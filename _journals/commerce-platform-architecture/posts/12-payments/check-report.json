@@ -1,0 +1,738 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/12-payments/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/12-payments/index.md",
+  "spec_sha": "672ade36f6e90e80",
+  "draft_sha": "d956fecb8e14148d",
+  "run_at": "2026-11-12T16:52:20+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter promise: follow Eva's payment, trust the provider's answer, one owner per refund",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Key points: provider-held payment state, four money stages varying by method, one writer and one key per money action",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: Boomerang, Message in a Bottle, Lynchpin",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Returning from the bank app does not tell the shop whether money moved",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Merchant only asks, so failures come from unconfirmed outcomes or double money moves; reconciliation exposes them",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Eva's iDEAL order sits pending, waiting on the webhook",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the chapter and its evidence",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Three Weeks in January ¶1",
+      "summary": "Kestrel & Pine's payment routes: online PSP, store terminals, wholesale invoices, marketplaces",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Three Weeks in January ¶2",
+      "summary": "Double Refund discovered: 212 returns refunded twice, EUR 19,400",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Three Weeks in January ¶3",
+      "summary": "Partial recovery and the reconstructed incident timeline",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Three Weeks in January ¶4",
+      "summary": "Root cause (two refunders, no key) and the chapter's question",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Three Weeks in January ¶5",
+      "summary": "Card-Testing Night shows the single-provider dependency",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "What a Payment Service Provider Does ¶1",
+      "summary": "The five parties in a payment",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "What a Payment Service Provider Does ¶2",
+      "summary": "PSP hides the parties; four-stage flow plus backward flows",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "What a Payment Service Provider Does ¶3",
+      "summary": "What each stage leaves in the order record",
+      "matched_spec_paragraph": "p12a"
+    },
+    {
+      "draft_locator": "What a Payment Service Provider Does ¶4",
+      "summary": "Authorization windows make capture-on-shipment a deadline",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "What a Payment Service Provider Does ¶5",
+      "summary": "Payout timing and netting, matched by finance from batch reports",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "What a Payment Service Provider Does ¶6",
+      "summary": "Leading payment method differs per country",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "What a Payment Service Provider Does ¶7",
+      "summary": "Method costs differ widely, iDEAL vs Klarna, interchange caps",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "What a Payment Service Provider Does ¶8",
+      "summary": "Caveat: iDEAL rebranding to Wero; Mollie semantics used",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Strong Customer Authentication and 3-D Secure ¶1",
+      "summary": "What strong customer authentication is and why checkout waits for it",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Strong Customer Authentication and 3-D Secure ¶2",
+      "summary": "PSD2 legal basis for SCA and its exemptions",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Strong Customer Authentication and 3-D Secure ¶3",
+      "summary": "3-D Secure, exemptions vs liability shift to store on the order + merchant-initiated transactions defined",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Fraud and Card Data: Keep the Attack Out and the Card Number Out ¶1",
+      "summary": "Two more pre-authorization decisions: keep attackers and card numbers out",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Fraud and Card Data: Keep the Attack Out and the Card Number Out ¶2",
+      "summary": "Fraud screening against card testing, plus a kill switch",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Fraud and Card Data: Keep the Attack Out and the Card Number Out ¶3",
+      "summary": "PCI DSS scope depends on which systems see card numbers",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Fraud and Card Data: Keep the Attack Out and the Card Number Out ¶4",
+      "summary": "Hosted fields and the SAQ levels they map to",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Fraud and Card Data: Keep the Attack Out and the Card Number Out ¶5",
+      "summary": "Payment-page scripts remain merchant risk; rule: never handle card numbers",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Fraud and Card Data: Keep the Attack Out and the Card Number Out ¶6",
+      "summary": "Pending PSD3/PSR rules + Instant Payments Regulation as a new rail",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "The Order Depends on a Message It Does Not Control ¶1",
+      "summary": "Outcome known only via the PSP's webhook; order must wait and be safe",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "The Order Depends on a Message It Does Not Control ¶2",
+      "summary": "Webhooks are unordered, duplicated, forgeable and retried for limited time",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "The Order Depends on a Message It Does Not Control ¶3",
+      "summary": "Three integration rules: dedupe events, fetch the record, daily pending job",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "The Order Depends on a Message It Does Not Control ¶4",
+      "summary": "Own small payment vocabulary behind a PSP adapter",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "The Order Depends on a Message It Does Not Control ¶5",
+      "summary": "Requirements per order-PSP flow",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Refunds, Cancels and Chargebacks: Money Flowing Backward ¶1",
+      "summary": "A refund is a new payment: only after capture, asynchronous, to original method",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Refunds, Cancels and Chargebacks: Money Flowing Backward ¶2",
+      "summary": "Sequence of how the Double Refund happened",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Refunds, Cancels and Chargebacks: Money Flowing Backward ¶3",
+      "summary": "The fix: one writer, return id as idempotency key, daily check",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Refunds, Cancels and Chargebacks: Money Flowing Backward ¶4",
+      "summary": "Chargebacks: issuer-driven reversals and dispute-ratio limits",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "The Choices: Four Ways to Take Payments ¶1",
+      "summary": "Option 1: the platform's built-in payments",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "The Choices: Four Ways to Take Payments ¶2",
+      "summary": "Platform payments are a wrapper over PSPs",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "The Choices: Four Ways to Take Payments ¶3",
+      "summary": "Option 2: one external PSP via the platform connector",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "The Choices: Four Ways to Take Payments ¶4",
+      "summary": "Option 3: custom integration with hosted fields",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "The Choices: Four Ways to Take Payments ¶5",
+      "summary": "Option 4: own payment service over several PSPs",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "The Choices: Four Ways to Take Payments ¶6",
+      "summary": "Recommendation: stay on option 2 and invest in discipline",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Stores, Wholesale and Marketplaces: Four Feeds, Not One ¶1",
+      "summary": "Online is one of four money routes",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Stores, Wholesale and Marketplaces: Four Feeds, Not One ¶2",
+      "summary": "Store terminal payments and their own feed",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Stores, Wholesale and Marketplaces: Four Feeds, Not One ¶3",
+      "summary": "Wholesale payment as an invoiced receivable",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Stores, Wholesale and Marketplaces: Four Feeds, Not One ¶4",
+      "summary": "Marketplace payouts as a third feed",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Stores, Wholesale and Marketplaces: Four Feeds, Not One ¶5",
+      "summary": "Online batch as fourth feed; daily batch and a payments sub-ledger",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "Scale changes the number of money-moving systems and feeds, not the mechanism",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "In Practice ¶1",
+      "summary": "Eva's iDEAL payment confirmed by webhook",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "In Practice ¶2",
+      "summary": "Card variant: authorize then capture at label print with a key",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "In Practice ¶3",
+      "summary": "Illustrative payout and matching by PSP reference",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "In Practice ¶4",
+      "summary": "Refund variant traced through returns, PSP, ERP and payout",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "Failure: duplicate refund",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶2",
+      "summary": "Failure: lost payment outcome",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶3",
+      "summary": "Failure: expired authorization",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶4",
+      "summary": "Failure: provider outage or account pause",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "Synthesis: wait for confirmation, one writer and key, daily comparison",
+      "matched_spec_paragraph": "p55a"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "Established: four stages and webhook handling rules",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "Context-dependent: capture on shipment and single PSP vs orchestration",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "Author's view: writers and keys first; merchant-owned payment vocabulary",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Seven questions to audit a payment integration",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Hand-off: order is paid; order management chapter next",
+      "matched_spec_paragraph": "p59"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "Refunds, Cancels and Chargebacks: Money Flowing Backward ¶2",
+      "quote": "The sequence shows how the Double Refund happened, and where one key would have stopped it.",
+      "finding": "Declared 'example' carrying over 'a refund as a new payment' and introducing 'the Double Refund seen as two such payments'. The sentence carries nothing over from the refund bullets and its subject, 'the sequence', points forward to a figure not yet shown, so the boundary does not express the example relationship.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/8",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits (section opening)",
+      "quote": "| **1 — Starting** (under about €2M) |",
+      "finding": "Declared phrase transition (elaboration) carrying over the four ways to take payments and the four feeds and introducing which setup fits which stage. The section opens directly on the table with no lead-in, so nothing ties the stage rows to the options and feeds just compared.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "Refunds, Cancels and Chargebacks: Money Flowing Backward ¶2",
+      "quote": "The sequence shows how the Double Refund happened, and where one key would have stopped it.",
+      "finding": "Flow reader A: \"'the sequence' refers to the figure that follows, which I only understood after I reached it.\" The sentence points to Figure 4 before it appears and the incident was last told sections earlier.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3 (line 150: \"'The sequence' points to a figure that has not appeared yet\")",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/6",
+      "draft_locus": "What a Payment Service Provider Does ¶7",
+      "quote": "\"$0.13 + €0.22\" for iDEAL",
+      "finding": "Flow reader A: \"'$0.13 + €0.22' mixes currencies, and 'iDEAL costs roughly €0.35' depends on a conversion the text never states. I had to work it out myself.\" The worked figure needs the dollar-to-euro step stated.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3 (line 86: \"Mixing dollars and euros without stating a conversion made me stop and check the arithmetic\")",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/3",
+      "draft_locus": "In Practice ¶4",
+      "quote": "which is why the payout for the sales of 22 April does not equal those sales",
+      "finding": "Flow reader A: \"I needed a second read to see that the 22 April batch is the 'later' batch.\" 'A later payout batch' and 'the payout for the sales of 22 April' are not visibly the same batch.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3 (line 218: \"I had to work out that the refund issued on 22 April is netted in that day's batch\")",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "Strong Customer Authentication and 3-D Secure ¶3",
+      "quote": "One more term matters later. A **merchant-initiated transaction** (MIT) is a charge the merchant triggers later",
+      "finding": "Flow reader A: \"The definition lands at the end of a paragraph about liability shift, and the term is next used only in option 3 and in 'When It Goes Wrong'. By then I had forgotten it.\" The spec places MIT in p25, far from its first use (capture windows, options, expired authorization); the distance comes from the declared order.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item 3 (line 96: \"MIT is tacked onto the end of a dense paragraph ... I had forgotten it by the time it came back\")",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "Fraud and Card Data: Keep the Attack Out and the Card Number Out ¶6",
+      "quote": "The rules around authentication and fraud are still moving, so the payment design needs someone who tracks them.",
+      "finding": "Flow reader A: \"This regulatory outlook is out of place at the end of the card-data section. The Instant Payments point, about a refund rail, has nothing to do with fraud or card scope.\" Third round with this paragraph flagged in a different place; the difficulty is where the spec puts p26 (and its instant-payments half), not the prose.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item 3 (line 110: \"sits inside 'Fraud and Card Data' but is about regulatory change in general ... It is out of place\")",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/7",
+      "draft_locus": "What a Payment Service Provider Does ¶8",
+      "quote": "One caveat on iDEAL, the chapter's running example.",
+      "finding": "Flow reader A: \"'One caveat on iDEAL...' sits after the cost paragraph and feels stranded. It belongs next to the iDEAL row of the methods table.\" The spec deliberately put p16 after costs (round 1) and rejected merging it into p15; both readers still lose the thread here.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item 3 (line 88: \"the iDEAL | Wero caveat is a tangent in the middle of the methods-and-costs discussion\")",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/3",
+      "draft_locus": "Refunds, Cancels and Chargebacks: Money Flowing Backward ¶4",
+      "quote": "**Chargebacks** are the other backward flow, and not the merchant's decision",
+      "finding": "Flow reader A: \"the Waypoint fix (two paragraphs and a figure) sits between the refund bullets and 'Chargebacks are the other backward flow'. The thread about money flowing back is interrupted.\" The order is the spec's (refunds section problem_solution with chargebacks last; moving them was rejected in round 2).",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item 3 (line 161: \"The section builds to the fix and then restarts with a different backward flow, which feels like an appendix\")",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Three Weeks in January ¶3",
+      "quote": "Most was recovered by asking customers to return it; the bank-transfer refunds could not be recalled.",
+      "finding": "Flow reader A: \"It is unclear what 'it' refers to ... the recovery also comes before the table that explains how the incident happened ... 'The dates and details are fictional' is tacked onto the end of an unrelated sentence.\"",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "What a Payment Service Provider Does ¶2",
+      "quote": "(a reference-architecture description, not a fact about any one company)",
+      "finding": "Flow reader A: the parenthetical \"breaks into the definition and made me re-read the sentence.\"",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/5",
+      "draft_locus": "The Choices: Four Ways to Take Payments ¶6",
+      "quote": "option 2's \"None\" assumes no fallback at all",
+      "finding": "Flow reader A: \"the next sentence recommends a rehearsed fallback for option 2. I re-read to work out whether the table or the advice is the final word.\"",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Three Weeks in January ¶5",
+      "quote": "raises a second question, which the chapter answers near its end",
+      "finding": "Flow reader A: \"the answer is split between the recommendation in the choices section and the outage entry in 'When It Goes Wrong', so I was never sure where the answer was.\" The promise does not say where the answer lands.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "draft_locus": "What a Payment Service Provider Does ¶6",
+      "quote": "across the euro area cards still lead at 48% of online payments by number",
+      "finding": "Flow reader B: \"At first this reads as a contradiction (cards lead, yet something else leads), and three ideas are crammed into one sentence. I had to read it twice.\"",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "The Choices: Four Ways to Take Payments ¶1",
+      "quote": "a merchant can put them together in four ways. **1. The platform's built-in payments.**",
+      "finding": "Flow reader B: \"Option 1 starts mid-paragraph, inside the transition sentence. Then the Shopify paragraph separates options 1 and 2, so the list is hard to see as a list.\"",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "We follow that message, then the money through settlement and payout.",
+      "finding": "Flow reader B: \"Eva then vanishes ... until In Practice. The middle is generic, so the promised walk-through comes as one late section rather than a thread through the chapter.\" The spec keeps Eva to the intro, the PSP party table and In Practice.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5",
+      "draft_locus": "Refunds, Cancels and Chargebacks: Money Flowing Backward (heading)",
+      "quote": "an uncaptured authorization is *canceled* instead",
+      "finding": "Flow reader B: \"The heading also promises 'Cancels', which get only half a bullet.\"",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "Fraud and Card Data: Keep the Attack Out and the Card Number Out ¶6",
+      "quote": "reached provisional agreement on 27 November 2025",
+      "finding": "Flow reader A: \"a provisional agreement 'on 27 November 2025' is supported by a press release dated '21 November 2025', six days earlier.\" The dates as given look inconsistent (the spec's evidence carries the same pair); check the source.",
+      "fault": "unclear",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "quote": "the shopper's bank, the payment scheme and the payment provider do",
+      "finding": "'Payment scheme' (on does_not_know) is used here and in the thesis paragraph; it is defined only in the party table of the PSP section.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Three Weeks in January ¶1",
+      "quote": "offers iDEAL, cards, PayPal, Klarna, Bancontact and Apple Pay",
+      "finding": "Klarna and Bancontact (and iDEAL in the key-points callout) are named before they are explained; Klarna is glossed as buy-now-pay-later only at the windows paragraph and Bancontact in the country table. Bancontact is on does_not_know.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "draft_locus": "What a Payment Service Provider Does ¶6 (Germany row)",
+      "quote": "\"Payment\" may be a 30-day receivable or a buy-now-pay-later loan",
+      "finding": "'Receivable' is on does_not_know and is used here; it is explained only in the Wholesale paragraph of the feeds section.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Fraud and Card Data: Keep the Attack Out and the Card Number Out ¶3",
+      "quote": "**PCI DSS** is the card industry's security standard",
+      "finding": "PCI DSS (on does_not_know) is glossed but the acronym is never expanded; AC-6 asks that every acronym be expanded on first use.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/thesis_statement",
+      "draft_locus": "Introduction callout",
+      "quote": "Payment is a state machine whose truth lives outside your systems.",
+      "finding": "'State machine' opens the first key point and is never explained; the audience knows APIs, databases and queues, not state machines.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶1 (Group row)",
+      "quote": "network tokens so saved cards are not locked to one PSP",
+      "finding": "'Network tokens' and 'a tokenized card base that cannot move' carry the Group-stage argument and are never explained.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶1 (Growing row)",
+      "quote": "an edge rate limit and a kill switch for guest card payments",
+      "finding": "'Edge rate limit' is used here and explained only in When It Goes Wrong ('rate limits at the edge of the site').",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "Strong Customer Authentication and 3-D Secure ¶3",
+      "quote": "An exemption buys conversion at the price of fraud liability",
+      "finding": "'Conversion' (share of checkouts that become payments) is not in already_knows and is never explained, yet carries the exemption trade-off.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "The Order Depends on a Message It Does Not Control ¶2",
+      "quote": "and every event is signed, because",
+      "finding": "What signing (and later 'owned and verified' endpoints) means is never said; the reader gets only why it matters.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "The Choices: Four Ways to Take Payments ¶3",
+      "quote": "the PSP's hosted page or drop-in component renders the methods",
+      "finding": "'Drop-in component' (and 'headless' in option 3, only cross-linked) are not explained, though they distinguish options 2 and 3.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "What a Payment Service Provider Does ¶2",
+      "quote": "Adyen's, Stripe's and Mollie's documentation",
+      "finding": "Adyen, Stripe and Mollie are never introduced as payment service providers; the reader must infer it.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "minor"
+    }
+  ]
+}

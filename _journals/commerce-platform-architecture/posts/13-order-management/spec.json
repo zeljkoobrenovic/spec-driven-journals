@@ -1,0 +1,1604 @@
+{
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "order-management",
+  "journal": "commerce-platform-architecture",
+  "part": "part-3",
+  "title": "The Order Record: Lifecycle, State and the Order Management System",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published chapter (posts/13-order-management/index.md) and its former spec.md, whose Non-goals, Modalities, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter. It is a contract, not a description: the places where the chapter did not yet do what the spec asks are listed under open_questions.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "What an order record holds (header, lines, money, promises, goods, references) and why the order number is the key for creating the order in every other system.",
+        "The order's three status lines (money, goods per shipment, returns) and how the status the customer sees is computed from them.",
+        "Routing, split shipments and backorders, and what an order management system holds and what it leaves to the shop platform and the ERP."
+      ],
+      "believe": [
+        "A single status word on an order hides facts that systems need, and is a fault, not a simplification.",
+        "The order's home is chosen by which system must answer the customer's question about a parcel."
+      ],
+      "can_do": [
+        "Decide whether a merchant needs an OMS by checking four conditions.",
+        "Say what a split order's status should read and what the customer should be told."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture; most of all the engineer or product manager who owns, or is about to own, an integration between the shop platform, a warehouse system and an ERP and must decide which system is the order's home. Service and operations managers get the vocabulary to ask why 'Delivered' was wrong.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side.",
+        "Roughly what an API, a database and a queue are.",
+        "Kestrel & Pine, its people, its 2026 incidents in outline and the names of the sixteen failure patterns (meet-kestrel-and-pine, where-commerce-platforms-go-wrong).",
+        "From Part I: the thirteen steps of an order, promise and handoff, the three status lines of an order (money, goods, returns), 'system' as any software or outside service that takes part in handling an order, 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, the business models and the four scale stages (Starting, Growing, Omnichannel, Group), the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation, and the Waypoint decisions W1 to W8.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+        "From Part II: product, variant, SKU and GTIN; prices selected once at order placement and frozen; discounts allocated to lines; available-to-promise, one writer each for on hand and committed, per-channel buffers and an exact commit at checkout.",
+        "From the earlier chapters of Part III: checkout creates the order once, with its payment pending, keyed so that a retry does not create a second order; the payment provider's webhook marks it paid; authorization, capture, settlement and payout; one writing system and a business key for every action that moves money."
+      ],
+      "does_not_know": [
+        "State machine; the order lifecycle, money, goods and return machines; fulfillment order; the order-level summary and its two rules.",
+        "Edit window, calculated order, hold, cancellation request, compensation and the saga pattern's vocabulary.",
+        "Sourcing, routing, split shipment, backorder, child shipment.",
+        "Orchestration; the OMS's components; the two-of-four rule."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a two-parcel order whose systems show three different statuses, the reader says what the order should have shown and which design decision was missing.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "An order for a fleece and socks ships the fleece first; the socks wait for replenishment. The shop shows 'Delivered', the warehouse 'In picking' and the ERP 'Not invoiced'. Using only this chapter: what should the order have shown, and what was missing in its design?",
+        "expected": "'Partially delivered: 1 of 2 parcels' (and 'ships in two parcels' to the customer): the goods status is held per shipment and the summary is taken from the least-advanced shipment. The design had one status word, so the first parcel's delivery marked the whole order delivered, and no one system held the order across the platform, the warehouse and the ERP."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given a merchant's channels and locations, the reader decides whether it needs an OMS by the four conditions and says why an OMS rather than the ERP holds the order.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A merchant sells through its own web shop and a marketplace and ships from two warehouses. A vendor offers it an OMS. Using only this chapter: does it need an order hub, and should that hub be the ERP or an OMS?",
+        "expected": "Yes: two of the four conditions hold (several channels create orders; several locations fulfil them), so one system must be the order's home. An OMS rather than the ERP, because the hub must route lines between the warehouses and answer a customer's question about a parcel, which a finance system running in batches cannot. Not decided by revenue."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can say what happens when support cancels an order that has already shipped.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Support 'cancels' an order that has already shipped. Using only this chapter: what should happen instead?",
+        "expected": "A shipped order cannot be canceled; the cancellation becomes a return (return label, receipt, inspection, refund on receipt), a compensating step the order system coordinates. Edits lock once the warehouse has accepted the work."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Why a single 'shipped' status misleads when the parts of an order move separately; what an order record holds; its separate states; routing and split shipments; where the order should live and when an OMS is needed. Evidence: Kestrel & Pine's Three-Status Order and its order-hub decision, platform and OMS vendor documentation."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-6",
+        "statement": "A reader new to commerce meets no term in this chapter before it is explained, and every acronym is expanded on first use or was glossed on an earlier page.",
+        "check": "known_before_new",
+        "method": "rubric",
+        "severity": "minor"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "Where does the order live once it is placed, what states does it pass through, and when does a merchant need an order management system (OMS)?",
+    "claim": "Once placed, an order should live in one system that holds it as one record, under one order number, with three separate status lines (money: authorized, paid, refunded, moved by the payment provider's events; goods: requested, accepted, shipped, delivered, held per shipment and moved by the warehouse and the carrier; returns: requested, received, inspected, refunded or exchanged) and computes the status the customer sees from all its shipments, so that the order reads delivered only when every parcel has been delivered. While one channel creates orders and one location fulfils them, that system is the shop platform; a merchant needs an OMS as the order's home once at least two of four conditions hold (several channels create orders, several locations fulfil them, promises depend on the location, service agents cannot see one order across systems), because an OMS, unlike the ERP, can route lines between locations and answer a customer's question about a parcel.",
+    "disputed_by": "The view that an order has one status in whichever system took it, kept in step with the others by connectors, and that an OMS is a product for large retailers, needed by revenue or order volume rather than by how many systems create and fulfil orders.",
+    "so_what": "Order #1052877 read 'Delivered' in the platform, 'In picking' in the warehouse and 'Not invoiced' in the ERP while the customer had a fleece and no socks, and produced 11 support tickets; with goods status per shipment it would have read 'Partially delivered: 1 of 2 parcels'. Kestrel & Pine meets all four conditions, so under W2 it makes a bought OMS the order hub, with the platform keeping the checkout and the ERP the books. A merchant that accepts the claim counts its order sources and fulfilling locations and names the order's home before it buys anything.",
+    "how_why": "Money, goods and returns are changed by different systems at different times (the payment provider, the warehouse and the carrier per parcel, the returns portal), so one status word lets the latest message overwrite the others: one parcel's delivery scan marked a two-parcel order delivered. Every system that copies the order receives it at least once, so the copies stay one order only through one number family with the order number as the key. With one channel and one location the platform's record sees every change; with several sources, each with its own connector to the warehouse and the books, no system sees the whole order; one condition alone can be handled by the platform plus a connector, but two make the joins between systems the problem, and choosing which location ships which line needs rules over stock, capacity, cut-off times and cost that the platforms' priority and distance rules do not hold. The ERP holds the financial record and runs in batches, so it cannot answer a parcel question.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "An order record has six parts (header, lines, money, promises, goods, references), and its number, drawn from one family for every channel, is the key that lets every other system receive the 'order placed' message more than once and still hold one order."
+      },
+      {
+        "id": "S2",
+        "claim": "Money, goods and returns are moved by different systems at different times, so the order keeps a separate state machine for each, the goods state lives on each shipment, and the status the customer sees is computed from the least-advanced shipment; one status word lets the latest message overwrite the others."
+      },
+      {
+        "id": "S3",
+        "claim": "Edits, holds and cancellations are changes to those state machines, not form updates: edits close once the warehouse accepts the work, and a cancellation after shipment becomes a return, a compensating step the order's home coordinates."
+      },
+      {
+        "id": "S4",
+        "claim": "Once several locations fulfil orders, choosing which location ships which line and whether to split is a cost decision over stock, capacity, cut-off times and carrier rates that the platforms' priority and distance rules do not make, and a split must be told to the customer."
+      },
+      {
+        "id": "S5",
+        "claim": "The order's home is chosen by which system must answer the customer's question about a parcel: the shop platform while one channel creates orders and one location fulfils them, and an OMS, not the ERP, once two of four conditions hold, with the platform keeping the checkout and the ERP the books."
+      },
+      {
+        "id": "S6",
+        "claim": "An order hub does not remove the joins between systems: messages are repeated, lost and reordered, so each join still needs the order or shipment id as its key, a state machine that refuses impossible moves and a daily comparison of the copies."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Gives the order one home and separate status lines, so that the payment outcome, each parcel and each return are kept without overwriting each other, and supplies the per-shipment record the ledger chapter invoices from.",
+    "supports": [
+      "P3-2",
+      "P3-4"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene to states: the Three-Status Order, then the record and the state machines that answer it"
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "choices, trade-offs and stages: four homes for the order on the same criteria, then by stage"
+      }
+    ],
+    "rationale": "The Three-Status Order comes first so that every term arrives as part of the answer to 'why did three systems give three answers'. The record's parts and its number come before the state machines, because the machines are fields of that record and the number is the key every later section relies on. The state machines come before changes to a placed order, since an edit or a cancellation is a move of one of those machines, and before routing, since a split creates the second fulfillment order whose state the summary rule reads. Routing needs several locations, which the reader meets there for the first time; several channels follow as the other half of the joins problem, with the two-of-four rule for when they need one home and three candidates for that home. The OMS as a product is described once it has been named as one candidate; the choices then weigh the four homes, the built service joining the three candidates as the fourth announced earlier, with W2 named as the outcome of that comparison rather than its premise; the trade-off table compares them on the criteria the earlier sections set up plus time, cost and failure, and the stages place them by scale. The worked example shows the chosen design (W2) at work: its rollout, the requirements of each interaction once the OMS has been chosen (with Eva's order traced through it) and the replay of #1052877. The failures come last, opening from the repeated messages every design receives, because every design, the chosen one included, must expect them. Moving the scene later would put five sections of vocabulary before the problem; moving routing before the state machines would describe a split before the reader knows that the goods state belongs to each shipment; giving the OMS's requirements before the choice would assume a decision the chapter has not made."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "A customer orders a jacket and socks, but the jacket ships first. The warehouse knows which items left, the payment provider knows what was paid, and support has to explain when the socks will arrive; a single 'shipped' status misleads both the customer and the team handling the order."
+    },
+    "bridge": {
+      "from_reader_world": "Anyone who has received half an order has seen a status page that said more, or less, than the box held; the previous chapter has just marked Eva's order paid.",
+      "to_topic": "The facts about one order are known by different systems, so the question is which one record brings them together, how it keeps them apart, and which system holds it."
+    },
+    "thesis_statement": {
+      "text": "An order needs one record that keeps money, goods per parcel and returns as separate status lines and computes the customer's status from all its parcels; the shop platform can hold it while one channel creates orders and one location fulfils them, and an order management system should hold it once two of four conditions hold, because it can route lines between locations and answer a parcel question.",
+      "placement": "KEY POINTS callout (all three bullets) and paragraph p02"
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p04",
+      "promises": [
+        {
+          "promise": "Start from Kestrel & Pine's Three-Status Order, #1052877.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Say what an order record holds and why its number is the key, then take its status apart into separate state machines and say how the status the customer sees is computed.",
+          "kept_in": [
+            "record",
+            "states"
+          ]
+        },
+        {
+          "promise": "Show how edits, holds and cancellations change those machines, and how routing decides which location ships which line and when to split.",
+          "kept_in": [
+            "changes",
+            "routing"
+          ]
+        },
+        {
+          "promise": "Ask when every channel's orders need one home and which system it should be, describe the OMS, and compare four homes by trade-off and scale stage.",
+          "kept_in": [
+            "channels",
+            "oms",
+            "choices",
+            "trade-offs",
+            "stages"
+          ]
+        },
+        {
+          "promise": "Show Kestrel & Pine's chosen design at work, with its requirements and #1052877 replayed through it, and list the ways order integrations fail.",
+          "kept_in": [
+            "in-practice",
+            "wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "When a jacket ships before the socks of the same order, the warehouse, the payment provider and support each know part of the story, and a single 'shipped' status misleads the customer and the team.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "A two-item order whose items leave at different times, with each fact held by a different party.",
+            "shows": "The chapter's problem in one case: one status word cannot describe an order whose parts move separately."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The merchant needs one record that brings those facts together and keeps money, goods per parcel and returns apart; the shop platform can hold it while one channel and one location are involved, and an order management system (OMS) should hold it once two of four named conditions hold, because it can route lines between locations and answer a parcel question.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The facts about one order held apart by the warehouse, the payment provider and support.",
+          "introduces": "The record that brings them together and the system that should hold it: the chapter's claim.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "In Eva's order the payment provider's message has just marked #1072455 paid, and this chapter is about the order from 'paid' through delivery and, after her exchange, the dispatch of her replacement jacket, with Figure 5 tracing her order through the design the chapter arrives at.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "time",
+          "carries_over": "The order marked paid by the payment provider's confirmed message, with the money's status kept in the order's own payment vocabulary (previous chapter).",
+          "introduces": "The rest of the order's life after 'paid': goods and returns, and the systems that hold copies of the order.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "Before Eva's order the chapter starts from an older order with another customer, Kestrel & Pine's Three-Status Order, then describes the order record and its number, its separate state machines, changes to a placed order, routing and splits, when every channel's orders need one home and which system it should be, the OMS, four homes by trade-off and stage, the chosen design at work with #1052877 replayed, and the ways order integrations fail; its evidence is the Kestrel & Pine case and platform and OMS vendors' documentation.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "Eva's order from 'paid' onward.",
+          "introduces": "An older order with another customer that the chapter starts from, then the order of the chapter and its evidence.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Kestrel & Pine: Order #1052877",
+      "controlling_idea": "Order #1052877 showed three honest statuses in three systems because a partial shipment was collapsed into 'fulfilled' and the invoice waited for 'order complete', and nobody owned the combined view.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S5"
+        ],
+        "how": "Shows one status word overwritten by the latest message and no system holding the whole order, the two faults the thesis answers."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The order, then what each system did as the days passed, then the tickets and the January review, then the decision; the decision makes sense only after the reader has seen that nobody owned the combined view."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap's first promise: the Three-Status Order.",
+        "introduces": "The order, its two items and what each system did.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Order #1052877, a €119 fleece and €18 socks, left Duiven in two parts: the fleece on 7 December, while the WMS kept the socks open as a second pick waiting for replenishment.",
+          "function": "description",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Order #1052877, €137, fleece shipped 7 December 2026, socks short in their pick location.",
+              "source": "_research/scenario-ledger.md, order-management and customer-service-and-notifications lines",
+              "shows": "The order became two shipments, the situation a single status cannot describe."
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "The agency's shipment-confirmation integration could not represent a partial shipment, so the first parcel marked the whole shop platform order fulfilled and its delivery on 8 December triggered 'Delivered': one confirmation, sent once and trusted (the Message in a Bottle).",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The fleece shipped and the socks still open.",
+            "introduces": "What the integration did with the first shipment confirmation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Meanwhile the ERP waited for an 'order complete' message and showed 'Not invoiced', and the WMS showed 'In picking': each system exposed a different part of the situation.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Each system, what it held, its status and what the status was true of: the shop platform 'Delivered' (the first parcel), the WMS 'In picking' (the second pick), the ERP 'Not invoiced' (the invoice run), the customer 'Where are my socks?' (the order).",
+              "shows": "Every status was honest about a different object, and none was about the order."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: the customer's box without socks among three screens.",
+              "shows": "The same point as the table, in one picture."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The shop platform's 'Delivered'.",
+            "introduces": "What the ERP and the WMS showed at the same time.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Eleven tickets followed before the socks shipped on 14 December, the case the company calls the Three-Status Order (an instance of Schrödinger's Order), and the January review found no owner for the combined view: the shop platform, the WMS and the ERP each held one part, and other orders began in still other systems.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Three statuses about three objects.",
+            "introduces": "What it cost (eleven tickets) and the review's finding that nobody owned the order.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Noor and Mara answered with Waypoint decision W2: choose one home for every order and specify what it must explain.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "No owner for the combined view.",
+            "introduces": "The decision that gives the order one home.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "record",
+      "heading": "What an Order Record Holds",
+      "controlling_idea": "An order record has six parts that downstream systems read, is distinct from a cart, a shipment and an invoice, and carries one number from one family that every other system uses as the key for creating it.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Defines the record the thesis says needs one home, and the number that keeps its copies one order."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The whole record first, then the three things it is not, then the one field every system shares; the identity rules need the reader to know what is being identified."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "W2's 'one home for every order'.",
+        "introduces": "What that home holds: the order record, part by part.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "Stripped to what every downstream system needs, an order record has six parts: header, lines, money, promises, goods and references.",
+          "function": "definition",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The six parts, what each holds and who reads it most.",
+              "shows": "Each part has its own readers, so the record serves warehouse, finance, carrier, service and customer at once."
+            }
+          ]
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "A cart is not an order, an order is not a shipment and an order is not an invoice.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The six parts of the record.",
+            "introduces": "Three neighbouring things it is often mistaken for.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The order number is shared by every system, the customer and the carrier label, so it comes from one family for every channel and is the idempotency key for creating the order anywhere else.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "An order that may become several shipments and invoices.",
+            "introduces": "The one identifier that ties them together, and its two rules.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "states",
+      "heading": "Several State Machines on One Record",
+      "controlling_idea": "An order carries separate state machines for its lifecycle, money, goods per shipment and returns, as the platforms' own documentation shows, and the status the customer sees is a summary computed from them under two rules.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Shows the separate status lines in two vendors' models and gives the rule that makes a two-parcel order read 'partially delivered'."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The term and the claim, then Shopify's and commercetools' models as evidence, then the summary rules that follow from them; the rules mean nothing before the reader knows the goods state lives on each shipment."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The record's money, goods and references parts.",
+        "introduces": "The states those parts move through, and that there are several.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p13",
+          "controlling_idea": "A state machine is a fixed set of states and allowed moves; the Three-Status Order came from assuming an order has one, when it has at least three, the status lines named in Part I.",
+          "function": "definition"
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Shopify keeps three status families on one order: order, payment and fulfillment.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Order status Open, Archived or Canceled; eight payment statuses including Voided; six fulfillment statuses including Partially fulfilled.",
+              "source": "Shopify Help Center, n.d., accessed November 2026",
+              "shows": "A major platform keeps money and goods as separate machines on one order."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The claim that an order has several machines.",
+            "introduces": "The first platform's own model.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Below the order, each fulfillment order, the instruction to one location to ship a group of lines, has statuses of its own and a request status for the handshake with the warehouse.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Seven fulfillment-order statuses plus a request status.",
+              "source": "Shopify developer documentation, n.d.",
+              "shows": "The goods state lives on each shipment, not on the order."
+            }
+          ],
+          "transition_in": {
+            "relationship": "place",
+            "carries_over": "Shopify's statuses on the order.",
+            "introduces": "The statuses one level below, on each fulfillment order.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "commercetools, a second platform, separates order, shipment and payment states as well, with return states and an optional custom state machine, so the two vendors agree on four machines that live in different places and are moved by different systems.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "OrderState, ShipmentState with Partial and Backorder, PaymentState, custom states with unvalidated transitions when an external system runs the workflow, return item states.",
+              "source": "commercetools API documentation, n.d., accessed November 2026",
+              "shows": "A second vendor separates the same machines."
+            },
+            {
+              "kind": "table",
+              "what": "Four machines (order lifecycle, money, goods, return), their typical states, where each lives and who moves it.",
+              "shows": "The goods machine lives on each shipment and is moved by the warehouse and the carrier, not by the order system."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: the goods state machine on each fulfillment order.",
+              "shows": "A two-parcel order has two goods machines and is delivered only when both are."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Shopify's order-level and fulfillment-order statuses.",
+            "introduces": "A second vendor's model, and the four machines both share.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "The words a customer sees are summaries computed from the machines below, and two rules keep them honest: 'fulfilled' is not 'delivered' unless carrier events are fed back, and a split order's summary is the state of its least-advanced shipment.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "With the second rule, #1052877 would have read 'Partially delivered: 1 of 2 parcels', with the second parcel still in preparation.",
+              "shows": "The rule gives the answer the opening case lacked."
+            },
+            {
+              "kind": "table",
+              "what": "What 'Delivered' on the order says, and what it does not say.",
+              "shows": "A one-word summary claims less than readers assume."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Machines that live on the order and on each shipment.",
+            "introduces": "How the one word the customer sees is computed from them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "changes",
+      "heading": "Changing a Placed Order",
+      "controlling_idea": "Edits, holds and cancellations are moves against the money, goods and stock commitments, governed by the goods state: edits close when the warehouse accepts the work, and a cancellation after shipment becomes a return.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Shows that changing an order is a move of its state machines, and that the order's home coordinates the compensating steps."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The general claim, then the three kinds of change in order of how far they reach: an edit changes work, a hold pauses it, a cancellation undoes it, and the last one defines compensation where it first needs it."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Separate machines, with the goods state on each shipment.",
+        "introduces": "What happens to them when a placed order is changed.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p18",
+          "controlling_idea": "Orders are edited, held or canceled more often than newcomers expect, and each change is a transaction against the money, goods and stock commitments, not a form update.",
+          "function": "claim"
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "An edit changes work other systems may have accepted, so it is checked against the goods state and the amount paid, allowed only on unfulfilled lines, turned into a request once the warehouse has accepted the work, and sent to every system that holds a copy.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify's calculated order, committed edit and unfulfilled-lines-only rule.",
+              "source": "Shopify developer documentation, n.d., accessed November 2026",
+              "shows": "A platform treats an edit as a validated transaction with a closing window."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Changes as transactions.",
+            "introduces": "The first kind: edits.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "A hold stops fulfillment without canceling, and the stock stays committed while it waits.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify: an order on hold keeps its inventory reserved.",
+              "source": "Shopify Help Center, n.d.",
+              "shows": "A hold pauses the goods machine without releasing the stock commitment."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Edits.",
+            "introduces": "The second kind: holds.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "A cancellation before acceptance releases stock and voids or refunds the payment, but after shipment it becomes a return, a compensation that whichever system is the order's home coordinates.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "The saga pattern's compensation vocabulary.",
+              "source": "Chris Richardson, microservices.io, n.d.",
+              "shows": "Undoing a shipment is a later business step, not a rollback."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Holds.",
+            "introduces": "The third kind: cancellations, before and after shipment.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "routing",
+      "heading": "Routing, Sourcing and Splits",
+      "controlling_idea": "With more than one location, sourcing, routing and splitting become decisions over stock, capacity, cut-off times and cost that the platforms' simple rules do not make, and a split must be told to the customer.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Shows the decision a single-location merchant never makes and that the platforms do not hold, one of the reasons an OMS becomes the home."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The terms, then what the platforms decide and leave out, then what OMS vendors add, then the business trade-off in a split and its special case, the backorder; the vendors' fuller decision is read against the platforms' gaps."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The fulfillment order and the goods state per shipment.",
+        "introduces": "How an order becomes more than one fulfillment order when it can ship from several locations.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p22",
+          "controlling_idea": "Once an order can be fulfilled from more than one location, three decisions appear: sourcing chooses the location for each line, routing is the rule set that makes the choice, and a split shipment is one order in several parcels.",
+          "function": "definition"
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Platforms route by simple rules over stock and geography, and do not know about capacity, cut-off times, carrier cost, marketplace fees or a maximum number of parcels.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Adobe Commerce source priority and distance priority; Shopify's assigned location, changeable only while the fulfillment order is open, scheduled or on hold.",
+              "source": "Adobe Commerce documentation updated 2026-08-20; Shopify developer documentation, n.d.",
+              "shows": "The platforms' routing is a priority list or the nearest location."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Routing as a rule set.",
+            "introduces": "The rules the platforms ship, and what they leave out.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "OMS vendors describe the fuller decision: candidates and suggestions with reasons, child shipments for what is not in stock, splits that maximise items and minimise shipments under cost caps, and assignment to the location that keeps the promise most profitably.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Kibo's candidates, suggestions and child shipments; Fluent's split logic and caps; Manhattan's 'most profitably'.",
+              "source": "Kibo, Fluent Commerce and Manhattan documentation, n.d., accessed November 2026",
+              "shows": "The decision the platforms leave out has a documented shape that can be read as a specification."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: routing turns one order into one or more fulfillment orders from stock per location, capacity, cut-off times and cost.",
+              "shows": "The same inputs decide whether to split now or wait."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the platforms' rules do not know.",
+            "introduces": "What OMS vendors say the decision should take into account.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "A split is a cost decision whose inputs are the carrier rates, the promise and the customer's channel, and whichever system makes it must also tell the customer 'two parcels'.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The fleece now and the socks later against one late parcel; the message nobody at Kestrel & Pine could send in December 2026.",
+              "shows": "The trade-off and the missing message in the opening case."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The vendors' inputs to the split decision.",
+            "introduces": "The business trade-off inside one split and the message it requires.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "A backorder is a split in time rather than space and needs the same honesty: a date from incoming stock and a message.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "A split and the message it needs.",
+            "introduces": "The same decision across time: the backorder.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "channels",
+      "heading": "Many Channels, One Record",
+      "controlling_idea": "When orders begin in several systems, each with its own connectors and vocabulary, one system must be the order hub once two of four conditions hold, and the question is which of three candidates owns which truth about the order.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Gives the two-of-four rule for when the order needs a hub and frames the hub as a choice between the platform, the ERP and an OMS, each holding a different truth."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The Spaghetti Junction first, then the rule for when it needs one record of its own, then the hub with its three candidates, then the boundary between them; the rule comes before the candidates because it decides whether a hub is needed at all, and the choice between candidates is left to the choices section."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "Several locations and the routing decision.",
+        "introduces": "Several channels creating orders, the other half of the joins problem.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p27",
+          "controlling_idea": "Several channels creating orders are the other half of the joins problem: Kestrel & Pine's orders begin in four systems, each with its own connector to the warehouse, its own path to the books and its own status vocabulary, the Spaghetti Junction that adding one channel at a time produces.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Storefront and B2B portal orders in the shop platform, marketplace orders through the connector, EDI and 38% hand-keyed wholesale orders in the ERP, store sales as POS receipts.",
+              "source": "_research/scenario-ledger.md, systems table",
+              "shows": "Four sources and four sets of connectors for one kind of record."
+            }
+          ]
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "The junction needs one record of its own once at least two of four conditions hold (several locations, several channels, promises that depend on location, service that cannot see one order), because one can be handled by the platform plus a connector and two make the joins between systems the problem; Kestrel & Pine has had all four since 2023.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: four condition cards, two ticked, leading to the order hub.",
+              "shows": "The rule in one picture."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Spaghetti Junction of four order sources.",
+            "introduces": "The rule for when that junction needs one record of its own.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The alternative to the junction is one order hub with one state model and one number family, and the real question is which of three candidates it should be (the platform, the ERP or an OMS), with building one's own left to the choices.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The platform, the ERP and an OMS: what each is good at, what it lacks, and at which stage it is common.",
+              "shows": "Each candidate holds a different record well (customer-facing, financial, operational) and lacks what the others have."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The junction and the point at which it needs one record.",
+            "introduces": "One hub, and three candidates for it, with a fourth announced.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "The three records are three truths about the same order, so the decision is which system owns which truth and how the others are told.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Fluent Commerce: 'your ERP stays the system of record' for finance.",
+              "source": "Fluent Commerce, n.d., accessed November 2026",
+              "shows": "An OMS vendor draws the same boundary between operational and financial records."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The three candidates and their strengths.",
+            "introduces": "That they are not rivals but owners of different truths.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "oms",
+      "heading": "The OMS as a Product",
+      "controlling_idea": "An OMS takes every channel's orders, routes them, tracks them and gives service one view, and owns the operational order while leaving checkout and the books alone.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Describes the system the thesis names as the home and its boundary with the platform and the ERP."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The product as vendors describe it, then its components and their boundaries; the boundaries mean more once the reader knows the jobs."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The OMS as the third candidate, the operational record.",
+        "introduces": "What an OMS is and does, component by component.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p30",
+          "controlling_idea": "An OMS takes orders from every channel, decides which location fulfils each line, tracks each order through delivery and returns, and gives service one view; orchestration is its job of sequencing those steps, and the vendors describe the same shape.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Manhattan's capability list, Kibo's 'distributed order orchestration', IBM Sterling's ship from store and call-center add-on.",
+              "source": "Manhattan, Kibo and IBM product pages, n.d., accessed November 2026",
+              "shows": "The category has a stable shape across vendors."
+            }
+          ]
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "What the OMS owns, and what it leaves alone, is the point: it is the system of record for the operational order, the sourcing decision and the order's state, and not for checkout, picking, refund execution or invoices.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six components (intake, availability, routing, orchestration, service view and edits, events out) with responsibility, what each is the system of record for and what not.",
+              "shows": "The OMS's boundary with the platform, the PSP, the WMS and the ERP, component by component."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The OMS's jobs as vendors list them.",
+            "introduces": "Which of those it owns and which it leaves to other systems.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "choices",
+      "heading": "The Choices",
+      "controlling_idea": "The order can live in the platform, the ERP, a bought OMS or a built service, and each fits a different merchant.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Sets the four homes side by side, with W2 as the third."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "From the least to the most new software: the platform's own record, the ERP as hub, a bought OMS, a built service; each is described by what it covers, where it fits and what it costs."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The three candidates and the OMS's components.",
+        "introduces": "The four places the order can live, one by one, the fourth being a built service.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p34",
+          "controlling_idea": "The platform's order can be the record, with apps and a WMS or 3PL connector around it; Shopify's features cover this well, and the absence of documented rule-based sourcing on cost, capacity or cut-off is its limit.",
+          "function": "description"
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "The ERP can be the order hub where wholesale dominates and the ERP partner is strong, at the cost of speed, a customer-facing state it cannot show and a hub owned by the finance system's vendor.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The platform as the record.",
+            "introduces": "The second option: the ERP.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "A bought OMS as the hub is Kestrel & Pine's choice, W2 (the OMS holds every channel's order, the shop platform keeps the checkout and the storefront history, the ERP the financial record), priced as a third core system, its subscription and implementation, and the work of re-pointing every order source and the warehouse.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Illustratively €4,500 a month including the availability module, about €320,000 one-time implementation.",
+              "source": "build-buy-or-assemble; _research/scenario-ledger.md",
+              "shows": "The order of magnitude of the choice Kestrel & Pine made."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The ERP as hub.",
+            "introduces": "The third option, Kestrel & Pine's.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "A built order service, the fourth option announced in the channels section, is right for a vendor whose product is commerce or a group with unusual rules, and wrong for a 14-person technology team, because the order record is where custom code is most expensive to get wrong.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "A bought OMS.",
+            "introduces": "The fourth option: building one.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Set side by side in a table, the four options differ on channels, state model, routing, service view, time, cost, exit and failure, and the author would stay with the platform's order until two of the four conditions hold, then choose by who should answer a parcel question.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Turns the comparison into the thesis's decision rule: the two-of-four count, then the parcel question."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The four options one by one.",
+        "introduces": "The same four on shared criteria, then the author's judgement.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p38a",
+          "controlling_idea": "Set side by side on the criteria of the earlier sections, plus time, cost and how each breaks, the four options compare in one table.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four options against orders from every channel, state model, routing and splits, service view, time to value, running cost, exit cost and what breaks them.",
+              "shows": "Only the bought OMS has one state model with separate machines, rule-based routing and one service screen; the platform breaks when a second channel or location arrives."
+            }
+          ]
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "The author would stay with the platform's order until two of the four conditions hold, then choose between the ERP and an OMS by asking who should answer a customer's parcel question, and build only when order management is the product.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The comparison.",
+            "introduces": "What the author would do.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Across Scale Stages: When It Fits and When It Limits",
+      "controlling_idea": "The record's shape is the same at every stage; what changes is how many systems create and fulfil orders, and the order needs a hub once two of the four conditions hold.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Places the home decision on the scale stages and ties the change to the number of order sources and locations, not to revenue."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The four options and when the author would move.",
+        "introduces": "What is typical and necessary at each scale stage.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p39a",
+          "controlling_idea": "The same choice looks different at each of the four scale stages: what is typical, what becomes necessary and the warning signs.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four stages (Starting 2016-2018, Growing 2019-2022, Omnichannel 2023-, Group) with what is typical, what becomes necessary and the warning signs.",
+              "shows": "The warning signs at each stage are joins between order copies, not volume."
+            }
+          ]
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "An order has the same parts at every stage; what changes is how many systems create orders and how many fulfil them, and once two of the four conditions hold the order needs a hub.",
+          "function": "synthesis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The stage table.",
+            "introduces": "What stays the same across stages and what changes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice",
+      "controlling_idea": "Kestrel & Pine's W2 rollout, the requirements of each interaction with the OMS and the replay of #1052877 show a two-parcel order with an honest summary and an invoice per shipment, which improves the explanation but not the stock.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S5"
+        ],
+        "how": "Shows the number family, the per-shipment state and the chosen home working on the opening case."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The rollout dates, then what each interaction with the rolled-out OMS must achieve (with Eva's order traced through it), then the replay day by day, then what it changes for support and what it does not; the requirements need the OMS to have been chosen, and the replay needs the design."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The Omnichannel stage and its hub.",
+        "introduces": "Kestrel & Pine's rollout of the hub and the opening order replayed through it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p41",
+          "controlling_idea": "W2 is implemented through 2027 seam by seam, from shadow copy in August to the retirement of the old order paths in January 2028, after which every order is created in the OMS by an event keyed on its order number from one family.",
+          "function": "description",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Shadow copy in August; parallel run 1-14 September (about 1.4% differences, illustrative); marketplace orders 15 September; storefront 13 October; Black Friday freeze; EDI and manual wholesale 8 December; old paths retired January 2028.",
+              "source": "_research/scenario-ledger.md, replatforming-and-migration line; consistency ruling 4",
+              "shows": "The hub is introduced one order source at a time."
+            }
+          ]
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Under W2 each interaction with the OMS has its own freshness, consistency, speed and fallback: only order creation and edits must be exact and immediate, and the invoice trigger per shipment may run in a daily batch if it is idempotent; the figures are the author's illustrative targets, and Figure 5 shows how Eva's order would run once storefront orders pass through the OMS.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five interactions (order creation, fulfillment order to the WMS, status back, edit or cancellation, invoice trigger) with freshness, consistency, speed and what happens if the OMS is down; assumptions labelled.",
+              "shows": "Only creation and edits must be exact and immediate; the invoice trigger may run in a daily batch if it is idempotent per shipment."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: Eva's order under Waypoint, from checkout to the status per parcel published to the storefront and the ERP.",
+              "shows": "The components in sequence for one order."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "W2 rolled out source by source, every order created in the OMS.",
+            "introduces": "What each interaction with that OMS must achieve, and Eva's order traced through it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Replayed through W2, #1052877 waits one working day under an illustrative routing rule, then splits into two fulfillment orders and tells the status page and notifications 'ships in two parcels'.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Illustrative rule: a consumer order under €150 may wait one working day for replenishment before splitting.",
+              "source": "_research/scenario-ledger.md, order-management line",
+              "shows": "The split is decided by a rule with an owner and announced."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The design and its requirements.",
+            "introduces": "The opening order replayed through it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Each parcel would move its own fulfillment order, the summary would read 'Partially delivered: 1 of 2 parcels', and each dispatch would trigger its own invoice keyed on the shipment id.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Fulfillment order 1052877-1; invoices on 7 and 14 December, both carrying the order number.",
+              "source": "_research/consistency-issues.md, ruling 18",
+              "shows": "Per-shipment state and per-shipment invoicing remove the 'Delivered' and 'Not invoiced' of the opening."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The split into two fulfillment orders.",
+            "introduces": "What each parcel's dispatch and delivery change.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Support can now see both parcels, but the customer still waits for the socks: the design improves the explanation, not the stock.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The honest summary and the invoices.",
+            "introduces": "What the design does not fix.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "Order integrations fail in eight recurring ways, and most are recovered by an identity on every message, a state machine that refuses impossible moves and a daily comparison: a hub gives each join one key, one owner and one check.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Shows that the hub leaves the joins in place and says what each one needs."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The design working on the opening case.",
+        "introduces": "That the same design still receives repeated, lost and reordered messages, and the ways order integrations fail.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "controlling_idea": "Even under the chosen design, order updates are messages, and repeating one must not repeat the order or shipment it describes, so the record must recognise a retry even when all systems work; the duplicate is one of eight ways order integrations fail.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Shopify's 13 billion webhooks for 2021 (2022-01-20), flagged as historical; Shopify warns an app may receive a webhook more than once.",
+              "source": "Shopify Engineering, 2022-01-20; Shopify developer documentation, n.d.",
+              "shows": "Duplicates are a property of the delivery mechanism, not a fault of a small merchant's systems."
+            },
+            {
+              "kind": "table",
+              "what": "Eight failures (duplicate order, lost confirmation, collapsed status, out-of-order events, edit after acceptance, cancel after shipment, routing nobody owns, stuck invoice trigger) with appearance, detection and recovery.",
+              "shows": "The recoveries repeat: keys, state checks and reconciliation."
+            }
+          ]
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "Most failures end with the same recovery: an identity on every message, a state machine that refuses impossible moves and a daily comparison between the copies, so a hub gives each join one key, one owner and one check rather than removing it.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The recovery column of the failure table read across its rows.",
+              "shows": "Most recoveries are a key, a state check or a daily comparison."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The eight failures in the table.",
+            "introduces": "What their recoveries have in common, and what a hub does to the joins.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Why failures are normal (repeated messages), with the table of eight failures attached to that paragraph, then what their recoveries share; the shared recovery is only visible after the rows."
+      }
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The jacket-and-socks order, the separate state machines, the split and the hub question are one answer: each fact about an order is first known by a different witness (the payment provider, the warehouse per parcel, the carrier, the returns portal), so only one record that keeps each witness's line apart and is the one place every channel's order is created can say 'two parcels, one delivered'; which system holds it follows from who must answer that parcel question.",
+    "so_what": "A merchant can count its order sources and fulfilling locations against the four conditions, and write down the order's home, its number family and its per-shipment status, before any OMS is bought; Kestrel & Pine's remedy was that decision first and the purchase second.",
+    "callback": {
+      "to": "The introduction's customer whose jacket shipped before the socks, with a single 'shipped' status that misled her and the team.",
+      "how": "The first paragraph of the conclusion says what that order should read, who says it and which system holds it."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Count the order sources and fulfilling locations against the four conditions, name the order's home and its number family, hold the goods state per shipment, and take the nine questions to your own company."
+    },
+    "hand_off": {
+      "to": "tax-invoicing-and-ledger",
+      "relationship": "cause_effect",
+      "carries_over": "The order with one home, one number and its goods status per shipment, accepted by the warehouse.",
+      "introduces": "The tax it carries, the invoice each shipment produces and the entries those documents post in the books."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The failures and the key, owner and check each join needs.",
+      "introduces": "The chapter's answer set against its opening, then what holds across the chapter, sorted by how settled it is.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p46",
+        "controlling_idea": "The order of the opening, whose jacket shipped before the socks as the fleece of #1052877 did, should have read 'Partially delivered: 1 of 2 parcels' with 'two parcels' told to the customer, and only a record that keeps money, each parcel and returns apart, and is the one place every channel's order is created, can say that; the system that holds it is the one that must answer the customer's parcel question.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The opening's jacket-and-socks order set against the chapter's answer.",
+            "shows": "The reader can now say what the order should read and why the home is chosen by the parcel question."
+          }
+        ]
+      },
+      {
+        "id": "p47",
+        "form": "list",
+        "controlling_idea": "Established: an order carries several state machines, the fulfillment order is the documented contract with the warehouse, and order management vendors converge on one boundary between the OMS, the ERP and the warehouse.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "The points it rests on, starting with what documentation establishes.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p48",
+        "form": "list",
+        "controlling_idea": "Depends on context: the platform's order suffices until two of the four conditions hold; the ERP or an OMS as hub depends on who asks about parcels; invoice per shipment wherever orders split; and a split rule needs an owner and a cap.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established.",
+          "introduces": "What changes with the merchant's situation.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p49",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: choose the order's home by who answers the customer's parcel question, buy the OMS and keep checkout on the platform and the books in the ERP.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established and what depends on context.",
+          "introduces": "The author's own judgement, labelled as such.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p50",
+        "form": "list",
+        "controlling_idea": "Nine questions let the reader find, in their own company, the order's home, its number family, its state machines, the split message, the edit window, the routing owner, the invoice trigger, the daily reconciliation and the fallback when the hub is down.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions that apply them to the reader's own company.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p51",
+        "controlling_idea": "Because under W2 Eva's order would have one home, one number, its goods status per shipment and a warehouse that has accepted the work, each shipment can produce its own invoice, and the next chapter follows the tax it carries, those invoices and the entries they post in the books.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The questions about the reader's own order flow.",
+          "introduces": "Eva's order as this chapter leaves it, and what the next chapter does with it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The cart and checkout orchestration that produces the order; payment authorization, capture, refunds and PSP webhooks.",
+      "covered_in": [
+        "cart-and-checkout",
+        "commerce-payments"
+      ]
+    },
+    {
+      "topic": "Invoice numbering, tax, credit notes and what the ERP posts; the ERP-as-hub debate in depth.",
+      "covered_in": [
+        "tax-invoicing-and-ledger",
+        "erp-and-back-office-integration"
+      ]
+    },
+    {
+      "topic": "Warehouse execution: waves, picking, the fulfillment-order contract from the warehouse side; carrier events and the delivery promise.",
+      "covered_in": [
+        "warehouse-and-fulfillment",
+        "shipping-and-delivery"
+      ]
+    },
+    {
+      "topic": "Store fulfillment models and the POS; marketplace order import mechanics; wholesale order entry and EDI.",
+      "covered_in": [
+        "stores-and-omnichannel",
+        "marketplaces-and-channel-integration",
+        "b2b-commerce",
+        "edi-and-e-invoicing"
+      ]
+    },
+    {
+      "topic": "The returns flow and refund reconciliation; notifications and the service tool.",
+      "covered_in": [
+        "returns-and-exchanges",
+        "customer-service-and-notifications"
+      ]
+    },
+    {
+      "topic": "Idempotency, outbox, sagas and reconciliation design; the migration method for introducing the OMS.",
+      "covered_in": [
+        "events-consistency-and-reconciliation",
+        "replatforming-and-migration"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "SAP Commerce's current order management and sourcing documentation was not fetched for the brief; only inventory Javadoc (2022) was verified, so SAP is not cited here.",
+    "The illustrative routing rule ('wait up to one working day for replenishment on a two-line D2C order under €150') is new; later chapters should reuse rather than restate it.",
+    "The 'Where we are' paragraph says order management tracks Eva's April 2027 order, while the OMS takes storefront orders only from 13 October 2027 (ruling 4) and Figure 4 shows Eva's order 'under Waypoint'. The paragraph is read as the order-management capability, held in April 2027 by the shop platform; the author may want to say so explicitly or date Figure 4.",
+    "Flow rubric, first run (sound with notes), notes not taken: (a) merge the stages paragraph (p39) into the trade-offs or cut it (kept, house format); (b) the trade-offs paragraph and the author's synthesis in the conclusion (p38, p49) say nearly the same thing (kept: the conclusion's tiers are the book's format); (c) the routing section (p24) cites 'OMS vendors' before the OMS section describes the product (the OMS is glossed in the introduction and in Part I).",
+    "Flow rubric, second run (sound with notes), notes not taken: the two-of-four rule recurs in p02, p33, p38, p39 and p48 (the stage table and the take-aways are house format); the trade-off criterion 'exit' is set up nowhere earlier; p38 and the author's synthesis (p49) nearly repeat each other.",
+    "Round 2 minor findings (one reader only) left as they are: the two-of-four rule is stated about six times (key points, p02, p33, Figure 4, p38, p39, p48); the OMS is glossed in the introduction and defined again in its section; W2 and its rollout months appear in the choices and trade-off table before 'In Practice'; 'Changing a Placed Order' before routing; terms not glossed in this chapter: state machine and cut-off times in the key points (defined later), pick location, replenishment, bulk stock and second pick, market and legal seller, Adobe Commerce and 'source', click-and-collect and ship-from-store, ERP partner, credit note and receivable, data warehouse, seam, shadow copy and change freeze, wave release.",
+    "Flow rubric, third run (after the round-1 reorder; sound with notes), notes not taken: merge the stages section into the trade-offs (house format); the routing section cites 'OMS vendors' before the OMS section; the trade-off table's 'how each breaks' precedes the failure section; invoice per shipment is argued nowhere before 'In Practice' beyond the requirements table and the scene (chapter 14 owns the rule); split the failure paragraph from its table."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Stopped after round 2 (escalate: 72 passed, 32 failed, 17 of them minor), as the brief allows when the remaining failures are mostly spec faults or need the author: the corroborated spec faults concern the hook (three similar orders), Eva's place in the body and Figure 5 showing her April 2027 order through an OMS that takes storefront orders only from 13 October 2027 (ruling 4), and the OMS section's place between the candidates table and the choices. Each needs the author's decision on the running example or the book's fixed 'Where we are' element. Cheap draft fixes applied without another round: section openings now carry the declared link (record from W2's home, states from the record's parts, routing from the fulfillment order, the OMS as the third candidate, the choices as three candidates plus a built service); a sentence says what the 'Delivered' table shows; Figures 4 and 5 renumbered in reading order (captions and references; image files unchanged); the order lifecycle named beside the three status lines; 'the joins' introduced; the case tied to the pattern names Schrödinger's Order and the Message in a Bottle; the webhook figure's hedge folded into one sentence; the saga pattern glossed; the replay's Monday dated 7 December; the hand-off says Eva's order 'would have' one home under W2.",
+      "rejected": [
+        "A third round (the remaining blocking points are spec faults the author must decide).",
+        "Replacing the hook with #1052877 or dropping Eva's framing without the author."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 of the draft check escalated on four spec faults that both flow readers reported (auto mode; changes to order, paragraph ideas and transitions pre-approved; intent, thesis, role and acceptance criteria untouched). (1) The two-of-four rule (p33) read as an afterthought at the end of the OMS section: it moves to the channels section, after the Spaghetti Junction (p27) and before the candidates (p28), as the rule for when the junction needs one record. (2) The requirements per interaction and Figure 4 (p32) assumed the OMS before it was chosen: they move into 'In Practice' after the rollout (p41), and Figure 4 is presented as how Eva's order would run once storefront orders pass through the OMS, which also gives Eva a place in the body. (3) Three candidates then four options: p28 announces the fourth (building one's own) and p37 calls it the fourth. (4) Eva's payoff and the three near-identical customers: p03 explains the replacement jacket (an exchange for a larger size), p04 introduces #1052877 as an older order with another customer, and p46 no longer says 'her'. Draft faults fixed with them: the four conditions listed in p02; lead sentences before the trade-off and stage tables (new units p38a, p39a); a lead for the requirements table saying what it shows; similarity marker on commercetools (p16); the return states said to be the table's last row; the webhook paragraph's age aside shortened and tied to the order-number rule; 'the order system' replaced by 'whichever system is the order's home' (p21); 'saga coordinator' replaced in the stage table; cut-off times glossed; the replay's invoices in the conditional.",
+      "rejected": [
+        "Moving the requirements table after the choices section (it would sit between the choices and the trade-offs).",
+        "Folding the candidates table into the choices section (author's table)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric, second run (sound with notes), taken without review: the routing section's pattern is relabelled problem_solution; the requirements paragraph (p32) names the per-shipment invoice trigger, so the replay's invoice per shipment is not new; the conclusion's callback (p46) names both the opening's jacket and #1052877's fleece; section rationales for 'Changing a Placed Order' and 'When It Goes Wrong' corrected.",
+      "rejected": [
+        "Merging or cutting the stages paragraph (asked again; house format).",
+        "Splitting the trade-off and failure tables into their own spec units (they are evidence of the paragraph they attach to, as the unit splitter reads them)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric, first run (sound with notes); the author asked for the rubric notes to be taken without review (auto mode). Taken: the scene names the Three-Status Order (p08) before the states section and the roadmap use the name; the retries paragraph (p40) moves from the head of 'In Practice' to open 'When It Goes Wrong', so 'In Practice' is chronological and the failure table has a lead-in; the W2 decision moves from the channels section (p29) to choice 3 (p36), so the comparison is not settled before it is made; choice 4 (p37) says it adds a fourth option to the three candidates; the 'Where we are' paragraph (p03) no longer promises to follow Eva's order through the body and points to Figure 4; the flow rationale says what the trade-off table adds.",
+      "rejected": [
+        "Cutting or merging the one-paragraph stages section (p39): the stage table is the book's house format.",
+        "Adding a separate comparison paragraph to the trade-offs section: the table is that comparison.",
+        "An Eva touchpoint in the body (no ledger fact for one)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Reconstructed the spec from the published chapter, one paragraph per unit (check_draft.py units). Intent outcome, acceptance criteria AC-1 to AC-5, thesis and role are copied from the journal spec unchanged. Of the old spec.md's eight success criteria, the first (every term defined from the chapter alone, acronyms expanded) is kept as AC-6, a known_before_new criterion at minor severity, for the author to keep or drop; the second (business problem before any component) is met by the section order and dropped as a criterion; the other six were inventories of tables, diagrams, citations and sections and are dropped. The length limit is 6,500 words, the cap the writer brief sets (the old spec named none); the published text had about 6,050.",
+      "rejected": [
+        "Carrying the inventory criteria over as custom criteria.",
+        "Setting the limit to the published length."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Known inconsistency fixed: the published take-aways said 'the second of either [channel or location] makes an order hub necessary', and the trade-off judgement and the stage paragraph said the same ('until the second order source or the second location'; 'the moment either count passes one'), while the key points, Figure 5, the OMS section and the journal-spec thesis say an order hub is needed once two of four conditions hold. All three now state the two-of-four rule (p38, p39, p48). The journal-spec thesis is the authority.",
+      "rejected": [
+        "Changing only the take-aways and leaving the trade-off and stage sentences contradicting them."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The state-machine section's summary for #1052877 read 'Partially shipped: one parcel delivered, one in preparation' and the worked example 'Partially delivered: 1 of 2 parcels'; the journal spec's so_what and AC-1 use the second. p17 now uses 'Partially delivered: 1 of 2 parcels', with the second parcel in preparation.",
+      "rejected": [
+        "Keeping two wordings for one summary."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Introduction: the thesis paragraph (p02) now states the claim (one record, separate lines, the platform while one channel and one location, an OMS once two of four conditions hold); the 'Where we are' paragraph (p03) starts from the order marked paid, as this chapter's transition_in asks; the Kestrel & Pine paragraph becomes the roadmap (p04), announcing every section and the evidence. A synthesis paragraph that returns to the opening (p46) is added to the conclusion, and the hand-off (p51) states the cause_effect relationship the next chapter declares. In this chapter Kestrel & Pine's hosted product is 'the shop platform'.",
+      "rejected": [
+        "A separate roadmap paragraph after the Kestrel & Pine paragraph (two paragraphs making the same move)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Old open question on invoice per shipment or per completed order: answered by consistency ruling 18 (one invoice per shipment at dispatch, keyed on the shipment id); the chapter already follows it and the question is closed.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Opened with the Three-Status Order as a table of 'status, true of what' rather than with the order data model, so the business problem precedes the vocabulary; rejected opening with the state-machine theory."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Adopted chapter 19's recorded mechanism for #1052877 (split shipment, agency flow without partial-shipment handling, ERP waiting on 'order complete') instead of inventing a second one, so the two chapters agree."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Framed the hub question as three truths (customer-facing, operational, financial) with three candidate homes, rather than 'platform vs OMS', because the ERP-as-hub option is the real alternative for wholesale-heavy merchants and chapter 23 owns the deeper debate."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Reused the ledger's W2 rollout dates and costs added by the build-buy and replatforming chapters rather than inventing a timeline."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine and _research/scenario-ledger.md",
+      "contributed": "The four order sources, the Three-Status Order, W2, the order-management, customer-service-and-notifications and replatforming-and-migration lines (dates and mechanism of #1052877, W2 rollout dates and costs)."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/consistency-issues.md, rulings 2, 4, 14 and 18",
+      "contributed": "The canonical mechanism of #1052877, the seam dates, the 'order complete' trigger, invoice per shipment."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (order-management entry; tax-invoicing-and-ledger transition_in)",
+      "contributed": "Intent, thesis, role and acceptance criteria; the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "customer-service-and-notifications",
+      "contributed": "The reconstructed mechanism and dates of #1052877."
+    },
+    {
+      "kind": "internal",
+      "ref": "journey-of-an-order",
+      "contributed": "Cart, order, shipment and invoice distinctions."
+    },
+    {
+      "kind": "internal",
+      "ref": "boundaries-and-systems-of-record",
+      "contributed": "The three truths of one order as bounded contexts."
+    },
+    {
+      "kind": "internal",
+      "ref": "warehouse-and-fulfillment",
+      "contributed": "The fulfillment order from the warehouse side."
+    },
+    {
+      "kind": "internal",
+      "ref": "replatforming-and-migration; build-buy-or-assemble",
+      "contributed": "W2 rollout dates and costs (ledger additions)."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-inventory-fulfillment-returns.md (Parts 1.3, 2, 3.2), _research/brief-integration-and-data.md (Parts 2.3, 2.8), _research/brief-shopify.md (5.4)",
+      "contributed": "The factual base."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify Help Center and developer documentation (order status; FulfillmentOrder; fulfillment services; edit orders; webhooks), n.d., accessed November 2026",
+      "contributed": "Status families, handshake, edit constraints, duplicate deliveries."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify Engineering, 'Cloud, Load, and Modular Code: What 2022 Looks Like for Shopify', 2022-01-20",
+      "contributed": "13 billion webhooks."
+    },
+    {
+      "kind": "external",
+      "ref": "commercetools documentation (orders; states), n.d., accessed November 2026",
+      "contributed": "Separate state enumerations; custom state machines."
+    },
+    {
+      "kind": "external",
+      "ref": "Adobe Commerce documentation, source algorithms and reservations, updated 2026-08-20",
+      "contributed": "Sourcing algorithms."
+    },
+    {
+      "kind": "external",
+      "ref": "Kibo documentation and product pages, n.d., accessed November 2026",
+      "contributed": "Routing candidates and suggestions, child shipments."
+    },
+    {
+      "kind": "external",
+      "ref": "Fluent Commerce documentation and site, n.d., accessed November 2026",
+      "contributed": "Split rules; 'your ERP stays the system of record'."
+    },
+    {
+      "kind": "external",
+      "ref": "Manhattan Associates and IBM product pages, n.d., accessed November 2026",
+      "contributed": "OMS definitions."
+    },
+    {
+      "kind": "external",
+      "ref": "Chris Richardson, microservices.io, 'Saga', n.d., accessed November 2026",
+      "contributed": "Compensation vocabulary."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Figure 5 caption made conditional (an order like Eva's under Waypoint once the OMS takes storefront orders, from 13 October 2027), so it no longer contradicts consistency ruling 4."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 2 (escalate: 72 passed, 32 failed, 17 minor); stopped after round 2 because the blocking spec faults need the author. Cheap draft fixes applied after the round (section openings, the 'Delivered' table's lead, figure renumbering, lifecycle named, 'the joins' introduced, pattern names, webhook hedge, saga gloss, the replay's Monday, the hand-off's 'would have'); ideas of p03, p06, p08, p32 and p51 follow the prose. The check report is stale against these edits."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted from spec.md to an outcome spec: intent, thesis and role copied from the journal spec; supporting claims, sections, paragraphs, transitions, introduction and conclusion reconstructed from the published chapter; record-keeping sections carried over; introduction and conclusion paragraphs revised or added (p02, p03, p04, p46, p51); two-of-four inconsistency fixed in p38, p39 and p48. Status draft. Flow rubric (sound with notes) taken: p08 names the Three-Status Order; p40 moved to open 'When It Goes Wrong'; W2 moved from p29 to p36; p37 marks the fourth option; p03 reworded. Second flow run (sound with notes): routing relabelled problem_solution; p32 and p46 ideas revised. Round 1 (escalate on four corroborated spec faults): p33 moved to the channels section, p32 moved to 'In Practice', p38a and p39a added, ideas of p02, p03, p04, p16, p21, p27, p28, p37, p43 and p46 revised; roadmap and flow rationale rewritten. The chapter is revised to match."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 3 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator)."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Final consistency pass: ledger-as-document reference rephrased."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: invoice-per-shipment ruling (issues item 18) applied; internal research brief removed from sources; 2022 Shopify figure flagged as historical."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article."
+    }
+  ],
+  "length": {
+    "max_words": 6500
+  }
+}

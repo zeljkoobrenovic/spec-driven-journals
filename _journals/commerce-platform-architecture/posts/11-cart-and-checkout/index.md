@@ -2,7 +2,7 @@
 title: "From Cart to Confirmation: Checkout Orchestration"
 date: 2026-11-07
 author: Željko Obrenović
-excerpt: "What happens between 'add to cart' and 'order confirmed', and why is checkout the most protected part of a commerce platform? Checkout is a short, clocked orchestration that asks every promise-making system (prices, promotions, tax, availability, shipping, payment) for a final answer and turns the cart into an order exactly once; it owns none of those facts itself, which is why platforms guard it so closely and why most checkout failures are a stale answer or a duplicate order."
+excerpt: "What happens between 'add to cart' and 'order confirmed', and why do platforms restrict what merchants may change in checkout? Checkout is a short, clocked orchestration that asks every promise-making system (prices, promotions, tax, availability, shipping, payment) for a final answer and turns the cart into an order exactly once; it owns none of those facts itself, which is why platforms guard it so closely and why most checkout failures are a stale answer or a duplicate order."
 permalink: cart-and-checkout
 timetoread: 28 min read
 icon: "assets/icons/11-cart-and-checkout.png"
@@ -15,7 +15,7 @@ logo: "assets/images/11-cart-and-checkout/logo.jpeg"
 >
 > * **A cart is a draft; checkout is a promise machine.** The cart reserves nothing and promises nothing. Checkout is the clocked sequence that asks pricing, promotions, tax, availability, shipping and payment for a final answer and turns the draft into an order the rest of the platform must keep.
 > * **Checkout should be thin, and it must create the order exactly once.** It composes calls and holds a short-lived state; it owns no prices, stock or payment state. The shopper may leave for the bank's app and never return, the payment provider's answer may arrive late and twice, so order creation is keyed on the cart and the payment, never on a page load.
-> * **Platforms withdraw the freedom to edit checkout, on purpose.** Shopify spent 2023 to 2026 replacing editable checkout templates and scripts with sandboxed extension points and dated deadlines. The lesson for a merchant is to customize checkout only through sanctioned mechanisms and to plan for the day the platform changes them.
+> * **Platforms withdraw the freedom to edit checkout, on purpose.** Shopify, the hosted commerce platform, spent 2023 to 2026 replacing editable checkout templates and scripts with sandboxed extension points (named places where an app's code runs isolated, under the platform's limits) and dated deadlines. The lesson for a merchant is to customize checkout only through sanctioned mechanisms and to plan for the day the platform changes them.
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-commerce-platforms-go-wrong.html):**
 >
@@ -26,19 +26,19 @@ logo: "assets/images/11-cart-and-checkout/logo.jpeg"
 <br>
 While a shopper checks out, a price can change, another customer can buy the last item and the payment response can arrive late. Checkout must combine answers from several systems into one order the merchant can fulfill. Otherwise a successful-looking purchase can leave the customer with unavailable goods, an unexpected total or a second order after a retry.
 
-Pricing supplies the price, inventory supplies availability, shipping supplies the delivery promise and the payment provider reports the money's state. Checkout coordinates these answers. It must check availability before committing stock and recognize repeated requests so a retry does not create another order or charge. The sequence and recovery behavior determine whether the promise survives a delay or failure. The supporting chapters are [[pricing-architecture]], [[commerce-promotions]], [[inventory-and-availability]], [[shipping-and-delivery]] and [[commerce-payments]].
+Those answers come from different owners. Pricing supplies the price, the tax engine the tax, inventory supplies availability, shipping supplies the delivery promise and the payment provider reports the money's state. Checkout coordinates these answers. It must check availability before committing stock and recognize repeated requests so a retry does not create another order or charge. Only the payment provider's own message, not the thank-you page, says that the money moved. Because every order passes through this sequence, platforms also limit where merchants may add their own code to it. The supporting chapters are [[pricing-architecture]], [[commerce-promotions]], [[inventory-and-availability]], [[shipping-and-delivery]] and [[commerce-payments]].
 
-Eva Janssen's purchase at Kestrel & Pine, the fictional outdoor brand, supplies the worked example. We then compare four ways to run checkout and use Shopify's documented 2023–2026 changes to examine customization limits.
+**Where we are in the order's journey.** Part III follows one order through four owners, and checkout is the first: it creates the order that the payment provider, the order record and the ledger then take over. Eva Janssen, a customer of Kestrel & Pine, the fictional outdoor brand, has a jacket and socks in her cart. At 21:14 on Tuesday 13 April 2027, checkout creates order #1072455 with payment pending. The payment result arrives separately. [[commerce-payments]] follows the money; [[order-management]] follows the order record.
 
-**Where we are in the order's journey.** Eva has a jacket and socks in her cart. At 21:14 on Tuesday 13 April 2027, checkout creates order #1072455 with payment pending. The payment result arrives separately. [[commerce-payments]] follows the money; [[order-management]] follows the order record.
+The chapter starts from three requests Kestrel & Pine's head of engineering receives about its checkout. It then separates the cart, the checkout and the order, lists what checkout calls and how fresh each answer must be, and follows the two clocks and the detour to the bank that decide how the order is created once and marked paid. Guest checkout, express wallets and business buyers come next; they change the steps but not the calls. Eva's checkout is then worked through step by step, followed by the five ways checkout fails. The last four sections answer the storefront owner's requests. The first is about abandoned carts. The other three ask who may change checkout: four ways to run it, Shopify's dated withdrawal of editable checkout between 2023 and 2026, and which way fits which scale stage. The evidence is Kestrel & Pine's checkout and its 2026 incidents, vendors' documentation, the checkout research of the Baymard Institute, a usability research firm, and Shopify's changelog.
 
 ## Setting the Scene at Kestrel & Pine: Three Requests for the Checkout
 
 In her second month, Noor Visser gets three requests about the same page.
 
-Milan Petrov, who owns the storefronts, wants a delivery-date line in checkout ("delivered Thursday") instead of the static "ordered before 22:00, delivered tomorrow", and a gift-wrap option. The agency proposes an app for the first and a script injected into the checkout page for the second. Milan also wants fewer abandoned carts; about seven in ten carts never become orders *(illustrative, in line with Baymard's industry average)*.
+Milan Petrov, who owns the storefronts, wants a delivery-date line in checkout ("delivered Thursday") instead of the static "ordered before 22:00, delivered tomorrow", and a gift-wrap option. The agency Kestrel & Pine retains for its storefronts proposes an app for the first and a script injected into the checkout page for the second. Milan also wants fewer abandoned carts; about seven in ten carts never become orders *(illustrative, in line with Baymard's industry average)*.
 
-Daniel Okafor, who owns the warehouse, wants to know why the checkout kept selling the Ridgewalker jacket for two hours after Duiven ran out on Black Friday evening 2026.
+Daniel Okafor, who owns the warehouse, wants to know why the checkout kept selling the Ridgewalker jacket for two hours after the Duiven warehouse ran out on Black Friday evening 2026.
 
 ![A warehouse shelf is empty while the storefront still shows the jacket in stock, because its stock figure is hours old.](assets/images/11-cart-and-checkout/11-phantom-stock-black-friday.jpeg)
 **Figure 1:** *The Phantom Stock: checkout promised availability from a stock figure up to two hours old, so it kept selling a jacket Duiven no longer had.*
@@ -46,11 +46,11 @@ Daniel Okafor, who owns the warehouse, wants to know why the checkout kept selli
 
 Sanne de Wit, who owns finance, wants the checkout to stop creating orders the payment provider later reports as unpaid, each of which she explains at month-end, and asks why the Card-Testing Night of August 2026 cost €2,900 in fees for payments that were all declined.
 
-Noor's first move is to ask a question none of the three had asked: **what, exactly, does the checkout call, and in what order?** The answer is the subject of this chapter; the agency's script proposal is the subject of its second half.
+Noor's first move is to ask a question none of the three had asked: **what, exactly, does the checkout call, and in what order?** The answer takes most of this chapter and settles Daniel's and Sanne's requests; Milan's requests, and the agency's script proposal, are the subject of its last four sections.
 
 ## The Cart Is a Draft, the Checkout Is a Commitment
 
-Three words carry the chapter, and they are easy to blur.
+Answering Noor's question starts with three words that are easy to blur: cart, checkout and order.
 
 A **cart** is a draft of an order that the shopper can still change: product references and quantities, perhaps a coupon code, perhaps an address. It reserves nothing: a jacket in Eva's cart is still for sale to everyone else. It promises nothing: the price next to the jacket is an estimate that will be recomputed. Carts live for days or weeks; a signed-in shopper's cart follows her across devices, and a guest cart lives in the browser until it is merged into an account at sign-in. The cart also hides the first business decision about checkout: whether to **reserve stock when an item is added**. Most platforms do not; stock is committed only when the order is created, because a reservation held by every browsing shopper would make the "in stock" figure useless. Flash sales and ticketing are the exception, and they pay for it with visible countdowns.
 
@@ -74,18 +74,20 @@ The distinction matters because every system downstream treats the order as a pr
 
 ## What Checkout Must Call
 
-A checkout walks the shopper through a handful of steps, and each step is a call to a system that owns a fact. The table below is a reference-architecture view; vendor flows differ in order and in how many steps are visible, but the calls are the same. (The Baymard Institute's 2024 benchmark counted an average of 5.1 steps from cart to order review and 11.3 form fields, and argued that eight fields suffice.)
+What checkout writes, every later system inherits. A checkout walks the shopper through a handful of steps, and each step is a call to a system that owns a fact. The table below is a reference-architecture view; vendor flows differ in order and in how many steps are visible, but the calls are the same. The visible steps vary widely: the Baymard Institute's 2024 benchmark counted an average of 5.1 steps from cart to order review and 11.3 form fields, and argued that eight fields suffice.
 
 | Step | What it must call | The promise it makes |
 | --- | --- | --- |
-| Identity (guest or account) | Customer service; address book for returning customers | "We know whom to bill and where to deliver" |
+| Identity (guest or account) | Customer records; address book for returning customers | "We know whom to bill and where to deliver" |
 | Address | Address validation; tax determination (the ship-to address decides the rate of VAT, value-added tax, Europe's sales tax) | "This is where it goes and what tax applies" |
 | Shipping options | Shipping-rate service or carrier rules; availability and the delivery promise | "Delivered by X for Y" |
 | Price review | Pricing, promotions, tax engine | "You pay exactly this" |
 | Payment | The PSP (payment service provider, the company that takes the shopper's money through many methods and pays the merchant one net amount), including authentication; fraud screening | "The money is reserved" |
 | Confirmation | Order creation; stock commitment; notifications | "The order exists and will be kept" |
 
-Two things stand out. First, **checkout owns none of the facts it writes.** The price list lives in pricing, the rate in the tax engine, the stock figure in inventory, the delivery promise in shipping, the payment state in the PSP; checkout consumes all of them. Second, **the calls have different freshness needs.** A product description may be hours old without harm; the price should be minutes old at most; the availability figure must be current at the moment of commitment or the order is a Phantom Stock waiting to happen.
+The table shows, first, that **checkout owns none of the facts it writes.** The price list lives in pricing, the tax in the tax engine, the stock figure in inventory, the delivery promise in shipping, the payment state in the PSP; checkout consumes all of them. Tax, for example, is computed from three facts the shop holds: the ship-to address, the product's tax category and whether the buyer is a business ([[tax-invoicing-and-ledger]] explains the rules).
+
+The second table below shows that **the calls have different freshness needs.** A product description may be hours old without harm; the price should be minutes old at most; the availability figure must be current at the moment of commitment or the order is a Phantom Stock waiting to happen.
 
 | Call | How fresh | How consistent | How fast (illustrative targets) | If it is down |
 | --- | --- | --- | --- | --- |
@@ -95,55 +97,106 @@ Two things stand out. First, **checkout owns none of the facts it writes.** The 
 | Shipping rates and promise | Current per address | Frozen on the order | Under 500 ms *(assumption)* | Offer the default service without a date |
 | Payment | The PSP's answer only | Idempotent per order | Seconds, plus the authentication detour | Queue the order as pending; do not fulfil |
 
-This is why checkout is described as an **orchestration**: a coordinator that calls several services in sequence, holds a short-lived state between the calls, and completes or abandons the whole. In plain words, a conductor, not a musician.
+Because it owns no facts and needs each answer fresh, checkout is described as an **orchestration**: a coordinator that calls several services in sequence, holds a short-lived state between the calls, and completes or abandons the whole. In plain words, a conductor, not a musician.
 
 ![Diagram: Checkout owns none of the facts it writes into the order](assets/images/11-cart-and-checkout/fig01-checkout-owns-none-facts-it-writes.jpeg)
 **Figure 3:** *Checkout owns none of the facts it writes into the order; it asks six systems for a final answer and creates the order exactly once.*
 
 ## The Clock and the Detour
 
-Checkout runs against two clocks it does not control.
+That short-lived state cannot last long: checkout runs against two clocks it does not control.
 
 The first is the **shopper's patience**. Baymard's 2026 list of abandonment reasons, from a survey of US adults who had abandoned a cart and were not merely browsing, puts "extra costs too high" at 40%, "delivery too slow" at 20%, "didn't trust the site with my card" at 19%, "forced to create an account" at 18% and "too long or complicated" at 17% (multi-select). Three of those five are architecture: showing total cost early means calling tax and shipping *on the cart*; showing a credible delivery date means calling the delivery promise; not forcing an account means the order needs a customer *reference*, not a customer *account*.
 
-The second clock is the **payment provider's**. A payment session expires: Mollie's documentation (n.d., accessed November 2026) gives iDEAL (the Dutch method in which the shopper pays by bank transfer from her banking app) sessions 15 minutes, cards 30 minutes, PayPal 6 hours and Klarna 48 hours, and advises merchants not to predict expiry but to wait for the webhook. A card authorization, once granted, is valid for days (Stripe's and Adyen's documentation list 5 to 7 days for most card schemes). Checkout must finish inside the session; capturing the money can wait for the warehouse ([[commerce-payments]]).
+The second clock is the **payment provider's**. A payment session expires: the documentation of Mollie, a Dutch PSP, (n.d., accessed November 2026) gives iDEAL (the Dutch method in which the shopper pays by bank transfer from her banking app) sessions 15 minutes, cards 30 minutes, PayPal 6 hours and Klarna 48 hours, and advises merchants not to predict expiry but to wait for the webhook. A card authorization, the bank's reservation of the amount, is valid for days once granted (the PSPs Stripe and Adyen list 5 to 7 days for most card schemes). Checkout must finish inside the session; capturing the money, actually taking it, can wait for the warehouse ([[commerce-payments]]).
 
 Inside the payment step sits a **detour**. For most European online payments the shopper leaves the merchant's page: to the bank's app for iDEAL, to a 3-D Secure challenge for a card (3-D Secure is the card networks' protocol for the strong customer authentication EU rules require; the shopper confirms in her banking app), to PayPal's page. She may lose her connection or never come back. Stripe's fulfillment guide states the consequence: "You can't rely on triggering fulfillment only from your checkout landing page, because it's not guaranteed customers visit that page." The platform learns the outcome from a **webhook**, an HTTP call the PSP makes to the merchant's server when something happened, and webhooks arrive late, out of order and sometimes twice (Stripe's documentation says so in as many words). Two rules follow.
 
 **Creating the order once despite retries.** A shopper can refresh the page or a provider can repeat a notification. An **idempotency key** identifies the intended business action so repeated requests reuse its result. Derive it from the cart and payment, rather than each page load, to avoid turning one purchase into several orders.
 
-commercetools documents creating the order with payment pending, then using the provider's notification to mark success or failure before fulfillment (checkout documentation, n.d., accessed November 2026). Stripe similarly requires fulfillment to handle repeated calls for the same Checkout Session ID. Both designs distinguish a new purchase from another attempt to finish the existing one.
+Vendors document the key on order creation. Stripe requires fulfillment to handle repeated calls for the same checkout session, identified by its session ID. commercetools, a commerce platform vendor, creates the order once with payment pending, so the provider's later notification marks success or failure on that order instead of creating another (checkout documentation, n.d., accessed November 2026). Both designs distinguish a new purchase from another attempt to finish the existing one.
 
-**Treat the payment outcome as external truth.** The order carries its own small payment vocabulary (pending, authorized, paid, failed) with the PSP's raw status beside it. Nothing in checkout decides that a payment succeeded; the PSP's signed webhook does, and a daily job asks the PSP about every order still pending after the method's expiry window, because webhooks stop retrying (Mollie after ten attempts over 26 hours, Stripe after three days). [[events-consistency-and-reconciliation]] owns the general pattern; checkout is its busiest application.
+**Treat the payment outcome as external truth.** The order carries its own small payment vocabulary (pending, authorized, paid, failed) with the PSP's raw status beside it. Nothing in checkout decides that a payment succeeded; the PSP's signed webhook (one the merchant can verify came from the PSP) does, and a daily job asks the PSP about every order still pending after the method's expiry window, because webhooks stop retrying (Mollie after ten attempts over 26 hours, Stripe after three days). [[events-consistency-and-reconciliation]] owns the general pattern; checkout is its busiest application.
 
 ![Diagram: The order exists before the payment outcome is known](assets/images/11-cart-and-checkout/fig02-order-exists-before-payment-outcome-known.jpeg)
 **Figure 4:** *The order exists before the payment outcome is known; the webhook, not the thank-you page, moves it to paid or failed, and a repeated webhook changes nothing.*
 
 ## Guest, Account and the Express Wallets
 
-A **guest checkout** lets a shopper buy without creating an account. The order still holds contact and delivery details, and can later be linked to an account. This removes a registration step without losing the information needed to fulfill the purchase. Baymard's 2026 survey lists forced account creation as the fourth-largest stated reason for abandonment. Linking the later account to the guest order is an identity-matching problem ([[identity-and-master-data]]); Eva also has store loyalty, newsletter and returns records without a shared identifier.
+Forced account creation was one of the shopper's reasons to leave; a **guest checkout** removes it by letting a shopper buy without creating an account. The order still holds contact and delivery details, and can later be linked to an account. Linking the later account to the guest order is an identity-matching problem ([[identity-and-master-data]]).
 
-**Express wallets** A wallet reuses saved payment and address details so the shopper can confirm them instead of entering them again. The merchant receives those details and a payment token, a substitute for the card credentials, to complete checkout.
+**Express wallets** shorten checkout in a second way. A wallet reuses saved payment and address details so the shopper can confirm them instead of entering them again. The merchant receives those details and a payment token, a substitute for the card credentials, to complete checkout.
 
-short-cut the steps. Apple Pay's developer overview (n.d., accessed November 2026) describes a purchase completed "from a product page with a single tap, without the need to add to a cart or fill out a form", with the merchant never receiving the card number. Google Pay's web documentation describes a payment sheet that returns a payment token to the merchant's server, which forwards it to the PSP. Shopify's Shop Pay stores e-mail, payment method and addresses; in Shopify's Black Friday–Cyber Monday reporting of 2 December 2025, Shop Pay carried 32% of orders across its merchants that weekend (a vendor-defined figure). The wallet supplies identity, address and a payment token in one callback. It does **not** remove the orchestration: pricing, tax, availability and shipping are still called, now from inside the wallet's callback and under a stricter clock.
+Three wallets show how far this goes. Apple Pay's developer overview (n.d., accessed November 2026) describes a purchase completed "from a product page with a single tap, without the need to add to a cart or fill out a form", with the merchant never receiving the card number. Google Pay's web documentation describes a payment sheet that returns a payment token to the merchant's server, which forwards it to the PSP. Shopify's Shop Pay stores e-mail, payment method and addresses; in Shopify's Black Friday–Cyber Monday reporting of 2 December 2025, Shop Pay carried 32% of orders across its merchants that weekend (a vendor-defined figure). The wallet supplies identity, address and a payment token in one callback. It does **not** remove the orchestration: pricing, tax, availability and shipping are still called, now from inside the wallet's callback and under a stricter clock.
+
+## What Changes When the Buyer Is a Company
+
+Guest checkout and wallets remove steps a consumer sees. A business customer changes more: three steps change, one goes away and one call is added. Identity is a **company account** with several contacts and roles, not a person; the buyer may need an approver before the order is final. Prices come from a **contract price list**, and the price review shows amounts *excluding* VAT. The address step collects the company's VAT identification number, and a valid number from another EU country switches the tax treatment to the **reverse charge** (the seller charges 0% and the buyer accounts for the VAT itself; [[tax-invoicing-and-ledger]]).
+
+The payment step often disappears: the order is placed on **payment terms** (net 30 days, at Kestrel & Pine) with a purchase-order number, and "payment" becomes a receivable in the ERP, not a PSP event. Shopify's Admin API (version 2026-10) types these terms as net, fixed date, on receipt or on fulfillment; Microsoft's documentation for the connector between its Business Central ERP and Shopify (14 October 2026) tells merchants to decide which system owns payment terms and credit limits, because "mixing both directions without a clear ownership rule can lead to conflicting records".
+
+Terms add the one call a consumer checkout never makes: a **credit check**. Checkout asks the ERP, which holds each business customer's balance and credit limit, whether the order fits under the limit.
+
+Kestrel & Pine's B2B portal runs on the shop platform's company accounts, price lists and net terms; 62% of wholesale orders arrive through it. [[b2b-commerce]] works the whole picture.
+
+## Eva's Checkout, Step by Step
+
+Back to a consumer: Eva's order, with every system it touches. The times between 21:09 and 21:14 are illustrative. Kestrel & Pine runs the hosted checkout of the shop platform, which the platform renders and runs. Since early 2027 two apps, Kestrel & Pine's answer to Milan's requests, add to it through the platform's sanctioned extension points, named places where an app may add to checkout: a delivery-date block and a gift-wrap option.
+
+| Time | Step | What checkout calls | Answer written into the order |
+| --- | --- | --- | --- |
+| 21:09 | Add to cart | Nothing beyond the storefront; the cart holds the jacket (women's, size M, moss) and two pairs of socks | Cart, no reservation |
+| 21:10 | Cart page | Pricing: €199 and 2 × €18; promotions: none; tax: NL 21% included in the consumer price; shipping: free over €75 | Total €235 shown before checkout starts |
+| 21:11 | Identity | Eva signs in to her online account; the address book returns her Nijmegen address | Customer reference, delivery address |
+| 21:12 | Shipping options | The delivery-date block turns the static rule "ordered before 22:00, delivered tomorrow" into a date: "delivered Wednesday 14 April"; PostNL home delivery, €0 | Delivery promise and carrier service |
+| 21:13 | Price review | Pricing, promotions and tax recomputed for the final cart and address: net €194.21, VAT €40.79, total €235 | The tax basis, frozen on the order |
+| 21:13 | Payment | iDEAL selected; the PSP creates a payment session; Eva is redirected to her bank's app | Payment reference, status pending |
+| 21:14 | Confirmation | Order #1072455 created with the payment pending and the three units committed in the shop platform; the PSP's webhook arrives seconds later with the iDEAL result and the order becomes *paid*; the confirmation e-mail is sent | The order the rest of the book follows |
+
+Three details of this order matter, one strength and two weaknesses. First, **the order exists before the payment confirmation arrives.** If Eva never returns from her bank's app, it remains pending until the provider's server notification, or a daily comparison job, confirms the outcome. Repeating that notification does not create another order or payment.
+
+Second, **stock remains a weakness** in this April 2027 example: checkout reads the shop platform's hourly copy from the ERP, itself fed every 15 minutes by the WMS. On Black Friday 2026 the same chain oversold 1,340 Ridgewalker jackets, the model Eva is buying.
+
+Third, **the delivery date still comes from a fixed rule**: the delivery-date block turns "ordered before 22:00, delivered tomorrow" into a date without asking the warehouse. Eva sees Wednesday 14 April, but receives the parcel on Thursday 15 April. [[shipping-and-delivery]] and [[journey-consumer-order]] show how warehouse and carrier timings can produce a credible date instead.
+
+![Diagram: Eva's checkout creates the order once, before the bank's answer, and lets the PSP's webhook move it to paid](assets/images/11-cart-and-checkout/fig03-eva-s-checkout-creates-order-once.jpeg)
+**Figure 5:** *Eva's checkout creates the order once, before the bank's answer, and lets the PSP's webhook move it to paid; a second delivery of the same webhook changes nothing.*
+
+Daniel's question is now answerable. On 27 November 2026 at 19:40 the WMS knew the Ridgewalker was gone; the availability call was answered by the shop platform's copy, refreshed up to two hours earlier. Checkout trusted the answer it was given. The fix is not in checkout; it is in who answers the availability call: the availability service of Waypoint decision W1.
+
+## When It Goes Wrong
+
+Eva's checkout showed two weak answers. Checkout failures as a whole cluster into five kinds.
+
+**The duplicate order.** A double-click, a browser retry after a timeout or a repeated webhook, and two orders exist for one cart, or one order is paid twice. Detect it with a report of orders sharing a cart id or payment reference; recover by canceling the duplicate before fulfillment and releasing the authorization rather than refunding a capture; prevent it with the idempotency key on order creation and a webhook handler that records every event id.
+
+**The lost outcome.** The shopper paid and never returned, the webhook failed and the PSP stopped retrying, and the order sits pending while the money sits authorized. Detect it with a daily list of orders pending longer than the method's expiry window; recover by querying the PSP and settling the order either way. Mollie's documentation prescribes exactly this fetch-the-status pattern, and makes its webhook carry only an id so that a forged call cannot mark anything paid. This answers Sanne's first request: an order the provider has not confirmed stays pending and is not fulfilled until the webhook or the daily job settles it.
+
+**The stale answer.** Availability, price or tax came from a copy that was behind. Detect it through oversold lines, price-parity warnings from marketplaces and invoices whose VAT differs from the checkout figure. For stock, cancel or delay with an apology and a voucher (most of the €96,000 the Black Friday Oversell cost Kestrel & Pine); for price and tax, honor the promise and correct the source. Prevent it with a current availability call at commitment, prices recomputed at the price review step and tax from the ship-to address.
+
+**The slow or failed dependency.** An extension (merchant code that runs inside checkout) exceeds its time limit, a tax engine is unreachable, a shipping-rate call hangs. Watch checkout latency and error rate per step on peak day as closely as orders per minute ([[peak-load-and-reliability]]), and decide the degradation ladder in advance: switch off optional blocks such as product recommendations, fall back to the platform's rate table with a flag for finance, offer the default carrier service without a date. The payment step and order creation are never on the ladder.
+
+**The attack.** The Card-Testing Night: 48,000 bot attempts with stolen card numbers against Kestrel & Pine's guest checkout in one night in August 2026, €2,900 of PSP fees for declined authorizations and a 40-minute account pause. Stripe's documentation on card testing (n.d., accessed November 2026) names the symptoms (a spike in failed payments, nonsensical customer names) and the controls: rate limits per address, velocity rules (limits on how many attempts a card, device or address may make in a period), a CAPTCHA (a challenge that tells people from bots) on guest checkout and the PSP's risk tools fed with every signal the integration can send. Visa's May 2025 monitoring fact sheet tracks these enumeration attacks, bots trying card numbers one after another, separately from disputes, so card networks now watch merchants for them. The architectural control is a kill switch that disables guest card payments without a deploy ([[commerce-security]]). This answers Sanne's question about the card-testing fees: the fees stop when bots are stopped before they reach the PSP.
 
 ## Abandoned Carts and the Business Metric
 
-Checkout has one business metric: **conversion**, the share of carts (or sessions) that become orders. Baymard's running list (updated 28 October 2026) gives an average documented abandonment rate of 70.22% across fifty studies from 2006 to 2025, with individual studies between 55% and 84%; the studies define "cart" and "abandonment" differently, so the figure is a direction, not a benchmark. Baymard's claim that fixing solvable usability issues could lift conversion by about 35% is its own estimate from usability testing, not a controlled experiment.
+The failures are settled; Milan's requests remain, and the first was fewer abandoned carts. Checkout has one business metric: **conversion**, the share of carts (or sessions) that become orders. Baymard's running list (updated 28 October 2026) gives an average documented abandonment rate of 70.22% across fifty studies from 2006 to 2025, with individual studies between 55% and 84%; the studies define "cart" and "abandonment" differently, so the figure is a direction, not a benchmark. Baymard's claim that fixing solvable usability issues could lift conversion by about 35% is its own estimate from usability testing, not a controlled experiment.
 
-An **abandoned cart** is a cart started and not converted within some window. Recovering it (the reminder e-mail an hour later) has two preconditions: the cart is persisted server-side, not only in the browser, and it is attached to an identity the merchant may contact, which under EU privacy rules means a consent question ([[privacy-and-customer-data]]). The architecture can do three things for conversion that no button color can: show the full price, including tax and shipping, before checkout begins (call tax and shipping rates on the cart page); show a delivery date the warehouse can keep (a computed promise, [[shipping-and-delivery]]); and never fail the payment step because an internal call was slow.
+An **abandoned cart** is a cart started and not converted within some window. Recovering it (the reminder e-mail an hour later) has two preconditions: the cart is persisted server-side, not only in the browser, and it is attached to an identity the merchant may contact, which under EU privacy rules means a consent question ([[privacy-and-customer-data]]).
+
+Recovery wins back a cart already lost; the architecture can also keep it from being lost. It can do three things for conversion that no button color can: show the full price, including tax and shipping, before checkout begins (call tax and shipping rates on the cart page); show a delivery date the warehouse can keep (a computed promise, [[shipping-and-delivery]]); and never fail the payment step because an internal call was slow.
 
 ## The Choices: Four Ways to Run a Checkout
 
-A merchant has four realistic options, and they map closely to the scale stages.
+Milan's other two requests, a delivery date and a gift-wrap option in checkout, raise a different question: who runs the checkout, and who may change it? A merchant has four realistic options, and they map closely to the scale stages.
 
 **1. The platform's hosted checkout, as is.** The platform renders, runs and protects the checkout; the merchant configures payment methods, shipping rules and branding. The merchant's PCI DSS scope (the card industry's security standard for anyone who touches card data) is the smallest possible, because the card fields are served from the PSP's domain and the merchant's servers never see a card number. Nothing to build and nothing to break.
 
 **2. The hosted checkout with sanctioned extensions.** The platform exposes named places where apps may add a block, validate a cart, customize delivery or payment options or run a sandboxed function, each with a fixed input, a fixed output and a time budget. Shopify's checkout extensibility is the best-documented example (next section); commercetools' API Extensions are a synchronous variant, a call to the merchant's endpoint before a cart or order is saved, with a default two-second timeout after which the whole call fails. The merchant gets the delivery-date line and the gift-wrap option without owning the page.
 
-**3. A custom or headless checkout on the platform's APIs.** The merchant or its agency builds the checkout pages on the platform's cart, checkout and payment APIs: full control of the experience, full responsibility for the orchestration rules above, for every script on the payment page and for keeping up with API versions ([[api-contracts-and-versioning]]). Card fields stay the PSP's hosted fields if the merchant wants the short PCI questionnaire.
+**3. A custom or headless checkout on the platform's APIs** (headless: the merchant builds the pages, the platform supplies only the APIs behind them). The merchant or its agency builds the checkout pages on the platform's cart, checkout and payment APIs: full control of the experience, full responsibility for the orchestration rules above, for every script on the payment page and for keeping up with API versions ([[api-contracts-and-versioning]]). Card fields stay the PSP's hosted fields (card inputs served from the PSP's own domain) if the merchant wants the short PCI questionnaire, the shortest of the yearly PCI DSS self-assessment forms.
 
-**4. An own checkout service over composable capabilities.** The merchant runs a checkout service that calls separate pricing, promotion, tax, availability, shipping and payment services, often from different vendors, and creates the order in an order management system: the composable style of [[commerce-architecture-styles]] applied to the most sensitive flow. It is right when one checkout logic must serve several storefronts, an app, a point of sale and a B2B portal, and it costs a team.
+**4. An own checkout service over composable capabilities.** The merchant runs a checkout service that calls separate pricing, promotion, tax, availability, shipping and payment services, often from different vendors, and creates the order in an order management system: the composable style of [[commerce-architecture-styles]] applied to checkout. It is right when one checkout logic must serve several storefronts, an app, a point of sale and a B2B portal, and it costs a team.
 
 | | 1. Hosted as is | 2. Hosted plus extensions | 3. Custom on platform APIs | 4. Own checkout service |
 | --- | --- | --- | --- | --- |
@@ -152,15 +205,13 @@ A merchant has four realistic options, and they map closely to the scale stages.
 | PCI DSS scope | Smallest (hosted page) | Smallest, if extensions cannot touch the payment fields | Small only with hosted fields; every page script is a liability | Depends on design; a service that touches card numbers is the long questionnaire |
 | Upgrade risk | None | Low: extensions are versioned | High: API versions, changed flows | Owned entirely by the merchant |
 | Team needed | None | An app developer or agency | Front-end and integration engineers | A platform team |
-| Fits | Starting; most Growing | Growing; Omnichannel on a SaaS platform | Omnichannel with a strong storefront team | Group; vendors |
+| Fits | Starting; most Growing | Growing; Omnichannel on a SaaS platform (software rented by the month and run by the vendor) | Omnichannel with a strong storefront team | Group; vendors |
 
-My rule: **take the most protected option that still gives you the two or three customizations the business needs, and get those through sanctioned extension points.** The reasons to leave option 2 are real (a checkout shared by web, app and store; a B2B flow the platform cannot express) and rarer than agencies suggest. Every freedom you take in checkout is a page you now keep working at 41 times normal load, under the card industry's rules, through every platform release.
+My rule: **take the most protected option that still gives you the two or three customizations the business needs, and get those through sanctioned extension points.** The reasons to leave option 2 are real (a checkout shared by web, app and store; a B2B flow the platform cannot express) and rarer than agencies suggest. Every freedom you take in checkout is a page you now keep working at peak (about 41 times an average hour's traffic on Black Friday 2026), under the card industry's rules, through every platform release.
 
 ## How Protected Checkout Is: Shopify's Timeline, 2023–2026
 
-A hosted platform can restrict where merchants insert checkout code. That gives the vendor more control over upgrades and payment-page behavior, while limiting the changes an agency can make. Shopify's changes show how that boundary can move over time.
-
-The clearest public record of a platform taking checkout *away* from its merchants is Shopify's, and it is worth reading as a sequence of dates.
+The rule follows from how platforms now treat checkout. A hosted platform can restrict where merchants insert checkout code. The clearest public record of that boundary moving, of a platform taking checkout *away* from its merchants, is Shopify's, and it is worth reading as a sequence of dates.
 
 On 13 February 2023 Shopify's changelog announced that `checkout.liquid`, the template file that let Shopify Plus merchants edit the checkout's markup, would stop working for the information, shipping and payment pages on 13 August 2024; checkouts not upgraded "will automatically revert to a standard, uncustomized Shopify Checkout". The replacement, checkout extensibility, was described as "app-based, upgrade-safe, higher-converting, and integrated with Shop Pay".
 
@@ -174,19 +225,9 @@ The timeline teaches three things that apply to any platform.
 
 First, **a time budget is how a platform protects checkout from the merchant's own code.** Shopify's instruction count and commercetools' two-second extension timeout are the same idea: your logic may run inside checkout, but only for so long, and if it fails the platform decides what happens (commercetools fails the whole call; Shopify's Functions cannot call the network at all).
 
-Second, **the payment page is where the card industry looks.** PCI DSS v4.0.1 added requirements for an inventory of scripts on the payment page and for tamper detection (6.4.3 and 11.6.1, effective 31 March 2025 per the PCI Security Standards Council's blog of 30 January 2025, which also removed them from the shortest self-assessment questionnaire in exchange for a declaration that the site is not susceptible to script attacks). The agency's gift-wrap script is exactly the kind of third-party script that rule exists for; a skimmer that compromises any script on that page reads every card typed into it ([[commerce-security]]).
+Second, **the payment page is where the card industry looks.** PCI DSS v4.0.1 added requirements for an inventory of scripts on the payment page and for tamper detection (6.4.3 and 11.6.1, effective 31 March 2025 per the PCI Security Standards Council's blog of 30 January 2025, which also removed them from the shortest self-assessment questionnaire in exchange for a declaration that the site is not susceptible to script attacks). The agency's gift-wrap script is exactly the kind of third-party script that rule exists for; a skimmer (code that copies card numbers as they are typed) that compromises any script on that page reads every card typed into it ([[commerce-security]]).
 
-Third, **a platform will withdraw an extension point, and it will tell you the date.** The Forked Platform pattern is usually described for customized open-source cores, but a checkout customized through a mechanism the vendor has announced it will retire is the same pattern on a SaaS platform (software rented by the month and run by the vendor). The remedy is an inventory of every checkout customization, its mechanism, and the vendor's support clock for that mechanism ([[extensibility-and-app-ecosystems]]).
-
-## What Changes When the Buyer Is a Company
-
-A business customer changes four steps and removes one. Identity is a **company account** with several contacts and roles, not a person; the buyer may need an approver before the order is final. Prices come from a **contract price list**, and the price review shows amounts *excluding* VAT. The address step collects the company's VAT identification number, and a valid number from another EU country switches the tax treatment to the **reverse charge** (the seller charges 0% and the buyer accounts for the VAT itself; [[tax-invoicing-and-ledger]]).
-
-The payment step often disappears: the order is placed on **payment terms** (net 30 days, at Kestrel & Pine) with a purchase-order number, and "payment" becomes a receivable in the ERP, not a PSP event. Shopify's Admin API (version 2026-10) types these terms as net, fixed date, on receipt or on fulfillment; Microsoft's documentation for its Business Central–Shopify connector (14 October 2026) tells merchants to decide which system owns payment terms and credit limits, because "mixing both directions without a clear ownership rule can lead to conflicting records".
-
-A **credit check** against the view of the ERP (enterprise resource planning system: the back-office system that keeps the books and each business customer's credit limit) of the customer's balance is the one call a consumer checkout never makes.
-
-Kestrel & Pine's B2B portal runs on the platform's company accounts, price lists and net terms; 62% of wholesale orders arrive through it. [[b2b-commerce]] works the whole picture.
+Third, **a platform will withdraw an extension point, and it will tell you the date.** The Forked Platform pattern is usually described for customized open-source cores, but a checkout customized through a mechanism the vendor has announced it will retire is the same pattern on a SaaS platform. The remedy is an inventory of every checkout customization, its mechanism, and the vendor's support clock for that mechanism ([[extensibility-and-app-ecosystems]]).
 
 ## Across Scale Stages: When It Fits and When It Limits
 
@@ -197,55 +238,18 @@ Kestrel & Pine's B2B portal runs on the platform's company accounts, price lists
 | **3 — Omnichannel** (€20M–€200M) | Checkout as a channel-independent capability: web, app and B2B portal share pricing, tax and availability; order created before the PSP's final answer and settled by webhook | One availability service behind every channel's checkout; one owner for order creation; a daily payment reconciliation job; a peak-day degradation ladder that never includes the payment step | The Black Friday Oversell; orders that exist but stay unpaid for days; the Card-Testing Night |
 | **4 — Group** | One checkout service with per-brand configuration, or several platform checkouts behind shared pricing, tax and payment services | A governed, versioned contract between checkout and the order system, owned by a platform team; the regulatory calendar for payment and card rules | Each brand's checkout re-implements VAT and promotion rules; a payment-flow change needs five deployments |
 
-Kestrel & Pine is a stage-3 merchant running a stage-2 checkout. Waypoint does not replace it (W4, stay and surround); it changes what the checkout *calls*: from Q4 2027 the availability answer at order creation comes from the availability service (W1), and from 13 October 2027 every storefront order is handed to the OMS, the order management system that becomes the order hub (W2), while the platform keeps the checkout. The chapter's advice holds at every stage; what changes is how many systems stand behind each call.
-
-## Eva's Checkout, Step by Step
-
-The recurring order, with every system it touches. Times inside the window are illustrative; the order time, amounts and order number are canonical. Kestrel & Pine runs its platform's hosted checkout with two sanctioned extensions added in 2027, a delivery-date block and a gift-wrap option.
-
-| Time | Step | What checkout calls | Answer written into the order |
-| --- | --- | --- | --- |
-| 21:09 | Add to cart | Nothing beyond the storefront; the cart holds the jacket (women's, size M, moss) and two pairs of socks | Cart, no reservation |
-| 21:10 | Cart page | Pricing: €199 and 2 × €18; promotions: none; tax: NL 21% included in the consumer price; shipping: free over €75 | Total €235 shown before checkout starts |
-| 21:11 | Identity | Eva signs in to her online account; the address book returns her Nijmegen address | Customer reference, delivery address |
-| 21:12 | Shipping options | The delivery-date block turns the static rule "ordered before 22:00, delivered tomorrow" into a date: "delivered Wednesday 14 April"; PostNL home delivery, €0 | Delivery promise and carrier service |
-| 21:13 | Price review | Pricing, promotions and tax recomputed for the final cart and address: net €194.21, VAT €40.79, total €235 | The tax basis, frozen on the order |
-| 21:13 | Payment | iDEAL selected; the PSP creates a payment session; Eva is redirected to her bank's app | Payment reference, status pending |
-| 21:14 | Confirmation | Order #1072455 created with the payment pending and the three units committed in the platform; the PSP's webhook arrives seconds later with the iDEAL result and the order becomes *paid*; the confirmation e-mail is sent | The order the rest of the book follows |
-
-Three details carry the design. **The order exists before the payment confirmation arrives.** If Eva never returns from her bank's app, it remains pending until the provider's server notification, or a daily comparison job, confirms the outcome. Repeating that notification does not create another order or payment.
-
-Stock remains a weakness in this April 2027 example: checkout reads the platform's hourly copy from the enterprise resource planning system (ERP), itself fed every 15 minutes by the warehouse management system (WMS). On Black Friday, the same chain oversold 1,340 jackets.
-
-The delivery date is also a static rule. Eva sees Wednesday 14 April, but receives the parcel on Thursday 15 April. [[shipping-and-delivery]] and [[journey-consumer-order]] show how warehouse and carrier timings can produce a credible date instead.
-
-![Diagram: Eva's checkout creates the order once, before the bank's answer, and lets the PSP's webhook move it to paid](assets/images/11-cart-and-checkout/fig03-eva-s-checkout-creates-order-once.jpeg)
-**Figure 5:** *Eva's checkout creates the order once, before the bank's answer, and lets the PSP's webhook move it to paid; a second delivery of the same webhook changes nothing.*
-
-Daniel's question is now answerable. On 27 November 2026 at 19:40 the WMS knew the Ridgewalker was gone; the availability call was answered by the platform's copy, refreshed up to two hours earlier. Checkout trusted the answer it was given. The fix is not in checkout; it is in who answers the availability call, which is W1.
-
-## When It Goes Wrong
-
-Checkout failures cluster into five kinds.
-
-**The duplicate order.** A double-click, a browser retry after a timeout or a repeated webhook, and two orders exist for one cart, or one order is paid twice. Detect it with a report of orders sharing a cart id or payment reference; recover by canceling the duplicate before fulfillment and releasing the authorization rather than refunding a capture; prevent it with the idempotency key on order creation and a webhook handler that records every event id.
-
-**The lost outcome.** The shopper paid and never returned, the webhook failed and the PSP stopped retrying, and the order sits pending while the money sits authorized. Detect it with a daily list of orders pending longer than the method's expiry window; recover by querying the PSP and settling the order either way. Mollie's documentation prescribes exactly this fetch-the-status pattern, and makes its webhook carry only an id so that a forged call cannot mark anything paid.
-
-**The stale answer.** Availability, price or tax came from a copy that was behind. Detect it through oversold lines, price-parity warnings from marketplaces and invoices whose VAT differs from the checkout figure. For stock, cancel or delay with an apology and a voucher (most of Kestrel & Pine's €96,000 Black Friday cost); for price and tax, honor the promise and correct the source. Prevent it with a current availability call at commitment, prices recomputed at the price review step and tax from the ship-to address.
-
-**The slow or failed dependency.** An extension exceeds its time budget, a tax engine is unreachable, a shipping-rate call hangs. Watch checkout latency and error rate per step on peak day as closely as orders per minute ([[peak-load-and-reliability]]), and decide the degradation ladder in advance: switch off the recommendation block, fall back to the platform's rate table with a flag for finance, offer the default carrier service without a date. The payment step and order creation are never on the ladder.
-
-**The attack.** The Card-Testing Night: 48,000 bot attempts with stolen card numbers against Kestrel & Pine's guest checkout in one night in August 2026, €2,900 of PSP fees for declined authorizations and a 40-minute account pause. Stripe's documentation on card testing (n.d., accessed November 2026) names the symptoms (a spike in failed payments, nonsensical customer names) and the controls: rate limits per address, velocity rules, a CAPTCHA trigger on guest checkout and the PSP's risk tools fed with every signal the integration can send; Visa's May 2025 monitoring fact sheet tracks these enumeration attacks separately from disputes. The architectural control is a kill switch that disables guest card payments without a deploy ([[commerce-security]]).
+The table lays out the options by scale stage, with the failures above as warning signs. On it, Kestrel & Pine is a stage-3 merchant running a stage-2 checkout. Milan's two requests end there: the delivery date and the gift wrap arrive in 2027 as two sanctioned extensions, not as the agency's script. Waypoint does not replace that checkout (W4, stay and surround); it changes what the checkout *calls*: from Q4 2027 the availability answer at order creation comes from the availability service (W1), and from 13 October 2027 every storefront order is handed to the OMS, the order management system that becomes the order hub (W2), while the shop platform keeps the checkout.
 
 ## What to Take Away
+
+At the start of this chapter a price changed, another customer bought the last item and the payment answer arrived late while a shopper checked out. None of the three breaks the order when checkout asks each owner for a final answer at the moment of commitment, creates the order once keyed on the cart and the payment, and leaves the provider's message to mark it paid. They break it when checkout writes a stale copy or trusts a page load, because every later system inherits what checkout wrote. The same fact explains the second half of the chapter: platforms keep merchant code to sanctioned, time-limited places because that one sequence must create every order exactly once, at peak, with card numbers typed into it. Noor's three requests have the same answer: Daniel's oversold jacket and Sanne's unpaid orders are settled by who answers each call and how the order is created, and Milan's changes go through sanctioned extensions. The decision in front of a merchant is therefore not which page to edit, but which owner answers each call and which sanctioned mechanism carries each change.
 
 **Established.**
 
 - The cart is a draft that reserves nothing; checkout is the orchestration that asks every promise-making system for a final answer; the order is the record that results. The three have different lifetimes, owners and rules.
 - The payment outcome is external truth that arrives by webhook, late, unordered and possibly twice; an order is created exactly once, keyed on the cart and the payment, and settled by the webhook or a reconciliation job, never by the thank-you page (Stripe's and commercetools' documentation, n.d., accessed November 2026).
 - Platforms protect checkout by withdrawing free-form customization in favor of time-boxed extension points; Shopify's dated timeline from February 2023 to August 2026 is the documented case.
-- Surprise costs, slow delivery and forced accounts lead Baymard's 2026 list of abandonment reasons; two of the three are answered by calling tax, shipping and the delivery promise on the cart.
+- Surprise costs and slow delivery lead Baymard's 2026 list of abandonment reasons; both are answered by calling tax, shipping and the delivery promise on the cart.
 
 **Depends on context.**
 
@@ -255,7 +259,7 @@ Checkout failures cluster into five kinds.
 
 **The author's synthesis.**
 
-- Treat checkout as a conductor, never a musician: the moment it owns a price list, a stock figure or a payment state of its own, it has become a second system of record for a fact that already has one, and the Truth patterns follow.
+- Treat checkout as a conductor, never a musician: the moment it owns a price list, a stock figure or a payment state of its own, it has become a second system of record for a fact that already has one, and two systems will soon disagree about it.
 - Keep an inventory of every checkout customization with its mechanism and the vendor's support date for that mechanism; the Forked Platform on a SaaS checkout is a deadline you were told about and did not write down.
 
 ## Questions to Ask

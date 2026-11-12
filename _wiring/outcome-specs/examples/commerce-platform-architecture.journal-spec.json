@@ -206,6 +206,10 @@
   "changelog": [
     {
       "date": "2026-11-12",
+      "change": "Part III (part-3) brought from outline to full: part intent, thesis with supporting claims P3-1 to P3-6, flow, opening and closing; intent, role and post_spec for the part intro; intent, thesis, role and transitions for cart-and-checkout, commerce-payments, order-management and tax-invoicing-and-ledger, reconstructed from the published chapters and their spec.md files. The part question and claim are rewritten so the claim answers the question; the cart-and-checkout question now asks why platforms restrict what merchants may change in checkout instead of why checkout is 'the most protected part', a superlative the chapter does not establish. The part's closing is assigned to tax-invoicing-and-ledger, whose published text does not yet perform it (it ends with the hand-off to Part IV). Theses tightened after the thesis rubric (all five passed on the first review)."
+    },
+    {
+      "date": "2026-11-12",
       "change": "Part II (part-2) brought from outline to full: part intent, thesis with supporting claims P2-1 to P2-6, flow, opening and closing; intent, thesis, role and transitions for the part intro and the five chapters (product-information, pricing-architecture, commerce-promotions, commerce-search-and-discovery, inventory-and-availability), reconstructed from the published chapters and their spec.md files. The part question and claim are rewritten so the claim answers the question; the product-information question now names ownership as well as modeling."
     },
     {
@@ -1694,16 +1698,114 @@
     {
       "id": "part-3",
       "title": "Part III — ORDER: Cart, Checkout, Payment and the Order Record",
-      "detail": "outline",
+      "detail": "full",
+      "intent": {
+        "outcome": {
+          "know": [
+            "The owners one order passes through after the cart: checkout creates it, the payment provider decides whether money moved, the order record holds its status, and the ERP issues its invoice and keeps the books.",
+            "Why the order keeps three status lines (money, goods per shipment, returns) and why every message and request about it carries a business key."
+          ],
+          "believe": [
+            "Checkout, the payment provider, the order record and the ERP each hold a different truth about the same order, and they agree only where each handoff has one writer, a key and a comparison.",
+            "The thank-you page, a single status field and a refund button in a provider's console are not evidence that money moved or that an order is complete."
+          ],
+          "can_do": [
+            "For one order at their own company, name the system that creates it, the one that knows whether it is paid, the one that holds its status per shipment and the one that issues its invoice, and the key and the comparison at each handoff."
+          ]
+        },
+        "acceptance_criteria": [
+          {
+            "id": "AC-1",
+            "statement": "Every supporting claim of the part thesis is argued by at least one chapter, and every chapter supports at least one.",
+            "check": "children_cover_parent_thesis",
+            "method": "deterministic",
+            "severity": "blocker"
+          },
+          {
+            "id": "AC-2",
+            "statement": "Each chapter's closing hand-off expresses the relationship its successor declares in transition_in.",
+            "check": "transition_expresses_declared_relationship",
+            "method": "rubric",
+            "severity": "major"
+          },
+          {
+            "id": "AC-3",
+            "statement": "Given an order whose systems disagree about its delivery, its invoice and its refund, a reader who has read only Part III names a missing status line, writer, key or comparison for each disagreement, before naming a better connector or a new product.",
+            "check": "custom",
+            "method": "cold_reader",
+            "severity": "major",
+            "probe": "A customer paid by iDEAL for two items that left in two parcels. After the first parcel arrives, the shop says 'Delivered', the warehouse 'In picking' and the ERP 'Not invoiced'. She later returns an item, and both the returns portal and a support agent in the payment provider's console refund it. Using only Part III: what was missing in each case?",
+            "expected": "The order had one status word instead of separate status lines with the goods status per shipment, so the first parcel's delivery marked the whole order delivered; the invoice waited for 'order complete' instead of being issued per shipment at dispatch, and nothing listed shipped orders without an invoice; two systems could refund and the request carried no business key (the return id), so the provider paid twice, and a daily comparison of the provider's refunds with credit notes would have found it. Not 'a better connector', 'a new payment provider' or 'an OMS' alone."
+          }
+        ]
+      },
       "thesis": {
-        "question": "How does intent become a commitment the merchant must keep?",
-        "claim": "Checkout is the moment the catalog's promises are fixed into an order, and the order, the payment and the invoice are three records with three owners that must be kept in agreement from then on."
+        "question": "How does a shopper's cart become an order, and what keeps the systems that hold the order, its money and its books in agreement afterwards?",
+        "claim": "A cart becomes an order once, at checkout, which asks each system that owns a fact for a final answer, writes those answers (price, tax, availability, delivery promise) into the order and creates it exactly once; afterwards the order, its money and its books stay in agreement only under four rules: the order has one home with three status lines (money, goods per shipment, returns), moved only by messages from the systems that witnessed each payment, shipment or return; every message and request about the order carries a business key that makes a repeat harmless, and whatever is still unresolved is checked with its source on a schedule; every action that moves money or issues a legal document has one writing system; and invoices, payout reports and bank lines are matched line by line every month on identifiers the order passes along.",
+        "disputed_by": "The view that the order is the shop platform's record with one status, that the thank-you page, the payment connector and the ERP connector between them keep the order, the money and the books in agreement, and that a disagreement is fixed by a better connector, a second payment provider or an order management system.",
+        "so_what": "Kestrel & Pine's Three-Status Order (#1052877: 'Delivered', 'In picking' and 'Not invoiced' for six days, 11 support tickets) and its Double Refund (212 returns, €19,400 refunded twice) were not faults inside any one product: each was a missing status line, writer, key or comparison. A merchant that accepts the claim writes down the order's home, the writer and the key of each money action and the monthly match before it buys an order management system or adds a payment provider.",
+        "how_why": "From the moment the shopper leaves for her bank's app, the merchant's own systems no longer witness what happens: the payment provider knows whether money moved, the warehouse which lines left, the carrier which parcel arrived, and each reports by message, which can be late, out of order, repeated or lost. One status word lets the latest message overwrite the others; a request without a business key cannot be told from a retry, so a second writer or one retry moves money twice; and an invoice, which must be numbered consecutively and never edited, can come from only one system. A payout nets payments, refunds and fees from different days, so only a line-by-line match on shared identifiers shows that nothing was lost.",
+        "supporting_claims": [
+          {
+            "id": "P3-1",
+            "claim": "Checkout owns none of the facts it writes into the order: it asks each owning system for a final answer at the moment of commitment, so an answer taken from an out-of-date copy becomes an error that every later system inherits."
+          },
+          {
+            "id": "P3-2",
+            "claim": "After checkout the order's systems learn what happened from messages sent by the systems that witnessed it (the payment provider, the warehouse, the carrier), which arrive late, out of order, twice or not at all; every message and request therefore carries a business key that makes a repeat harmless, and a scheduled job asks the source about everything still unresolved."
+          },
+          {
+            "id": "P3-3",
+            "claim": "Every action that moves money or issues a legal document has exactly one writing system: one system may refund, one may capture, and one system per legal entity issues invoices and credit notes."
+          },
+          {
+            "id": "P3-4",
+            "claim": "An order is one record with three status lines (money, goods per shipment, returns) from which the status the customer sees is computed, and once orders are created and fulfilled in several places one system must hold that record as the order's home."
+          },
+          {
+            "id": "P3-5",
+            "claim": "Tax is computed from facts the shop owns (ship-to address, product tax category, buyer status) under rates kept once for every channel, and the invoice is issued per shipment at dispatch, never edited and corrected only by a credit note that references it."
+          },
+          {
+            "id": "P3-6",
+            "claim": "The ledger is posted from documents and payout reports, not from payment events, and the books agree with the shop only when invoices, payout reports and bank lines are matched line by line on shared identifiers."
+          }
+        ]
       },
       "role": {
         "contribution": "Follows the promises from the catalog into the commitment: cart, payment, order record and ledger.",
         "supports": [
           "J2"
         ]
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "additional_patterns": [
+          {
+            "pattern": "chronological",
+            "applies_to": "cart-and-checkout to tax-invoicing-and-ledger: each chapter starts at a later moment of Eva's order (the 21:09 cart, the 21:13 payment request, the order from 'paid' onward, the invoice at dispatch on 14 April and the May close)"
+          }
+        ],
+        "rationale": "Each chapter starts where the one before it handed the order on and uses what that chapter fixed. Checkout comes first because it creates the order with its payment pending and introduces the webhook and the key on order creation; the payments chapter follows that pending payment through its four stages and makes the key and the single writer the rule for every action that moves money; the order chapter needs the money status line the payments chapter defined and adds the goods line per shipment, the returns line and split shipments; the ledger chapter comes last because it invoices per shipment, which needs split shipments, and matches payout reports, which need the payments chapter's stages. Putting payments first would explain a webhook for an order the reader has not seen created; putting the order chapter before payments would name a money status line before the reader knows what moves it; putting the ledger before the order chapter would ask for one invoice per shipment before the reader knows that an order can leave in two parcels."
+      },
+      "opening": {
+        "carried_by": "part-3",
+        "hook": {
+          "type": "puzzling_scenario",
+          "content": "A shopper pays, but the order still appears unpaid because the confirmation has not reached the shop; the warehouse cannot tell whether to dispatch it, and support cannot give a clear answer."
+        },
+        "bridge": "From the shopper's click on 'pay' to the merchant's side, where checkout, the payment provider, the order record and the ledger each describe a different step at a different time; and to Eva's €235 order #1072455, created at 21:14 on 13 April 2027 with its payment pending, confirmed seconds later, invoiced on 14 April and reconciled at the May close.",
+        "roadmap": "Four chapters, in the order one order meets its owners: how checkout creates one order despite retries (Eva's payment redirect); how money moves through authorization, capture, settlement and payout, and why a refund needs one writer and a key (the Double Refund: 212 returns, €19,400); the order's one home with separate payment, shipment and return states (the Three-Status Order, #1052877, 11 tickets); how orders become invoices, payouts and ledger entries matched with the bank (Eva's €194.21 net and €40.79 VAT; Ardennes Trail Co.'s Peppol invoice)."
+      },
+      "closing": {
+        "carried_by": "tax-invoicing-and-ledger",
+        "synthesis": "Eva's payment redirect, the Double Refund, the Three-Status Order and the invoice that waited six days look like four problems in four systems: checkout, the payment provider, the order record and the ERP. Read together they are one: after the cart, each fact about an order is first known by a system the merchant does not control and reaches the others by message, so the systems agree only where the chapters put one home with three status lines, one writer per money action or document, a business key on every message and a comparison of every copy with its source.",
+        "so_what": "Most of Kestrel & Pine's remedies are rules, not purchases: a read-only provider console, the return id as the refund's key, one invoice per shipment, a daily list of shipped orders without an invoice, and a decision about the order's home that came before the OMS was bought. A reader can list the writers, keys and comparisons of their own order flow before any product is discussed.",
+        "callback": "The part opening's shopper who has paid while the order still reads unpaid, the warehouse that cannot tell whether to dispatch, and support that cannot answer.",
+        "takeaway": {
+          "type": "course_of_action",
+          "content": "For one order at your own company, name the system that creates it, the one that knows whether it is paid, the one that holds its status per shipment and the one that issues its invoice, with the key and the comparison at each handoff; start with the list of shipped orders without an invoice and the daily comparison of the provider's refunds with credit notes."
+        }
       },
       "transition_in": {
         "relationship": "sequence",
@@ -1718,40 +1820,413 @@
           "folder": "part-3-intro",
           "title": "Part 3 introduction",
           "kind": "part_intro",
-          "detail": "outline",
-          "question": "What does this part argue, and in what order should its chapters be read?"
+          "detail": "full",
+          "question": "What does this part argue, and in what order should its chapters be read?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "Part III answers four questions in order: how checkout creates one order from final answers despite retries, how money moves and who may move it, where the order lives and which states it keeps, and how it becomes tax, invoices and ledger entries matched with the bank.",
+                "After checkout the facts about an order arrive as messages from the payment provider, the warehouse and the carrier, which can be late or repeated."
+              ],
+              "can_do": [
+                "Pick the Part III chapter that answers the decision in front of them."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "A reader of this page alone can name the four chapters' subjects in reading order.",
+                "check": "intro_predicts_content",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "After reading only this page: what will each of the next four chapters tell you, in order?",
+                "expected": "How checkout coordinates its dependencies and creates one order despite retries; how money moves through authorization, collection, settlement and payout, and why a refund needs one writer and a key; the order's shared home with separate payment, shipment and return states; how orders, invoices, payouts and the bank are connected and reconciled."
+              },
+              {
+                "id": "AC-2",
+                "statement": "A reader of this page alone can say why a paid order can still read unpaid and what the part says the order needs.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "minor",
+                "probe": "Using only this page: why can an order the shopper has paid still read unpaid in the shop, and what does the order need?",
+                "expected": "The payment provider reports the result by a webhook, a server-to-server message that can arrive late or repeat, so the shop knows the payment only when the message arrives; the order needs one home that keeps separate states for money, shipments and returns, and a key on every message so that a repeat changes nothing."
+              }
+            ]
+          },
+          "role": {
+            "contribution": "Performs the part's opening: states the part thesis, places the part between Eva's click on 'pay' and the May close, and gives the reading order.",
+            "supports": []
+          },
+          "post_spec": "posts/part-3-intro/spec.json"
         },
         {
           "id": "cart-and-checkout",
           "folder": "11-cart-and-checkout",
           "title": "From Cart to Confirmation: Checkout Orchestration",
           "kind": "chapter",
-          "detail": "outline",
-          "question": "What happens between \"add to cart\" and \"order confirmed\", and why is checkout the most protected part of a platform?"
+          "detail": "full",
+          "question": "What happens between \"add to cart\" and \"order confirmed\", and why do platforms restrict what merchants may change in checkout?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "The difference between a cart (a draft that reserves and promises nothing), checkout (a clocked sequence that asks for final answers) and the order (the record the rest of the platform must keep).",
+                "What checkout calls, in what order, and how fresh each answer must be.",
+                "The four ways to run a checkout, and the mechanisms through which platforms let merchants change it."
+              ],
+              "believe": [
+                "Checkout should own none of the facts it writes into the order.",
+                "The payment provider's signed message, not the thank-you page, decides that a payment succeeded."
+              ],
+              "can_do": [
+                "Draw their own checkout's call sequence and say which answers come from copies.",
+                "Judge a proposal to customize checkout by its mechanism and by the vendor's support date for that mechanism."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "Given a shopper who pays in her bank's app and never returns, and a payment notification delivered twice, the reader says when the order is created, what marks it paid and why the repeat changes nothing.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "A shopper pays by iDEAL in her bank's app and never returns to the shop; the payment provider's notification then arrives twice. Using only this chapter: when should the order have been created, what marks it paid, and what does the second notification do?",
+                "expected": "The order is created at confirmation with the payment pending, keyed on the cart and the payment (an idempotency key), not on the thank-you page; the provider's signed webhook moves it to paid; the second webhook changes nothing because its event is recognized as already applied; a daily job asks the provider about orders still pending after the method's expiry window."
+              },
+              {
+                "id": "AC-2",
+                "statement": "Given a checkout that kept selling a product the warehouse no longer had, the reader places the fault in the system that answered the availability call, not in checkout.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "On a peak evening the checkout kept selling a jacket for up to two hours after the warehouse ran out. Using only this chapter: where was the fault, and is the fix in the checkout?",
+                "expected": "Checkout trusted the availability answer it was given, which came from the platform's copy of stock refreshed up to two hours earlier; checkout owns no stock figure. The fix is in who answers the availability call at order creation (a current answer from an availability service, W1), not in checkout."
+              },
+              {
+                "id": "AC-3",
+                "statement": "Given an agency's proposal to inject a script into the checkout, the reader names the sanctioned alternative and the two risks of the script.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "minor",
+                "probe": "An agency proposes to add a gift-wrap option by injecting a script into the checkout's payment page. Using only this chapter: what should the merchant do instead, and why?",
+                "expected": "Use a sanctioned extension point of the platform, which runs with a time limit and is versioned. A third-party script on the payment page falls under the card industry's script rules (PCI DSS) and can read every card number typed there, and a mechanism outside the sanctioned ones is withdrawn on a date the vendor announces (Shopify's checkout.liquid and Scripts); keep an inventory of each customization, its mechanism and the vendor's support date."
+              },
+              {
+                "id": "AC-4",
+                "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+                "check": "intro_predicts_content",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+                "expected": "Why a price, the last unit or the payment answer can change while the shopper checks out; what checkout must call and how it creates one order despite retries; Eva's checkout as the worked example; four ways to run checkout; Shopify's 2023–2026 changes as the case for limits on customization. Evidence: Kestrel & Pine's checkout, vendor documentation, Shopify's dated changelog."
+              },
+              {
+                "id": "AC-5",
+                "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+                "check": "reverse_outline_matches_spec",
+                "method": "reverse_outline",
+                "severity": "blocker"
+              }
+            ]
+          },
+          "thesis": {
+            "question": "What happens between \"add to cart\" and \"order confirmed\", and why do platforms restrict what merchants may change in checkout?",
+            "claim": "Between 'add to cart' and 'order confirmed', checkout asks each system that owns a fact for a final answer (price, tax, availability, delivery promise, payment), writes those answers into the order and creates the order exactly once, keyed on the cart and the payment rather than on a page load, leaving the payment provider's signed message, not the thank-you page, to mark it paid. Platforms restrict merchant changes to named extension points with time limits because every order passes through checkout: merchant code there can delay or fail order creation at peak, a script on the payment page can read the card numbers typed into it, and a template the merchant edits cannot follow the platform's upgrades.",
+            "disputed_by": "The view that checkout is the storefront's last few pages, which a merchant or its agency may edit like any other page, and that the order exists, paid, once the shopper reaches the thank-you page.",
+            "so_what": "Kestrel & Pine's checkout kept selling the Ridgewalker jacket for up to two hours after Duiven ran out on Black Friday 2026 because checkout wrote the answer of an out-of-date stock copy into each order and the warehouse could not keep those orders; the fix is to have a current availability service answer that call, not to change checkout. A merchant that accepts the claim lists what its checkout calls and which answers come from copies, creates orders keyed on the cart and the payment and settles them by webhook and a daily job, and customizes checkout only through sanctioned extension points listed with the vendor's support date; Shopify withdrew editable checkout templates and scripts on dated deadlines between August 2024 and August 2026.",
+            "how_why": "The warehouse, finance and the customer all act on what checkout writes into the order, so a stale price or stock figure written there becomes their error. The shopper leaves for her bank's app or a 3-D Secure challenge and may not come back, and the provider's webhook arrives late, out of order or twice, so an order created on the thank-you page can be lost and one created per request without a key can be duplicated. Checkout carries every order at peak load and its payment page falls under the card industry's script rules, so code the platform cannot limit in time or isolate puts every order at risk; and the platform ships its own checkout changes (new payment methods, compliance fixes) into its template, so a merchant's edited copy misses them. Webhooks can also stop arriving, so a daily job asks the provider about every order still pending."
+          },
+          "role": {
+            "contribution": "Shows the moment the catalog's answers become an order and introduces the two mechanisms the rest of the part relies on: the payment provider's message as the only source of the payment's outcome, and the key that makes a repeated request harmless.",
+            "supports": [
+              "P3-1",
+              "P3-2"
+            ]
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The part's relay of one order through four owners, which starts at checkout.",
+            "introduces": "What checkout calls, in what order, and how it creates the order exactly once.",
+            "form": "sentence",
+            "placement": "end_of_previous"
+          },
+          "post_spec": "posts/11-cart-and-checkout/spec.json"
         },
         {
           "id": "commerce-payments",
           "folder": "12-payments",
           "title": "Taking the Money: Payment Providers, Authorization, Capture and Refunds",
           "kind": "chapter",
-          "detail": "outline",
-          "question": "How does money move from the shopper to the merchant, and what can go wrong?"
+          "detail": "full",
+          "question": "How does money move from the shopper to the merchant, and what can go wrong?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "The parties to a payment (shopper, issuer, scheme, acquirer, payment provider) and its four stages: authorization, capture, settlement, payout; refunds and chargebacks as payments flowing back.",
+                "How payment methods differ by country (iDEAL, Bancontact, PayPal and purchase on account) and what each difference changes in the design.",
+                "What strong customer authentication, 3-D Secure, the liability shift and PCI DSS scope require of the payment design."
+              ],
+              "believe": [
+                "Only the payment provider knows whether money moved; the order records the provider's confirmed outcome in its own small payment vocabulary.",
+                "A refund is a new payment, not an undo, and needs one writer and one key."
+              ],
+              "can_do": [
+                "Name, for their own company, every system that holds a credential to refund, capture or create a payment, and the business key each request carries.",
+                "Say what a daily payment reconciliation compares and what it finds."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "Given returns refunded twice by two systems, the reader explains why the provider accepted the second refund and names the three controls that prevent it, before naming a new provider.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "A returns portal refunds customers after inspection; support agents can also refund in the payment provider's console. Over three weeks some 200 returns are refunded twice. Using only this chapter: why did the provider accept the second refund, and what prevents it?",
+                "expected": "Two systems could refund and neither request carried a key naming the return, so the provider saw two valid requests. The controls: one writer per money action (the returns portal through the platform, the console read-only for everyone else); the return id as the refund's idempotency key; a daily comparison of the provider's refunds with the refunds the platform recorded. Not a new provider."
+              },
+              {
+                "id": "AC-2",
+                "statement": "Given a card order shipped after its authorization window, the reader says what happens to the money and what should have prevented it.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "A shop takes card payments and captures them when the order ships. The warehouse ships one order on day eight after the purchase. Using only this chapter: what happens to the payment, and what should have been in place?",
+                "expected": "The authorization (valid about seven days for the major card schemes) has expired, so the funds were released and the capture fails; the parcel leaves unpaid. Capture at label print, an alert when an authorized order nears its window uncaptured, and a fulfillment hold when the window is close; a later charge needs a merchant-initiated transaction."
+              },
+              {
+                "id": "AC-3",
+                "statement": "The reader can say why a card payment design cannot be reused unchanged for iDEAL.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "minor",
+                "probe": "Using only this chapter: why can a Dutch shop not reuse its card payment design unchanged for iDEAL?",
+                "expected": "iDEAL is an instant, irrevocable transfer from the shopper's bank with no separate capture and no chargeback, and a 15-minute session; a refund is a new transfer back. A card is authorized, then captured inside a window, and can be disputed. A design that assumes one method's stages breaks on the other."
+              },
+              {
+                "id": "AC-4",
+                "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+                "check": "intro_predicts_content",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+                "expected": "Why the shop's own page does not tell it whether money was reserved, collected or is still pending; payment providers, reserving and collecting money, customer authentication, payment notifications and refunds; Eva's iDEAL payment followed to payout, and a refund. Evidence: Kestrel & Pine's payments, payment-provider documentation, EU payment law."
+              },
+              {
+                "id": "AC-5",
+                "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+                "check": "reverse_outline_matches_spec",
+                "method": "reverse_outline",
+                "severity": "blocker"
+              }
+            ]
+          },
+          "thesis": {
+            "question": "How does money move from the shopper to the merchant, and what can go wrong?",
+            "claim": "Money moves in four stages that the merchant only requests and the shopper's bank, the card or bank scheme and the payment provider carry out: authorization reserves the amount, capture takes it, settlement moves it between banks, and payout pays the merchant net batches on the provider's schedule, typically one per sales day; a refund or a chargeback is a new payment in the opposite direction, and each payment method changes the stages (an iDEAL payment is taken at once and cannot be charged back; a card authorization expires after about seven days). The failures that land on the merchant's own systems are acting on an outcome it did not see or moving money twice: an order marked paid or unpaid without the provider's confirmed message, a capture attempted after the authorization has expired, and one refund sent by two systems with no shared key.",
+            "disputed_by": "The view that payments are the payment provider's concern: once a provider is integrated, 'paid' is a flag set at checkout, a refund is an undo anyone with console access may perform, and the main payment decision is which provider to use or whether to add a second one.",
+            "so_what": "Kestrel & Pine refunded 212 returns twice in January 2027, €19,400, because the returns portal and support in the provider's console could both refund and neither request carried a key; bank-transfer refunds could not be recalled. Its fix was one writer, the return id as the key and a daily comparison, not a new provider. A merchant that accepts the claim lists who holds a credential to move money and with what key before it compares providers, and keeps one provider with that discipline until volume, countries or resilience require more.",
+            "how_why": "The issuer and the provider decide whether money moved and report it by webhook, which arrives at least once, in no guaranteed order, and stops retrying after 26 hours (Mollie) or three days (Stripe), so only the provider's record, fetched when the decision matters, and a daily job for pending payments give the order the true state. A provider executes every valid request it receives; a refund that names only an order and an amount cannot be recognized as a repeat, whereas a request carrying the return id as its idempotency key returns the first result. An authorization lapses on the issuer's clock whatever the order's status, so a capture must be scheduled against that deadline; and each method fixes its own windows, so a design built on one method's stages misses another's deadlines."
+          },
+          "role": {
+            "contribution": "Follows the money the order is waiting for through stages the merchant does not control and makes the single writer and the business key the rule for every action that moves money.",
+            "supports": [
+              "P3-2",
+              "P3-3"
+            ]
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The order created with its payment pending, and the payment provider's webhook as the only source of the payment's outcome.",
+            "introduces": "The money's own life after checkout: the four stages, the methods that change them, and refunds and chargebacks as payments flowing back.",
+            "form": "sentence",
+            "placement": "end_of_previous"
+          },
+          "post_spec": "posts/12-payments/spec.json"
         },
         {
           "id": "order-management",
           "folder": "13-order-management",
           "title": "The Order Record: Lifecycle, State and the Order Management System",
           "kind": "chapter",
-          "detail": "outline",
-          "question": "Where does the order live once it is placed, what states does it pass through, and when does a merchant need an order management system (OMS)?"
+          "detail": "full",
+          "question": "Where does the order live once it is placed, what states does it pass through, and when does a merchant need an order management system (OMS)?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "What an order record holds (header, lines, money, promises, goods, references) and why the order number is the key for creating the order in every other system.",
+                "The order's three status lines (money, goods per shipment, returns) and how the status the customer sees is computed from them.",
+                "Routing, split shipments and backorders, and what an order management system holds and what it leaves to the shop platform and the ERP."
+              ],
+              "believe": [
+                "A single status word on an order hides facts that systems need, and is a fault, not a simplification.",
+                "The order's home is chosen by which system must answer the customer's question about a parcel."
+              ],
+              "can_do": [
+                "Decide whether a merchant needs an OMS by checking four conditions.",
+                "Say what a split order's status should read and what the customer should be told."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "Given a two-parcel order whose systems show three different statuses, the reader says what the order should have shown and which design decision was missing.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "An order for a fleece and socks ships the fleece first; the socks wait for replenishment. The shop shows 'Delivered', the warehouse 'In picking' and the ERP 'Not invoiced'. Using only this chapter: what should the order have shown, and what was missing in its design?",
+                "expected": "'Partially delivered: 1 of 2 parcels' (and 'ships in two parcels' to the customer): the goods status is held per shipment and the summary is taken from the least-advanced shipment. The design had one status word, so the first parcel's delivery marked the whole order delivered, and no one system held the order across the platform, the warehouse and the ERP."
+              },
+              {
+                "id": "AC-2",
+                "statement": "Given a merchant's channels and locations, the reader decides whether it needs an OMS by the four conditions and says why an OMS rather than the ERP holds the order.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "A merchant sells through its own web shop and a marketplace and ships from two warehouses. A vendor offers it an OMS. Using only this chapter: does it need an order hub, and should that hub be the ERP or an OMS?",
+                "expected": "Yes: two of the four conditions hold (several channels create orders; several locations fulfil them), so one system must be the order's home. An OMS rather than the ERP, because the hub must route lines between the warehouses and answer a customer's question about a parcel, which a finance system running in batches cannot. Not decided by revenue."
+              },
+              {
+                "id": "AC-3",
+                "statement": "The reader can say what happens when support cancels an order that has already shipped.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "minor",
+                "probe": "Support 'cancels' an order that has already shipped. Using only this chapter: what should happen instead?",
+                "expected": "A shipped order cannot be canceled; the cancellation becomes a return (return label, receipt, inspection, refund on receipt), a compensating step the order system coordinates. Edits lock once the warehouse has accepted the work."
+              },
+              {
+                "id": "AC-4",
+                "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+                "check": "intro_predicts_content",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+                "expected": "Why a single 'shipped' status misleads when the parts of an order move separately; what an order record holds; its separate states; routing and split shipments; where the order should live and when an OMS is needed. Evidence: Kestrel & Pine's Three-Status Order and its order-hub decision, platform and OMS vendor documentation."
+              },
+              {
+                "id": "AC-5",
+                "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+                "check": "reverse_outline_matches_spec",
+                "method": "reverse_outline",
+                "severity": "blocker"
+              }
+            ]
+          },
+          "thesis": {
+            "question": "Where does the order live once it is placed, what states does it pass through, and when does a merchant need an order management system (OMS)?",
+            "claim": "Once placed, an order should live in one system that holds it as one record, under one order number, with three separate status lines (money: authorized, paid, refunded, moved by the payment provider's events; goods: requested, accepted, shipped, delivered, held per shipment and moved by the warehouse and the carrier; returns: requested, received, inspected, refunded or exchanged) and computes the status the customer sees from all its shipments, so that the order reads delivered only when every parcel has been delivered. While one channel creates orders and one location fulfils them, that system is the shop platform; a merchant needs an OMS as the order's home once at least two of four conditions hold (several channels create orders, several locations fulfil them, promises depend on the location, service agents cannot see one order across systems), because an OMS, unlike the ERP, can route lines between locations and answer a customer's question about a parcel.",
+            "disputed_by": "The view that an order has one status in whichever system took it, kept in step with the others by connectors, and that an OMS is a product for large retailers, needed by revenue or order volume rather than by how many systems create and fulfil orders.",
+            "so_what": "Order #1052877 read 'Delivered' in the platform, 'In picking' in the warehouse and 'Not invoiced' in the ERP while the customer had a fleece and no socks, and produced 11 support tickets; with goods status per shipment it would have read 'Partially delivered: 1 of 2 parcels'. Kestrel & Pine meets all four conditions, so under W2 it makes a bought OMS the order hub, with the platform keeping the checkout and the ERP the books. A merchant that accepts the claim counts its order sources and fulfilling locations and names the order's home before it buys anything.",
+            "how_why": "Money, goods and returns are changed by different systems at different times (the payment provider, the warehouse and the carrier per parcel, the returns portal), so one status word lets the latest message overwrite the others: one parcel's delivery scan marked a two-parcel order delivered. Every system that copies the order receives it at least once, so the copies stay one order only through one number family with the order number as the key. With one channel and one location the platform's record sees every change; with several sources, each with its own connector to the warehouse and the books, no system sees the whole order; one condition alone can be handled by the platform plus a connector, but two make the joins between systems the problem, and choosing which location ships which line needs rules over stock, capacity, cut-off times and cost that the platforms' priority and distance rules do not hold. The ERP holds the financial record and runs in batches, so it cannot answer a parcel question."
+          },
+          "role": {
+            "contribution": "Gives the order one home and separate status lines, so that the payment outcome, each parcel and each return are kept without overwriting each other, and supplies the per-shipment record the ledger chapter invoices from.",
+            "supports": [
+              "P3-2",
+              "P3-4"
+            ]
+          },
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The order marked paid by the payment provider's confirmed message, with the money's status kept in the order's own payment vocabulary.",
+            "introduces": "The rest of the order's life after 'paid': the goods and returns that move on their own status lines, the systems that hold copies of the order, and which of them is its home.",
+            "form": "sentence",
+            "placement": "end_of_previous"
+          },
+          "post_spec": "posts/13-order-management/spec.json"
         },
         {
           "id": "tax-invoicing-and-ledger",
           "folder": "14-tax-invoicing-and-ledger",
           "title": "Tax, Invoices and the Books: From Order to Ledger",
           "kind": "chapter",
-          "detail": "outline",
-          "question": "How does an order become tax, an invoice and entries in the books, and what does the commerce system owe finance?"
+          "detail": "full",
+          "question": "How does an order become tax, an invoice and entries in the books, and what does the commerce system owe finance?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "The three outcomes the commerce system owes finance (the right tax, a valid invoice, books that match the bank) and the documents that carry them, each with its owning system.",
+                "The VAT rules that decide a rate: destination rates above the €10,000 One Stop Shop threshold, the reverse charge for EU business buyers with a valid VAT number, and tax-inclusive against tax-exclusive prices.",
+                "The ledger entries for a consumer order paid through a payment provider, and why Kestrel & Pine recognizes revenue for goods at delivery."
+              ],
+              "believe": [
+                "The shop issues order confirmations; one system per legal entity issues invoices.",
+                "Nothing posts to the ledger from a webhook; the ledger is fed from documents."
+              ],
+              "can_do": [
+                "Split a tax-inclusive consumer total into net and VAT.",
+                "Name the daily and monthly checks that prove the orders, the payouts and the bank agree."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "Given an order shipped in two parcels and invoiced only on 'order complete', the reader names what goes wrong and the invoicing rule that prevents it.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "An order of two items ships in two parcels a week apart; the ERP issues the invoice only when the warehouse reports the whole order complete. Using only this chapter: what goes wrong, and what is the rule?",
+                "expected": "The invoice waits for the slowest line, so a shipped (and delivered) parcel stays uninvoiced for days. Invoice per shipment at dispatch, keyed on the shipment id, with a daily list of shipped orders that have no invoice."
+              },
+              {
+                "id": "AC-2",
+                "statement": "Given a return of an invoiced and paid item, the reader names the documents that follow and says the invoice is not changed.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "A customer's €199 jacket was invoiced and paid; she returns it for a refund. Using only this chapter: which documents follow, and may the invoice be changed?",
+                "expected": "No: an issued invoice is immutable. A credit note with its own sequential number, referencing the invoice, reverses the jacket line (net and VAT); the refund, sent by the one refund writer, references both, and the three reconcile to zero; the refund appears as a deduction in a later payout."
+              },
+              {
+                "id": "AC-3",
+                "statement": "The reader can say why a payout differs from a day's sales and how finance shows that nothing is missing.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "minor",
+                "probe": "The payment provider's payout for one sales day is smaller than that day's sales. Using only this chapter: why, and how does finance show that nothing is missing?",
+                "expected": "The payout is net of fees and of refunds and chargebacks from earlier days, and arrives days later. Finance matches it line by line, using the order number passed to the provider and the batch or trace reference on the bank line, and posts fees from the report; matching totals only cannot find a missing line."
+              },
+              {
+                "id": "AC-4",
+                "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+                "check": "intro_predicts_content",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+                "expected": "Why the amount reaching the bank differs from what the customer paid; following the VAT in Eva's order into the ERP; a Belgian wholesale invoice over Peppol; tax, invoices, credit notes, ledger entries and reconciliation. Evidence: Kestrel & Pine's month-end close, EU and national tax rules, payment-provider and ERP documentation."
+              },
+              {
+                "id": "AC-5",
+                "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+                "check": "reverse_outline_matches_spec",
+                "method": "reverse_outline",
+                "severity": "blocker"
+              }
+            ]
+          },
+          "thesis": {
+            "question": "How does an order become tax, an invoice and entries in the books, and what does the commerce system owe finance?",
+            "claim": "An order becomes tax, an invoice and ledger entries through documents, not events: the tax is computed from three facts the shop owns (the ship-to address, the product's tax category, and whether the buyer is a consumer or a VAT-registered business) under rates kept in one place for every channel; the invoice is issued at dispatch for each shipment by one system per legal entity, numbered in one consecutive series, never edited and corrected only by a credit note that references it; and the ledger is posted from invoices, credit notes and the payment provider's payout reports. The commerce system owes finance the facts and identifiers those documents need (the tax basis frozen on the order, a shipment confirmation carrying the shipment id, the buyer references an e-invoice must carry, the order number passed to the payment provider, refunds from one writer), so that a monthly match of invoices, payouts and bank lines explains each difference.",
+            "disputed_by": "The view that the shop platform's order confirmation is the invoice, that tax is a rate the platform adds at checkout, and that the books can be posted from the platform's payment events as they arrive, with differences found by comparing monthly totals.",
+            "so_what": "Order #1052877 sat 'Not invoiced' for six days because the invoice waited for an 'order complete' message that a short pick prevented and no report listed shipped orders without an invoice; the Double Refund's second refund referenced no credit note; Ardennes Trail Co. rejected a Peppol invoice for a buyer reference the B2B portal never asked for. A merchant that accepts the claim makes the ERP the only invoice issuer, invoices per shipment and builds the shipped-not-invoiced list and the refunds-against-credit-notes job first, before an OMS or a PIM.",
+            "how_why": "Rates depend on the destination country, the product category and the buyer's status, and change, so rates kept in several channels drift apart. A tax basis recomputed after the address or a rate changes no longer matches what the customer was shown, so the basis is frozen on the order and any difference listed. For goods the supply happens at dispatch, per shipment, so an invoice that waits for the whole order waits for the slowest line. The law requires a consecutive number unique to each invoice and an issued invoice kept unchanged for years, which only one issuing system per legal entity can guarantee. Where two systems can refund, both can refund the same return, so refunds come from one writer. A payout nets payments, refunds, fees and chargebacks from different days, so it never equals a day's sales and can be matched only line by line on identifiers carried from the order."
+          },
+          "role": {
+            "contribution": "Follows the order into the documents that finance and the tax authorities rely on, extends the one-writer and key rules to invoices and credit notes, and performs the part's closing (the published chapter does not yet do so: it ends with the hand-off to Part IV only).",
+            "supports": [
+              "P3-3",
+              "P3-5",
+              "P3-6"
+            ]
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The order with one home, one number and its goods status per shipment, accepted by the warehouse.",
+            "introduces": "The tax it carries, the invoice each shipment produces and the entries those documents post in the books.",
+            "form": "sentence",
+            "placement": "end_of_previous"
+          },
+          "post_spec": "posts/14-tax-invoicing-and-ledger/spec.json"
         }
       ]
     },

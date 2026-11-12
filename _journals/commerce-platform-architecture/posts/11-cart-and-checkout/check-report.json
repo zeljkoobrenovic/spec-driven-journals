@@ -1,0 +1,839 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/11-cart-and-checkout/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/11-cart-and-checkout/index.md",
+  "spec_sha": "3e90cf2b5a054b90",
+  "draft_sha": "677253f8e0799d87",
+  "run_at": "2026-11-12T16:43:46+01:00",
+  "round": 2,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Checkout must merge shifting answers into one fulfillable order or purchases go wrong",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Checkout coordinates answers owned by other systems, checks stock and dedupes retries / platforms restrict merchant code in checkout",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Checkout as first owner in Part III, introducing Eva's pending order #1072455",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the chapter's sections and evidence sources",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Three Requests for the Checkout ¶1",
+      "summary": "Noor receives three requests about the checkout",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Three Requests for the Checkout ¶2",
+      "summary": "Milan wants a delivery date and gift wrap via app and script / Milan also wants fewer abandoned carts",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Three Requests for the Checkout ¶3",
+      "summary": "Daniel asks why the sold-out jacket kept selling on Black Friday",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Three Requests for the Checkout ¶4",
+      "summary": "Sanne wants no more unpaid orders and asks about card-testing fees",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Three Requests for the Checkout ¶5",
+      "summary": "Noor reframes the requests as: what does checkout call, in what order",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "The Cart Is a Draft, the Checkout Is a Commitment ¶1",
+      "summary": "Need to distinguish cart, checkout and order",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "The Cart Is a Draft, the Checkout Is a Commitment ¶2",
+      "summary": "Cart as a changeable draft that reserves and promises nothing / whether to reserve stock on add-to-cart",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "The Cart Is a Draft, the Checkout Is a Commitment ¶3",
+      "summary": "Checkout as the short, clocked sequence asking for final answers",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "The Cart Is a Draft, the Checkout Is a Commitment ¶4",
+      "summary": "Order as the resulting record, handed to order management",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "The Cart Is a Draft, the Checkout Is a Commitment ¶5",
+      "summary": "Stale data written into the order propagates downstream",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "What Checkout Must Call ¶1",
+      "summary": "Checkout steps as calls to fact-owning systems (reference table)",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "What Checkout Must Call ¶2",
+      "summary": "Checkout owns none of the facts it writes",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "What Checkout Must Call ¶3",
+      "summary": "Different calls need different data freshness, availability most",
+      "matched_spec_paragraph": "p16a"
+    },
+    {
+      "draft_locator": "What Checkout Must Call ¶4",
+      "summary": "Checkout as orchestration: a conductor, not a musician",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "The Clock and the Detour ¶1",
+      "summary": "Checkout faces two clocks it doesn't control",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "The Clock and the Detour ¶2",
+      "summary": "Shopper patience: abandonment reasons that are architectural",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "The Clock and the Detour ¶3",
+      "summary": "Payment session expiry versus authorization validity",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "The Clock and the Detour ¶4",
+      "summary": "Shopper leaves for the bank; outcome arrives via unreliable webhooks",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "The Clock and the Detour ¶5",
+      "summary": "Idempotency key from cart and payment to create the order once",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "The Clock and the Detour ¶6",
+      "summary": "Stripe and commercetools examples of create-once order handling",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "The Clock and the Detour ¶7",
+      "summary": "PSP webhook plus daily reconciliation decides payment success",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Guest, Account and the Express Wallets ¶1",
+      "summary": "Guest checkout removes forced account creation",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Guest, Account and the Express Wallets ¶2",
+      "summary": "Express wallets reuse saved details and return a payment token",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Guest, Account and the Express Wallets ¶3",
+      "summary": "Apple Pay, Google Pay, Shop Pay examples; orchestration still required",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "What Changes When the Buyer Is a Company ¶1",
+      "summary": "B2B checkout: company accounts, approvals, contract prices, reverse-charge VAT",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "What Changes When the Buyer Is a Company ¶2",
+      "summary": "Payment terms replace the payment step; decide who owns terms",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "What Changes When the Buyer Is a Company ¶3",
+      "summary": "Credit check against the ERP as the added B2B call",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "What Changes When the Buyer Is a Company ¶4",
+      "summary": "Kestrel & Pine's B2B portal on platform features",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Eva's Checkout, Step by Step ¶1",
+      "summary": "Setup for walking through Eva's hosted checkout with two extensions",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Eva's Checkout, Step by Step ¶2",
+      "summary": "Strength: order exists as pending before payment confirmation",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Eva's Checkout, Step by Step ¶3",
+      "summary": "Weakness: stock read from a stale hourly copy",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Eva's Checkout, Step by Step ¶4",
+      "summary": "Weakness: delivery date from a fixed rule, delivered a day late",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Eva's Checkout, Step by Step ¶5",
+      "summary": "Answer to Daniel: stale availability source, fix is who answers",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "Checkout failures fall into five kinds",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶2",
+      "summary": "Duplicate orders: detect, recover, prevent",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶3",
+      "summary": "Lost payment outcome settled by querying the PSP; answers Sanne",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶4",
+      "summary": "Stale answers for stock, price or tax and their handling",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶5",
+      "summary": "Slow or failed dependencies and a pre-planned degradation ladder",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶6",
+      "summary": "Card-testing attacks and controls; answers Sanne's fee question",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "Abandoned Carts and the Business Metric ¶1",
+      "summary": "Conversion as the metric; abandonment statistics and their limits",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Abandoned Carts and the Business Metric ¶2",
+      "summary": "Preconditions for abandoned-cart recovery: server-side cart and consented identity",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Abandoned Carts and the Business Metric ¶3",
+      "summary": "Three architectural moves that prevent abandonment",
+      "matched_spec_paragraph": "p29a"
+    },
+    {
+      "draft_locator": "The Choices: Four Ways to Run a Checkout ¶1",
+      "summary": "Who runs and may change checkout: four options",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "The Choices: Four Ways to Run a Checkout ¶2",
+      "summary": "Option 1: hosted checkout as is, minimal PCI scope",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "The Choices: Four Ways to Run a Checkout ¶3",
+      "summary": "Option 2: hosted checkout with sanctioned, time-limited extensions",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "The Choices: Four Ways to Run a Checkout ¶4",
+      "summary": "Option 3: custom or headless checkout on platform APIs",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "The Choices: Four Ways to Run a Checkout ¶5",
+      "summary": "Option 4: own checkout service over composable capabilities",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "The Choices: Four Ways to Run a Checkout ¶6",
+      "summary": "Author's rule: most protected option plus sanctioned extensions",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "How Protected Checkout Is: Shopify's Timeline, 2023–2026 ¶1",
+      "summary": "Platforms restrict checkout code; Shopify's timeline as the record",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "How Protected Checkout Is: Shopify's Timeline, 2023–2026 ¶2",
+      "summary": "2023 announcement retiring checkout.liquid for checkout extensibility",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "How Protected Checkout Is: Shopify's Timeline, 2023–2026 ¶3",
+      "summary": "Later sunsets for thank-you pages and Shopify Scripts",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "How Protected Checkout Is: Shopify's Timeline, 2023–2026 ¶4",
+      "summary": "Current Shopify customization mechanisms and limits",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "How Protected Checkout Is: Shopify's Timeline, 2023–2026 ¶5",
+      "summary": "Three general lessons from the timeline",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "How Protected Checkout Is: Shopify's Timeline, 2023–2026 ¶6",
+      "summary": "Time budgets protect checkout from merchant code",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "How Protected Checkout Is: Shopify's Timeline, 2023–2026 ¶7",
+      "summary": "PCI script rules make payment-page scripts a risk",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "How Protected Checkout Is: Shopify's Timeline, 2023–2026 ¶8",
+      "summary": "Platforms retire extension points on dates; keep a customization inventory",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "Options by scale stage and Kestrel & Pine's position / Waypoint changes what checkout calls, not the checkout",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "Synthesis: final answers, create once, provider marks paid; sanctioned extensions",
+      "matched_spec_paragraph": "p61a"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "Established conclusions of the chapter",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "Context-dependent conclusions",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "Author's synthesis: conductor not musician; customization inventory",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Diagnostic questions for one's own checkout",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Hand-off to order management and payments chapter",
+      "matched_spec_paragraph": "p65"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 67 outline summaries match the controlling ideas of their aligned spec paragraphs, in spec order; the four two-idea units carry exactly the two ideas their spec paragraphs combine.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Introduction ¶2: Spec p02 is the thesis paragraph and deliberately joins coordination with the platform limit; one claim in two halves.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Setting the Scene at Kestrel & Pine: Three Requests for the Checkout ¶2: Spec p06 states Milan's request as both changes and fewer abandoned carts; one idea: Milan's requests.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "The Cart Is a Draft, the Checkout Is a Commitment ¶2: Spec p11 includes reserve-on-add in the cart's definition.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Across Scale Stages: When It Fits and When It Limits ¶1: Spec p49 combines Kestrel & Pine's stage and Waypoint's change of calls as one analysis.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every paragraph ties to S1-S6 or is a declared transition/context unit.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/0/evidence/1",
+      "draft_locus": "What Checkout Must Call ¶1",
+      "quote": "(The Baymard Institute's 2024 benchmark counted an average of 5.1 steps from cart to order review and 11.3 form fields, and argued that eight fields suffice.)",
+      "finding": "The statistic is dropped in as a parenthesis and never tied to the point it should support (steps vary while the calls stay the same); the 'eight fields suffice' clause points to usability, a topic the section does not pursue. Both flow readers found it off-topic.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "All other figures (1-5), tables (cart/checkout/order, call steps, freshness, Eva's steps, four options, stages), quotations (Stripe, Microsoft, Shopify changelog) and statistics are followed or framed by a sentence saying what they show.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/transition_in",
+      "draft_locus": "What Checkout Must Call ¶1",
+      "quote": "A checkout walks the shopper through a handful of steps, and each step is a call to a system that owns a fact.",
+      "finding": "Declared cause_effect carrying over 'the order as a promise every later system inherits' into 'what checkout calls to fill that promise'. The opening sentence starts afresh and does not pick up the order-as-promise from the previous paragraph, so the causal link is left implicit.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/transition_in",
+      "draft_locus": "The Clock and the Detour ¶1",
+      "quote": "Checkout runs against two clocks it does not control.",
+      "finding": "Declared elaboration carrying over 'checkout as an orchestration with a short-lived state' into 'the clocks that limit how long that state may live'. The sentence does not refer to the orchestration's short-lived state, so the reader is not told why clocks follow from it.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/11/transition_in",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "quote": "The table lays the four options, Shopify's lessons and the failures above (as warning signs) out by scale stage.",
+      "finding": "Declared placement is start_of_this, but the section opens with the stage table and no lead sentence; the sentence that carries over the options and Shopify's lessons comes only after the table, so the reader meets the table cold (flow reader A item 12).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other boundaries (introduction, p05-p65, section openings for scene, cart, guest, B2B, Eva, wrong, abandoned, choices, Shopify, and the conclusion's 'At the start of this chapter...') express the declared relationship at the declared placement.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on a puzzling scenario (price change, last item, late payment answer); none of the weak patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "Opens with a callback, not 'in conclusion'; synthesizes rather than restating; no new subtopic beyond a minor note on synchronous methods.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "Links the two halves ('The same fact explains the second half of the chapter') and states the merchant's decision: which owner answers each call and which sanctioned mechanism carries each change.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "'At the start of this chapter a price changed, another customer bought the last item and the payment answer arrived late' returns to the hook and says what keeps each from breaking the order.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "Intro reader predicted every section in order (requests, cart/checkout/order, calls, clocks and detour, guest/wallets/B2B, Eva, failures, abandoned carts, four ways, Shopify 2023-2026, scale stages) and the evidence (Kestrel & Pine incidents, vendor docs, Baymard, Shopify changelog).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Order created once at confirmation, payment pending, keyed on cart and payment not page load; signed webhook marks paid; repeat changes nothing because event ids are recorded; daily job after expiry window. Matches expected.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Fault in the platform's stale stock copy that answered the availability call; fix is who answers it (availability service, W1), not checkout. Matches expected.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Sanctioned, versioned, time-limited extension point; PCI DSS script rules and skimmer risk; dated withdrawal (Shopify); customization inventory with support date. Matches expected.",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "The last four sections answer the requests about the storefront: what the architecture can do about abandoned carts, and then who may change checkout: four ways to run it, Shopify's dated withdrawal of editable checkout between 2023 and 2026, and which way fits which scale stage.",
+      "finding": "Nested colons make the reader count to match 'the last four sections'; both readers re-read the roadmap.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3 (roadmap)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Eva's Checkout, Step by Step ¶1",
+      "quote": "Two apps add to it through the platform's sanctioned extension points, named places where an app may add to checkout: a delivery-date block and a gift-wrap option.",
+      "finding": "Milan's two open requests appear already installed before the chapter answers them; only the stages section says they arrive in 2027. Both readers named this the worst snag. The prose should mark them as 2027 additions at first appearance.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3 ('Two apps add to it ...')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "What Checkout Must Call ¶1",
+      "quote": "(The Baymard Institute's 2024 benchmark counted an average of 5.1 steps from cart to order review and 11.3 form fields, and argued that eight fields suffice.)",
+      "finding": "Usability statistic sits off-topic in the calls section and never returns.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3 (Baymard step counts)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/5",
+      "draft_locus": "The Choices: Four Ways to Run a Checkout ¶6",
+      "quote": "My rule: **take the most protected option that still gives you the two or three customizations the business needs, and get those through sanctioned extension points.**",
+      "finding": "The rule is stated before its justification; the next section opens 'The rule follows from how platforms now treat checkout.' Both readers propose placing Shopify's timeline before the rule. The spec's order (choices, then Shopify) causes this.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item 3 ('My rule' before its justification)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/transition_in",
+      "draft_locus": "Eva's Checkout, Step by Step ¶1",
+      "quote": "Back to a consumer: Eva's order, which this book follows to the ledger, with every system it touches.",
+      "finding": "Guest/wallets and B2B sit between the mechanics and the worked example, so the reader switches context twice and Eva, introduced in the opening, disappears for five sections. Both readers suggest moving Eva directly after the Clock and the Detour; the spec's order causes it.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, items 2-4 (B2B placement; Eva disappears)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/5",
+      "draft_locus": "When It Goes Wrong ¶6",
+      "quote": "Stripe's documentation on card testing (n.d., accessed November 2026) names the symptoms",
+      "finding": "One sentence runs from Stripe's controls through several parentheticals into Visa's fact sheet; both readers re-read it.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3 (attack paragraph sentence)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "quote": "Because every order passes through this sequence, platforms also limit where merchants may add their own code to it.",
+      "finding": "Reader A found the jump to platform control abrupt and unsupported at this point.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "The Clock and the Detour ¶2",
+      "quote": "Three of those five are architecture: showing total cost early means calling tax and shipping *on the cart*",
+      "finding": "Reader A: the abandonment material previews the Abandoned Carts section, which repeats it, so 'two clocks' reads as one clock plus an abandonment preview. The spec places the abandonment reasons here.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/11/paragraphs/0",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "quote": "The table lays the four options, Shopify's lessons and the failures above (as warning signs) out by scale stage.",
+      "finding": "Reader A: explanation comes after the table; OMS is expanded only here.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "Eva's Checkout, Step by Step ¶3",
+      "quote": "On Black Friday, the same chain oversold 1,340 jackets.",
+      "finding": "Reader A could not tell whether Eva's jacket is the Ridgewalker, or link this to the €96,000 that appears later.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "What Checkout Must Call ¶3",
+      "quote": "Second, **the calls have different freshness needs.**",
+      "finding": "Reader B: 'Second' continues 'The table shows, first', but the first table does not show freshness; only the following table does.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "What Checkout Must Call ¶4",
+      "quote": "This is why checkout is described as an **orchestration**",
+      "finding": "Reader B: 'This' reaches back past the freshness table to the ownership point; re-read.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/6",
+      "draft_locus": "How Protected Checkout Is: Shopify's Timeline, 2023–2026 ¶7",
+      "quote": "PCI DSS v4.0.1 added requirements for an inventory of scripts on the payment page and for tamper detection (6.4.3 and 11.6.1, effective 31 March 2025",
+      "finding": "Reader B: long nested parenthetical forced a re-read.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both readers named the same ordering principle (mechanism answering Daniel and Sanne, then governance answering Milan). Both also flagged Waypoint/W1/W2/W4 as unexplained, but the audience already knows the Waypoint decisions from Part I, so this is not counted for the intended reader.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "Key points",
+      "quote": "Shopify spent 2023 to 2026 replacing editable checkout templates",
+      "finding": "Shopify is never identified as a commerce platform vendor (commercetools is). Terms reader only; not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "What Checkout Must Call ¶1",
+      "quote": "Customer service; address book for returning customers",
+      "finding": "'Customer service' reads as the support desk; it means a customer-data system. Terms reader only; not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "What Checkout Must Call ¶1",
+      "quote": "The table below is a reference-architecture view",
+      "finding": "'reference-architecture view' is not explained. Terms reader only; not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "The Cart Is a Draft, the Checkout Is a Commitment ¶3",
+      "quote": "A **checkout** is the orchestrated sequence that turns the cart into an order.",
+      "finding": "'orchestrated' is used before orchestration (on does_not_know) is defined in the next section. Terms reader only; not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "What Checkout Must Call ¶3",
+      "quote": "Fall back to the platform's rate table with a flag",
+      "finding": "'the platform's rate table' is not explained. Terms reader only; not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "The Clock and the Detour ¶3",
+      "quote": "list 5 to 7 days for most card schemes",
+      "finding": "'card schemes' (and Klarna) not glossed. Terms reader only; not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "The Clock and the Detour ¶7",
+      "quote": "the PSP's signed webhook does",
+      "finding": "'signed' is not explained, though the thesis rests on the provider's signed message. Terms reader only; not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "What Changes When the Buyer Is a Company ¶2",
+      "quote": "\"payment\" becomes a receivable in the ERP",
+      "finding": "'receivable' and 'purchase-order number' not explained. Terms reader only; not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "What Changes When the Buyer Is a Company ¶2",
+      "quote": "Microsoft's documentation for its Business Central–Shopify connector",
+      "finding": "'Admin API' and 'Business Central' not explained; Business Central never identified as an ERP. Terms reader only; not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "When It Goes Wrong ¶4",
+      "quote": "price-parity warnings from marketplaces",
+      "finding": "'price-parity warnings' not explained. Terms reader only; not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "When It Goes Wrong ¶6",
+      "quote": "a 40-minute account pause",
+      "finding": "Whose account and paused by whom is unclear; 'disputes' unexplained. Terms reader only; not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "The Choices: Four Ways to Run a Checkout ¶5",
+      "quote": "the composable style of [[commerce-architecture-styles]]",
+      "finding": "'composable' explained only by the link. Terms reader only; not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "How Protected Checkout Is: Shopify's Timeline, 2023–2026 ¶2",
+      "quote": "the template file that let Shopify Plus merchants edit",
+      "finding": "'Shopify Plus' used before it is shown to be a plan tier; 'additional scripts' never explained. Terms reader only; not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "How Protected Checkout Is: Shopify's Timeline, 2023–2026 ¶4",
+      "quote": "merchant logic compiled to WebAssembly",
+      "finding": "'WebAssembly' and 'web pixels for tracking' not explained. Terms reader only; not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "What to Take Away ¶3",
+      "quote": "(iDEAL, Bancontact, 3-D Secure challenges); where every method answers synchronously",
+      "finding": "'Bancontact' and 'asynchronous/synchronously' not explained. Terms reader only; not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Every does_not_know term (cart/checkout/order, reserve-on-add, payment session, 3-D Secure, SCA, idempotency key, guest checkout, express wallet, payment token, conversion, abandoned cart, company account, contract price list, reverse charge, payment terms, credit check, hosted checkout, extension point, headless, PCI DSS, self-assessment questionnaire, sandboxed function) is given in the draft; paragraph openings start from known information.",
+      "severity": "minor"
+    }
+  ]
+}

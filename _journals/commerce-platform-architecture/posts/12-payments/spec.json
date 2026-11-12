@@ -1,0 +1,1721 @@
+{
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "commerce-payments",
+  "journal": "commerce-platform-architecture",
+  "part": "part-3",
+  "title": "Taking the Money: Payment Providers, Authorization, Capture and Refunds",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published chapter (posts/12-payments/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter (check_draft.py units). It is a contract, not a description: where the published chapter did not yet do what the spec asks (a roadmap that names every section, a conclusion that returns to the opening, a hand-off that names the payment vocabulary and the goods and returns status lines), the units were added or rewritten here and the prose follows them.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The parties to a payment (shopper, issuer, scheme, acquirer, payment provider) and its four stages: authorization, capture, settlement, payout; refunds and chargebacks as payments flowing back.",
+        "How payment methods differ by country (iDEAL, Bancontact, PayPal and purchase on account) and what each difference changes in the design.",
+        "What strong customer authentication, 3-D Secure, the liability shift and PCI DSS scope require of the payment design."
+      ],
+      "believe": [
+        "Only the payment provider knows whether money moved; the order records the provider's confirmed outcome in its own small payment vocabulary.",
+        "A refund is a new payment, not an undo, and needs one writer and one key."
+      ],
+      "can_do": [
+        "Name, for their own company, every system that holds a credential to refund, capture or create a payment, and the business key each request carries.",
+        "Say what a daily payment reconciliation compares and what it finds."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture; most of all the engineer or product manager who must connect a returns portal, an order system or a checkout to a payment provider, and next the finance and operations leaders who need to see why a refund is not an undo and why payouts never equal sales.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side.",
+        "Roughly what an API, a database and a queue are.",
+        "Kestrel & Pine, its people, its incidents in outline and the names of the sixteen failure patterns (meet-kestrel-and-pine, where-commerce-platforms-go-wrong).",
+        "From Part I: the thirteen steps of an order, promise and handoff, the three status lines (money, goods, returns), 'system' for any software or outside service that handles an order, 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, the business models and the four scale stages (Starting, Growing, Omnichannel, Group), the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation, and the Waypoint decisions W1 to W8.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+        "From Part II: one owning system per product attribute, prices frozen at order placement, promotions as data, gift cards and points as liabilities, available-to-promise and an exact commit at checkout.",
+        "From cart-and-checkout: checkout creates the order exactly once with its payment pending, and the PSP's webhook marks it paid; a daily job asks the PSP about orders still pending."
+      ],
+      "does_not_know": [
+        "Issuer, scheme, acquirer; authorization, capture, settlement, payout; authorization window.",
+        "iDEAL, Bancontact, purchase on account, buy-now-pay-later; interchange.",
+        "Strong customer authentication (SCA), PSD2, 3-D Secure, exemptions, liability shift, merchant-initiated transaction (MIT).",
+        "Refund as a new payment, cancel, chargeback and dispute ratio.",
+        "Idempotency key in the PSP's sense; the order's own payment vocabulary.",
+        "PCI DSS, self-assessment questionnaire (SAQ), hosted fields; card testing and a kill switch.",
+        "Receivable; payout feed; payments sub-ledger."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given returns refunded twice by two systems, the reader explains why the provider accepted the second refund and names the three controls that prevent it, before naming a new provider.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A returns portal refunds customers after inspection; support agents can also refund in the payment provider's console. Over three weeks some 200 returns are refunded twice. Using only this chapter: why did the provider accept the second refund, and what prevents it?",
+        "expected": "Two systems could refund and neither request carried a key naming the return, so the provider saw two valid requests. The controls: one writer per money action (the returns portal through the platform, the console read-only for everyone else); the return id as the refund's idempotency key; a daily comparison of the provider's refunds with the refunds the platform recorded. Not a new provider."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given a card order shipped after its authorization window, the reader says what happens to the money and what should have prevented it.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A shop takes card payments and captures them when the order ships. The warehouse ships one order on day eight after the purchase. Using only this chapter: what happens to the payment, and what should have been in place?",
+        "expected": "The authorization (valid about seven days for the major card schemes) has expired, so the funds were released and the capture fails; the parcel leaves unpaid. Capture at label print, an alert when an authorized order nears its window uncaptured, and a fulfillment hold when the window is close; a later charge needs a merchant-initiated transaction."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can say why a card payment design cannot be reused unchanged for iDEAL.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this chapter: why can a Dutch shop not reuse its card payment design unchanged for iDEAL?",
+        "expected": "iDEAL is an instant, irrevocable transfer from the shopper's bank with no separate capture and no chargeback, and a 15-minute session; a refund is a new transfer back. A card is authorized, then captured inside a window, and can be disputed. A design that assumes one method's stages breaks on the other."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Why the shop's own page does not tell it whether money was reserved, collected or is still pending; payment providers, reserving and collecting money, customer authentication, payment notifications and refunds; Eva's iDEAL payment followed to payout, and a refund. Evidence: Kestrel & Pine's payments, payment-provider documentation, EU payment law."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-6",
+        "statement": "A reader new to commerce meets no term in this chapter before it is explained, and every acronym is expanded on first use.",
+        "check": "known_before_new",
+        "method": "rubric",
+        "severity": "minor"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How does money move from the shopper to the merchant, and what can go wrong?",
+    "claim": "Money moves in four stages that the merchant only requests and the shopper's bank, the card or bank scheme and the payment provider carry out: authorization reserves the amount, capture takes it, settlement moves it between banks, and payout pays the merchant net batches on the provider's schedule, typically one per sales day; a refund or a chargeback is a new payment in the opposite direction, and each payment method changes the stages (an iDEAL payment is taken at once and cannot be charged back; a card authorization expires after about seven days). The failures that land on the merchant's own systems are acting on an outcome it did not see or moving money twice: an order marked paid or unpaid without the provider's confirmed message, a capture attempted after the authorization has expired, and one refund sent by two systems with no shared key.",
+    "disputed_by": "The view that payments are the payment provider's concern: once a provider is integrated, 'paid' is a flag set at checkout, a refund is an undo anyone with console access may perform, and the main payment decision is which provider to use or whether to add a second one.",
+    "so_what": "Kestrel & Pine refunded 212 returns twice in January 2027, €19,400, because the returns portal and support in the provider's console could both refund and neither request carried a key; bank-transfer refunds could not be recalled. Its fix was one writer, the return id as the key and a daily comparison, not a new provider. A merchant that accepts the claim lists who holds a credential to move money and with what key before it compares providers, and keeps one provider with that discipline until volume, countries or resilience require more.",
+    "how_why": "The issuer and the provider decide whether money moved and report it by webhook, which arrives at least once, in no guaranteed order, and stops retrying after 26 hours (Mollie) or three days (Stripe), so only the provider's record, fetched when the decision matters, and a daily job for pending payments give the order the true state. A provider executes every valid request it receives; a refund that names only an order and an amount cannot be recognized as a repeat, whereas a request carrying the return id as its idempotency key returns the first result. An authorization lapses on the issuer's clock whatever the order's status, so a capture must be scheduled against that deadline; and each method fixes its own windows, so a design built on one method's stages misses another's deadlines.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "The merchant only requests: the issuer, the scheme and the payment provider carry the money through authorization, capture, settlement and payout, and a refund or a chargeback is a new payment in the opposite direction with its own state, failures and fees."
+      },
+      {
+        "id": "S2",
+        "claim": "Each payment method bends the stages differently (an iDEAL payment is instant and cannot be charged back, a card authorization expires after about seven days, a German invoice purchase is a receivable or a loan), so a design built on one method's stages misses another's deadlines."
+      },
+      {
+        "id": "S3",
+        "claim": "Only the payment provider knows whether money moved, and it reports by webhook, at least once and in no guaranteed order; the order therefore keeps its own small payment vocabulary moved only by confirmed events, fetches the provider's record when the decision matters, and asks the provider daily about every payment still pending."
+      },
+      {
+        "id": "S4",
+        "claim": "A provider executes every valid request it receives, so every action that moves money needs one writing system and one business key, and a daily comparison of the provider's records with the merchant's finds what the rule missed."
+      },
+      {
+        "id": "S5",
+        "claim": "Authentication and card-data rules shape the design: the order stores the authentication result and the liability flag, fraud screening and a kill switch act before authorization, and hosted fields keep every card number out of the merchant's systems."
+      },
+      {
+        "id": "S6",
+        "claim": "How a merchant takes payments, and how many payout feeds finance must match, change with scale; a merchant of Kestrel & Pine's size gains more from one provider used with discipline than from an orchestration layer over several."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Follows the money the order is waiting for through stages the merchant does not control and makes the single writer and the business key the rule for every action that moves money.",
+    "supports": [
+      "P3-2",
+      "P3-3"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene to refunds: the Double Refund is the problem; the stages, the authentication step and the message supply the terms its fix (one writer, one key, one daily check) needs"
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "choices, feeds and stages: four ways to take payments on the same criteria, then the four payout feeds, then the stage table"
+      },
+      {
+        "pattern": "chronological",
+        "applies_to": "psp, sca, fraud, message, refunds: the order in which one payment meets each step, from the parties and the stages through the checks before the request leaves the shop, the outcome message after it, and the money flowing back"
+      }
+    ],
+    "rationale": "The Double Refund comes first so that each term arrives as part of the answer to 'who may move money, with what key, and how does the order learn what the PSP did'. The parties and the four stages follow because every later section names a stage: authentication happens before authorization, the webhook reports the stages' outcomes, a refund is only possible after capture, and a payout is what finance matches. Authentication, fraud screening and card data come before the message because the shopper leaves for her bank or a 3-D Secure challenge before the outcome can arrive, and the message section starts from that departure; putting it after the message would leave '3-D Secure' unexplained where it is first needed. The message section comes before refunds because the refund fix reuses its two habits: applying a repeated event once (an event id) becomes sending a repeated request once (an idempotency key), and the daily job for pending payments becomes the daily refund comparison; the requirements table also previews the refund flow that the next section explains. Fraud and card data follow authentication because all three act before the payment request leaves the shop, and the section ends with the dated rules that govern all three; the choices table later compares PCI scope, which the reader then already has. The four ways to take payments come before the payout feeds, and both before the scale-stage section, whose table uses the options and the feeds in its rows; Shopify's payments are told with the option they exemplify, not among the parties. Eva's payment is worked through after the reader has every term, and the failures come last, each one a rule of the chapter seen from detection, recovery or prevention. Moving the scene later would put a vocabulary lecture before the problem; moving refunds before the message would present the refund key and the daily refund comparison without the event-id rule and the pending-payments job they are modelled on."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "A shopper approves a payment in a bank app and returns to the web shop. That return alone does not tell the merchant whether the money was reserved, collected or still pending."
+    },
+    "bridge": {
+      "from_reader_world": "Anyone who has paid online has been sent to a bank app or a card check and back to a thank-you page; the previous chapter left Eva's order created at that point with its payment pending.",
+      "to_topic": "The merchant's own systems do not see what happens at the bank, so the question is how the money moves, how the order learns the outcome, and what goes wrong when it guesses or when money is moved twice."
+    },
+    "thesis_statement": {
+      "text": "The shopper's bank, the scheme and the payment provider move the money; the merchant only asks. The failures that land on the merchant's own systems come from acting on an outcome it did not see confirmed, or from moving money twice: a paid order left unpaid, a reservation that expires before capture, a refund sent by two systems with no shared key.",
+      "placement": "KEY POINTS callout (all three bullets) and paragraph p02"
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p03",
+      "promises": [
+        {
+          "promise": "Start from three weeks in January 2027 when Kestrel & Pine refunded 212 returns twice.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Explain what a payment provider does: the parties, the four stages of a payment and how methods differ by country.",
+          "kept_in": [
+            "psp"
+          ]
+        },
+        {
+          "promise": "Explain the checks made before the money is reserved: customer authentication, fraud screening and keeping card numbers out of the merchant's systems.",
+          "kept_in": [
+            "sca",
+            "fraud"
+          ]
+        },
+        {
+          "promise": "Explain the message that tells the order what happened, and refunds and chargebacks as money flowing backward.",
+          "kept_in": [
+            "message",
+            "refunds"
+          ]
+        },
+        {
+          "promise": "Compare four ways to take payments, add the stores', wholesale and marketplace payout feeds, and say which setup fits which scale stage.",
+          "kept_in": [
+            "choices",
+            "feeds",
+            "stages"
+          ]
+        },
+        {
+          "promise": "Work Eva's payment through and list the ways payment integrations fail.",
+          "kept_in": [
+            "in-practice",
+            "wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "When a shopper returns from her bank app, the shop still does not know whether the money was reserved, collected or is still pending, and it needs the provider's confirmation to release the order without asking her to pay twice.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "A shopper approves a payment in her bank app and comes back to the web shop.",
+            "shows": "The merchant's page sees the shopper return, not the money move."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Because the bank, the scheme and the payment provider move the money and the merchant only asks, the merchant's failures come from acting on an outcome it did not see confirmed or from moving money twice, and checking unresolved payments against the provider's records makes them visible early.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "A paid order left unpaid by a missing confirmation, a reservation that expires before capture, a refund sent by two systems with no shared key.",
+            "shows": "The thesis's two kinds of failure, each in one concrete form the chapter returns to."
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The shop does not know what happened at the bank.",
+          "introduces": "Who does move the money, and the two kinds of failure that follow for the merchant.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "Eva, the book's shopper, was sent to her bank's app at 21:13 on 13 April 2027 to pay €235 by iDEAL and her order exists with its payment pending, so from here only the payment provider's message can say whether the money moved; the chapter follows that message and the money to payout, and ends by asking what a refund would have done in place of her later exchange of the jacket.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Eva's €235 iDEAL payment at 21:13 on 13 April 2027; order #1072455 pending (cart-and-checkout).",
+            "shows": "Places the chapter where the previous one ended: an order created with its payment pending, waiting for the provider's webhook."
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The shopper of the opening, waiting for the provider's confirmation.",
+          "introduces": "Eva's order, created with its payment pending at the end of checkout, and the webhook as the only source of its outcome.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter starts from the Double Refund, explains the payment provider's parties, stages and methods, then the checks before the money is reserved (authentication, fraud screening, card data), the outcome message, refunds and chargebacks, compares four ways to take payments, adds the other payout feeds and the scale stages, and ends with Eva's payment worked through and the ways payment integrations fail; its evidence is Kestrel & Pine's incidents, payment providers' documentation and EU payment law.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "Eva's order waiting for the money's outcome.",
+          "introduces": "The order in which the chapter follows the money, and its evidence.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Kestrel & Pine: Three Weeks in January",
+      "controlling_idea": "Kestrel & Pine refunded 212 returns twice because two systems could refund and neither sent a key naming the return, and its Card-Testing Night showed that one provider carried every online sale.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S6"
+        ],
+        "how": "States the chapter's problem in Kestrel & Pine's own incidents: two writers and no key, and one provider for every sale."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Told in the order Noor Visser's team assembled the evidence: the payment routes first, so the reader knows which systems could act; then the January 2027 discovery, the reconstruction and the diagnosis; the Card-Testing Night of August 2026 last although it happened earlier, because it is a second incident that raises a second question (one provider for every sale), which the choices and the failures answer."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The roadmap's first promise: the Double Refund.",
+        "introduces": "Kestrel & Pine's payment routes and the January 2027 incident.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Kestrel & Pine takes money by three routes, its online payment provider, a separate terminal provider for the stores, and bank transfers from wholesale customers, and finance must account for all three.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "The PSP offers iDEAL, cards, PayPal, Klarna, Bancontact and Apple Pay and pays a net daily amount; six stores on a terminal provider; wholesale on 30-day terms.",
+              "source": "_research/scenario-ledger.md (systems landscape)",
+              "shows": "The systems that can move money at Kestrel & Pine before the incident is told."
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "In January 2027 the Finance Director found that 212 returns had been refunded twice over three weeks, once by the returns portal and once by support in the PSP console, and €19,400 had gone out a second time: the Double Refund, Kestrel & Pine's case of the Boomerang.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Double Refund: 212 returns, €19,400, January 2027, found from duplicate credits in the ERP.",
+              "source": "_research/scenario-ledger.md, incident 3",
+              "shows": "Two systems that could refund produced the same refund twice."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The routes finance must account for.",
+            "introduces": "What finance found in January 2027.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Bank-transfer refunds could not be recalled, and Noor Visser's reconstruction shows an ordinary sequence: a helpful agent refunds in the console after the carrier's 'delivered' scan, and the returns portal refunds again after inspection.",
+          "function": "evidence",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Day-by-day reconstruction: day 0 parcel arrives; days 0–3 the customer asks support; day 1 the agent refunds €199 in the PSP console; days 2–5 the portal refunds on inspection through the platform; day 31 finance finds two credits per order.",
+              "source": "_research/scenario-ledger.md, commerce-payments line (illustrative mechanism)",
+              "shows": "Each step was reasonable on its own; the fault is that two systems could act and the PSP could not tell the requests apart."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The €19,400 refunded a second time.",
+            "introduces": "What could be recovered, and how the double refunds came about.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Two systems could refund, neither sent a key that named the business event, and the two paths met only in the ledger, which gives the chapter its question: who may move money, with what key, and how does the order find out what the PSP actually did?",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The reconstructed sequence.",
+            "introduces": "The diagnosis and the chapter's question.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Kestrel & Pine's other payment incident, the Card-Testing Night of August 2026 (48,000 stolen card numbers, €2,900 in fees, a 40-minute pause of the PSP account), raises a second question the chapter answers near its end: what happens when the one provider that carries every online sale stops.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "48,000 attempts, €2,900 in fees for declined authorizations, a 40-minute account pause.",
+              "source": "_research/scenario-ledger.md, incident 8",
+              "shows": "A single provider is a single point of failure for every online sale; commerce-security owns the defense."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Noor's question about who may move money.",
+            "introduces": "A second, earlier incident and the second question it raises: one provider for every sale.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "psp",
+      "heading": "What a Payment Service Provider Does",
+      "controlling_idea": "A payment service provider stands in front of the issuer, the scheme and the acquirer and carries every payment through four stages, authorization, capture, settlement and payout, whose windows and costs differ by method and country.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "Names the parties and the four stages the thesis rests on, and shows from provider documentation and dated usage figures that methods change the stages."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Parties first, then the four stages they carry out, then what each stage leaves in the order record, then the windows and payout timing of those stages, then how the methods of each country bend them and what they cost, and last a dated caveat on iDEAL's semantics: the windows need the stages, the country methods generalize what the windows began to show, the costs need the methods, and the caveat qualifies the method the chapter's example uses without interrupting the move from methods to costs."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The question of how the order finds out what the PSP did.",
+        "introduces": "What a PSP is and who stands behind it when Eva pays.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "When Eva pays, at least five parties take part: the shopper, the issuer, the scheme, the acquirer and the PSP.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The five parties in plain words and in Eva's iDEAL payment.",
+              "shows": "Each party is defined by its role and placed in the chapter's running example."
+            }
+          ]
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "A PSP hides the other parties behind one contract, and the providers' documentation describes the same four-stage flow, authorization, capture, settlement and payout, with refunds and chargebacks flowing back.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Adyen, Stripe and Mollie documentation, n.d., accessed November 2026.",
+              "shows": "The four stages are common to the providers, not one vendor's model."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The five parties.",
+            "introduces": "What the PSP does with them: one contract and four stages.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12a",
+          "controlling_idea": "Each stage has a different actor and leaves something different in the order record: the authorization's reference and expiry, the capture's amount and shipment, nothing for settlement, and the payout's batch, matched by finance.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: the four stages, with the webhook, capture and refunds through one path, and the payout matched by finance.",
+              "shows": "The merchant only requests; the stages run outside its systems."
+            },
+            {
+              "kind": "table",
+              "what": "Stage, who acts, in plain words, what the order record keeps; Adyen's line on manual capture at shipment.",
+              "source": "Adyen documentation, n.d., accessed November 2026",
+              "shows": "What the order must store at each stage, and that settlement is invisible to it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The four stages named from the providers' documentation.",
+            "introduces": "The stages one by one: who acts and what the order record keeps.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "A card authorization is valid for about seven days and Klarna must be captured within 28, so capture on shipment is a promise with a deadline: a parcel shipped after the window leaves unpaid.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Stripe: seven days for Visa, Mastercard, American Express and Discover for customer-initiated online payments; on expiry \"the funds are released and the payment status changes to canceled\"; Klarna 28 days at Stripe and Mollie.",
+              "source": "Stripe and Mollie documentation, n.d., accessed November 2026",
+              "shows": "The window runs on the issuer's clock, whatever the order's status."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "Authorization and capture as separate stages.",
+            "introduces": "The windows between them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Payout follows its own schedule, days later and net of refunds and fees, so a payout never equals one day's sales, and the batch report is what finance matches against orders.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Adyen's default \"sales day payout\" with a two-business-day delay; Stripe's initial EU settlement timing of seven calendar days moving to three business days.",
+              "source": "Adyen and Stripe documentation, n.d., accessed November 2026",
+              "shows": "A payout never equals one day's sales, so matching needs the batch report."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The authorization and capture windows.",
+            "introduces": "Payout timing, which is separate.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Cards lead across the euro area, but in each of Kestrel & Pine's three countries a different method leads, iDEAL in the Netherlands, Bancontact (which works like a card) in Belgium, PayPal and purchase on account in Germany, and each difference changes the design.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Cards at 48% of euro-area online payments by number (ECB SPACE 2024).",
+              "source": "European Central Bank, 2024-12",
+              "shows": "Cards lead in the euro area as a whole, which makes the local leaders in the table the point: a design built for cards alone does not fit any of the three countries."
+            },
+            {
+              "kind": "table",
+              "what": "Country, dominant method, dated evidence (Dutch Payments Association 2025-02; Bancontact Payconiq Company 2025-02; EHI via Ecommerce News 2024) and what each means for the design.",
+              "shows": "iDEAL has no capture and no chargeback, Bancontact follows card rules, a German 'payment' may be a 30-day receivable or a loan; the last column is the author's judgement."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The four stages as the providers describe them.",
+            "introduces": "That methods by country bend those stages.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Methods also cost different amounts: on a €100 sale a buy-now-pay-later payment can cost ten times an iDEAL payment, a pricing decision before it is a technical one.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Adyen's indicative prices: \"$0.13 + €0.22\" for iDEAL, \"$0.13 + Interchange++ + 0.60%\" for Visa and Mastercard, \"$0.13 + 2.99%\" for Klarna in Germany; interchange capped at 0.2% (debit) and 0.3% (credit) by Regulation (EU) 2015/751.",
+              "source": "Adyen pricing, n.d., accessed November 2026; Official Journal, 2015-05-19",
+              "shows": "The method mix sets the fee line."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Methods differ in their stages, country by country.",
+            "introduces": "Methods also differ in cost.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "One caveat on the running example: iDEAL is changing its name under the European Payments Initiative's wallet, so the chapter relies on Mollie's documented iDEAL semantics, dated, and flags the name as in motion.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "The scheme's site brands itself \"iDEAL | Wero\" as of November 2026; Mollie: instant charge, automatic capture, partial refunds for 365 days, no chargeback, 15-minute session.",
+              "source": "Currence iDEAL and Mollie documentation, n.d., accessed November 2026",
+              "shows": "Which iDEAL semantics the chapter relies on, and that they are dated."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The methods' stages and costs as documented today.",
+            "introduces": "A caveat that iDEAL's own name is changing, and which semantics the chapter relies on.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sca",
+      "heading": "Strong Customer Authentication and 3-D Secure",
+      "controlling_idea": "EU law requires strong customer authentication before most online payments; for cards 3-D Secure performs it, whether it ran decides who bears a fraud dispute, and a later merchant-initiated charge depends on it, so the order must store its result.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Shows that the authentication step before authorization leaves facts (the result, the liability flag, the MIT flag) the order must keep."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "What authentication is in plain words, then the law that requires it and its exemptions, then the card protocol, its liability rules and the merchant-initiated charge that depends on it: the reader needs the requirement before the protocol that meets it."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The methods and their stages, starting with authorization.",
+        "introduces": "The check that comes before authorization: who is paying.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p23",
+          "controlling_idea": "Before authorization, payment authentication checks that the person paying may use the method; strong customer authentication combines independent checks, and checkout must let it finish before treating the payment as confirmed.",
+          "function": "definition"
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "PSD2 gives strong customer authentication its legal definition (two of knowledge, possession and inherence) and requires it when a payer starts an electronic payment, and its detailed rules set the exemptions.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Directive (EU) 2015/2366, Article 4(30) and Article 97, applied from 13 January 2018; Delegated Regulation (EU) 2018/389, applied from 14 September 2019: contactless up to €50, trusted beneficiaries, recurring after the first, low-value remote up to €30, transaction risk analysis up to €500.",
+              "source": "Official Journal, 2015-12-23 and 2018-03-13",
+              "shows": "The requirement and its exemptions are law, with dates."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Strong customer authentication in plain words.",
+            "introduces": "The law that defines and requires it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "For cards 3-D Secure 2 performs the check; an exemption trades conversion for fraud liability, so the order stores the authentication result and the liability flag; and a later merchant-initiated charge is allowed only if the first payment was authenticated and flagged for it.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "EMVCo: frictionless and challenge flows; Stripe: \"Exemptions aren't guaranteed\"; \"If a cardholder disputes a 3DS payment as fraudulent, the liability typically shifts from you to the card issuer\"; with an exemption \"liability shift doesn't apply\".",
+              "source": "EMVCo and Stripe documentation, n.d., accessed November 2026",
+              "shows": "Whether authentication ran decides who pays for a fraud dispute, which the order must be able to prove."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The legal requirement.",
+            "introduces": "The card protocol that meets it, and what follows for the order.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fraud",
+      "heading": "Fraud and Card Data: Keep the Attack Out and the Card Number Out",
+      "controlling_idea": "Besides authentication, two decisions act before the payment request leaves the shop: screen attacks with a kill switch in reserve, and keep every card number out of the merchant's systems with hosted fields; and the rules behind all three are still moving.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Shows the two decisions, fraud screening and PCI scope, that decide what the merchant's systems may see and do."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The section's scope first, then the attack (fraud screening, with the Card-Testing Night as its case), then card data in three steps (the standard, the mechanism, the 2025 change), then the dated rules that are still moving: the two decisions are grouped, card data needs its standard before its mechanism, and the regulatory outlook comes last because it covers authentication, fraud liability and payment rails together."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "Authentication as one check before the money is reserved.",
+        "introduces": "Two other decisions that act before the request leaves the shop: keeping attackers out and card numbers out.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p31",
+          "controlling_idea": "Authentication is one check before the money is reserved; two other decisions also act before the request leaves the shop, and other chapters own their depth, so this section keeps to what shapes the payment design.",
+          "function": "transition"
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Fraud screening and request limits before authorization stop card testing, the Card-Testing Night's attack, before it costs fees or a provider pause, and a kill switch lets the merchant pause one method while the rest keep trading.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Stripe's card-testing guidance: spikes in failed payments, small amounts, implausible details; risk models, rate limits, CAPTCHA, login, limits per address.",
+              "source": "Stripe documentation, n.d., accessed November 2026",
+              "shows": "The controls exist and act before authorization."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The section's two decisions.",
+            "introduces": "The first: keeping the attack out.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Card data is a scope decision: PCI DSS obligations depend on which systems can see a card number, and the design goal is that none of the merchant's can.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "PCI DSS v4.0.1 published 11 June 2024; future-dated requirements effective 31 March 2025.",
+              "source": "PCI Security Standards Council, 2024-06-11",
+              "shows": "The standard and its dates."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Keeping the attack out.",
+            "introduces": "The second decision: keeping the card number out.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Hosted fields keep the card number away from the merchant's code and servers, which keeps the merchant at the smallest self-assessment questionnaire.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Stripe's mapping: hosted checkout or fields to SAQ A, merchant-hosted form to SAQ A-EP, raw card data to SAQ D, \"more than 300 security controls\"; Adyen: \"solely responsible for the security of cardholder data only as soon as Adyen receives the data\".",
+              "source": "Stripe PCI guide and Adyen PCI DSS guide, n.d., accessed November 2026",
+              "shows": "Integration choice sets the compliance burden, and the boundary of the provider's responsibility."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The goal that no merchant system sees a card number.",
+            "introduces": "The mechanism that achieves it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Since January 2025 every script on the payment page remains the merchant's risk, so the rule is never to store, log or send a card number, to use the PSP's token and to keep a list of every script on the payment page.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "SAQ A eligibility that the site \"is not susceptible to attacks from scripts\", replacing two script requirements on 30 January 2025.",
+              "source": "PCI Security Standards Council, 2025-01-30",
+              "shows": "Hosted fields do not remove the merchant's responsibility for its own page."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Hosted fields as the mechanism.",
+            "introduces": "What remains the merchant's risk, and the rule.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "The rules around authentication and fraud are still moving, so the payment design needs someone who tracks them: PSD3 and the Payment Services Regulation are agreed but not yet law, and the Instant Payments Regulation is in force and makes instant transfer a plausible checkout and refund rail.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Provisional agreement 27 November 2025 (European Parliament press release 21 November 2025); Council compromise texts 23 April 2026, files open on 29 October 2026; not in the Official Journal as of 7 November 2026. Regulation (EU) 2024/886: receive by 9 January 2025, send by 9 October 2025, free payee verification.",
+              "source": "European Parliament, 2025-11-21; Council of the EU, 2026-10-29; Official Journal, 2024-03-19",
+              "shows": "Which rules are coming and which already apply, with dates."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The rules on authentication and card data that apply today.",
+            "introduces": "That these rules are still moving: PSD3 and the Payment Services Regulation coming, instant payments in force, so the design needs someone who tracks them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Shows that the authentication and fraud rules the design depends on have dates and are changing, which is why the reader's questions include a regulatory calendar with an owner."
+          }
+        }
+      ]
+    },
+    {
+      "id": "message",
+      "heading": "The Order Depends on a Message It Does Not Control",
+      "controlling_idea": "Nothing in the merchant's own systems knows whether a payment succeeded; the provider says so by webhook, at least once and in no guaranteed order, so the order applies each event once, fetches the provider's record when the decision matters, runs a daily job for what is pending, and keeps its own small payment vocabulary.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "States the rule and the three consequences from the providers' own documentation, and the vocabulary that lets the order change provider without changing every system."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The rule first, then the documentation that proves the message is unreliable, then the three consequences, then the vocabulary that holds the result, then the requirements of each flow: each step depends on the one before."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The checks made before the payment request leaves the shop.",
+        "introduces": "That once the request has left, the merchant cannot see the outcome and must wait for the provider's message.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p18",
+          "controlling_idea": "Once the checks are passed and the request has left, nothing in the merchant's own systems knows whether the payment succeeded: the shopper left for her bank's app or a 3-D Secure challenge, and the PSP tells the merchant by webhook, so the order must wait for that message and be safe when it arrives twice or not at all.",
+          "function": "claim"
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "The providers' documentation says the message can come out of order, twice or forged, and stops retrying after a time.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Stripe: \"Stripe doesn't guarantee the delivery of events in the order that they're generated\"; \"Webhook endpoints might occasionally receive the same event more than once\"; signing because \"an attacker could send fake webhook events\". Mollie: id-only webhooks, so \"fake calls to your webhook will never result in orders being processed without being actually paid\"; ten retries over 26 hours.",
+              "source": "Stripe and Mollie documentation, n.d., accessed November 2026",
+              "shows": "The message is unreliable by the providers' own account."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The webhook as the only source of the outcome.",
+            "introduces": "What the providers say about it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "form": "list",
+          "controlling_idea": "Three consequences belong in the integration contract of any order system: treat a repeated event as a no-op, fetch the provider's record when the decision matters, and run a daily job for every payment still pending.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: the webhook as a doorbell; the clerk checks the PSP's record and a daily job checks pending orders.",
+              "shows": "The three consequences in one picture."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The message's documented properties.",
+            "introduces": "What the order system must do about them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "The order records each confirmed event in its own small payment vocabulary (pending, authorized, paid, refunded, disputed), translating the PSP's statuses inside an adapter, so changing PSP changes an adapter, not every downstream system.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Mollie has seven payment statuses, Stripe's PaymentIntent six.",
+              "source": "Mollie and Stripe documentation, n.d., accessed November 2026",
+              "shows": "Each provider's vocabulary is its own; the order needs one that does not depend on it."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: the order's few payment states, moved only by confirmed events, with the PSP's raw status beside them.",
+              "shows": "What the vocabulary looks like."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Confirmed events, each applied once.",
+            "introduces": "Where the order records them: its own payment vocabulary.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Each flow between the order and the PSP (outcome in, capture out, refund out, payout report in) has its own needs for freshness, consistency, speed and behavior when the other side is down.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four flows by freshness, consistency, speed and what happens if the other side is down; latencies marked as assumptions.",
+              "shows": "Capture and refund need a key and a deadline; the payout report needs line-by-line matching."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The order's payment vocabulary and the outcome message.",
+            "introduces": "All four flows between the order and the PSP, side by side.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "refunds",
+      "heading": "Refunds, Cancels and Chargebacks: Money Flowing Backward",
+      "controlling_idea": "A refund is a new payment in the opposite direction, so it needs one writer and one key, which is the fix of the Double Refund; a chargeback is a backward payment the merchant does not decide.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S4"
+        ],
+        "how": "Shows from provider documentation that a refund is a payment, uses the Double Refund to show why it needs one writer and one key, and adds the chargeback as the backward flow the merchant does not control."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "What a refund is, then how the Double Refund happened with that knowledge, then the three-part fix, then the other backward flow: the fix cannot be understood before the reader sees a refund as a new payment."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The requirements table: requests going out to the PSP need a key and a deadline, and exactly one refund per return.",
+        "introduces": "Why the refund row needs the most care: a refund is a new payment, not an undo.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p27",
+          "form": "list",
+          "controlling_idea": "A refund must happen exactly once per return because it is a new payment in the opposite direction: possible only after capture (before capture the authorization is canceled instead), asynchronous and able to fail later, and only to the original method.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Adyen: \"You can only refund a payment after it has been captured\"; a refund can fail after success, funds \"up to 40 business days\"; Stripe: fees \"aren't returned\"; credit \"approximately 5-10 business days later\".",
+              "source": "Adyen and Stripe documentation, n.d., accessed November 2026",
+              "shows": "A refund has its own state, failures and fees."
+            }
+          ]
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The Double Refund, drawn as a sequence, shows two writers on two paths with no shared key, so the PSP could not refuse the second request and the paths met only in the ledger.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: the Double Refund as a sequence of two writers and two paths.",
+              "shows": "Where one key would have stopped the second refund."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "A refund as a new payment.",
+            "introduces": "The Double Refund seen as two such payments.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Waypoint's fix of February 2027 has three parts: one writer per money action, the return id as the refund's idempotency key, and a daily comparison of the PSP's refunds with the shop platform's.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Support's console access read-only; refunds only from the returns portal through the shop platform; the return id as key; a daily check by order number and amount to Sanne de Wit's team.",
+              "source": "_research/scenario-ledger.md, commerce-payments line",
+              "shows": "The fix is writers, keys and a comparison, not a new provider."
+            },
+            {
+              "kind": "quotation",
+              "what": "Stripe \"saves the status code and body of the first request made with a given idempotency key\" and may prune keys after 24 hours.",
+              "source": "Stripe documentation, n.d., accessed November 2026",
+              "shows": "How a key makes a repeat harmless, and why the merchant's own key store must outlive the provider's."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: two desks refunding the same parcel against one desk whose key makes the provider refuse the repeat.",
+              "shows": "The fix in one picture."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Two writers and no shared key.",
+            "introduces": "The three-part fix.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Chargebacks are the other backward flow and not the merchant's decision: the issuer reverses the payment, the dispute ratio is watched for months, and a slow refund path pushes customers to dispute instead.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Stripe: a dispute \"occurs when a cardholder questions your payment with their card issuer\", the issuer \"immediately reverses the payment\", up to 120 days; Adyen's dispute stages and auto-defense of refunded disputes; Visa's monitoring threshold lowered to 150 basis points on 1 April 2026.",
+              "source": "Stripe and Adyen documentation, n.d., accessed November 2026; Visa VAMP fact sheet, 2025-05",
+              "shows": "Disputes cost the merchant and are counted against it, which is a second reason to get refunds right."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Refunds, which the merchant issues.",
+            "introduces": "Chargebacks, which it does not.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "choices",
+      "heading": "The Choices: Four Ways to Take Payments",
+      "controlling_idea": "A merchant can take payments through the platform's own payments, one PSP through a connector, a custom integration with hosted fields, or its own payment service over several PSPs; at Kestrel & Pine's size the second, run with discipline, is the right choice.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Compares the four options on the criteria the chapter has built (PCI scope, capture control, who may move money, resilience), shows that even a platform's own payments run over PSPs, and gives the author's rule."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "Four options from least to most control, the first with the Shopify case that shows what lies under it, then the comparison table attached to the fourth option, then the author's rule: the rule needs the comparison, and the Shopify case belongs with the option it explains."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The parts of the payment design: stages, checks before authorization, the message and refunds.",
+        "introduces": "The four ways to put them together.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p36",
+          "controlling_idea": "The platform's built-in payments need nothing integrated, but the method mix and fees are the platform's and any second system that moves money must go through its API.",
+          "function": "description"
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Shopify Payments, the public example of the first option, runs over Stripe, PayPal and Adyen in the Netherlands, Belgium and Germany, so a platform's own payments are a commercial wrapper over licensed PSPs and the four stages apply underneath.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Shopify's processor list names Stripe, PayPal and Adyen; its European payment terms state that no Shopify entity is \"licensed as a bank, payment institution, or money services business\".",
+              "source": "Shopify processor list and Shopify Payments Terms of Service (Ireland), n.d., accessed November 2026",
+              "shows": "'The platform's own payments' is a commercial wrapper over licensed PSPs."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The platform's built-in payments as the first option.",
+            "introduces": "Shopify Payments as the public case, and what sits underneath it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "One external PSP through the platform's connector, Kestrel & Pine's setup since 2016, gives local methods, pricing and risk tools and ownership of the webhook endpoint and of who else may call the PSP.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first option, a wrapper over PSPs.",
+            "introduces": "The second: contracting a PSP directly.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "A custom integration with hosted fields gives full control of capture and merchant-initiated charges, and leaves every property of the webhook to the checkout team.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The second option.",
+            "introduces": "The third.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "A payment service of the merchant's own over several PSPs routes and reconciles across them, and is worth its complexity only when volume, countries or resilience demand it.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The four options by time to first sale, method mix, PCI scope, capture control, who else may move money, resilience and fit.",
+              "shows": "Only the fourth option survives a provider outage, and only by adding the most to run."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The third option.",
+            "introduces": "The fourth, and the table that compares all four.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "The table shows that only an own payment service over several PSPs keeps selling through a provider outage, at the highest running cost; for a merchant of Kestrel & Pine's size the author's rule is to stay on one PSP, spend the effort on discipline, and rehearse a fallback for one method instead.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The comparison table.",
+            "introduces": "The author's recommendation for Kestrel & Pine's size.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "feeds",
+      "heading": "Stores, Wholesale and Marketplaces: Four Feeds, Not One",
+      "controlling_idea": "Online is only one of four ways money reaches Kestrel & Pine; stores, wholesale and marketplaces each bring their own payout feed, so finance reconciles four feeds by daily batch.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Shows that the number of feeds finance must match grows beyond the PSP, which explains W5's daily batch and a payments sub-ledger."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The claim, then the three other feeds one by one, then online and the conclusion: the four-feeds conclusion needs all four named."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The choices for taking online payments.",
+        "introduces": "That online is only one of four feeds.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p41",
+          "controlling_idea": "Online is one of four ways money reaches Kestrel & Pine.",
+          "function": "claim"
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Stores take cards through the terminal provider with different authentication, a different PCI questionnaire and a separate payout feed, and a web order refunded at the till is the store's version of the Double Refund.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The four ways.",
+            "introduces": "The first: stores.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Wholesale customers do not pay at checkout: their payment is a receivable tracked in the ERP and settled by a bank transfer finance matches to the invoice.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Bergzicht's spring reorder invoiced on 9 April 2027 and due on 9 May.",
+              "source": "_research/scenario-ledger.md (Bergzicht's spring reorder)",
+              "shows": "A wholesale 'payment' is an amount owed for 30 days."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Stores.",
+            "introduces": "Wholesale.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Marketplaces collect the shopper's money and pay the seller out net of fees on their own schedule, a third payout feed.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Wholesale.",
+            "introduces": "Marketplaces.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "With the PSP's daily batch as the fourth, four feeds need four reconciliations, which is why Waypoint's W5 moves finance by daily batch and where a payments sub-ledger earns its place.",
+          "function": "synthesis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Stores, wholesale and marketplaces.",
+            "introduces": "Online as the fourth feed and what the four together require.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Across Scale Stages: When It Fits and When It Limits",
+      "controlling_idea": "The payment mechanism does not change with scale; what changes is how many systems can move money and how many feeds finance must match, and the Growing stage is where the Double Refund happens.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S6",
+          "S4"
+        ],
+        "how": "Places the options, the feeds and the one-writer rule on the four scale stages."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The four ways to take payments and the four feeds.",
+        "introduces": "Which setup fits which scale stage.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "controlling_idea": "The payment mechanism does not change with scale; the number of systems that can move money and of feeds to match does, and stage 2 is where the Double Refund happens because the first integration beyond the platform gets a PSP key.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four stages by what is typical, what becomes necessary and the signs the stage is ending.",
+              "shows": "The writers and feeds grow with each stage while the stages of a payment stay the same."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice",
+      "controlling_idea": "Eva's €235 shows the stages, the message and the payout in one iDEAL payment, and its refund variant shows one writer and one key at work.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3",
+          "S4"
+        ],
+        "how": "Applies the chapter's terms to the running example: pending until the webhook, payout matched by line, a refund keyed on the return id."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The payment, then the same payment by card for contrast while the payment is fresh, then its payout, then the refund variant later in April: the order in which the money moves."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The whole payment design and the one-writer rule by stage.",
+        "introduces": "Eva's payment worked through.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p47",
+          "controlling_idea": "Eva's iDEAL payment is requested at 21:13, the order is created pending at 21:14, and the PSP's webhook marks it paid seconds later; iDEAL has no separate capture and no card chargeback.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Order #1072455, €235, 13 April 2027.",
+              "source": "_research/scenario-ledger.md (Eva's jacket; cart-and-checkout line)",
+              "shows": "The order is paid by the provider's message, not by the shopper's return."
+            }
+          ]
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "With a card, the payment would be authorized on Tuesday and captured on Wednesday at label print, inside the seven-day window, with the fulfillment order id as the capture's key.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The iDEAL payment, with no capture.",
+            "introduces": "The same order paid by card.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "Under labelled assumptions the payout arrives on 15 April in a batch net of fees and refunds, and finance matches it to orders by the PSP reference.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "An assumed €0.30 fee and payout on Thursday 15 April, two business days later; the cited Adyen price is $0.13 + €0.22.",
+              "source": "_research/scenario-ledger.md, commerce-payments line (assumptions)",
+              "shows": "Payout is a net batch matched by reference, not a copy of the day's sales."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The iDEAL payment confirmed (and its card alternative).",
+            "introduces": "Its payout.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Had Eva asked for a refund, the returns portal would refund €199 after inspection with the return id as the key, through the shop platform and the PSP, and support would issue nothing in the console; the refund shows up as a deduction in a later batch, which is why matching is by line.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Refund variant: request 19 April, inspection 22 April, €199 by a new iDEAL transfer, credit note in the ERP.",
+              "source": "_research/scenario-ledger.md (Eva's jacket, refund variant)",
+              "shows": "One writer and one key at work, and why a batch does not equal a day's sales."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The payment and its payout.",
+            "introduces": "The refund that a different choice on 19 April would have produced.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "Four failures, the duplicate refund, the lost outcome, the expired authorization and the provider outage, each come with a way to detect them and a way to recover or prevent them, most drawn from the chapter's rules.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4",
+          "S2"
+        ],
+        "how": "Turns the chapter's rules into detection, recovery and prevention for the failures the thesis names."
+      },
+      "flow": {
+        "pattern": "order_of_importance",
+        "rationale": "The duplicate refund first, because it is the chapter's case; then the lost outcome and the expired authorization, the other two failures the thesis names; then the outage, which the Card-Testing Night raised."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Eva's payment going right.",
+        "introduces": "The ways it can go wrong.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p51",
+          "controlling_idea": "The duplicate refund is detected by a daily list of the PSP's refunds against the shop platform's, recovered by asking for the money back, and prevented by one writer and the return id as key.",
+          "function": "analysis"
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "The lost outcome is detected by the daily job for payments pending beyond their method's expiry, recovered by asking the PSP, and prevented by a webhook endpoint that is owned and verified.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "A failure of moving money twice.",
+            "introduces": "A failure of not seeing the outcome.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "The expired authorization is detected by an alert before the window closes, recovered only by a merchant-initiated charge where the first payment was set up for one, and prevented by capture at label print and a fulfillment hold.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The lost outcome.",
+            "introduces": "A capture after the deadline.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "The provider outage or account pause, as on the Card-Testing Night, is detected by watching the PSP's error rate, met with a rehearsed fallback and a kill switch, and prevented by limits before authorization.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Failures inside one payment.",
+            "introduces": "A failure that stops every payment.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The stages, the methods, the message and the refund rules are one answer seen from four sides: the merchant only asks, so its systems must record what the provider confirms, give every action that moves money one writer and one key, and compare their records with the provider's every day. Every failure in the chapter breaks one of those three, and none of the fixes is a different provider.",
+    "so_what": "A reader can list, before comparing providers, which systems hold a credential that can move money, the key each request carries and what the daily comparison checks; that list is what stopped the Double Refund, and it is the same for one provider or several.",
+    "callback": {
+      "to": "The introduction's shopper returning from her bank app to a shop that does not know whether the money moved, and the Double Refund of the scene.",
+      "how": "The first paragraph of the conclusion returns to the shopper and to the 212 returns and says what the order should have relied on in each: the provider's confirmed message, and one writer with one key."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Name the systems that may refund, capture or create a payment, give each request a business key, run a daily comparison with the provider's records, and take the seven questions to your own company."
+    },
+    "hand_off": {
+      "to": "order-management",
+      "relationship": "time",
+      "carries_over": "The order marked paid by the payment provider's confirmed message, with the money's status kept in the order's own payment vocabulary.",
+      "introduces": "The rest of the order's life after 'paid': the goods and returns that move on their own status lines, the systems that hold copies of the order, and which of them is its home."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The four failures and their detection, recovery and prevention.",
+      "introduces": "The chapter's answer set against its opening, then what holds across the chapter, sorted by how settled it is.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p55a",
+        "controlling_idea": "The shopper's return from her bank app and the 212 double refunds have one answer: the merchant only asks, so the order relies on the provider's confirmed message, every action that moves money has one writer and one key, and a daily comparison finds what slips through, none of which needs a new provider.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The opening's shopper and the scene's Double Refund set against the chapter's three rules.",
+            "shows": "The reader can now say what the order should rely on in each case, and that the fix is writers, keys and a comparison."
+          }
+        ]
+      },
+      {
+        "id": "p55",
+        "form": "list",
+        "controlling_idea": "Established: money moves in four stages with refunds and chargebacks flowing back, capture must happen inside a window of days and a refund can fail later; the outcome arrives by webhook at least once and in no guaranteed order, so the merchant persists event ids, fetches the object and runs a daily pending job.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "The points it rests on, starting with what provider documentation establishes.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p56",
+        "form": "list",
+        "controlling_idea": "Depends on context: capture on shipment suits cards with frequent cancellations but not instant methods, and one PSP with discipline suits merchants up to the Omnichannel stage while orchestration suits Group scale.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established.",
+          "introduces": "What changes with the merchant's situation.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p57",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: treat payments as a problem of writers and keys before a problem of providers, and keep the order's payment vocabulary the merchant's own.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established and what depends on context.",
+          "introduces": "The author's own judgement, labelled as such.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p58",
+        "form": "list",
+        "controlling_idea": "Seven questions let the reader find, in their own company, who may move money, with what key, where the authentication result is stored, the authorization windows, the fallback, the payout feeds and the regulatory calendar.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions that apply them to the reader's own company.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p59",
+        "controlling_idea": "The provider's message has moved Eva's order to 'paid' in the order's own payment vocabulary; money is one of the order's three status lines, and the next chapter follows the goods and returns lines, the systems that hold copies of the order and which of them is its home.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "time",
+          "carries_over": "The order marked paid by the payment provider's confirmed message, with the money's status kept in the order's own payment vocabulary.",
+          "introduces": "The rest of the order's life after 'paid': the goods and returns that move on their own status lines, the systems that hold copies of the order, and which of them is its home.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The cart, the checkout steps, the authentication detour inside checkout and creating the order before the PSP's answer; this chapter starts at the payment request.",
+      "covered_in": [
+        "cart-and-checkout"
+      ]
+    },
+    {
+      "topic": "VAT, the invoice, the credit note, revenue recognition and what the ERP posts.",
+      "covered_in": [
+        "tax-invoicing-and-ledger"
+      ]
+    },
+    {
+      "topic": "Returns policy, RMAs, inspection, dispositions and refund timing from the returns side; this chapter only fixes the refund's writer and key.",
+      "covered_in": [
+        "returns-and-exchanges"
+      ]
+    },
+    {
+      "topic": "Card-testing defenses in depth, account takeover, skimming and the shared-responsibility model; fraud scoring.",
+      "covered_in": [
+        "commerce-security",
+        "fraud-prevention (LISTED)"
+      ]
+    },
+    {
+      "topic": "Interchange economics, payment orchestration, tokens and the payments sub-ledger in depth; the chapter links rather than re-teaches.",
+      "covered_in": [
+        "payments-fundamentals",
+        "adyen",
+        "stripe",
+        "payments-to-ledger",
+        "designing-financial-ledgers"
+      ]
+    },
+    {
+      "topic": "Terminal selection and store refunds; credit limits and payment terms; marketplace payouts.",
+      "covered_in": [
+        "stores-and-omnichannel",
+        "b2b-commerce",
+        "marketplaces-and-channel-integration"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "The Double Refund's day-by-day mechanism (support refunding in the PSP console in response to 'where is my refund' contacts between carrier delivery and inspection) is appended to the ledger as an illustration; returns-and-exchanges and journey-return-and-exchange should reuse it rather than invent a different trigger.",
+    "Kestrel & Pine's PSP fees and payout schedule are assumptions modeled on Adyen's public documentation; if a later chapter needs exact fee lines, they should be added to the ledger once.",
+    "Whether iDEAL's transition to Wero changes refund or session semantics for merchants is not documented on the scheme's site as of November 2026; revisit before the 2027 edition.",
+    "PSD3/PSR adoption and application dates should be re-checked against the Official Journal before publication.",
+    "AC-6 (every term explained before use, every acronym expanded) was carried over from the old spec's success criteria as a minor known_before_new criterion; the author may keep or drop it.",
+    "In Practice has the shop platform request Eva's iDEAL payment at 21:13 and create the order at 21:14; the ledger fixes only 21:14 for the order. The chapter keeps both times as published; the author may confirm that the request-then-create order matches cart-and-checkout.",
+    "Flow rubric note not taken: merge the one-paragraph scale-stage section into the choices or the conclusion. Kept because every chapter of the book has the stage section; its table is the paragraph's evidence.",
+    "Flow rubric note not taken: cut the Double Refund sequence paragraph (p28) to a back-reference. It is already two sentences plus Figure 4; kept.",
+    "Flow rubric note not taken: 'cards with frequent cancellations' in the Depends-on-context list is not set up earlier; left as the author's wording.",
+    "Flow rubric round 2 notes not taken: merging the iDEAL name-change paragraph (p16) into the methods table paragraph; Klarna's 28-day window (p13) is named before the methods table, now with a one-clause gloss; 'label print' and 'fulfillment hold' are introduced where used, not earlier.",
+    "Draft check ended in ESCALATE after round 3 (13 passed, 29 failed; blocking: 2 draft transitions and 7 points both flow readers reported, 4 of them spec-order faults). The author decides on the spec-order points, each raised in more than one round: (a) the PSD3/instant-payments paragraph (p26) reads as a digression wherever it sits (SCA section in rounds 1-2, end of fraud section in round 3); options are to cut it to one sentence, move it to the conclusion beside question 7, or keep it; (b) the iDEAL | Wero caveat (p16) is stranded after the costs; options are to fold it into the methods table's Netherlands row or a footnote; (c) chargebacks (p30) come after the Double Refund fix and break the backward-money thread; option is to put them before the Double Refund figure (p28); (d) merchant-initiated transactions are defined in the SCA section (p25) far from their use in capture and the expired-authorization failure; option is to define them where capture windows are explained (p13).",
+    "Draft points left after round 3 (cheap ones fixed without another round, see changelog): the scale-stage section opens on its table with no lead-in (adding one would add a unit); option 1 starts inside the bridge sentence of the choices section and the Shopify paragraph splits the list of options; Eva is not mentioned between the introduction and In Practice; 'Cancels' in the refunds heading gets only part of a bullet; terms left unglossed: state machine, network tokens, conversion, webhook signing, drop-in component, headless.",
+    "Flow rubric on the final order (sound with notes), not taken: section 2's declared large_to_small breaks at the country methods; the fulfillment order id as the capture key and the fulfillment hold first appear in In Practice and the failures; section 9 (scale stages) has one item; 'cards with frequent cancellations' in Depends on context is not set up earlier.",
+    "The PSD3/PSR provisional agreement is dated 27 November 2025 in the chapter and the research briefs, but the European Parliament press release cited for it is dated 21 November 2025 (its URL carries 20251121). The date was not changed; re-check the press release's date and what it reports before publication."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Round 2 escalated on two spec-fault flow results reported by both readers: the checks before authorization were split, and the PSD3/instant-payments paragraph was a digression inside the SCA section. Under the pre-approved latitude: the fraud and card-data section moved to follow authentication (the order of sections is now scene, PSP, SCA, fraud, message, refunds, choices, feeds, stages, practice, wrong); the PSD3/instant-payments paragraph (p26) moved to the end of that section, where it covers authentication, fraud liability and payment rails together; transitions of the fraud, message, refunds and choices sections and of p26 rewritten; the roadmap reordered. Draft faults in the named units fixed: the choices bridge sentence and a reading of the options table that reconciles option 2's 'None' with the rehearsed fallback (p36, p40), the Double Refund named once as the Boomerang's case (p06), Bancontact 'works like a card' (p15), the fee sentence split and the arithmetic worked (p17), the MIT sentence split (p25), the payment vocabulary's states named (p21), the refunds opening rewritten (p27); cheap minors: Mollie's 30 minutes called a card checkout session, W5 named, payout of 22 April's sales, orchestration and velocity rules glossed, the Card-Testing Night named in the fraud paragraph.",
+      "rejected": [
+        "Cutting the PSD3/instant-payments paragraph.",
+        "Moving chargebacks before the Double Refund fix."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 escalated on five spec-fault flow results (both flow readers) and one spec-fault trace result; under the pre-approved latitude for spec faults: the Card-Testing Night (p09) is now framed as a second, earlier incident that raises the chapter's second question, answered in the choices and failures, rather than 'sharpening' the first; the 'Where we are' paragraph (p04) names Eva as the opening's shopper and sets up the size-L exchange the refund variant refers to; p15 no longer says the card path comes first (each country's leader differs); the iDEAL name caveat (p16) moved to the end of the PSP section, after costs; the PSD3/instant-payments paragraph (p26) now says why it is there (the rules move, so the design needs someone tracking them), supporting S5 and the regulatory-calendar question; p06 names the Double Refund and the Boomerang; p21 and p27 carry the declared links. Draft faults fixed in the named units: payout and requirements-table evidence read out, SCA not defined twice, webhook not redefined, the €0.30 assumption explained, '$ + €' pricing explained; cheap minors: four feeds foreshadowed, adapter, token, chargeback, buy-now-pay-later and LISTED glossed, idempotency key defined in its own sentence, the rehearsed fallback described, refund row says 'retry only with the same key'.",
+      "rejected": [
+        "Moving the Card-Testing Night into the fraud section: it would leave the scene without the Lynchpin and the choices without their motivating incident.",
+        "Cutting the PSD3/instant-payments paragraph: the old spec required its dated status."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric round 2: sound with notes. Taken: the card alternative (p49) moved before the payout (p48) so In Practice follows the money; the scene's pattern relabelled assertion-evidence-reasoning; p27's idea now names the cancel before capture the prose already gives, and p40's idea the rehearsed fallback the prose already gives, which answers the rubric's two 'gaps'; the PSP section's rationale corrected.",
+      "rejected": [
+        "Merging p16 into p15.",
+        "Folding the scale-stage section into the feeds."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric round 1: sound with notes. Taken without review (auto mode): the Shopify paragraph (p12) moved from the PSP section to the choices, after the platform's own payments it exemplifies, so the PSP section runs parties, stages, records, windows without a break; the scene's rationale now says it is told in order of discovery; the post-level rationale no longer says the message section introduces the key (it introduces the event id and the daily job that the refund key and refund comparison are modelled on); the failures section no longer claims every remedy was named earlier, and the lost outcome and expired authorization each get the missing prevention or recovery; glosses added in the prose for Klarna as buy-now-pay-later at its first window and for the payments sub-ledger.",
+      "rejected": [
+        "Merging the scale-stage section away.",
+        "Cutting p28 to a back-reference."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The author asked for the flow rubric's notes to be taken without review (auto mode). Before the first run: the 'Where we are' paragraph (p04) was put before the roadmap (p03) and now starts from the order created with its payment pending, as this chapter's transition_in asks; the roadmap names every section in order and the evidence; the section on strong customer authentication was moved before the section on the outcome message, so that 3-D Secure is explained before the message section first needs it and the payment is followed in the order it meets each step; a lead-in for the four-stage table (p12a) was added so the table is read out rather than attached to the Shopify example; a synthesis paragraph that returns to the opening shopper and the Double Refund (p55a) was added to the conclusion; the hand-off now names the payment vocabulary and the goods and returns status lines that order-management's transition_in carries over. In this chapter Kestrel & Pine's hosted product is 'the shop platform'.",
+      "rejected": [
+        "Changing any section heading.",
+        "Moving fraud and card data next to authentication: the choices table compares PCI scope and needs it close by.",
+        "Moving the four feeds before the choices."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Reconstructed the spec from the published chapter, one paragraph per unit (check_draft.py units). Intent outcome, acceptance criteria AC-1 to AC-5, thesis and role are copied from the journal spec unchanged. Of the old spec.md's nine success criteria, the second (every term defined from the chapter alone, every acronym expanded) is kept as AC-6, a known_before_new criterion at minor severity, for the author to keep or drop; the word limit is kept as length.max_words (6,500; the published text had 5,513 by the checker's count); the others were inventories of callouts, tables, diagrams, examples, sources and sections and are dropped. The opener criterion named a WHY IT MATTERS callout that consistency ruling 11 has since dropped.",
+      "rejected": [
+        "Carrying the inventory criteria over as custom criteria.",
+        "Setting the limit to the published length."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Made 'one writer, one key' and the webhook-as-external-truth rule the spine, rather than a tour of PSP products, because the newcomer's decisions are about who may call the PSP and how the order learns the result; Adyen, Stripe and Mollie documentation were chosen as evidence because they publish precise, quotable semantics, not as recommendations."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Told the Double Refund from the money side with a sequence diagram and left the returns-side fix (one refund path, refund on inspection) to chapter 18, to avoid two chapters teaching the same scene."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Kept SCA, PCI DSS and fraud to what shapes the architecture (the detour, the liability flag, SAQ scope, the kill switch) and linked chapter 34 and RECONCILED for depth.",
+      "rejected": [
+        "A full PCI requirements walkthrough, outside a newcomer's altitude."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Added the 'four feeds' section (stores, wholesale, marketplaces, online) so the chapter explains why Waypoint's W5 makes finance a daily batch, rather than leaving payouts to chapter 14 alone."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (part-3; commerce-payments; order-management transition_in)",
+      "contributed": "Intent, acceptance criteria AC-1 to AC-5, thesis and role, copied unchanged; the hand-off's relationship."
+    },
+    {
+      "kind": "internal",
+      "ref": "PLAN.md contract 12 and the neighbouring contracts 11, 13, 14, 18, 34",
+      "contributed": "The chapter's original scope and its boundaries with its neighbours."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md and _research/consistency-issues.md",
+      "contributed": "The PSP and terminal provider, the Double Refund and its illustrative mechanism, the Card-Testing Night, Eva's jacket and its refund variant, Bergzicht's reorder, Waypoint W5; ruling 11 on the opener format."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-checkout-payments-tax.md, _research/brief-security-privacy-regulation.md, _research/brief-shopify.md",
+      "contributed": "PSP stages, methods by country, SCA and PSD3, idempotency and webhooks, PCI DSS, fraud basics; PCI scope and PSD2/PSD3 status; Shopify Payments as a wrapper over licensed PSPs."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine, cart-and-checkout, events-consistency-and-reconciliation, erp-and-back-office-integration, stores-and-omnichannel, journey-consumer-order",
+      "contributed": "What the reader already knows and where the chapter links instead of re-teaching."
+    },
+    {
+      "kind": "external",
+      "ref": "Adyen, Stripe and Mollie developer documentation, n.d., accessed 2026-11",
+      "contributed": "Authorization and capture windows, refunds, disputes, webhooks, idempotency, payouts, PCI guides, card testing."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify payment terms and processor list (n.d., accessed 2026-11) and Form 10-K for fiscal 2025 (2026-02-11)",
+      "contributed": "A platform's payments as a wrapper over PSPs."
+    },
+    {
+      "kind": "external",
+      "ref": "Dutch Payments Association (2025-02-18), Bancontact Payconiq Company (2025-02-12), EHI via Ecommerce News (2024), ECB SPACE 2024 (2024-12)",
+      "contributed": "Method usage by country."
+    },
+    {
+      "kind": "external",
+      "ref": "Directive (EU) 2015/2366, Delegated Regulation (EU) 2018/389, Regulation (EU) 2015/751, Regulation (EU) 2024/886, European Parliament press release (2025-11-21), Council state of play (2026-10-29)",
+      "contributed": "The regulatory frame and its dates."
+    },
+    {
+      "kind": "external",
+      "ref": "PCI Security Standards Council (2024-06-11, 2025-01-30), EMVCo (n.d.), Visa VAMP fact sheet (2025-05)",
+      "contributed": "Card-industry rules and thresholds."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Round 3 (escalate: 13 passed, 29 failed; blocking: 2 draft transition faults and 7 corroborated flow points, 4 of them spec-order faults; 20 minor). After the last round, cheap fixes without another round: Figure 4 named in p28's opening; the three providers named as PSPs (p11); the dollar-to-euro conversion behind the fee arithmetic stated (p17); the 22 April payout sentence made unambiguous (p50); PCI DSS expanded (p33). Remaining failures and the author's options are in open_questions. The check report is stale against these edits."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 2 (escalate: 12 passed, 27 failed, of which 10 blocking: 2 spec faults, 8 draft faults; 17 minor). Fraud and card data moved after authentication with the PSD3 paragraph at its end; named units revised; round 3 to follow."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 1 (escalate: 12 passed, 29 failed, of which 6 spec faults, 12 corroborated flow points and 11 minor). Spec changes (p04, p06, p09, p15, p16 moved, p17, p21, p24, p26, p27, refunds transition) and draft revisions of the named units; round 2 to follow."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json from the published chapter; flow rubric notes taken (authentication before the message, roadmap and 'Where we are' reordered, four-stage lead-in, conclusion synthesis, hand-off to order-management); index.md revised to match. Status draft."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 3 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: added the missing author's-synthesis tier; Double Refund diagram no longer reuses Eva's order number; Stripe authorization window wording corrected (customer-initiated, not customer-present); iDEAL and 3-D Secure defined at first use; timetoread corrected. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 6500
+  }
+}

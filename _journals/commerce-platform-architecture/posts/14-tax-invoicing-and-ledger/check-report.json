@@ -1,0 +1,765 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/14-tax-invoicing-and-ledger/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/14-tax-invoicing-and-ledger/index.md",
+  "spec_sha": "330fba149bda553c",
+  "draft_sha": "89c5c1c07b9f2372",
+  "run_at": "2026-11-12T16:49:38+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Payouts arrive net of fees and refunds, so finance must link tax, invoice, fee, refund and bank to explain differences",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Kestrel & Pine's order volumes make manual explanation impossible",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Where the order stands: after dispatch each shipment produces invoices, payouts and ledger entries",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Chapter thesis: orders reach the books through documents with identifiers, matched monthly",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "Roadmap of the chapter's sections and sources",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Sanne's April Close ¶1",
+      "summary": "Sanne's April close: four payment routes each needing its own matching",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Sanne's April Close ¶2",
+      "summary": "The Double Refund incident: refunds never compared with credit notes",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Sanne's April Close ¶3",
+      "summary": "The Three-Status Order incident: dispatched goods left uninvoiced for six days",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Sanne's April Close ¶4",
+      "summary": "Belgian Peppol e-invoicing obligation and Kestrel & Pine's response",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Sanne's April Close ¶5",
+      "summary": "Rejected Peppol invoice prompts Sanne's two questions on invoice issuer and monthly proof",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "What the Commerce System Owes Finance ¶1",
+      "summary": "The three outcomes the shop owes finance: right tax, valid invoice, books matching the bank",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "What the Commerce System Owes Finance ¶2",
+      "summary": "Each finance document has one owner (owner table)",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "What the Commerce System Owes Finance ¶3",
+      "summary": "Two rules: shop does not issue invoices, ledger is not posted from webhooks",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "What the Commerce System Owes Finance ¶4",
+      "summary": "The facts and identifiers the shop must hand to finance",
+      "matched_spec_paragraph": "p14a"
+    },
+    {
+      "draft_locator": "VAT in Plain Words ¶1",
+      "summary": "Lead-in to five VAT facts",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "VAT in Plain Words ¶2",
+      "summary": "VAT rates vary by country and product category",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "VAT in Plain Words ¶3",
+      "summary": "Kestrel & Pine's goods all carry the standard rate",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "VAT in Plain Words ¶4",
+      "summary": "Prices must declare whether they include or exclude tax",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "VAT in Plain Words ¶5",
+      "summary": "Cross-border consumer sales taxed at destination via OSS",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "VAT in Plain Words ¶6",
+      "summary": "Intra-EU business sales use reverse charge at 0%",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "VAT in Plain Words ¶7",
+      "summary": "US sales tax and economic nexus as the contrast that motivates tax engines",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Tax at Checkout and Tax at Invoice ¶1",
+      "summary": "Checkout tax is a promise, invoice tax is legal; recompute or freeze, never drift",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Tax at Checkout and Tax at Invoice ¶2",
+      "summary": "Allocating shipping and discounts across mixed-rate lines",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "The Invoice as a Legal Document ¶1",
+      "summary": "Invoice content is legally prescribed, including a consecutive number",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "The Invoice as a Legal Document ¶2",
+      "summary": "Lead-in to the invoice's architectural rules",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "The Invoice as a Legal Document ¶3",
+      "summary": "Invoice numbers are gap-free and assigned at posting",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "The Invoice as a Legal Document ¶4",
+      "summary": "Issued invoices are never edited",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "The Invoice as a Legal Document ¶5",
+      "summary": "Corrections only via credit notes that reference the invoice; refunds reference both",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "The Invoice as a Legal Document ¶6",
+      "summary": "One invoice per shipment, triggered idempotently by shipment confirmation",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "The Invoice as a Legal Document ¶7",
+      "summary": "Invoice retention periods mean the ERP, not the shop, is system of record",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "E-Invoicing at a Glance ¶1",
+      "summary": "What an e-invoice and the Peppol network are",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "E-Invoicing at a Glance ¶2",
+      "summary": "E-invoicing mandate dates per country and the Long Fuse",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "E-Invoicing at a Glance ¶3",
+      "summary": "The invoice issuer must also own e-invoice transmission status and archive",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "From Order to Ledger: What Gets Posted ¶1",
+      "summary": "Ledger defined; standard postings from documents for a PSP-paid order",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "From Order to Ledger: What Gets Posted ¶2",
+      "summary": "Lead-in to three accounting rules",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "From Order to Ledger: What Gets Posted ¶3",
+      "summary": "Revenue is recognized on transfer of control under IFRS 15",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "From Order to Ledger: What Gets Posted ¶4",
+      "summary": "Kestrel & Pine recognizes revenue at delivery, not shipment",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "From Order to Ledger: What Gets Posted ¶5",
+      "summary": "Month-end cut-off moves invoiced-but-undelivered parcels to next month",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "From Order to Ledger: What Gets Posted ¶6",
+      "summary": "Expected returns are a liability",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "From Order to Ledger: What Gets Posted ¶7",
+      "summary": "Gift cards are liabilities until redeemed",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Reconciliation: Orders, Payouts and the Bank ¶1",
+      "summary": "Reconciliation defined as a three-way match of invoices, payouts and bank",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Reconciliation: Orders, Payouts and the Bank ¶2",
+      "summary": "PSP reports' join keys; passing the order number enables order-level reconciliation",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Reconciliation: Orders, Payouts and the Bank ¶3",
+      "summary": "Fixing the Double Refund: one refund writer plus a daily refund-vs-credit-note check",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "The Choices ¶1",
+      "summary": "Lead-in to three handoff decisions",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "The Choices ¶2",
+      "summary": "Where tax is computed: options",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "The Choices ¶3",
+      "summary": "Where the invoice is issued: options",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "The Choices ¶4",
+      "summary": "How the ledger learns: options",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "The Choices ¶5",
+      "summary": "Author's recommended choices and the missing uninvoiced-orders job",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "Handoff shape stays constant across scale; only feeds and entities grow",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Eva's Order in the Books, and Ardennes Trail Co.'s Peppol Invoice ¶1",
+      "summary": "Eva's order and its frozen tax basis",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Eva's Order in the Books, and Ardennes Trail Co.'s Peppol Invoice ¶2",
+      "summary": "Eva's iDEAL payment and PSP fee",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Eva's Order in the Books, and Ardennes Trail Co.'s Peppol Invoice ¶3",
+      "summary": "Invoice creation at dispatch and its ledger posting for Eva's order",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Eva's Order in the Books, and Ardennes Trail Co.'s Peppol Invoice ¶4",
+      "summary": "PSP payout batch posting and bank reference tie-out",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Eva's Order in the Books, and Ardennes Trail Co.'s Peppol Invoice ¶5",
+      "summary": "Eva's exchange as credit note plus new invoice, and the refund variant",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Eva's Order in the Books, and Ardennes Trail Co.'s Peppol Invoice ¶6",
+      "summary": "Ardennes Trail Co.'s wholesale order as a reverse-charge intra-EU supply",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Eva's Order in the Books, and Ardennes Trail Co.'s Peppol Invoice ¶7",
+      "summary": "ERP issues the Peppol invoice with buyer reference",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Eva's Order in the Books, and Ardennes Trail Co.'s Peppol Invoice ¶8",
+      "summary": "Wholesale ledger entry and VAT return reporting",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "Checkout tax differs from invoice tax: detect and treat as discount",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶2",
+      "summary": "Missing invoice: detect with daily shipped-not-invoiced list",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶3",
+      "summary": "Duplicate invoice: credit note and idempotency key",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶4",
+      "summary": "E-invoicing mandate discovered late: regulatory calendar as detection",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶5",
+      "summary": "Doubled refund / unmatched payout residuals",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "Recap: documents and identifiers answer Sanne's two questions",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "Established facts on VAT, invoices, revenue and e-invoicing mandates",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "Context-dependent choices on tax engine, issuer, ledger shape and tax basis",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "Author's synthesis: small set of referenced documents and two daily checks",
+      "matched_spec_paragraph": "p66"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Questions to ask about one's own invoicing, tax and reconciliation",
+      "matched_spec_paragraph": "p67"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Part III's four cases are one problem of facts known elsewhere and passed by message",
+      "matched_spec_paragraph": "p68"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶3",
+      "summary": "Four rules for systems to agree / exercise to map one order's systems and start with the daily checks",
+      "matched_spec_paragraph": "p69"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶4",
+      "summary": "Transition to Part IV on physical fulfillment",
+      "matched_spec_paragraph": "p70"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/*/paragraphs",
+      "draft_locus": "whole draft",
+      "quote": "",
+      "finding": "All 70 outline summaries match the controlling ideas of the aligned spec paragraphs (p01–p70) in spec order; no unit is missing, extra or out of order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "p61",
+      "draft_locus": "When It Goes Wrong ¶5",
+      "quote": "The refund that doubled, and the payout that does not match. The last two failures are in the money, and both are the reconciliation table above",
+      "finding": "Flagged two_ideas, but the spec's controlling idea joins both money failures under one idea (both are rows of the reconciliation table, caught by the same daily and monthly checks); one idea.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "p69",
+      "draft_locus": "Questions to Ask ¶3",
+      "quote": "Before any product is discussed, take one order at your own company and name the system that creates it",
+      "finding": "Flagged two_ideas, but the exercise applies the four rules the paragraph states (the spec's idea: rules, not purchases, so a reader can list them for one order); the second part supports the first.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "S1–S5",
+      "draft_locus": "whole draft",
+      "quote": "",
+      "finding": "Every body paragraph ties to a supporting claim: scene/owes to S1, VAT and checkout tax to S2 (US paragraph explains tax engines), invoice and e-invoice to S3, ledger incl. gift cards to S4, reconciliation, choices, example and failures to S2–S5; conclusion paragraphs serve the conclusion and the part closing.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "p13, p16, p34, p42, p47, p49, p50",
+      "draft_locus": "tables in owes, VAT, ledger, reconciliation, choices, stages, example",
+      "quote": "Two rules follow from the table and carry the rest of the chapter.",
+      "finding": "Each table is introduced and its point is drawn in the same or the next paragraph (owner table → two rules; rates → standard rate everywhere; entries → three rules; mismatch table → Double Refund is its third row; choices → usual answer in each row; tax basis → numbers reused in the posting).",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "p24, p28, p42, p21",
+      "draft_locus": "quotations",
+      "quote": "\"eine fortlaufende Nummer mit einer oder mehreren Zahlenreihen\", a consecutive number from one or more number series, unique to the invoice",
+      "finding": "Each quotation (§ 14 UStG, Odoo credit-note rule, Stripe payout report and trace_id, Avalara jurisdictions) is translated or followed by the conclusion drawn from it.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/example (figure of Eva's order)",
+      "draft_locus": "Eva's Order in the Books… ¶8 (image attached after the Ardennes entry)",
+      "quote": "The entry is debit trade receivable €3,800, credit revenue €3,800 (April revenue once bpost delivers), no VAT",
+      "finding": "The figure of Eva's order is attached after the Ardennes Trail Co. paragraphs, so it sits apart from the Eva paragraphs it illustrates and no adjacent sentence says what it shows (reader B: 'Figure 5 (Eva's order) comes after the Ardennes Trail subsection'). Move it after p54 or add a sentence pointing to it.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "all transition_in except /sections/wrong",
+      "draft_locus": "all boundaries",
+      "quote": "Entries posted from documents still have to be proved against the money.",
+      "finding": "Every other boundary expresses its declared relationship and picks up the declared known information, including section openings (e.g. 'The tax computed at dispatch ends up on the invoice', 'Each rule so far leaves the merchant a decision') and the hand-off to part-4 (sequence: 'Part III has followed Eva's order as a record and as money… The next part begins there').",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/wrong/transition_in (contrast; carries over: the two orders that went right)",
+      "draft_locus": "boundary Eva's Order ¶8 → When It Goes Wrong ¶1",
+      "quote": "The tax that differs. The first failure starts at checkout: the invoice VAT differs from the checkout VAT",
+      "finding": "The section is declared as a contrast with the two worked orders that went right, but its opening goes straight into the first failure without picking up the two orders or signalling the turn from success to failure.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "spec_locus": "audience.does_not_know",
+      "draft_locus": "whole draft",
+      "quote": "A ledger (the general ledger) is the book of accounts in which every transaction is recorded twice, as a debit and a credit",
+      "finding": "Every does_not_know term is explained at or near first use: VAT, inclusive/exclusive prices, OSS and €10,000, reverse charge, VIES (as the EU's VAT-number check), economic nexus, tax engine, credit note, retention, e-invoice, EN 16931, Peppol, access point, BT-10, state clearance, ledger, debit/credit, IFRS 15, cut-off, breakage, sub-ledger, payout report, three-way match, trace/batch reference. PIM, Duiven and the three status lines, reported by cold readers, are on audience.already_knows.",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/stages (scale table)",
+      "draft_locus": "Across Scale Stages table",
+      "quote": "marketplace VAT booked as if the merchant collected it",
+      "finding": "The stages table assumes the reader knows that marketplaces collect and remit VAT themselves; nothing in the chapter explains it and it is not in audience.already_knows.",
+      "fault": "draft",
+      "corroborated_by": "reader B: marketplace VAT booked as if the merchant collected it (scale table)",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "p34 (ledger table)",
+      "draft_locus": "From Order to Ledger ¶1 table",
+      "quote": "Dispute expense (or a receivable while defended), dispute fee",
+      "finding": "'Receivable while defended' is new accounting vocabulary for this audience and is never explained.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "p22",
+      "draft_locus": "Tax at Checkout and Tax at Invoice ¶1",
+      "quote": "a calculation at checkout that records nothing, and a committed document at invoicing",
+      "finding": "'Committed document' is tax-engine vocabulary the reader has not met; one clause (the engine records the transaction for reporting) would explain it.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "p23",
+      "draft_locus": "Tax at Checkout and Tax at Invoice ¶2",
+      "quote": "Stripe Tax documents two methods, proportional allocation and the highest rate.",
+      "finding": "The 'highest rate' allocation method is named but never explained, so the reader cannot see how it differs from proportional allocation.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p34 → p36–p38 (ledger flow: entries before rules)",
+      "draft_locus": "From Order to Ledger ¶1",
+      "quote": "The invoice row posts revenue at dispatch; a month-end cut-off, below, moves undelivered parcels to the next month.",
+      "finding": "Reader A: 'I had to re-read before I understood that the posting happens at dispatch and the cut-off corrects it.' Posting revenue at dispatch is read as the recognition point until the cut-off paragraph; both readers ask for the revenue rule and cut-off before the table. The spec orders entries before rules.",
+      "fault": "spec",
+      "corroborated_by": "reader B: 'The invoice row posts revenue at dispatch…' — re-read, only made sense after the cut-off paragraph",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p22 (table)",
+      "draft_locus": "Tax at Checkout and Tax at Invoice ¶1",
+      "quote": "The table compares the two flows on freshness, finality, speed and fallback.",
+      "finding": "Reader A: '\"Finality\" and \"How consistent\" do not match, so I briefly checked whether I had missed a column.' The lead-in names a dimension the table does not use.",
+      "fault": "draft",
+      "corroborated_by": "reader B: 'The column is headed \"How consistent\", not finality.'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/flow (example after choices and stages)",
+      "draft_locus": "Eva's Order in the Books… (section placement)",
+      "quote": "Two orders show the rules at work.",
+      "finding": "Reader A: 'Eva's figures appear only after the choices and the scale table. The ledger and reconciliation tables stay abstract until then.' Both readers propose moving the worked orders right after Reconciliation. The spec's flow rationale deliberately puts the example after the choices.",
+      "fault": "spec",
+      "corroborated_by": "reader B: move the worked orders right after Reconciliation, before The Choices",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p03, p12",
+      "draft_locus": "Introduction ¶3 and What the Commerce System Owes Finance ¶1",
+      "quote": "the VAT (Europe's consumption tax, charged at every sale and reclaimed by business buyers)",
+      "finding": "VAT is expanded in the introduction ('the value-added tax (VAT)') and defined again in the owes section; reader A: 'VAT is defined twice'. Keep one definition.",
+      "fault": "draft",
+      "corroborated_by": "reader B: 'VAT was also already expanded in the \"Where we are\" paragraph.'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/so_what (p66)",
+      "draft_locus": "What to Take Away ¶4",
+      "quote": "build them in the first month of any finance integration, before the OMS and the PIM",
+      "finding": "Reader A: 'the PIM has not been mentioned in this chapter, so the comparison feels out of place.' PIM is known to the book's audience, but the chapter gives no reason why the checks come before those systems.",
+      "fault": "unclear",
+      "corroborated_by": "reader B: 'PIM comes in from nowhere.'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/choices, /sections/stages",
+      "draft_locus": "The Choices; Across Scale Stages",
+      "quote": "Kestrel & Pine's answer is W5: finance moves by daily batch, with a reconciliation job per flow.",
+      "finding": "Reader A: the stages section 'reads like a second pass over \"The choices\"'; both present simple, usual and scaled answers. The two sections are separate in the spec.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p46",
+      "draft_locus": "The Choices ¶3",
+      "quote": "Where is the invoice issued? By the shop platform, by the ERP, or by an invoicing service in front of several ERPs",
+      "finding": "Reader B: 'The Choices reopens settled questions. \"Where is the invoice issued?\" was already answered as a rule (\"The shop does not issue invoices\").' Frame the options as the ones the rules rule out, or say why they remain open by stage.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p65 vs stages table",
+      "draft_locus": "What to Take Away ¶3",
+      "quote": "at Kestrel & Pine's volume, order-level postings in a daily batch keep the general ledger readable",
+      "finding": "Reader A: 'I was not sure whether a sub-ledger is recommended for Kestrel & Pine or not', because the stage-3 row recommends 'order-level matching or a sub-ledger so the general ledger stays readable'.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/scene controlling_idea vs p43",
+      "draft_locus": "Setting the Scene ¶2; Reconciliation ¶3",
+      "quote": "two winter incidents remain unresolved",
+      "finding": "Reader B: this 'conflicts with \"The fix had two parts: one writer for refunds…\" later on. Was the Double Refund fixed or not?' The spec itself calls the incidents unresolved and gives the fix.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p40",
+      "draft_locus": "From Order to Ledger ¶7",
+      "quote": "Gift cards are liabilities until redeemed.",
+      "finding": "Reader B: 'felt out of place, because no gift card appears in the case or the examples'. The spec puts gift cards in S4 without a case.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p15/p21",
+      "draft_locus": "VAT in Plain Words ¶1 and ¶7",
+      "quote": "The first outcome, the right tax, rests on five facts about VAT.",
+      "finding": "Reader B: the fifth 'fact' ('There is no VAT' in the US) is not a fact about VAT and Kestrel & Pine does not sell in the US. The spec counts the US contrast as the fifth fact.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p32",
+      "draft_locus": "E-Invoicing at a Glance ¶2",
+      "quote": "For Kestrel & Pine the Long Fuse, a mandate noticed only when it bites, is now lit by the German issuing dates.",
+      "finding": "Reader B: 'It is unclear why Germany is the lit fuse when Belgium was the incident.' One clause on why Germany is the next exposure would fix it.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p69",
+      "draft_locus": "Questions to Ask ¶3",
+      "quote": "a read-only provider console, so support can no longer refund by hand, the return id as the refund's key",
+      "finding": "Reader B: 'Neither remedy appears in this chapter… they read as new.' They come from earlier Part III chapters; naming the chapter they come from would anchor them.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "spec_locus": "/introduction",
+      "draft_locus": "Introduction ¶1–¶5",
+      "quote": "A customer pays for an order, but the amount reaching the merchant's bank may be smaller because the payment provider deducted a fee.",
+      "finding": "Opens on a concrete puzzling scenario, bridges to Kestrel & Pine's volume, states the thesis and a roadmap; none of the weak patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "spec_locus": "/conclusion",
+      "draft_locus": "What to Take Away; Questions to Ask",
+      "quote": "Eva's payment reached the bank inside a smaller payout",
+      "finding": "Does not open with 'in conclusion', adds no new subtopic (the part-closing rules and remedies are the spec's declared part close and come from Part III), and holds no body evidence beyond a sorted restatement with sources.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/synthesis, so_what",
+      "draft_locus": "What to Take Away ¶1, ¶4; Questions to Ask ¶2–¶3",
+      "quote": "Every failure in this chapter is a document issued by the wrong system, twice, or without a reference.",
+      "finding": "States what no section states alone (every failure is a document from the wrong system, twice or unreferenced; four Part III cases are one problem) and why it matters (build the two daily checks first; remedies are rules, not purchases).",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/callback",
+      "draft_locus": "What to Take Away ¶1; Questions to Ask ¶2",
+      "quote": "Eva's payment reached the bank inside a smaller payout, net of fees and other customers' refunds, and finance can still account for every euro",
+      "finding": "Returns to the introduction's smaller payout and explains it, answers Sanne's two questions, and returns to the part opening's paid-but-unpaid shopper, warehouse and support.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "spec_locus": "/introduction/roadmap",
+      "draft_locus": "Introduction",
+      "quote": "Expected order: it opens with Sanne de Wit's April close and her two questions.",
+      "finding": "The cold reader predicted the sections in order (Sanne's close, what the shop owes, VAT and two tax moments, invoice and Peppol e-invoice, ledger, three-way match, choices and stages, Eva's order and the Belgian wholesale Peppol invoice, failures), the evidence (EU and national tax rules, PSP and ERP documentation, the company's month-end) and the tone.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "spec_locus": "/intent/acceptance_criteria/AC-1",
+      "draft_locus": "reader-probes Q1",
+      "quote": "The invoice waits for the slowest line… The rule is one invoice per shipment, not per order… idempotent on the shipment id. A daily list of shipped orders with no invoice",
+      "finding": "Matches expected: parcel uninvoiced for days, invoice per shipment at dispatch keyed on the shipment id, daily shipped-not-invoiced list.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "spec_locus": "/intent/acceptance_criteria/AC-2",
+      "draft_locus": "reader-probes Q2",
+      "quote": "The invoice may not be changed: once issued it is immutable, and a credit note is the only legal way to correct it. Invoice, credit note and refund reconcile to zero.",
+      "finding": "Matches expected: immutable invoice, credit note with its own number referencing the invoice and reversing net and VAT, refund from the one writer referencing both, deduction in a later payout.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "spec_locus": "/intent/acceptance_criteria/AC-3",
+      "draft_locus": "reader-probes Q3",
+      "quote": "The PSP pays out net. It deducts its fees inside the batch, along with earlier refunds and chargebacks.",
+      "finding": "Matches expected: net of fees, earlier refunds and chargebacks, settlement delay; fees posted from the report; line-level join on the order number and the batch/trace reference.",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "custom",
+      "verdict": "pass",
+      "spec_locus": "/intent/acceptance_criteria/AC-6",
+      "draft_locus": "reader-probes Q4",
+      "quote": "Net = €60.50 / 1.21 = €50.00, and VAT = €10.50.",
+      "finding": "Exactly the expected split.",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-7",
+      "check": "custom",
+      "verdict": "pass",
+      "spec_locus": "/intent/acceptance_criteria/AC-7",
+      "draft_locus": "Questions to Ask ¶2–¶3 (p68–p69)",
+      "quote": "They look like four problems in four systems… They are one problem. After the cart, each fact about an order is first known by a system the merchant does not control, and it reaches the other systems by message.",
+      "finding": "p68 names the four cases as one problem and calls back to the paid-but-unpaid shopper; p69 gives the four agreement rules (one home, one writer, a key, a comparison) and the rules-before-purchases so-what ('Before any product is discussed').",
+      "severity": "minor"
+    }
+  ]
+}

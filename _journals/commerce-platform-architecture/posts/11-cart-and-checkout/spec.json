@@ -1,0 +1,1797 @@
+{
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "cart-and-checkout",
+  "journal": "commerce-platform-architecture",
+  "part": "part-3",
+  "title": "From Cart to Confirmation: Checkout Orchestration",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published chapter (posts/11-cart-and-checkout/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter. It is a contract, not a description: where the published chapter did not do what the spec asks, the gap is listed under open_questions and the prose was revised to match.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The difference between a cart (a draft that reserves and promises nothing), checkout (a clocked sequence that asks for final answers) and the order (the record the rest of the platform must keep).",
+        "What checkout calls, in what order, and how fresh each answer must be.",
+        "The four ways to run a checkout, and the mechanisms through which platforms let merchants change it."
+      ],
+      "believe": [
+        "Checkout should own none of the facts it writes into the order.",
+        "The payment provider's signed message, not the thank-you page, decides that a payment succeeded."
+      ],
+      "can_do": [
+        "Draw their own checkout's call sequence and say which answers come from copies.",
+        "Judge a proposal to customize checkout by its mechanism and by the vendor's support date for that mechanism."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture; most of all the engineer or product manager who has just inherited a checkout (Noor Visser's position). The e-commerce manager who asks for checkout changes and the finance lead who sees unpaid orders at month-end are the secondary readers.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side.",
+        "Roughly what an API, a database and a queue are.",
+        "Kestrel & Pine, its people (Noor Visser, Milan Petrov, Daniel Okafor, Sanne de Wit), its 2026 incidents in outline and the names of the failure patterns (meet-kestrel-and-pine, where-commerce-platforms-go-wrong).",
+        "From Part I: the thirteen steps of an order, promise and handoff, the three status lines (money, goods, returns), what a 'system' is, 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, the business models and the four scale stages (Starting, Growing, Omnichannel, Group), the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation, and the Waypoint decisions W1 to W8.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+        "From Part II: one written price rule with prices selected once at order placement and frozen; promotions as data with an evaluation order; available-to-promise with one writer each for on hand and committed and an exact commit at checkout; the Black Friday Oversell, where the platform's stock copy was up to two hours old.",
+        "From the Part III introduction: one order passes through four owners (checkout, the payment provider, the order record, the ledger), and Eva's order #1072455 is created at 21:14 on 13 April 2027 with its payment pending."
+      ],
+      "does_not_know": [
+        "Cart, checkout and order as three different things; orchestration; reserve-on-add.",
+        "Freshness of an answer at the moment of commitment; the payment session and its expiry.",
+        "The detour to the bank's app, 3-D Secure and strong customer authentication, the idempotency key on order creation, the payment outcome as external truth.",
+        "Guest checkout, express wallet and payment token; conversion and abandoned cart.",
+        "Company account, contract price list, reverse charge, payment terms, credit check.",
+        "Hosted checkout, extension point, time budget, headless checkout, PCI DSS and its self-assessment questionnaire, sandboxed function."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a shopper who pays in her bank's app and never returns, and a payment notification delivered twice, the reader says when the order is created, what marks it paid and why the repeat changes nothing.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A shopper pays by iDEAL in her bank's app and never returns to the shop; the payment provider's notification then arrives twice. Using only this chapter: when should the order have been created, what marks it paid, and what does the second notification do?",
+        "expected": "The order is created at confirmation with the payment pending, keyed on the cart and the payment (an idempotency key), not on the thank-you page; the provider's signed webhook moves it to paid; the second webhook changes nothing because its event is recognized as already applied; a daily job asks the provider about orders still pending after the method's expiry window."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given a checkout that kept selling a product the warehouse no longer had, the reader places the fault in the system that answered the availability call, not in checkout.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "On a peak evening the checkout kept selling a jacket for up to two hours after the warehouse ran out. Using only this chapter: where was the fault, and is the fix in the checkout?",
+        "expected": "Checkout trusted the availability answer it was given, which came from the platform's copy of stock refreshed up to two hours earlier; checkout owns no stock figure. The fix is in who answers the availability call at order creation (a current answer from an availability service, W1), not in checkout."
+      },
+      {
+        "id": "AC-3",
+        "statement": "Given an agency's proposal to inject a script into the checkout, the reader names the sanctioned alternative and the two risks of the script.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "An agency proposes to add a gift-wrap option by injecting a script into the checkout's payment page. Using only this chapter: what should the merchant do instead, and why?",
+        "expected": "Use a sanctioned extension point of the platform, which runs with a time limit and is versioned. A third-party script on the payment page falls under the card industry's script rules (PCI DSS) and can read every card number typed there, and a mechanism outside the sanctioned ones is withdrawn on a date the vendor announces (Shopify's checkout.liquid and Scripts); keep an inventory of each customization, its mechanism and the vendor's support date."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Why a price, the last unit or the payment answer can change while the shopper checks out; what checkout must call and how it creates one order despite retries; Eva's checkout as the worked example; four ways to run checkout; Shopify's 2023–2026 changes as the case for limits on customization. Evidence: Kestrel & Pine's checkout, vendor documentation, Shopify's dated changelog."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-6",
+        "statement": "A reader new to commerce meets no term in this chapter before it is explained, and every acronym is expanded on first use.",
+        "check": "known_before_new",
+        "method": "rubric",
+        "severity": "minor"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What happens between \"add to cart\" and \"order confirmed\", and why do platforms restrict what merchants may change in checkout?",
+    "claim": "Between 'add to cart' and 'order confirmed', checkout asks each system that owns a fact for a final answer (price, tax, availability, delivery promise, payment), writes those answers into the order and creates the order exactly once, keyed on the cart and the payment rather than on a page load, leaving the payment provider's signed message, not the thank-you page, to mark it paid. Platforms restrict merchant changes to named extension points with time limits because every order passes through checkout: merchant code there can delay or fail order creation at peak, a script on the payment page can read the card numbers typed into it, and a template the merchant edits cannot follow the platform's upgrades.",
+    "disputed_by": "The view that checkout is the storefront's last few pages, which a merchant or its agency may edit like any other page, and that the order exists, paid, once the shopper reaches the thank-you page.",
+    "so_what": "Kestrel & Pine's checkout kept selling the Ridgewalker jacket for up to two hours after Duiven ran out on Black Friday 2026 because checkout wrote the answer of an out-of-date stock copy into each order and the warehouse could not keep those orders; the fix is to have a current availability service answer that call, not to change checkout. A merchant that accepts the claim lists what its checkout calls and which answers come from copies, creates orders keyed on the cart and the payment and settles them by webhook and a daily job, and customizes checkout only through sanctioned extension points listed with the vendor's support date; Shopify withdrew editable checkout templates and scripts on dated deadlines between August 2024 and August 2026.",
+    "how_why": "The warehouse, finance and the customer all act on what checkout writes into the order, so a stale price or stock figure written there becomes their error. The shopper leaves for her bank's app or a 3-D Secure challenge and may not come back, and the provider's webhook arrives late, out of order or twice, so an order created on the thank-you page can be lost and one created per request without a key can be duplicated. Checkout carries every order at peak load and its payment page falls under the card industry's script rules, so code the platform cannot limit in time or isolate puts every order at risk; and the platform ships its own checkout changes (new payment methods, compliance fixes) into its template, so a merchant's edited copy misses them. Webhooks can also stop arriving, so a daily job asks the provider about every order still pending.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "A cart is a draft that reserves and promises nothing, checkout is a short, clocked sequence that asks for final answers, and the order is the record every later system must keep, so whatever checkout writes into the order every later system inherits."
+      },
+      {
+        "id": "S2",
+        "claim": "Checkout owns none of the facts it writes: each answer comes from the system that owns it and must be fresh enough at the moment of commitment, so a stale answer (the Phantom Stock) is fixed in the system that answers the call, not in checkout."
+      },
+      {
+        "id": "S3",
+        "claim": "Because the shopper leaves for her bank or a 3-D Secure challenge and the payment provider reports by webhook, late, out of order, twice or never, the order is created once, keyed on the cart and the payment, the provider's signed message marks it paid, and a daily job asks the provider about every order still pending."
+      },
+      {
+        "id": "S4",
+        "claim": "Guest checkout, express wallets, abandoned-cart recovery and business buyers change which steps the shopper sees and when the calls are made, not the calls themselves."
+      },
+      {
+        "id": "S5",
+        "claim": "The four ways to run checkout trade the merchant's freedom to change it against the orchestration, card-security and upgrade work the merchant takes on, so most merchants should take the most restricted option that still gives them the two or three changes they need through sanctioned extension points."
+      },
+      {
+        "id": "S6",
+        "claim": "Platforms restrict merchant code in checkout to named extension points with time limits, on dated deadlines, because merchant code there can delay order creation at peak, a script on the payment page can read card numbers, and an edited template cannot follow the platform's upgrades; the merchant's defence is an inventory of each customization with its mechanism and the vendor's support date."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Shows the moment the catalog's answers become an order and introduces the two mechanisms the rest of the part relies on: the payment provider's message as the only source of the payment's outcome, and the key that makes a repeated request harmless.",
+    "supports": [
+      "P3-1",
+      "P3-2"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene to wrong: three requests, then the calls, rules and worked example that answer Daniel's and Sanne's"
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "abandoned to stages: Milan's requests; four options on the same criteria, the dated case for the restriction, then the fit by stage"
+      }
+    ],
+    "rationale": "The three requests come first so every term arrives as part of an answer. Cart, checkout and order are defined before the calls because the calls fill the order. The calls come before the clocks because the clocks limit how long the orchestration may hold its state, and the detour in the payment step is where the two rules come from. Guest checkout, wallets and business buyers follow the rules because they change the steps the calls sit in, and each is read against the call table. Eva's checkout comes after all of these because it uses every call and both rules on one order, and it answers Daniel's request; the failures follow it because each failure is a broken call or rule just seen working. The last four sections answer Milan's requests: abandoned carts first, because they use the shopper's clock, the calls made on the cart and the degradation ladder from the failures; then the four ways to run checkout, then Shopify's dated withdrawal, which explains why the author's rule picks sanctioned extensions, and then the stage table, which uses the options and the warning signs from the failures and places Kestrel & Pine. Putting the options before the failures (the published order) split the orchestration half in two and asked the reader to judge extension points before seeing what they must not break; putting Eva's checkout before the calls would show answers without their owners."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "While a shopper checks out, a price can change, another customer can buy the last item and the payment response can arrive late; a successful-looking purchase can still leave the customer with unavailable goods, an unexpected total or a second order after a retry."
+    },
+    "bridge": {
+      "from_reader_world": "Every reader has clicked 'pay' and seen a thank-you page, and assumes the order then exists and is paid.",
+      "to_topic": "Behind that page several systems each supply one answer, and the shopper may leave for her bank's app and never come back; the question is how those answers become one order, created once, and why platforms limit what merchants may change there."
+    },
+    "thesis_statement": {
+      "text": "Checkout asks the owner of each fact (price, tax, availability, delivery promise, payment state) for a final answer, creates the order once however often a request is repeated, and leaves the payment provider's message to mark it paid; because every order passes through it, platforms limit where merchants may add their own code.",
+      "placement": "KEY POINTS callout (all three bullets) and paragraph p02"
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p03",
+      "promises": [
+        {
+          "promise": "Start from three requests Kestrel & Pine's architect receives about its checkout.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Separate the cart, the checkout and the order, and list what checkout calls and how fresh each answer must be.",
+          "kept_in": [
+            "cart-draft",
+            "calls"
+          ]
+        },
+        {
+          "promise": "Follow the two clocks and the detour to the bank that decide how the order is created once and marked paid.",
+          "kept_in": [
+            "clock"
+          ]
+        },
+        {
+          "promise": "Look at guest checkout, express wallets and business buyers, which change the steps but not the calls.",
+          "kept_in": [
+            "guest-wallets",
+            "b2b"
+          ]
+        },
+        {
+          "promise": "Work Eva's checkout through step by step, then the five ways checkout fails.",
+          "kept_in": [
+            "eva",
+            "wrong"
+          ]
+        },
+        {
+          "promise": "End with Milan's requests: what the architecture can do about abandoned carts, then who may change checkout: four ways to run it, Shopify's dated withdrawal of editable checkout from 2023 to 2026, and which way fits which scale stage.",
+          "kept_in": [
+            "abandoned",
+            "choices",
+            "shopify",
+            "stages"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "While a shopper checks out, a price can change, another customer can buy the last item and the payment answer can arrive late, so checkout must combine several systems' answers into one order the merchant can fulfil, or a successful-looking purchase ends in unavailable goods, an unexpected total or a second order.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "A price change, a competing buyer and a late payment answer during one checkout.",
+            "shows": "The chapter's problem in one case: several answers that can change while the shopper is still paying."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Each owning system supplies one answer and checkout coordinates them: it checks availability before committing stock, recognizes a repeated request so a retry creates no second order or charge, lets only the payment provider's message say that money moved, and, because every order passes through it, is the place where platforms limit merchant code.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The need to combine several changing answers into one order.",
+          "introduces": "Who supplies each answer, what checkout itself must do with them, and why platforms guard where merchant code may run.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "Checkout is the first of the four owners Part III follows: at 21:14 on Tuesday 13 April 2027 it turns Eva's jacket and socks into order #1072455 with the payment pending, and the payment's result arrives separately.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Eva Janssen's order #1072455 at Kestrel & Pine, 21:14 on 13 April 2027, payment pending.",
+            "shows": "Places the chapter at the first handoff of the part and names the worked example.",
+            "source": "scenario-ledger.md, Eva's jacket"
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "Checkout creating the order once and the provider's message marking it paid.",
+          "introduces": "Where that happens in Eva's order and in the part's relay of one order through four owners.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter starts from three requests about Kestrel & Pine's checkout, separates cart, checkout and order, lists what checkout calls and how fresh each answer must be, follows the clocks and the detour to the bank that decide how the order is created once, looks at guest checkout, wallets and business buyers, works Eva's checkout through, lists the ways checkout fails, and ends with abandoned carts, four ways to run checkout, Shopify's dated withdrawal of editable checkout and the fit by scale stage; its evidence is Kestrel & Pine's incidents, vendor documentation, Baymard's research and Shopify's changelog.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "Eva's order created at 21:14 with the payment pending.",
+          "introduces": "The order in which the chapter explains how that happens and who may change it, and the kinds of evidence it uses.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Kestrel & Pine: Three Requests for the Checkout",
+      "controlling_idea": "Three requests about one page (a delivery date and gift wrap, an oversold jacket, unpaid orders and card-testing fees) all turn on one question nobody asked: what does checkout call, and in what order?",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S5"
+        ],
+        "how": "Sets up the two halves of the chapter: Daniel's and Sanne's requests are answered by what checkout calls and how it creates the order; Milan's script proposal by who may change checkout."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The roadmap's first item, three requests about the checkout.",
+        "introduces": "Noor Visser and the three owners who ask.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "In her second month Noor Visser gets three requests about the same page.",
+          "function": "transition"
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Milan Petrov wants a delivery date and a gift-wrap option in checkout, for which the agency proposes an app and an injected script, and he wants fewer abandoned carts.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "A delivery-date line instead of 'ordered before 22:00, delivered tomorrow'; a gift-wrap option by injected script; about seven in ten carts abandoned (illustrative, in line with Baymard's average).",
+              "shows": "Introduces the customization question the last three sections answer, and the abandonment problem."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Three requests.",
+            "introduces": "The first: the storefront owner's, made through the agency Kestrel & Pine retains.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Daniel Okafor wants to know why checkout kept selling the Ridgewalker jacket for two hours after Duiven ran out on Black Friday 2026.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: the empty shelf while the storefront shows the jacket in stock from an hours-old figure.",
+              "shows": "Shows the Phantom Stock: checkout promised from a stale stock figure."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The storefront owner's request.",
+            "introduces": "The second: the warehouse owner's.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Sanne de Wit wants checkout to stop creating orders the payment provider later reports as unpaid, and asks why the Card-Testing Night of August 2026 cost €2,900 in fees for payments that were all declined.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Unpaid orders explained at month-end; the Card-Testing Night, €2,900 in fees.",
+              "shows": "Introduces the payment outcome and the attack the chapter returns to.",
+              "source": "scenario-ledger.md, incident 8"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The warehouse owner's request.",
+            "introduces": "The third: finance's.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Noor answers all three with one question, what checkout calls and in what order, which most of the chapter answers, while Milan's requests and the agency's script proposal are the subject of its last four sections.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The three requests.",
+            "introduces": "The single question behind them and how the chapter divides its answer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cart-draft",
+      "heading": "The Cart Is a Draft, the Checkout Is a Commitment",
+      "controlling_idea": "A cart is a draft that reserves and promises nothing, checkout is the short, clocked sequence that asks for final answers, and the order is the record every later system keeps, so a stale answer written at checkout becomes everyone's error.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Defines the three terms the rest of the chapter depends on and states why what checkout writes matters."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Cart, checkout and order in the order a purchase meets them, then why the last one matters."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Noor's question about what checkout calls.",
+        "introduces": "The three words the answer depends on: cart, checkout and order.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "Answering Noor's question starts with three words that are easy to blur: cart, checkout and order.",
+          "function": "transition"
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "A cart is a draft the shopper can still change: it reserves no stock and promises no price, and whether to reserve stock when an item is added is the first business decision about checkout, which most platforms answer no.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: an editable pencilled cart becomes a stamped, locked order.",
+              "shows": "Shows the change of state from draft to commitment."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The three words.",
+            "introduces": "The first, the cart.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "A checkout is the short, clocked sequence that turns the cart into an order and is the first moment the platform asks every other capability for a final answer rather than an estimate.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The cart as a draft.",
+            "introduces": "The second word, checkout.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "An order is the record that exists when checkout succeeds, which belongs to order management from that moment, and the three differ in lifetime, who may change them, stock, price and owner.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Cart, checkout and order compared on lifetime, change, stock reservation, price and tax, and owner.",
+              "shows": "Lets the reader tell the three apart on five concrete properties."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The checkout.",
+            "introduces": "The third word, the order, and a comparison of all three.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "The distinction matters because every later system treats the order as a promise, so a stale price or stock figure written into it becomes the error of the warehouse, finance and the customer.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The order as the record that results.",
+            "introduces": "Why what checkout writes into it matters.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "calls",
+      "heading": "What Checkout Must Call",
+      "controlling_idea": "Each checkout step calls a system that owns a fact, checkout owns none of them, and each answer has its own freshness need, so checkout is an orchestration, a coordinator and not an owner.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Lists the calls, states that checkout owns none of the facts and gives each call's freshness, which is where a stale answer enters."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The step table first, then what it shows (no owned facts, different freshness), then the name for that shape."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The order as a promise every later system inherits.",
+        "introduces": "What checkout calls to fill that promise.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p15",
+          "controlling_idea": "Each checkout step is a call to a system that owns a fact, and each makes a promise to the shopper.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six steps (identity, address, shipping options, price review, payment, confirmation) with what each calls and the promise it makes.",
+              "shows": "The reader can draw a checkout's call sequence from it."
+            },
+            {
+              "kind": "statistic",
+              "what": "Baymard 2024: 5.1 steps and 11.3 form fields on average; eight fields suffice.",
+              "shows": "Shows that the steps vary by vendor while the calls stay the same.",
+              "source": "Baymard Institute, 2024"
+            }
+          ]
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Checkout owns none of the facts it writes: price, tax, stock, delivery promise and payment state each live in another system, and tax, for example, is computed from three facts the shop holds (the ship-to address, the product's tax category and whether the buyer is a business).",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The calls in the step table.",
+            "introduces": "What they reveal: checkout only consumes the facts.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16a",
+          "controlling_idea": "The calls also differ in how fresh their answer must be: a description may be hours old, a price minutes, and availability must be current at the moment of commitment or the order is a Phantom Stock waiting to happen.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Price and promotions, tax, availability, shipping and payment against freshness, consistency, illustrative latency targets and behaviour when down.",
+              "shows": "Shows which answers may come from a copy and which may not, and that payment and order creation are never guessed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Checkout owns none of the facts.",
+            "introduces": "The second thing the calls reveal: each answer has its own freshness need, and what to do when a call is down.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "That is why checkout is called an orchestration: a coordinator that calls several services in sequence, holds a short-lived state and completes or abandons the whole.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: checkout asks six systems for a final answer and creates the order once.",
+              "shows": "Shows the orchestration and that it owns none of the facts."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Several owners, each with its own freshness need.",
+            "introduces": "The name for the thing that coordinates them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "clock",
+      "heading": "The Clock and the Detour",
+      "controlling_idea": "Checkout runs against the shopper's patience and the payment provider's session, and inside the payment step the shopper leaves for her bank, so the order must be created once, keyed on the cart and the payment, and the provider's message must decide that it is paid.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Derives the two rules (one order despite retries; the payment outcome as external truth) from the clocks and the detour."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The two clocks and the detour are the problem; the two rules are the answer, each followed by its evidence."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Checkout as an orchestration with a short-lived state.",
+        "introduces": "The clocks that limit how long that state may live, and the detour where checkout loses sight of the shopper.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p18",
+          "controlling_idea": "Checkout runs against two clocks it does not control.",
+          "function": "transition"
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "The first clock is the shopper's patience, and three of the five leading reasons for abandonment are architecture: showing total cost early, a credible delivery date and not forcing an account.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Baymard 2026: extra costs 40%, delivery too slow 20%, card trust 19%, forced account 18%, too long 17% (multi-select, US adults who abandoned).",
+              "shows": "Ties each architectural call (tax and shipping on the cart, the delivery promise, a customer reference) to a stated reason for leaving.",
+              "source": "Baymard Institute, updated 28 October 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Two clocks.",
+            "introduces": "The first, the shopper's patience.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The second clock is the payment provider's: a payment session expires in minutes to days by method, so checkout must finish inside the session while capturing the money can wait.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Mollie: iDEAL 15 minutes, cards 30 minutes, PayPal 6 hours, Klarna 48 hours; wait for the webhook. Stripe and Adyen: card authorizations valid 5 to 7 days.",
+              "shows": "Gives the deadlines checkout works inside.",
+              "source": "Mollie, Stripe, Adyen documentation, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The shopper's clock.",
+            "introduces": "The second clock, the payment provider's.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Inside the payment step the shopper leaves for her bank's app or a 3-D Secure challenge and may never return, and the platform learns the outcome only from webhooks that arrive late, out of order and sometimes twice, from which two rules follow.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Stripe: 'You can't rely on triggering fulfillment only from your checkout landing page, because it's not guaranteed customers visit that page.'",
+              "shows": "Shows that the thank-you page cannot be the trigger.",
+              "source": "Stripe documentation, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The payment session.",
+            "introduces": "What happens inside it: the detour and the webhook.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The first rule: create the order once despite retries, with an idempotency key derived from the cart and the payment rather than from each page load.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Two rules follow.",
+            "introduces": "The first rule and the idempotency key.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Vendors document the key on order creation: Stripe requires fulfilment to tolerate repeated calls for the same checkout session, and commercetools creates the order once with the payment pending so that later notifications update it rather than create another.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "commercetools checkout payments lifecycle; Stripe fulfilment guide.",
+              "shows": "Shows the pattern is documented practice that tells a new purchase from another attempt at the same one.",
+              "source": "commercetools and Stripe documentation, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The idempotency key on order creation.",
+            "introduces": "Two vendors that build checkout this way.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The second rule: treat the payment outcome as external truth, decided by the provider's signed webhook, with a daily job asking the provider about every order still pending because webhooks stop retrying.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Mollie stops after ten attempts over 26 hours, Stripe after three days.",
+              "shows": "Shows why a scheduled check must back up the webhook.",
+              "source": "Mollie and Stripe documentation"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: the order exists before the payment outcome is known; the webhook moves it to paid or failed and a repeat changes nothing.",
+              "shows": "Shows the two rules working together."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first rule.",
+            "introduces": "The second rule.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "guest-wallets",
+      "heading": "Guest, Account and the Express Wallets",
+      "controlling_idea": "Guest checkout and express wallets remove steps the shopper sees, but every call behind them is still made, now under a stricter clock.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Shows two variants that change the visible steps and leave the orchestration in place."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Two step-removing variants side by side, then what neither removes."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The forced account as one of the shopper's reasons to leave.",
+        "introduces": "Two ways to remove steps: guest checkout and express wallets.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p25",
+          "controlling_idea": "Guest checkout lets a shopper buy without an account while the order still holds the details needed to fulfil it, and linking a later account to the guest order is an identity-matching problem.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Forced account creation is the fourth-largest stated reason for abandonment (Baymard 2026).",
+              "shows": "Explains why guest checkout is on by default."
+            }
+          ]
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "An express wallet reuses the shopper's saved payment and address details, so she confirms instead of typing, and gives the merchant a payment token in place of the card details.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Guest checkout as one way to remove a step.",
+            "introduces": "A second way: the express wallet.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Wallets shorten the visible steps (Apple Pay, Google Pay, Shop Pay's 32% of Shopify's Black Friday weekend orders), but pricing, tax, availability and shipping are still called, now from inside the wallet's callback.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Apple Pay developer overview; Google Pay web documentation; Shopify's BFCM 2025 report, Shop Pay 32% of orders (vendor-defined).",
+              "shows": "Shows how far wallets shorten checkout and that the orchestration remains.",
+              "source": "Apple, Google, Shopify, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "What a wallet is.",
+            "introduces": "Three wallets and what they leave in place.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "b2b",
+      "heading": "What Changes When the Buyer Is a Company",
+      "controlling_idea": "A business buyer changes four steps and removes one: a company account, contract prices excluding VAT, a VAT number that can switch the tax treatment, payment terms instead of a payment, and a credit check against the ERP.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Shows the largest variant: the same orchestration with different owners for identity, price, tax and payment."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The steps that change, the step that disappears, the call that is added, then the example."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Two variants of the consumer checkout: guest checkout and express wallets.",
+        "introduces": "The buyer that changes the most steps: a company.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p45",
+          "controlling_idea": "A business customer changes three steps, removes one and adds one call; the three are the identity, price and address steps: a company account with roles and approvers, a contract price list shown excluding VAT, and a VAT identification number that can switch the tax treatment to reverse charge.",
+          "function": "comparison"
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "The payment step often disappears into payment terms, a receivable in the ERP rather than a PSP event, so the merchant must decide which system owns the terms and the credit limit.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify Admin API 2026-10 payment-term types; Microsoft's Business Central–Shopify connector guidance (14 October 2026) on owning terms and credit limits.",
+              "shows": "Shows that platforms model terms and that ownership must be decided.",
+              "source": "Shopify and Microsoft documentation"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Three steps that change.",
+            "introduces": "The step that often disappears: payment.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "A credit check against the ERP is the one call a consumer checkout never makes.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Payment terms as a receivable in the ERP.",
+            "introduces": "The extra call that terms require.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "Kestrel & Pine's B2B portal runs on the shop platform's company accounts, price lists and net terms and takes 62% of wholesale orders.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "62% of wholesale orders arrive through the B2B portal.",
+              "shows": "Grounds the section in the running example.",
+              "source": "scenario-ledger.md, systems landscape"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The four changes and the extra call.",
+            "introduces": "Kestrel & Pine's own business checkout.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "eva",
+      "heading": "Eva's Checkout, Step by Step",
+      "controlling_idea": "Eva's checkout shows every call with its answer, creates the order before the bank's answer and lets the webhook mark it paid, and exposes two weaknesses, the stock copy and the static delivery date, whose fix lies in the systems that answer.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Applies the calls and the two rules to the running order and answers Daniel's question."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The full call sequence, then the three details that carry the design, then the opening question answered."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The business buyer's checkout.",
+        "introduces": "Back to the consumer: Eva's checkout with every system it calls.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p50",
+          "controlling_idea": "Eva's checkout, from add to cart at 21:09 to confirmation at 21:14, calls pricing, promotions, tax, the address book, the delivery-date extension and the payment provider, and each answer is written into the order.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven steps from 21:09 to 21:14 with what checkout calls and what it writes: €199 and 2 × €18, €235, free shipping, net €194.21, VAT €40.79, iDEAL, order #1072455.",
+              "shows": "The reader sees the call sequence and each frozen answer for one real-sized order.",
+              "source": "scenario-ledger.md, Eva's jacket; journey-consumer-order line"
+            }
+          ]
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "The order exists before the payment confirmation arrives, and a repeated notification creates no second order or payment.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The step table.",
+            "introduces": "The first of three details that carry the design.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Stock is still a weakness in April 2027: checkout reads the platform's hourly copy fed from the ERP and the WMS, the chain that oversold 1,340 jackets on Black Friday.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Black Friday Oversell, 1,340 units.",
+              "shows": "Shows the cost of a stale availability answer.",
+              "source": "scenario-ledger.md, incident 1"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The first detail.",
+            "introduces": "The second: where the availability answer comes from.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "The delivery date is also a static rule: Eva is promised Wednesday 14 April and receives the parcel on Thursday 15 April.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: Eva's checkout creates the order once before the bank's answer and lets the webhook move it to paid.",
+              "shows": "Summarizes the worked example."
+            },
+            {
+              "kind": "fact",
+              "what": "Promised 14 April, delivered 15 April.",
+              "shows": "Shows a promise checkout wrote from a rule no system keeps.",
+              "source": "scenario-ledger.md, Eva's jacket and warehouse rhythm"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The second detail.",
+            "introduces": "The third: where the delivery date comes from.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Daniel's question is answered: checkout trusted the availability answer from the platform's copy, so the fix is in who answers that call, the availability service of Waypoint decision W1, not in checkout.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "27 November 2026 at 19:40 the WMS knew the Ridgewalker was gone; the platform's copy was up to two hours old.",
+              "shows": "Places the fault in the system that answered.",
+              "source": "scenario-ledger.md, incident 1"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The stale stock answer in Eva's order.",
+            "introduces": "The answer to Daniel's request from the opening.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "Checkout failures fall into five kinds (duplicate order, lost outcome, stale answer, slow or failed dependency, attack), each with its own detection, recovery and prevention.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Turns the two rules and the freshness table into detection and recovery, and answers Sanne's question about the card-testing night."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Five kinds, in the order of the two rules (duplicates, lost outcomes), the freshness table (stale answers, slow dependencies) and then the attack."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The two weaknesses Eva's checkout exposed.",
+        "introduces": "The full set of ways checkout fails.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p55",
+          "controlling_idea": "Checkout failures cluster into five kinds.",
+          "function": "transition"
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "A duplicate order comes from a double click, a retry or a repeated webhook and is prevented by the idempotency key and a handler that records every event id.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Five kinds.",
+            "introduces": "The first, the duplicate order.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "A lost outcome leaves the order pending while the money sits authorized, and is found and settled by a daily query to the provider, which with the two rules answers Sanne's first request: an order the provider has not confirmed stays pending and is not fulfilled.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Mollie's fetch-the-status pattern and id-only webhook.",
+              "shows": "Shows the documented recovery and why a forged call cannot mark anything paid.",
+              "source": "Mollie documentation"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The duplicate order.",
+            "introduces": "The second, the lost outcome.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "A stale answer for stock, price or tax comes from a copy that was behind, and is prevented by a current call at commitment.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Most of Kestrel & Pine's €96,000 Black Friday cost.",
+              "shows": "Shows the cost of the stale stock answer.",
+              "source": "scenario-ledger.md, incident 1"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The lost outcome.",
+            "introduces": "The third, the stale answer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "A slow or failed dependency is met with a degradation ladder decided in advance, on which payment and order creation never appear.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The stale answer.",
+            "introduces": "The fourth, the slow or failed dependency.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "An attack such as the Card-Testing Night is met with rate limits, velocity rules, a CAPTCHA on guest checkout and a kill switch for guest card payments that needs no deploy, which answers Sanne's question about the card-testing fees.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "48,000 bot attempts, €2,900 in fees, a 40-minute account pause.",
+              "shows": "Grounds the attack in the running example.",
+              "source": "scenario-ledger.md, incident 8"
+            },
+            {
+              "kind": "source",
+              "what": "Stripe on card testing; Visa's May 2025 monitoring fact sheet.",
+              "shows": "Shows the documented symptoms and controls.",
+              "source": "Stripe and Visa"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The slow dependency.",
+            "introduces": "The fifth, the attack, which answers Sanne's question about the card-testing fees.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "abandoned",
+      "heading": "Abandoned Carts and the Business Metric",
+      "controlling_idea": "Conversion is checkout's one business metric, and the architecture decides both whether an abandoned cart can be recovered and whether fewer carts are abandoned.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Ties conversion to calls made early (tax, shipping, delivery promise) and to a cart persisted with an identity."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The metric and how far its figures can be trusted first, then what the architecture can do about it."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The five ways checkout fails, the last of which answers Sanne's question.",
+        "introduces": "Milan's first request, fewer abandoned carts, and the business measure behind it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p28",
+          "controlling_idea": "Checkout's one business metric is conversion, and the abandonment rate behind it is a direction, not a benchmark, because studies define cart and abandonment differently.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Baymard: 70.22% average across fifty studies, 2006 to 2025, range 55% to 84%; its 35% uplift claim is its own estimate.",
+              "shows": "Shows the size of the problem and how far the figures can be trusted.",
+              "source": "Baymard Institute, updated 28 October 2026"
+            }
+          ]
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Recovering an abandoned cart needs a cart stored on the server and tied to an identity the merchant may contact.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Two preconditions for recovery: a server-side cart and a consented identity.",
+              "shows": "Shows that recovery is decided by storage and consent, not by the reminder e-mail."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Conversion and abandonment.",
+            "introduces": "What it takes to win an abandoned cart back.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29a",
+          "controlling_idea": "The architecture can lower abandonment in three ways no button colour can: show the full price before checkout, show a delivery date the warehouse can keep, and never fail payment because an internal call was slow.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Tax and shipping called on the cart page; a computed delivery promise; payment and order creation kept off the degradation ladder.",
+              "shows": "Ties each lever to a call or rule the chapter has already shown."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Recovering carts after they are abandoned.",
+            "introduces": "Preventing abandonment in the first place, with three levers taken from the calls, the shopper's clock and the degradation ladder.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "choices",
+      "heading": "The Choices: Four Ways to Run a Checkout",
+      "controlling_idea": "A merchant can run the hosted checkout as is, add sanctioned extensions, build a custom checkout on the platform's APIs or run its own checkout service, and each step away from the first adds orchestration, card-security and upgrade work.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Sets the four options side by side on the same criteria and gives the author's rule."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "Four options in order of increasing merchant responsibility on the same criteria, then the rule."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "What the architecture can do for conversion, Milan's first request.",
+        "introduces": "His second: changes to checkout itself, and who runs and may change it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p30",
+          "controlling_idea": "Milan's delivery date and gift wrap raise who runs the checkout and who may change it, which is the merchant's choice among four options that map closely to the scale stages.",
+          "function": "transition"
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "The hosted checkout as is gives the smallest card-security scope and nothing to build or break.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Four options.",
+            "introduces": "The first, the hosted checkout as is, and PCI DSS scope.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The hosted checkout with sanctioned extensions lets apps add blocks and run logic at named places with fixed inputs, outputs and a time budget, so the merchant gets its changes without owning the page.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify checkout extensibility; commercetools API Extensions with a two-second default timeout.",
+              "shows": "Shows two documented forms of the extension point.",
+              "source": "Shopify and commercetools documentation"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first option.",
+            "introduces": "The second, extensions at named places.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "A custom or headless checkout on the platform's APIs gives full control and full responsibility for the orchestration, the payment-page scripts and API versions.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The second option.",
+            "introduces": "The third, a custom checkout.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "An own checkout service over separate capabilities fits when one checkout must serve several storefronts, an app, a point of sale and a B2B portal, and it costs a team.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The four options against who runs the orchestration, customization, PCI DSS scope, upgrade risk, team needed and the stages they fit.",
+              "shows": "Lets the reader place their own checkout and see what each step away from the first costs."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The third option.",
+            "introduces": "The fourth, an own service, and the four compared.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "The author's rule: take the most restricted option that still gives the two or three changes the business needs, through sanctioned extension points, because every freedom taken is a page kept working at peak, under card rules and through every release.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The four options compared.",
+            "introduces": "The author's rule for choosing among them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "shopify",
+      "heading": "How Protected Checkout Is: Shopify's Timeline, 2023–2026",
+      "controlling_idea": "Shopify's withdrawal of editable checkout templates and scripts on dated deadlines from 2023 to 2026 shows why platforms restrict merchant code in checkout: time budgets, the card industry's payment-page rules, and extension points that are withdrawn on announced dates.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Gives the dated case and draws the three lessons that answer the agency's script proposal."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "additional_patterns": [
+          {
+            "pattern": "grouping",
+            "applies_to": "p41 to p44: three lessons"
+          }
+        ],
+        "rationale": "The dates in order, then the three lessons the dates teach."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The rule to customize only through sanctioned extension points.",
+        "introduces": "Why platforms make that the only way, shown by the clearest dated record.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p36",
+          "controlling_idea": "A hosted platform can restrict where merchants put checkout code, and Shopify's dated changes are the clearest public record of that boundary moving.",
+          "function": "claim"
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "In February 2023 Shopify announced that checkout.liquid would stop working for the in-checkout pages on 13 August 2024, replaced by checkout extensibility.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify changelog, 13 February 2023.",
+              "shows": "Dates the first withdrawal and names the replacement.",
+              "source": "Shopify changelog, 2023"
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "Shopify's record as a sequence of dates.",
+            "introduces": "The first date.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The thank-you and order-status pages followed in 2025 and 2026, and Shopify Scripts were retired on 30 June 2026.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify developer documentation and help center: 28 August 2025 (Plus), 26 August 2026 (non-Plus), Scripts 30 June 2026.",
+              "shows": "Completes the dated sequence.",
+              "source": "Shopify, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The in-checkout pages.",
+            "introduces": "The later dates.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "As of November 2026 advanced checkout customization is limited to Shopify Plus and to UI extensions, Shopify Functions with an instruction limit, web pixels and a branding API.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify Functions API 2026-10: 11 million instructions per run for carts up to 200 lines.",
+              "shows": "Shows the hard limits of the sanctioned mechanisms.",
+              "source": "Shopify developer documentation"
+            },
+            {
+              "kind": "reasoning",
+              "what": "INFERENCE, NOT DOCUMENTED callout: the arc is consistent with a platform that wants one checkout it can change under every merchant, keep inside card rules and keep fast at peak.",
+              "shows": "Labels the author's reading of Shopify's reasons as inference."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The withdrawals.",
+            "introduces": "What remains in November 2026.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "The timeline teaches three things that apply to any platform.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The dated sequence.",
+            "introduces": "Its lessons for any platform.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "A time budget is how a platform protects checkout from the merchant's own code.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Three lessons.",
+            "introduces": "The first, time budgets.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "The payment page is where the card industry looks: PCI DSS v4.0.1 requires an inventory of payment-page scripts and tamper detection, and the agency's gift-wrap script is exactly what that rule exists for.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "PCI DSS 6.4.3 and 11.6.1, effective 31 March 2025, PCI SSC blog of 30 January 2025.",
+              "shows": "Ties the agency's script to a dated rule.",
+              "source": "PCI Security Standards Council, 2025"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Time budgets.",
+            "introduces": "The second, the payment page.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "A platform will withdraw an extension point and announce the date, so the merchant keeps an inventory of every checkout customization, its mechanism and the vendor's support date.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The payment page.",
+            "introduces": "The third, withdrawal on a date, and the remedy.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Across Scale Stages: When It Fits and When It Limits",
+      "controlling_idea": "The stage table maps the four options, what becomes necessary and the warning signs (several of them the failures above) to the scale stages, and Kestrel & Pine, a stage-3 merchant on a stage-2 checkout, keeps its checkout and changes what it calls.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Maps the options to the scale stages and places Kestrel & Pine: a stage-3 merchant running a stage-2 checkout whose calls Waypoint changes."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The options and the lessons from Shopify.",
+        "introduces": "The same advice laid out by scale stage, with Kestrel & Pine's place in it and the answer to Milan's two requests.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p49",
+          "controlling_idea": "Kestrel & Pine is a stage-3 merchant running a stage-2 checkout, whose delivery date and gift wrap come as two sanctioned extensions rather than a script, and Waypoint keeps that checkout but changes what it calls: the availability service answers at order creation (W1) and the OMS receives every order (W2).",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four stages against what is typical, what becomes necessary and the warning signs.",
+              "shows": "The reader can find their own stage and read off the next step and the signs it is due."
+            },
+            {
+              "kind": "fact",
+              "what": "W4 stay and surround; W1 availability service from Q4 2027; W2 OMS from 13 October 2027.",
+              "shows": "Shows the remedy is in what checkout calls, not in replacing it.",
+              "source": "scenario-ledger.md, Waypoint"
+            },
+            {
+              "kind": "fact",
+              "what": "Two extensions added in 2027: a delivery-date block and a gift-wrap option.",
+              "shows": "Closes Milan's requests with the sanctioned mechanism.",
+              "source": "scenario-ledger.md, cart-and-checkout line"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The two halves of the chapter are one argument: checkout matters because every later system inherits what it writes into the order, and that is also why platforms limit merchant code there; the page that must create each order exactly once from fresh answers at peak is the page a slow extension or a skimming script would break. So the merchant's decision is not which page to edit but which owner answers each call and which sanctioned mechanism carries each change.",
+    "so_what": "A reader can draw their checkout's call sequence, mark the answers that come from copies, check that the order is keyed on the cart and the payment and settled by webhook and a daily job, and judge an agency's proposal by its mechanism and the vendor's support date, before buying anything.",
+    "callback": {
+      "to": "The introduction's shopper during whose checkout a price changes, the last item sells and the payment answer arrives late.",
+      "how": "The first conclusion paragraph says what keeps each of those three from breaking the order."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "List what your checkout calls and which answers come from copies; key order creation on the cart and the payment and settle it by webhook and a daily job; inventory every checkout customization with its mechanism and the vendor's support date; take the nine questions to your own company."
+    },
+    "hand_off": {
+      "to": "commerce-payments",
+      "relationship": "elaboration",
+      "carries_over": "The order created with its payment pending, and the payment provider's webhook as the only source of the payment's outcome.",
+      "introduces": "The money's own life after checkout: the four stages, the methods that change them, and refunds and chargebacks as payments flowing back."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "Kestrel & Pine's checkout kept, with what it calls changed.",
+      "introduces": "The chapter's answer set against its opening, then what holds across the chapter, sorted by how settled it is.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p61a",
+        "controlling_idea": "A price change, a sold-out item and a late payment answer break the order only when checkout writes a stale answer or trusts a page load; asked at commitment, keyed on the cart and the payment and settled by the provider's message, they do not, and the same need, a checkout that creates every order once at peak, is why platforms keep merchant code to sanctioned, time-limited places; Noor's three requests get the same answer, Daniel's and Sanne's in who answers each call and how the order is created, Milan's in sanctioned extensions.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The opening's three changes during checkout set against the two rules and the platform's limits.",
+            "shows": "The reader can now say what keeps each change from breaking the order and why the restriction serves the same goal."
+          }
+        ]
+      },
+      {
+        "id": "p61",
+        "form": "list",
+        "controlling_idea": "Established: cart, checkout and order differ in lifetime, owner and rules; the payment outcome arrives by webhook and the order is created once and settled by webhook or a reconciliation job; platforms protect checkout with time-boxed extension points (Shopify 2023 to 2026); surprise costs and slow delivery lead the reasons for abandonment, and calling tax, shipping and the delivery promise on the cart answers both.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "The points it rests on, starting with what is established.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p62",
+        "form": "list",
+        "controlling_idea": "Depends on context: hosted with or without extensions fits most merchants and a custom checkout needs shared channels and a team; guest checkout is right for consumers while for business customers the account is the checkout; order-before-outcome is the robust pattern where redirects dominate.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established.",
+          "introduces": "What changes with the merchant's situation.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p63",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: treat checkout as a conductor that owns no fact, and keep an inventory of every checkout customization with its mechanism and the vendor's support date.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established and what depends on context.",
+          "introduces": "The author's own judgement, labelled as such.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p64",
+        "form": "list",
+        "controlling_idea": "Nine questions let the reader find, in their own company, what checkout calls and which answers are copies, how old availability can be, what settles an unreturned payment or a repeated webhook, which customizations and payment-page scripts run and when their support ends, whether tax and shipping show on the cart, what can be switched off without a deploy, and who answers for business customers.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions that apply them to the reader's own company.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p65",
+        "controlling_idea": "Checkout hands the order to two systems at once, the order record to order management and the payment request to the payment provider, and the next chapter follows the money through its own stages.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The questions about the reader's own checkout.",
+          "introduces": "The handoff of the order with its payment pending to the next chapter.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "How the PSP moves money, authorization windows in depth, 3-D Secure flows, refunds and disputes.",
+      "covered_in": [
+        "commerce-payments"
+      ]
+    },
+    {
+      "topic": "The order state machine, order edits and the OMS.",
+      "covered_in": [
+        "order-management"
+      ]
+    },
+    {
+      "topic": "Available-to-promise, reservations and the availability service.",
+      "covered_in": [
+        "inventory-and-availability"
+      ]
+    },
+    {
+      "topic": "Promotion stacking and discount allocation; tax determination rules.",
+      "covered_in": [
+        "commerce-promotions",
+        "tax-invoicing-and-ledger"
+      ]
+    },
+    {
+      "topic": "The delivery promise's data sources.",
+      "covered_in": [
+        "shipping-and-delivery"
+      ]
+    },
+    {
+      "topic": "Company accounts, quotes, approvals, credit limits.",
+      "covered_in": [
+        "b2b-commerce"
+      ]
+    },
+    {
+      "topic": "Extension mechanisms as a taxonomy and app governance; API versioning.",
+      "covered_in": [
+        "extensibility-and-app-ecosystems",
+        "api-contracts-and-versioning"
+      ]
+    },
+    {
+      "topic": "Card testing, skimming and PCI scope in depth.",
+      "covered_in": [
+        "commerce-security"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Draft check stopped after round 2 (escalate), as the brief allows when the blocking failures are mostly order questions for the author. Two corroborated flow findings are at fault in the spec's order and need the author's decision: (a) the author's rule (p35) comes before its evidence, Shopify's timeline (p36 to p44); both round-2 flow readers would put the timeline before the four options or before the rule; (b) guest checkout, wallets and the business buyer sit between the clocks and Eva's worked example, which both readers would move up to follow the clocks directly, with the variants after it. Neither was changed here: (a) reverses the published argument (options, rule, then why), and (b) undoes the variant-then-example order the chapter rubric accepted twice.",
+    "Remaining after the closing fixes (the check report is stale against them): the stage section still opens on its table, with the sentence that carries over the options after it, because a lead sentence before the table would be a second unit (p49); the known_before_new terms reported once only (card schemes, Klarna, receivable, purchase-order number, Admin API, price-parity warnings, the 40-minute account pause, disputes, composable, Shopify Plus, additional scripts, WebAssembly, web pixels, Bancontact, synchronously, the platform's rate table, reference-architecture view) are left for a sharpen pass within the word limit; the abandonment reasons appear in the shopper's clock (p19) and again in the abandoned-carts section (p29a). Waypoint and W1, W2 and W4 are glossed only by name: both flow readers in both rounds stumbled on them, although the audience knows them from Part I; the author may want a one-clause gloss at first mention.",
+    "Flow rubric, second run, notes not taken: the option paragraphs (p31, p33) use card-security scope before the PCI DSS payment-page rule is explained (p43), though p31 glosses PCI DSS; the 'Established' list (p61) does not repeat the freshness point; the abandonment reasons appear in the shopper's clock (p19) and are used again in the abandoned-carts section (p29).",
+    "Flow rubric, first run, notes not taken: (a) the author's rule (p35) cites 'card rules' before the PCI DSS payment-page requirement is explained in the Shopify section (p43); kept, since the option table already names PCI DSS scope and the Shopify section is the rule's evidence. (b) 'Phantom Stock' (p16a) is used as a name; it is one of the failure patterns the reader knows from Part I and is listed in the chapter's opening callout.",
+    "Shopify's 13 August 2024 date comes from the February 2023 changelog; the current developer page says only that in-checkout `checkout.liquid` is unsupported. A reviewer should confirm no later Shopify post changed the date.",
+    "The chapter states (as an illustration) that Kestrel & Pine added two sanctioned checkout extensions in 2027; the ledger records this (cart-and-checkout line) so extensibility-and-app-ecosystems and journey-consumer-order can reuse it.",
+    "Whether Kestrel & Pine's platform creates the order before or after the iDEAL result is a reference-architecture choice the chapter makes for the example; it is recorded in the ledger (cart-and-checkout line) so the journeys agree.",
+    "The journal spec no longer calls checkout 'the most protected part' of a commerce platform. The front-matter excerpt still asked that question; it was changed to the journal spec's question. The section heading 'How Protected Checkout Is' was kept (it does not claim a superlative); the author may want a plainer heading."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Round 2 (escalate) closed without a third round: of the blocking failures, two are order questions for the author (open_questions) and the rest were cheap draft fixes applied after the round: the calls section opens from the order as a promise; the Baymard step count says what it shows; the clocks open from the orchestration's short-lived state; the roadmap's last sentence is split; the extensions in Eva's checkout are named as the 2027 answer to Milan's requests; the long card-testing sentence is split; 'the second table', the orchestration lead-in, 'signed webhook', Business Central as an ERP, Shopify as a platform, 'Customer records' and 'Ridgewalker' made explicit. Five sentences were cut to stay within 6,500 words: a remark on what restriction gives the vendor (p36), the registration-step sentence (p25), 'the chapter's advice holds at every stage' (p49), and two lead-in phrases.",
+      "rejected": [
+        "A third round.",
+        "Reordering the Shopify timeline before the options, or Eva's checkout before the variants, without the author."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 of the draft check escalated on two spec faults (the outliner and both flow readers), changed under the pre-approval for paragraph ideas: Sanne's unpaid-orders answer moves from the attack paragraph (p60) to the lost-outcome paragraph (p57); the abandoned-carts paragraph p29 is split into recovery (p29) and prevention (p29a). Also: p23 now opens on the key on order creation (Stripe first), so it no longer blurs into the second rule; p45 counts the business buyer's changes as three steps changed, one removed and one call added; p61's Baymard summary no longer says forced accounts lead the list (card distrust ranks above it in p19). Draft faults fixed in the same pass.",
+      "rejected": [
+        "Merging the abandoned-carts section into the shopper's clock.",
+        "Keeping both of Sanne's answers in the attack paragraph."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Second run of the chapter's flow rubric (sound with notes), taken without review: the conclusion's first paragraph (p61a) also returns to Noor's three requests; the stage section's controlling idea names the table it rests on, which the rubric's input did not show.",
+      "rejected": [
+        "Moving the abandonment reasons out of the shopper's clock (p19) into the abandoned-carts section: they are the evidence that the clock exists.",
+        "Cutting the time-budget lesson (p42) as a repeat of option 2: it is the general lesson the option is one case of."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "First run of the chapter's flow rubric (sound with notes), taken without review as the author asked: the abandoned-carts section moves after the failures, as the first of Milan's requests, because it is about the conversion metric and changes no step, and it relies on the degradation ladder of the failures section; p54 reminds the reader that W1 is the Waypoint decision for the availability service; p60 closes Sanne's two questions and the stage paragraph (p49) closes Milan's delivery date and gift wrap with the two sanctioned extensions (ledger, cart-and-checkout line); the stage section's controlling idea is narrowed to what its one paragraph does; the abandoned-carts section has a declared order.",
+      "rejected": [
+        "Folding the abandoned-carts section into the shopper's clock (p19): it would change a section heading and lose the conversion metric's own section.",
+        "Adding paragraphs to the stage section: the table carries the per-stage content, and the word limit is better spent elsewhere."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The author asked for the flow rubric's notes to be taken without review (auto mode). Before the chapter's own rubric run, two notes from the part's flow rubric were taken: the three tax inputs (ship-to address, product tax category, buyer status) are named where the chapter says checkout owns none of the facts (p16), with a pointer to tax-invoicing-and-ledger; and the extension-points thread (choices, Shopify's timeline, scale stages) moves to the end of the chapter, after the failures, so the orchestration half (calls, clocks, variants, Eva's checkout, failures) is read in one run and the scene's 'second half' is literally the last three sections. Also: the roadmap (p03) now announces every section; 'Where we are' (p04) comes before it and picks up the part's relay of one order through four owners, as this chapter's transition_in asks; the thesis paragraph (p02) states both halves of the thesis; 'Two things stand out' is split into two units (p16, p16a), one idea each; the two opening paragraphs of the Shopify section are one unit (p36), since both said the same thing; a synthesis paragraph that returns to the hook (p61a) opens the conclusion.",
+      "rejected": [
+        "Keeping the options and the Shopify section in the middle of the chapter, as published.",
+        "Moving only the Shopify section to the end and leaving the options before Eva's checkout.",
+        "Putting the business buyer after the failures."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Success criteria of the former spec.md: the opener format, the list of tables and diagrams, the take-away tiers and the cross-link list were inventories and are dropped; the ledger-facts and dated-sources criteria are governed by the ledger and the Sources apparatus, not by a reader check, and are dropped here; 'a reader new to the field can define every term from the chapter alone' becomes AC-6 (known_before_new, minor), an addition beyond the journal spec for the author to keep or drop. The 6,500-word cap is kept as length.max_words.",
+      "rejected": [
+        "A rubric criterion for dated sources."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "In this chapter Kestrel & Pine's hosted product is 'the shop platform' where the text means that product; 'platform' alone is kept where it means any vendor's platform (Shopify, commercetools).",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Used Shopify's checkout.liquid timeline rather than a survey of several vendors' extension models, because it is the only publicly dated sequence that shows a platform withdrawing checkout freedom step by step; other vendors appear only where their documentation states a mechanism (commercetools' two-second timeout)."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Chose 'create the order before the PSP's final answer, settle by webhook' as the recommended pattern, citing commercetools and Stripe, rather than presenting it as one option among equals, because iDEAL, Bancontact and 3-D Secure redirects make the asynchronous outcome the normal case for a European merchant; the take-aways say when the alternative is acceptable."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Kept the four checkout options at the level of 'who runs the orchestration' rather than listing vendor products, to stay platform-neutral and to map the options onto the scale stages."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Treated B2B checkout in one section with four differences and a hand-off, rather than a parallel walkthrough of Bergzicht's order, which belongs to journey-wholesale-order."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Eva's order, the Oversell, the Card-Testing Night, the systems landscape, Waypoint W1, W2 and W4, the cart-and-checkout line (two extensions, order before the iDEAL result)."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-checkout-payments-tax.md",
+      "contributed": "Part 1 (checkout as orchestration, Baymard, guest and wallets, the Shopify timeline), Part 4 (idempotency, webhooks, status models), Part 5 (PCI scope), Part 6 (card testing)."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-shopify.md",
+      "contributed": "Part 4.1 (the checkout.liquid timeline), 4.2 (Shop Pay), 4.5 (B2B payment terms), Part 5.2 (Functions limits)."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-platform-engineering-scale.md",
+      "contributed": "Part 3.4 (extension points as named moments with time budgets), 5.4 (degradation)."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-b2b-edi-erp.md",
+      "contributed": "Part 1 (company accounts, payment terms), Part 4.2 (Business Central connector ownership advice)."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (part-3; cart-and-checkout; commerce-payments transition_in)",
+      "contributed": "Intent, thesis, role, acceptance criteria, the transition from the part introduction and the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine; commerce-payments; order-management; inventory-and-availability",
+      "contributed": "Cast, systems and incidents; neighbouring contracts."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify changelog (2023), developer documentation and help center (accessed 2026-11)",
+      "contributed": "The checkout extensibility timeline, Functions limits, plan gating, Shop Pay share."
+    },
+    {
+      "kind": "external",
+      "ref": "commercetools, Stripe and Mollie documentation (accessed 2026-11)",
+      "contributed": "Order-before-outcome flow, webhook guarantees, idempotency, session expiry."
+    },
+    {
+      "kind": "external",
+      "ref": "Baymard Institute (2026, 2024)",
+      "contributed": "Abandonment rate and reasons, form-field benchmark."
+    },
+    {
+      "kind": "external",
+      "ref": "PCI Security Standards Council (2025), Visa (2025), Regulation (EU) 2018/389",
+      "contributed": "Payment-page scripts, enumeration monitoring, strong customer authentication."
+    },
+    {
+      "kind": "external",
+      "ref": "Apple and Google developer documentation (accessed 2026-11)",
+      "contributed": "Express wallet flows."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Round 2 (escalate: 19 passed, 32 failed after aggregation; 6 corroborated flow findings, 2 of them spec order, plus 4 draft majors; AC-1 to AC-5 pass) and closing fixes without a third round; 6,489 words. The check report is stale. Round 1 (escalate: 103 passed, 33 failed, 12 of them minor; two spec faults) resolved: p57/p60 ideas, p29 split into p29 and p29a, p23, p45 and p61 ideas revised; transitions into the Introduction thesis, the wallets, the abandoned carts, the Shopify section and the stage section written into the prose; roadmap matches the order; draft faults fixed. 67 paragraphs. Flow rubric run 2 (sound with notes): p61a returns to the three requests; stage idea names its table. Prose revised to match the spec unit for unit (6,220 words). Flow rubric run 1 (sound with notes) taken: abandoned carts moved after the failures; W1 reminder in p54; Sanne's and Milan's requests closed in p60 and p49; stage section narrowed. Converted from spec.md to an outcome spec: intent, thesis and role copied from the journal spec; supporting claims, sections, paragraphs, transitions, introduction and conclusion reconstructed from the published chapter; record-keeping sections carried over. The part rubric's notes taken: tax inputs named (p16); choices, Shopify's timeline and scale stages moved after the failures; roadmap, 'Where we are', thesis paragraph and conclusion synthesis revised or added; p16a split out; p36 and p37 merged. Status draft."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 3 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator)."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: Eva's delivery promise corrected to the static Wednesday 14 April (delivered a day late); VAT, iDEAL and ERP defined at first use; OMS seam date 13 October 2027."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article."
+    }
+  ],
+  "length": {
+    "max_words": 6500
+  }
+}
