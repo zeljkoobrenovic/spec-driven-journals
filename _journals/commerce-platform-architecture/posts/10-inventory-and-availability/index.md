@@ -28,19 +28,19 @@ A web shopper and a store customer try to buy the last jacket within the same mi
 
 A shelf count alone cannot answer the question. Some units already belong to unshipped orders; others are held back as buffers, damaged goods or wholesale allocations. Cart reservations and incoming deliveries add further conditions. **Availability must combine those facts before a channel commits to a sale.** Copying a stock number along a chain of scheduled updates leaves channels selling from different answers.
 
-This chapter explains when stock becomes committed, how locations and channels share it, and when a merchant needs a separate availability service. Kestrel & Pine, the fictional outdoor brand, supplies the worked example: its worst evening of 2026.
+**Where we are in the order's journey.** Search has just shown Eva a Ridgewalker jacket marked "in stock", and she is about to add it to her cart. Availability supplies that label, the cart's stock check and the commitment at checkout that prevents another shopper buying her unit. [[cart-and-checkout]] covers order creation; [[warehouse-and-fulfillment]] covers picking it.
 
-**Where we are in the order's journey.** Eva is about to add a Ridgewalker jacket to her cart. Availability supplies the badge she sees, the cart's stock check and the commitment at checkout that prevents another shopper buying her unit. [[cart-and-checkout]] covers order creation; [[warehouse-and-fulfillment]] covers picking it.
+This chapter starts from the worst evening of 2026 at Kestrel & Pine, the fictional outdoor brand: the Black Friday Oversell. It then takes "in stock" apart into the numbers behind it, explains when a unit becomes promised, and adds several locations and channels. From there it describes the availability service: which system writes which number, what each step of a purchase needs from it, and why stock changes should travel as events and not as scheduled copies. It compares four ways of computing availability, weighs their trade-offs and says which fits which scale stage. It ends by working the Oversell through again with the remedy in place, listing the ways stock integrations fail, and checking the count itself against a study of inventory records. The evidence throughout is the Oversell, the vendors' platform documentation and that study.
 
 ## Setting the Scene at Kestrel & Pine: Friday 27 November 2026, 19:40
 
 In January 2027 Noor Visser, Kestrel & Pine's new Head of Engineering, asks Ruben Alves, the lead integration engineer, and Daniel Okafor, Head of Operations, to reconstruct the Black Friday Oversell minute by minute. The mechanism was never written down. What they draw on the whiteboard is a chain.
 
-Duiven's **warehouse management system (WMS)** knows which bin holds each unit and directs picking. It reduces physical stock when a unit is picked. In 2026, it sent counts every 15 minutes to the **enterprise resource planning system (ERP)**, which handles finance, purchasing and stock valuation. The ERP copied them hourly to the commerce platform; the platform copied them hourly to the marketplace connector for bol, Amazon.de and Zalando.
+Duiven's **warehouse management system (WMS)** knows which bin holds each unit and directs picking. It reduces physical stock when a unit is picked. In 2026, it sent counts every 15 minutes to the **enterprise resource planning system (ERP)**, which handles finance, purchasing and stock valuation. The ERP copied them hourly to the shop platform; the platform copied them hourly to the marketplace connector for bol, Amazon.de and Zalando.
 
-A storefront sale reduced the platform's count immediately. Other channels learned of it only after picking and the subsequent updates, up to two hours later. Marketplace sales reached the storefront through the same slow chain.
+A storefront sale reduced the shop platform's count immediately. Other channels learned of it only after picking and the subsequent updates, up to two hours later. Marketplace sales reached the storefront through the same slow chain.
 
-On Friday 27 November the Ridgewalker jacket, the hero product, was the deal of the week. The reconstruction is illustrative; the totals are those recorded in [[meet-kestrel-and-pine]].
+On Friday 27 November the Ridgewalker jacket, the hero product, was the deal of the week. The reconstruction is illustrative; the totals are those recorded in [[meet-kestrel-and-pine]]. Of the 1,340 units oversold that evening, about 790 were storefront orders and 550 marketplace orders (illustrative split); the marketplace share carried the penalties.
 
 | Time (27 Nov 2026) | What happened | What the channels believed about the Ridgewalker |
 | --- | --- | --- |
@@ -54,7 +54,7 @@ On Friday 27 November the Ridgewalker jacket, the hero product, was the deal of 
 ![A relay race where the news of an empty shelf passes from the warehouse through ERP and platform to marketplaces while carts keep arriving.](assets/images/10-inventory-and-availability/10-oversell-relay.jpeg)
 **Figure 1:** *The Black Friday Oversell as a relay: each hand-off waited for its schedule, so the channels kept selling for up to two hours after Duiven ran out, and 1,340 units were oversold.*
 
-Two things made it worse. The order queue from the platform to the WMS backed up for four hours that evening ([[warehouse-and-fulfillment]]), so the WMS's count fell later than the sales it reflected. And three of the platform's 41 installed apps could write inventory. One, a pre-order app, had already caused the App That Wrote Stock in March 2026: two weeks of phantom reservations on about 600 variants, because the app and the WMS feed both wrote the same number and each undid the other.
+Two things made it worse. The order queue from the platform to the WMS backed up for four hours that evening ([[warehouse-and-fulfillment]]), so the WMS's count fell later than the sales it reflected. And three of the shop platform's 41 installed apps could write inventory. One, a pre-order app, had already caused the App That Wrote Stock in March 2026: two weeks of phantom reservations on about 600 variants, because the app and the WMS feed both wrote the same number and each undid the other.
 
 Mara Lindqvist, the CEO, asked the question every CEO asks after an oversell: "Why did the website not know?" Noor's answer, which became Waypoint decision W1, was that the website could not know, because nobody had decided who owned the number and nothing carried changes fast enough. This chapter is that answer in full.
 
@@ -75,7 +75,7 @@ From these, the number a channel may actually sell is derived. In planning vocab
 ![Diagram: On hand is the one counted fact](assets/images/10-inventory-and-availability/fig01-hand-one-counted-fact-committed-reserved.jpeg)
 **Figure 2:** *On hand is the one counted fact; committed, reserved and held-back units are claims against it; available-to-promise is what remains, and it is a derivation that each channel should receive, not a number each channel should keep.*
 
-The vendors' own vocabularies show that this is not one platform's idea. The table aligns four of them; the alignment is the author's, none of the vendors publishes such a mapping.
+The vendors' own vocabularies show that this is not one platform's idea. The table aligns four of them; the alignment is the author's, none of the vendors publishes such a mapping. Note that three of the four say "reserved" or "reservation" for what this chapter calls committed: a claim by a placed order.
 
 | Concept | Shopify (developer docs, n.d.) | commercetools (API docs, n.d.) | Adobe Commerce (docs, updated 2026-08) | SAP Commerce (2022 API docs) |
 | --- | --- | --- | --- | --- |
@@ -85,15 +85,19 @@ The vendors' own vocabularies show that this is not one platform's idea. The tab
 | Held back deliberately | `safety_stock`, `damaged`, `quality_control` | none built in | none built in | none built in |
 | Location | location | supply channel | source, grouped into stocks | warehouse |
 
-Shopify's developer documentation (n.d., accessed November 2026) states the arithmetic plainly: on hand "equals the sum of inventory quantities that are in the available, committed, reserved, damaged, safety_stock, and quality_control states", and incoming is not part of on hand. Its POS gained "On hand" and "Unavailable" states on 9 February 2023, with the stated aim of reducing accidental overselling. And on 5 August 2026 Shopify moved the holds for draft orders and transfers from `reserved` to `committed`, leaving `available` and `on_hand` unchanged: an integration that subtracted `reserved` in its own calculation changed behavior that day without any code change. Even the meaning of a stock state can move under the systems that read it ([[api-contracts-and-versioning]]).
+Shopify's developer documentation (n.d., accessed November 2026) states the arithmetic plainly: on hand "equals the sum of inventory quantities that are in the available, committed, reserved, damaged, safety_stock, and quality_control states", and incoming is not part of on hand. Its POS gained "On hand" and "Unavailable" states on 9 February 2023, with the stated aim of reducing accidental overselling.
 
-**The warehouse owns on hand. The order-taking system owns committed. Nobody should own "available", because it is a computation.** Most oversells begin when a system stores "available" as a fact and lets another system overwrite it.
+On 5 August 2026 Shopify moved the holds for draft orders and transfers from `reserved` to `committed`, leaving `available` and `on_hand` unchanged: an integration that subtracted `reserved` in its own calculation changed behavior that day without any code change. Even the meaning of a stock state can move under the systems that read it ([[api-contracts-and-versioning]]).
+
+Each of these numbers needs an owner. **Inventory valuation**, what the stock is worth in the books, stays in the ERP; it needs cost prices and accounting rules the commerce side should never hold ([[erp-and-back-office-integration]]). For the numbers in the formula, the rule is short. **The warehouse owns on hand. The order-taking system owns committed. Nobody should own "available", because it is a computation.** Most oversells begin when a system stores "available" as a fact and lets another system overwrite it.
 
 ## When a Unit Becomes Promised: Reservations and Allocations
 
 The platforms disagree about *when* a unit leaves the available number: when it goes into a cart, when the order is created, or when the warehouse allocates it to a pick. This is a business choice with a cost on each side, and the vendors expose it as configuration.
 
-commercetools lets each cart choose an inventory mode (API documentation, n.d., accessed November 2026): `TrackOnly` lets an order be created "even if the Inventory Entry quantity is zero or negative"; `ReserveOnOrder` reserves line items "only for the duration of the ordering transaction" and returns an out-of-stock error if a line is gone when the order is created; `ReserveOnCart` reserves units at add-to-cart, releases them on removal and expires them after a configurable 1 to 44,640 minutes. The same documentation states that cart- and order-driven quantities are eventually consistent with the internal availability used for reservations, with a delay of up to 10 seconds. Adobe Commerce reserves "when submitting an order", creates a compensating reservation on cancellation and deducts from the specific source when the order ships (documentation, updated 20 August 2026). Shopify commits units at order creation and keeps them committed while an order is on hold (help center, n.d.).
+commercetools lets each cart choose an inventory mode (API documentation, n.d., accessed November 2026): `TrackOnly` lets an order be created "even if the Inventory Entry quantity is zero or negative"; `ReserveOnOrder` reserves line items "only for the duration of the ordering transaction" and returns an out-of-stock error if a line is gone when the order is created; `ReserveOnCart` reserves units at add-to-cart, releases them on removal and expires them after a configurable 1 to 44,640 minutes. The same documentation states that cart- and order-driven quantities are eventually consistent with the internal availability used for reservations (they agree only after a short delay), with a delay of up to 10 seconds. Adobe Commerce reserves "when submitting an order", creates a compensating reservation (one that cancels the first) on cancellation and deducts from the specific source when the order ships (documentation, updated 20 August 2026). Shopify commits units at order creation and keeps them committed while an order is on hold (help center, n.d.).
+
+Each of the three moments protects something different and costs something different.
 
 | Moment the unit is promised | Protects | Costs | Fits |
 | --- | --- | --- | --- |
@@ -121,13 +125,13 @@ A **channel** is a place where a promise is made: a storefront, a marketplace li
 
 **Sourcing is a separate decision.** Once a line can be fulfilled from more than one location, someone must decide which. Adobe Commerce ships two source-selection algorithms, source priority (a configured list) and distance priority (nearest source to the shipping address), per its documentation updated 20 August 2026. Shopify assigns groups of lines to a location through a *fulfillment order* (developer docs, n.d.). The moment sourcing needs capacity, cut-off times, carrier cost or split-shipment limits, the decision moves to an order management system, [[order-management]]'s subject.
 
-**Wholesale needs allocations, not just availability.** A wholesale buyer who ordered 240 jackets for spring should not compete with Friday-evening shoppers for them. An **allocation** reserves part of the pool for a customer, a season or a channel in advance, so the storefront sees on hand minus committed minus allocations. None of the four platforms above holds per-customer allocations; they are order management territory ([[b2b-commerce]] covers the commercial side).
+**Wholesale needs allocations, not just availability.** A wholesale buyer who ordered 240 jackets for spring should not compete with Friday-evening shoppers for them. An **allocation** here reserves part of the pool for a customer, a season or a channel in advance (a second sense of the word: in the warehouse, allocation assigns a unit to a placed order), so the storefront sees on hand minus committed minus allocations. None of the four platforms above holds per-customer allocations; they are order management territory ([[b2b-commerce]] covers the commercial side).
 
-Two further cases promise stock that is not on hand. A **backorder** accepts an order for a unit that is out but expected; a **pre-order**, for a unit not yet released. Both are legitimate only if the incoming quantity is tracked and the date is honest; Directive 2011/83/EU, Article 18, requires delivery within 30 days unless agreed otherwise, so an open-ended backorder is a legal risk too. **Inventory valuation**, what the stock is worth in the books, stays in the ERP; it needs cost prices and accounting rules the commerce side should never hold ([[erp-and-back-office-integration]]).
+Two further cases promise stock that is not on hand. A **backorder** accepts an order for a unit that is out but expected; a **pre-order**, for a unit not yet released. Both are legitimate only if the incoming quantity is tracked and the date is honest; Directive 2011/83/EU, Article 18, requires delivery within 30 days unless agreed otherwise, so an open-ended backorder is a legal risk too.
 
 ## How the Pieces Fit: The Availability Service
 
-With several locations and channels, the clean arrangement separates three responsibilities and connects them with events. A **stock event** is a message sent the moment a stock quantity changes, saying which stock-keeping unit (**SKU**, one sellable variant such as the Ridgewalker women's M in moss), at which location, changed by how much, why, and when. A **queue** holds events until each consumer has processed them.
+With several locations and channels, the clean arrangement separates three responsibilities and connects them with events. A **stock event** is a message sent the moment a stock quantity changes, saying which stock-keeping unit (**SKU**, one sellable variant such as the Ridgewalker women's M in moss), at which location, changed by how much, why, and when. A **queue** holds events until each consumer has processed them. A **reconciliation job** compares, on a schedule, the service's copies with the systems that count and commit.
 
 | Component | Responsibility | Writes | Never writes |
 | --- | --- | --- | --- |
@@ -139,7 +143,7 @@ With several locations and channels, the clean arrangement separates three respo
 ![Diagram: The Waypoint target](assets/images/10-inventory-and-availability/fig03-waypoint-target-counting-systems-send-stock.jpeg)
 **Figure 5:** *The Waypoint target: counting systems send stock events, order-taking systems send commitments, one availability service derives available per channel and publishes it back, and a reconciliation job checks the copies against the counts.*
 
-This is Waypoint decision W1 drawn as a diagram. The WMS is the system of record for physical stock at Duiven (the **system of record** is the one system whose value is the truth when copies disagree; [[boundaries-and-systems-of-record]] owns the idea). The POS is the system of record for store stock. The marketplace's program stock is a tracked external location. The availability service is bought as a module of the OMS Kestrel & Pine introduces under W2, not built, and the hourly chain is retired by Q4 2027.
+This is Waypoint decision W1 drawn as a diagram. The WMS is the system of record for physical stock at Duiven (the **system of record** is the one system whose value is the truth when copies disagree; [[boundaries-and-systems-of-record]] owns the idea). The POS is the system of record for store stock. The marketplace's program stock is a tracked external location. The availability service is bought as a module of the OMS Kestrel & Pine introduces under W2, not built, and the hourly chain is retired by Q4 2027. The service holds a safety buffer per channel, and its copies are reconciled with the WMS on a schedule; the worked example below gives the figures.
 
 ### Requirements per interaction
 
@@ -157,25 +161,27 @@ The checkout row carries the design. It is the only place where the last unit mu
 
 ### Events versus periodic sync
 
-The difference between a stock event and an hourly sync is not only speed. A sync copies a snapshot, which must be applied carefully into a system that has its own claims (committed units). An event describes a change: it can be applied as a delta, kept in order per SKU and location, and deduplicated by its id.
+The difference between a stock event and an hourly sync is not only speed. A sync copies a snapshot, which must be applied carefully into a system that has its own claims (committed units): if the snapshot overwrites the receiving system's available figure, the commitments made since the count are erased. An event describes a change: it can be applied as a delta (add or subtract the change), kept in order per SKU and location, and deduplicated by its id.
 
 Public examples show both ends. Shopify polls a fulfillment service's stock endpoint for on hand per SKU hourly (developer docs, n.d., accessed November 2026). Picqer, a Dutch warehouse system for small and mid-size merchants, documents a `products.free_stock_changed` webhook "to support real-time stock updates in a store" (n.d., accessed November 2026); a **webhook** is a push notification the source sends to a receiver's URL when something changes. Microsoft's inventory sync between Business Central and Shopify (documented 14 October 2026) is the careful middle: it compares "Shopify Stock" with "Last Calculated Stock" per variant and location and sends an update only when they differ.
 
-At group scale the same design appears with industrial tooling. A 2020 account of Walmart's inventory backend, by its then director of engineering on Confluent's blog (4 May 2020; the author's views, not Walmart's endorsement), describes more than ten event sources normalized into one canonical inventory event, where "Each item-store combination always maps to one specific partition, so only one consumer processes it". The account is six years old; the idea, one ordered stream of changes per SKU and location, is the point.
+At group scale the same design appears with industrial tooling. A 2020 account of Walmart's inventory backend, by its then director of engineering on Confluent's blog (4 May 2020; the author's views, not Walmart's endorsement), describes more than ten event sources normalized into one canonical inventory event, where "Each item-store combination always maps to one specific partition, so only one consumer processes it" (a partition is one ordered sub-stream of the event stream). The account is six years old; the idea, one ordered stream of changes per SKU and location, is the point.
 
 ## The Choices
 
-A growing merchant has four realistic ways to compute availability. Each is right for a stage, and each becomes a limit at the next.
+The availability service of the previous section is one of four realistic ways a growing merchant can compute availability, and it is not the right one for every merchant. Each is right for a stage, and each becomes a limit at the next.
 
 **1. The platform's own stock.** The platform's inventory fields are the system of record for on hand, committed and available; apps, a same-vendor POS and a 3PL connector write to it. This is how Kestrel & Pine ran in 2016–2018 with its Tiel 3PL, and how most merchants start. It works while there is one location and the platform is the only system that takes orders.
 
-**2. The ERP or WMS as the stock master, with periodic sync.** An ERP or WMS counts on hand; a connector copies it to the platform and from there to channels on a schedule. This is Kestrel & Pine's January 2027 landscape and the most common arrangement at the Growing stage, because every ERP and WMS vendor ships such a connector. Its limit is structural: the copy is a snapshot, the schedule is a lag, and each hop adds its own clock. The Oversell is what it does at peak.
+**2. The ERP or WMS as the stock master, with periodic sync.** An ERP or WMS counts on hand; a connector copies it to the platform and from there to channels on a schedule. This is still Kestrel & Pine's landscape in January 2027, and it is the most common arrangement at the Growing stage, because every ERP and WMS vendor ships such a connector. Its limit is structural: the copy is a snapshot, the schedule is a lag, and each hop adds its own clock. The Oversell is what it does at peak.
 
 **3. An event-driven availability service.** Counting systems emit stock events; order systems emit commitments; one service derives available per channel and publishes it. This is W1. It can be bought (a module of an OMS, a feature of an enterprise platform, a standalone inventory service) or built (a small service over a queue). The cost is integration work on every counting and ordering system, and the discipline of one writer per state.
 
 **4. A fulfillment provider's shared pool.** The merchant hands physical stock to a logistics provider that promises it to several channels from one pool. Zalando's ZEOS announced in November 2024 that it would fulfill most of NEXT's continental-European direct-to-consumer orders through "a unified stock pool and an advanced order management system"; by March 2026 it reported 24 markets and 18 sales channels (letter to shareholders, 12 March 2026). This moves the availability problem to the provider, at the price of the merchant's control over the count and the buffer.
 
 ## Trade-offs
+
+The four options differ on five points: how long the other channels take to learn of a sale, how many systems write "available", whether buffers and allocations are possible, what the integration costs, and how the option breaks.
 
 | Criterion | 1. Platform stock | 2. Stock master plus sync | 3. Availability service | 4. Provider pool |
 | --- | --- | --- | --- | --- |
@@ -195,26 +201,22 @@ Consider a separate availability service when any two conditions apply: multiple
 | --- | --- | --- | --- |
 | **1 — Starting** (Kestrel & Pine 2016–2018) | The platform's own stock fields; a 3PL or back room counts through the platform's app; reserve-on-order | A weekly count against the platform; at most one app with permission to write inventory | A 3PL or an accounting system starts "correcting" the platform's number by hand |
 | **2 — Growing** (2019–2022) | An ERP or 3PL system counts on hand; a vendor connector syncs it to the platform on a schedule; the first marketplace gets a copy of the copy | A written owner for on hand and for committed; a daily reconciliation; a safety buffer on the marketplace | Out-of-stock cancellations cluster in busy weeks; two systems can both write inventory; the first "why did the website not know" |
-| **3 — Omnichannel** (2023–, now) | Own warehouse on a WMS, stores on a POS, a marketplace program holding stock, several channels; the chain of copies | One availability service (bought or built) fed by stock events; per-channel buffers; wholesale allocations; reconciliation weekly, daily at peak | An oversell at peak; click-and-collect checked by phone; apps writing stock; sync lag in hours; cycle counts finding double-digit variances |
+| **3 — Omnichannel** (2023–, now) | Own warehouse on a WMS, stores on a POS, a marketplace program holding stock, several channels; the chain of copies | One availability service (bought or built) fed by stock events; per-channel buffers; wholesale allocations; reconciliation weekly, daily at peak | An oversell at peak; click-and-collect checked by phone; apps writing stock; sync lag in hours; cycle counts (rolling partial stock counts) finding double-digit variances |
 | **4 — Group** | Several brands or countries, several warehouses, possibly several WMS vendors after acquisitions; a provider's pool for some markets | A shared availability service with per-brand segmentation; one ordered event stream per SKU and location; capacity-aware sourcing in the OMS | Brands competing for one pool with no allocation rules; the availability service becomes a bottleneck shared by every storefront |
 
 The approach changes with scale more than most topics in this book, because stock is the fact the most systems copy. What does not change: on hand is counted by one system per location, available is derived, and the last unit at checkout is committed atomically. A Starting merchant gets all three from the platform for free; an Omnichannel merchant must arrange them deliberately.
 
 ## In Practice
 
-Synchronizing every stock copy still fails if the original count is wrong. **Cycle counting** checks a small part of physical stock on a rolling schedule so discrepancies can be found and corrected; safety buffers reduce the risk while uncertainty remains.
-
-DeHoratius and Raman found 65% of nearly 370,000 inventory records inaccurate across 37 stores of one US retailer (*Management Science*, April 2008). This is an old, pre-RFID study of one retailer, not a current industry rate; later reviews report 20% to 67% across studies. It explains why counting accuracy deserves its own controls alongside the integration mechanisms discussed above.
-
 ### Kestrel & Pine, worked
 
-The reconstruction gave Noor three causes, and W1 answers each.
+Kestrel & Pine is the Omnichannel merchant that had not arranged these things. The January 2027 reconstruction of the opening scene gave Noor three causes, and W1 answers each.
 
-**Cause 1: lag by design.** Three hops, each on its own clock, up to two hours end to end. At 38 orders a minute, one hour of blindness is 2,300 orders, any of which could contain a Ridgewalker. W1 replaces the chain with stock events from the WMS to the availability service, carried by the iPaaS (the integration platform as a service that runs Kestrel & Pine's integrations) instead of passing through the ERP; the service republishes available to the platform and the connector within seconds. Of the 1,340 oversold units, about 790 were storefront orders and 550 marketplace orders (illustrative split); the marketplace share carried the penalties.
+**Cause 1: lag by design.** Three hops, each on its own clock, up to two hours end to end. At 38 orders a minute, one hour of blindness is 2,300 orders, any of which could contain a Ridgewalker. W1 replaces the chain with stock events from the WMS to the availability service, carried by the iPaaS (the integration platform as a service that runs Kestrel & Pine's integrations) instead of passing through the ERP; the service republishes available to the platform and the connector within seconds.
 
 **Cause 2: several writers.** Six writers could change Duiven stock: the WMS feed (reaching the platform through the ERP's hourly sync), hand adjustments in the ERP, hand edits in the platform admin and three apps. Four of them were automated flows into the platform: the hourly sync and the three apps. W1 names one writer per state: the WMS writes on hand for Duiven, the POS for each store, the platform and the connector write committed, the service writes available. The apps lose their inventory permission; the pre-order app, if it survives the app review of [[extensibility-and-app-ecosystems]], gets a pre-order allocation in the service instead.
 
-**Cause 3: no buffer, no reconciliation.** Every channel sold down to the last unit, and nobody compared the WMS with the platform until the first weekly reconciliation in May 2027 found 2.3% of active variants with a different quantity, most left behind by the apps. After W1 the service holds a per-channel safety buffer, illustratively 3 units per SKU for marketplaces and 1 for the storefronts, and reconciliation runs weekly, daily in November.
+**Cause 3: no buffer, no reconciliation.** Every channel sold down to the last unit, and nobody compared the WMS with the platform. When the first weekly reconciliation ran, in May 2027, four months after the reconstruction, it found 2.3% of active variants with a different quantity, most left behind by the apps. After W1 the service holds a per-channel safety buffer, illustratively 3 units per SKU for marketplaces and 1 for the storefronts, and reconciliation runs weekly, daily in November.
 
 Had W1 existed on 27 November 2026: the pick at 19:40 emits an event; the service recomputes the Ridgewalker's availability within seconds; the storefront badge flips to sold out and the connector pushes zero to the marketplaces on its next run, minutes later rather than two hours. The marketplace buffer would have pulled the listing a few sales before the shelf emptied. The oversell shrinks from 1,340 units to the handful that slip through the marketplace's own push interval. That is not zero. **No availability design reaches zero oversells; the goal is to make the window seconds wide and the buffer deliberate.**
 
@@ -234,7 +236,13 @@ Stock integrations fail in a small number of recurring ways. Each has a detectio
 
 One entry recurs in the detection column: the reconciliation job. **A stock integration without a reconciliation job is not finished**, because every delivery mechanism a merchant will meet (a webhook, a queue, a connector's retry) delivers at least once and sometimes not at all. Shopify's webhook documentation says delivery "isn't always guaranteed" and tells apps to "use reconciliation jobs to periodically fetch data" (n.d., accessed November 2026). Waypoint W5 makes the reconciliation job a condition of every integration.
 
+A reconciliation compares every copy with the count. It cannot tell whether the count itself is right, and research finds that it often is not: this is the last row of the table. DeHoratius and Raman found 65% of nearly 370,000 inventory records inaccurate across 37 stores of one US retailer (*Management Science*, April 2008). This is an old study of one retailer, made before radio-frequency identification (RFID) tags were used to count stock, not a current industry rate; later reviews report 20% to 67% across studies.
+
+Counting accuracy therefore deserves its own controls alongside the integration mechanisms discussed above. **Cycle counting** checks a small part of physical stock on a rolling schedule so discrepancies can be found and corrected; safety buffers reduce the risk while uncertainty remains.
+
 ## What to Take Away
+
+The web shopper and the store customer of the opening could both be sold the last jacket because each channel kept its own number. Give each location one counted fact, give each claim on it one writer, derive in one place what each channel may sell, and commit the unit to exactly one order at checkout: then one of the two gets the jacket and the other sees "sold out" before paying. None of this needs a faster copy. It needs a written decision about who writes each number, how a change travels and what compares the copies, and that decision can be made before any product is bought.
 
 **Established.**
 
@@ -265,7 +273,11 @@ One entry recurs in the detection column: the reconciliation job. **A stock inte
 7. When did the last reconciliation between the counting system and the platform run, what variance did it find, and who fixed it?
 8. What happens to checkout if the availability service is down for ten minutes?
 
-Eva's jacket is in stock, and the unit she is about to buy will be committed to her order and to nobody else's. The next part follows that click: the cart as a draft, the checkout as a timed orchestration of every promise so far, and the payment that turns a promise into an order. Continue with [[part-3]] and [[cart-and-checkout]].
+This chapter closes Part II. The part opened with a product page on which a description, a price and a stock badge sit side by side and change at different speeds. Its five chapters each started from a Kestrel & Pine incident: the season typed four times, the Price Drift, the Stacking Bug, the jacket nobody could find and the Oversell. They look like five problems in five tools. They are one problem: a system showed or used a value it did not own, and nothing compared that value with the system that did own it.
+
+Each chapter's remedy has the same three parts: one writer per fact, a declared path to each channel, and a comparison of every copy with its source. None of Kestrel & Pine's 2027 remedies replaces the shop platform; they are an ownership table per fact, events in place of scheduled copies, and reconciliations. You can make the same list for your own company before any purchase is discussed. For product content, price, discount and stock, write down the owner, who may write, how each channel learns of a change and what compares the copy with the source. Start with stock, the fact that changes fastest.
+
+Eva's jacket is in stock, and the unit she is about to buy will be committed to her order and to nobody else's. The next part follows that click, the step at which the product, the price, the discount and the available unit are fixed into an order and money is taken: the cart as a draft, the checkout as a timed orchestration of every promise so far, and the payment that turns a promise into an order. Continue with [[part-3]] and [[cart-and-checkout]].
 
 ## Sources and Evidence
 

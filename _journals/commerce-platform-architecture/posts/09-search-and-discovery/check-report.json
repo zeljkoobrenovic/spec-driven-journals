@@ -1,0 +1,744 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/09-search-and-discovery/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/09-search-and-discovery/index.md",
+  "spec_sha": "a029e4800d2b02d1",
+  "draft_sha": "c3d1f03a21edb4de",
+  "run_at": "2026-11-12T13:09:40+01:00",
+  "round": 1,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter aim: how search, navigation, merchandising, recommendations and reviews help a shopper find a product, and what catalog, prices and stock must provide.",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Key points: the index is a copy that goes stale; search is only as good as the data under it; reviews are discovery data with provenance rules.",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: the Phantom Stock, the Message in a Bottle and the Lynchpin, each as it appears in search.",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "A jacket vanishes from filtered results because its waterproof rating never reached the storefront; discovery depends on product facts, not ranking.",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "The search index only holds copies of content, price and stock; copies age, so each feed needs a named source and a repair process.",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Reviews are the fourth kind of index data: a ranking signal that also carries a legally required record of where each review came from.",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the chapter: the Kestrel & Pine report, discovery vocabulary, the index as a copy, reviews, product choices, and failures.",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "Topics left to other chapters and the companion book: source data owners, deep engine and ranking detail, shopping agents, SEO.",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Introduction ¶6",
+      "summary": "Places the chapter in the order's journey: Eva searches for a jacket, and search must combine description, price and stock.",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Waterproof Jacket Nobody Could Find ¶1",
+      "summary": "Sets up Kestrel & Pine's March 2027 search review: built-in search, catalog size, who took part, figures illustrative.",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Waterproof Jacket Nobody Could Find ¶2",
+      "summary": "What the report showed: the best-seller unfindable for lack of an attribute, no synonyms, and two-hour-old stock shown on the busiest evening.",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Waterproof Jacket Nobody Could Find ¶3",
+      "summary": "The three fixes: synonym sets now, a waterproofness attribute when the PIM arrives, and availability from its own service later.",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Three Ways to Find a Product ¶1",
+      "summary": "Discovery is whatever connects a shopper's need to the roughly 17,000 active variants.",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Three Ways to Find a Product ¶2",
+      "summary": "Plain definitions of search terms: index, indexing, relevance, ranking, facet, merchandising rule, synonym set, typo tolerance, personalization, zero-result rate.",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Three Ways to Find a Product ¶3",
+      "summary": "Baymard's research shows sites handle product-name searches but often fail feature and use-case queries, the same pattern as Kestrel & Pine.",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together: The Index as a Copy ¶1",
+      "summary": "Introduces the diagram: the search service consumes four systems of record, each changing at its own pace.",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together: The Index as a Copy ¶2",
+      "summary": "The central decision is which facts sit in the index (filterable but stale) and which are fetched fresh at query time (current but not filterable).",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together: The Index as a Copy ¶3",
+      "summary": "The rule behind the table: each feed must refresh as often as the shown statement can change; otherwise fetch the fact at query time.",
+      "matched_spec_paragraph": "p15a"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together: The Index as a Copy ¶4",
+      "summary": "Availability is the hardest case: chained stock copies showed sold-out items as in stock; the fix is a coarse event-fed flag plus a live check.",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together: The Index as a Copy ¶5",
+      "summary": "Scheduled synchronization copies on an interval, so the index lags by that interval or more.",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together: The Index as a Copy ¶6",
+      "summary": "Event-driven indexing updates records within seconds but needs safe handling of repeats and a job that finds missed updates.",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together: The Index as a Copy ¶7",
+      "summary": "Always keep a full rebuild possible, built beside the live index and switched over only when complete.",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together: The Index as a Copy ¶8",
+      "summary": "How a lexical engine matches and ranks words, and why synonyms applied at search time are easier to keep current.",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together: The Index as a Copy ¶9",
+      "summary": "Merchandising rules override relevance and should be managed like promotions, with an owner, start, end and regular review.",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together: The Index as a Copy ¶10",
+      "summary": "Facets are only as good as attribute completeness and platform limits, so their quality is decided in the PIM.",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together: The Index as a Copy ¶11",
+      "summary": "Collaborative filtering recommends from other shoppers' behaviour; Amazon's history shows simple baselines are hard to beat.",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together: The Index as a Copy ¶12",
+      "summary": "Vector search matches meaning, and hybrid search merges it with word matching; major engines now offer it because word matching alone misses variants.",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together: The Index as a Copy ¶13",
+      "summary": "Embeddings are another derived copy that goes stale and needs reindexing on a model change / Vendor conversion-lift figures are uncontrolled anecdotes, so measure your own first.",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together: The Index as a Copy ¶14",
+      "summary": "Conversational search is the frontier, and what an assistant needs from the merchant is the same structured, fresh data agents need.",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together: The Index as a Copy ¶15",
+      "summary": "Wholesale search must show each buyer their assortment and price; contract prices go in the index for few tiers or are merged at query time for many.",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together: The Index as a Copy ¶16",
+      "summary": "Assortment visibility must be enforced inside the search service, tied to the account's credential, because results can leak information.",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Reviews and Ratings as Discovery and Trust Data ¶1",
+      "summary": "A review does two jobs: it ranks and persuades as discovery data, and it is a regulated claim of purchase as trust data.",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Reviews and Ratings as Discovery and Trust Data ¶2",
+      "summary": "EU and US law require merchants to verify that reviews are genuine, disclose ranking parameters, and forbid fake, bought or suppressed reviews.",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Reviews and Ratings as Discovery and Trust Data ¶3",
+      "summary": "Four design consequences for reviews: record provenance per review, moderate by rule, disclose unconditional incentives, document ranking parameters.",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Reviews and Ratings as Discovery and Trust Data ¶4",
+      "summary": "Marketplace reviews belong to the marketplaces, not the merchant / A merchant this size should use a specialist reviews service and ensure ratings reach the index and order links survive.",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "The Choices ¶1",
+      "summary": "Option one: the shop platform's built-in search, free with published limits, suited to catalogs that fit the platform and tolerate its delay.",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "The Choices ¶2",
+      "summary": "Option two: a hosted search service fed by events, buying tooling at the cost of integrations, fees and vendor-held configuration.",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "The Choices ¶3",
+      "summary": "Option three: a self-run engine, right when relevance is a competitive asset or data must stay in-house, at the cost of a dedicated team.",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "The Choices ¶4",
+      "summary": "Option four: search as its own platform inside a composable or marketplace stack, suited to groups.",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "The Choices ¶5",
+      "summary": "The author's rule: measure zero-result rate and failing queries before buying, since much is fixed with existing tools and data.",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "Across scale stages the feeding pipeline matters more than the engine; each stage has a different limiting factor and fix.",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "In Practice ¶1",
+      "summary": "Search interfaces get retired by vendors, so integrations must move before the cutoff.",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "In Practice ¶2",
+      "summary": "Vendor search limits are documented and can exclude filters, prices or variants, so read them before committing.",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "In Practice ¶3",
+      "summary": "Measure search by results found, clicks and purchases per language and channel, keeping counting rules consistent.",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "In Practice ¶4",
+      "summary": "Kestrel & Pine's 2027 plan kept its existing vendor, applied the three fixes plus routine upkeep, and cut zero-result searches cheaply.",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "Failure: the index shows stock the warehouse lacks; how to detect it by sampling and recover with the flag and live check.",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶2",
+      "summary": "Failure: a catalog change never reaches the index; detect with an hourly comparison job and re-index the differences.",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶3",
+      "summary": "Failure: an unplanned full rebuild done in place serves a half-built index; build beside the old one and swap.",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶4",
+      "summary": "Failure: synonyms applied to the wrong language index; detect per-language metrics and keep one owned set per language.",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶5",
+      "summary": "Failure: a merchandising rule outlives its campaign; list rules without end dates and require validity windows.",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶6",
+      "summary": "Failure: review provenance is lost when the reviews app changes; keep the order link in your own store.",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶7",
+      "summary": "Failure: wholesale assortments or prices leak because filtering happened in the storefront; enforce it in the service and treat as a security incident.",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶8",
+      "summary": "Failure: the hosted search service is down; navigation must still work and the search box must show an error, not empty results.",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "Synthesis: every fault was results unsupported by their sources; three conditions prevent it, all owned outside search, so fund data before a vendor.",
+      "matched_spec_paragraph": "p51a"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "What is established: the index is a lagging copy, the standard search measures, hybrid retrieval is now common, and review provenance is legally required.",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "What depends on context: when built-in search suffices, when a hosted service pays off, when to index availability, where to enforce wholesale visibility.",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "The author's view: fund the PIM and availability service before a search vendor, and keep rules and synonyms as versioned data outside vendor consoles.",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten questions for applying the chapter's lessons to the reader's own company.",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Hand-off: search showed Eva the jacket as in stock; the next chapter examines what that availability promise means.",
+      "matched_spec_paragraph": "p56"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "reverse_outline_matches_spec",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 56 outline summaries state the controlling idea of the spec paragraph they are aligned to, in the spec's order. Two summaries are thinner than the spec idea because the unit's table carries the rest (p07: the report's figures; p10: the three forms), which is not a mismatch.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "The reverse outline, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[], the introduction and the conclusion; no unit is unmatched.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "p24 (marked two_ideas): ruled one idea. The unit opens 'Two cautions.' and gives each caution with its own evidence under that one topic sentence, as the spec's controlling idea declares; a single phrase ('two cautions on AI retrieval') covers it.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "finding": "The outliner needed two phrases. The unit sets two statements side by side with no sentence joining them: marketplace review pools belong to the marketplaces, and a merchant of this size should use a specialist reviews app. The spec's transition gives the joining idea (where reviews should run and what remains the merchant's work); the draft never states it, so the unit reads as two ideas.",
+      "spec_locus": "p31",
+      "draft_locus": "Reviews and Ratings as Discovery and Trust Data ¶4",
+      "quote": "Marketplaces keep their own reviews under their own rules; a merchant selling on bol, Amazon.de and Zalando has three review pools it does not own",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "fail",
+      "finding": "The unit says that a vendor can withdraw the query interface and the integration must move. None of S1 to S6 covers that: it is not about what the index holds, how it is fed, what runs on its records, or reviews, and a withdrawn query interface is not a failure of a feed (S4). The draft renders the spec paragraph faithfully, so the gap is in the spec. Both flow readers also found the item out of place. Every other unit ties to a supporting claim (p22 and p25 loosely to S5, p27 and p50 loosely to S3).",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "In Practice ¶1",
+      "quote": "**Retired search interfaces.** A storefront depends on the interface through which it queries the search engine.",
+      "fault": "spec",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "finding": "The three-ways table has no sentence saying what it shows. The prose before it ends on 'Discovery is whatever connects the two' and the next paragraph turns to vocabulary; nothing says that discovery takes three forms or that search and navigation both need indexed text and attributes while recommendations need behavior data (the spec's 'shows').",
+      "spec_locus": "/sections/1/paragraphs/0/evidence/0",
+      "draft_locus": "Three Ways to Find a Product ¶1",
+      "quote": "| Way of finding | What the shopper does | What the system needs | Who tunes it |",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "finding": "The requirements table follows the full-rebuild paragraph with no sentence before or after it saying what it shows (the spec: each kind of change has its own freshness and failure behavior; the product page and the availability service remain the truth). Both flow readers stopped at it.",
+      "spec_locus": "/sections/2/paragraphs/6/evidence/0",
+      "draft_locus": "How the Pieces Fit Together: The Index as a Copy ¶7",
+      "quote": "| Interaction | Freshness | Consistency | Latency | Availability |",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "finding": "The trade-off table stands between the fourth option and 'My rule' with no sentence saying what it shows (the spec: the options differ in who owns relevance and the pipeline, not only in features) or why it has three columns for four options. The table sits directly before this unit, which owns it in the spec.",
+      "spec_locus": "/sections/4/paragraphs/4/evidence/0",
+      "draft_locus": "The Choices ¶5",
+      "quote": "| Criterion | Platform built-in | Hosted search service | Self-run engine |",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "finding": "Declared: sequence, carrying over matching and ranking by words and rules and introducing recommending from behavior. The unit opens cold on a new term under a subheading that names personalization; nothing picks up the ranking just explained or says that what follows also works on the index's records. Both flow readers found this subsection unconnected to the section it sits in.",
+      "spec_locus": "/sections/2/paragraphs/10/transition_in",
+      "draft_locus": "How the Pieces Fit Together: The Index as a Copy ¶11",
+      "quote": "**Collaborative filtering** recommends items from patterns of what other shoppers viewed or bought together, without understanding the items.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "finding": "Declared for the section: additional support, carrying over the search products and the stages each fits and introducing what their vendors document and the plan Kestrel & Pine made. The section opens on its first item with no sentence at all; neither the heading 'In Practice' nor the first sentences say that these are findings from the vendors' documentation about the products just compared. Both flow readers marked the section's position unclear. All other declared transitions and the hand-off to inventory-and-availability are expressed at their boundaries; those of The Choices, the stages section, When It Goes Wrong and the Reviews section are carried only by the heading and the first sentences, which is thin but readable.",
+      "spec_locus": "/sections/6/transition_in",
+      "draft_locus": "In Practice ¶1",
+      "quote": "**Retired search interfaces.** A storefront depends on the interface through which it queries the search engine.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "finding": "Both flow readers marked the In Practice section 'unclear': four unrelated items, with no reason given for their order or for the section following the stages (reader_flow1: 'In Practice: unclear. It is four unrelated items ... and the order among them is not explained'). The spec's reason (three findings from the public record about the products just compared, then the plan that uses them) is sound but is nowhere in the prose.",
+      "spec_locus": "/sections/6",
+      "draft_locus": "In Practice ¶1",
+      "quote": "**Retired search interfaces.** A storefront depends on the interface through which it queries the search engine.",
+      "fault": "draft",
+      "corroborated_by": "reader_flow2 section list (In Practice: unclear)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "finding": "reader_flow1 item 10: 'a pattern not in the chapter's opening list, in an item that seemed out of place at the head of In Practice'; it would move the item to When It Goes Wrong. The difficulty comes from the item's place and subject, which the spec declares (see also paragraph_traces_to_thesis for p38).",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "In Practice ¶1",
+      "quote": "This is the Deprecated Endpoint failure in the search path",
+      "fault": "spec",
+      "corroborated_by": "reader_flow2 item 11",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "finding": "reader_flow1 item 4: 'I could not tell the two apart, and the introduction defined relevance differently (\"how well results match the request\")'. The roadmap paragraph and the vocabulary paragraph define relevance in two ways and the second does not separate it from ranking.",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Three Ways to Find a Product ¶2",
+      "quote": "**Relevance** is the engine's ordering of results for a query; **ranking** is the same thing seen as a list.",
+      "fault": "draft",
+      "corroborated_by": "reader_flow2 item 2",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "finding": "reader_flow1 item 3: 'the scene is set in March-April 2027 and the PIM \"goes live\" in Q3 in the sentence before; the jump to a past-tense result is abrupt'; it also leaves the impression that the PIM produced the result, which 'mainly through synonyms' later contradicts. Both readers re-read to find when 'now' is.",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The Waterproof Jacket Nobody Could Find ¶3",
+      "quote": "By Q4 2027 the zero-result rate was 4.1%.",
+      "fault": "draft",
+      "corroborated_by": "reader_flow2 item 3",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "finding": "reader_flow1 item 5: the table 'follows the full-rebuild paragraph with no sentence saying what it is'. reader_flow2 adds that 'Availability' in its heading means uptime, not stock.",
+      "spec_locus": "/sections/2/paragraphs/6",
+      "draft_locus": "How the Pieces Fit Together: The Index as a Copy ¶7",
+      "quote": "| Interaction | Freshness | Consistency | Latency | Availability |",
+      "fault": "draft",
+      "corroborated_by": "reader_flow2 item 6",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "finding": "reader_flow1 item 6: 'had to re-read to unpack the metaphor'. reader_flow2 re-read it twice and adds that 'a count' in the same sentence is not explained.",
+      "spec_locus": "/sections/2/paragraphs/8",
+      "draft_locus": "How the Pieces Fit Together: The Index as a Copy ¶9",
+      "quote": "because a rule that never expires is a price nobody can explain in a different costume.",
+      "fault": "draft",
+      "corroborated_by": "reader_flow2 item 7",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "finding": "reader_flow1 item 7: 'unclear what is being contrasted; the Amazon paragraph ... took two readings. Recommendations also sit oddly under \"The Index as a Copy\", since the table says behavior signals are not in the index.' reader_flow2 finds the same paragraph overloaded with dates, the subsection opening on recommendations under a heading that says personalization, and its place inside the index section unclear. The spec's reason for the place (these also run on the copy's records) is not stated in the prose.",
+      "spec_locus": "/sections/2/paragraphs/10",
+      "draft_locus": "How the Pieces Fit Together: The Index as a Copy ¶11",
+      "quote": "The lesson is evidence, not nostalgia",
+      "fault": "draft",
+      "corroborated_by": "reader_flow2 item 8",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "finding": "reader_flow1 item 9: 'a fourth choice is described, but the comparison table has three columns'. The spec's transition for this unit (the three options most merchants choose among, then the fourth for the largest) is not said, so the fourth option reads as dropped from the table.",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "The Choices ¶4",
+      "quote": "It is a Group-stage answer.",
+      "fault": "draft",
+      "corroborated_by": "reader_flow2 item 10",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "finding": "reader_flow1 item 2: 'the case that follows is a typed search returning nothing, not a filter; I wondered whether these were two incidents'. reader_flow2 reports the same mismatch at the conclusion ('a waterproof jacket that a filter could not find'). The hook's wording is fixed by the spec; the conclusion's 'a filter could not find' and the missing bridge between the generic shopper and the Kestrel & Pine query are the draft's.",
+      "spec_locus": "/introduction/hook",
+      "draft_locus": "Introduction ¶1",
+      "quote": "A shopper filters for a waterproof jacket, but a suitable product disappears from the results because its waterproof rating exists only in a spreadsheet.",
+      "fault": "unclear",
+      "corroborated_by": "reader_flow2 item 13",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "finding": "reader_flow2 item 1 only: 'the section never lists three things; I found them only in the conclusion'. The spec's roadmap paragraph promises the three conditions in the index section, but no paragraph of that section states all three (p15a states the second and third).",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "The longest section explains the index as a copy and the three things that must be true of it",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "finding": "reader_flow2 item 4 only: 'the next sentences give a rule and then \"one condition\"; unclear which is the one rule'.",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "How the Pieces Fit Together: The Index as a Copy ¶3",
+      "quote": "The table follows one rule.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "finding": "reader_flow2 item 5 only: present tense for a design not yet built, and 'the exact answer comes on the product page, where the table and the introduction say at query time, \"at the moment of the search\"'.",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "How the Pieces Fit Together: The Index as a Copy ¶4",
+      "quote": "and the product page asks that service for the exact number.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "finding": "reader_flow1 item 1 only: 'the paragraph before lists content, price, discount and stock, so I counted reviews as the fifth and went back'.",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "Reviews are a fourth kind of data in the index",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "finding": "reader_flow2 item 9 only: 'four quotations and two topics (reviews, ranking) in one sentence'.",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Reviews and Ratings as Discovery and Trust Data ¶2",
+      "quote": "Directive (EU) 2019/2161, applied from 28 May 2022, makes it material information whether reviews come from",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "finding": "reader_flow2 item 12 only: the plan 're-tells the opening fixes, three sections later, with \"broad\" for the earlier \"coarse\"'.",
+      "spec_locus": "/sections/6/paragraphs/3",
+      "draft_locus": "In Practice ¶4",
+      "quote": "It kept the three fixes told at the start of the chapter (synonyms per language, attributes in the PIM, a broad availability flag with the exact check left to the product page)",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "finding": "reader_flow1 item 11 only: 'The Lynchpin is promised at the top (\"by one agency, with no record of why\") but gets one clause in The Choices and no entry in When It Goes Wrong'.",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "The Choices ¶2",
+      "quote": "which is the Lynchpin risk.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "finding": "'segment-price design' is used as a name for one of the three designs just listed, none of which was given that name ('one price per tier or customer group'); the reader has to map it back.",
+      "spec_locus": "/intent/audience/does_not_know",
+      "draft_locus": "How the Pieces Fit Together: The Index as a Copy ¶16",
+      "quote": "fit the segment-price design",
+      "fault": "draft",
+      "corroborated_by": "reader_flow1 item 8",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "finding": "'click position' is on the spec's does_not_know list and the draft uses it three times (stage table, Measuring search, take-aways) without ever saying what it is.",
+      "spec_locus": "/intent/audience/does_not_know/0",
+      "draft_locus": "In Practice ¶3",
+      "quote": "conversion rate and average click position",
+      "fault": "draft",
+      "corroborated_by": "on the spec's does_not_know list (/intent/audience/does_not_know/0) and never explained in the draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "finding": "'assortment' is on the does_not_know list and is used in the freshness table before it is explained in the wholesale subsection.",
+      "spec_locus": "/intent/audience/does_not_know/2",
+      "draft_locus": "How the Pieces Fit Together: The Index as a Copy ¶2",
+      "quote": "| Category and assortment membership | Weekly | Hours | In the index |",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "finding": "'search-time synonyms' is not explained and the other side of 'the distinction' (synonyms applied when indexing) is never named.",
+      "spec_locus": "p19",
+      "draft_locus": "How the Pieces Fit Together: The Index as a Copy ¶8",
+      "quote": "recommends search-time synonyms because the sets can be updated without reindexing; the distinction matters at Kestrel & Pine",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "finding": "The acronym 'kNN' is never expanded or tied to the 'approximate nearest-neighbor retrieval' glossed earlier; AC-6 requires every acronym expanded on first use.",
+      "spec_locus": "/intent/acceptance_criteria/5",
+      "draft_locus": "The Choices ¶5",
+      "quote": "| Hybrid or semantic retrieval | Plan-gated, English first | Built in since 2023–2024 | Elastic kNN and hybrid; OpenSearch 2.11+ |",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "finding": "The legal term 'material information' carries the paragraph's point and is not explained (information a trader must give the consumer).",
+      "spec_locus": "p29",
+      "draft_locus": "Reviews and Ratings as Discovery and Trust Data ¶2",
+      "quote": "makes it material information whether reviews come from",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "finding": "'composable' is not on the known list and is not explained here.",
+      "spec_locus": "p35",
+      "draft_locus": "The Choices ¶4",
+      "quote": "**A search module of a composable or marketplace stack.**",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "finding": "Vendor names are used as evidence before the reader is told what the vendors are: commercetools is never identified, Algolia, Elasticsearch and OpenSearch only in The Choices, Shopify only by implication.",
+      "spec_locus": "p14",
+      "draft_locus": "How the Pieces Fit Together: The Index as a Copy ¶2",
+      "quote": "commercetools' Product Search (documentation accessed November 2026) shows the usual compromise",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The introduction opens on a specific case (a rating kept in a spreadsheet), states its claim and gives a roadmap; none of the weak patterns applies.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion does not open with 'in conclusion', does not end on a rephrased thesis alone and holds no new subtopic; the tiered lists restate points the body made, with small qualifications.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "The first paragraph of What to Take Away states what no single section states (four faults are one kind: a results page showing what its sources do not support; the three conditions are owned outside the search team) and says why it matters (the first money goes to attributes and a stock feed; 9.4% to 4.1% with the same engine).",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "The conclusion returns to the waterproof jacket whose rating existed only in a spreadsheet and says why no ranking algorithm could have found it and what did (an attribute and a synonym).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted every section in the spec's order (report, three ways and vocabulary, index as a copy with its three conditions, ordering and filtering, AI retrieval, wholesale, reviews, products by scale stage and vendor documentation, failures) and the plain, sceptical tone. Evidence: it named the Kestrel & Pine report, vendor documentation and the EU and US review rules, but said 'I do not expect measured data or studies', so the usability research (one paragraph) was not predicted; the introduction does not mention it.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader named the data gap (title says 'shell jacket', rating in a spreadsheet, search indexes only title, description, type and tags, no synonym) and would check the zero-result rate and top failing queries per language and which fields are indexed, before any new engine. Matches expected.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader answered: only a coarse 'available' flag in the index, the exact number from the availability service at query time or on the product page, because an indexed fact is only as fresh as the last indexing run and stock changes by the second; it cited the two-hour 'in stock' case. Matches expected.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader answered: how each review was collected and the order it is linked to, because Directive (EU) 2019/2161 requires a merchant to be able to show reviews come from real purchasers and to take reasonable steps to check. Matches expected.",
+      "severity": "minor"
+    }
+  ]
+}

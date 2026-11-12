@@ -206,6 +206,10 @@
   "changelog": [
     {
       "date": "2026-11-12",
+      "change": "Part II (part-2) brought from outline to full: part intent, thesis with supporting claims P2-1 to P2-6, flow, opening and closing; intent, thesis, role and transitions for the part intro and the five chapters (product-information, pricing-architecture, commerce-promotions, commerce-search-and-discovery, inventory-and-availability), reconstructed from the published chapters and their spec.md files. The part question and claim are rewritten so the claim answers the question; the product-information question now names ownership as well as modeling."
+    },
+    {
+      "date": "2026-11-12",
       "change": "Preface brought from outline to full: part intent, thesis with supporting claims PF-1 to PF-3, flow, opening and closing; intent, thesis, role and transitions for introduction, where-commerce-platforms-go-wrong and meet-kestrel-and-pine, reconstructed from the published pages and their spec.md files. The part claim drops 'almost all'."
     },
     {
@@ -1065,16 +1069,114 @@
     {
       "id": "part-2",
       "title": "Part II — CATALOG: Products, Prices and Promises",
-      "detail": "outline",
+      "detail": "full",
+      "intent": {
+        "outcome": {
+          "know": [
+            "The four kinds of fact a shopper reads before buying (product content, price, discount, availability), how fast each changes and which kind of system owns each.",
+            "That the search index and the listings on channels the merchant does not run are copies of those facts."
+          ],
+          "believe": [
+            "Product content, price, discount and availability need separate owners and separate paths to the channels, although they appear side by side on one product page.",
+            "A value shown from a copy that nothing compares with its source is a promise the merchant cannot be sure of keeping."
+          ],
+          "can_do": [
+            "For product content, price, discount and stock at their own company, name the system of record, who may write it, how each channel learns of a change and what compares the channel's copy with the source."
+          ]
+        },
+        "acceptance_criteria": [
+          {
+            "id": "AC-1",
+            "statement": "Every supporting claim of the part thesis is argued by at least one chapter, and every chapter supports at least one.",
+            "check": "children_cover_parent_thesis",
+            "method": "deterministic",
+            "severity": "blocker"
+          },
+          {
+            "id": "AC-2",
+            "statement": "Each chapter's closing hand-off expresses the relationship its successor declares in transition_in.",
+            "check": "transition_expresses_declared_relationship",
+            "method": "rubric",
+            "severity": "major"
+          },
+          {
+            "id": "AC-3",
+            "statement": "Given a channel that shows a different price and a different stock status from the merchant's own shop, a reader who has read only Part II treats them as two facts with two owners and asks about the source and the comparison of each copy, before asking for a faster synchronization or a new product.",
+            "check": "custom",
+            "method": "cold_reader",
+            "severity": "major",
+            "probe": "A marketplace listing shows a jacket at last week's campaign price and 'in stock'; the merchant's own shop shows the list price and 'sold out'. Using only Part II: which facts are involved, and what would you ask about each?",
+            "expected": "Two facts, price and availability, with different owners. The listing is a copy of each. For each: which system is the source, when and how the listing last learned of a change (an effective-dated price change; a stock event or a scheduled push), and what compares the listing with the source. Not 'synchronize faster' and not 'replace the connector'."
+          }
+        ]
+      },
       "thesis": {
-        "question": "What does the shop offer, and what can it promise about it?",
-        "claim": "Every promise a shop makes before the order (this product, this price, this discount, findable, in stock) is a fact owned by one capability and shown from copies, and it is only as good as the copy the channel reads."
+        "question": "Which system should own each fact a shopper reads before buying (the product's description, its price, a discount, its stock status), and how should each fact reach the channels and the search results that show it?",
+        "claim": "The four facts need four owners, not one catalog, because they do not change together (content changes by the season, a price by the day, a discount with each cart, stock by the second): product content is owned attribute by attribute in the system where its producing team works, a price by the system whose rule selects it, a discount by the cart that computes it, and stock status by one service that derives it from counted stock and commitments. A channel that can ask the owner at the moment of sale asks it; the search index and every other channel receive a copy of each fact, and a copy is safe to show only if it names its source and is compared with that source on a schedule set by how fast the fact changes.",
+        "disputed_by": "The view that the catalog is one record in one product, the shop platform or a product information system, which holds description, price, discount and stock together and pushes them to every channel on one schedule.",
+        "so_what": "A merchant that accepts the claim answers four ownership questions before it buys a product information system, a pricing service, a search service or a faster connector, and adds a comparison of copy against source to every feed it keeps; Kestrel & Pine's Price Drift ran for nine days, and its Black Friday Oversell for an evening, because no such comparison existed.",
+        "how_why": "A description may be a day old without harm, a price that is a day old is charged to real orders, a discount depends on a cart that does not exist until the shopper builds it, and the last unit can be sold in seconds; one update schedule is therefore too slow for stock or needlessly strict for content. A channel that holds its own listing cannot ask the owner at the moment of sale, so it shows a copy, and a pushed update that is lost raises no error anywhere: only a comparison finds it.",
+        "supporting_claims": [
+          {
+            "id": "P2-1",
+            "claim": "Product data needs one owning system per attribute, not per product, and identifiers (SKU, GTIN) that are never changed or reused, because orders, warehouses and marketplaces are keyed on them."
+          },
+          {
+            "id": "P2-2",
+            "claim": "A price is selected from several valid candidates by one written rule, once, at order placement, and frozen on the order; the invoice and any refund copy that frozen price."
+          },
+          {
+            "id": "P2-3",
+            "claim": "A discount is computed once, in the cart, in a declared order of evaluation with a stop rule, and is finished only when it is allocated to the order lines that invoices and refunds read; gift cards and loyalty points are balances the merchant owes, not discounts."
+          },
+          {
+            "id": "P2-4",
+            "claim": "The search index owns no fact: it is a copy of product, price, availability and review data, so what a shopper can find is decided by what is fed into the index and how fresh each feed is."
+          },
+          {
+            "id": "P2-5",
+            "claim": "'In stock' is a number derived from counted stock and commitments, each with one writer; it is computed in one place and published to the channels, not stored as a fact by each of them."
+          },
+          {
+            "id": "P2-6",
+            "claim": "A channel that cannot ask the owning system at the moment of sale shows a copy, and a copy is safe to show only with a named source and a scheduled comparison against it."
+          }
+        ]
       },
       "role": {
         "contribution": "Applies the record-and-copy rule to the facts that exist before an order: product, price, promotion, search index and availability.",
         "supports": [
           "J2"
         ]
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "additional_patterns": [
+          {
+            "pattern": "small_to_large",
+            "applies_to": "product-information to commerce-promotions: one variant, then the prices that variant can carry, then the discounts on a cart of several variants"
+          }
+        ],
+        "rationale": "Each chapter uses what the one before it fixed. Prices are stored per SKU, so the product chapter's identifiers come first; a discount is subtracted from a selected price, so pricing precedes promotions; the search index is a copy of product, price and discount data, so it follows the three chapters that say who owns them; it also copies stock status, which the search chapter treats only as a figure that goes out of date and leaves to the next chapter; availability comes last because the search chapter ends on a results page that says 'in stock' from a two-hour-old copy, which is the question the inventory chapter answers, and because its last step, committing one unit to one order at checkout, is where Part III begins. Putting inventory before search would remove that one forward reference, but the part would then end on search instead of on the unit committed at checkout. Moving search first would describe a copy before the reader knows what it copies or who owns the originals; moving inventory before pricing would cut the price-to-discount sequence in two and put the commitment at checkout four chapters away from the cart chapter that relies on it."
+      },
+      "opening": {
+        "carried_by": "part-2",
+        "hook": {
+          "type": "intriguing_example",
+          "content": "A shopper reads a jacket's description, price and stock badge on the same page. The description may stay unchanged for a season; the last sellable unit can disappear while the page is open."
+        },
+        "bridge": "From the shopper's side, where the description, the price and the badge sit side by side on one page, to the merchant's side, where each changes at its own speed and comes from a different system; and to Eva's order, which needs all of them to be right before she adds the jacket to her cart on 13 April 2027.",
+        "roadmap": "Five chapters, each opened by one Kestrel & Pine disagreement between copies: who owns product content and identifiers (a season typed four times); who selects a price and how channels receive it (the Price Drift); how offers combine and reach invoices and refunds (the Black Friday Stacking Bug); the search index as a maintained copy (the waterproof jacket nobody could find); physical stock against what a channel may still sell (the Black Friday Oversell)."
+      },
+      "closing": {
+        "carried_by": "inventory-and-availability",
+        "synthesis": "The season typed four times, the Price Drift, the Stacking Bug, the jacket nobody could find and the Oversell look like five problems in five tools. Read together they are one: a value shown or used by a system that did not own it, with nothing comparing it to the system that did. Each chapter's remedy has the same three parts: one writer per fact, a declared path to each channel, and a comparison of every copy with its source.",
+        "so_what": "None of Kestrel & Pine's 2027 remedies replaces the shop platform: they are an ownership table per fact, events in place of scheduled copies, and reconciliations. A reader can make the same list for their own company before any purchase is discussed.",
+        "callback": "The part opening's product page, where a description, a price and a stock badge sit side by side and change at different speeds.",
+        "takeaway": {
+          "type": "course_of_action",
+          "content": "For product content, price, discount and stock, write down the owner, who may write, how each channel learns of a change and what compares the copy with the source; start with stock, the fact that changes fastest."
+        }
       },
       "transition_in": {
         "relationship": "example",
@@ -1089,48 +1191,503 @@
           "folder": "part-2-intro",
           "title": "Part 2 introduction",
           "kind": "part_intro",
-          "detail": "outline",
-          "question": "What does this part argue, and in what order should its chapters be read?"
+          "detail": "full",
+          "question": "What does this part argue, and in what order should its chapters be read?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "Part II answers five questions in order: who owns product content and identifiers, who selects a price and how channels receive it, how offers combine and reach invoices and refunds, what feeds the search index, and what 'in stock' means.",
+                "The facts on one product page change at different speeds and have different owners."
+              ],
+              "can_do": [
+                "Pick the Part II chapter that answers the decision in front of them."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "A reader of this page alone can name the five chapters' subjects in reading order.",
+                "check": "intro_predicts_content",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "After reading only this page: what will each of the next five chapters tell you, in order?",
+                "expected": "Who owns product content and identifiers; who selects a price and how channels receive it; how offers combine and how discounts reach invoices and refunds; the search index as a maintained copy; physical stock against what a channel may still sell."
+              },
+              {
+                "id": "AC-2",
+                "statement": "A reader of this page alone can say why the facts on one product page are not updated on one schedule.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "minor",
+                "probe": "Using only this page: why should a product's description and its stock badge not be updated on the same schedule?",
+                "expected": "The description can stay unchanged for a season while the last unit can sell while the page is open; one schedule leaves the page right about the product and wrong about whether it can be bought; each fact needs its own owner and its own path to the channels."
+              }
+            ]
+          },
+          "role": {
+            "contribution": "Performs the part's opening: states the part thesis, places the part before 'add to cart' in Eva's order and gives the reading order.",
+            "supports": []
+          },
+          "post_spec": "posts/part-2-intro/spec.json"
         },
         {
           "id": "product-information",
           "folder": "06-product-information",
           "title": "What Are We Selling? Products, Variants and the Catalog",
           "kind": "chapter",
-          "detail": "outline",
-          "question": "How should products be modeled so that every channel shows the right thing?"
+          "detail": "full",
+          "question": "How should product data be modeled and owned so that every channel shows the same, correct product?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "The four things that share the name 'product' (product, variant, SKU, GTIN) and which of them may change.",
+                "Which system is the record for each kind of product data: identity and cost, logistic attributes, content, channel mappings, storefront presentation, listings.",
+                "The four ways merchants arrange product data and the test for when a product information system (PIM) is needed."
+              ],
+              "believe": [
+                "The design question is which system may change which field and how the others learn of it, not which tool to buy.",
+                "A channel's rejection of a product is a message to route to the field's owner, not an exception."
+              ],
+              "can_do": [
+                "Write an attribute-level ownership table for one product at their own company.",
+                "Say whether a merchant needs a PIM by counting the teams that produce product data and the channels that consume it."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "Given a short description of a merchant, the reader decides whether it needs a PIM by counting producers and consumers of product data, not by revenue or by what larger brands use.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "A merchant has one storefront in one language, and one team edits products in the shop platform. A vendor offers it a product information system. Using only this chapter: should it buy, and what is the test?",
+                "expected": "Not yet. The test is more than one producing team and more than one consuming channel; below that the shop platform is the right catalog, and a PIM bought early is the Giant's Boots."
+              },
+              {
+                "id": "AC-2",
+                "statement": "Given a product value that is right in one channel and wrong in another, the reader asks which system owns that attribute and in which direction it flows, before asking for a faster copy.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "The product team corrects a jacket's waterproof rating in the web shop; a marketplace listing still shows the old value. Using only this chapter: what is missing, and where should the correction have been made?",
+                "expected": "The attribute has no single owning system (system of record) with a one-way path to the channels. The correction belongs in the owning system, and the storefront and the marketplace both receive it from there; the shop platform's editor should be read-only for fields it does not own."
+              },
+              {
+                "id": "AC-3",
+                "statement": "The reader can state the rule for a mistyped or reusable identifier and the reason for it.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "minor",
+                "probe": "A SKU was typed wrong on a variant that already has orders. Using only this chapter: what should happen to it, and why?",
+                "expected": "Retire it and issue a new one, mapping the old one for history; never correct it in place and never reuse it, because orders, the warehouse and marketplaces are keyed on the SKU and the GTIN."
+              },
+              {
+                "id": "AC-4",
+                "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+                "check": "intro_predicts_content",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+                "expected": "What a product is made of (product, variant, SKU, GTIN, attributes); who owns which field among many producers and consumers; how a PIM fits and when it is needed; the choices and their trade-offs by scale stage; what channels document and what Kestrel & Pine does; how product data fails. Evidence: Kestrel & Pine's season launch, platform and channel documentation, standards."
+              },
+              {
+                "id": "AC-5",
+                "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+                "check": "reverse_outline_matches_spec",
+                "method": "reverse_outline",
+                "severity": "blocker"
+              }
+            ]
+          },
+          "thesis": {
+            "question": "How should product data be modeled and owned so that every channel shows the same, correct product?",
+            "claim": "Model a product as a product, its variants and two permanent identifiers per variant (the SKU and the GTIN), which are never edited once issued and never reused (a wrong one is retired and replaced); give each attribute exactly one owning system, from which the value flows in one direction to every channel; and route each channel's rejection back to the owner of the attribute that caused it. A product information system becomes necessary only when product data has more than one producing team and more than one consuming channel.",
+            "disputed_by": "The view that product data is one record that belongs in one tool, so that channels showing different things is cured by choosing the right tool: the shop platform, the ERP or a product information system.",
+            "so_what": "A merchant writes the attribute ownership table before it sees a vendor demo, because a product information system bought without one becomes one more copy of the product data to keep in step; and it retires a wrong SKU instead of editing it, so that old orders keep their link.",
+            "how_why": "Different teams produce different attributes (purchasing the identity and cost, the product team the content, the marketplace team the channel mappings), so ownership per product leaves several teams editing the same record in different systems. Orders, warehouses and marketplaces are keyed on the SKU and the GTIN, so a changed or reused identifier joins two items or loses an order's link. Each channel validates what it receives against its own rules and answers later, so a product can be declined after it was sent and nobody is told unless the answer has a route back. With one producing team or one consuming channel the shop platform's product record can hold the work; several of both need a workflow between them that the record cannot hold, which is the job of a product information system."
+          },
+          "role": {
+            "contribution": "Supplies the product model and the identifiers that prices, discounts, the search index and stock figures are all keyed on, and applies the record-and-copy rule at the level of one attribute.",
+            "supports": [
+              "P2-1",
+              "P2-6"
+            ]
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The part's claim that the facts on one product page have different owners and change at different speeds.",
+            "introduces": "The slowest-changing of them, product content, and the identifiers on which every other catalog fact is keyed.",
+            "form": "sentence",
+            "placement": "end_of_previous"
+          },
+          "post_spec": "posts/06-product-information/spec.json"
         },
         {
           "id": "pricing-architecture",
           "folder": "07-pricing-architecture",
           "title": "What Does It Cost? Price Lists, Contract Prices, Currencies and Tax",
           "kind": "chapter",
-          "detail": "outline",
-          "question": "Where should a price be computed, and how do you keep it consistent across storefronts, stores, marketplaces and wholesale?"
+          "detail": "full",
+          "question": "Where should a price be computed, and how do you keep it consistent across storefronts, stores, marketplaces and wholesale?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "What a price is made of: price lists and the dimensions (market, currency, customer group, channel, quantity, validity, tax basis) on which candidates differ.",
+                "The selection rule, the moment of selection, and the difference between the engine that selects a price and the copies that show it.",
+                "The two EU rules that make price history a legal record: tax-inclusive consumer prices and the lowest price of the previous 30 days."
+              ],
+              "believe": [
+                "A price is the result of a rule applied at a moment, not a number stored on a product.",
+                "A copy of a price is a promise made on the source's behalf, so it needs a source, an effective date and a comparison."
+              ],
+              "can_do": [
+                "For one product at their own company, list every system that holds a price and name the source for each kind of price.",
+                "Say, for a given channel, whether it can call the pricing engine or must receive a copy, and what the copy then needs."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "Given a channel that still shows an ended campaign price, the reader names a lost or dropped update to a copy as the failure and a scheduled comparison of copy against source as what detects it.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "A campaign price ended yesterday, but one country's storefront still shows it. Using only this chapter: what failed, and what would have caught it the next morning?",
+                "expected": "The update that restores the list price never arrived or was dropped, and nothing reported it (the silent restore). A daily comparison of every price copy with its source would have listed the difference; a campaign stored as one row with a start and an end date removes the need for a restore message. Not 'push prices more often'."
+              },
+              {
+                "id": "AC-2",
+                "statement": "The reader can say at which moment the charged price is selected and what the invoice and a later refund use.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "A shopper puts a jacket in the cart during a campaign and checks out after the campaign has ended. Using only this chapter: which price is charged, and which price does the invoice show?",
+                "expected": "The price selected once, at order placement, by the same rule and data the storefront uses, so the list price that applies after the campaign; it is frozen on the order, and the invoice copies it and never selects again."
+              },
+              {
+                "id": "AC-3",
+                "statement": "The reader can say what a pricing system must be able to answer before a price reduction is announced in the EU.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "minor",
+                "probe": "A merchant in the Netherlands plans to announce '20% off' next week. Using only this chapter: what must its pricing system be able to answer first, and why?",
+                "expected": "The lowest price it charged for that product in that market in the previous 30 days, because EU law (Directive 2019/2161) requires an announced reduction to show that prior price; this needs a price history with effective dates."
+              },
+              {
+                "id": "AC-4",
+                "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+                "check": "intro_predicts_content",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+                "expected": "What a price is made of and the rule that selects one; tax, markets and currencies; the European price rules; the engine against the copies and who may change a price; the choices and their trade-offs by scale stage; platform documentation and Kestrel & Pine's 2027 design; how pricing fails. Evidence: the Price Drift, platform documentation, EU directives."
+              },
+              {
+                "id": "AC-5",
+                "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+                "check": "reverse_outline_matches_spec",
+                "method": "reverse_outline",
+                "severity": "blocker"
+              }
+            ]
+          },
+          "thesis": {
+            "question": "Where should a price be computed, and how do you keep it consistent across storefronts, stores, marketplaces and wholesale?",
+            "claim": "A price should be computed by one written, deterministic rule that selects it from the valid candidates, and each kind of price (consumer, wholesale) should have one source system, the system in which the team that sets that kind of price works; the price is selected once, at order placement, and frozen on the order for the invoice and any refund to copy. A channel that can call the rule at the moment of sale, such as the merchant's own storefront, calls it; a channel that cannot (a marketplace listing, a store till that must work offline, a wholesale customer's electronic order) receives a copy, and the copies stay consistent only if each carries its source and an effective date and is compared with that source every day, with each difference listed for a person to correct.",
+            "disputed_by": "The view that a price is a number stored on the product, so that keeping channels consistent means typing or pushing the same number into every system, and pushing it more often when they disagree.",
+            "so_what": "Kestrel & Pine's German storefront sold at €179 instead of €199 for nine days, on 410 orders, at a cost of about €8,200, because the update that should have restored the price failed and nothing compared the channels. With a dated campaign row and a daily comparison the difference is on a list the next morning; and a merchant that keeps dated prices can answer the EU's question about the lowest price of the last 30 days.",
+            "how_why": "One SKU has several valid prices that differ by market, customer group, channel, quantity and validity, so only a rule can pick one; two systems that apply different rules, or the same rule at different moments, charge different amounts for the same sale. A pushed price change can be lost without an error in the sender or the receiver, so a missing update is found only by comparing the copy with the source."
+          },
+          "role": {
+            "contribution": "Shows that a catalog fact can be the result of a rule and a moment, not a stored value, and introduces the engine-against-copies distinction that the promotions, search and inventory chapters reuse.",
+            "supports": [
+              "P2-2",
+              "P2-6"
+            ]
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The product described once and owned per attribute, with price and stock left out of the ownership table.",
+            "introduces": "A product-related fact that changes on a different cadence, carries legal weight in Europe and is copied into more systems than any other: the price.",
+            "form": "paragraph",
+            "placement": "end_of_previous"
+          },
+          "post_spec": "posts/07-pricing-architecture/spec.json"
         },
         {
           "id": "commerce-promotions",
           "folder": "08-promotions-and-loyalty",
           "title": "Discounts, Coupons and Loyalty: Promotions Without Chaos",
           "kind": "chapter",
-          "detail": "outline",
-          "question": "How do you offer discounts, coupons, bundles and loyalty rewards without breaking the price, the margin or the books?"
+          "detail": "full",
+          "question": "How do you offer discounts, coupons, bundles and loyalty rewards without breaking the price, the margin or the books?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "The parts of a promotion system: definitions with an order of evaluation and a stop rule, eligibility, the code ledger, evaluation in the cart, allocation to order lines.",
+                "Why gift cards, store credit and loyalty points are liabilities held in ledgers and not promotions."
+              ],
+              "believe": [
+                "A promotion incident is a governance failure (a setting without an owner) before it is a software failure.",
+                "The allocated net line price, not the list price, is the price every later system must read."
+              ],
+              "can_do": [
+                "Allocate an order-level discount to lines and compute the refund for one returned line.",
+                "Ask of any promotion setup which system computes the final discount, in what order, where stacking stops and who may change that."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "Given an order with an order-level discount and one returned line, the reader computes the refund from the allocated net line price and says what had to be recorded at order time.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "An order holds a €199 jacket and €36 of socks, with a 10% code on the whole order. The customer returns the jacket. Using only this chapter: how much is refunded, and what must have been recorded when the order was placed?",
+                "expected": "€179.10, not €199: the €23.50 discount is allocated to the lines in proportion (€19.90 to the jacket), and the net price per line is written to the order, where the returns tool, the invoice and the credit note read it."
+              },
+              {
+                "id": "AC-2",
+                "statement": "Given two discounts that combined against the business's intent, the reader names the missing owner of the combination rule and a test against the active promotions, before naming a new tool.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "In a sale week a welcome code combined with an automatic 20% discount on the same carts, although nobody intended it. Using only this chapter: what was missing, and what would you do before the next campaign?",
+                "expected": "The rule that decides stacking lived in a platform setting that nobody owned or checked against the campaign plan. Give the combination settings one owner, write each campaign with its order of evaluation and stop rule in one calendar, and test the new campaign against every promotion already active. Governance first, not a new promotion engine."
+              },
+              {
+                "id": "AC-3",
+                "statement": "The reader can say why a gift-card balance is not a discount and who must check it against what.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "minor",
+                "probe": "Using only this chapter: why is a gift card not a promotion, and who has to check its balance against what, how often?",
+                "expected": "It is value the customer has paid for in advance, so the merchant owes it: a liability kept as a ledger with a balance. Finance reconciles the stored-value balances to a liability account every month."
+              },
+              {
+                "id": "AC-4",
+                "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+                "check": "intro_predicts_content",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+                "expected": "What a promotion is and what it touches; the parts of a promotion system and where the final discount is computed; how a discount reaches the invoice, the refund and the books; gift cards, store credit and points as ledgers; the choices by scale stage; dated examples and Kestrel & Pine's 2027 plan; how promotions fail. Evidence: the Black Friday Stacking Bug, a worked allocation on Eva's order, platform documentation, accounting standards and a company filing."
+              },
+              {
+                "id": "AC-5",
+                "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+                "check": "reverse_outline_matches_spec",
+                "method": "reverse_outline",
+                "severity": "blocker"
+              }
+            ]
+          },
+          "thesis": {
+            "question": "How do you offer discounts, coupons, bundles and loyalty rewards without breaking the price, the margin or the books?",
+            "claim": "Promotions leave the price, the margin and the books intact when three things hold: each promotion, whether a discount, a coupon or a bundle, is a data record with a place in a declared order of evaluation and a rule that says where stacking (combining promotions on one order) stops; the final discount is computed once, in the cart, and written to the order allocated to its lines, so that invoices and refunds read the net price of each line; and gift cards, store credit and loyalty points are kept apart from promotions as ledgers of value the merchant owes its customers, reconciled every month to a liability account.",
+            "disputed_by": "The view that a promotion is a marketing setting a campaign manager switches on in the shop platform, that the discount shown on the product page is the discount, and that a gift card or a loyalty point is one more kind of discount.",
+            "so_what": "Kestrel & Pine's Black Friday Stacking Bug put two discounts on 2,860 orders and cost about €52,000, part of it refunded twice on returns. A merchant that accepts the claim gives the combination settings one owner, tests each campaign against the promotions already active, and makes its order export carry the net price per line.",
+            "how_why": "Two promotions that are each valid combine unless a rule says where stacking stops; when that rule is a platform setting nobody owns, nobody checks it against a new campaign. The product page is rendered before the cart exists, so it can only estimate; the cart is the first place where all lines, codes and the customer are known. Invoices, tax, returns and partial refunds work line by line, so a discount left at order level is refunded at the wrong amount. A gift-card balance is money already received for goods not yet delivered, and a loyalty point is a reward the customer has already earned, so accounting standards record both as liabilities."
+          },
+          "role": {
+            "contribution": "Shows what may be subtracted from a selected price and how the result is fixed on the order, so that the price a later system reads is the one the customer paid.",
+            "supports": [
+              "P2-3"
+            ]
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The price selected by rule and frozen on the order.",
+            "introduces": "What may be subtracted from that price at checkout, in which order, and how the discount reaches the invoice and the refund.",
+            "form": "paragraph",
+            "placement": "end_of_previous"
+          },
+          "post_spec": "posts/08-promotions-and-loyalty/spec.json"
         },
         {
           "id": "commerce-search-and-discovery",
           "folder": "09-search-and-discovery",
           "title": "Finding the Product: Search, Navigation and Merchandising",
           "kind": "chapter",
-          "detail": "outline",
-          "question": "How do shoppers find products, and what has to be true of the data for search to work?"
+          "detail": "full",
+          "question": "How do shoppers find products, and what has to be true of the data for search to work?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "The three ways of finding a product (search, navigation, recommendations) and that all three read the search index.",
+                "Which facts belong in the index and which are fetched from their owner at query time, and why.",
+                "That reviews are data in the index with provenance the law requires a merchant to keep."
+              ],
+              "believe": [
+                "A query that returns nothing is more often a gap in the data than a fault of the engine.",
+                "Synonyms, merchandising rules and ranking parameters are data with owners and end dates, not settings in a vendor's console."
+              ],
+              "can_do": [
+                "Diagnose a zero-result query as a missing attribute, a missing synonym or an unindexed product.",
+                "Decide, for a given fact, whether it goes in the index or is fetched at query time, from how fast it changes."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "Given a common query that returns no results, the reader looks for a gap in the indexed data and for measurements of failing queries, before considering another search engine.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "A shop's best-selling jacket returns no results for 'waterproof jacket'. Using only this chapter: what are the likely causes, and what would you check before looking at a new search engine?",
+                "expected": "A data gap: the word or attribute is not in anything the index reads (the title says 'shell jacket', the waterproof rating lives in a spreadsheet), or a synonym is missing. Check the zero-result rate and the top failing queries per language, and which fields the search indexes. Not the engine."
+              },
+              {
+                "id": "AC-2",
+                "statement": "The reader can say how availability should appear in search results and why an exact stock count in the index is a risk.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "Should the exact stock count be stored in the search index? Using only this chapter: what does it recommend, and why?",
+                "expected": "Only a coarse 'available' flag in the index, so results can be filtered; the exact answer is fetched from the availability service at query time or on the product page. A fact in the index is only as fresh as the last indexing run and stock changes by the second, so an indexed count keeps saying 'in stock' after the shelf is empty."
+              },
+              {
+                "id": "AC-3",
+                "statement": "The reader can say what a merchant must keep for each published review and why.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "minor",
+                "probe": "A merchant marks its reviews 'verified purchase'. Using only this chapter: what must it keep for each review, and why?",
+                "expected": "How the review was collected and the order it came from, because EU law (Directive 2019/2161) requires a merchant to be able to show that reviews come from real purchasers and to take steps to check."
+              },
+              {
+                "id": "AC-4",
+                "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+                "check": "intro_predicts_content",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+                "expected": "The ways of finding a product; the index as a copy and what goes in it against what is fetched fresh; how the index is fed; relevance, merchandising and facets; personalization and AI retrieval; search for wholesale; reviews; the choices by scale stage; how search fails. Evidence: Kestrel & Pine's search report, platform and search-vendor documentation, usability research, EU and US rules on reviews."
+              },
+              {
+                "id": "AC-5",
+                "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+                "check": "reverse_outline_matches_spec",
+                "method": "reverse_outline",
+                "severity": "blocker"
+              }
+            ]
+          },
+          "thesis": {
+            "question": "How do shoppers find products, and what has to be true of the data for search to work?",
+            "claim": "Shoppers find products by search, by navigation and by recommendation, and all three read one search index, which is a copy of product, price, availability and review data. Search works when three things are true of that data: the attributes and the words shoppers use are in the index; each feed into the index is refreshed at least as often as the statement shown from that feed (a price, a rating) can change; and a fact that no feed can keep that fresh, such as the last unit of stock, is fetched at query time from the system that owns the fact.",
+            "disputed_by": "The view that poor search results are a weakness of the search engine, to be cured by buying a stronger search product or adding AI retrieval.",
+            "so_what": "Kestrel & Pine's rate of searches with no result fell from 9.4% to 4.1% after it added synonym sets and one product attribute, with the search engine it already had. A merchant that accepts the claim measures its failing queries, pays for product attributes and a stock feed before it pays a search vendor, and stops showing an exact stock count from the index.",
+            "how_why": "An engine can match, filter and rank only on what its index holds: a waterproof rating kept in a spreadsheet cannot match 'waterproof jacket', and a stock figure copied every hour keeps saying 'in stock' after the shelf is empty. Ranking, merchandising rules and semantic retrieval all run on those same index records, so none of them can supply an attribute that was never loaded or correct a figure that is out of date. A value fetched at query time is the owning system's current value, so it cannot be out of date in the way an indexed copy can."
+          },
+          "role": {
+            "contribution": "Shows the first consumer that needs all the catalog's facts at once, and makes the case that a copy's usefulness is decided by its feeds.",
+            "supports": [
+              "P2-4",
+              "P2-6"
+            ]
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Product content, price and discount, each with a named owner.",
+            "introduces": "A system that owns none of those facts and shows copies of all of them: the search index through which the shopper finds the product.",
+            "form": "sentence",
+            "placement": "end_of_previous"
+          },
+          "post_spec": "posts/09-search-and-discovery/spec.json"
         },
         {
           "id": "inventory-and-availability",
           "folder": "10-inventory-and-availability",
           "title": "Is It in Stock? Inventory, Availability and the Promise You Can Keep",
           "kind": "chapter",
-          "detail": "outline",
-          "question": "What does \"in stock\" mean, who computes it, and how do you avoid selling what you do not have?"
+          "detail": "full",
+          "question": "What does \"in stock\" mean, who computes it, and how do you avoid selling what you do not have?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "The five stock numbers (on hand, committed, reserved, held back, incoming) and the available-to-promise figure derived from them.",
+                "The three moments at which a unit can become promised (cart, order, fulfillment) and what each costs.",
+                "The parts of an availability service and which system writes which number."
+              ],
+              "believe": [
+                "'Available' is a computation that no system should store as a fact and let another overwrite.",
+                "Oversells come from several writers and from scheduled copying, not from a system that cannot count."
+              ],
+              "can_do": [
+                "Compute available-to-promise from on hand, committed, reserved and held-back units.",
+                "Name, for their own company, the system of record for on hand at each location and the only writer of committed.",
+                "Say when a merchant needs a separate availability service."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "Given the stock numbers for one product at one location, the reader computes what a channel may still sell and names the result as derived.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "A warehouse has 10 jackets on the shelf. 3 belong to placed orders that have not shipped, 1 is reserved in a cart, and 2 are held back as a buffer. Using only this chapter: how many may a channel still sell, and what is that number called?",
+                "expected": "4: on hand minus committed minus reserved minus held back. It is available-to-promise (or 'available'), a derived number, not a count."
+              },
+              {
+                "id": "AC-2",
+                "statement": "Given two channels that sold the same last unit, the reader names several writers and scheduled copying as causes and does not accept a shorter sync interval as the whole remedy.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "Two channels sold the same last unit. Using only this chapter: which causes would you look for, and would copying stock every five minutes instead of every hour fix it?",
+                "expected": "Several systems writing the same stock number; copying on a schedule, so each channel learns of the other's sales late; a reservation window; a wrong count; no buffer. A shorter interval shortens the lag and leaves the writers. The remedy is one writer for on hand and one for committed, stock changes sent as events, 'available' computed in one place per channel with a buffer, and a reconciliation."
+              },
+              {
+                "id": "AC-3",
+                "statement": "The reader can say which interaction must get an exact answer from the availability service and which may read a slightly stale copy.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "minor",
+                "probe": "Using only this chapter: which step of a purchase must ask the availability service and wait for the answer, and which steps may show a slightly old figure?",
+                "expected": "Checkout, at order creation: the unit is committed atomically so the last unit goes to exactly one order. The 'in stock' badge on listing pages, add to cart and the marketplace stock push may read a slightly stale copy."
+              },
+              {
+                "id": "AC-4",
+                "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+                "check": "intro_predicts_content",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+                "expected": "What 'in stock' means as several numbers; when a unit becomes promised; many locations and channels; the availability service and what each interaction needs; events against scheduled copying; the choices and their trade-offs by scale stage; Kestrel & Pine's Oversell worked through; how stock integrations fail. Evidence: the Black Friday Oversell, platform documentation, a study of inventory record accuracy."
+              },
+              {
+                "id": "AC-5",
+                "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+                "check": "reverse_outline_matches_spec",
+                "method": "reverse_outline",
+                "severity": "blocker"
+              }
+            ]
+          },
+          "thesis": {
+            "question": "What does \"in stock\" mean, who computes it, and how do you avoid selling what you do not have?",
+            "claim": "'In stock' means available-to-promise: units on hand minus three amounts: units committed to orders, units held temporarily for carts, and units held back as a buffer. This figure is computed in one place and published to each channel: by the shop platform while the shop platform is the only system that takes orders and counts stock, and, once a second system takes orders or counts stock, by one service that receives every count and every commitment. A merchant avoids selling what it does not have by giving on hand and committed one writer each, sending each stock change as an event when it happens instead of copying totals on a schedule, holding back a buffer per channel, and committing a unit to exactly one order at checkout.",
+            "disputed_by": "The view that stock is one number which each system holds and synchronizes with the others, so that an oversell is cured by synchronizing more often.",
+            "so_what": "On Black Friday 2026 Kestrel & Pine oversold 1,340 units on 1,120 orders, at a cost of about €96,000, while every system was up and reporting its own number. A merchant that accepts the claim writes down who owns each stock number before it builds the first connector.",
+            "how_why": "A stored 'available' figure can be overwritten by any system that copies it, so two writers, or one copy made on a schedule, leave channels selling from different answers; at Kestrel & Pine's peak of 38 orders a minute, a one-hour copy interval can hide up to about 2,300 orders from the other channels. Deriving the figure in one place, from one counted fact and one list of commitments, leaves one answer for every channel, and only the commit at checkout has to be exact."
+          },
+          "role": {
+            "contribution": "Applies the part's argument to the fastest-changing fact, where a stale copy costs most, and performs the part's closing before handing the committed unit to the cart.",
+            "supports": [
+              "P2-5",
+              "P2-6"
+            ]
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "A search result that shows the jacket 'in stock' from a copy of stock up to two hours old.",
+            "introduces": "What 'in stock' means, who computes it, and how the figure becomes a promise the warehouse can keep.",
+            "form": "sentence",
+            "placement": "end_of_previous"
+          },
+          "post_spec": "posts/10-inventory-and-availability/spec.json"
         }
       ]
     },

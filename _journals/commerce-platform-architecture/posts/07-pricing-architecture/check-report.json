@@ -1,0 +1,731 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/07-pricing-architecture/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/07-pricing-architecture/index.md",
+  "spec_sha": "8f4263987b26e698",
+  "draft_sha": "a37a64026072fb32",
+  "run_at": "2026-11-12T13:10:11+01:00",
+  "round": 1,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "One jacket legitimately has different consumer and wholesale prices; the hard part is each channel selecting the right one.",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "A price rule needs explicit inputs such as buyer, country, channel, quantity and date / Rules need an owner, because prices typed separately per system drift.",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Price differs from other product attributes: it changes often, has legal weight and is widely copied / Eva's order records the price, which invoice and refund must reuse.",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap: the Price Drift, what a price is, tax and EU rules, engine versus copies, four arrangements, practice, failures.",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Price Drift ¶1",
+      "summary": "In October 2026 the German storefront sold at EUR 179 for nine days after a silent sync failure, costing about EUR 8,200.",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Price Drift ¶2",
+      "summary": "The campaign price sat in the ERP's German consumer list, copied hourly to the shop platform by a connector.",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Price Drift ¶3",
+      "summary": "The same campaign dates were entered separately in the marketplace connector, while stores got a weekly file and ran no campaign.",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Price Drift ¶4",
+      "summary": "The restoring update failed while reporting success and was never retried, so only the German storefront stayed at the campaign price.",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Price Drift ¶5",
+      "summary": "No system compared prices, so the drift surfaced only through a marketplace warning and the finance margin report.",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Price Drift ¶6",
+      "summary": "An inventory found eleven prices for one jacket in seven places with no rule naming the source of each.",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "What a Price Is Made Of ¶1",
+      "summary": "Many prices per product are normal: a price is a number selected from many by a rule, not a product attribute.",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "What a Price Is Made Of ¶2",
+      "summary": "Defines the vocabulary of price kinds: price list, base, customer-specific, contract, tiered price and quote.",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "What a Price Is Made Of ¶3",
+      "summary": "Because several prices can match one purchase, platforms need and document a selection rule with an order and tie-breaker.",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "What a Price Is Made Of ¶4",
+      "summary": "The selection rule must be deterministic and written down, since different tie-breakers give different answers when prices overlap.",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "What a Price Is Made Of ¶5",
+      "summary": "A price is selected at a moment; if stages select at different moments or rules, the shopper sees one price and pays another.",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "What a Price Is Made Of ¶6",
+      "summary": "Vendor documentation shows the moment going wrong: SAP's cart-date bug, and Adobe's freeze-at-order rule that suits purchase orders only.",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "What a Price Is Made Of ¶7",
+      "summary": "The author's rule: display prices may change, the charged price is selected once at order placement and frozen; the invoice copies.",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Tax, Markets and Currencies: Why €199 Is Three Different Prices ¶1",
+      "summary": "Tax basis changes what a stored number means, so every stored price must say whether it includes tax.",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Tax, Markets and Currencies: Why €199 Is Three Different Prices ¶2",
+      "summary": "EU law requires consumer prices to include tax, while US prices exclude it because sales tax depends on delivery address.",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Tax, Markets and Currencies: Why €199 Is Three Different Prices ¶3",
+      "summary": "One gross price across countries with different VAT gives different margins; either gross or net pricing works, but the basis must be stored.",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Tax, Markets and Currencies: Why €199 Is Three Different Prices ¶4",
+      "summary": "Under OSS a cross-border consumer sale carries the destination country's VAT inside the same price, while a wholesale sale carries none.",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Tax, Markets and Currencies: Why €199 Is Three Different Prices ¶5",
+      "summary": "Multi-currency merchants choose converted or fixed per-market prices, and rounding matters because marketplaces and price rules compare to the cent.",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "The Price Rules Europe Writes Into the System ¶1",
+      "summary": "Europe imposes two further requirements on pricing: a prior-price rule for reductions and competition decisions on marketplace price comparison.",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "The Price Rules Europe Writes Into the System ¶2",
+      "summary": "The Omnibus directive requires announced reductions to show the lowest price of the prior 30 days, and regulators have fined shops for it.",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "The Price Rules Europe Writes Into the System ¶3",
+      "summary": "The system must therefore keep an effective-dated price history per SKU, market and channel, which scattered prices cannot provide.",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "The Price Rules Europe Writes Into the System ¶4",
+      "summary": "Marketplaces continuously compare a merchant's prices and act on them, and the legal limits on that keep shifting.",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "The Price Rules Europe Writes Into the System ¶5",
+      "summary": "Channel price rules must be configuration, not code, because regulation changes / Marketplace price-state events should reach the pricing system, not someone's inbox.",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶1",
+      "summary": "A pricing architecture consists of four components that feed a fifth element, the copies.",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶2",
+      "summary": "Channels that can call the engine need no copy; those that cannot receive one, which needs a source, effective date and reconciler.",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶3",
+      "summary": "Three flows shape the design: acknowledged marketplace copies, a deliberately day-old POS copy, and inbound EDI prices checked against the contract.",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶4",
+      "summary": "A price change should be one event with scope, values, effective date, author and reason; people, imports and repricers each need rules.",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶5",
+      "summary": "Grant price-change rights by role in the source system and make copies read-only so channels cannot override approved prices.",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶6",
+      "summary": "Spreadsheet imports can overwrite prices like any application, so validate and review them before they apply.",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶7",
+      "summary": "Automated repricers need an identity, owner, log and limits, and may bound the channel price but never alter the base price.",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "The Choices ¶1",
+      "summary": "Components do not determine which system holds price data; four arrangements cover what merchants do.",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "The Choices ¶2",
+      "summary": "Shop platform as price source suits consumer-led merchants but handles wholesale contract pricing poorly.",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "The Choices ¶3",
+      "summary": "ERP as price source suits wholesale but is too slow and inexpressive for consumer campaigns.",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "The Choices ¶4",
+      "summary": "A dedicated pricing service is the cleanest but costliest option, justified only by genuinely complex pricing.",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "The Choices ¶5",
+      "summary": "Splitting sources by kind of price, linked by dated events and daily comparison, gives one rule and history per kind; Kestrel & Pine chose it.",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "The Choices ¶6",
+      "summary": "Per-channel price ownership is something merchants drift into, valid only as derived channel prices under the split arrangement.",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "The author recommends the split arrangement under three assumptions; if any fails, a pricing service is the right answer.",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "The recommendation suits Kestrel & Pine's stage; other scale stages call for different fits.",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "summary": "Tax basis and 30-day history are constant across scale; the source decision changes once, when the ERP arrives, then copies multiply.",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "In Practice ¶1",
+      "summary": "The argument is checked against vendor documentation and Kestrel & Pine's decision; platform limits constrain which price combinations can be represented.",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "In Practice ¶2",
+      "summary": "Shopify and commercetools document specific caps on catalogs and prices per variant.",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "In Practice ¶3",
+      "summary": "Price counts grow multiplicatively, so platforms store prices apart from products and document a selection rule.",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "In Practice ¶4",
+      "summary": "In April 2027 the shop platform became owner of consumer prices and campaign dates, the ERP of wholesale and contract prices.",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "In Practice ¶5",
+      "summary": "Wholesale price changes flow from the ERP as effective-dated events through the integration platform to catalogs, tills and the marketplace connector.",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "In Practice ¶6",
+      "summary": "A daily comparison of all price copies starts in May 2027 and the old connector's price flow is retired.",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "In Practice ¶7",
+      "summary": "Introduces a table of how the jacket is priced on the day of Eva's order.",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "In Practice ¶8",
+      "summary": "The price frozen on the order lets Eva's later exchange reuse it regardless of the current list price.",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "In Practice ¶9",
+      "summary": "A recent campaign lowers the legal prior price for Black Friday, and the new price history answers that automatically.",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "In Practice ¶10",
+      "summary": "Under the new design the campaign ends by its own end date and daily reconciliation would cut the drift from nine days to one.",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "The new design does not prevent pricing failures but exposes them sooner; five recur.",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶2",
+      "summary": "A campaign-end price that never arrives is caught by reconciliation and acknowledgements, and fixed by republishing an idempotent event.",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶3",
+      "summary": "A repricer undercutting the storefront is caught by cost floors and alerts, and contained by bounded rules that never touch the base price.",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶4",
+      "summary": "A wrong reference price is prevented by computing it from history at scheduling time and corrected across every channel.",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶5",
+      "summary": "An EDI order price differing from the contract list should be caught by validation on receipt, before shipment rather than at invoicing.",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶6",
+      "summary": "Cart and checkout selecting at different moments is invisible to copy comparison; a boundary-crossing test detects it.",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶7",
+      "summary": "Four failures are copies diverging from a record and are caught by scheduled reconciliation; the fifth is prevented by a test.",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "The drift was an uncompared copy, not a wrong price; one dated record per kind of price fixes it and satisfies the legal duty.",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "Established facts: prices are rule-selected, EU law requires tax-inclusive prices and a 30-day prior price, and marketplaces act on price comparisons.",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "Context-dependent choices: which system is source per price kind, whether a pricing service is warranted, and gross versus net pricing.",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "Author's synthesis: treat every copy as a promise with source, date and comparison, and fix selection at order placement.",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Diagnostic questions a reader can ask about sources, selection rule, moment, tax basis, history, campaign ends, automations and marketplace warnings.",
+      "matched_spec_paragraph": "p66"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "The page price is only the starting point; the next chapter covers what promotions may subtract from the frozen price at checkout.",
+      "matched_spec_paragraph": "p67"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/4",
+      "draft_locus": "In Practice ¶5",
+      "quote": "Store tills and the marketplace connector consume those events.",
+      "finding": "The outliner read the paragraph as wholesale price changes flowing from the ERP to catalogs, tills and the marketplace connector. The spec's controlling idea (p49) has two flows: the ERP's wholesale changes to the business catalogs and the OMS, and the shop platform's consumer changes to the tills and the marketplace connector. The draft never names the shop platform as the publisher of the consumer price events, so 'those events' attaches to the ERP's wholesale changes. The other 65 units match their spec paragraphs in order.",
+      "fault": "draft",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Introduction ¶2 (p02): one idea, that a price comes from an owned rule with explicit inputs rather than from numbers typed per system; inputs, owner and drift are its parts. The sentence on marketplace commissions and promotions is a stray, reported under flow_is_followable.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "The Price Rules Europe Writes Into the System ¶5 (p28): one idea, what marketplace price comparison requires of the system, with two requirements in one sentence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2/controlling_idea",
+      "draft_locus": "Introduction ¶3",
+      "quote": "Eva sees €199 on the product page and pays that jacket price at checkout on 13 April 2027.",
+      "finding": "The paragraph holds two ideas: why the price differs from the other product attributes (it changes more often, carries legal weight, is copied more widely), and that Eva's €199 is recorded on order #1072455 and reused by the invoice and any refund. The spec's controlling idea for p03 joins the same two with 'and in Eva's order', so the draft does what the spec asks.",
+      "fault": "spec",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every body unit traces to one of S1 to S5 through its section's advances_thesis; introduction, conclusion and the transition units (p04, p36, p55, p67) trace by role.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/6/evidence/0",
+      "draft_locus": "How the Pieces Fit Together ¶7",
+      "quote": "ChannelEngine describes 'margin guardrails' in its undated guidance, accessed November 2026.",
+      "finding": "The source is cited but no sentence says what it shows. The spec's 'shows' is that vendors of repricing tools ship limits as a feature, so a merchant can require them; the draft says neither what ChannelEngine is nor why its guardrails matter here, and the sentence connects to neither neighbour. All other evidence items, tables, figures and quotations have a sentence or caption that says what they show (the trade-offs table and the 13 April table are read only through the recommendation and the last row, which is thin but acceptable).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/4/transition_in",
+      "draft_locus": "Questions to Ask ¶1",
+      "quote": "1. For one product, how many systems hold a price, and which one is the source for each kind of price (consumer, wholesale, contract, channel)?",
+      "finding": "The spec declares a sentence at the start of p66 that carries the take-aways over and introduces the questions as the way to apply them (cause_effect). The draft goes from the heading straight into the numbered list; nothing says the questions apply the take-aways to the reader's own company. All other declared transitions, and the hand-off to commerce-promotions, are expressed (the boundaries into Introduction ¶2 and Scene ¶6 are reported under flow_is_followable).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "quote": "The price rule therefore needs explicit inputs: buyer, country, channel, quantity and date.",
+      "finding": "Both readers lost the thread here: no price rule has been introduced, so 'The' and 'therefore' attach to nothing. The spec's p02 makes the step explicit ('Because several prices are valid, a price comes from a rule'); the draft skips it. Both also stumbled on the next sentence about marketplace commissions and promotions, which is not in the spec's controlling idea. Overall both readers found the chapter easy to follow and described an order (problem, vocabulary, constraints, design, choice, check) that agrees with the declared prerequisite_order; 6 trivial or audience-covered points were left out (failure-pattern names and W5, which the audience knows from Part I; A9; B4; B7; the 'old connector' part of B13).",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, point 1 and flow reader B, point 1",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/5/transition_in",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The Price Drift ¶6",
+      "quote": "Noor Visser's April 2027 inventory of where the Ridgewalker's price lived made the pattern visible.",
+      "finding": "The story jumps six months from October 2026 to April 2027 with no bridge, the inventory has not been mentioned, and 'the pattern' has no earlier referent. The declared transition carries over the drift as one failed copy and introduces the count of places; the draft does not make that step.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, point 2 and flow reader B, point 2",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/5",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The Price Drift ¶6",
+      "quote": "One jacket, eleven prices, seven places, no rule saying which was the source of which.",
+      "finding": "Neither reader could reproduce eleven prices or seven places from the lists in the paragraph, which names four systems. The draft gives exactly the lists in the spec's evidence for p10, so the unreproducible count comes from the spec; reader A also read the DE list as being in two systems.",
+      "fault": "spec",
+      "corroborated_by": "flow reader A, point 3 and flow reader B, point 3",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/heading",
+      "draft_locus": "Tax, Markets and Currencies: Why €199 Is Three Different Prices (heading)",
+      "quote": "Why €199 Is Three Different Prices",
+      "finding": "Both readers looked for a third price and found two net amounts (€164.46 and €167.23), because the Netherlands and Belgium share 21%. The heading and p20's evidence ('three different amounts of revenue') are the spec's.",
+      "fault": "spec",
+      "corroborated_by": "flow reader A, point 5 and flow reader B, point 5",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "Tax, Markets and Currencies: Why €199 Is Three Different Prices ¶3",
+      "quote": "would give the shopper €199.00 in Arnhem and €195.71 in Munich",
+      "finding": "The Dutch city changes from Nijmegen to Arnhem in the middle of one comparison; both readers re-read to check whether a different VAT rate was meant. A small point, but both reported it.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, point 5 and flow reader B, point 6",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/0/evidence/0",
+      "draft_locus": "How the Pieces Fit Together ¶1 (components table) and ¶2 (Figure 3)",
+      "quote": "Example at Kestrel & Pine (2027 design)",
+      "finding": "The components table's last column and Figure 3 ('Two sources, one per kind of price') show the chosen arrangement two sections before The Choices presents the four options, so 'This is what Kestrel & Pine chose in 2027' and the recommendation in Trade-offs arrive already answered. The spec asks for both: p29's table carries each component's 'place in Kestrel & Pine's 2027 design' and p30's Figure 3 is the two-source picture.",
+      "fault": "spec",
+      "corroborated_by": "flow reader A, point 7 and flow reader B, point 9",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "In Practice ¶1 to ¶3 (What the platforms document)",
+      "quote": "The vendors first. One variant may need different prices for several markets, buyer groups and quantities.",
+      "finding": "Both readers marked this subsection's position 'unclear': it is announced as a check of the argument, but returns to the made-of section's point that prices multiply, after the design, the choice and the stages are settled, and neither could see which argument was being checked; 'therefore' in the next sentence does not follow. Both proposed moving it next to the selection rule. The order is the spec's (decision log: the move was rejected because of AC-4), so the difficulty comes from the order itself.",
+      "fault": "spec",
+      "corroborated_by": "flow reader A, point 10 and flow reader B, point 12",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/4",
+      "draft_locus": "In Practice ¶5",
+      "quote": "Store tills and the marketplace connector consume those events.",
+      "finding": "The preceding sentences are about the ERP's wholesale price events, but tills and the marketplace connector need consumer prices; the table below then says the stores get a daily file. The spec's p49 separates the two flows (the shop platform's consumer changes go to the tills and the connector); the draft dropped the shop platform as their source. Same defect as the AC-5 result.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, point 11 and flow reader B, point 13",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1 (against ¶3 and ¶5)",
+      "quote": "Five failures recur, each with a way to detect it and a way to recover.",
+      "finding": "The promise is not kept: the EDI failure has a detection and no recovery, and the repricer's 'Recovery' is a preventive design. The spec has the same gap: p55 and the section idea promise a detection and a recovery for each, while p60's controlling idea has no recovery and p57's is 'bounding channel rules in configuration'.",
+      "fault": "spec",
+      "corroborated_by": "flow reader A, point 12 and flow reader B, point 14",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "draft_locus": "What a Price Is Made Of ¶6",
+      "quote": "Adobe Commerce documents the opposite rule for purchase orders",
+      "finding": "Reader A could not tell what the rule is the opposite of: the SAP bug also keeps an earlier price. The spec's evidence for p16 says it is the same behaviour, a bug for a cart and correct for a negotiated order; 'opposite' obscures that. One reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/1",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "quote": "The source decision changes once, at the Growing stage",
+      "finding": "Reader B: the Group row of the table just above makes 'a pricing service shared across brands' necessary, which is a second change of source, so 'once' contradicts the table. The claim is the spec's p44. One reader only.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/6",
+      "draft_locus": "When It Goes Wrong ¶7",
+      "quote": "They end in the same component: a reconciliation that compares copies to their source on a schedule and gives a person a list.",
+      "finding": "Reader A: for the repricer and the reference price the detections given just above are a floor and a computation from history, not a comparison of copies, so the closing does not follow from the section. The sentence is the spec's p61 (and the spec's open questions already ask the author to confirm it). One reader only.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/acceptance_criteria/5",
+      "draft_locus": "How the Pieces Fit Together ¶1 (components table); also the failure-patterns callout and the per-flow table",
+      "quote": "within a floor and a ceiling",
+      "finding": "'Floor' is on does_not_know (a price floor). It is used in the failure-patterns callout, the components table and the per-flow table before the gloss in How the Pieces Fit Together ¶5 ('the cost floor (the lowest price that still covers the product's cost)'); 'ceiling' is never explained.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, point 8",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/acceptance_criteria/5",
+      "draft_locus": "How the Pieces Fit Together ¶7",
+      "quote": "ChannelEngine describes 'margin guardrails' in its undated guidance, accessed November 2026.",
+      "finding": "ChannelEngine is never said to be a marketplace-integration or repricing product, and 'margin guardrails' is not explained.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, point 10",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/acceptance_criteria/5",
+      "draft_locus": "The Price Rules Europe Writes Into the System ¶3 (first body use; also the KEY POINTS callout)",
+      "quote": "must keep an effective-dated price history per SKU, per market and per channel",
+      "finding": "'Effective date' / 'effective-dated' carries the thesis and is used about a dozen times, but is never defined; the nearest explanation is in the conclusion ('the dates from which and until which it applies'). Not corroborated by a flow reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/acceptance_criteria/5",
+      "draft_locus": "How the Pieces Fit Together ¶4",
+      "quote": "Three kinds of author need rules: people, file imports and automated repricers.",
+      "finding": "'Repricer' is on does_not_know and is never defined; the only explanation is by example, late, in When It Goes Wrong ¶3 ('A connector rule chases a competitor's price'). Because that example does explain it in part, corroboration is not set.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/acceptance_criteria/5",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The Price Drift ¶1 (also Introduction ¶3)",
+      "quote": "A price-list sync had failed silently.",
+      "finding": "'Price list' is on does_not_know and is used in the introduction and throughout the scene before it is defined in What a Price Is Made Of ¶2. A few words at first use would do. Not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/acceptance_criteria/5",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The Price Drift ¶1",
+      "quote": "one marketplace sent a price-parity warning",
+      "finding": "'Price parity' is on does_not_know and is used here before the parity clauses are explained in The Price Rules Europe Writes Into the System ¶4; what a parity warning is today is never said directly. Not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/acceptance_criteria/5",
+      "draft_locus": "The Price Rules Europe Writes Into the System ¶3",
+      "quote": "The reference price is itself a syndicated field, because marketplaces and feeds show the strike-through price too.",
+      "finding": "'Reference price' and 'strike-through price' (and later the 'was' price) are three names for the 'prior price' defined one paragraph earlier; the draft never says they are the same thing. Not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/acceptance_criteria/5",
+      "draft_locus": "Tax, Markets and Currencies: Why €199 Is Three Different Prices ¶3",
+      "quote": "So the net revenue per jacket is €164.46 in Nijmegen and €167.23 in Munich",
+      "finding": "The chapter defines tax-inclusive and tax-exclusive two paragraphs earlier and then switches to 'net' and 'gross' without saying they mean excluding and including VAT. Not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/acceptance_criteria/5",
+      "draft_locus": "What a Price Is Made Of ¶6",
+      "quote": "Adobe Commerce documents the opposite rule for purchase orders",
+      "finding": "'Purchase order' is never explained, although the author's rule in the next paragraph depends on it ('Quotes and purchase orders freeze earlier'). Not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/acceptance_criteria/5",
+      "draft_locus": "How the Pieces Fit Together ¶6",
+      "quote": "Validate floors, dates and restoration rows",
+      "finding": "'Restoration rows' is a coined term that is never explained (the rows of a campaign file that put the normal price back). Not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on a concrete case (one jacket, two legitimate prices) and states the difficulty; none of the weak patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The first conclusion paragraph synthesises; the tiered lists restate with citations but as sorted take-aways, not as new evidence or a new subtopic.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "States that the remedy and the legal duty need the same dated record, which no single section says, and that a merchant that keeps it can explain every price to a customer, a marketplace or a regulator.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "Returns to the jacket at €199 and €95 and says why both are right.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The reader predicted every section in order and named the Price Drift, platform documentation and EU legal requirements as evidence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Names the dropped restoring update that nothing reported, the daily reconciliation of every copy against its source, and the dated campaign row that removes the restore message.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "List price after the campaign, selected once at order placement by the storefront's rule and data, frozen on the order; the invoice copies and never selects.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Lowest price in the previous 30 days for the SKU in that market, because of Directive 2019/2161; needs an effective-dated price history.",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-7",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Split by kind with the three assumptions; a pricing service when one fails or with many markets, currencies, customer groups or storefronts.",
+      "severity": "minor"
+    }
+  ]
+}

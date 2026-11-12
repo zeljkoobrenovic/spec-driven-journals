@@ -1,0 +1,1691 @@
+{
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "inventory-and-availability",
+  "journal": "commerce-platform-architecture",
+  "part": "part-2",
+  "title": "Is It in Stock? Inventory, Availability and the Promise You Can Keep",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published chapter (posts/10-inventory-and-availability/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter. It is a contract, not a description: the places where the chapter did not yet do what the spec asks are listed under open_questions.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The five stock numbers (on hand, committed, reserved, held back, incoming) and the available-to-promise figure derived from them.",
+        "The three moments at which a unit can become promised (cart, order, fulfillment) and what each costs.",
+        "The parts of an availability service and which system writes which number."
+      ],
+      "believe": [
+        "'Available' is a computation that no system should store as a fact and let another overwrite.",
+        "Oversells come from several writers and from scheduled copying, not from a system that cannot count."
+      ],
+      "can_do": [
+        "Compute available-to-promise from on hand, committed, reserved and held-back units.",
+        "Name, for their own company, the system of record for on hand at each location and the only writer of committed.",
+        "Say when a merchant needs a separate availability service."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture; most of all the integration or back-end engineer who inherits a stock synchronization and needs to know which system should own which number before touching it. Operations and e-commerce managers get the vocabulary for a conversation about buffers and oversells.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side.",
+        "Roughly what an API, a database and a queue are.",
+        "Kestrel & Pine, its people, its 2026 incidents in outline and the names of the failure patterns (meet-kestrel-and-pine, where-commerce-platforms-go-wrong).",
+        "From Part I: the thirteen steps of an order, promise and handoff, 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, the business models and the four scale stages (Starting, Growing, Omnichannel, Group), the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation, and the Waypoint decisions W1 to W8.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+        "From the earlier chapters of Part II: who owns product content, prices and discounts, and that the search index is a copy that showed the Ridgewalker 'in stock' from a stock figure up to two hours old."
+      ],
+      "does_not_know": [
+        "The stock numbers: on hand, committed (allocated), reserved, held back, safety stock, incoming, and available-to-promise (ATP).",
+        "Reserve-on-cart, reserve-on-order and allocation at fulfillment; the consistency window.",
+        "Location, per-channel buffer, sourcing, allocation for a customer, backorder, pre-order, inventory valuation.",
+        "Stock event, snapshot against change, synchronous call, atomic commit, eventual consistency in plain words.",
+        "Cycle counting and inventory record inaccuracy."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given the stock numbers for one product at one location, the reader computes what a channel may still sell and names the result as derived.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A warehouse has 10 jackets on the shelf. 3 belong to placed orders that have not shipped, 1 is reserved in a cart, and 2 are held back as a buffer. Using only this chapter: how many may a channel still sell, and what is that number called?",
+        "expected": "4: on hand minus committed minus reserved minus held back. It is available-to-promise (or 'available'), a derived number, not a count."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given two channels that sold the same last unit, the reader names several writers and scheduled copying as causes and does not accept a shorter sync interval as the whole remedy.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Two channels sold the same last unit. Using only this chapter: which causes would you look for, and would copying stock every five minutes instead of every hour fix it?",
+        "expected": "Several systems writing the same stock number; copying on a schedule, so each channel learns of the other's sales late; a reservation window; a wrong count; no buffer. A shorter interval shortens the lag and leaves the writers. The remedy is one writer for on hand and one for committed, stock changes sent as events, 'available' computed in one place per channel with a buffer, and a reconciliation."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can say which interaction must get an exact answer from the availability service and which may read a slightly stale copy.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this chapter: which step of a purchase must ask the availability service and wait for the answer, and which steps may show a slightly old figure?",
+        "expected": "Checkout, at order creation: the unit is committed atomically so the last unit goes to exactly one order. The 'in stock' badge on listing pages, add to cart and the marketplace stock push may read a slightly stale copy."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "What 'in stock' means as several numbers; when a unit becomes promised; many locations and channels; the availability service and what each interaction needs; events against scheduled copying; the choices and their trade-offs by scale stage; Kestrel & Pine's Oversell worked through; how stock integrations fail. Evidence: the Black Friday Oversell, platform documentation, a study of inventory record accuracy."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-6",
+        "statement": "A reader new to commerce meets no term in this chapter before it is explained, and every acronym is expanded on first use.",
+        "check": "known_before_new",
+        "method": "rubric",
+        "severity": "minor"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What does \"in stock\" mean, who computes it, and how do you avoid selling what you do not have?",
+    "claim": "'In stock' means available-to-promise: units on hand minus three amounts: units committed to orders, units held temporarily for carts, and units held back as a buffer. This figure is computed in one place and published to each channel: by the shop platform while the shop platform is the only system that takes orders and counts stock, and, once a second system takes orders or counts stock, by one service that receives every count and every commitment. A merchant avoids selling what it does not have by giving on hand and committed one writer each, sending each stock change as an event when it happens instead of copying totals on a schedule, holding back a buffer per channel, and committing a unit to exactly one order at checkout.",
+    "disputed_by": "The view that stock is one number which each system holds and synchronizes with the others, so that an oversell is cured by synchronizing more often.",
+    "so_what": "On Black Friday 2026 Kestrel & Pine oversold 1,340 units on 1,120 orders, at a cost of about €96,000, while every system was up and reporting its own number. A merchant that accepts the claim writes down who owns each stock number before it builds the first connector.",
+    "how_why": "A stored 'available' figure can be overwritten by any system that copies it, so two writers, or one copy made on a schedule, leave channels selling from different answers; at Kestrel & Pine's peak of 38 orders a minute, a one-hour copy interval can hide up to about 2,300 orders from the other channels. Deriving the figure in one place, from one counted fact and one list of commitments, leaves one answer for every channel, and only the commit at checkout has to be exact.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "'In stock' is a derived figure, available-to-promise: on hand, the one counted fact, minus the units committed to orders, reserved for carts and held back on purpose; a system that stores it as a fact and lets another system overwrite it has prepared an oversell."
+      },
+      {
+        "id": "S2",
+        "claim": "The moment a unit becomes promised (cart, order or fulfillment) is a business choice with a cost on each side, and only the commit at checkout has to be exact: there the last unit must go to exactly one order."
+      },
+      {
+        "id": "S3",
+        "claim": "The figure is computed in one place and published per channel: by the shop platform while it is the only system that takes orders and counts stock, and by one availability service, with a buffer per channel, once a second system takes orders or counts stock."
+      },
+      {
+        "id": "S4",
+        "claim": "Oversells come from several writers of one number and from totals copied on a schedule, so the remedy is one writer each for on hand and committed and stock changes sent as events when they happen, not a shorter copying interval."
+      },
+      {
+        "id": "S5",
+        "claim": "The counted fact is itself often wrong and events are sometimes lost or repeated, so the design is finished only with a deliberate buffer and a scheduled comparison of every copy with the system that counts."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Applies the part's argument to the fastest-changing fact, where a stale copy costs most, and performs the part's closing before handing the committed unit to the cart.",
+    "supports": [
+      "P2-5",
+      "P2-6"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene then five-numbers to service: the Oversell, then the terms and the arrangement that answer it"
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "choices, trade-offs and stages: four options on the same criteria, then by stage"
+      }
+    ],
+    "rationale": "The Oversell comes first so that every term arrives as part of the answer to 'why did the website not know'. The five numbers follow because nothing can be said about ownership until the reader knows which number is counted and which is derived; the moment of promise follows the numbers because it is the moment a unit moves from one of them to another. Locations and channels come after both: 'available per channel' needs 'available', and the wholesale allocation is explained by contrast with the warehouse's allocation of a unit to an order, which the moment of promise introduces. The service needs all three (numbers, moments, channels), since its component table says which system writes which number and its requirements table says which interaction must be exact. The choices come after the service because the service is one of the four and the other three are judged against it; the trade-offs come before the stages because the stage table uses the criteria the trade-offs name (lag, writers, buffers) as its warning signs. Kestrel & Pine's W1 is named in the scene and shown in the service section before the choices; the reader knows it from Part I as a decision already taken, and the choices then say what it was chosen over. The worked example comes after the choices and the stages because it applies the chosen option (W1) to the opening case at the Omnichannel stage; before the choices it would be a list of remedies with no names. The failures come last because every design must expect them, the recommended one included, and the section ends on the count's own accuracy, the one failure a reconciliation cannot find; the reconciliation and the buffer are what the conclusion and the part closing start from. Moving the scene later would put four sections of vocabulary before the problem; moving the failures before the choices would describe faults of a design the reader has not met."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "A web shopper and a store customer try to buy the last jacket within the same minute. Both channels show it as available, but there is only one unit on the shelf."
+    },
+    "bridge": {
+      "from_reader_world": "Anyone has seen 'in stock' on a product page, and the search results of the previous chapter have just shown Eva that label.",
+      "to_topic": "A shelf count cannot produce that label: some units belong to unshipped orders and others are held back, so the label is a calculation, and the question is who makes it and how every channel gets the same answer."
+    },
+    "thesis_statement": {
+      "text": "Availability is computed from the count, the claims against it and the units held back, in one place, before a channel commits to a sale; copying a stock number along a chain of scheduled updates leaves channels selling from different answers.",
+      "placement": "KEY POINTS callout (all three bullets) and paragraph p02"
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p03",
+      "promises": [
+        {
+          "promise": "Start from Kestrel & Pine's worst evening of 2026, the Black Friday Oversell.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Take 'in stock' apart into the numbers behind it, and say when a unit becomes promised.",
+          "kept_in": [
+            "five-numbers",
+            "promised"
+          ]
+        },
+        {
+          "promise": "Add several locations and channels, and describe the availability service: which system writes which number, what each step of a purchase needs, and why stock changes should travel as events and not as scheduled copies.",
+          "kept_in": [
+            "locations",
+            "service"
+          ]
+        },
+        {
+          "promise": "Compare four ways of computing availability, weigh their trade-offs and say which fits which scale stage.",
+          "kept_in": [
+            "choices",
+            "trade-offs",
+            "stages"
+          ]
+        },
+        {
+          "promise": "Work the Oversell through with the remedy in place, list the ways stock integrations fail, and check the count itself against a study of inventory records.",
+          "kept_in": [
+            "in-practice",
+            "wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A web shopper and a store customer who try to buy the last jacket in the same minute can both succeed if each channel relies on its own stock count, so the channels need a shared way to decide which sale gets the unit.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Two channels, one unit on the shelf, two sales within a minute.",
+            "shows": "The chapter's problem in one case: two answers to one question about one unit."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "A shelf count alone cannot say whether a unit may be sold, because some units already belong to orders and others are held back, so availability has to combine those facts before a channel commits to a sale, and copying a number along scheduled updates leaves channels with different answers.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The need for a shared way to decide which sale gets the last unit.",
+          "introduces": "Why a count is not that answer: the claims and holds a count leaves out, and the chapter's claim that availability is a calculation.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "In Eva's order the search results have just shown the Ridgewalker 'in stock', and availability is what supplies that label, the cart's stock check and the commitment at checkout that keeps another shopper from buying her unit.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "Availability as a calculation made before a channel commits to a sale.",
+          "introduces": "Where that calculation is used in Eva's order, starting from the 'in stock' label the previous chapter's search results showed.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter starts from Kestrel & Pine's Black Friday Oversell, takes 'in stock' apart into its numbers, says when a unit becomes promised, adds locations and channels, describes the availability service, compares four ways of computing availability with their trade-offs and by scale stage, works the Oversell through with the remedy in place and ends with the ways stock integrations fail and the accuracy of the count itself; its evidence is the Oversell, vendors' platform documentation and a study of inventory records.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The three places in Eva's order where availability is used.",
+          "introduces": "The order in which the chapter explains how that answer is computed, and its evidence: the Oversell, platform documentation and a study of inventory records.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Kestrel & Pine: Friday 27 November 2026, 19:40",
+      "controlling_idea": "On Black Friday 2026 Kestrel & Pine oversold 1,340 jackets while every system was up, because stock counts were copied along a chain of scheduled updates and nobody had decided who owned the number.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Gives the case the chapter explains: an oversell caused by scheduled copying and several writers, with no system down."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The chain as it was built, the lag it produced, the evening minute by minute, what made it worse, then the CEO's question: the reader needs the chain before the timeline can be read, and the question only after seeing that nothing was broken."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The claim that copying a stock number along scheduled updates leaves channels selling from different answers.",
+        "introduces": "The evening on which that happened at Kestrel & Pine.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "In January 2027 Noor Visser asked Ruben Alves and Daniel Okafor to reconstruct the Black Friday Oversell minute by minute, and what they drew was a chain.",
+          "function": "context",
+          "organization": "narration"
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "In 2026 the warehouse management system sent counts to the ERP every 15 minutes, the ERP copied them to the shop platform hourly, and the platform copied them hourly to the marketplace connector.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "WMS to ERP every 15 minutes, ERP to shop platform hourly, shop platform to marketplace connector hourly.",
+              "shows": "Stock reached each channel as a copy of a copy, each on its own clock.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The chain on the whiteboard.",
+            "introduces": "Its three hops and the schedule of each.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "A sale on one channel therefore reached the other channels only after picking and the scheduled updates, up to two hours later.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Up to two hours for a sale to reduce the stock shown elsewhere.",
+              "shows": "The lag is a property of the chain, not a fault in it.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The three scheduled hops.",
+            "introduces": "The lag they add up to for a sale on one channel.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "On Friday 27 November the Ridgewalker sold out in the warehouse at 19:40 and the channels went on selling it, the marketplaces until after 21:05, so 1,340 units were oversold on 1,120 orders, about 790 of the units on the storefronts and 550 on the marketplaces.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Timeline of 27 November 2026: 19:40 last units picked; 19:45 the WMS tells the ERP; 20:00-21:00 peak hour of 2,300 orders, 38 a minute; about 20:30 the ERP tells the platform (illustrative time); 21:05 the Ridgewalker set to zero by hand in the connector; Saturday 1,340 units oversold, 1,120 orders affected.",
+              "shows": "Each row shows which systems still believed the jacket was in stock, so the reader sees the news of the empty shelf arrive one hop at a time.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "scenario",
+              "what": "Of the 1,340 oversold units about 790 were storefront orders and 550 marketplace orders (illustrative split); the marketplace share carried the penalties.",
+              "shows": "Both kinds of channel oversold, and the marketplace share cost most.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: the Oversell as a relay.",
+              "shows": "Each hand-off waited for its schedule while carts kept arriving."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The chain and its lag of up to two hours.",
+            "introduces": "The evening the lag met a peak hour, as a timeline.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Two things made it worse: the order queue to the warehouse backed up for four hours, and three of the shop platform's 41 apps could write inventory, one of which had already caused two weeks of phantom reservations in March 2026.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Four-hour backlog of the order queue to the WMS; the App That Wrote Stock, March 2026, about 600 variants for two weeks.",
+              "shows": "Lag was not the only cause: the count itself arrived late, and the number had more than one writer.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The timeline of the evening.",
+            "introduces": "Two aggravating facts: a queue backlog and apps that wrote the same number as the warehouse feed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "The CEO asked why the website did not know, and Noor's answer, which became Waypoint decision W1, was that it could not know because nobody had decided who owned the number and nothing carried changes fast enough.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The lag and the several writers.",
+            "introduces": "The question they raise and the answer the rest of the chapter gives in full.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "five-numbers",
+      "heading": "What \"In Stock\" Means: Five Numbers, Not One",
+      "controlling_idea": "'In stock' is not one number: on hand is a counted fact, committed, reserved and held-back units are claims against it, and what a channel may sell is derived from them.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Defines the numbers and the derivation the thesis names, and shows four vendors separating them in the same way."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The five numbers, then the formula that needs them, then the vendors' names for the same things, then one vendor stating the arithmetic and changing a state's meaning, then who owns which number: the ownership rule needs the reader to know which numbers are counted and which are derived."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "'Nobody had decided who owned the number.'",
+        "introduces": "That the number is five numbers and a calculation, which is why ownership had not been decided.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "form": "list",
+          "controlling_idea": "Every system that tracks stock separates the units physically present from the units it may still promise, using five numbers: on hand, committed, reserved, held back and incoming.",
+          "function": "definition",
+          "organization": "classification"
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The number a channel may sell, available-to-promise, is derived: on hand minus committed, minus reserved, minus held back, plus incoming only if the merchant promises against it.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "available-to-promise = on hand − committed − reserved − held back (+ incoming, only if you promise against it), stated as industry practice.",
+              "shows": "The reader can compute what a channel may sell from the other numbers."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: on hand as the one counted fact, the claims against it and what remains.",
+              "shows": "Available is a remainder, not a count."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The five numbers.",
+            "introduces": "The figure derived from them and its formula.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Shopify, commercetools, Adobe Commerce and SAP Commerce all separate physical units, units promised to orders and units sellable now, under different names; three of them say 'reserved' for what this chapter calls committed.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The author's alignment of four vendors' terms for physical units, promised units, sellable units, deliberate holds and location.",
+              "shows": "The separation is common to the vendors, so it is not one platform's idea; the alignment is the author's.",
+              "source": "Vendor documentation, dated in the table"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The formula as industry practice.",
+            "introduces": "Four vendors' vocabularies aligned to it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Shopify's documentation states the arithmetic outright: on hand is the sum of the available, committed, reserved and held-back states, and incoming is not part of it.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "On hand \"equals the sum of inventory quantities that are in the available, committed, reserved, damaged, safety_stock, and quality_control states\"; POS gained 'On hand' and 'Unavailable' states on 9 February 2023.",
+              "shows": "A vendor publishes the same arithmetic the formula gives.",
+              "source": "Shopify developer documentation, n.d., accessed November 2026; Shopify changelog, 2023-02-09"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The four vendors' vocabularies.",
+            "introduces": "One vendor's own statement of the sum.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14a",
+          "controlling_idea": "On 5 August 2026 Shopify moved some holds from reserved to committed, so an integration that subtracted reserved in its own calculation changed behavior without a code change: the meaning of a stock state can move under the systems that read it.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Draft-order and transfer holds moved from `reserved` to `committed`; `available` and `on_hand` unchanged.",
+              "shows": "A system that recomputes available from another system's states depends on definitions it does not control.",
+              "source": "Shopify developer changelog, 2026-08-05"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Shopify's states and their sum.",
+            "introduces": "A dated change to what one state means.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Each number has an owner except the derived one: the ERP keeps what the stock is worth, the warehouse owns on hand, the order-taking system owns committed, and nobody should own 'available', because it is a computation; most oversells begin when a system stores it as a fact and lets another overwrite it.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The numbers, the formula and the vendors' practice.",
+            "introduces": "Who owns which number, and why the derived one has no owner.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "promised",
+      "heading": "When a Unit Becomes Promised: Reservations and Allocations",
+      "controlling_idea": "A unit can leave the available number at add-to-cart, at order creation or at fulfillment; the choice is a business one with a cost on each side, and each leaves a window in which two buyers can get the same unit.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Sets out the three moments and their costs, and shows that even the common default leaves a window of seconds."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The claim that the moment is a choice, the vendors' configuration as evidence, the three moments compared, then what the published window means at peak: the comparison table needs the vendors' modes, and the window is the cost of the row most merchants choose."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Committed and reserved as claims against on hand.",
+        "introduces": "The moment at which a claim is made, which the definitions left open.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p16",
+          "controlling_idea": "The platforms disagree about when a unit leaves the available number (in the cart, at order creation or at the warehouse's allocation), and expose the choice as configuration because it is a business choice with a cost on each side.",
+          "function": "claim"
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "commercetools offers three inventory modes per cart and publishes a delay of up to 10 seconds, Adobe Commerce reserves when an order is submitted, and Shopify commits at order creation.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "commercetools: TrackOnly, ReserveOnOrder, ReserveOnCart (expiry 1 to 44,640 minutes), eventual consistency of up to 10 seconds; Adobe Commerce: reservation at order submission, compensating reservation on cancellation; Shopify: committed at order creation and while on hold.",
+              "shows": "The three moments are real product settings, not a theoretical classification.",
+              "source": "commercetools API documentation, n.d., accessed November 2026; Adobe Commerce documentation, updated 2026-08-20; Shopify Help Center, n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The choice exposed as configuration.",
+            "introduces": "Three vendors' documented settings.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17a",
+          "controlling_idea": "Each of the three moments protects something different and costs something different: the cart protects the shopper and ties up stock, order creation uses stock best and leaves a window of seconds, and allocation at fulfillment keeps the warehouse flexible and accepts orders it may not fill.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Three moments (add to cart, order creation, allocation at fulfillment) against protects, costs and fits.",
+              "shows": "The reader can pick a moment from the kind of sale: scarce-stock drops, ordinary selling, wholesale and backorders."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: a unit's life from available through reserved or committed to shipped.",
+              "shows": "The states a unit passes through and the two ways it returns to available."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The vendors' settings.",
+            "introduces": "The three moments side by side: what each protects, what it costs and where it fits.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "A window of 10 seconds is six orders at Kestrel & Pine's peak rate, enough to oversell a hot item; every platform has such a window and most do not publish it.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "38 orders a minute for 10 seconds is about six orders.",
+              "shows": "A published, small window is still large enough to matter on a peak day.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The 'window of seconds' in the order-creation row.",
+            "introduces": "What that window is worth at 38 orders a minute.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "locations",
+      "heading": "Many Locations, Many Channels",
+      "controlling_idea": "With stock in several places and promises made in several channels, one physical pool is promised many times, so availability is published per channel with a buffer, and sourcing, allocations and promises against incoming stock become separate decisions.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Shows why, with more than one location and channel, one figure per channel has to be derived from a shared pool, which is the case for computing it in one place."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "additional_patterns": [
+          {
+            "pattern": "grouping",
+            "applies_to": "the three rules (buffer per channel, sourcing, allocations)"
+          }
+        ],
+        "rationale": "Kestrel & Pine's several stock places first, then the two definitions (location, channel) the rules are stated in, then the three rules, then the two cases that promise stock not on hand: the rules cannot be read before 'per channel' and 'location' mean something."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Everything so far: one shelf and one shop.",
+        "introduces": "Several shelves and several shops, as at Kestrel & Pine.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "controlling_idea": "Kestrel & Pine has neither one shelf nor one shop: its stock sits at Duiven, in six stores and in a marketplace's fulfillment program warehouse.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Duiven; six stores of about 1,800 variants each; a marketplace fulfillment program warehouse in Germany holding about 40% of the units sold on that marketplace there.",
+              "shows": "The single-shelf assumption fails for an ordinary mid-size brand.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "A location is any place from which stock can be promised and shipped, each with its own count and its own counting system; a marketplace's warehouse is the hardest case because the merchant sees its count and cannot check it.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The places where Kestrel & Pine's stock sits.",
+            "introduces": "The term for such a place, and the one the merchant cannot count.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "A channel is a place where a promise is made, availability is published per channel, and one physical pool may be promised to several channels at once.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Where stock sits.",
+            "introduces": "Where it is promised, and that one pool serves several such places.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Each channel gets its own buffer, largest where an oversell costs most, and because a buffer withholds sellable units it is a business setting.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "A marketplace oversell brings a seller-performance penalty and, repeated, a suspended listing.",
+              "shows": "The cost of an oversell differs by channel, so the buffer should too."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: one pool, many promises, with a buffer layer.",
+              "shows": "Every channel draws on the same stock; the buffer is what no channel may sell."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "One pool promised to several channels.",
+            "introduces": "The first rule: availability per channel, with a buffer per channel.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Which location fulfills a line is a separate decision from whether the unit is available, and once it needs capacity, cut-off times or carrier cost it belongs to an order management system.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Adobe Commerce's source priority and distance priority algorithms; Shopify's fulfillment order.",
+              "shows": "Platforms ship simple sourcing; anything richer is the order management system's.",
+              "source": "Adobe Commerce documentation, updated 2026-08-20; Shopify developer docs, n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The first rule, about channels.",
+            "introduces": "The second rule, about locations: sourcing.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Wholesale needs allocations in a second sense of the word: not the warehouse assigning a unit to a placed order, but part of the pool set aside in advance for a customer, a season or a channel, which none of the four platforms holds per customer.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A wholesale buyer who ordered 240 jackets for spring should not compete with Friday-evening shoppers.",
+              "shows": "Without an allocation the storefront can sell units a wholesale order is counting on."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The first two rules.",
+            "introduces": "The third rule: an advance claim on the pool for a wholesale customer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "A backorder and a pre-order promise stock that is not on hand, which is legitimate only if the incoming quantity is tracked and the date is honest.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Directive 2011/83/EU, Article 18: delivery within 30 days unless agreed otherwise.",
+              "shows": "An open-ended backorder is a legal risk as well as a service one.",
+              "source": "Directive 2011/83/EU"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Rules for promising stock that is on hand.",
+            "introduces": "Two cases that promise stock that is not.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "service",
+      "heading": "How the Pieces Fit: The Availability Service",
+      "controlling_idea": "The arrangement that keeps one answer per channel separates counting, order-taking and deriving, gives each number one writer, asks for an exact answer only at checkout, and carries stock changes as events instead of scheduled snapshots.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4",
+          "S2"
+        ],
+        "how": "Describes the one place that computes the figure, the single writer of each number, the exact commit at checkout and the event in place of the scheduled copy."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The components and their writers, then Kestrel & Pine's W1 as that arrangement, then what each interaction needs from it, then the one interaction that must be exact, then how changes should reach it and public examples of both ways: the requirements per interaction presuppose the service, and the event-against-sync comparison presupposes knowing which interactions tolerate lag."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "One pool, several locations and channels, buffers and allocations: several things to combine for every channel.",
+        "introduces": "The arrangement that combines them in one place.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p26",
+          "controlling_idea": "With several locations and channels, counting, order-taking and deriving availability are three responsibilities with one writer per number, connected by stock events, and a reconciliation job compares the service's copies with the systems that count and commit, on a schedule.",
+          "function": "description",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four components (stock-counting systems, order-taking systems, the availability service, the reconciliation job) with what each is responsible for, writes and never writes.",
+              "shows": "Every number has exactly one writer, and 'available' is written only by the service that derives it."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: the Waypoint target.",
+              "shows": "Counts and commitments flow in, available per channel flows out, and reconciliation checks the copies against the counts."
+            }
+          ]
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "This arrangement is Waypoint decision W1: the WMS is the system of record for Duiven's physical stock, the POS for store stock, the marketplace program's stock is a tracked external location, and the availability service, which holds a buffer per channel and is reconciled with the WMS on a schedule, is bought as a module of the order management system.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "W1; the service bought as a module of the OMS introduced under W2; the hourly chain retired by Q4 2027.",
+              "shows": "The arrangement is a concrete decision a mid-size merchant took, bought and not built.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The general arrangement.",
+            "introduces": "Kestrel & Pine's version of it, system by system.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Different interactions need different freshness from the service, from a cached badge on a listing page to a commit at checkout, and each has a fallback if the service is down.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five interactions (listing badge, add to cart, checkout, marketplace push, click-and-collect) against how fresh, how consistent, how fast and what happens if the service is down; latency targets labeled as the author's assumptions.",
+              "shows": "Only one row needs an exact answer; the others tolerate seconds or minutes and must never block."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The service that publishes available per channel.",
+            "introduces": "What each step of a purchase needs from it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Checkout is the only interaction where the last unit must go to exactly one order, so it alone asks the service and waits, with an atomic commit; everything else can read a slightly stale copy.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The table of interactions.",
+            "introduces": "The one row the design depends on, and the rule it gives.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "A stock event differs from a scheduled sync in kind, not only in speed: a sync copies a snapshot that must be applied carefully to a system with its own claims, and an event describes one change that can be applied in order and applied once.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Interactions that tolerate a slightly stale copy.",
+            "introduces": "How the copy is kept current: a change sent when it happens against a total copied on a schedule.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Public documentation shows both ends and a middle: Shopify polls a fulfillment service hourly, Picqer offers a stock-changed webhook, and Microsoft's Business Central sync compares before it sends.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify fulfillment service polling (hourly); Picqer `products.free_stock_changed` webhook; Microsoft Business Central and Shopify inventory sync (2026-10-14).",
+              "shows": "Both designs are in ordinary use, and a careful sync compares and sends only differences.",
+              "source": "Shopify developer docs and Picqer, n.d., accessed November 2026; Microsoft Learn, 2026-10-14"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Event against scheduled sync.",
+            "introduces": "Three documented products along that range.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "At group scale the same design appears as one ordered stream of changes per SKU and location, as a 2020 account of Walmart's inventory backend describes.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"Each item-store combination always maps to one specific partition, so only one consumer processes it\"; more than ten event sources normalized into one inventory event.",
+              "shows": "Ordering changes per SKU and location is what makes events safe to apply; the account is six years old and one engineer's view.",
+              "source": "Suman Pattnaik on Confluent's blog, 2020-05-04"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Small and mid-size examples.",
+            "introduces": "The same idea at the largest scale.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "choices",
+      "heading": "The Choices",
+      "controlling_idea": "A growing merchant has four ways to compute availability (the platform's own stock, a stock master with periodic sync, an event-driven availability service, a fulfillment provider's shared pool), and each is right for a stage and a limit at the next.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Places 'computed by the shop platform' and 'computed by one service' among the realistic options and says when each holds."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The four options in the order a growing merchant meets them, which is also Kestrel & Pine's own history; the provider's pool comes last because it hands the problem to someone else."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The availability service as the clean arrangement.",
+        "introduces": "That it is one of four options, and not the right one for every merchant.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p33",
+          "controlling_idea": "There are four realistic ways to compute availability, each right for a stage and a limit at the next.",
+          "function": "claim"
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "The platform's own stock fields work while there is one location and the platform is the only system that takes orders.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Kestrel & Pine in 2016-2018 with its Tiel 3PL.",
+              "shows": "The simplest option was right for the company's first stage.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Four ways.",
+            "introduces": "The first, where most merchants start.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "An ERP or WMS as stock master with periodic sync is the common arrangement at the Growing stage, and its limit is structural: the copy is a snapshot, the schedule is a lag, and each hop adds its own clock.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Kestrel & Pine's January 2027 landscape; the Oversell is what it does at peak.",
+              "shows": "The option fails at peak for a reason built into it.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The platform's own stock.",
+            "introduces": "The second option, which Kestrel & Pine ran in January 2027.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "An event-driven availability service, bought or built, costs integration work on every counting and ordering system and the discipline of one writer per state.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The stock master with periodic sync.",
+            "introduces": "The third option, W1, and what it costs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "A fulfillment provider's shared pool moves the availability problem to the provider, at the price of the merchant's control over the count and the buffer.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Zalando's ZEOS and NEXT, November 2024: \"a unified stock pool and an advanced order management system\"; 24 markets and 18 sales channels by March 2026.",
+              "shows": "A provider's pool across channels is an offered product.",
+              "source": "Zalando SE, 2024-11-21; letter to shareholders, 2026-03-12"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The availability service a merchant runs.",
+            "introduces": "The fourth option, where someone else runs it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "The four options differ in lag, in the number of writers of 'available', in buffers and allocations, in integration cost and in how they break; keep platform stock until a second system takes orders or counts stock, name the owners before building a connector, and consider a separate service when two of four conditions hold.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "States the condition under which the platform stops being the one place, and why owners are named before a connector is built."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The four options one by one.",
+        "introduces": "The same four compared on the criteria that decide between them, then the author's recommendation.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p38a",
+          "controlling_idea": "The four options compare on five things: how long other channels take to learn of a sale, how many systems write 'available', whether buffers and allocations are possible, what integration costs and how each option breaks.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four options against lag, number of writers of 'available', per-channel buffers and wholesale allocations, integration cost and when it breaks.",
+              "shows": "Only the availability service has seconds of lag, one writer and buffers under the merchant's control; the sync chain has the most lag and the most writers."
+            }
+          ]
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "The author would keep platform stock until another system starts taking orders or counting stock, and then assign owners for physical and committed stock before building the connector, because a connector without that agreement copies two incompatible answers.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The comparison.",
+            "introduces": "What the author would do, and in which order.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "A separate availability service is worth considering when any two of four conditions apply (multiple locations, multiple order channels, location-specific promises, wholesale allocations); Kestrel & Pine met that test in 2023 and built the copying chain instead.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Kestrel & Pine met the test in 2023; W1 replaces the chain.",
+              "shows": "The test would have told the company three years before the Oversell.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "When to leave platform stock.",
+            "introduces": "When to go further, to a separate service, and when a provider's pool suits.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Across Scale Stages: When It Fits and When It Limits",
+      "controlling_idea": "What is typical, what becomes necessary and what warns that an approach is outgrown change at each of the four scale stages, while three things do not change: one system counts on hand per location, available is derived, and the last unit at checkout is committed atomically.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Shows the shop platform as the one place at the Starting stage and the service at the Omnichannel stage, with the same three rules at both."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "'Each is right for a stage' and the conditions for moving on.",
+        "introduces": "The same advice laid out stage by stage, with warning signs.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "controlling_idea": "Stock handling changes with scale more than most topics because stock is the fact most systems copy, but at every stage on hand is counted by one system per location, available is derived, and the last unit at checkout is committed atomically.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four stages (Starting, Growing, Omnichannel, Group) against what is typical, what becomes necessary and the warning signs, with Kestrel & Pine's years.",
+              "shows": "The reader can find their own stage and read off the next step and the signs that it is due; a Starting merchant gets the three constants from the platform, an Omnichannel merchant must arrange them."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice",
+      "controlling_idea": "Kestrel & Pine's reconstruction finds three causes of the Oversell (lag by design, several writers, no buffer and no reconciliation), each of which W1 answers without bringing oversells to zero.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S5"
+        ],
+        "how": "Works the thesis's remedy through the opening case cause by cause, and shows that a buffer and a reconciliation remain necessary."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "additional_patterns": [
+          {
+            "pattern": "grouping",
+            "applies_to": "the three causes, each with its remedy"
+          }
+        ],
+        "rationale": "The three causes, each with W1's answer, then the evening replayed with W1 in place. The replay needs all three remedies, and its last sentence (not zero) is what the next section starts from."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The Omnichannel stage, where a merchant must arrange deliberately what a Starting merchant gets from the platform.",
+        "introduces": "Kestrel & Pine as the merchant at that stage that had not, and the Oversell worked through cause by cause.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p43",
+          "controlling_idea": "Kestrel & Pine is the Omnichannel merchant that had not arranged these things: the January 2027 reconstruction of the opening scene gave Noor three causes of the Oversell, and W1 answers each.",
+          "function": "transition"
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "The first cause was lag by design: three hops on their own clocks, up to two hours end to end, which W1 replaces with stock events from the WMS to the availability service.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "38 orders a minute makes one hour of blindness 2,300 orders.",
+              "shows": "The lag's size in orders.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Three causes.",
+            "introduces": "The first, and W1's answer to it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "The second cause was several writers: six could change Duiven stock, four of them automated flows into the shop platform, and W1 names one writer per state.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Six writers: the WMS feed (through the ERP's hourly sync), hand adjustments in the ERP, hand edits in the platform admin, three apps; four automated flows into the platform: the hourly sync and the three apps.",
+              "shows": "The number had no single owner, so any correction could be undone by another writer.",
+              "source": "Kestrel & Pine scenario ledger; ruling 22"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first cause.",
+            "introduces": "The second, and W1's answer to it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "The third cause was no buffer and no reconciliation: every channel sold to the last unit and nobody compared the WMS with the platform, as the first weekly reconciliation showed when it ran in May 2027; W1 adds a per-channel buffer and a weekly reconciliation.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "First weekly reconciliation, May 2027: 2.3% of active variants with a different quantity; buffers of 3 units per SKU for marketplaces and 1 for the storefronts (illustrative); reconciliation weekly, daily in November.",
+              "shows": "Differences existed unseen for months, and the buffer is a number someone now chooses.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The second cause.",
+            "introduces": "The third, and W1's answer to it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "Had W1 existed on 27 November 2026, the oversell would have shrunk from 1,340 units to the few that pass through the marketplace's own push interval: no availability design reaches zero, and the goal is a window seconds wide and a deliberate buffer.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The three causes and their remedies.",
+            "introduces": "The evening replayed with all three remedies in place, and what remains.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "Stock integrations fail in a small number of recurring ways, each with a detection and a recovery; the reconciliation job detects most of them, so an integration without one is not finished, and the one failure it cannot detect, a wrong count, needs controls of its own.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Shows that events and single writers still fail in known ways and that a scheduled comparison of copy with source is what finds the failures."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "'No availability design reaches zero oversells.'",
+        "introduces": "The ways in which even the event-driven design fails, and how each is found and repaired.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p48",
+          "controlling_idea": "Seven failures recur in stock integrations (duplicated events, out-of-order events, snapshot overwrite, two writers, a counting system outage, identifier mismatch, a wrong count), and each has a detection and a recovery.",
+          "function": "description",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven failures against what each looks like, how it is detected and how it is recovered.",
+              "shows": "Each failure is recognizable from its symptom and has a known repair; the Kestrel & Pine incidents appear as rows."
+            }
+          ]
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "The reconciliation job recurs in the detection column, and a stock integration without one is not finished, because every delivery mechanism delivers at least once and sometimes not at all.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Delivery \"isn't always guaranteed\"; \"use reconciliation jobs to periodically fetch data\". Waypoint W5 makes a reconciliation job a condition of every integration.",
+              "shows": "The vendor that sends the events tells receivers not to rely on them alone.",
+              "source": "Shopify webhook documentation, n.d., accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The detection column of the table.",
+            "introduces": "The one control most of the failures share, and the vendor instruction and Waypoint decision that require it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "A reconciliation compares every copy with the count and cannot tell whether the count itself is right, and published research finds it often is not: a 2008 study of one US retailer found 65% of nearly 370,000 inventory records inaccurate, and later reviews report 20% to 67%.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "65% of nearly 370,000 records inaccurate across 37 stores of one US retailer; 20% to 67% across later studies.",
+              "shows": "Record inaccuracy is common enough that no synchronization design can assume a correct count; an old, pre-RFID study of one retailer, not a current industry rate.",
+              "source": "DeHoratius and Raman, Management Science, April 2008; Production journal review, 2018"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The reconciliation job, which compares copies with the systems that count.",
+            "introduces": "The one failure in the table it cannot find: a wrong count, and how common that is.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Count accuracy therefore needs its own controls beside the integration: cycle counting, which checks part of the physical stock on a rolling schedule, and safety buffers for the uncertainty that remains.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "How often the counted fact is wrong.",
+            "introduces": "The two controls that answer it: cycle counting and a buffer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "All seven failures, then the control most of them share, then the one failure that control cannot find, with the research that measures it and the two controls that answer it: the count-accuracy paragraphs need the table's last row and the reconciliation job before them, and read earlier (they once opened 'In Practice') they were a topic the section then left."
+      }
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The five numbers, the moment of promise, the per-channel figure and the failures are one answer seen from four sides: there is one counted fact per location and everything else is a claim on it or a calculation from it, so the only decisions are who writes each number, how fast a change travels and what compares the copies. For the part: the season typed four times, the Price Drift, the Stacking Bug, the jacket nobody could find and the Oversell are one problem, a value shown or used by a system that did not own it with nothing comparing it to the system that did, and each chapter's remedy has the same three parts.",
+    "so_what": "A merchant can write the ownership of each stock number down before any product is bought, and the same list (owner, who may write, how each channel learns of a change, what compares the copy with the source) can be made for product content, price and discount; none of Kestrel & Pine's 2027 remedies replaces the shop platform.",
+    "callback": {
+      "to": "The introduction's web shopper and store customer who try to buy the last jacket in the same minute; and, for the part, the part opening's product page where a description, a price and a stock badge sit side by side and change at different speeds.",
+      "how": "The first paragraph of the conclusion returns to the two buyers and says what decides which of them gets the jacket; paragraph p54a returns to the part's product page and, with p54b, performs the part's closing."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Write down who owns each stock number before the first connector is built, size the buffer per channel from measurement, and take the eight questions to your own company; then, for product content, price, discount and stock, write down the owner, who may write, how each channel learns of a change and what compares the copy with the source, starting with stock."
+    },
+    "hand_off": {
+      "to": "part-3",
+      "relationship": "sequence",
+      "carries_over": "The catalog's facts: product, price, promotion and availability.",
+      "introduces": "The step at which those facts are fixed into an order and money is taken."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The failures, the reconciliation job that finds most of them and the controls on the count.",
+      "introduces": "The chapter's answer set against its opening, then what holds across the chapter, sorted by how settled it is.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p50a",
+        "controlling_idea": "The web shopper and the store customer of the opening can both be told 'yes' only while each channel keeps its own number; with one counted fact per location, one writer for each claim on it, one place that derives what each channel may sell and a commit at checkout that gives the unit to exactly one order, one of them gets the jacket and the other is told in time.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The opening's two buyers of one jacket set against the chapter's answer.",
+            "shows": "The reader can now say what decides which sale gets the unit, and that it is ownership of the numbers, not a faster copy."
+          }
+        ]
+      },
+      {
+        "id": "p50",
+        "form": "list",
+        "controlling_idea": "Established: on hand is a counted fact owned by one system per location and available is derived; when a unit becomes promised is a configurable business choice; counted stock is often wrong and delivery of stock changes is at least once at best.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "The points it rests on, starting with what vendor documentation and research establish.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p51",
+        "form": "list",
+        "controlling_idea": "Depends on context: whether platform stock, a periodic sync, reserve-on-cart or a bought, built or provider-run availability service fits depends on how many systems take orders and count stock, on the interval and on the kind of sale.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established.",
+          "introduces": "What changes with the merchant's situation.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p52",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: who owns the stock number must be answered in writing before the first connector is built, and the per-channel buffer should be sized from measured count error and lag.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established and what depends on context.",
+          "introduces": "The author's own judgement, labelled as such.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p53",
+        "form": "list",
+        "controlling_idea": "Eight questions let the reader find, in their own company, the owner and writers of each stock number, the moment of promise, the path and lag between channels, the buffer, the last reconciliation and the fallback at checkout.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions that apply them to the reader's own company.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p54a",
+        "controlling_idea": "Part II opened with a product page where a description, a price and a stock badge sit side by side, and its five incidents (the season typed four times, the Price Drift, the Stacking Bug, the jacket nobody could find, the Oversell) are one problem: a value shown or used by a system that did not own it, with nothing comparing it to the system that did.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The part opening's product page set against the five chapters' incidents.",
+            "shows": "Performs the synthesis and callback of the part's closing declared in the journal spec."
+          }
+        ],
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "This chapter's answer about stock, the fastest-changing of the catalog's facts.",
+          "introduces": "What the five chapters of Part II say together, set against the part opening's product page.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p54b",
+        "controlling_idea": "Each chapter's remedy has the same three parts (one writer per fact, a declared path to each channel, a comparison of every copy with its source), none of which replaces the shop platform, so a reader can write down, for product content, price, discount and stock, the owner, who may write, how each channel learns of a change and what compares the copy with the source, starting with stock.",
+        "function": "recommendation",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Kestrel & Pine's 2027 remedies: an ownership table per fact, events in place of scheduled copies, and reconciliations.",
+            "shows": "Performs the so-what and take-away of the part's closing: the remedy is a list a reader can write before any purchase."
+          }
+        ],
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The one problem behind the five incidents.",
+          "introduces": "The remedy the five chapters share, and the list the reader can make for their own company.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p54",
+        "controlling_idea": "Eva's unit will be committed to her order and to nobody else's, and Part III follows that click: the step at which the product, the price, the discount and the available unit are fixed into an order and money is taken.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The catalog's facts: product, price, promotion and availability.",
+          "introduces": "The step at which those facts are fixed into an order and money is taken.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Cart and checkout orchestration, including what the cart calls and when.",
+      "covered_in": [
+        "cart-and-checkout"
+      ]
+    },
+    {
+      "topic": "Order sourcing and routing rules in depth, split shipments and the order management system as a product category.",
+      "covered_in": [
+        "order-management"
+      ]
+    },
+    {
+      "topic": "Warehouse operations: receiving, picking, cycle counting mechanics, the fulfillment order contract.",
+      "covered_in": [
+        "warehouse-and-fulfillment"
+      ]
+    },
+    {
+      "topic": "Store stock, click-and-collect and ship-from-store mechanics; marketplace stock allocation mechanics and fulfillment programs as channels.",
+      "covered_in": [
+        "stores-and-omnichannel",
+        "marketplaces-and-channel-integration"
+      ]
+    },
+    {
+      "topic": "Idempotency, outbox, retries and reconciliation design in depth; bounded contexts and the entity-owner table.",
+      "covered_in": [
+        "events-consistency-and-reconciliation",
+        "boundaries-and-systems-of-record"
+      ]
+    },
+    {
+      "topic": "Inventory valuation and purchasing; wholesale commercial terms.",
+      "covered_in": [
+        "erp-and-back-office-integration",
+        "b2b-commerce"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "The Shopify changelog adding `safety_stock`, `damaged` and `quality_control` (2023) could not be fetched; the chapter says so. Re-verify when the page is available.",
+    "The ASCM/APICS ATP definition is paraphrased as industry practice, not quoted; replace with a quotation if the dictionary becomes fetchable.",
+    "The illustrative per-channel buffers (3 marketplace, 1 storefront) and the 790/550 channel split of the Oversell are ledger additions of this chapter; later chapters (marketplaces, peak-day journey) should reuse rather than restate them.",
+    "The stock chain's hops as the ledger gives them (WMS to ERP every 15 minutes, ERP to shop platform hourly, shop platform to connector hourly) add up to 2 hours 15 minutes, more than the stated 'up to two hours'. This is an open ledger question and was not resolved here: the chapter keeps the published wording ('up to two hours') in the scene, Figure 1's caption, the failure-pattern callout and Cause 1. The author decides in the ledger first.",
+    "The journal spec assigns Part II's closing to this chapter and the published chapter had no such paragraph. Paragraph p54a was added to the spec and the prose to perform it (synthesis, so-what, callback to the part opening's product page, take-away). It names the five incidents as the journal spec's closing does and adds no figure. The author should check its wording against the Part II introduction once that page has been through the same pass.",
+    "The next page, the Part III introduction (part-3), is still at `outline` in the journal spec and has no transition_in of its own; the hand-off uses the transition_in of the part (sequence: the catalog's facts, then the step at which they are fixed into an order and money is taken). That is enough to write the hand-off but gives no hook to hand to; revisit p54 when Part III is brought to full detail.",
+    "The published chapter had no conclusion paragraph that synthesizes and returns to the opening; p50a was added, built only from statements the chapter already makes.",
+    "Flow rubric, first run (sound with notes), notes not taken. (a) The scene's four-hour order queue is not among the three causes of the worked example; it is answered by the 'counting system outage' row of the failure table, and was left there. (b) Merge the vendor table paragraph (p13) with Shopify's arithmetic (p14): kept apart, because p14 sets up the dated change in p14a. (c) Cut the inventory valuation paragraph (p25a) as a boundary remark: kept, it is the author's text and says which stock number the commerce side should not hold. (d) The one-paragraph stages section repeats the three constants: kept, the stage table is the book's house format. (e) The 'Where we are in the order's journey' paragraph (p04) interrupts the line from the claim to the roadmap: it is a fixed element of every chapter and was placed before the roadmap, as in chapters 1 and 2. (f) The vendor paragraph p17 gives no documented example of allocation at fulfillment; none is in the sources, so none was added. (g) The lag of the three hops is restated in the choices (p35) and the worked example (p44): kept, each is one clause.",
+    "Flow rubric, second run (sound with notes), notes not taken. (a) Move the Walmart account (p32) to the one-paragraph stages section: kept with the other public examples of events against scheduled sync. (b) Shorten the stock-master option (p35) to a pointer back to the scene: kept as the author wrote it. (c) The first reconciliation is dated May 2027, after the January 2027 reconstruction that opens the scene; both dates are the ledger's, and the worked example is told from after W1.",
+    "Flow rubric, third run (sound with notes), notes not taken: move the Walmart account (p32) to the stages section (asked a second time; kept with the public examples of events and scheduled sync); merge the signpost paragraph p43 into the first cause (kept: it now carries the link from the stages to the worked example); 'allocation' at fulfillment is used in the promised section before the locations section sets the wholesale sense against it; the marketplace's own push interval in the replay (p47) is given only in the requirements table.",
+    "Round 1 of the draft check, single-reader findings left as they are: the four-hour queue backlog is not placed on the scene's timeline; the scene says three apps could write inventory and gives a March incident, not what the apps did on the evening (the ledger says nothing about the evening); the timeline's 'about 20:30' row follows the '20:00-21:00' row; the failure-pattern callout says 'The Secret Agent' where the scene says 'the App That Wrote Stock'; terms met in a callout or table before their definition (reservation windows, wholesale allocations, backorder, sourcing), 'planned receipts' and 'single-period', and Business Central, which is named without saying what it is (no statement about a real product was added)."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 of the draft check escalated on three spec faults that both flow readers reported (auto mode; changes to order, paragraph ideas and transitions were pre-approved by the author; intent, thesis, role and acceptance criteria untouched). (1) The count-accuracy paragraphs (p41, p42) opened 'In Practice' on a topic the section then left: they now close 'When It Goes Wrong', after the reconciliation job, as the one failure a reconciliation cannot find; 'In Practice' is the worked example only and starts from the Omnichannel row of the stage table. (2) The 790/550 split of the oversold units arrived after the remedy for the first cause: it is now in the scene (p08), beside the total. (3) The valuation paragraph (p25a) read as an afterthought after the section's conclusion, where the second flow run had put it: it is no longer a unit; its sentence opens the ownership paragraph (p15), which now names the owner of each number. Draft faults fixed with them: the vendor table says that three vendors use 'reserved' for what the chapter calls committed (p13); the two senses of 'allocation' are named before the sentence that counts them (p24); the choices open from the service just described; the worked example says its third cause was shown by a reconciliation run in May 2027; the roadmap names the evidence.",
+      "rejected": [
+        "Cutting the valuation sentence.",
+        "Leaving the count-accuracy paragraphs at the head of 'In Practice' with a stronger lead-in.",
+        "A new subheading for the count-accuracy paragraphs."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Second flow run (sound with notes), taken without review as the author asked: the valuation paragraph (p25a) moves from the locations section to the end of the five-numbers section, where it is the third ownership statement after on hand and committed (the first run had found it the weakest fit in the locations section); the W1 paragraph (p27) says the service holds a per-channel buffer and is reconciled with the WMS on a schedule, so the worked example replays W1 and does not extend it; the flow rationale says why the moment of promise precedes locations, why the stages precede the practice section, and where the count-accuracy research sits.",
+      "rejected": [
+        "Cutting the valuation paragraph.",
+        "Moving the Walmart account to the stages section."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The author asked for the flow rubric's notes to be taken without review (auto mode). Before the first run: the 'Where we are' paragraph (p04) was put before the roadmap (p03) and now starts from the search result of the previous chapter, as this chapter's transition_in asks; the roadmap announces every section; Shopify's arithmetic and its dated change of a state's meaning are two paragraphs (p14, p14a); the comparison of the three moments has its own lead-in (p17a), as does the trade-off table (p38a); inventory valuation is its own paragraph (p25a); a synthesis paragraph that returns to the opening (p50a) and the part closing were added to the conclusion. From the first run: in 'In Practice' the research on count accuracy now comes before the controls that answer it (p41, p42); the reconciliation job is said in a sentence where the service is introduced (p26); the second sense of 'allocation' is flagged where it appears (p24); the part closing is two paragraphs, the diagnosis (p54a) and the remedy with the take-away (p54b); the roadmap names the trade-offs; the flow rationale says why trade-offs precede stages, why W1 appears before the choices, and no longer calls the failures those of the recommended design only. In this chapter Kestrel & Pine's hosted product is 'the shop platform'.",
+      "rejected": [
+        "Changing any section heading or the order of sections.",
+        "Renaming one of the two senses of 'allocation'.",
+        "Cutting the valuation paragraph or the one-paragraph stages section."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Reconstructed the spec from the published chapter, one paragraph per unit (check_draft.py units). Intent outcome, acceptance criteria AC-1 to AC-5, thesis and role are copied from the journal spec unchanged. Of the old spec.md's eight success criteria, the first (every term defined from the chapter alone, every acronym expanded) is kept as AC-6, a known_before_new criterion at minor severity, for the author to keep or drop; the second (business problem before any component) is met by the section order and dropped as a criterion; the other six were inventories of tables, diagrams and sections and are dropped. The length limit is 6,500 words, the cap the old spec referred to (writer brief and style guide); the published text had 5,600.",
+      "rejected": [
+        "Carrying the inventory criteria over as custom criteria.",
+        "Setting the limit to the published length."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Made the Oversell reconstruction (an illustrative timeline with ledger totals) the opening scene rather than a vocabulary lecture, so the business problem precedes every term.",
+      "rejected": [
+        "Opening with the ATP formula."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Chose four options (platform stock, stock master plus sync, availability service, provider pool), because the Growing-stage reader's real choice is the second option and the Group-stage reader's is the fourth.",
+      "rejected": [
+        "A two-way 'sync vs events' framing."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Kept the vendor evidence inside the explanatory sections and reduced 'In Practice' to the one empirical finding (DeHoratius and Raman) plus the worked example, to stay within the length cap without dropping evidence."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Left sourcing rules, split shipments and the OMS to chapter 13, and idempotency and reconciliation design to chapter 25, naming both at the handoff points rather than re-teaching them."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine and _research/scenario-ledger.md",
+      "contributed": "The systems landscape, the sync chain, the Oversell and the App That Wrote Stock, W1; the 790/550 split, the buffers, the May 2027 reconciliation."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/consistency-issues.md, ruling 22",
+      "contributed": "Six writers of Duiven stock in January 2027, four of them automated flows into the shop platform."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (part-2 closing; part-3 transition_in)",
+      "contributed": "The part closing this chapter performs and the hand-off to Part III."
+    },
+    {
+      "kind": "internal",
+      "ref": "boundaries-and-systems-of-record",
+      "contributed": "The system-of-record idea the chapter uses for on hand."
+    },
+    {
+      "kind": "internal",
+      "ref": "order-management",
+      "contributed": "Sourcing, split shipments and the OMS whose module hosts the availability service."
+    },
+    {
+      "kind": "internal",
+      "ref": "events-consistency-and-reconciliation",
+      "contributed": "Idempotency, ordering and reconciliation, referenced not re-taught."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-inventory-fulfillment-returns.md (Part 1), _research/brief-integration-and-data.md (Parts 1-2, 5.3), _research/brief-shopify.md (4.4, 5.4)",
+      "contributed": "The factual base."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify developer documentation and changelogs (inventory quantities; POS states 2023-02-09; reserved to committed 2026-08-05; fulfillment services; webhooks)",
+      "contributed": "Vocabulary, arithmetic, semantics change, hourly polling, delivery not guaranteed."
+    },
+    {
+      "kind": "external",
+      "ref": "commercetools API documentation (inventory, carts, inventory APIs overview)",
+      "contributed": "Inventory modes, reservation expiry, 10-second window."
+    },
+    {
+      "kind": "external",
+      "ref": "Adobe Commerce Inventory Management documentation (2026-08)",
+      "contributed": "Sources, stocks, reservations, sourcing algorithms."
+    },
+    {
+      "kind": "external",
+      "ref": "SAP Commerce 2205 StockService Javadoc (2022)",
+      "contributed": "Reserve and release per warehouse."
+    },
+    {
+      "kind": "external",
+      "ref": "Microsoft Learn, Business Central and Shopify inventory sync (2026-10-14)",
+      "contributed": "Compare-then-send sync."
+    },
+    {
+      "kind": "external",
+      "ref": "Picqer API documentation",
+      "contributed": "Stock-changed webhook."
+    },
+    {
+      "kind": "external",
+      "ref": "Confluent blog, Walmart inventory (2020-05-04)",
+      "contributed": "One partition per item and store."
+    },
+    {
+      "kind": "external",
+      "ref": "Zalando SE, ZEOS and NEXT (2024-11-21); letter to shareholders 2025 (2026-03-12)",
+      "contributed": "Shared stock pool."
+    },
+    {
+      "kind": "external",
+      "ref": "DeHoratius and Raman, Management Science (2008)",
+      "contributed": "Inventory record inaccuracy."
+    },
+    {
+      "kind": "external",
+      "ref": "Directive 2011/83/EU, Article 18",
+      "contributed": "30-day delivery rule."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Round 1 (escalate: 14 passed, 25 failed, of which 16 single-reader findings recorded as minor) resolved in the spec: p41 and p42 moved to close 'When It Goes Wrong'; the 790/550 split moved to p08; p25a folded into p15; ideas of p13, p43, p46 and the roadmap revised; transitions of the moved units, the 'In Practice' section and the conclusion rewritten. 60 paragraphs. The chapter is revised to match and the round's draft faults fixed."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Second flow run (sound with notes): p25a moved to close the five-numbers section; p27 names W1's buffer and reconciliation; flow rationale extended. 61 paragraphs."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Flow rubric (sound with notes) taken: p04 before p03; p14a, p17a, p25a, p38a split out or added; p41 and p42 reordered (research, then controls); p50a, p54a and p54b added to the conclusion; roadmap and flow rationale rewritten. 61 paragraphs. The chapter is revised to match."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted from spec.md to an outcome spec: intent, thesis and role copied from the journal spec; supporting claims, sections, paragraphs, transitions, introduction and conclusion reconstructed from the published chapter; record-keeping sections carried over. Status draft."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 3 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator)."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Final consistency pass: stock writers before Waypoint aligned to six (WMS feed via the ERP's hourly sync, hand edits in ERP and platform, three apps), four of them automated flows (consistency item 22)."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: aligned the Oversell timeline with the 21:05 manual zeroing in the connector, corrected the ZEOS quote, removed the internal research-brief citation and ledger references, confirmed the 41-app count (ruling 10), made the post-Waypoint stock path explicit (WMS events via the iPaaS, not the ERP)."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article."
+    }
+  ],
+  "length": {
+    "max_words": 6500
+  }
+}

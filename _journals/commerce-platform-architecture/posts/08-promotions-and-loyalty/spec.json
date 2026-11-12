@@ -1,0 +1,1555 @@
+{
+ "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+ "spec_version": "0.1",
+ "kind": "post",
+ "id": "commerce-promotions",
+ "journal": "commerce-platform-architecture",
+ "part": "part-2",
+ "title": "Discounts, Coupons and Loyalty: Promotions Without Chaos",
+ "status": "draft",
+ "revised": "2026-11-12",
+ "basis": "Reconstructed from the published chapter (posts/08-promotions-and-loyalty/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter. It is a contract, not a description: the places where the published chapter did not do what the spec asks are listed under open_questions and decision_log.",
+ "intent": {
+  "outcome": {
+   "know": [
+    "The parts of a promotion system: definitions with an order of evaluation and a stop rule, eligibility, the code ledger, evaluation in the cart, allocation to order lines.",
+    "Why gift cards, store credit and loyalty points are liabilities held in ledgers and not promotions."
+   ],
+   "believe": [
+    "A promotion incident is a governance failure (a setting without an owner) before it is a software failure.",
+    "The allocated net line price, not the list price, is the price every later system must read."
+   ],
+   "can_do": [
+    "Allocate an order-level discount to lines and compute the refund for one returned line.",
+    "Ask of any promotion setup which system computes the final discount, in what order, where stacking stops and who may change that."
+   ]
+  },
+  "audience": {
+   "who": "Readers new to commerce architecture. The ecommerce manager who configures campaigns and the engineer who owns the order export benefit most: the chapter shows them the same promotion from the cart's side and from the invoice's side. Finance readers get the liability and breakage rules in plain words; product managers get the choices and the scale-stage judgement.",
+   "already_knows": [
+    "What buying something online is like from the shopper's side, including typing a discount code and paying with a gift card.",
+    "From Part I: the thirteen steps of an order, promise and handoff, the three status lines, what a system is, 'the shop platform' for the hosted product, Kestrel & Pine's systems, people and incidents in outline, the four scale stages, bounded context, system of record, single writer, events, idempotency and reconciliation, Waypoint decisions W1 to W8, the failure-pattern names.",
+    "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub / order management system, availability service, D2C, B2B, PIM, POS.",
+    "From the two chapters before this one: product information owned per attribute, and a price selected by one rule and frozen on the order."
+   ],
+   "does_not_know": [
+    "Promotion, coupon code, automatic discount, eligibility, stacking, order of evaluation, stop rule, discount allocation, net line price.",
+    "Gift card, store credit and loyalty points as liabilities; breakage, material right, contract liability, deferred revenue.",
+    "Prior price, strike-through price, incrementality, holdout group."
+   ]
+  },
+  "acceptance_criteria": [
+   {
+    "id": "AC-1",
+    "statement": "Given an order with an order-level discount and one returned line, the reader computes the refund from the allocated net line price and says what had to be recorded at order time.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "An order holds a €199 jacket and €36 of socks, with a 10% code on the whole order. The customer returns the jacket. Using only this chapter: how much is refunded, and what must have been recorded when the order was placed?",
+    "expected": "€179.10, not €199: the €23.50 discount is allocated to the lines in proportion (€19.90 to the jacket), and the net price per line is written to the order, where the returns tool, the invoice and the credit note read it."
+   },
+   {
+    "id": "AC-2",
+    "statement": "Given two discounts that combined against the business's intent, the reader names the missing owner of the combination rule and a test against the active promotions, before naming a new tool.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "In a sale week a welcome code combined with an automatic 20% discount on the same carts, although nobody intended it. Using only this chapter: what was missing, and what would you do before the next campaign?",
+    "expected": "The rule that decides stacking lived in a platform setting that nobody owned or checked against the campaign plan. Give the combination settings one owner, write each campaign with its order of evaluation and stop rule in one calendar, and test the new campaign against every promotion already active. Governance first, not a new promotion engine."
+   },
+   {
+    "id": "AC-3",
+    "statement": "The reader can say why a gift-card balance is not a discount and who must check it against what.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "minor",
+    "probe": "Using only this chapter: why is a gift card not a promotion, and who has to check its balance against what, how often?",
+    "expected": "It is value the customer has paid for in advance, so the merchant owes it: a liability kept as a ledger with a balance. Finance reconciles the stored-value balances to a liability account every month."
+   },
+   {
+    "id": "AC-4",
+    "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+    "check": "intro_predicts_content",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+    "expected": "What a promotion is and what it touches; the parts of a promotion system and where the final discount is computed; how a discount reaches the invoice, the refund and the books; gift cards, store credit and points as ledgers; the choices by scale stage; dated examples and Kestrel & Pine's 2027 plan; how promotions fail. Evidence: the Black Friday Stacking Bug, a worked allocation on Eva's order, platform documentation, accounting standards and a company filing."
+   },
+   {
+    "id": "AC-5",
+    "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+    "check": "reverse_outline_matches_spec",
+    "method": "reverse_outline",
+    "severity": "blocker"
+   },
+   {
+    "id": "AC-6",
+    "statement": "A reader new to commerce meets no term in this chapter before it is explained, and every acronym is expanded on first use.",
+    "check": "known_before_new",
+    "method": "rubric",
+    "severity": "minor"
+   }
+  ]
+ },
+ "thesis": {
+  "question": "How do you offer discounts, coupons, bundles and loyalty rewards without breaking the price, the margin or the books?",
+  "claim": "Promotions leave the price, the margin and the books intact when three things hold: each promotion, whether a discount, a coupon or a bundle, is a data record with a place in a declared order of evaluation and a rule that says where stacking (combining promotions on one order) stops; the final discount is computed once, in the cart, and written to the order allocated to its lines, so that invoices and refunds read the net price of each line; and gift cards, store credit and loyalty points are kept apart from promotions as ledgers of value the merchant owes its customers, reconciled every month to a liability account.",
+  "disputed_by": "The view that a promotion is a marketing setting a campaign manager switches on in the shop platform, that the discount shown on the product page is the discount, and that a gift card or a loyalty point is one more kind of discount.",
+  "so_what": "Kestrel & Pine's Black Friday Stacking Bug put two discounts on 2,860 orders and cost about €52,000, part of it refunded twice on returns. A merchant that accepts the claim gives the combination settings one owner, tests each campaign against the promotions already active, and makes its order export carry the net price per line.",
+  "how_why": "Two promotions that are each valid combine unless a rule says where stacking stops; when that rule is a platform setting nobody owns, nobody checks it against a new campaign. The product page is rendered before the cart exists, so it can only estimate; the cart is the first place where all lines, codes and the customer are known. Invoices, tax, returns and partial refunds work line by line, so a discount left at order level is refunded at the wrong amount. A gift-card balance is money already received for goods not yet delivered, and a loyalty point is a reward the customer has already earned, so accounting standards record both as liabilities.",
+  "supporting_claims": [
+   {
+    "id": "S1",
+    "claim": "Two promotions that are each valid combine against the business's intent when the rule that decides stacking is a platform setting nobody owns or tests, so a promotion incident is a governance failure before it is a software failure."
+   },
+   {
+    "id": "S2",
+    "claim": "A promotion is a data record: a type, conditions of eligibility, a usage record, and a place in a declared order of evaluation with a rule that says where stacking stops."
+   },
+   {
+    "id": "S3",
+    "claim": "The final discount is computed once, in the cart, and written to the order allocated to its lines, because the product page can only estimate and because invoices, tax, returns and refunds work line by line."
+   },
+   {
+    "id": "S4",
+    "claim": "Gift cards, store credit and loyalty points are value the merchant owes its customers, kept as ledgers apart from promotions and reconciled every month to a liability account."
+   },
+   {
+    "id": "S5",
+    "claim": "How much promotion machinery a merchant needs depends on how many systems must agree on the result, so the platform's own promotions with clear ownership are enough until one promotion must be the same rule in two systems the platform does not control."
+   },
+   {
+    "id": "S6",
+    "claim": "What the law, abuse and measurement ask of promotions arrives as requirements on recorded data: a price history, a usage record per customer identity and a record of what was offered."
+   }
+  ]
+ },
+ "role": {
+  "contribution": "Shows what may be subtracted from a selected price and how the result is fixed on the order, so that the price a later system reads is the one the customer paid.",
+  "supports": [
+   "P2-3"
+  ]
+ },
+ "flow": {
+  "pattern": "prerequisite_order",
+  "additional_patterns": [
+   {
+    "pattern": "problem_solution",
+    "applies_to": "scene through pieces: the incident, then the vocabulary and the system that would have prevented it"
+   },
+   {
+    "pattern": "grouping",
+    "applies_to": "choices, in-practice and when-it-goes-wrong: parallel options, parallel findings and parallel failures"
+   }
+  ],
+  "rationale": "The incident comes first because it gives the reader three concrete faults to carry through the chapter. The vocabulary follows because the faults cannot be named exactly without it, and the system description follows the vocabulary because its five parts are described in those words. Stored value comes after the promotion system because it is defined by contrast with it: a reader who met the ledgers first would not yet know what they are being kept apart from. The choices and the scale stages need both halves, since the comparison of the four options has a row for allocation and a row for stored value; moved before the system description, it would compare options on criteria not yet explained. The public examples follow the choices because each names a record (a price history, a customer identity, the offers made) that the chosen arrangement must keep, and the 2027 plan closes them because it applies the governance rule the choices end on. The failures come last because each is the absence of something an earlier section established."
+ },
+ "introduction": {
+  "hook": {
+   "type": "puzzling_scenario",
+   "content": "A shopper uses a welcome code to buy a jacket and socks, then returns the jacket. How much should the merchant refund?"
+  },
+  "bridge": {
+   "from_reader_world": "Anyone who has typed a discount code or spent a gift card knows promotions from the shopper's side, where the discount is simply a lower total.",
+   "to_topic": "The refund question shows that the total is not enough: the discount has to be recorded per item, the combination of offers has to be decided by a rule, and a stored balance is a debt and not a discount."
+  },
+  "thesis_statement": {
+   "text": "A promotion is a rule evaluated in one place, at cart time, in a declared order with a rule that says when stacking stops; the discount is not finished until it is allocated to lines; gift cards, store credit and points are money owed, kept as ledgers and reconciled to a liability account every month.",
+   "placement": "KEY POINTS callout, all three bullets; paragraphs p01 to p03 state the three parts in prose"
+  },
+  "roadmap": {
+   "placement": "IN THIS CHAPTER callout and paragraph p05",
+   "promises": [
+    {
+     "promise": "Start from Kestrel & Pine's Black Friday Stacking Bug.",
+     "kept_in": [
+      "scene"
+     ]
+    },
+    {
+     "promise": "Define a promotion and what it touches.",
+     "kept_in": [
+      "what-a-promotion-is"
+     ]
+    },
+    {
+     "promise": "Describe the parts of a promotion system and where the final discount is computed, and follow a discount to the invoice, the refund and the books with a worked allocation on Eva's order.",
+     "kept_in": [
+      "pieces"
+     ]
+    },
+    {
+     "promise": "Treat gift cards, store credit and points as ledgers of money owed.",
+     "kept_in": [
+      "stored-value"
+     ]
+    },
+    {
+     "promise": "Compare four ways to run promotions and say how each fits the scale stages.",
+     "kept_in": [
+      "choices",
+      "scale-stages"
+     ]
+    },
+    {
+     "promise": "Give dated examples and Kestrel & Pine's plan for Black Friday 2027.",
+     "kept_in": [
+      "in-practice"
+     ]
+    },
+    {
+     "promise": "List the ways promotions fail, with detection and recovery.",
+     "kept_in": [
+      "when-it-goes-wrong"
+     ]
+    }
+   ]
+  },
+  "paragraphs": [
+   {
+    "id": "p01",
+    "controlling_idea": "A shopper who used a welcome code on a jacket and socks returns the jacket, and the right refund depends on how the discount was shared across the items, so a promotion needs a recorded calculation that checkout, returns and finance all use.",
+    "function": "context",
+    "organization": "illustration",
+    "evidence": [
+     {
+      "kind": "scenario",
+      "what": "A welcome code on a jacket and socks, then a return of the jacket; a returns system that reads the list price refunds more than the shopper paid.",
+      "shows": "One ordinary return is enough to show that a discount has to be recorded per item."
+     }
+    ]
+   },
+   {
+    "id": "p02",
+    "controlling_idea": "Offers also interact before payment: two valid discounts can combine into a price the business never intended, so the promotion rules must say which combinations apply.",
+    "function": "claim",
+    "transition_in": {
+     "relationship": "additional_support",
+     "carries_over": "The discount whose share per item decides the refund.",
+     "introduces": "A second way a promotion goes wrong, before payment: two valid offers combining.",
+     "form": "phrase",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p03",
+    "controlling_idea": "Gift cards and loyalty points are a different obligation from a discount: a balance the customer can still spend, which the merchant owes and must keep a record of.",
+    "function": "claim",
+    "transition_in": {
+     "relationship": "contrast",
+     "carries_over": "Discounts and how they combine.",
+     "introduces": "Stored balances, which are owed to the customer and are not discounts.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p04",
+    "controlling_idea": "The previous chapter selected a price by rule and froze it on the order; this chapter covers what may be subtracted from that price at checkout, and Eva's order of 13 April 2027 already carries one promotion, free shipping over €75.",
+    "function": "context",
+    "evidence": [
+     {
+      "kind": "scenario",
+      "what": "Eva's order at Kestrel & Pine on 13 April 2027: a €199 jacket and two €18 pairs of socks, €235 in total, no item discount, free shipping over €75.",
+      "shows": "Even an order with no discount code passes through promotion evaluation.",
+      "source": "Kestrel & Pine scenario ledger (illustrative)"
+     }
+    ],
+    "transition_in": {
+     "relationship": "example",
+     "carries_over": "Discounts and balances as things that must be recorded.",
+     "introduces": "The place of promotions in the order's journey, after the price is selected, and the one promotion on Eva's order.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p05",
+    "controlling_idea": "The chapter starts from Kestrel & Pine's Black Friday Stacking Bug, defines a promotion and what it touches, describes the parts of a promotion system and follows a discount to the invoice, the refund and the books, treats gift cards, store credit and points as ledgers, compares four ways to run promotions across the scale stages, and ends with dated examples, the 2027 plan and the ways promotions fail.",
+    "function": "transition",
+    "transition_in": {
+     "relationship": "sequence",
+     "carries_over": "Where promotions sit in the order's journey.",
+     "introduces": "The order of the chapter's sections and the kinds of evidence it uses.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   }
+  ]
+ },
+ "sections": [
+  {
+   "id": "scene",
+   "heading": "Setting the Scene at Kestrel & Pine: The Black Friday Stacking Bug",
+   "controlling_idea": "In Black Friday week 2026 two valid promotions combined on 2,860 orders because of a setting nobody checked, and the cost of about €52,000 came from three separate faults: the stacking, the shipping threshold and the missing allocation.",
+   "function": "example",
+   "advances_thesis": {
+    "supports": [
+     "S1",
+     "S3"
+    ],
+    "how": "Shows in one incident that the stacking rule lived in an unowned setting, that the page and the cart computed the threshold differently, and that an unallocated order-level discount was refunded back."
+   },
+   "flow": {
+    "pattern": "chronological",
+    "rationale": "The promotions as configured, what the setting did to them, then the diagnosis: the reader needs the three promotions before the combination and the figures before the three faults are named."
+   },
+   "transition_in": {
+    "relationship": "example",
+    "carries_over": "Two valid discounts combining against intent, announced in the introduction.",
+    "introduces": "The incident at Kestrel & Pine in which that happened, with its figures.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p06",
+     "form": "list",
+     "controlling_idea": "For Black Friday week, 23–29 November 2026, Milan Petrov configured three promotions on the hosted shop platform: an automatic 20% off outerwear, the standing 10% welcome code and free shipping over €75.",
+     "function": "context",
+     "organization": "narration",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "The three promotions active in the week of 23–29 November 2026.",
+       "shows": "Each promotion was valid on its own; the incident needed nothing unusual.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      }
+     ]
+    },
+    {
+     "id": "p07",
+     "controlling_idea": "The welcome code was not meant to combine with the outerwear discount, but a combination setting the agency had switched on in October still allowed both and nobody checked it against the campaign plan; the week cost about €52,000 in three ways: two discounts on 2,860 orders, shipping charged on 1,140 orders after the page had promised it free, and 190 returns refunded too much.",
+     "function": "cause_effect",
+     "organization": "narration",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "31,000 online orders in the week; 2,860 with both discounts; Ridgewalker €199 → €159.20 → €143.28; about €43,000 margin beyond plan; 1,140 orders charged €4.95 shipping after the page promised it free, about €5,600 refunded; 190 returns over-refunded, about €3,000; total about €52,000.",
+       "shows": "The cost has three parts, each from a different fault, and each row is a figure the later sections explain.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "The three promotions as configured.",
+      "introduces": "The intent that two of them should not combine, the setting that let them, and what the week cost.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p08",
+     "controlling_idea": "Three things went wrong, and the chapter returns to each: the stacking rule lived in a setting and not in the campaign, the free-shipping threshold was evaluated on different subtotals by the page and the cart, and the order-level discount was never allocated to the lines.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "figure",
+       "what": "Figure 1: the jacket price falling from €199 to €159.20 to €143.28 because a combine switch was left on.",
+       "shows": "The first of the three faults in one picture: the second discount applied on top of the first."
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The three costs of the week: double discounts, shipping charged against the page's promise, over-refunded returns.",
+      "introduces": "The fault behind each, and the conclusion that a price nobody can reconstruct from the rules has no owner.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "what-a-promotion-is",
+   "heading": "What a Promotion Is, and What It Touches",
+   "controlling_idea": "A promotion is a rule that lowers the price under stated conditions; it comes in seven shapes, each of which touches the price, the margin and the books, and stored value is not one of them.",
+   "function": "definition",
+   "advances_thesis": {
+    "supports": [
+     "S2",
+     "S4"
+    ],
+    "how": "Gives the vocabulary (promotion, code, eligibility, stacking, allocation) in which the thesis is stated and sets stored value apart from the start."
+   },
+   "flow": {
+    "pattern": "large_to_small",
+    "rationale": "The definition, then its seven types, then what all the types have in common, then what is excluded: the exclusion makes sense only once the reader knows what a promotion is."
+   },
+   "transition_in": {
+    "relationship": "elaboration",
+    "carries_over": "The three faults of the Stacking Bug: stacking, evaluation and allocation.",
+    "introduces": "Plain definitions of those words and of the kinds of promotion.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p09",
+     "controlling_idea": "A promotion is a rule that lowers the price a customer pays under stated conditions, and five words describe it: coupon code, automatic discount, eligibility, stacking and discount allocation.",
+     "function": "definition",
+     "evidence": [
+      {
+       "kind": "figure",
+       "what": "Figure 2: an eligibility rule card above four panels (coupon code, automatic, stacking, allocation).",
+       "shows": "The five words in one picture, each tied to what it does to a price."
+      }
+     ]
+    },
+    {
+     "id": "p10",
+     "controlling_idea": "Every platform supports the same seven types of promotion, and each type needs different facts to compute and changes a different part of the order.",
+     "function": "description",
+     "organization": "classification",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Seven promotion types (percentage off, fixed amount off, order discount, buy X get Y, tiered, free shipping, bundle) with an example, what each needs to compute and what it changes.",
+       "shows": "Product discounts change a line; order discounts change the total and must be allocated to lines.",
+       "source": "Author's synthesis"
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 3: seven tiles, one per promotion type.",
+       "shows": "The seven types at a glance, grouped by whether they change a line, the total or the shipping."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The definition of a promotion.",
+      "introduces": "The seven types and what each needs and changes.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p11",
+     "controlling_idea": "Every type touches three things the business cares about: the price the customer sees, the margin, and the books.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "The Ridgewalker at €143.28 still cleared its €58 landed cost but gave up about a sixth of its planned Black Friday unit margin.",
+       "shows": "Margin is lost without any single promotion being wrong.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 4: one discount tag with arrows to a price tag, a margin bar and an invoice with a ledger.",
+       "shows": "One discount reaches three places, which are the three things the chapter's question asks to keep intact."
+      }
+     ],
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The seven types and what each changes.",
+      "introduces": "The three things all of them touch: price, margin and books.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p12",
+     "controlling_idea": "Gift cards, store credit and loyalty points look like promotions and are not: they are value the merchant owes, kept as ledgers, and get their own section.",
+     "function": "claim",
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "What a promotion is and touches.",
+      "introduces": "The instruments that look like promotions and are money owed.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "pieces",
+   "heading": "How the Pieces Fit Together",
+   "controlling_idea": "A promotion system has five parts arranged around one decision: the final discount is computed once, in the cart, and written to the order allocated per line, where the invoice, the credit note and the ledger read it.",
+   "function": "process",
+   "advances_thesis": {
+    "supports": [
+     "S2",
+     "S3"
+    ],
+    "how": "Carries the first two clauses of the thesis: promotions as data with a declared order and stop rule, and the discount computed once and allocated to lines, shown on Eva's order."
+   },
+   "flow": {
+    "pattern": "chronological",
+    "rationale": "The five parts in the order a discount passes through them, then the discount's path after the order with one worked case, then the moments at which the parts are used. The worked allocation follows the fifth part directly, because a reader who has just met allocation can check it on real numbers; placed after the table of moments it would be separated from the step it illustrates. The moments come last because their table mentions every part, and its closing point, that code redemption and stored value behave like money, leads into the next section."
+   },
+   "transition_in": {
+    "relationship": "elaboration",
+    "carries_over": "The vocabulary of promotions and the three things a promotion touches.",
+    "introduces": "The parts of the system that evaluates promotions, and the path of a discount from the cart to the books.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p13",
+     "controlling_idea": "A promotion system has five parts, whatever product provides them, arranged around one decision: the final discount is computed once, in the cart, and written to the order with its allocation.",
+     "function": "claim",
+     "evidence": [
+      {
+       "kind": "figure",
+       "what": "Figure 5: the product page shows an estimate; the promotion engine computes the final discount at cart time and writes it to the order per line, read by invoice, refund and analytics.",
+       "shows": "Where each of the five parts sits and which of them the later systems read."
+      }
+     ]
+    },
+    {
+     "id": "p14",
+     "controlling_idea": "Promotion definitions: each promotion is a record with a position in the order of evaluation, and three vendors document the same shape, a declared order and a stop rule.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Shopify evaluates product, then order, then shipping discounts, and calculates two combined percentage order discounts on the original subtotal (10% plus 20% on €100 gives €70); commercetools gives each cart discount a sortOrder, a stacking mode and discount groups; Adobe Commerce has rule priority and 'Discard subsequent rules'.",
+       "shows": "Three independent products arrive at promotions as data with a declared order and a stop rule.",
+       "source": "Shopify Help Center, commercetools docs, Adobe Experience League (accessed November 2026)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The five parts.",
+      "introduces": "The first part, the definition record, and how three vendors order and stop evaluation.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p15",
+     "controlling_idea": "Eligibility and identity: conditions such as 'first order' need to know who the customer is, and a check on the e-mail address alone treats one person with two addresses as two first-time customers.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "Kestrel & Pine's welcome code checked 'first order' by e-mail address.",
+       "shows": "Eligibility is only as good as the customer identity behind it.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "The definition record and its conditions.",
+      "introduces": "The second part: deciding who qualifies, which depends on customer identity.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p16",
+     "controlling_idea": "The code ledger: every code has a usage record that must be strongly consistent at redemption, so that two checkouts cannot both take the last use.",
+     "function": "explanation",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Adobe generates single-use codes in batches with usage caps; Shopify separately limits how many codes one order may carry (5 product or order codes and 1 shipping code).",
+       "shows": "A platform treats capped single-use codes as the basic defense against code sharing; the Shopify figure is a different limit, per order, and is given as such.",
+       "source": "Adobe Experience League, Shopify Help Center (accessed November 2026)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Eligibility per customer.",
+      "introduces": "The third part: the record of how often a code has been used.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p17",
+     "controlling_idea": "Evaluation in the cart: the engine applies the promotions in order to the cart's lines and stops where the stop rule says, and because some conditions are known only at checkout, the product page can show only an estimate.",
+     "function": "process",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Adobe: conditions on the shipping or payment method 'are met only in checkout after the specific shipping/payment methods are selected'.",
+       "shows": "A vendor states that some conditions cannot be evaluated before checkout, which is why the page estimates.",
+       "source": "Adobe Experience League (accessed November 2026)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Definitions, eligibility and codes, the inputs.",
+      "introduces": "The fourth part: the evaluation itself, and why it can be final only in the cart.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p18",
+     "controlling_idea": "Allocation and events: the last part writes the result where later systems read it, as a net price on each order line and as an event for each promotion applied, redeemed or offered.",
+     "function": "process",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "commercetools distributes an absolute cart discount proportionately, evenly or individually across the lines.",
+       "shows": "Allocation is a documented choice of the engine, not an afterthought.",
+       "source": "commercetools docs (accessed November 2026)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "The discount the cart computed.",
+      "introduces": "The fifth part: writing that discount to the order per line and emitting events.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p21",
+     "controlling_idea": "A discount leaves the order in three documents, the invoice, the credit note and the ledger, and each reads the net price per line, which makes allocation a tax matter as well.",
+     "function": "explanation",
+     "evidence": [
+      {
+       "kind": "example",
+       "what": "An order-level discount across a jacket at 21% VAT and a book at 9% must be allocated before the tax can be right.",
+       "shows": "Without allocation the VAT per line cannot be computed."
+      }
+     ],
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "The net price written to each order line by the fifth part.",
+      "introduces": "The three documents that read it after the order: invoice, credit note and ledger.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p22",
+     "controlling_idea": "On Eva's order of €235, a hypothetical 10% code is allocated in proportion to the list prices: €19.90 to the jacket and €3.60 to the socks.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Jacket €199.00, 84.7% of €235, discount €19.90, net €179.10; socks €36.00, 15.3%, discount €3.60, net €32.40; total discount €23.50, net €211.50. The code is hypothetical.",
+       "shows": "The discount is split by each line's share of the order, and every line ends with a net price.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "Allocation as the step the three documents depend on.",
+      "introduces": "The calculation on Eva's order.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p23",
+     "controlling_idea": "When Eva returns the jacket the refund is €179.10, not €199, and the 190 over-refunded Black Friday returns were this calculation skipped.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "The returns portal read €159.20 because the order-level 10% had not been written to the lines, and gave back €15.92 per jacket that the customer had never paid.",
+       "shows": "The over-refund is exactly the unallocated share of the discount.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 6: a returns counter refunding €159.20 for a jacket paid at €143.28.",
+       "shows": "The Boomerang pattern in one picture: the discount given a second time on the return."
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The net line prices on Eva's order.",
+      "introduces": "The refund that follows from them, and the Stacking Bug's over-refunds as the same step missing.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p19",
+     "controlling_idea": "Promotions are evaluated at six moments, and each moment has its own requirements for freshness, consistency, latency and availability.",
+     "function": "comparison",
+     "organization": "classification",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Six interactions (product page strike-through price, cart evaluation, code redemption, stored-value redemption, promotion publication, analytics) by freshness, consistency, latency and availability; latency figures labelled assumptions.",
+       "shows": "Only some interactions need a final, consistent answer; the page may show an estimate and must not block.",
+       "source": "Author's synthesis"
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The five parts and the discount's path from the cart to the refund.",
+      "introduces": "The six moments at which a promotion is evaluated or read, and what each moment needs.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p20",
+     "controlling_idea": "Only the two interactions that behave like money, code redemption and stored value, must be strongly consistent; everything else can be a cached copy with a known delay.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The table of interactions.",
+      "introduces": "The one distinction to take from it: the two rows that behave like money hold the truth, and the rest are copies.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "stored-value",
+   "heading": "Gift Cards, Store Credit and Points: Ledgers, Not Promotions",
+   "controlling_idea": "Gift cards, store credit and loyalty points are liabilities with settled accounting rules, so each is kept as a ledger whose balances finance reconciles to a liability account every month.",
+   "function": "explanation",
+   "advances_thesis": {
+    "supports": [
+     "S4"
+    ],
+    "how": "Carries the third clause of the thesis: stored value is money owed, with its own records and its own monthly check."
+   },
+   "flow": {
+    "pattern": "prerequisite_order",
+    "rationale": "What the instruments are, the rules that make them liabilities and where the chapter takes those rules from, a filing that applies them, the design rules, then the one thing often confused with them, and Kestrel & Pine's position: the design rules cannot be argued before the accounting that forces them, and membership placed between the liability claim and its accounting support made two readers lose the claim."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "Stored value, named at the end of the promotion system as one of the two interactions that behave like money.",
+    "introduces": "What gift cards, store credit and points are: balances the merchant owes, not rules.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p24",
+     "controlling_idea": "A gift card is value paid in advance, store credit is value the merchant granted and loyalty points are value the customer earned, and all three are a liability on the balance sheet until redeemed or expired.",
+     "function": "definition",
+     "evidence": [
+      {
+       "kind": "figure",
+       "what": "Figure 7: issuance, redemption, expiry and breakage changing a balance per instrument in the commerce platform, with the sum agreeing with the liability account in finance.",
+       "shows": "Stored value is a ledger with two holders, the platform for the balance and finance for the liability."
+      }
+     ]
+    },
+    {
+     "id": "p25",
+     "controlling_idea": "For the three instruments the accounting is settled and drives the data model: under IFRS 15 and ASC 606 a gift-card sale is a liability and not revenue, the part never redeemed (breakage) is estimated, and points that give a material right defer revenue.",
+     "function": "explanation",
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The three instruments as liabilities.",
+      "introduces": "The accounting standards that say so and what they require to be recorded.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p26",
+     "controlling_idea": "A note on sources: these rules are cited from PwC's guide to ASC 606 and a secondary summary of IFRS 15, because the standard's own text was not checked for this chapter.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "PwC's revenue guide on unexercised rights: estimated breakage is recognized 'in proportion to the pattern of exercised rights'; breakage not expected is recognized only when redemption becomes remote; amounts due under unclaimed-property law are never breakage revenue. The IFRS Foundation's page confirms IFRS 15 replaced IFRIC 13.",
+       "shows": "The breakage rule has a named, public source, and the reader knows which part is second-hand.",
+       "source": "PwC Viewpoint and IFRS Foundation (accessed November 2026)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "The accounting rules for liabilities and breakage.",
+      "introduces": "Where the chapter takes them from, and the limit of that sourcing.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p27",
+     "controlling_idea": "Starbucks' FY2025 annual report shows the same obligation at scale: a stored value card and loyalty liability of $1,751.7 million and $200.4 million of breakage recognized in the year.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "statistic",
+       "what": "Stored value card and loyalty liability $1,751.7 million; breakage recognized in company-operated stores $200.4 million; Stars deferred 'as each Star is earned' and expiring 'after six to twelve months, depending on the market'.",
+       "shows": "A public filing records stored value as deferred revenue and estimates breakage; the obligation has the same shape for a merchant with €200,000 outstanding.",
+       "source": "Starbucks Form 10-K, fiscal year ended 28 September 2025"
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "The rules for liabilities and breakage, and their sources.",
+      "introduces": "One company's filing that applies them, with amounts.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p28",
+     "form": "list",
+     "controlling_idea": "Four design rules follow: every instrument is a ledger, expiry belongs to the issuance, redemption is idempotent, and the platform's balances are reconciled to finance's liability account every month.",
+     "function": "recommendation",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Shopify: 'Store credit expiration is set per issuance'.",
+       "shows": "A platform models expiry the way the rule says.",
+       "source": "Shopify Help Center (accessed November 2026)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The accounting rules and their scale.",
+      "introduces": "The four design rules they lead to.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p29",
+     "controlling_idea": "Paid membership programs are often confused with loyalty points and are none of the three instruments: a membership is a subscription with its own revenue line, which the promotion engine reads as an eligibility condition.",
+     "function": "explanation",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Amazon's 2025 annual report: subscription services net sales of $49.6 billion, Prime benefits as 'effective worldwide marketing tools'; Target's FY2025 report on Target Circle 360.",
+       "shows": "Large retailers report membership as subscription revenue, not as a discount or a points balance.",
+       "source": "Amazon Form 10-K (filed February 2026); Target Form 10-K, fiscal 2025"
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "The three instruments and the design rules for them.",
+      "introduces": "Paid membership, often confused with loyalty, which is a subscription and not a balance.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p30",
+     "controlling_idea": "Kestrel & Pine's gift cards live in two separate pools, about €186,000 online and €41,000 in stores at 31 December 2026, which neither channel can redeem for the other and which finance reconciles each month from two exports.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "Outstanding balances at 31 December 2026: about €186,000 online and €41,000 in stores; Sanne de Wit reconciles two exports to the liability account monthly.",
+       "shows": "The monthly reconciliation exists, and the two pools are the price of two systems.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "The design rules for stored value, and membership set apart.",
+      "introduces": "How Kestrel & Pine's stored value stood at the end of 2026.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p31",
+     "controlling_idea": "Kestrel & Pine deferred an online loyalty program until it can recognize the same customer across channels, and left a shared balance service to the 2028 store-system evaluation.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "Stores keep a loyalty list; the online shop has none; a shared balance service is to be considered under decision W4.",
+       "shows": "A points balance in an account the redemption system cannot identify would be a liability nobody can honor.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "The two gift-card pools.",
+      "introduces": "The loyalty program not launched, for the same reason of separate systems.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "choices",
+   "heading": "The Choices",
+   "controlling_idea": "A merchant can run promotions in four ways, and the platform's built-in promotions are enough until one promotion must be the same rule in two systems the platform does not control.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "S5",
+     "S1"
+    ],
+    "how": "Turns the model into a decision: which arrangement fits, and why governance is the first improvement."
+   },
+   "flow": {
+    "pattern": "grouping",
+    "rationale": "Four parallel options from the least to the most machinery, with the non-design last, then the rule for choosing: the rule can be read only after the options it chooses between."
+   },
+   "transition_in": {
+    "relationship": "sequence",
+    "carries_over": "The promotion system and the stored-value ledgers as they must work.",
+    "introduces": "The four ways a merchant can obtain them.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p32",
+     "controlling_idea": "A merchant can run promotions in four ways, the fourth of which is common and not good.",
+     "function": "claim"
+    },
+    {
+     "id": "p33",
+     "controlling_idea": "The platform's built-in promotions come with documented combination rules and limits, and fit any merchant whose promotions fit the platform's vocabulary.",
+     "function": "description",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Shopify allows at most 25 active automatic discounts; commercetools 100 active code-less cart discounts per project plus 100 per store, and 10 codes per cart.",
+       "shows": "Vendors cap promotions because their interaction is the most common source of margin errors.",
+       "source": "Shopify Help Center, commercetools docs (accessed November 2026)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The four ways.",
+      "introduces": "The first: the platform's own promotions.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p34",
+     "controlling_idea": "A promotion or loyalty app adds what the platform does not model and becomes a second writer of the price, with its own rules and failure modes.",
+     "function": "description",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "Kestrel & Pine's pre-order app wrote stock; a loyalty app is the same shape of risk.",
+       "shows": "An app that writes a fact the platform also writes is an integration to be governed.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "The platform's built-in promotions.",
+      "introduces": "The second way: the platform plus an app.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p35",
+     "controlling_idea": "A dedicated promotion engine shared across channels is the only option in which a store and the web shop run one promotion from one rule, at the cost of an integration into every checkout and a team that owns the rules.",
+     "function": "description",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "The platform plus an app.",
+      "introduces": "The third way: a separate engine every channel calls.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p36",
+     "controlling_idea": "Rules hard-coded in a theme, a script or a marketplace listing are copies that drift, so nobody can say what the price was on a given day.",
+     "function": "description",
+     "organization": "classification",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "The four options compared on where the final discount is computed, order of evaluation and stop rule, the same promotion across channels, allocation to lines, stored value across channels, and which scale stages each fits.",
+       "shows": "Reading across a row shows what each option leaves undefined; hard-coded rules fit nobody.",
+       "source": "Author's synthesis"
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "The three designed options.",
+      "introduces": "The fourth, which is the absence of a design.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p37",
+     "controlling_idea": "The author's rule is to use the platform's promotions until a promotion must be the same rule in two systems the platform does not control, and until then to improve governance: one owner for the combination settings, one calendar and a rollout test against the active promotions.",
+     "function": "recommendation",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "For Kestrel & Pine the moment has arrived for the stores (a separate POS), will arrive for the B2B portal if wholesale promotions start, and never arrives for marketplaces.",
+       "shows": "The rule gives a different answer per channel of one merchant.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The four options and their comparison.",
+      "introduces": "The author's rule for choosing, applied to Kestrel & Pine.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "scale-stages",
+   "heading": "Across Scale Stages: When It Fits and When It Limits",
+   "controlling_idea": "The promotion engine changes little with scale; what changes is how many systems must agree on the result and how much money the stored-value ledger holds.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "S5"
+    ],
+    "how": "Says when each choice stops fitting, by the number of systems that must agree."
+   },
+   "transition_in": {
+    "relationship": "elaboration",
+    "carries_over": "The four options and the rule for choosing.",
+    "introduces": "What is typical, necessary and a warning sign at each of the four scale stages.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p38",
+     "controlling_idea": "Across the four stages the engine changes little; what grows is the number of systems that must agree on the result and the money the stored-value ledger holds, so Kestrel & Pine's order is ownership and allocation first, a cross-channel balance second and a loyalty program last.",
+     "function": "analysis",
+     "organization": "classification",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Four stages (Starting, Growing, Omnichannel, Group), each with what is typical, what becomes necessary and the warning signs of outgrowing the approach.",
+       "shows": "The necessary items grow with channels and legal entities, not with the number of rules.",
+       "source": "Author's synthesis"
+      },
+      {
+       "kind": "scenario",
+       "what": "Kestrel & Pine at stage 3: three channels with their own discounts, two gift-card pools, about €227,000 outstanding.",
+       "shows": "It has the agreement problem acutely and the ledger problem mildly, which sets its order of work.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "in-practice",
+   "heading": "In Practice",
+   "controlling_idea": "Law, abuse and measurement each ask the promotion system to record something, and Kestrel & Pine's plan for Black Friday 2027 shows the chapter's rules written down for one campaign.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S6",
+     "S1",
+     "S3"
+    ],
+    "how": "Supplies dated public evidence for the data a promotion system must keep, and shows the governance and allocation fixes in one plan."
+   },
+   "flow": {
+    "pattern": "grouping",
+    "rationale": "Three parallel public findings, then the one company plan that answers the incident the chapter opened with: the plan comes last because it uses the governance rule from the choices and the allocation from the system description."
+   },
+   "transition_in": {
+    "relationship": "additional_support",
+    "carries_over": "The model and the choice of arrangement.",
+    "introduces": "Dated public examples of what promotions must record, and the plan Kestrel & Pine wrote after the incident.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p38a",
+     "controlling_idea": "Three dated public sources show what the outside asks a promotion system to record (the law a price history, abuse a check of who the customer is, measurement a record of the offers made), and Kestrel & Pine's 2027 plan then shows the chapter's rules written down for one campaign.",
+     "function": "transition"
+    },
+    {
+     "id": "p39",
+     "controlling_idea": "The EU's prior-price rule turns a promotion into a data requirement: a price history per SKU and country that can give the lowest price of the last 30 days when a promotion is published.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Directive (EU) 2019/2161, applied from 28 May 2022; the Dutch regulator ACM supervising from 1 January 2023 with a worked example (€50 raised to €70 and cut 35% is a 9% discount); fines published 11 June 2024 against five named web shops; § 11 PAngV in Germany.",
+       "shows": "The rule is enforced, so the price history is a legal requirement and not a nicety.",
+       "source": "Directive (EU) 2019/2161; ACM publications of 6 December 2022 and 11 June 2024"
+      },
+      {
+       "kind": "scenario",
+       "what": "Had the Price Drift run into November, the German strike-through price for the Ridgewalker would legally have been €179, not €199.",
+       "shows": "The rule applied to the running example.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "The three outside demands just named.",
+      "introduces": "The first: the EU's prior-price rule and the price history it requires.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p40",
+     "controlling_idea": "Promotion abuse is an identity problem: its main forms, several accounts for one sign-up offer, self-referral and guessable codes, all exploit a weak check of who the customer is.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Ravelin's 2020 article names multi-accounting, self-referral and guessable codes; its figure that 53% of merchants saw more abuse is a vendor survey without a published sample.",
+       "shows": "The taxonomy is usable; the figure is directional only.",
+       "source": "Ravelin, 2020"
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "A requirement the law places on promotion data.",
+      "introduces": "A requirement abuse places on it: knowing the customer.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p41",
+     "controlling_idea": "Whether a promotion earned anything can be measured only against a holdout group not given the offer, which requires the platform to record which promotions were offered.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Gubela, Lessmann and Jaroszewicz (2019): judge coupon campaigns on revenue uplift, not conversions; Gubela and Lessmann (2021): of several coupon types, only a €15 coupon produced positive incremental revenue.",
+       "shows": "Redemption rate overstates effect, because many redeemers would have bought anyway.",
+       "source": "EJOR 2019; arXiv 2021"
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "What abuse requires the system to know.",
+      "introduces": "What measurement requires it to record.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p42",
+     "controlling_idea": "For Black Friday 2027 Milan and Noor wrote the promotion plan as a table in which every row has an owner, an order of evaluation and a stop rule, stated the free-shipping threshold the way the cart computes it, and tested the plan against every active promotion in a staging copy.",
+     "function": "example",
+     "organization": "narration",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Five rows (20% off outerwear, welcome code 10%, free shipping over €75, the store promotion, marketplace deals) with type, order, what each combines with, stop and owner; the welcome code never combines with the outerwear discount, and the shipping threshold is on the discounted subtotal and stated on the product page.",
+       "shows": "Each of the three 2026 faults has a row or a column that prevents it.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "problem_solution",
+      "carries_over": "The public examples, and the 2026 incident behind them.",
+      "introduces": "Kestrel & Pine's written plan for the next campaign.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p43",
+     "controlling_idea": "Two changes matter more than the table: the order export now carries the allocated net price per line, and every change to a promotion setting needs a second person's approval.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "Ruben Alves added the net line price to the integration contract under decision W5; neither change cost software.",
+       "shows": "The fixes are ownership and a field in an export, not a new engine.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "emphasis",
+      "carries_over": "The plan as a table.",
+      "introduces": "The two changes that outlast one campaign.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "when-it-goes-wrong",
+   "heading": "When It Goes Wrong",
+   "controlling_idea": "Promotions fail in six recurring ways, and each can be detected by comparing what was computed with what was recorded and recovered by correcting the record.",
+   "function": "cause_effect",
+   "advances_thesis": {
+    "supports": [
+     "S1",
+     "S3",
+     "S4"
+    ],
+    "how": "Shows what breaks when a clause of the thesis is missing: an unowned stacking rule, two computations of one discount, a missing allocation, an unchecked balance."
+   },
+   "flow": {
+    "pattern": "chronological",
+    "rationale": "Six failures along a promotion's life: the combination when the campaign starts, the estimate against the cart, the code and the stored-value debit at checkout, the refund after the order, and the copies when the promotion ends. Read in this order the list works as a timeline a team can walk through before a campaign; in any other order the reader has to work out when each failure can occur."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "The plan made in advance for 2027.",
+    "introduces": "What still goes wrong, how each failure is noticed and how it is repaired.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p44",
+     "controlling_idea": "Unintended stacking is detected by a daily report of orders with more than one discount and repaired by honoring the orders and fixing the setting.",
+     "function": "cause_effect"
+    },
+    {
+     "id": "p45",
+     "controlling_idea": "The estimate and the final discount disagree when the page and the cart compute by different rules; logging both per session detects it.",
+     "function": "cause_effect",
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "Stacking, the first failure.",
+      "introduces": "A second: the page and the cart disagree.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p47",
+     "controlling_idea": "Codes leak or are guessed, which shows as redemptions per code per hour above the expected rate.",
+     "function": "cause_effect",
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "Failures of the discount calculation in the cart.",
+      "introduces": "A failure at redemption: the code itself leaks or is guessed.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p48",
+     "controlling_idea": "Stored value is debited twice, or not at all, when a checkout is retried or a payment message arrives late; ledger entries that reference the checkout attempt show the duplicate.",
+     "function": "cause_effect",
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "A failure of codes at checkout.",
+      "introduces": "A failure of the stored-value debit at the same moment.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p46",
+     "controlling_idea": "The discount comes back twice when a return refunds the list price or a gift-card purchase is refunded both to the card and to the payment method; a weekly reconciliation of refunds against net line prices detects it.",
+     "function": "cause_effect",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Failures up to and at checkout.",
+      "introduces": "A failure after the order: the refund gives the discount back twice.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p49",
+     "controlling_idea": "A promotion ends but a copy of it does not, on a cached page, a marketplace listing, a feed or a till; an end-of-promotion check on every channel detects it.",
+     "function": "cause_effect",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Failures during the promotion's life.",
+      "introduces": "A failure at its end: a copy outside the platform keeps running.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  }
+ ],
+ "conclusion": {
+  "heading": "What to Take Away",
+  "synthesis": "The stacking, the shipping charge and the over-refund looked like three faults and were one: each time, a number the customer or a later system relied on had been computed in one place and never recorded where the next reader looked. The same holds for stored value. A promotion system is therefore judged by what it writes down (the order and stop rule in the campaign, the net price on each line, the balance in a ledger) more than by how it computes.",
+  "so_what": "A merchant can prevent most promotion incidents without buying anything: give the combination settings an owner, test each campaign against the promotions already active, and make every order export carry the net price per line.",
+  "callback": {
+   "to": "The shopper who used a welcome code on a jacket and socks and returned the jacket.",
+   "how": "The reader can now compute the refund (the jacket's net line price) and say what had to be written to the order at checkout for the returns system to find it."
+  },
+  "takeaway": {
+   "type": "course_of_action",
+   "content": "Give the combination settings one owner, keep one promotion calendar with an order of evaluation per campaign, test every campaign against the active promotions, export the allocated net line price, and take the ten questions to the business."
+  },
+  "hand_off": {
+   "to": "commerce-search-and-discovery",
+   "relationship": "contrast",
+   "carries_over": "Product content, price and discount, each with a named owner.",
+   "introduces": "A system that owns none of those facts and shows copies of all of them: the search index through which the shopper finds the product."
+  },
+  "transition_in": {
+   "relationship": "conclusion_summary",
+   "carries_over": "The six failures along a promotion's life and their repairs.",
+   "introduces": "The opening's return answered, then what holds across the chapter, sorted by how settled it is.",
+   "form": "sentence",
+   "placement": "start_of_this"
+  },
+  "paragraphs": [
+   {
+    "id": "p50",
+    "controlling_idea": "The refund for the returned jacket is its net line price, which exists only if the discount was computed once in the cart and written to the order per line; the Stacking Bug's three faults were each a number computed in one place and not recorded where the next system read it.",
+    "function": "synthesis",
+    "evidence": [
+     {
+      "kind": "reasoning",
+      "what": "The opening's return set against the chapter's answer and the three faults of the Stacking Bug.",
+      "shows": "The reader can now answer the opening question and see one cause behind three costs."
+     }
+    ]
+   },
+   {
+    "id": "p51",
+    "form": "list",
+    "controlling_idea": "Established: promotions are data with an order of evaluation and a stop rule, computed once in the cart; an order-level discount must be allocated to lines; stored value is a contract liability; the EU requires the prior price.",
+    "function": "synthesis",
+    "transition_in": {
+     "relationship": "elaboration",
+     "carries_over": "The chapter's answer in one case.",
+     "introduces": "What is established, with its sources.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p52",
+    "form": "list",
+    "controlling_idea": "Depends on context: when a shared promotion engine, a central stored-value balance, a loyalty program and holdout measurement are worth their cost.",
+    "function": "synthesis",
+    "transition_in": {
+     "relationship": "contrast",
+     "carries_over": "What is established.",
+     "introduces": "What depends on the merchant's situation.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p53",
+    "form": "list",
+    "controlling_idea": "The author's synthesis: the cheapest promotion architecture is governance, and the allocated net line price should be treated as the order's primary price.",
+    "function": "recommendation",
+    "transition_in": {
+     "relationship": "additional_support",
+     "carries_over": "What depends on context.",
+     "introduces": "The author's own judgement, labelled as such.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p54",
+    "form": "list",
+    "controlling_idea": "Ten questions let the reader test a promotion setup in their own company.",
+    "function": "recommendation",
+    "transition_in": {
+     "relationship": "sequence",
+     "carries_over": "The take-aways.",
+     "introduces": "Questions that apply them.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p55",
+    "controlling_idea": "Product content, price and discount now each have a named owner; the next chapter turns to the search index, which owns none of those facts and shows copies of all of them.",
+    "function": "transition",
+    "transition_in": {
+     "relationship": "contrast",
+     "carries_over": "The facts decided so far, each with an owner.",
+     "introduces": "A system that owns none of them and shows copies of all: the search index.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   }
+  ]
+ },
+ "non_goals": [
+  {
+   "topic": "The base price, price lists, contract prices and the pricing engine.",
+   "covered_in": [
+    "pricing-architecture"
+   ]
+  },
+  {
+   "topic": "The cart's persistence and checkout orchestration; the payment, idempotency keys and refunds as money movements.",
+   "covered_in": [
+    "cart-and-checkout",
+    "commerce-payments"
+   ]
+  },
+  {
+   "topic": "Invoice numbering, VAT rates and the ledger entries; the return workflow.",
+   "covered_in": [
+    "tax-invoicing-and-ledger",
+    "returns-and-exchanges"
+   ]
+  },
+  {
+   "topic": "Customer identity resolution across channels; holdout analytics and metric definitions.",
+   "covered_in": [
+    "identity-and-master-data",
+    "commerce-data-and-analytics"
+   ]
+  },
+  {
+   "topic": "Marketplace promotion tools, price parity and repricing; app governance.",
+   "covered_in": [
+    "marketplaces-and-channel-integration",
+    "extensibility-and-app-ecosystems"
+   ]
+  },
+  {
+   "topic": "Fraud and identity signals in depth; ledger design in depth.",
+   "covered_in": [
+    "LISTED: fraud-prevention",
+    "RECONCILED: designing-financial-ledgers"
+   ]
+  }
+ ],
+ "modalities": [],
+ "open_questions": [
+  "The IFRS 15 breakage paragraphs (B44–B47) are cited through PwC's ASC 606 guide and a secondary IFRS summary; the standard's own text was not readable in research. A reviewer with access should confirm the wording.",
+  "Whether Kestrel & Pine's 2028 POS evaluation (W4) should make a cross-channel stored-value balance a selection criterion is raised here but decided nowhere yet; stores-and-omnichannel or build-buy-or-assemble may want to pick it up.",
+  "Loyalty program mechanics (tiers, earn and burn rates, partner points) are deliberately thin; if the book later adds a loyalty case, this chapter's liability rules are the place to link from.",
+  "Flow rubric note not taken: 'Across Scale Stages' is one paragraph and a table, and its judgement overlaps the choices; the rubric would merge it into 'The Choices'. Kept because every chapter of the book has the section. The author decides.",
+  "Paid membership has now stood in two places: after the design rules (published, and again now, after both round-1 flow readers lost the thread with it earlier), and directly after the definitions (first flow rubric). The author may prefer to cut it to a sentence.",
+  "Flow rubric note not taken: 'the discount comes back twice' in 'When It Goes Wrong' brings a second case (a gift-card purchase refunded to the card and to the payment method) that no earlier section prepares. A clause in the stored-value design rules would prepare it.",
+  "Both round-1 flow readers found the dated examples of 'In Practice' far from the points they support (the prior-price rule from the price, abuse from eligibility and the code ledger, holdouts from the events). The journal spec's AC-4 expects the section after the choices, so it stays and now opens with a paragraph saying what it adds. Moving the examples needs a journal-spec change, which is the author's.",
+  "In the 2027 plan table, row 1 has Stop 'Yes' while row 2 says the customer gets the larger of the two discounts; both round-1 flow readers could not reconcile the two. Row 2's wording was made plainer; what 'Stop: Yes' means for a cart with outerwear and other lines is the author's to say, since the ledger gives the plan only in outline."
+ ],
+ "decision_log": [
+  {
+   "date": "2026-11-12",
+   "decision": "Round 1 of the draft check escalated on spec faults (auto mode; changes to order, paragraph ideas and transitions were pre-approved by the author; intent, thesis, role and acceptance criteria untouched). (1) Both flow readers lost the liability claim when paid membership (p29) stood between it and the accounting: membership is back after the design rules, where the published chapter had it, reversing a note of the first flow rubric. (2) Both readers found the sourcing merged into the accounting paragraph (p25) a break of thought: it is its own short paragraph (p26) again, reversing another note of the first rubric. (3) Both readers found the position of 'In Practice' partly unclear. The journal spec's AC-4 fixes the section after the choices, so the order is kept and a short opening paragraph (p38a) says what the public sources add and why the plan closes them; 56 paragraphs. (4) p16's evidence used Shopify's limit on codes per order as if it were a usage cap; the spec and the chapter now give it as a separate limit.",
+   "rejected": [
+    "Moving the dated examples next to the points they support, against the journal spec's expected order.",
+    "Cutting the Shopify code limit."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Flow rubric, second run after the reordering: sound with notes, no blocking forward reference. Two notes taken without changing the order: p08 no longer calls the incident's three faults 'the three things this chapter is about' (the chapter's three subjects are stacking, allocation and stored value), and the 2027 plan (p42) says in prose that the free-shipping threshold is now stated the way the cart computes it, so the plan answers all three faults. Three notes not taken are under open_questions.",
+   "rejected": [
+    "Merging the one-paragraph scale-stages section into the choices: the journal spec's AC-4 and the book's chapter template expect the section.",
+    "Moving membership again."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Flow rubric, first run: sound with notes. The author asked for the rubric notes to be taken without review (auto mode), so all five were taken. (1) 'When It Goes Wrong' now runs along a promotion's life: the double refund (p46) follows the code and stored-value failures at checkout. (2) The scene's second paragraph (p07) names the three costs of the week in prose, so the diagnosis in p08 and the 190 returns cited later rest on something already told. (3) The sourcing paragraph (p26) is merged into the accounting paragraph (p25); 54 paragraphs. (4) Paid membership (p29) moves to directly after the definitions of the three instruments, so the design rules run into Kestrel & Pine's position. (5) In 'How the Pieces Fit Together' the discount's path to the invoice with the worked allocation (p21 to p23) follows the fifth part directly, and the moments of evaluation (p19, p20) close the section and lead into stored value. Every transition a move invalidated was rewritten, and the declared reasons for the chapter and for sections 3, 4 and 8 now say what would break.",
+   "rejected": [
+    "Keeping the moments of evaluation between allocation being written and being read.",
+    "Cutting the membership paragraph to a sentence."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Converted spec.md to spec.json from the published chapter (auto mode: the author asked for the pass to run without stopping). Intent outcome, acceptance criteria AC-1 to AC-5, thesis and role are copied unchanged from the journal spec. The old success criteria were inventories and are dropped (callouts and pattern names; tables and diagrams present; sourcing list; sections present), except two: the worked allocation is covered by AC-1, and 'a newcomer can define every term' is kept as AC-6 (known_before_new, minor), which is an addition to the journal spec's criteria for the author to keep or drop. The 6,500-word limit is kept.",
+   "rejected": [
+    "Carrying the inventory criteria over as acceptance criteria.",
+    "Making AC-6 major."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Changes to the published order made with the conversion, because the contract asks for them. (1) Introduction reordered to the order of the thesis: the return (allocation), offers combining (stacking), stored balances, then where the chapter sits in the order's journey, then the roadmap; the journey paragraph now opens with the price selected and frozen in the previous chapter, as the post's transition_in requires, and the roadmap announces every section and the kinds of evidence (AC-4). (2) The two 'Stored value is a liability' paragraphs of 'In Practice' repeated the stored-value section and pointed back to it ('Starbucks' FY2025 10-K, above'); their one new item, the PwC and IFRS sourcing, is now one paragraph (p26) in the stored-value section next to the rules it sources. (3) A synthesis paragraph (p50) opens 'What to Take Away', returning to the opening's return; the published conclusion was three sorted lists with no callback. (4) The hand-off is a contrast (facts with owners against a search index that owns none), as commerce-search-and-discovery declares, where the published sentence was a sequence.",
+   "rejected": [
+    "Leaving the sourcing paragraphs in 'In Practice' as a third dated example.",
+    "Moving the prior-price example forward to the definitions; the journal spec's AC-4 expects the dated examples after the choices, so the earlier mention gets a gloss and a pointer instead."
+   ]
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Made discount allocation the chapter's spine rather than the rules engine, because the stacking bug's costliest tail (over-refunds) and the invoice and tax consequences hang off it; the rules engine is explained through three vendors' published ordering rules rather than an abstract design."
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Treated gift cards, store credit and points as a separate section with their own diagram, so the reader learns they are liabilities; chose Starbucks' 10-K as the public example because it is the most precise filing on stored-value liability and breakage."
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Invented the stacking bug as three chained failures (combination setting, threshold on the discounted subtotal, missing allocation) totaling about €52,000, kept separate from the Oversell's €96,000."
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Kept paid membership to one paragraph; a longer Prime treatment belongs to case-amazon."
+  }
+ ],
+ "sources": [
+  {
+   "kind": "internal",
+   "ref": "_research/scenario-ledger.md and _research/consistency-issues.md (ruling 9)",
+   "contributed": "All Kestrel & Pine figures: Black Friday week, the Stacking Bug (2,860 orders; about €43,000, €5,600 and €3,000; about €52,000 in total), the Price Drift, Eva's order, the gift-card balances."
+  },
+  {
+   "kind": "internal",
+   "ref": "_research/brief-catalog-pricing-search.md Parts 2.3 and 3; _research/brief-checkout-payments-tax.md Parts 7.4 and 8.5–8.6",
+   "contributed": "Prior price, platform discount rules, abuse, stored-value accounting, incrementality, allocation as a tax problem."
+  },
+  {
+   "kind": "internal",
+   "ref": "pricing-architecture, cart-and-checkout, tax-invoicing-and-ledger, returns-and-exchanges, identity-and-master-data",
+   "contributed": "Neighbours whose terms this chapter uses briefly."
+  },
+  {
+   "kind": "external",
+   "ref": "Shopify, commercetools and Adobe Commerce discount documentation (accessed 2026-11)",
+   "contributed": "Ordering rules, limits, allocation modes, per-issuance expiry."
+  },
+  {
+   "kind": "external",
+   "ref": "Directive (EU) 2019/2161; ACM publications of 2022-12-06 and 2024-06-11; § 11 PAngV",
+   "contributed": "The prior-price rule and its enforcement."
+  },
+  {
+   "kind": "external",
+   "ref": "Starbucks, Amazon and Target FY2025 10-Ks; PwC Viewpoint on unexercised rights; IFRS Foundation IFRS 15 page",
+   "contributed": "Liabilities, breakage, membership."
+  },
+  {
+   "kind": "external",
+   "ref": "Gubela, Lessmann and Jaroszewicz (2019); Gubela and Lessmann (2021); Ravelin (2020)",
+   "contributed": "Incrementality and promotion abuse."
+  }
+ ],
+ "changelog": [
+  {
+   "date": "2026-11-12",
+   "change": "Round 1 (escalate: 9 checks passed; failures on 4 fixed checks and 12 corroborated flow points): membership moved back after the design rules, the sourcing note split out again, an opening paragraph added to 'In Practice', p16's evidence corrected; round 1's draft faults fixed in the chapter (Eva told apart from the opening shopper, 'the better offer' said plainly, the price-margin-books sentence split, the Black Friday refund bridged, vendor limits explained, the plan's two changes and the synthesis reworded, the First Snowfall named, glosses for net price, VAT, landed cost, strike-through price, contract liability, deferred revenue, parity warning, RECONCILED and LISTED)."
+  },
+  {
+   "date": "2026-11-12",
+   "change": "Flow rubric notes taken: failures reordered along a promotion's life, the three costs named in the scene, sourcing merged into the accounting paragraph, membership moved up, the worked allocation placed directly after the five parts. Chapter revised to match unit for unit."
+  },
+  {
+   "date": "2026-11-12",
+   "change": "spec.md converted to spec.json (outcome spec), reconstructed from the published chapter; introduction reordered, sourcing paragraph moved to the stored-value section, synthesis paragraph and contrast hand-off added. Status draft."
+  },
+  {
+   "date": "2026-11-09",
+   "change": "Added three figures to 'What a Promotion Is, and What It Touches': the promotion vocabulary, the seven promotion types, and one discount touching price, margin and books (article-illustrator)."
+  },
+  {
+   "date": "2026-11-07",
+   "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator)."
+  },
+  {
+   "date": "2026-11-07",
+   "change": "Final consistency pass: ledger-as-document reference rephrased."
+  },
+  {
+   "date": "2026-11-07",
+   "change": "Editorial review pass: confirmed the Stacking Bug figures against ruling 9, expanded acronyms and accounting terms, removed internal ledger and brief references, timetoread 28."
+  },
+  {
+   "date": "2026-11-07",
+   "change": "Initial spec and article."
+  }
+ ],
+ "length": {
+  "max_words": 6500
+ }
+}

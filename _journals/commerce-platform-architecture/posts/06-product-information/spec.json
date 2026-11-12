@@ -1,0 +1,1700 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "product-information",
+  "journal": "commerce-platform-architecture",
+  "part": "part-2",
+  "title": "What Are We Selling? Products, Variants and the Catalog",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published chapter (posts/06-product-information/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter. It is a contract, not a description: the places where the chapter does not yet do what the spec asks are listed under open_questions.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The four things that share the name 'product' (product, variant, SKU, GTIN) and which of them may change.",
+        "Which system is the record for each kind of product data: identity and cost, logistic attributes, content, channel mappings, storefront presentation, listings.",
+        "The four ways merchants arrange product data and the test for when a product information system (PIM) is needed."
+      ],
+      "believe": [
+        "The design question is which system may change which field and how the others learn of it, not which tool to buy.",
+        "A channel's rejection of a product is a message to route to the field's owner, not an exception."
+      ],
+      "can_do": [
+        "Write an attribute-level ownership table for one product at their own company.",
+        "Say whether a merchant needs a PIM by counting the teams that produce product data and the channels that consume it."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture: engineers, product managers, analysts and consultants who have just joined a merchant, a vendor or an agency. Most of all the product manager or engineer handed 'the catalog' or 'the marketplace listings' as a responsibility, who needs the ownership table and the questions to ask before touching a tool. The leader approving a PIM purchase gets the trade-off table and the scale-stage test.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side; roughly what an API, a database and a queue are.",
+        "From Part I: the thirteen steps of an order, promise and handoff, what a system is, 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, Kestrel & Pine's systems, people and ten incidents in outline, the four scale stages (Starting, Growing, Omnichannel, Group), the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation, Waypoint decisions W1 to W8 and the sixteen failure-pattern names.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub, availability service, D2C, B2B, PIM, POS.",
+        "From the Part II introduction: that the facts on one product page (content, price, discount, availability) change at different speeds and have different owners."
+      ],
+      "does_not_know": [
+        "The product model: product, variant, option and option value, SKU against GTIN, EAN-13 and GTIN-14, GS1.",
+        "Attribute, attribute set, taxonomy, channel mapping, bundle, configurable product, digital good, lifecycle states.",
+        "Enrichment, syndication, feed, structured data, schema.org, staged and published data.",
+        "The four arrangements of product data and the producer-and-consumer test for a PIM.",
+        "Master data management (MDM), product lifecycle management (PLM), CE marking."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a short description of a merchant, the reader decides whether it needs a PIM by counting producers and consumers of product data, not by revenue or by what larger brands use.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A merchant has one storefront in one language, and one team edits products in the shop platform. A vendor offers it a product information system. Using only this chapter: should it buy, and what is the test?",
+        "expected": "Not yet. The test is more than one producing team and more than one consuming channel; below that the shop platform is the right catalog, and a PIM bought early is the Giant's Boots."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given a product value that is right in one channel and wrong in another, the reader asks which system owns that attribute and in which direction it flows, before asking for a faster copy.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "The product team corrects a jacket's waterproof rating in the web shop; a marketplace listing still shows the old value. Using only this chapter: what is missing, and where should the correction have been made?",
+        "expected": "The attribute has no single owning system (system of record) with a one-way path to the channels. The correction belongs in the owning system, and the storefront and the marketplace both receive it from there; the shop platform's editor should be read-only for fields it does not own."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can state the rule for a mistyped or reusable identifier and the reason for it.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A SKU was typed wrong on a variant that already has orders. Using only this chapter: what should happen to it, and why?",
+        "expected": "Retire it and issue a new one, mapping the old one for history; never correct it in place and never reuse it, because orders, the warehouse and marketplaces are keyed on the SKU and the GTIN."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "What a product is made of (product, variant, SKU, GTIN, attributes); who owns which field among many producers and consumers; how a PIM fits and when it is needed; the choices and their trade-offs by scale stage; what channels document and what Kestrel & Pine does; how product data fails. Evidence: Kestrel & Pine's season launch, platform and channel documentation, standards."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-6",
+        "statement": "A reader new to commerce meets no term in this chapter before it is explained, and every acronym is expanded on first use.",
+        "check": "known_before_new",
+        "method": "rubric",
+        "severity": "minor"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How should product data be modeled and owned so that every channel shows the same, correct product?",
+    "claim": "Model a product as a product, its variants and two permanent identifiers per variant (the SKU and the GTIN), which are never edited once issued and never reused (a wrong one is retired and replaced); give each attribute exactly one owning system, from which the value flows in one direction to every channel; and route each channel's rejection back to the owner of the attribute that caused it. A product information system becomes necessary only when product data has more than one producing team and more than one consuming channel.",
+    "disputed_by": "The view that product data is one record that belongs in one tool, so that channels showing different things is cured by choosing the right tool: the shop platform, the ERP or a product information system.",
+    "so_what": "A merchant writes the attribute ownership table before it sees a vendor demo, because a product information system bought without one becomes one more copy of the product data to keep in step; and it retires a wrong SKU instead of editing it, so that old orders keep their link.",
+    "how_why": "Different teams produce different attributes (purchasing the identity and cost, the product team the content, the marketplace team the channel mappings), so ownership per product leaves several teams editing the same record in different systems. Orders, warehouses and marketplaces are keyed on the SKU and the GTIN, so a changed or reused identifier joins two items or loses an order's link. Each channel validates what it receives against its own rules and answers later, so a product can be declined after it was sent and nobody is told unless the answer has a route back. With one producing team or one consuming channel the shop platform's product record can hold the work; several of both need a workflow between them that the record cannot hold, which is the job of a product information system.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "A 'product' is a product, its variants and two identifiers per variant, the SKU and the GTIN; the content around them may change, and the identifiers are assigned once, never edited and never reused, because orders, warehouses and marketplaces are keyed on them."
+      },
+      {
+        "id": "S2",
+        "claim": "Product data has many producers and many consumers, so each attribute needs exactly one owning system, from which its value flows in one direction; without one, every consumer makes its own copy."
+      },
+      {
+        "id": "S3",
+        "claim": "Each channel validates product data against its own rules and answers later, so publishing to channels needs a record of what was sent and a route that brings each rejection back to the attribute's owner."
+      },
+      {
+        "id": "S4",
+        "claim": "A product information system becomes necessary only when product data has more than one producing team and more than one consuming channel; below that the shop platform or a disciplined spreadsheet is the right catalog."
+      },
+      {
+        "id": "S5",
+        "claim": "Product data fails without an error, so every identifier and every copy needs a scheduled check against its system of record."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Supplies the product model and the identifiers that prices, discounts, the search index and stock figures are all keyed on, and applies the record-and-copy rule at the level of one attribute.",
+    "supports": [
+      "P2-1",
+      "P2-6"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene to pim: a launch with no owner for product content, then the model, the ownership rule and the system that carries it out"
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "choices, trade-offs and stages: four arrangements, their conditions, and the stage at which each fits"
+      }
+    ],
+    "rationale": "The scene comes first because it shows the cost of copies with no owner before any term is defined. The product model follows because ownership is decided per piece, and the pieces (identifiers, attributes, mappings, translations) need names first. Ownership precedes the PIM because the PIM is only the system that the ownership table names for one row; described first, it would be a tool with no job. The flow requirements stand inside the PIM section, after enrichment and syndication are defined; one section earlier they used both words undefined. The choices, trade-offs and stages come after the PIM section because three of the four arrangements are defined by what they lack compared with it, and the test for a PIM needs all four on the table. The public documentation and Kestrel & Pine's W3 follow the recommendation because W3 is the recommendation carried out; before it, W3 would be a sequence of steps with no reason for their order. Trade-offs precede the stages because the stage table applies the test for a PIM that the trade-offs section states. The public documentation stands with W3, after the judgement, as the evidence and the application of it. The failures come last because they are what remains to detect once an owner exists, and the pulled rug needs the channels' documented, changing rules before it. If the definitions came before the scene, the reader would not yet have the case that shows why they matter."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "The Ridgewalker women's jacket comes in six sizes and four colors: twenty-four variants, each with an internal code and a barcode, whose descriptions must reach several channels in three languages. A corrected waterproof rating reaches only the web shop, and marketplace buyers still get the old one."
+    },
+    "bridge": {
+      "from_reader_world": "Anyone has seen the same product described differently on a brand's own shop and on a marketplace.",
+      "to_topic": "Product data starts in whichever system first needed it, so there are several copies and no rule for which one a correction goes into; the question becomes which system may change which field."
+    },
+    "thesis_statement": {
+      "text": "Separate the product from its variants and its permanent identifiers, give each field one owner whose value the channels consume, and bring each channel's rejection back to that owner; a PIM is needed only when several teams write product data and several channels read it.",
+      "placement": "KEY POINTS callout (all three bullets) and paragraph p02 ('Give each field an owner and let the channels consume its value'); the PIM test is announced in the IN THIS CHAPTER callout and the Giant's Boots bullet"
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p04",
+      "promises": [
+        {
+          "promise": "Start with one season launch at Kestrel & Pine in which four teams typed the same color four times.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Say what a product is made of and who should own each field.",
+          "kept_in": [
+            "product-model",
+            "ownership"
+          ]
+        },
+        {
+          "promise": "Show how the pieces fit together when a PIM is one of them.",
+          "kept_in": [
+            "pim"
+          ]
+        },
+        {
+          "promise": "Compare four ways to arrange product data, with their trade-offs and the scale stage at which each fits.",
+          "kept_in": [
+            "choices",
+            "trade-offs",
+            "stages"
+          ]
+        },
+        {
+          "promise": "End with what platforms and channels document, what Kestrel & Pine decides, and how product data fails.",
+          "kept_in": [
+            "in-practice",
+            "when-it-goes-wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "One jacket in six sizes and four colors is twenty-four variants whose codes, descriptions, images and attributes must reach several channels in three languages, and a corrected waterproof rating that reaches only the web shop leaves marketplace buyers with wrong information about the same jacket.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "The Ridgewalker women's jacket: 6 sizes x 4 colors = 24 variants; a corrected waterproof rating that reaches only the web shop.",
+            "shows": "One correction in one place is enough to make two channels disagree about the same jacket, which is the chapter's question in one case.",
+            "source": "Kestrel & Pine scenario ledger"
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Product data starts in whichever system first needed it, and the copies agree only until someone changes one; giving each field one owner whose value the channels consume stops every correction from becoming another round of manual entry.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The correction that reached one channel and not the other.",
+          "introduces": "Why that happens (copies that began in different systems, with no owner) and the chapter's claim: one owner per field.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Before Eva can find the jacket, the Ridgewalker women's M in moss needs its content and two identifiers, a SKU and a GTIN; of the facts on a product page the content changes most slowly, and the identifiers are the keys under which price, discount and stock are stored.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "place",
+          "carries_over": "The jacket of the opening and its record.",
+          "introduces": "Where that record sits in the order's journey and in Part II: the slowest-changing fact on the product page, and the identifiers every other catalog fact is keyed on.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter goes from one season launch at Kestrel & Pine to what a product is made of, who should own each field and how the pieces fit with a PIM, then compares four arrangements by trade-off and scale stage, and ends with the public documentation, Kestrel & Pine's decision and the ways product data fails.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The product record the order's journey depends on.",
+          "introduces": "The order in which the chapter takes its subject.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Kestrel & Pine: The Season That Was Typed Four Times",
+      "controlling_idea": "At one season launch, four teams typed the same product into four systems, because product content had no owner.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Shows the cost of copies with no owner (a color in three spellings, 310 untranslated variants, 140 declined listings) before any concept or tool is named."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The state of the copies, one variant followed through them, what the steps share, then the decision that answers it. The decision placed first would be a tool with no reason."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The claim that product data begins in several places and drifts.",
+        "introduces": "Kestrel & Pine's copies in January 2027 and one variant followed through a launch.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "In January 2027 Kestrel & Pine's product data for 3,400 products in 26,000 variants lives in the shop platform, the ERP and spreadsheets, with a fourth copy in the marketplace connector, and there is no PIM, the shared place where content would be prepared for all channels.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "3,400 products, 26,000 variants, about 17,000 active, 1,200 new per season; three places plus the connector's copy; no PIM.",
+              "shows": "The catalog is large enough, and spread over enough systems, that copies cannot be kept in step by hand.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "form": "list",
+          "controlling_idea": "Followed through the Spring/Summer 2027 launch, one new Ridgewalker variant passed through five steps, each in a different system or spreadsheet, and something was lost or changed at each one.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Purchasing (ERP, color MOSS GRN, landed cost EUR 58), the product team (season sheet, Moss), the agency (two-day import; the 20,000 mm rating never became a field), a translator (about 310 variants in Dutch on the German storefront for three weeks), the marketplace team (about 140 variants declined by bol; color olive).",
+              "shows": "Every consumer of product content re-entered it, and each re-entry dropped or changed something that a shopper or a channel later noticed.",
+              "source": "Kestrel & Pine scenario ledger (illustrative)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The copies and the missing PIM.",
+            "introduces": "What the copies cost in one launch, step by step (illustrative details).",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Four teams typed one color four times in three forms and a marketplace declined a tenth of the season, because without an owner for product content every channel created its own version.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: one green jacket typed into four systems as MOSS GRN, Moss, Moss and olive.",
+              "shows": "The four entries are one fact with no owner, so every consumer of it became a producer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The five steps of the launch.",
+            "introduces": "What they have in common: no owner for product content.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07a",
+          "controlling_idea": "Waypoint decision W3 answers this by introducing a PIM in Q3 2027 as the owner of content and attributes, while the ERP keeps costs and purchasing and the shop platform and the marketplace connector consume published content.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "W3: a PIM in Q3 2027 as system of record for content and attributes; the ERP keeps costs and purchasing.",
+              "shows": "The remedy is an ownership decision, to which the rest of the chapter gives the reasons.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Product content without an owner.",
+            "introduces": "The decision that gives it one, W3.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "product-model",
+      "heading": "What a Product Is: Four Things That Share a Name",
+      "controlling_idea": "A product is a product, its variants and two permanent identifiers per variant, surrounded by attributes, categories, translations and lifecycle states that change.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Separates what may change (content, attributes, categories, translations, states) from what may not (the SKU and the GTIN), which is the first third of the thesis."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The four concepts and their permanence first, because every later paragraph and section keys on them; then how many variants a platform allows, the identifiers and their rule, and the other shapes in which the rule holds; then the fields, categories, translations and states that hang on a product. Attributes before taxonomies because a channel's category decides which attributes are mandatory."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The launch in which product content had no owner.",
+        "introduces": "What the thing to be owned is made of: four concepts under one name.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "controlling_idea": "Before asking who should own product data, a newcomer needs to know that a 'product' is a stack of four concepts (product, variant, SKU, GTIN), each identified differently and each stable to a different degree.",
+          "function": "definition",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four rows (product, variant, SKU, GTIN) with what each is, who assigns it and whether it may change.",
+              "shows": "The four concepts differ exactly in who assigns them and whether they may change, which is what the ownership rules later rest on."
+            }
+          ]
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "A variant is one point in the grid that the options define, and the platforms' documentation and the schema.org vocabulary both split product from variant in this way.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Shopify: the product is 'the container for all product information'; 'each variant represents a specific combination of option values'.",
+              "shows": "A major platform models product and variant as the table does.",
+              "source": "Shopify developer documentation, accessed November 2026"
+            },
+            {
+              "kind": "quotation",
+              "what": "schema.org v30.1: a ProductGroup differs 'only along defined dimensions, such as size or color', variants linked by isVariantOf.",
+              "shows": "The vocabulary search engines read makes the same split, so it is not one vendor's choice.",
+              "source": "schema.org, September 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The product and variant rows of the table.",
+            "introduces": "Option and option value, and two public sources that make the same split.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09a",
+          "controlling_idea": "A shop platform may cap how many variants one product can hold, the caps are recent and moving (Shopify from 100 to 2,048, commercetools 100 or 10,000 by catalog model), and a merchant that split products to fit a cap damaged its search, feeds and analytics for years after the cap was lifted.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shopify: 100 variants historically; 2,048 from API version 2024-04, for all merchants from 15 October 2025. commercetools: Classic 100; Modular Catalog, generally available 29 September 2026, up to 10,000.",
+              "shows": "The cap is a fact of the platform that changes, while a split made to fit it stays in the catalog.",
+              "source": "Shopify changelog, 15 October 2025; commercetools release notes, 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The variant as one point in the grid of options.",
+            "introduces": "How many points a platform lets one product hold, and the lasting cost of splitting a product to fit.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "The SKU is the merchant's private code and the GTIN the global identifier issued through GS1, in a 13-digit form on European retail barcodes and a 14-digit form for trade units, with a separate GTIN for every distinct item and packaging configuration.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "GS1: a GTIN is 'unique, global and verifiable within the GS1 system'; 'only a GS1 Member Organisation can provide you with a GS1 GTIN'.",
+              "shows": "The GTIN's meaning is fixed outside the merchant, so the merchant cannot redefine it.",
+              "source": "GS1 support article, August 2024"
+            },
+            {
+              "kind": "fact",
+              "what": "Kestrel & Pine has carried a GTIN on every own-brand SKU since 2021.",
+              "shows": "The running example already has the identifiers the rule needs.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Product and variant, whose shape a platform can constrain.",
+            "introduces": "The two identifiers, which are where newcomers make costly mistakes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "A SKU and a GTIN are promises to every other system, so they are assigned once, before the first sale, and a mistake is retired, never corrected in place.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "commercetools: 'treat the sku values as immutable identifiers'.",
+              "shows": "A platform gives integrators the same rule the author states.",
+              "source": "commercetools documentation, accessed November 2026"
+            },
+            {
+              "kind": "reasoning",
+              "what": "A reused SKU is a stock count that belongs to two items; a reused GTIN is a marketplace listing that shows the wrong product.",
+              "shows": "Names the damage on each side, which is the reason for the rule."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: one product as a grid of variants, each with two permanent identifiers, plus attributes, media and categories that change.",
+              "shows": "The model separates what may change from what may not."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "What the two identifiers are and who issues them.",
+            "introduces": "The rule that follows: assign once, never edit, never reuse.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "form": "list",
+          "controlling_idea": "Products that are not a plain size-and-color grid (a bundle, a configurable product, a digital good, a gift card) keep the same rule: every item that can be sold keeps its own identity.",
+          "function": "explanation",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Adobe Commerce's October 2026 documentation distinguishes the configurable parent from simple products with their own SKUs.",
+              "shows": "A platform that names the grid differently still gives each sellable item its own SKU.",
+              "source": "Adobe Experience League, October 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The rule that identifiers are assigned once and never reused.",
+            "introduces": "Four other shapes of product in which the rule still holds.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "An attribute is a typed field and an attribute set is the list of fields a kind of product must carry; a storefront filter, a search facet or a marketplace listing can use only an attribute that is filled consistently for every product of that kind.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Kestrel & Pine's waterproof rating, held only in a spreadsheet, is invisible to the filter, the search and the listing.",
+              "shows": "A value that is not a consistently filled field cannot be used by anything that reads the catalog."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Identity, which never changes whatever the product's shape.",
+            "introduces": "The fields around it, which do change: attributes and attribute sets.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Every channel has its own taxonomy, so the merchant needs an internal taxonomy and a mapping per channel, and the mapping is data with an owner, not code.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Google's product taxonomy: version 2021-09-21, 5,595 categories. bol: more than 4,000 classifications ('chunks'), each with mandatory attributes.",
+              "shows": "Two channels publish two different trees, so a translation table per channel cannot be avoided.",
+              "source": "Google Merchant Center help and bol Retailer API documentation, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Attributes and attribute sets inside the merchant.",
+            "introduces": "The category trees outside it, one per channel, and the mapping between them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Translation is per product, per language and often per channel, so every description exists several times by design and each translation has its own completeness status.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Shopify: 'each published language gets its own URLs, and your store displays the translated version when translations exist'.",
+              "shows": "A platform treats each language as its own published version.",
+              "source": "Shopify Help Center, accessed November 2026"
+            },
+            {
+              "kind": "fact",
+              "what": "Kestrel & Pine sells in three countries and two languages in Belgium alone.",
+              "shows": "Three copies of every description are the normal case for the running example.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Attributes and categories, which differ per channel.",
+            "introduces": "Content that also differs per language: translations.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "A product has a lifecycle whose states are set per channel, and a product that has been sold is discontinued and never deleted, because orders, returns, invoices and analytics reference it for years.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "commercetools separates staged from published data and 'you can only delete unpublished products'.",
+              "shows": "A platform enforces the no-deletion rule mechanically.",
+              "source": "commercetools documentation, accessed November 2026"
+            },
+            {
+              "kind": "fact",
+              "what": "Google Merchant Center's availability takes in_stock, out_of_stock, preorder or backorder, and an out-of-stock item must still show its price.",
+              "shows": "A channel keeps its own lifecycle value for the same product.",
+              "source": "Google Merchant Center product data specification, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Translations with their own status.",
+            "introduces": "The product's own status over time: its lifecycle.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ownership",
+      "heading": "Who Owns Which Field: Producers, Consumers and the System of Record",
+      "controlling_idea": "Because different teams produce different attributes, the system of record for product data is decided per attribute, not per product.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "States the central rule of the thesis, one owning system per attribute, and gives the table a reader can copy."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The fact (many producers and consumers), the rule with its table, the two rows the table hands on, then the running example read against it. The table before the producers would be a list of owners with no reason for there being several."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The pieces a product is made of: identifiers, attributes, mappings, translations.",
+        "introduces": "Who writes and who reads each piece, and so which system should own it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p17",
+          "controlling_idea": "Product data has many producers (purchasing, the product team, translators, suppliers, the marketplace team) and many consumers (storefronts, search, marketplaces and feeds, the warehouse, the wholesale portal, the data warehouse and, from 2027, AI agents).",
+          "function": "claim",
+          "organization": "classification"
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "The system of record for product data must be decided per attribute, not per product, because the attributes have different natural owners.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eight rows of data (item identity, logistic attributes, product content, channel mappings, storefront presentation, listings, price, stock), each with its system of record, producers, readers and the reason.",
+              "shows": "Each kind of product data has a different producer, so each row names a different owner; the table is an industry-typical arrangement, not a law."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Many producers and many consumers.",
+            "introduces": "The rule that follows from them, and the ownership table.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Price and stock are left out of this chapter's ownership because they need different freshness, so product content, prices and stock travel on separate paths even when they end in the same feed.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The table's last two rows.",
+            "introduces": "Why price and stock are owned elsewhere: a day-old description is harmless, a day-old price or an hour-old stock figure is not.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Read against the table, Kestrel & Pine in January 2027 has four producers of product content and no system of record for it, which is the Spaghetti Junction.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The shop platform, the spreadsheets, the ERP and the connector each hold product content for their own reason.",
+              "shows": "Each copy exists for a good local reason, and no rule says which one is right.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The ownership table.",
+            "introduces": "Kestrel & Pine's own state read against the 'product content' row.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pim",
+      "heading": "How the Pieces Fit Together With a PIM",
+      "controlling_idea": "With a PIM as the owner of content, three rules about ownership make the arrangement work: one direction per attribute, whole products published on a schedule, and every channel's answer returned to the owner.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Turns the ownership table into flows: where each value is written, how it reaches the channels and how a channel's refusal comes back."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The terms and the vendors' agreement on them first, with the picture, then what each flow in the picture requires, then the rules that meet the requirements. The flow table before the definitions would use 'enrichment' and 'syndication' undefined."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Kestrel & Pine's product content with four producers and no system of record.",
+        "introduces": "The system the table names for that row, a PIM, and the rules that make it an owner.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p21",
+          "controlling_idea": "A PIM, the system the ownership table names for product content, is the editorial system where product data is created, enriched, translated and approved before it is published; enrichment, syndication, feed and structured data are the four terms its work is described in.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Each term is defined in one sentence in the paragraph.",
+              "shows": "The reader has the vocabulary the flow table and the three rules use."
+            }
+          ]
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "The vendors agree on what a PIM is, a central place that collects, enriches and distributes product information, and none gives a testable threshold for when it pays off.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Akeneo: 'a system or solution that helps businesses manage, centralize, and distribute product information'; Pimcore: an 'open core platform for Product Experience Management'.",
+              "shows": "The vendors' definitions match the chapter's, and neither says when a merchant needs one.",
+              "source": "Akeneo and Pimcore, accessed November 2026"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: the ERP creates the item and keeps its cost, the PIM owns what a shopper reads, every channel consumes, and rejections flow back to the owner.",
+              "shows": "The whole arrangement in one picture, which the flow table and the rules then go through."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The chapter's own definition of a PIM.",
+            "introduces": "Two vendors' definitions, what they leave unanswered, and the arrangement in one picture.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The four flows of product data (the new season into the ERP, enrichment into the PIM, publication to the storefront and search, syndication to marketplaces and feeds) differ in how fresh, how consistent, how fast and how available they must be.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four flows by freshness, consistency, speed and availability need.",
+              "shows": "The flows cannot share one mechanism: identity is exact and batched, enrichment runs at human speed, publication is whole-product and timed, syndication is asynchronous with a report."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The arrows in Figure 3.",
+            "introduces": "The four flows they stand for and what each requires.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Two requirements stand out: content tolerates lag but demands completeness, and syndication is asynchronous, so the architecture must expect a 'no' to arrive after the 'sent'.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "bol's documentation says an upload report may take an hour; Google disapproves a product with an incorrect GTIN.",
+              "shows": "Two channels document that the answer comes later and can be a refusal.",
+              "source": "bol Retailer API documentation and Google Merchant Center help, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The flow table.",
+            "introduces": "The two requirements in it that shape the design.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Three design rules meet these requirements, and they are rules about ownership, not about the tool.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The two requirements and the picture in Figure 3.",
+            "introduces": "Three rules that meet them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Rule 1: each attribute flows in one direction, from the one system that may change it, and a connector's direction setting carries out that decision but cannot make it.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Microsoft, Business Central Shopify connector: 'decide which system is the system of record for product data'; 'If you manage item names, descriptions, and pricing in Business Central, choose the To Shopify direction. If your merchandising team maintains product content in Shopify ... choose From Shopify'.",
+              "shows": "A vendor documents ownership direction as a setting chosen per field before the sync is configured.",
+              "source": "Microsoft Learn, 16 October 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The announcement of three rules.",
+            "introduces": "The first: one direction per attribute.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Rule 2: publish whole products on a schedule, not single fields on change, because content changes constantly during a season build and nobody wants half-enriched products on the storefront; a whole-product publication also keeps the visible page, the structured data and the feeds saying the same thing.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Waypoint's integration standard (W5): products move 'by scheduled publication' while stock, orders and prices move by events.",
+              "shows": "The running example applies the rule.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "source",
+              "what": "commercetools' staged and current data; Shopify's productSet mutation for when 'an external system is the source of truth'.",
+              "shows": "Two platforms provide a whole-product, atomic publication.",
+              "source": "commercetools and Shopify developer documentation, accessed November 2026"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: loose fields dripping onto a shelf one by one against complete product boxes arriving together on a date.",
+              "shows": "The difference between publishing fields on change and products on a schedule."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Rule 1.",
+            "introduces": "The second rule: whole products, on a schedule.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Rule 3: every channel's answer comes back to the owner, through an outbox per channel, a validation step before sending and a rejection report that becomes a task for a person.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Without the loop, bol's 140 declined variants are a line in a report nobody reads.",
+              "shows": "The scene's rejection is what the rule exists for.",
+              "source": "Kestrel & Pine scenario ledger (illustrative)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Rule 2.",
+            "introduces": "The third rule: the channel's answer returns to the owner.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "choices",
+      "heading": "The Choices",
+      "controlling_idea": "There are four realistic ways to arrange product data, and each is right for some merchant.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Places the PIM as one of four arrangements, so that the test for needing one has alternatives to choose between."
+      },
+      "flow": {
+        "pattern": "small_to_large",
+        "rationale": "From the arrangement every merchant starts with to the one that needs the most organization; the order is also the order in which Kestrel & Pine met them."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The arrangement with a PIM.",
+        "introduces": "The three arrangements without one, and the PIM as the fourth.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p31",
+          "controlling_idea": "The arrangement with a PIM is one of four realistic ways to arrange product data, and in the first of them the shop platform is the catalog: every merchant's starting point, and right for one channel and one language.",
+          "function": "description"
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Second, the ERP is the product master: it works for identity and cost and fails for content, which ends up in spreadsheets beside it.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Kestrel & Pine's content in spreadsheets beside the ERP.",
+              "shows": "The running example is the failure this arrangement produces.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The shop platform as catalog.",
+            "introduces": "The second way.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Third, spreadsheets with discipline: cheap and flexible, and limited by the number of hands, not by size.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The ERP as master.",
+            "introduces": "The third way.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Fourth, a PIM as the system of record for content, with the ERP keeping identity and cost: Waypoint's W3, whose conditions the trade-offs section states.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Spreadsheets.",
+            "introduces": "The fourth way.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "A fifth option, master data management across products, customers, suppliers and locations, belongs to the Group stage and to another chapter.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The four ways compared here.",
+            "introduces": "One left out, and where it is covered.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "A PIM becomes necessary when product data has more than one producer and more than one consumer; below that line it is the Giant's Boots.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "States the test for a PIM, the last sentence of the thesis, with its conditions and the two assumptions under it."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The four arrangements, the fourth 'right under conditions'.",
+        "introduces": "The conditions, in a table, and the author's recommendation.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p36",
+          "controlling_idea": "The author's recommendation: a PIM becomes necessary when product data has more than one producer and more than one consumer and the shop platform's product record can no longer hold the workflow between them; below that line it is the Giant's Boots, above it the drift costs more than the subscription.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The four arrangements by when each is right, cost, workflow, translations, channel validation and the warning sign of outgrowing it.",
+              "shows": "The arrangements differ on exactly the points several producers and several consumers need: workflow, translations, validation."
+            },
+            {
+              "kind": "case",
+              "what": "Kestrel & Pine crossed the line around 2021-2022, with marketplaces (2021) and a third country (2022).",
+              "shows": "The test dates the need in the running example years before the decision of 2027.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Two assumptions sit under the recommendation: the ERP keeps item identity and cost, and the merchant can name one owner for product content with authority over every team that writes it; without that owner the PIM becomes a fifth copy.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "At Kestrel & Pine the owner is Teun Baas, who owns the catalog and the seasons.",
+              "shows": "The running example can name the owner the recommendation needs.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The recommendation.",
+            "introduces": "The two assumptions it rests on.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Across Scale Stages: When It Fits and When It Limits",
+      "controlling_idea": "Identifier discipline is the same at every stage; the arrangement of content ownership changes once, between Growing and Omnichannel.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S4"
+        ],
+        "how": "Sets the test for a PIM and the identifier rule against the four scale stages, so a reader can place a merchant."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "The recommendation and its conditions.",
+        "introduces": "How what is typical, what is necessary and the warning signs change as a merchant grows.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p38",
+          "controlling_idea": "Which arrangement fits changes as a merchant grows, and at each of the book's four stages a different arrangement is typical, something different becomes necessary, and different signs show the merchant has outgrown it.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four stages (Starting, Growing, Omnichannel, Group) by what is typical, what becomes necessary and the warning signs.",
+              "shows": "The same question has a different right answer at each stage, and each stage has signs a reader can look for."
+            }
+          ]
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The author's judgement: identifier discipline does not change with scale and everything else does; the ownership rule changes once, at the Growing-to-Omnichannel boundary, when content gets its own system.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The stage table.",
+            "introduces": "What stays the same across its rows and what changes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice",
+      "controlling_idea": "Public documentation confirms that channels validate and reject on their own schedule, and Kestrel & Pine's W3 applies the chapter's rules in a fixed order: ownership, direction, loop, migration.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S2"
+        ],
+        "how": "Supplies the dated public evidence for channel validation, and shows the ownership table, the direction rule and the rejection loop carried out for one company."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The public documentation first, then the company: the reader sees that the constraints are real before seeing one merchant work within them. Inside W3 the order is the order of the work: the table, the direction, the loop, then the migration."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "The stages and the recommendation, which are the author's judgement.",
+        "introduces": "What vendors and channels document, and what one company does.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "controlling_idea": "Public documentation backs the chapter's point that channels validate and reject: a record that looks complete in the merchant's shop can still be rejected by a channel that checks its own required fields, identifiers and media rules.",
+          "function": "claim"
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Google and bol each publish required fields and refusal rules, and each rule changes on the channel's schedule, which is the Pulled Rug seen from the catalog side.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Google Merchant Center: required id, title, description, link, image_link, price, availability; an incorrect GTIN is disapproved; a 500 x 500 pixel image minimum from 31 January 2027. bol: an EAN for every product, two mandatory enrichment levels, products offline without a required CE marking, a data model updated 'daily'.",
+              "shows": "Both channels document refusal, and both change their rules on their own dates.",
+              "source": "Google Merchant Center help and bol Retailer API documentation, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The claim that channels validate and reject.",
+            "introduces": "Two channels' documented rules.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Kestrel & Pine's W3, the decision from the opening scene, is a bought PIM, and the chapter reads it as a sequence of four steps with illustrative dates.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What vendors and channels document.",
+            "introduces": "What Kestrel & Pine does about it under W3.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "Ownership first: in April 2027, before any vendor demo, Noor, Teun and Milan wrote the attribute-level ownership table for the Ridgewalker on one page.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "ERP: SKU, GTIN, supplier, landed cost (EUR 58), purchasing unit, weight, dimensions. PIM: names, descriptions in Dutch, French and German, the jacket attribute set, media, internal category, mappings to four channel taxonomies, color as a controlled list. Shop platform: collections and landing pages only. Connector: nothing; it derives listings.",
+              "shows": "The chapter's ownership table filled in for one product, with every field given one owner.",
+              "source": "Kestrel & Pine scenario ledger (illustrative)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The announced sequence.",
+            "introduces": "Its first step, the ownership table.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "One direction per field: the ERP creates items and the PIM imports them, the PIM publishes whole products to the shop platform on a schedule, and the shop platform's editor is read-only for the fields it does not own.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Nightly import from the ERP; scheduled publication with a launch date per season; the agency's season-sheet import retired.",
+              "shows": "Rules 1 and 2 carried out.",
+              "source": "Kestrel & Pine scenario ledger (illustrative)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The ownership table.",
+            "introduces": "The second step: the direction each field flows in.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "Syndication with a loop: each channel's rejections return to the PIM as tasks on the product, and a completeness score per channel is visible before launch.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "A repeat of bol's 140 declines becomes a list to clear before launch, not a surprise in the next day's upload report.",
+              "shows": "Rule 3 carried out against the scene's rejection.",
+              "source": "Kestrel & Pine scenario ledger (illustrative)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Direction per field.",
+            "introduces": "The third step: the route back from the channels.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "Migration consumer by consumer: the PIM is loaded in July 2027 from the four copies, about 1,900 variants with conflicting attributes are resolved before anything is published, the consumers move one at a time, and the PIM is the first prerequisite of W8.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Load in July 2027; about 1,900 conflicting variants; DE storefront in August; NL and BE storefronts and the connector in September; spreadsheets read-only; Spring/Summer 2028 the first season built in the PIM.",
+              "shows": "Loading the owner is itself a comparison of the copies, and the move is small because it goes one consumer at a time.",
+              "source": "Kestrel & Pine scenario ledger (illustrative)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The rules in place.",
+            "introduces": "The fourth step: how the copies are replaced.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "The results that matter are small: the season import becomes a scheduled publication, the German storefront launches with no untranslated variants, and one spelling of moss reaches four channels.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Two agency days become a scheduled publication; the completeness score blocks an untranslated product.",
+              "shows": "Each result answers one loss in the opening scene.",
+              "source": "Kestrel & Pine scenario ledger (illustrative)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The four steps.",
+            "introduces": "What they change, measured against the scene.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "when-it-goes-wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "Product data fails without an error, in five ways that have to be detected on purpose, and each is found by comparing a copy or an identifier with its system of record.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S1",
+          "S3"
+        ],
+        "how": "Shows what the identifier rule and the rejection loop protect against, and adds the scheduled comparison that the rules alone do not provide."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Five parallel failures, each with detection and recovery, from the one the scene showed (rejection) to the one a channel causes (the pulled rug), then what they share."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "W3 carried out and its results.",
+        "introduces": "What still fails with an owner in place, and how to detect it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p50",
+          "controlling_idea": "Even with an owner in place, product data fails quietly, so its failures have to be detected on purpose.",
+          "function": "claim"
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "Silent rejection: a channel declines a product in a report nobody reads; it is detected by a listing status per variant per channel reconciled against the channel, and recovered by making the rejection a task for the owner.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Detection: status per variant per channel and a daily count of variants that should be live and are not. Recovery: a task on the owner's queue.",
+              "shows": "The failure has no error of its own, so only a comparison finds it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Failures to detect on purpose.",
+            "introduces": "The first failure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Identifier drift: a reused SKU, a wrong GTIN or a recreated variant joins two items or loses an order's link; it is detected by a weekly cross-reference check and recovered by retiring the identifier and mapping the old one for history, never by editing in place.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The warehouse counts two items as one; a marketplace shows the wrong product; orders lose their link.",
+              "shows": "What the never-edit, never-reuse rule protects."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Silent rejection.",
+            "introduces": "The second failure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "The split product: variants modeled as separate products show the jacket several times in search, feeds and analytics; it is detected by products that share a name and brand but not a group id and recovered by a merge that keeps old URLs and ids mapped.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Search shows the jacket four times, item_group_id is wrong in feeds, analytics count four products.",
+              "shows": "A modelling shortcut is paid for in every consumer of the catalog."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Identifier drift.",
+            "introduces": "The third failure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Stale translation: one language is republished while another still carries the old claim; it is detected by completeness per locale as a blocking state and recovered by publishing the whole product again in all locales.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "A fixed Dutch description beside an unchanged German one.",
+              "shows": "Publishing fields and not whole products produces two versions of one claim."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The split product.",
+            "introduces": "The fourth failure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "The pulled rug: a marketplace changes its data model or retires an API version on a published date; it is detected by a named owner who reads the channel's notices and by a weekly listing status check, and recovered through the mapping, which is data.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Kestrel & Pine's Deprecated Endpoint of February 2027, in one sentence: an agency script called a retired API version and bol's figures were stale for two days.",
+              "shows": "The running example has already been caught by a channel changing on its own schedule.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Stale translation.",
+            "introduces": "The fifth failure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "The five failures share one remedy: a copy is acceptable only with a reconciliation that compares it with its system of record on a schedule and lists the differences for a person.",
+          "function": "synthesis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The five failures.",
+            "introduces": "What their detections have in common: a scheduled comparison of copy against record.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The product model, the ownership table and the rejection loop are three parts of one design: the identifiers say which item a value belongs to, the owning system says where the value may be changed, and the route back from each channel says whether the channel accepted it. The choice of tool comes after these three, and a PIM is one place to keep the second and third.",
+    "so_what": "A merchant that has the three in writing can decide on a PIM by counting producing teams and consuming channels, and can refuse one bought because larger brands have one; a merchant without them gets one more copy whatever it buys.",
+    "callback": {
+      "to": "The corrected waterproof rating that reached the web shop and not the marketplace.",
+      "how": "The reader can now say what was missing: no system owned the rating, so the correction was made in a system that only shows it, and nothing carried it on or reported that the marketplace still had the old value."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Write the attribute ownership table before choosing a tool, treat SKUs and GTINs as permanent, route each channel's rejection to the owner, and take the eight questions to the people who run the catalog."
+    },
+    "hand_off": {
+      "to": "pricing-architecture",
+      "relationship": "contrast",
+      "carries_over": "The product described once and owned per attribute, with price and stock left out of the ownership table.",
+      "introduces": "A product-related fact that changes on a different cadence, carries legal weight in Europe and is copied into more systems than any other: the price."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The five failures and their shared remedy, a scheduled comparison.",
+      "introduces": "The chapter's answer set against its opening, then what holds, sorted by how settled it is.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p57",
+        "controlling_idea": "The corrected waterproof rating of the opening reached one channel because no system owned it; three things would have carried it to every channel (identifiers that say which jacket, one owning system per attribute, a route back from each channel), and a PIM is needed for the second and third only when several teams write product data and several channels read it.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The opening's correction set against the chapter's three rules.",
+            "shows": "The reader can now name what was missing in the opening case, and sees the three rules as one design."
+          }
+        ]
+      },
+      {
+        "id": "p58",
+        "form": "list",
+        "controlling_idea": "Established: a product is a product, its variants and permanent identifiers; channels validate against their own rules and reject asynchronously; products with sales history are never deleted.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "The points it rests on, sorted by how settled they are, starting with what the documentation establishes.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p59",
+        "form": "list",
+        "controlling_idea": "Depends on context: when the shop platform stops being the right catalog, whether the ERP also owns logistic attributes, where channel mappings live, and whether a variant limit matters.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What the documentation settles.",
+          "introduces": "What changes with the merchant's situation.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p60",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: decide the ownership table before choosing a PIM, and treat syndication as an integration with an outbox, a validation step and a rejection loop, not as a feed.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established and what depends on context.",
+          "introduces": "The author's own judgement, labelled as such.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p61",
+        "form": "list",
+        "controlling_idea": "Eight questions let the reader apply the chapter to their own company's copies, editors, identifiers, attributes, rejections, launches, channel rules and readiness for agents.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions that apply them.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p62",
+        "controlling_idea": "The ownership table left out price and stock; the price comes next, a product-related fact that changes at a different cadence, carries legal weight in Europe and is copied into more systems than any other, taken up in the next chapter with the Price Drift.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The product described once and owned per attribute, with price and stock left out of the ownership table.",
+          "introduces": "A product-related fact that changes on a different cadence, carries legal weight in Europe and is copied into more systems than any other: the price.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Prices, price lists and tax-inclusive display.",
+      "covered_in": [
+        "pricing-architecture"
+      ]
+    },
+    {
+      "topic": "Stock, available-to-promise and the oversell.",
+      "covered_in": [
+        "inventory-and-availability"
+      ]
+    },
+    {
+      "topic": "The search index, facets and relevance built on attributes.",
+      "covered_in": [
+        "commerce-search-and-discovery"
+      ]
+    },
+    {
+      "topic": "Marketplace listing operations, order import and channel allocation.",
+      "covered_in": [
+        "marketplaces-and-channel-integration"
+      ]
+    },
+    {
+      "topic": "Master data management across customers, suppliers and locations, and the cross-reference table as a product.",
+      "covered_in": [
+        "identity-and-master-data"
+      ]
+    },
+    {
+      "topic": "The ERP's role as a hub and the ERP partner's connector.",
+      "covered_in": [
+        "erp-and-back-office-integration"
+      ]
+    },
+    {
+      "topic": "Promotions, bundle discount allocation and gift-card liabilities.",
+      "covered_in": [
+        "commerce-promotions",
+        "tax-invoicing-and-ledger"
+      ]
+    },
+    {
+      "topic": "Migration mechanics for the PIM introduction.",
+      "covered_in": [
+        "replatforming-and-migration"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "The chapter assigns logistic attributes (weight, dimensions, customs code) to the ERP; warehouse-and-fulfillment may prefer the WMS to measure and own them at first receipt. Reconcile when that chapter is revised.",
+    "The PIM go-live sequence follows the ledger line appended by replatforming-and-migration (loaded July 2027 with 1,900 conflicting variants resolved, DE storefront first consumer in August, NL/BE and the connector in September); this chapter adds only that Spring/Summer 2028 is the first season built in the PIM, and both lines should be kept in step if either chapter changes.",
+    "Flow rubric, first run (2026-11-12, sound with notes). Taken: the vendors' definitions now follow the PIM definition directly (p23 before p22); the one-sentence opening of The Choices is merged into the first option; a sentence on variant limits is added where the variant is defined (p09); the W3 introduction (p44) no longer restates the scene. Not taken: (a) 'system of record', the Group stage, the failure-pattern names and W8 were called forward references; all are established in Part I, and W8 is glossed again in the text. (b) 'feeds' is used in the ownership section before the PIM section defines 'feed'; the ownership table would need a gloss in a table cell. (c) The 'depends on context' take-away on logistic attributes and the eighth question on AI agents rest on one table row and one clause each; they are the author's and were kept. (d) Trade-offs and Across Scale Stages declare no section flow of their own (two paragraphs each).",
+    "Flow rubric, second run (2026-11-12, sound with notes). Taken: the paragraph on keeping page, structured data and feeds aligned (p22) now follows the flow requirements. Not taken: (a) move the vendors' definitions (p23) to the head of Trade-offs, where 'no vendor gives a threshold' meets the author's threshold; kept in the PIM section because Figure 3 hangs on that paragraph and it completes the definition. (b) Cut or move the list of four product shapes (p14), which no later item uses. (c) Swap p02 and p03 in the introduction. (d) The stages section does not visibly apply the producer-and-consumer test. (e) The conclusion's opening paragraph (p57) and the author's-synthesis list (p60) partly restate each other; the three-tier take-away is the book's house format.",
+    "Flow rubric, third run after the move (2026-11-12, sound with notes; no change of order followed). Notes not taken: none of the three rules visibly meets the alignment requirement of p22; merge the announcement of the rules (p26) into Rule 1; the pulled rug is found by reading a channel's notices, so the shared remedy of p56 (a scheduled comparison) fits it only in part; 'outbox' and 'group id' need a gloss (the text glosses the outbox in Rule 3 and names item_group_id in In Practice).",
+    "GS1's own site blocked fetching; the GTIN format facts rest on a GS1 support article and an encyclopaedia page. A reviewer with access to the GTIN Management Standard could replace the secondary citation."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json from the published chapter, one paragraph per unit. The author asked for the flow rubric's notes to be taken without review; the changes of order made for that reason are the entries of this date.",
+      "rejected": [
+        "Keeping spec.md beside spec.json."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Moved 'Requirements per flow' (the flow table and its reading, p24 and p25) from the ownership section into the PIM section, after the definitions and Figure 3 and before the three rules: the table uses 'enrichment' and 'syndication', which were defined one section later, and its two findings are the reasons for rules 2 and 3.",
+      "rejected": [
+        "Leaving the table in the ownership section and glossing the two terms there."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Merged the 'Ownership direction is a documented setting' pair of paragraphs from In Practice into Rule 1 (p27): both rested on the same Microsoft Learn page and made the same point. The longer quotation moved into Rule 1; the sentence calling the page 'this chapter's argument in two sentences' was dropped.",
+      "rejected": [
+        "Keeping the point in both places."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Merged the one-sentence opening of The Choices into the first option (p31), and the one-sentence paragraph defining a PIM in the scene into the paragraph before it (p05), and split the scene's closing paragraph into the diagnosis with Figure 1 (p07) and the W3 decision (p07a), so that each has one controlling idea.",
+      "rejected": [
+        "One closing paragraph carrying both the diagnosis and the decision."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After check round 1 (escalate on spec faults; changes of order and paragraph ideas were approved in advance by the author for this pass): (1) the variant limits (formerly p40 and p41 of In Practice) are one paragraph, p09a, where the variant is defined, because both flow readers met them in In Practice as new material; In Practice now documents only channel validation. (2) The list of other product shapes (p14) follows the identifier rule and is reframed as cases in which the rule still holds; before, it traced to no supporting claim and listed the configurable product as something other than the grid. The subheading 'Bundles, digital goods, translations and lifecycle' becomes 'Translations and lifecycle'. (3) The paragraph on keeping page, structured data and feeds aligned (p22) is merged into Rule 2, the rule that answers it. (4) The Deprecated Endpoint in the pulled-rug failure (p55) is cut to one sentence. (5) The transition into p03 is redeclared as 'place'.",
+      "rejected": [
+        "Cutting the list of product shapes.",
+        "Leaving the variant limits in In Practice with a longer forward pointer."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p04) that announces every section, a sentence in p03 that places the chapter in Part II as the part's transition_in asks (the slowest-changing fact; the identifiers every other catalog fact is keyed on), and an opening paragraph of the conclusion (p57) that returns to the corrected waterproof rating and states the synthesis.",
+      "rejected": [
+        "Relying on the IN THIS CHAPTER callout as the only roadmap.",
+        "A conclusion made only of the three take-away lists."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Success criteria of spec.md: the criterion on terms and acronyms is kept as AC-6 (known_before_new, minor; added beyond the journal spec's criteria, for the author to keep or drop). The others were inventories (a table is present, a section has four columns, three tiers and eight questions are present, two diagrams have captions) or facts the ledger and the Sources apparatus already govern (Kestrel & Pine figures, dated public evidence); they are dropped as criteria. Their substance is carried by the journal spec's AC-1 to AC-3 and by the evidence entries of the paragraphs.",
+      "rejected": [
+        "Carrying the nine checklist items over as acceptance criteria."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Kept the word limit of 6,500 that spec.md set. Where the chapter means the hosted product it now says 'the shop platform', the name fixed in chapter 1.",
+      "rejected": [
+        "Raising the limit to make room for the added paragraphs."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Chose attribute-level ownership (a table per kind of data) as the chapter's central device, because the ledger's three copies exist precisely because identity, cost and content have different natural owners, and because the Business Central connector documentation shows the per-field direction as a documented setting.",
+      "rejected": [
+        "Product-level ownership ('the PIM owns the product')."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Opened the scene with a season launch, because the ledger gives no product-data incident with numbers and a launch shows all four copies and all four producing teams at once; the scene's numbers are labeled illustrative.",
+      "rejected": [
+        "Opening with a single incident."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Kept vendor PIM descriptions to two short quotations (Akeneo, Pimcore) and stated the PIM threshold as the author's judgement, since no independent study of when a PIM pays off was found."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Dropped GS1 Digital Link and Sunrise 2027 from the article for length; they belong in stores-and-omnichannel (2D codes at the point of sale) if anywhere."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine and _research/scenario-ledger.md",
+      "contributed": "The three copies, the catalog figures, W3, the season-launch scene and the Deprecated Endpoint."
+    },
+    {
+      "kind": "internal",
+      "ref": "boundaries-and-systems-of-record",
+      "contributed": "The system-of-record concept this chapter applies per attribute."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-catalog-pricing-search.md, Part 1",
+      "contributed": "Product model, variant limits, taxonomies, PIM vendor pages, syndication rules."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-b2b-edi-erp.md, section 4.5",
+      "contributed": "The ERP, PIM and commerce ownership table."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-integration-and-data.md",
+      "contributed": "The Business Central Shopify connector's per-field direction."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify developer documentation and changelog (2024-2025)",
+      "contributed": "The product, option and variant model; the 2,048-variant limit."
+    },
+    {
+      "kind": "external",
+      "ref": "commercetools documentation and release notes (2026)",
+      "contributed": "Immutable SKUs, staged and published data, Classic and Modular catalogs."
+    },
+    {
+      "kind": "external",
+      "ref": "schema.org Product (v30.1, 2026) and GS1 support (2024)",
+      "contributed": "Standard definitions of variant groups and the GTIN."
+    },
+    {
+      "kind": "external",
+      "ref": "Google Merchant Center product data specification and bol Retailer API documentation (accessed 2026-11)",
+      "contributed": "Channel validation rules."
+    },
+    {
+      "kind": "external",
+      "ref": "Microsoft Learn, Business Central Shopify connector (2026-10)",
+      "contributed": "'Decide which system is the system of record for product data'."
+    },
+    {
+      "kind": "external",
+      "ref": "Akeneo and Pimcore (accessed 2026-11)",
+      "contributed": "Vendor definitions of PIM."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Round 1 (escalate: 12 passed, 34 failed, of which 20 were single-reader term findings recorded as minor). Spec faults fixed in the spec (variant limits moved to the product model, product shapes reframed, alignment paragraph merged into Rule 2, Deprecated Endpoint shortened); draft faults fixed in the chapter (the fourth typing of the color shown, the Choices opened by naming the PIM as the fourth way, the 2021-2022 line set against the 2023 stage, the callback worded as a general case)."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec) from the published chapter; intent, thesis and role copied from the journal spec; order of ideas revised from the flow rubric (three runs, each sound with notes); chapter revised to match. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Final consistency pass: ledger-as-document reference rephrased. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: expanded acronyms and terms on first use, fixed the year Kestrel & Pine crossed the PIM threshold, dated volatile platform limits, removed internal ledger references, timetoread 30. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 6500
+  }
+}
