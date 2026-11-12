@@ -215,7 +215,7 @@ The new design did not make the copies right by being named. Its own reconciliat
 
 ## When Ownership Is Not Decided: The Five Truth Patterns
 
-After W1, Kestrel & Pine's stock has an owner. Most of its other facts did not, and the failures that followed already have names. [[where-commerce-platforms-go-wrong]] names five patterns in a family it calls Truth. Each is a fact without an owner.
+After W1, Kestrel & Pine's stock has an owner. Most of its other facts did not, and the failures that followed already have names. [[where-commerce-platforms-go-wrong]] names five patterns in a family it calls Truth. Each is a fact without an owner. The last column of the table names the Waypoint decision that gave each fact its owner: W1 and W2 from earlier in this chapter, and W5, Waypoint's integration standards, under which every integration has a named owner, a contract and a reconciliation job.
 
 | Pattern | The fact with no record | Kestrel & Pine's incident | The owner Waypoint named |
 | --- | --- | --- | --- |
