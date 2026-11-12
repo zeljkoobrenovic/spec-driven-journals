@@ -439,7 +439,7 @@
             {
               "kind": "source",
               "what": "Hans Moravec, Mind Children (1988), and the existing contrast between formal reasoning and a one-year-old’s perception/common sense.",
-              "shows": "Use Moravec’s contrast as a related analogy, not a measurement of learning a software design. Narrow the inference to the declared point: a model release does not supply its human recipient with the attention and practice needed to understand the output.",
+              "shows": "Before introducing Moravec’s task comparison, connect it to the declared generation-versus-learning contrast: generating output and learning to understand it make different demands, and a model release does not supply its human recipient with the attention and practice needed to understand the output. Present Moravec as an analogy for those different demands, not a measurement of learning a software design.",
               "source": "Existing article and legacy spec"
             },
             {
@@ -1001,7 +1001,7 @@
         {
           "id": "p33",
           "form": "prose",
-          "controlling_idea": "The recipient must deliberately build understanding by following the steps that produce the design.",
+          "controlling_idea": "The recipient deliberately builds their own understanding through a plausible reconstruction of the design, without claiming to recover its creator’s original theory.",
           "function": "recommendation"
         },
         {
@@ -1053,7 +1053,7 @@
             {
               "kind": "case",
               "what": "Preserve the project link and the three-item list: start with a client and server; expose lost mappings on restart; add a database, load balancing, caching, splitting, and regional proximity as their problems emerge. Make the existing edge-boosted result traceable by explaining nearby caching as part of the already-described response to delay between users and services.",
-              "shows": "Shows a repeatable problem→decision sequence instead of a finished architecture that the reader must merely trust. Explain the technical prerequisite at the load-balancer step: another working server must exist for requests to be routed around a failed one. State this as a requirement of the example, not a newly verified feature of the linked project.",
+              "shows": "Shows a repeatable problem→decision sequence instead of a finished architecture that the reader must merely trust. Introduce another available server before the load balancer, then motivate routing requests to a working server. Keep both steps inside the existing list unit and state this as a requirement of the example, not a newly verified feature of the linked project.",
               "source": "https://zeljkoobrenovic.github.io/spec-driven-system-design-interviews/; existing article"
             }
           ]
@@ -1101,7 +1101,7 @@
             {
               "kind": "reasoning",
               "what": "Retain the existing design/proof/plan/diagnosis examples, the simplest-working-version questions, the explicit caveat about model explanations being made up, and [[breaking-vibe-monolith]] / [[risc-for-ai-software-development]].",
-              "shows": "Generalizes the practice while preserving the crucial distinction between a useful learning path and knowledge of how the model actually produced its answer. Explain each related essay’s connection locally: structural boundaries support shared understanding, while inspectable platform behavior supports trust.",
+              "shows": "Generalizes the practice while preserving the crucial distinction between a useful learning path and knowledge of how the model actually produced its answer. Keep both related-essay links in their existing order as subordinate examples of the same reconstruction question: what problem would lead a person to choose the boundaries or platform behavior being examined? Do not introduce a separate architectural prescription, platform requirement or forward hand-off within this unit.",
               "source": "Existing article"
             }
           ]
@@ -1358,9 +1358,21 @@
   ],
   "open_questions": [
     "The original author of the title quotation remains uncertain. The existing attribution decision is to say Andrej Karpathy popularized it, crediting an earlier tweet; do not call him its originator without further author-supplied evidence.",
-    "Final round 2 returned ESCALATE for undefined “edge-boosted,” with four uncorroborated minor flow notes. Closing edits explain the nearby-cache step and term, qualify the passive-use warning at its opening, explain the two related-article links, and clarify the Naur table cell. These are local repairs after the final permitted reader check; their readability is not independently rechecked, and the report is stale for both draft and spec. Review these closing edits before treating the article as checked; no third round was run."
+    "Round 3 ended ESCALATE with one blocker, three major and two minor draft findings. Closing edits address the early Moravec bridge (p11), the learner’s own understanding rather than recovery of the creator’s original theory (p33), the second-server prerequisite before load balancing (p35), and p37’s reconstruction-only focus with both links retained. These edits follow the third and final independent check and have not been independently rechecked. The round-3 report is stale for both spec and draft; review the closing edits before treating the article as checked. No fourth round was run."
   ],
   "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Round 3 returned ESCALATE: 13 passes and six draft findings after the structure result was merged. p37 failed reverse-outline alignment (blocker), paragraph unity (major), and independently corroborated flow (major) because its ending added architectural/platform prescriptions to a reconstruction paragraph. p11 had a corroborated major flow finding because the Moravec task comparison arrived before its link to generation and human learning. The uncorroborated minor findings were p33’s possible promise to recover the creator’s original theory and p35’s late second-server prerequisite. Specify only local closing repairs before prose: place p11’s narrow generation/learning bridge before the analogy; make p33 promise the learner’s own understanding from a plausible path; put another server before the balancer in p35; and replace p37’s architectural/trust ending with one subordinate reconstruction question retaining both crosslinks in order. Preserve all 44 units and their order, inherited intent/thesis/role/criteria, status draft, figures, names, quotations, sources, assets and front matter. No criteria changes, waivers, further reader round or claimed pass; retain the round-3 report unchanged as historical evidence, stale after these closing edits."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After the two-round ESCALATE report and its closing fixes, the author said “continue,” authorizing one additional fresh draft check, overall round 3. This supersedes the earlier two-round stop for this recheck only. Recheck the already-applied nearby-cache explanation, passive-use qualification, specific related-article connections and Naur table clarification without changing the prose, copied contract or 44 units. At this preparation point the closing fixes have not yet received their independent recheck; its outcome belongs in check-report.json, and no pass or resolved finding is presumed. Keep status draft and run no further round after round 3."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Historical round-2 closeout, before the author’s continuation: Final round 2 returned ESCALATE for undefined “edge-boosted,” with four uncorroborated minor flow notes. Closing edits explain the nearby-cache step and term, qualify the passive-use warning at its opening, explain the two related-article links, and clarify the Naur table cell. These are local repairs after the final permitted reader check; their readability is not independently rechecked, and the report is stale for both draft and spec. Review these closing edits before treating the article as checked; no third round was run."
+    },
     {
       "date": "2026-11-12",
       "decision": "At the two-round limit, apply only cheap local fixes named by the final readers: explain edge caching within the existing delay-reduction example, narrow the opening evidence warning to passive use, connect the reconstruction method to the linked boundary/trust arguments, and clarify the Naur benefit cell. Keep all 44 units and their order, source claims, figures, dates, names and copied criteria. Record that the closing edits leave the ESCALATE report stale; do not claim a pass or run a third check."
@@ -1596,6 +1608,14 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Specified four local closing repairs after final round-3 ESCALATE (13 passes; one blocker, three major and two minor findings): connect Moravec before the analogy, distinguish learning from recovery of original theory, introduce the second server before its balancer, and keep both p37 links subordinate to reconstruction. Preserve the 44-unit order and inherited contract. Closing edits receive no further independent check and leave the round-3 report stale."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Recorded the author’s continuation for one additional fresh draft check, overall round 3, of the already-applied closing fixes. Moved the obsolete no-third-round workflow question into historical decision_log context while retaining the quotation-attribution question. Independent verification is pending at this preparation point; its outcome will be recorded in check-report.json. No prose, contract field, unit count or unit-order change."
+    },
     {
       "date": "2026-11-12",
       "change": "Closed after round-2 ESCALATE (16 passes, one major and four minor findings). Specified local closing repairs before prose; final report will remain stale and no further reader round will run."
