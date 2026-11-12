@@ -24,9 +24,13 @@ this script through --results. Its format:
 
     {"reverse_outline": [{"draft_locator", "summary", "matched_spec_paragraph"}],
      "results": [{"criterion", "check", "verdict", "spec_locus", "draft_locus",
-                  "quote", "finding", "weak_pattern", "fault", "waived_by"}]}
+                  "quote", "finding", "weak_pattern", "fault", "corroborated_by",
+                  "waived_by"}]}
 
 'severity' is filled in from the spec's acceptance criteria and the defaults.
+A failed known_before_new or flow_is_followable result is minor (recorded,
+not blocking) unless it carries 'corroborated_by': a second, independent
+reader who reported the same point.
 """
 
 import datetime
@@ -76,7 +80,13 @@ def cmd_units(post_dir):
     print(json.dumps(out, indent=2, ensure_ascii=False))
 
 
-def severity_for(post, criterion, check):
+def severity_for(post, criterion, check, result=None):
+    """Severity from the spec's acceptance criteria, else the default.
+
+    A failed result of an open-ended check (osp.CORROBORATION_CHECKS) that no
+    second reader corroborated is minor, unless the spec names that check in
+    an acceptance criterion, in which case the spec's severity stands.
+    """
     criteria = post["intent"]["acceptance_criteria"]
     for c in criteria:
         if c["id"] == criterion:
@@ -84,6 +94,9 @@ def severity_for(post, criterion, check):
     for c in criteria:
         if c["check"] == check and check != "custom":
             return c["severity"]
+    if result and check in osp.CORROBORATION_CHECKS and result.get("verdict") == "fail" \
+            and not result.get("corroborated_by"):
+        return "minor"
     return osp.DEFAULT_SEVERITY[check]
 
 
@@ -168,7 +181,7 @@ def cmd_finalize(post_dir, results_path, round_no):
         if r.get("check") not in osp.DEFAULT_SEVERITY:
             sys.exit(f"unknown check in results: {r.get('check')!r}")
         r.setdefault("criterion", r["check"])
-        r["severity"] = severity_for(post, r["criterion"], r["check"])
+        r["severity"] = severity_for(post, r["criterion"], r["check"], r)
         if r.get("verdict") == "fail" and r["check"] != "reverse_outline_matches_spec" \
                 and osp.DEFAULT_SEVERITY.get(r["check"]) and not r.get("quote") and not r.get("finding"):
             sys.exit(f"failed result for {r['criterion']} has neither a quote nor a finding")
@@ -212,6 +225,12 @@ def cmd_finalize(post_dir, results_path, round_no):
     print(f"{verdict.upper()}  round {round_no}  pass={counts['pass']} fail={counts['fail']} waived={counts['waived']}  -> {rel(out)}")
     for r in failing:
         print(f"  [{r['severity']}] {r['criterion']} ({r.get('fault', 'unclear')}): {r.get('finding', '')}")
+    minor = [r for r in results if r["verdict"] == "fail" and r["severity"] == "minor"]
+    if minor:
+        print(f"  {len(minor)} minor finding(s) recorded, not blocking:")
+        for r in minor:
+            note = "" if r["check"] not in osp.CORROBORATION_CHECKS else " (one reader only)"
+            print(f"    [minor] {r['criterion']}{note}: {r.get('finding', '')}")
     if verdict == "escalate":
         print("  Stop revising: a failure points at the spec, or the revision budget is spent. The author decides.")
     sys.exit(0 if verdict == "pass" else 1)

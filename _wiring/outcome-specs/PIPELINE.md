@@ -139,7 +139,7 @@ than its check needs.
 | --- | --- | --- | --- |
 | Script | Spec and draft | Compares headings, paragraph counts per section, length, the hand-off link, cross-link targets | The structural half of `reverse_outline_matches_spec`; length |
 | Reverse outliner | The draft only | Writes one short phrase per paragraph; flags any paragraph that needs two | `reverse_outline_matches_spec`, `one_controlling_idea_per_paragraph` |
-| Cold reader | The introduction only, or the draft only | Answers each criterion's `probe`; one reads the whole draft and reports how it is organised and where it lost the thread | `intro_predicts_content`, `flow_is_followable` and every `cold_reader` criterion |
+| Cold reader | The introduction only, or the draft only | Answers each criterion's `probe`; two, separately, read the whole draft and report how it is organised and where they lost the thread | `intro_predicts_content`, `flow_is_followable` and every `cold_reader` criterion |
 | Judge | Spec, draft, the outline and the cold reader's answers | Aligns outline to spec; scores answers against `expected`; rules on each transition, each evidence item, the introduction and the conclusion, quoting the passage each verdict rests on | All remaining checks |
 
 The output is one `check-report.json` (schema in this folder), stamped with
@@ -167,6 +167,12 @@ Every failed result names a `fault`: the draft, the spec, or unclear.
 
 Rules that hold across the table:
 
+- **Open-ended findings need two readers.** A failed `known_before_new` or
+  `flow_is_followable` result blocks only when a second, independent reader
+  reported the same point. Otherwise it is recorded as minor. Chapter 4
+  showed why: over six rounds, four judges each failed a different small
+  point the previous ones had passed, while every fixed-question check
+  passed from the second cycle on.
 - **Revision is local.** Only the units named in the report are rewritten,
   then the whole draft is re-checked, since a local fix can break a neighbour.
 - **Two rounds.** After two revisions with failures remaining, the verdict is

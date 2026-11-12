@@ -84,7 +84,7 @@ In plain words: the storefront, order management, the warehouse and the finance 
 | Warehouse | Work to do | A fulfillment order: pick lines, bins, a packing station, one or more parcels; a split order is two of these | Released, in picking, packed, shipped |
 | ERP | Something to invoice and post | A sales order with net amounts, VAT, a debtor, a receivable | Open, invoiced, paid |
 
-The parcel that opened this chapter, *Delivered* in one system and *In picking* in another, was a real order at Kestrel & Pine. The **Three-Status Order**, #1052877, generated 11 support tickets because its three statuses described different objects. The fleece shipped on 7 December 2026; the socks waited a week for replenishment. The platform showed *Delivered* after the fleece's carrier scan. The WMS showed *In picking* while the socks waited. The enterprise resource planning system (ERP) showed *Not invoiced* because it required the WMS's "order complete" message.
+The parcel that opened this chapter, *Delivered* in one system and *In picking* in another, was a real order at Kestrel & Pine. The company had no order management system yet, so three of the four contexts were in play: the storefront, the warehouse and the ERP. The **Three-Status Order**, #1052877, generated 11 support tickets because its three statuses described different objects. The fleece shipped on 7 December 2026; the socks waited a week for replenishment. The platform showed *Delivered* after the fleece's carrier scan. The WMS showed *In picking* while the socks waited. The enterprise resource planning system (ERP) showed *Not invoiced* because it required the WMS's "order complete" message.
 
 For six days, nobody could give the customer a combined view. **An order management system (OMS) must explain the whole order while retaining the separate facts.** Waypoint decision W2 assigns that job to a purchased OMS, with one state model and one order number family.
 
@@ -132,7 +132,7 @@ Ownership decides who wins; it does not decide how quickly the copies must follo
 | Fact | A copy may be stale for | Agreement required | Why |
 | --- | --- | --- | --- |
 | Availability shown to a channel | Seconds at peak; minutes normally | Eventual, within a buffer | Every minute of staleness is an oversell window; Kestrel & Pine's two hours produced 1,340 oversold units |
-| Consumer price | Minutes; exact at a promotion's start and end | Exact across channels | A stale price is a broken promise, and on marketplaces a parity breach; at Kestrel & Pine a stale €179 price once ran for nine days, an incident the company calls the Price Drift |
+| Consumer price | Minutes; exact at a promotion's start and end | Exact across channels | A stale price is a broken promise, and on marketplaces it can break the marketplace's price-parity rule, which limits how far a seller's price there may differ from its price elsewhere; at Kestrel & Pine a stale €179 price once ran for nine days, an incident the company calls the Price Drift |
 | Order existence | Seconds to minutes | Exact: never lost, never doubled | A missed order is a missed cut-off; a doubled one ships twice |
 | Order status | Minutes | Eventual | Stale status creates "where is my order" contacts, not losses |
 | Product content | Hours | Eventual | A late description is a missed sale, not a wrong one |
@@ -211,7 +211,7 @@ Replay the Black Friday evening against the right-hand column. At 19:40 the last
 ![Diagram: Kestrel & Pine's warehouse stock before and after Waypoint decision W1](assets/images/04-boundaries-and-systems-of-record/fig03-kestrel-pine-s-warehouse-stock-before.jpeg)
 **Figure 5:** *Kestrel & Pine's warehouse stock before and after Waypoint decision W1: six writers feeding a two-hour chain of copies become one writer per location, an availability service that computes what each channel may sell, and copies that learn by event.*
 
-The new design did not make the copies right by being named. Its own reconciliation had to find what the old chain had left behind: the first weekly run in May 2027 found 2.3% of active variants with a different quantity between the WMS and the platform (illustrative), most left behind by the three apps. The apps' write access was removed, and that figure is the reconciliation's baseline.
+The new design did not make the copies right by being named. Its reconciliation was the first part to run, months before the rest went live in Q4 2027, and it had to find what the old chain had left behind: the first weekly run in May 2027 found 2.3% of active variants with a different quantity between the WMS and the platform (illustrative), most left behind by the three apps. The apps' write access was removed, and that figure is the reconciliation's baseline.
 
 ## When Ownership Is Not Decided: The Five Truth Patterns
 

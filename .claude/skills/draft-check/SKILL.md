@@ -53,7 +53,8 @@ Let `P` be the post folder.
      evidence, and in what tone.
    - For each acceptance criterion with `method: cold_reader`: give it the
      whole draft and the criterion's `probe`, nothing else.
-   - For `flow_is_followable`: give it the whole draft and ask how easy it
+   - For `flow_is_followable`: start **two** such readers, separately, so
+     neither sees the other's answer. Give each the whole draft and ask how easy it
      was to follow, not whether it is good: what principle orders the
      sections; for each section, why it comes where it does; every place it
      lost the thread, had to re-read or met something out of place, with the
@@ -78,9 +79,14 @@ Let `P` be the post folder.
      point. Each material point is one failed result with the reader's quote;
      the fault is the draft when the spec's order is fine and the prose
      obscures it, the spec when the reader's difficulty comes from the order
-     itself.
+     itself. Set `corroborated_by` on a failed result only when **both** flow
+     readers reported the same point (the same passage, or the same problem
+     in different words), naming the second reader and its item. A section
+     both readers mark "unclear" is corroborated.
    - `known_before_new`: terms against `audience.already_knows` and
-     `does_not_know`.
+     `does_not_know`. Set `corroborated_by` on a failed result only when a
+     flow reader also reported the term as unexplained, or when the term is
+     on the spec's `does_not_know` list and the draft never gives it.
    - `no_weak_introduction_pattern`, `no_weak_conclusion_pattern`: name the
      pattern in `weak_pattern` when one is found.
    - `conclusion_synthesizes_and_answers_so_what`,
@@ -115,6 +121,19 @@ Let `P` be the post folder.
 10. **On `PASS`:** run `python3 _wiring/check_draft.py status P` and report its
     output. Do not change `status` in `spec.json`; say that the spec can be
     set to `accepted`.
+
+## Open-ended checks need two readers
+
+`known_before_new` and `flow_is_followable` have no fixed list of things to
+look for, so a fresh reader reports a different small point on every pass and
+a draft never converges if each one blocks. A failed result of these two
+checks therefore blocks only when it carries `corroborated_by`. Without it,
+`check_draft.py` records the finding as minor: it is listed in the report and
+in your summary, and it does not cause `REVISE` or `ESCALATE`. Fix minor
+findings when they are cheap and plainly right; do not start another round
+for them. Never add `corroborated_by` yourself to make a point count, or
+leave it off to make one go away: it states a fact about what two readers
+said.
 
 ## After any later edit
 

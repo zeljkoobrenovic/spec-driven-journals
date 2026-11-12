@@ -164,6 +164,14 @@ probe, or to add a `custom` criterion.
 | `conclusion_synthesizes_and_answers_so_what` | draft | rubric | major | Conclusions | The conclusion states something no single section states, and says why it matters. |
 | `conclusion_calls_back_to_introduction` | draft | rubric | major | Conclusions | The conclusion returns to the element of the introduction named in `callback.to`. |
 
+**Corroboration.** `known_before_new` and `flow_is_followable` are open-ended:
+they have no fixed list of things to find, and a fresh reader reports a
+different small point on each pass. A failed result of either is major only
+when a second, independent reader reported the same point (the result carries
+`corroborated_by`); otherwise it is recorded as minor and does not block. The
+draft-time flow check is therefore run with two readers. A spec that names one
+of these checks in an acceptance criterion keeps the severity it states.
+
 The six checks the brief requires map to: `intro_predicts_content`;
 `reverse_outline_matches_spec`; `one_controlling_idea_per_paragraph` with
 `paragraph_traces_to_thesis`; `transition_expresses_declared_relationship`;

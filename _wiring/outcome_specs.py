@@ -62,6 +62,11 @@ DRAFT_READER_CHECKS = [c for c in DEFAULT_SEVERITY
                        if c not in ("thesis_passes_tests", "flow_order_is_sound", "children_cover_parent_thesis",
                                     "role_matches_journal_spec", "custom")]
 MAX_REVISION_ROUNDS = 2
+# Checks whose findings are open-ended: a fresh reader reports a different
+# small point on every pass. A failure of one of these blocks only when a
+# second, independent reader reported the same point ("corroborated_by");
+# otherwise it is recorded as minor.
+CORROBORATION_CHECKS = {"known_before_new", "flow_is_followable"}
 
 
 def load_json(path):
