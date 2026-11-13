@@ -1,0 +1,150 @@
+---
+name: detailed-article
+description: Write or revise the detailed main article (index.md) of a spec-driven journal post from its spec contract (spec.json, or the older spec.md), following the house record style (status highlight, MADR-inspired sections, cross-links). Use when asked to write, draft, expand, or revise a post's main article, index.md, or "the article modality" in _journals/*/posts/*/.
+---
+
+# Detailed Article (the `index` modality)
+
+## Goal
+
+Write or revise `index.md` — the detailed main article of a post — from the
+sibling `spec.md`. The article is the **required, default modality**: every
+post has one, and it is the default tab on the rendered post page. Other
+modalities (`summary.md`, `dialog.md`, `comics.md`) are derived from the spec
+and this article; when the article changes substantively, flag sibling
+modality files that may now be stale.
+
+## Which contract
+
+- If the post folder has a **`spec.json`**, it is the contract, and the
+  section "Writing from `spec.json`" below replaces steps 1–4 of the
+  workflow. Ignore any `spec.md` beside it.
+- Otherwise the older **`spec.md`** is the contract and the workflow applies
+  as written.
+
+Wherever this skill says `spec.md`, read "the post's spec".
+
+## Writing from `spec.json`
+
+1. Check that the spec validates
+   (`python3 _wiring/validate_spec.py <journal> <folder>`) and that its
+   `status` is `accepted`. If it is `draft`, stop and say so: an article is
+   not drafted from a spec the author has not accepted, unless the author
+   says to go ahead.
+2. Read the spec whole, then the journal's style guide and ledger if it has
+   them, and the previous and next posts' entries in `journal-spec.json`.
+3. Write the introduction, each section and the conclusion **unit by unit in
+   spec order**. One spec paragraph becomes one prose paragraph (or one list
+   with its lead-in, when `"form": "list"`), which:
+   - states the paragraph's `controlling_idea` and nothing that belongs to
+     another paragraph;
+   - does the job its `function` names;
+   - uses the `evidence` listed, and after each item says what it shows;
+   - opens by expressing its `transition_in`: the declared relationship, from
+     what is carried over to what is introduced.
+   Tables, figures and quotations listed as evidence sit with their paragraph.
+   Section headings are the spec's `heading` values, unchanged.
+4. **Do not add, drop, merge, split or reorder units.** If the argument cannot
+   be written as specified, stop and report which unit and why. That is a
+   fault in the spec, and the spec is changed first, by the author's decision.
+5. The introduction carries the spec's hook, bridge, thesis statement and
+   roadmap; the conclusion its synthesis, answer to "so what?", callback,
+   takeaway and hand-off. The house style below still governs voice,
+   callouts, front matter and format.
+6. **Do not certify your own draft.** Run
+   `python3 _wiring/check_draft.py structure <post-dir>` and fix any
+   structural failure. Then hand the draft to the `draft-check` skill, which
+   uses readers that did not write it. Report the draft as written and
+   unchecked until that has run.
+7. Continue with workflow steps 5 and 6 (wiring and build).
+
+## Contract rules
+
+- `spec.md` is the contract. **Never edit spec.md from this skill.** If the
+  requested article diverges from the spec's Intent or Success criteria, stop
+  and say so — either the user updates the spec first (spec-first rule) or
+  narrows the request.
+- If the post already exists and has moved beyond its spec, flag the drift:
+  suggest setting the spec's `status: drifted` and updating `revised:` — but
+  let the user make that edit decision.
+- `permalink:` and `id:` front matter never change once published.
+
+## Workflow
+
+1. Read `spec.md` (Intent, Audience, Success criteria, Non-goals, Modalities,
+   Sources) and the existing `index.md` if present.
+2. Skim 1-2 neighboring posts in the same journal for tone and section shape.
+3. Write/revise `index.md` following the house style below.
+4. Walk the spec's Success criteria one by one and verify each against the
+   draft; report the checklist to the user.
+5. If this is a new post, wire it into `_journals/<journal>/config.yaml`
+   (add `- <slug>/index.md` under the right section).
+6. Run `python3 _wiring/build.py`; confirm `[built] <journal>` and that
+   `docs/<journal>/<permalink>.html` exists and embeds `"key": "index"`.
+
+## House style
+
+- **Front matter**: `title`, `date`, `author`, `excerpt`, `permalink`,
+  `timetoread`, `tags`; ADR-shaped posts also carry `id` and
+  `status: <state>:<colour>` (e.g. `proposed:orange`, `accepted:green`).
+- **Opening highlight** before the first `## Heading`. Two shapes — pick by
+  post kind:
+
+  - **ADR-shaped posts** (decisions, principles, foundations) — a fixed
+    two-line status/decision blockquote:
+
+    ```markdown
+    > **Status**: PROPOSED
+    >
+    > **Decision**: One paragraph stating the decision clearly enough that a
+    > reader gets the direction before reading the body.
+    ```
+
+    Use `**Principle**` instead of `**Decision**` for principle posts. Keep
+    the visible status aligned with the front-matter `status:` value.
+
+  - **Essay-shaped posts** (e.g. the `ai-notes` journal) — a **KEY POINTS**
+    blockquote of **exactly three bullets** that capture the *essence* of the
+    essay: typically the problem, the core insight or symptom, and the
+    resolution. Three is the rule, not a range — force the synthesis down to
+    three even when the essay has many threads; collapse related ideas into a
+    single bullet rather than adding a fourth. Each bullet is one or two
+    sentences, leads with **bolded** key phrases, and stands on its own so a
+    skim reader gets the whole argument from the block alone.
+
+    ```markdown
+    > **KEY POINTS:**
+    >
+    > * **First essential point** — the problem or the gap, stated so it lands
+    >   before the body.
+    > * **Second essential point** — the core insight, mechanism, or symptom
+    >   that the essay turns on.
+    > * **Third essential point** — the resolution or the move it argues for.
+
+    <br>
+    ```
+
+    Follow the block with a `<br>` before the lead paragraph, matching the
+    existing `ai-notes` posts.
+- **Body order (MADR-inspired)**: `Statement`/`Decision` → `How to Read This`
+  → `Rationale` → `Implications` → `What This Means for Teams` →
+  `Anti-Patterns` → `Examples` → `Related Principles`/cross-links →
+  `Scope and Revisiting` → `Authoritative References`. Sections may be
+  omitted, but keep the order.
+- **Section headings use Title Case** — capitalize principal words; keep articles,
+  coordinating conjunctions, and short prepositions (`a`, `the`, `and`, `or`,
+  `to`, `by`, `in`, `of`, `for`) lowercase unless first; capitalize the first
+  word after a colon. E.g. `## The Root: A Trap We Built by Being True to
+  Ourselves`, not `## The root: a trap we built by being true to ourselves`.
+  Applies to every `##`/`###` heading, including descriptive ones on reflective
+  posts. (The MADR section names above are already in this form.)
+- **Tables of contrasts** ("What it says / What it does **not** say") and
+  grouped bullets read well in the rendered HTML — prefer them over long
+  prose.
+- **Cross-link** related records with `[[permalink]]` rather than ad-hoc
+  text references. Link liberally — unresolved `[[slugs]]` survive the build
+  as visible TODOs.
+- **Tone**: declarative. Records are read by humans and by AI tools as
+  context.
+- Image references stay journal-root-relative (`assets/images/...`); put
+  files in the post's own `assets/` folder.

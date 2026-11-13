@@ -1,61 +1,61 @@
 {
   "spec": "_journals/commerce-platform-architecture/posts/part-5-intro/spec.json",
   "draft": "_journals/commerce-platform-architecture/posts/part-5-intro/index.md",
-  "spec_sha": "92c7b698d09ace45",
-  "draft_sha": "f001edd0e2cacda3",
-  "run_at": "2026-11-12T22:32:33+01:00",
-  "round": 3,
+  "spec_sha": "1a4dbaf18e776a7f",
+  "draft_sha": "e1ece3758c3b98a5",
+  "run_at": "2026-11-13T12:40:17+01:00",
+  "round": 4,
   "verdict": "escalate",
   "reverse_outline": [
     {
+      "draft_locator": "Introduction callout",
+      "summary": "Part's three takeaways: one order record for all channels, connectors translate without owning, outside parties impose scores and deadlines",
+      "matched_spec_paragraph": null
+    },
+    {
       "draft_locator": "Introduction ¶1",
-      "summary": "One product sold through several channels comes with different fulfilment conditions, and reusing consumer checkout risks penalties",
+      "summary": "Same product sold through different channels carries different fulfillment conditions and penalties",
       "matched_spec_paragraph": "p01"
     },
     {
       "draft_locator": "Introduction ¶2",
-      "summary": "Kestrel & Pine's marketplace and wholesale revenue, and how wholesale orders arrive (portal vs hand-keyed into the ERP)",
+      "summary": "Kestrel & Pine's marketplace and wholesale revenue, with hand-keyed orders living only in the ERP",
       "matched_spec_paragraph": "p02"
     },
     {
       "draft_locator": "Introduction ¶3",
-      "summary": "In this part outside systems create the order and intermediaries translate it / the example order routes for the jacket used throughout the part",
+      "summary": "Orders created by outside systems, and the part's running jacket examples",
       "matched_spec_paragraph": "p03"
     },
     {
       "draft_locator": "Introduction ¶4",
-      "summary": "The core decision: every channel's order lands in the order record, connectors translate without owning, the ERP takes batches / the order of the chapters",
+      "summary": "Core decision: every order authoritative in the order record, connectors translate while owners keep promises",
       "matched_spec_paragraph": "p04"
     },
     {
       "draft_locator": "Chapters in this part ¶1",
-      "summary": "Preview of the marketplace chapter: listings, stock allocation, seller performance and why a connector needs a contract and owner",
+      "summary": "Marketplace chapter preview: listings, stock sync, penalties, connector ownership",
       "matched_spec_paragraph": "p05"
     },
     {
       "draft_locator": "Chapters in this part ¶2",
-      "summary": "Preview of the B2B chapter: company accounts, terms and credit limits, so accepting an order means more than checking stock",
+      "summary": "B2B chapter preview: company accounts, terms and credit limits gating order acceptance",
       "matched_spec_paragraph": "p06"
     },
     {
       "draft_locator": "Chapters in this part ¶3",
-      "summary": "Preview of the EDI and e-invoicing chapter: shipment notices must match what was packed, and partner requirements differ from legal mandates",
+      "summary": "EDI and e-invoicing chapter preview: shipment notices matching packed goods, mandates",
       "matched_spec_paragraph": "p07"
     },
     {
       "draft_locator": "Chapters in this part ¶4",
-      "summary": "Preview of the ERP chapter: giving the ERP a clear financial role, with batches for finance and a faster route for stock",
+      "summary": "ERP chapter preview: ERP's financial role and faster stock route than batches",
       "matched_spec_paragraph": "p08"
     },
     {
       "draft_locator": "Where to Begin ¶1",
-      "summary": "The penalties trace back to orders or promises in the wrong system; start with the marketplace chapter",
+      "summary": "Problems trace to orders or promises from the wrong place; start with marketplaces",
       "matched_spec_paragraph": "p09"
-    },
-    {
-      "draft_locator": "Introduction callout",
-      "summary": "KEY POINTS: every outside channel creates one kind of order flagged by channel; connectors and document providers carry facts between owners; outside parties grade, charge back and set legal dates, so availability never waits on a scheduled finance update",
-      "matched_spec_paragraph": "p04"
     }
   ],
   "results": [
@@ -67,288 +67,251 @@
       "finding": "sections, unit counts and unit forms match the spec"
     },
     {
-      "criterion": "standard",
+      "criterion": "reverse_outline_matches_spec",
       "check": "reverse_outline_matches_spec",
       "verdict": "pass",
-      "finding": "All nine summaries match their aligned controlling ideas in the spec's order; the callout matches p04's KEY POINTS evidence.",
+      "finding": "All nine aligned summaries carry the controlling idea of their spec paragraph (p01 to p09) in the declared order; the callout is p04's evidence and has no own paragraph. Small drift: the p08 summary omits the ERP partner's connector case.",
       "severity": "blocker"
     },
     {
-      "criterion": "standard",
+      "criterion": "one_controlling_idea_per_paragraph",
       "check": "one_controlling_idea_per_paragraph",
       "verdict": "pass",
-      "finding": "Introduction ¶3 (contrast plus the example routes) and ¶4 (claim plus chapter order) were marked two_ideas, but the spec joins both pairs in one controlling idea (p03, p04), so neither holds an unjoined second idea.",
+      "draft_locus": "Introduction callout",
+      "finding": "Marked two_ideas, but it is the KEY POINTS callout whose house shape requires three points; not a failure.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "draft_locus": "Introduction ¶3",
+      "finding": "Marked two_ideas, but the spec's p03 controlling idea is one idea (someone else's system creates the order) illustrated by the part's routes; the examples are instances of the contrast, not a second claim.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
       "check": "paragraph_traces_to_thesis",
       "verdict": "pass",
-      "finding": "p01-p04 perform the role (hook, company, routes, claim with roadmap); p05-p08 each preview a chapter tied to its declared claims (P5-1..P5-5); p09 restates the claim's cause.",
+      "finding": "Every unit traces to the supporting claims: ¶1 to P5-4, ¶2 to P5-1/P5-5 (keyed orders outside the order record), ¶3 to P5-2, ¶4 to P5-1 to P5-3, the chapter paragraphs to the claims their spec lists, and the closing to P5-1/P5-3.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
+      "criterion": "evidence_is_explained",
       "check": "evidence_is_explained",
       "verdict": "pass",
-      "finding": "Figure 1 is tied to p01's conditions; p02's numbers are followed by 'Keyed orders exist only in the ERP.'; p03's routes by 'All share the warehouse and books of Eva's order.'; Figures 2-3 and the callout sit with p04's rule ('each promise sent out ... comes from its owner'); p05-p08 cases each have a 'shows why'/'illustrates' sentence or a following consequence.",
+      "finding": "The ¶2 statistics are followed by 'Keyed orders exist only in the ERP, outside the order record'; the ¶3 scenario by 'All share the warehouse and books of Eva's order'; each chapter case by a 'shows why'/'illustrates' sentence; the figures' captions state what they show (readers quote them). See the flow result on Figures 2 and 3 for their density.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
+      "criterion": "transition_expresses_declared_relationship",
       "check": "transition_expresses_declared_relationship",
       "verdict": "pass",
-      "finding": "p02 elaboration (the merchant named), p03 contrast ('Unlike in Parts II to IV'), p04 cause_effect ('come from one decision'), section end_of_previous ('The chapters take ...'), p06 contrast ('turns from consumers to companies'), p07 elaboration ('For the largest buyers'), p08 sequence ('Last,') are all expressed and pick up the declared known information.",
+      "draft_locus": "Introduction ¶1 -> ¶2",
+      "finding": "Elaboration: naming 'Kestrel & Pine, the fictional outdoor brand' right after the opening's merchant makes it that merchant; implicit (no linking phrase) but both flow readers followed it.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
+      "criterion": "transition_expresses_declared_relationship",
       "check": "transition_expresses_declared_relationship",
-      "verdict": "fail",
-      "spec_locus": "/conclusion/transition_in",
-      "draft_locus": "Where to Begin ¶1",
-      "quote": "The opening's penalties are orders outside the order record or promises from the wrong system.",
-      "finding": "Declared conclusion_summary carrying over 'the four chapters and the case each names' and introducing what their cases share with the opening's penalties. The sentence picks up only the opening; none of the chapters' cases (oversell, credit hold, the €14,200 deduction, the undocumented connector) is named, so it reads as a repeat of p04 rather than a summary of the chapters (both flow readers called the closing redundant).",
-      "fault": "draft",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "known_before_new",
       "verdict": "pass",
-      "finding": "Paragraph openings all start from introduced material; 'promise', 'order record', 'marketplace', 'channel', 'wholesale', Eva's order and Kestrel & Pine are known from earlier parts; 'e-invoicing mandates' is on does_not_know as only named here and the draft gives the minimum (an authority's legal date: 'e-invoicing mandates arrive with legal dates'); 'despatch advices' is glossed as shipment notices.",
+      "draft_locus": "Introduction ¶2 -> ¶3",
+      "finding": "Contrast expressed by 'Unlike in Parts II to IV, someone else's system creates the order'.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/3/evidence/0",
-      "draft_locus": "KEY POINTS callout (bullet 3) and Figure 3 caption",
-      "quote": "Marketplaces grade, retail chains charge back and e-invoicing mandates arrive with legal dates",
-      "finding": "'charge back' is used in the callout and glossed only later in the Figure 3 caption ('every chargeback (a buyer's deduction)'); the body text never explains it.",
-      "fault": "draft",
-      "corroborated_by": "flowA: 'The caption also introduces \"chargeback\" and \"strike\" for the first time.'",
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "draft_locus": "Introduction ¶3 -> ¶4",
+      "finding": "Cause-effect sentence: 'The keyed orders and the opening's penalties come from one decision'.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/sections/0/paragraphs/0/evidence/0",
-      "draft_locus": "Chapters in this part ¶1",
-      "quote": "a retired interface leaves one channel outdated for two days",
-      "finding": "'a retired interface' is not on the known list and gets no context (a marketplace API version retired on a date nobody owned).",
-      "fault": "draft",
-      "corroborated_by": "flowA: '\"a retired interface leaves one channel outdated for two days\" ... come without any setup, so they read as references to stories I haven't seen.'",
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "draft_locus": "Introduction ¶4 -> Chapters in this part",
+      "finding": "Elaboration at end of previous: 'The chapters take marketplaces, business buyers, trading-partner documents, then the ERP.'",
       "severity": "major"
     },
     {
-      "criterion": "standard",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/3/evidence/0",
-      "draft_locus": "KEY POINTS callout (bullet 1)",
-      "quote": "Marketplace, portal, email and electronic trading-partner orders should all create one kind of order, flagged by channel.",
-      "finding": "'trading partner' is not on the known list and is never glossed (here, or in 'trading-partner documents' and 'trading-partner requirements'). Terms reader only; minor.",
-      "fault": "draft",
-      "severity": "minor"
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "draft_locus": "Chapters ¶1 -> ¶2",
+      "finding": "Contrast: 'turns from consumers to companies'.",
+      "severity": "major"
     },
     {
-      "criterion": "standard",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/3/evidence/0",
-      "draft_locus": "KEY POINTS callout (bullet 2)",
-      "quote": "Connectors and electronic document providers carry facts between owners",
-      "finding": "'electronic document providers' appears before the page names the EDI provider, and nothing says they are the same intermediary. Terms reader only; minor.",
-      "fault": "draft",
-      "severity": "minor"
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "draft_locus": "Chapters ¶2 -> ¶3",
+      "finding": "Elaboration: 'For the largest buyers' narrows the wholesale channel.",
+      "severity": "major"
     },
     {
-      "criterion": "standard",
-      "check": "known_before_new",
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "draft_locus": "Chapters ¶3 -> ¶4",
+      "finding": "Sequence: 'Last,'.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "draft_locus": "Chapters ¶4 -> Where to Begin ¶1",
+      "finding": "Conclusion summary: the opening sentence gathers the chapters' cases ('The stale stock, the credit hold and the deduction').",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both readers describe problem -> company -> decision -> chapter map -> start, matching large_to_small with the chapters in the announced prerequisite order; neither marks any section unclear. Stops at 'order record', 'Eva's order' and 'Parts II to IV' concern terms the declared audience already knows from Parts I to IV and are not counted against the draft.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/2/evidence/0",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "Connectors should translate channel requirements while preserving ownership of prices, stock and orders: each promise sent out (stock, price and credit, pallet contents, the invoice) comes from its owner.",
+      "finding": "Both readers re-read ¶4: the 'one decision' sentence is abstract and the paragraph then switches from where orders are created to 'promise', a new term inside a parenthesis whose list does not match the ownership list before it, so the one decision reads as two (flow-A items 9-10).",
+      "fault": "draft",
+      "corroborated_by": "flow-B items 10-11: 'authoritative' is abstract and 'promise' appears for the first time as a term of art inside a parenthesis-heavy sentence, so the one decision seems to become two.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3/evidence/1-2",
+      "draft_locus": "Introduction ¶4 (Figures 2 and 3)",
+      "quote": "each promise sent out (stock, price and credit, pallet contents, the invoice) comes from its owner.",
+      "finding": "Figures 2 and 3 sit back to back with no prose between them, and their captions carry new points (strike, daily batches, events, every failure as a promise from the wrong system) the body has not made (flow-A item 11).",
+      "fault": "draft",
+      "corroborated_by": "flow-B items 12-13: Figure 2's caption says more than the paragraph it illustrates; Figures 2 and 3 back to back with dense captions, the second introducing 'strike'.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3 (controlling_idea: 'KEY POINTS bullet 3 adds that availability never waits on the ERP')",
+      "draft_locus": "Introduction callout (bullet 3)",
+      "quote": "so availability must never wait on a scheduled finance-system update.",
+      "finding": "The ERP-timing point is set up nowhere in the body: the bullet's clause jumps from outside parties to finance-system timing, and 'Finance can consume complete batches' in Chapters ¶4 arrives with no body sentence saying the ERP works in batches (flow-B item 6). The spec assigns the point to the callout only, after round 3 cut the body sentence.",
+      "fault": "spec",
+      "corroborated_by": "flow-A item 14: the body never says the ERP works in batches, so the contrast in 'Finance can consume complete batches while stock availability needs a faster route' arrives late.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
       "draft_locus": "Introduction ¶3",
-      "quote": "one fulfilled by the merchant, one by the marketplace",
-      "finding": "Marketplace fulfilment (the marketplace holding and shipping the merchant's stock) is not on the known list and is not explained. Terms reader only (flowA asked why the difference matters, a different point); minor.",
+      "quote": "The part's examples are routes for the same jacket: two Amazon.de orders on 13 April 2027;",
+      "finding": "The two Amazon.de orders and their date are announced as the part's examples but never used again on the page (flow-A item 7); flow-A item 6 also found 'someone else's system creates the order' clashes with the keyed orders of ¶2, which Kestrel & Pine's own staff create.",
       "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "standard",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/1",
-      "draft_locus": "Introduction ¶2",
-      "quote": "Keyed orders exist only in the ERP.",
-      "finding": "Both flow readers could not tell why the fact matters until p04 two paragraphs later and had to look back. The spec's evidence 'shows' gives the missing link (these orders exist outside the order record), which the draft omits; adding it keeps the declared order.",
-      "fault": "draft",
-      "corroborated_by": "flowA: 'This sentence states a fact without saying why it matters.'; flowB: 'At this point I could not tell why it mattered.'",
+      "corroborated_by": "flow-B item 14: the two Amazon.de orders announced as the example for this route are not tied to the marketplace chapter's incident.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
+      "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/3",
-      "draft_locus": "Introduction ¶4",
-      "quote": "The ERP takes orders in daily batches; no sale waits on it.",
-      "finding": "Both readers stalled here: flowA could not tell whether it describes today or states a rule; flowB found it a rule stated without a reason. The spec's how_why reason (the ERP changes on a finance cycle) is absent.",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Chapters in this part ¶1",
+      "quote": "a retired connector interface leaves one channel outdated for two days.",
+      "finding": "A new incident with no setup; readers could not tell what was retired or whether it is the Amazon.de story (flow-B item 14).",
       "fault": "draft",
-      "corroborated_by": "flowA: 'I could not tell whether \"The ERP takes orders in daily batches; no sale waits on it\" describes how things work today or states a rule.'; flowB: 'This is abrupt. It is a rule stated without a reason.'",
+      "corroborated_by": "flow-A item 12: 'retired connector interface' is vague; could not tell whether it means an API version the marketplace shut down.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
+      "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/3",
-      "draft_locus": "Introduction ¶4",
-      "quote": "Connectors should translate channel requirements while preserving ownership of prices, stock and orders",
-      "finding": "p04's rule sentences are too dense to take in one pass: flowA says the paragraph 'packs four claims together'; flowB 'read it twice'.",
-      "fault": "draft",
-      "corroborated_by": "flowA: 'This paragraph also packs four claims together'; flowB: '\"Connectors should translate ...\" is dense. I read it twice.'",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/3/evidence/2",
-      "draft_locus": "Introduction ¶4 and Figure 3",
-      "quote": "each promise sent out, from stock figures to invoices, comes from its owner",
-      "finding": "'promise' is known from earlier parts, but here it means the values sent to outside parties, and the text never lists the four; both readers had to wait for the Figure 3 caption to learn what the promises are (the intro reader also could not name them).",
-      "fault": "draft",
-      "corroborated_by": "flowA: 'Figure 3 names \"four promises\", but the text never counts or lists them.'; flowB: 'The word \"promise\" is new here and is not explained until the Figure 3 caption.'",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/0/paragraphs/3/evidence/0",
+      "spec_locus": "/sections/0/paragraphs/3",
       "draft_locus": "Chapters in this part ¶4",
-      "quote": "A connector that took three weeks to understand",
-      "finding": "Both readers could not tell which connector is meant or where the story comes from; the spec names it (the partner-built ERP connector), the draft does not.",
+      "quote": "The ERP partner's connector, which took three weeks to understand, illustrates the cost of undocumented ownership.",
+      "finding": "'The ERP partner' is referred to with a definite article but never introduced, so the case arrives without setup (flow-A item 13).",
       "fault": "draft",
-      "corroborated_by": "flowA: '\"A connector that took three weeks to understand\" come without any setup'; flowB: 'it is unclear which connector is meant.'",
+      "corroborated_by": "flow-B item 16: another new incident with no setup; 'the ERP partner' has not been mentioned.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/2/transition_in",
-      "draft_locus": "Introduction ¶3",
-      "quote": "Unlike in Parts II to IV, someone else's system creates the order",
-      "finding": "flowA read this as contradicting the previous paragraph, where staff key in 38% of orders themselves. One reader; minor.",
-      "fault": "draft",
-      "severity": "minor"
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Terms readers flagged that the audience already knows (order record, connector, ERP, EDI, Eva's order, Parts II to IV, system of record behind 'authoritative') pass; does_not_know items are handled as the spec says: despatch advice glossed as shipment notices, e-invoicing mandates and seller performance only named; strike and chargeback glossed at first use. 'Technical contract' (flow-B only) is left to the chapter.",
+      "severity": "major"
     },
     {
-      "criterion": "standard",
-      "check": "flow_is_followable",
+      "criterion": "known_before_new",
+      "check": "known_before_new",
       "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/3/transition_in",
-      "draft_locus": "Introduction ¶4",
-      "quote": "The keyed orders and the opening's penalties come from one decision",
-      "finding": "flowA had to re-read to find what 'the opening's penalties' referred to (p01 says 'deductions or delayed payment'). One reader; minor.",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "standard",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/2/evidence/0",
-      "draft_locus": "Introduction ¶3",
-      "quote": "one fulfilled by the merchant, one by the marketplace",
-      "finding": "flowA could not tell why the difference between the two Amazon.de orders matters. One reader; minor.",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "standard",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/0/paragraphs/0/evidence/0",
-      "draft_locus": "Chapters in this part ¶1",
-      "quote": "a retired interface leaves one channel outdated for two days",
-      "finding": "flowA read it as a reference to a story not yet seen. One reader; minor.",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "standard",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/3/evidence/0",
-      "draft_locus": "KEY POINTS callout (bullet 3)",
-      "quote": "so availability must never wait on a scheduled finance-system update",
-      "finding": "flowA: the key point about the finance-system update comes before the page introduces the ERP (the ERP is known from Part I, but this callout line is not tied to it). One reader; minor.",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "standard",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/3/evidence/1",
-      "draft_locus": "Figure 2 caption vs KEY POINTS",
+      "spec_locus": "/intent/audience/already_knows (EDI)",
+      "draft_locus": "Introduction callout (bullets 1-2)",
       "quote": "Connectors and electronic document providers carry facts between owners",
-      "finding": "flowB noticed the Figure 2 caption counts three intermediaries including the B2B portal while the key points name only connectors and document providers. One reader; minor.",
+      "finding": "'Electronic document providers' and 'electronic trading-partner orders' are new names for EDI providers and EDI orders, used before ¶3 introduces 'electronic data interchange (EDI) provider'; the audience knows EDI but not these names, and nothing links them (flow-A item 17).",
       "fault": "draft",
-      "severity": "minor"
+      "corroborated_by": "flow-B items 18-19: 'electronic document providers' is presumably the EDI provider introduced later, but the names differ.",
+      "severity": "major"
     },
     {
-      "criterion": "standard",
+      "criterion": "no_weak_introduction_pattern",
       "check": "no_weak_introduction_pattern",
       "verdict": "pass",
-      "finding": "Opens on a puzzling scenario (one jacket, three channels, penalties), not a placeholder, restated question, definition, 'dawn of man' or book report.",
+      "finding": "The introduction opens on a puzzling scenario (the same jacket ending in penalties or deductions), not a placeholder, restated question, definition or book report.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
+      "criterion": "no_weak_conclusion_pattern",
       "check": "no_weak_conclusion_pattern",
       "verdict": "pass",
-      "finding": "Does not open with 'in conclusion', adds no new idea or evidence, and does not end on the thesis alone: it ends with a course of action ('Begin with ...').",
+      "finding": "The closing names the chapters' cases and their shared cause and gives a course of action; no 'in conclusion', new idea, bare thesis restatement or body evidence.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
       "check": "conclusion_synthesizes_and_answers_so_what",
       "verdict": "pass",
-      "finding": "States, of all four chapters' cases at once, that the penalties are orders outside the order record or promises from the wrong system, which no chapter paragraph says, and turns it into where to start; the so-what is implicit but present (the cause is placement, not more channels). See the conclusion transition failure for the missing tie to the chapters' cases.",
+      "finding": "'The stale stock, the credit hold and the deduction began as orders outside the order record or promises from the wrong system' synthesizes across chapters, and 'Begin with' gives the action; the so-what (not more channels or tools) is implied rather than stated.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
+      "criterion": "conclusion_calls_back_to_introduction",
       "check": "conclusion_calls_back_to_introduction",
       "verdict": "pass",
-      "finding": "'The opening's penalties' returns to p01's penalties and deductions and names their cause, as callback.how declares.",
+      "finding": "The closing names the cause of the penalties and deductions set up in p01 ('the deduction' echoes the chain's pallet-label deduction); the callback is implicit, as it does not name the opening's jacket.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
+      "criterion": "intro_predicts_content",
       "check": "intro_predicts_content",
       "verdict": "pass",
-      "finding": "The intro reader predicted the chapter order exactly (marketplaces, business buyers, trading-partner documents, ERP), the evidence (fictional Kestrel & Pine numbers and jacket routes, diagrams) and the tone. Minor gap: could not tell where e-invoicing mandates sit, nor name the four promises.",
+      "finding": "The intro reader predicted the four chapters in the roadmap's order (marketplaces, business buyers, trading-partner documents/EDI, then the ERP), matching the roadmap promise kept in 'chapters'.",
       "severity": "major"
     },
     {
       "criterion": "AC-1",
       "check": "intro_predicts_content",
       "verdict": "pass",
-      "finding": "ac1 names all four chapters in order with the expected subjects: listings, imported orders, allocation, seller performance; accounts, negotiated prices, terms, credit limits; structured orders, despatch advices, invoices and dated e-invoicing mandates; the ERP's financial and purchasing role with complete batches for finance and a faster route for stock.",
+      "finding": "The cold reader named the four chapters' subjects in reading order; the finer chapter details in 'expected' sit in the chapter paragraphs, which this reader (introduction only) did not see.",
       "severity": "major"
     },
     {
       "criterion": "AC-2",
       "check": "custom",
       "verdict": "pass",
-      "finding": "ac2 gives the outside parties' non-negotiated rules (marketplace grading and penalties, chain labels/notices/invoices and chargebacks) and the decision (where each order becomes authoritative; one order record; connectors translate, each value from its owner). It omits mandates' legal dates, which the probe (marketplace or chain) did not ask for.",
+      "finding": "The reader gives the outside parties' non-negotiated rules (scorecard and late-dispatch penalties, pallet labels and chargebacks) and the decision of where each order becomes authoritative, with connectors translating and each promise from its owner; omitting the mandates' legal dates is immaterial to the probe.",
       "severity": "minor"
     }
   ]

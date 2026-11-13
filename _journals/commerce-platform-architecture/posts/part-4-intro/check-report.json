@@ -1,70 +1,70 @@
 {
   "spec": "_journals/commerce-platform-architecture/posts/part-4-intro/spec.json",
   "draft": "_journals/commerce-platform-architecture/posts/part-4-intro/index.md",
-  "spec_sha": "d310599d930fc9d0",
-  "draft_sha": "e405d994eef52d9f",
-  "run_at": "2026-11-12T22:07:57+01:00",
-  "round": 3,
+  "spec_sha": "ed0babe05895ff4b",
+  "draft_sha": "eb3d9511600507c1",
+  "run_at": "2026-11-13T12:26:00+01:00",
+  "round": 5,
   "verdict": "escalate",
   "reverse_outline": [
     {
       "draft_locator": "Introduction callout",
-      "summary": "Three takeaways: physical systems own their facts; promises must be computed from real inputs; each fact and view has a single source",
+      "summary": "Three takeaways: physical systems own their facts, promises are computed from inputs, one writer per fact and one source per view",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction ¶1",
-      "summary": "Fast checkout still depends on slower physical picking, packing and collection that can delay delivery",
+      "summary": "Physical fulfilment work after checkout decides whether delivery happens on time",
       "matched_spec_paragraph": "p01"
     },
     {
       "draft_locator": "Introduction ¶2",
-      "summary": "Timeline of Eva's jacket order: late delivery, then a size exchange",
+      "summary": "Timeline of Eva's jacket order: late delivery and size exchange",
       "matched_spec_paragraph": "p02"
     },
     {
       "draft_locator": "Introduction ¶3",
-      "summary": "Kestrel & Pine introduced with the scale of its fulfillment operations",
+      "summary": "Kestrel & Pine introduced with its fulfilment volumes and channels",
       "matched_spec_paragraph": "p03"
     },
     {
       "draft_locator": "Introduction ¶4",
-      "summary": "Waypoint's three rules: single writer per fact, promises computed from its events, shared order record for all views",
+      "summary": "Waypoint's three rules: single writer per fact, promises computed from its events, all views read one order record",
       "matched_spec_paragraph": "p04"
     },
     {
       "draft_locator": "Introduction ¶5",
-      "summary": "Roadmap: chapters trace the parcel out and back",
+      "summary": "Roadmap of the part following Eva's parcel out and back",
       "matched_spec_paragraph": "p05"
     },
     {
       "draft_locator": "Chapters in this part ¶1",
-      "summary": "Warehouse chapter: order-to-warehouse handoff, illustrated by a Black Friday backlog that never reached the floor",
+      "summary": "Warehouse chapter: order-management/warehouse contract and the Black Friday backlog incident",
       "matched_spec_paragraph": "p06"
     },
     {
       "draft_locator": "Chapters in this part ¶2",
-      "summary": "Shipping chapter: delivery dates must be computed from cut-offs, backlog and carrier data, not a fixed rule",
+      "summary": "Shipping chapter: carrier integration and delivery dates computed from real inputs, not a fixed rule",
       "matched_spec_paragraph": "p07"
     },
     {
       "draft_locator": "Chapters in this part ¶3",
-      "summary": "Stores chapter: tills as order and stock sources, shown by a click-and-collect trial selling phantom stock",
+      "summary": "Stores chapter: till as a data source and the Utrecht store-stock incident",
       "matched_spec_paragraph": "p08"
     },
     {
       "draft_locator": "Chapters in this part ¶4",
-      "summary": "Returns chapter: separate states and owners for request, inspection, restock and refund, shown by double refunds",
+      "summary": "Returns chapter: separate states and owners for return steps, shown by the double refunds",
       "matched_spec_paragraph": "p09"
     },
     {
       "draft_locator": "Chapters in this part ¶5",
-      "summary": "Customer service chapter: aligning all status views, shown by a split-shipment order generating tickets",
+      "summary": "Customer service chapter: aligning messages, status page and support view after the three-status order",
       "matched_spec_paragraph": "p10"
     },
     {
       "draft_locator": "Where to Begin ¶1",
-      "summary": "Common diagnosis that promises came from the wrong source, plus a pointer to start with the warehouse chapter",
+      "summary": "Closing: failures came from promises made without inputs; start with the warehouse chapter",
       "matched_spec_paragraph": "p11"
     }
   ],
@@ -77,709 +77,204 @@
       "finding": "sections, unit counts and unit forms match the spec"
     },
     {
-      "criterion": "standard",
+      "criterion": "reverse_outline_matches_spec",
       "check": "reverse_outline_matches_spec",
       "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/0",
-      "draft_locus": "Introduction ¶1",
-      "finding": "Outline (fast checkout vs slower picking, packing and collection that can delay delivery) matches the controlling idea.",
+      "finding": "All eleven summaries match their aligned spec paragraphs' controlling ideas in the same order; the callout is the KEY POINTS evidence of p04. Small drift only: the p08 summary omits the alternative routes and the p09 summary omits that refund and restock wait for inspection.",
       "severity": "blocker"
     },
     {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/1",
-      "draft_locus": "Introduction ¶2",
-      "finding": "Outline (Eva's timeline: late delivery, then size exchange) matches.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/2",
-      "draft_locus": "Introduction ¶3",
-      "finding": "Outline (Kestrel & Pine with the scale of its fulfillment) matches.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/3",
-      "draft_locus": "Introduction ¶4",
-      "finding": "Outline (Waypoint's three rules: single writer, promises from its events, one shared record) matches.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/4",
-      "draft_locus": "Introduction ¶5",
-      "finding": "Outline (roadmap: chapters trace the parcel out and back) matches.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/0",
-      "draft_locus": "Chapters in this part ¶1",
-      "finding": "Outline (warehouse chapter: order-to-warehouse handoff, Black Friday backlog) matches.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/1",
-      "draft_locus": "Chapters in this part ¶2",
-      "finding": "Outline (shipping chapter: dates computed from cut-offs, backlog, carrier data, not a fixed rule) matches.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/2",
-      "draft_locus": "Chapters in this part ¶3",
-      "finding": "Outline (stores chapter: till as order and stock source, phantom stock in collection trial) matches.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/3",
-      "draft_locus": "Chapters in this part ¶4",
-      "finding": "Outline (returns chapter: separate states and owners, double refunds) matches.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/4",
-      "draft_locus": "Chapters in this part ¶5",
-      "finding": "Outline (service chapter: aligned status views, split-shipment tickets) matches.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/conclusion/paragraphs/0",
-      "draft_locus": "Where to Begin ¶1",
-      "finding": "Outline (promises came from the wrong source; start with the warehouse chapter) matches the synthesis and takeaway.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
+      "criterion": "one_controlling_idea_per_paragraph",
       "check": "one_controlling_idea_per_paragraph",
       "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/3/evidence/0",
-      "draft_locus": "Introduction callout",
-      "finding": "The outliner marked the KEY POINTS callout as two ideas; it is the house-format three-bullet summary of the thesis, declared as evidence of p04, not a prose paragraph, so three takeaways are its intended form.",
+      "finding": "The outliner marked no unit as carrying two ideas; the three-bullet KEY POINTS callout is the shape the house style requires.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
-      "check": "one_controlling_idea_per_paragraph",
-      "verdict": "pass",
-      "spec_locus": "/conclusion/paragraphs/0",
-      "draft_locus": "Where to Begin ¶1",
-      "finding": "The outliner marked diagnosis plus pointer as two ideas; the spec's p11 controlling idea and the conclusion's synthesis and course_of_action takeaway declare exactly this pair for the one closing unit, and the pointer follows from the diagnosis.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
+      "criterion": "paragraph_traces_to_thesis",
       "check": "paragraph_traces_to_thesis",
       "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/0",
-      "draft_locus": "Introduction ¶1",
-      "finding": "Example paragraph; traces through the thesis's how_why (promise in seconds, physical work later) that p04 states.",
+      "finding": "¶1-¶3 set up the gap and scenario the thesis answers, ¶4 states P4-1, P4-3/P4-4 and P4-5 as three rules, and each chapter paragraph introduces the chapter carrying its declared claims; P4-2's keyed accept-or-reject instruction is only named (as 'the work instruction and response'), as the spec allows.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/1",
-      "draft_locus": "Introduction ¶2",
-      "finding": "Example paragraph; Eva's order passes the warehouse, carrier and returns bench whose facts the claim (P4-1, P4-3, P4-4) concerns.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/2",
-      "draft_locus": "Introduction ¶3",
-      "finding": "Context paragraph; names the places (warehouse, carriers, stores, returns) that P4-1 assigns as witnesses.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/3",
-      "draft_locus": "Introduction ¶4",
-      "finding": "Claim paragraph; states P4-1 (only writer), P4-3/P4-4 (promise computed from the writer's events, refund waits for the bench) and P4-5 (one order record). P4-2 is not stated, a gap the decision log records for length.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/4",
-      "draft_locus": "Introduction ¶5",
-      "finding": "Transition paragraph; orders the chapters that argue P4-1 to P4-5.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/0",
-      "draft_locus": "Chapters in this part ¶1",
-      "finding": "Traces to P4-2 (work instruction and response) and P4-3 (backlog); P4-1 implicit.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/1",
-      "draft_locus": "Chapters in this part ¶2",
-      "finding": "Traces to P4-3: the promise must read collection schedules, backlog, location and carrier performance.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/2",
-      "draft_locus": "Chapters in this part ¶3",
-      "finding": "Traces to P4-1: the till as another source (witness) of stock; P4-3's staff confirmation is not stated but the paragraph still serves P4-1.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/3",
-      "draft_locus": "Chapters in this part ¶4",
-      "finding": "Traces to P4-4: refund and restock wait for inspection, one system issues refunds.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/4",
-      "draft_locus": "Chapters in this part ¶5",
-      "finding": "Traces to P4-5: messages, status page and support view aligned on one status.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/conclusion/paragraphs/0",
-      "draft_locus": "Where to Begin ¶1",
-      "finding": "Synthesis paragraph; restates the thesis ('each promise came from the wrong place').",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
+      "criterion": "evidence_is_explained",
       "check": "evidence_is_explained",
       "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/0/evidence/0",
-      "draft_locus": "Introduction ¶1",
-      "finding": "The seconds-versus-picking contrast and the day's slip are stated and their consequence given.",
+      "finding": "Each case is followed or framed by what it shows ('shows why a warehouse can have spare picking capacity...', 'show why each action needs its own state...', 'drew eleven tickets because...'); the volumes are framed as 'makes such promises at scale'. The Store Stock Mirage is the thinnest: what it shows (a promise read from a copy, not the till) is left implicit, but the surrounding sentences draw the data lesson.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/1/evidence/0",
-      "draft_locus": "Introduction ¶2",
-      "finding": "Eva's timeline is framed as 'this sequence' of the physical work; the day-late delivery is stated (its cause is deferred to Chapters ¶2, see flow results).",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/1/evidence/1",
-      "draft_locus": "Introduction ¶2",
-      "finding": "Figure 1's caption matches the timeline in the text (packed 14 April, delivered 15 April in Nijmegen, size L 19 April, exchange 22 April).",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/2/evidence/0",
-      "draft_locus": "Introduction ¶3",
-      "finding": "The volumes are explained as 'makes such promises at scale'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/3/evidence/0",
-      "draft_locus": "Introduction callout",
-      "finding": "The KEY POINTS bullets do not map onto the body's three rules: bullet 3 merges rule 1 (one writer) and rule 3 (one record), while the body's rule 2 carries the refund clause; 'stock that rises only on the warehouse's verdict' and 'every incident in this part is a promise made without its inputs' are not backed in the body. Both flow readers (A7, B7) could not map bullets to rules. The spec's own p04 grouping differs from the callout it cites as evidence.",
-      "quote": "One writer per fact, one source per view.",
-      "fault": "spec",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/3/evidence/1",
-      "draft_locus": "Introduction ¶5 (Figure 2)",
-      "finding": "Figure 2's caption explains the systems picture (order record instructs, physical facts return as events to the one record read by notifications, status page and support agent). Note: the figure sits after the roadmap (¶5), not beside the rules (¶4) as the spec's evidence placement implies; readers still tied it to the rules.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/0/evidence/0",
-      "draft_locus": "Chapters in this part ¶1",
-      "finding": "The Queue That Waited is explained: spare picking capacity while orders never reached the warehouse.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/1/evidence/0",
-      "draft_locus": "Chapters in this part ¶2",
-      "finding": "Eva's case is explained: a fixed storefront rule ignored the missed 21:00 batch; the AC-2 reader reconstructed it. The rule itself is not quoted (see known_before_new).",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/2/evidence/0",
-      "draft_locus": "Chapters in this part ¶3",
-      "finding": "The Store Stock Mirage is stated next to the till as the source of stock, so the reader can see the promise did not read the till; the link is implicit but no reader missed it.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/3/evidence/0",
-      "draft_locus": "Chapters in this part ¶4",
-      "finding": "Eva's exchange and the Double Refund are said to show why each action needs its own state and owner.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/3/evidence/1",
-      "draft_locus": "Chapters in this part ¶4",
-      "finding": "'Refund and restock wait for inspection, and one system issues refunds' is stated.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/4/evidence/0",
-      "draft_locus": "Chapters in this part ¶5",
-      "finding": "Eleven tickets explained by no system being able to say the order ships in two parcels.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "fail",
-      "spec_locus": "/sections/0/paragraphs/4/evidence/1",
-      "draft_locus": "Chapters in this part ¶5 (Figure 3)",
-      "finding": "Figure 3's caption introduces a 'four promises' frame the prose never sets up, and lists incidents in an order that pairs by position with promises that do not fit the text ('delivered tomorrow' with the Queue That Waited although the text ties the delivery-date promise to Eva; 'your order was delivered' with the Three-Status Order, a split-shipment problem). Both flow readers had to work the pairing out and the terms reader could not reconstruct it.",
-      "quote": "the Queue That Waited, the Store Stock Mirage, the Three-Status Order and the Double Refund are the four made without them",
-      "fault": "draft",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
+      "criterion": "transition_expresses_declared_relationship",
       "check": "transition_expresses_declared_relationship",
       "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/1/transition_in",
-      "draft_locus": "Introduction ¶1 → ¶2",
-      "finding": "'Eva's jacket order shows this sequence' expresses example.",
+      "finding": "p02 'Eva's jacket order shows this sequence' (example), p03 'Eva bought from' (elaboration), p04 'At each step ... draws three rules from this' (cause_effect), p05 'The chapters follow Eva's parcel' (sequence; also the section's end_of_previous elaboration), p07 'Then', p08 'Off Eva's route' (contrast), p09 'On the way back', p10 'Last', and the closing's summary sentence all express their declared relationships. p10's 'Last' gives the sequence but not its declared carry-over (the events of the earlier chapters), which flow-A noted the reader must infer.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/2/transition_in",
-      "draft_locus": "Introduction ¶2 → ¶3",
-      "finding": "'Eva bought from Kestrel & Pine' expresses elaboration of her order.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/3/transition_in",
-      "draft_locus": "Introduction ¶3 → ¶4",
-      "finding": "'At each step a system on the spot knows the facts first ... draws three rules from this' expresses cause_effect (flow reader B found it abstract; see flow results).",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/4/transition_in",
-      "draft_locus": "Introduction ¶4 → ¶5",
-      "finding": "'The chapters follow Eva's parcel out and back' expresses sequence; it gives the order of the places, though it does not refer back to the rules explicitly.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/transition_in",
-      "draft_locus": "Introduction ¶5 → Chapters in this part",
-      "finding": "The roadmap sentence at the end of the introduction announces the five places the section elaborates one by one.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/1/transition_in",
-      "draft_locus": "Chapters in this part ¶1 → ¶2",
-      "finding": "'Then' expresses sequence from warehouse to carrier.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/2/transition_in",
-      "draft_locus": "Chapters in this part ¶2 → ¶3",
-      "finding": "'Off Eva's route' expresses contrast with the parcel route.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/3/transition_in",
-      "draft_locus": "Chapters in this part ¶3 → ¶4",
-      "finding": "'On the way back' expresses sequence to the return.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/4/transition_in",
-      "draft_locus": "Chapters in this part ¶4 → ¶5",
-      "finding": "'Last' expresses sequence to the status chapter.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "spec_locus": "/conclusion/transition_in",
-      "draft_locus": "Chapters in this part ¶5 → Where to Begin ¶1",
-      "finding": "'None of these cases needed faster work; each promise came from the wrong place' sums up the cases (conclusion_summary).",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
+      "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "pass",
-      "spec_locus": "/flow",
-      "draft_locus": "whole page",
-      "finding": "Both flow readers describe the same organising principle as declared: hook, one case (Eva), company, rules, roadmap, chapters in the parcel's order (stores as a side branch), where to begin; both call the page easy to follow and keep the order; no section was unclear to both.",
+      "finding": "Both readers found the page easy to follow and describe the declared organisation (problem, example, company, rules, roadmap, then chapters in the order of Eva's parcel out and back, stores as a side trip); no section's position is unclear. Undefined 'order record', 'Waypoint' and the incident names, flagged by both, are in audience.already_knows (Parts I to III) and are not counted as lost-thread points; failures follow as separate results.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/3",
-      "draft_locus": "Introduction ¶4",
-      "finding": "Flow A (item 7): the three-rules paragraph is hard to count; the second rule carries two ideas (computed promise and refund waiting for the bench), the refund clause reads as an example of rule one, and the rules do not line up with the KEY POINTS bullets.",
-      "quote": "A promise such as a delivery date is computed from that writer's events, and a refund waits for the returns bench, where returns are inspected.",
-      "fault": "spec",
-      "corroborated_by": "flowB item 7",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/4",
-      "draft_locus": "Introduction ¶5",
-      "finding": "Flow A (item 8): the roadmap claims the chapters follow Eva's parcel, yet lists stores as a leg, which the chapter list then calls 'Off Eva's route'.",
-      "quote": "The chapters follow Eva's parcel out and back: warehouse, carrier and delivery date, stores, return and refund, and the status the customer sees.",
-      "fault": "spec",
-      "corroborated_by": "flowB item 10",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
+      "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
       "spec_locus": "/sections/0/paragraphs/4/evidence/1",
-      "draft_locus": "Chapters in this part ¶5 (Figure 3)",
-      "finding": "Flow A (item 9): Figure 3's 'four promises' appear for the first time, the incidents are in a different order from the chapters, and the positional pairing ('delivered tomorrow' with the Queue That Waited) contradicts the text; flow B called this the place it lost the thread most.",
-      "quote": "The four promises of Part IV",
-      "fault": "draft",
-      "corroborated_by": "flowB item 13",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/0/paragraphs/0",
-      "draft_locus": "Chapters in this part ¶1",
-      "finding": "Flow A (item 10): KEY POINTS says every incident is a promise made without its inputs, but the chapter list describes the Queue That Waited as a backlog of orders that never reached the warehouse, not as a promise; the reader must supply the promise. Flow B (item 13) reports the same for the Queue That Waited.",
-      "quote": "The Queue That Waited, a four-hour Black Friday backlog, shows why a warehouse can have spare picking capacity while customers wait for orders that never reached it.",
-      "fault": "unclear",
-      "corroborated_by": "flowB item 13",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/0/paragraphs/4",
-      "draft_locus": "Chapters in this part ¶5",
-      "finding": "Flow A (item 11): 'it' has no clear referent; it took a moment to see it means the order.",
-      "quote": "no system could say that it ships in two parcels",
-      "fault": "draft",
-      "corroborated_by": "flowB item 12",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/1",
-      "draft_locus": "Introduction ¶2",
-      "finding": "Flow A (item 6): Duiven is called 'the warehouse' before the reader is told whose warehouse it is; the seller is named only in the next paragraph. Flow B (item 9) mentions the company-after-Eva order only as optional and not a problem, so this is not counted as corroborated.",
-      "quote": "Duiven, the warehouse, picks and packs on 14 April",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "standard",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/1",
-      "draft_locus": "Introduction ¶2",
-      "finding": "Flow B (item 6): the paragraph gives the 21:14 order time and the day-late delivery but not why; the reader searched for the cause, which only appears in the shipping entry three paragraphs later. No forward pointer.",
-      "quote": "PostNL delivers on Thursday 15 April, a day late.",
+      "draft_locus": "Chapters in this part ¶5 (Figure 3 caption)",
+      "quote": "Last, [[customer-service-and-notifications]] aligns **messages, the status page and the support view**.",
+      "finding": "Both readers re-read Figure 3's caption because it lists the Three-Status Order before the Double Refund while the chapters put returns before service (flow-A item 12: 'The incident order here (Three-Status before Double Refund) differs from the chapter order'). The order is fixed by the spec's Figure 3 evidence.",
       "fault": "spec",
-      "severity": "minor"
+      "corroborated_by": "flow-B item 5: 'The chapters present the Double Refund before the Three-Status Order, but the caption swaps them.'",
+      "severity": "major"
     },
     {
-      "criterion": "standard",
+      "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/3",
-      "draft_locus": "Introduction ¶4",
-      "finding": "Flow B (item 8): after the company figures, 'At each step' is abstract; the reader had to go back to Eva's timeline to supply the steps.",
-      "quote": "At each step a system on the spot knows the facts first.",
-      "fault": "draft",
-      "severity": "minor"
+      "spec_locus": "/sections/0/paragraphs/4/evidence/1",
+      "draft_locus": "Chapters in this part ¶5 (Figure 3 caption)",
+      "quote": "Last, [[customer-service-and-notifications]] aligns **messages, the status page and the support view**.",
+      "finding": "Both readers could not reconcile Figure 3's four promises with five chapters, nor its pairing of 'delivered tomorrow' with the Queue That Waited (the text tied that promise to Eva and shipping) and 'your order was delivered' with the Three-Status Order (described as a two-parcel problem). The count and pairing are declared in the spec.",
+      "fault": "spec",
+      "corroborated_by": "flow-B item 5: 'The caption pairs \"delivered tomorrow\" with the Queue That Waited ... There are five chapters and four promises'",
+      "severity": "major"
     },
     {
-      "criterion": "standard",
+      "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/conclusion/paragraphs/0",
+      "spec_locus": "/conclusion/synthesis",
       "draft_locus": "Where to Begin ¶1",
-      "finding": "Flow A (item 12): 'faster work' contrasts with something the page never raised. (Flow B item 14 found 'faster work' follows on and objects instead to the wording 'wrong place'; the two readers disagree, so not corroborated.)",
       "quote": "None of these cases needed faster work",
+      "finding": "Both readers met 'faster work' as a new contrast nothing earlier sets up (flow-A item 13: 'None needed faster work is a new claim'). The spec's synthesis sets the cases against faster work, but no earlier unit is assigned to state the disputed view, so the prose cannot prepare it within the spec.",
       "fault": "spec",
-      "severity": "minor"
+      "corroborated_by": "flow-B item 10: '\"Faster work\" is a new contrast that nothing earlier sets up.'",
+      "severity": "major"
     },
     {
-      "criterion": "standard",
+      "criterion": "flow_is_followable",
       "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/conclusion/paragraphs/0",
-      "draft_locus": "Where to Begin ¶1",
-      "finding": "Flow B (item 14): 'came from the wrong place' is new wording for what KEY POINTS and Figure 3 call 'made without its inputs'; the reader had to check they meant the same. (Flow A item 12 found this phrase works.)",
-      "quote": "each promise came from the wrong place",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "standard",
-      "check": "known_before_new",
-      "verdict": "pass",
-      "spec_locus": "/intent/audience",
-      "draft_locus": "whole page",
-      "finding": "Known or glossed: system of record, single writer, events, order record, Waypoint and Kestrel & Pine (already_knows), returns bench (does_not_know, glossed in ¶4 'where returns are inspected'), Duiven, backlog (given by the Black Friday case), the incident names except the Three-Status Order, status page, messages and 'keyed by the return' (idempotency is known).",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/intent/audience/does_not_know/1",
-      "draft_locus": "Introduction callout",
-      "finding": "'pick wave' is on does_not_know and is never given; the body says 'picking batch' without linking the two (terms reader item 1).",
-      "quote": "“Delivered tomorrow” needs the pick wave, the backlog and the carrier's transit time",
-      "fault": "draft",
-      "corroborated_by": "audience.does_not_know[1] (never given)",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/intent/audience/does_not_know/2",
-      "draft_locus": "Chapters in this part ¶1",
-      "finding": "'the work instruction and response' is on does_not_know and is named but never glossed; it is the first chapter's subject (terms reader item 4). The spec chose to name it only (decision log, length).",
-      "quote": "the work instruction and response between order management and the warehouse",
-      "fault": "spec",
-      "corroborated_by": "audience.does_not_know[2] (never given)",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/3/evidence/0",
-      "draft_locus": "Introduction callout",
-      "finding": "'the warehouse's verdict' (the disposition) is used before the body says what it is; the reader must infer it from 'Refund and restock wait for inspection' (terms reader item 8).",
-      "quote": "stock that rises only on the warehouse's verdict",
-      "fault": "draft",
-      "corroborated_by": "flowA item 13",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "known_before_new",
       "verdict": "fail",
       "spec_locus": "/sections/0/paragraphs/4",
       "draft_locus": "Chapters in this part ¶5",
-      "finding": "'The Three-Status Order' is not explained and clashes with the known 'three status lines' (terms reader item 13).",
-      "quote": "The Three-Status Order drew eleven tickets",
+      "quote": "The Three-Status Order drew eleven tickets because no system could say the order ships in two parcels.",
+      "finding": "Both readers could not connect the name 'Three-Status Order' to the given cause (two parcels) and had to guess that three screens showed three statuses (flow-A item 11). A few words saying three systems showed three different statuses would close it.",
       "fault": "draft",
-      "corroborated_by": "flowB item 12",
+      "corroborated_by": "flow-B item 19: 'The Three-Status Order: the name is never explained ... The text gives only the two-parcel cause.'",
       "severity": "major"
     },
     {
-      "criterion": "standard",
-      "check": "known_before_new",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "The system that knows a fact is its only writer: for returns, the warehouse's returns bench, where items are inspected.",
+      "finding": "flow-B paused because the only example of the one-writer rule jumps to returns while the text had been walking the parcel outward. The returns-bench example is the spec's choice for p04 (single reader, minor).",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
       "spec_locus": "/introduction/paragraphs/0",
       "draft_locus": "Introduction ¶1",
-      "finding": "'collection' is used for both the carrier's pickup and customer collection in store, unglossed, in adjacent sentences; 'Collection schedules' in Chapters ¶2 is ambiguous (terms reader item 3).",
-      "quote": "before the carrier's collection",
+      "quote": "Returns and store collections depend on the same work.",
+      "finding": "flow-A re-read to separate 'store collections' (customers collecting in store) from 'the carrier's collection' in the sentence before (single reader, minor).",
       "fault": "draft",
       "severity": "minor"
     },
     {
-      "criterion": "standard",
-      "check": "known_before_new",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/0/paragraphs/1",
-      "draft_locus": "Chapters in this part ¶2",
-      "finding": "'fixed storefront rule' is not stated, so the reader cannot see what the rule promised (terms reader item 11; the AC-2 reader raised the same doubt, but is not a flow reader).",
-      "quote": "a fixed storefront rule",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Chapters in this part ¶1",
+      "quote": "The Queue That Waited, a four-hour Black Friday backlog, shows why a warehouse can have spare picking capacity while customers wait for orders that never reached it.",
+      "finding": "flow-B re-read to reconcile a backlog with spare capacity; that the queue sat before the warehouse, not in it, is implied but not stated (single reader, minor).",
       "fault": "draft",
       "severity": "minor"
     },
     {
-      "criterion": "standard",
-      "check": "known_before_new",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/0/paragraphs/1",
-      "draft_locus": "Chapters in this part ¶2",
-      "finding": "'location' is ambiguous: customer address, warehouse or store (terms reader item 12; also raised by the AC-2 reader).",
-      "quote": "Collection schedules, backlog, location and carrier performance",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Chapters in this part ¶3",
+      "quote": "Store pickup and counter exchange provide alternative routes.",
+      "finding": "flow-B could not tell what these are alternative routes for (single reader, minor).",
       "fault": "draft",
       "severity": "minor"
     },
     {
-      "criterion": "standard",
-      "check": "known_before_new",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
       "spec_locus": "/sections/0/paragraphs/3",
       "draft_locus": "Chapters in this part ¶4",
-      "finding": "'authorized owner' is vague next to the known 'single writer'; the reader cannot tell if it is the same idea (terms reader item 10).",
-      "quote": "its own state and authorized owner",
+      "quote": "Eva's size exchange and January 2027's 212 double refunds (the Double Refund) show why each action needs its own state and authorized owner.",
+      "finding": "flow-A found this sentence dense: four steps, two cases and two requirements in one sentence (single reader, minor).",
       "fault": "draft",
       "severity": "minor"
     },
     {
-      "criterion": "standard",
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "The three does_not_know terms are handled as the spec allows: the returns bench is glossed ('where items are inspected'), the pick wave is glossed in ¶2 of the chapters ('the 21:00 picking batch') and the KEY POINTS uses the plain 'picking batch', and 'the work instruction and response' is only named. Terms both readers flagged (order record, order management, Waypoint, writer, keyed, incident names) are in already_knows from Parts I to III.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
       "check": "no_weak_introduction_pattern",
       "verdict": "pass",
-      "spec_locus": "/introduction",
-      "draft_locus": "Introduction ¶1",
-      "finding": "Opens on a puzzling scenario (seconds-fast checkout against a day's slip), not on a scope statement, definition or 'this part explains'.",
+      "finding": "The introduction opens on a concrete puzzling scenario (seconds at checkout against a day's slip) and a dated worked order; no placeholder, restated question, definition or book-report opening.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
+      "criterion": "no_weak_conclusion_pattern",
       "check": "no_weak_conclusion_pattern",
       "verdict": "pass",
-      "spec_locus": "/conclusion",
-      "draft_locus": "Where to Begin ¶1",
-      "finding": "No weak pattern: not a bare summary, apology or new topic; it synthesizes the cases and gives a course of action.",
+      "finding": "The closing applies the KEY POINTS diagnosis to every case including the opening's late delivery and gives a course of action; it is not a bare rephrased thesis, grab bag or 'in conclusion'. Its 'faster work' contrast is recorded under flow_is_followable.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
       "check": "conclusion_synthesizes_and_answers_so_what",
       "verdict": "pass",
-      "spec_locus": "/conclusion",
-      "draft_locus": "Where to Begin ¶1",
-      "finding": "Synthesis ('none needed faster work; each promise came from the wrong place') says what no chapter paragraph says of all cases, and the so-what (fix where promises read facts; start at the warehouse) follows.",
+      "finding": "'each promise, like the opening's late delivery, was made without its inputs' synthesizes the cases, and 'Begin with [[warehouse-and-fulfillment]], where Eva's paid order reaches Duiven' gives the so-what and takeaway.",
       "severity": "major"
     },
     {
-      "criterion": "standard",
+      "criterion": "conclusion_calls_back_to_introduction",
       "check": "conclusion_calls_back_to_introduction",
       "verdict": "pass",
-      "spec_locus": "/conclusion/callback",
-      "draft_locus": "Where to Begin ¶1",
-      "finding": "'as did the opening's late delivery' and 'Eva's paid order reaches Duiven' call back to ¶1–¶2.",
+      "finding": "'like the opening's late delivery' calls back to ¶1's day-slip and Eva's day-late delivery in ¶2, naming it as one more promise made without its inputs.",
+      "severity": "major"
+    },
+    {
+      "criterion": "intro_predicts_content",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted the roadmap exactly: warehouse, carrier and delivery date, a side trip to the stores, return and refund, and the status the customer sees, in that order.",
       "severity": "major"
     },
     {
       "criterion": "AC-1",
       "check": "intro_predicts_content",
       "verdict": "pass",
-      "spec_locus": "/introduction/roadmap",
-      "draft_locus": "Introduction ¶5",
-      "finding": "The cold reader of the introduction named five chapters in the roadmap's order: warehouse, carrier and delivery date, stores, returns and refunds (refund waits for inspection, single writer), the status the customer sees (one record for notifications, status page, agent). Against expected, the warehouse chapter was predicted as picking and stock ownership rather than the instruction and response, and the store chapter only partly as the till as a source; the subjects and order still match. The reader was unsure whether there are exactly five chapters.",
+      "finding": "The cold reader named the five chapter subjects in reading order; the finer elements of `expected` (instruction and response, the till as a source, the separate return steps with owners, the shared status) are stated in bold in each chapter paragraph, so a reader of the whole page finds them.",
       "severity": "major"
     },
     {
       "criterion": "AC-2",
       "check": "custom",
       "verdict": "pass",
-      "spec_locus": "/intent/acceptance_criteria/1",
-      "draft_locus": "Chapters in this part ¶2",
-      "finding": "The reader answered that a fixed storefront rule ignored that the 21:14 order missed Duiven's 21:00 last picking batch, and that the promise should be computed from the warehouse's batches and backlog, the carrier's collection schedule and performance, and the location; this matches expected. Doubts noted: the rule itself and PostNL's collection time are not stated.",
+      "finding": "The reader explained that a fixed storefront rule ignored that the 21:14 order missed Duiven's 21:00 picking batch, and that the promise should be computed from the picking batch, backlog, collection schedules, location and carrier performance, matching `expected`.",
       "severity": "minor"
     }
   ]

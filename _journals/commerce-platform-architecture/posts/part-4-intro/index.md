@@ -12,8 +12,8 @@ logo: "assets/images/part-4-intro/logo.jpeg"
 > **KEY POINTS:**
 >
 > * **The physical world has its own systems of record.** The warehouse counts shelves, the carrier's scan proves delivery and the returns bench knows what came back; nothing upstream may overwrite them.
-> * **A promise about the physical world is a computation, not a sentence.** “Delivered tomorrow” needs the pick wave, the backlog and the carrier's transit time; every incident in this part is a promise made without its inputs.
-> * **One writer per fact, one source per view.** One refund writer keyed by the return, stock that rises only on the warehouse's verdict, and every customer-facing screen reading the same order record.
+> * **A promise about the physical world is a computation, not a sentence.** “Delivered tomorrow” needs the warehouse's picking batch, the backlog and the carrier's transit time; every incident in this part is a promise made without its inputs.
+> * **One writer per fact, one source per view.** One refund writer keyed by the return, stock that rises only after warehouse inspection, and every customer-facing screen reading the same order record.
 
 <br>
 Checkout confirms and charges an order in seconds, but someone has to pick and pack the goods before the carrier's collection. If the order reaches the warehouse late or the shelf is empty, delivery slips a day. Returns and store collections depend on the same work.
@@ -25,7 +25,7 @@ Eva's jacket order shows this sequence. She orders at 21:14 on Tuesday 13 April 
 
 Eva bought from **Kestrel & Pine, a fictional outdoor brand** that makes such promises at scale: 336,000 parcels and 9,400 wholesale shipments a year from its one warehouse, four carriers, six stores on separate till software and 72,000 return parcels.
 
-At each step a system on the spot knows the facts first. The company's **Waypoint** improvement program draws three rules from this. The system that knows a fact is its only writer: for returns, the returns bench, where they are inspected. A promise such as a delivery date or a refund is computed from that writer's events. Messages, the status page and the support agent read one order record.
+At each step a system on the spot knows the facts first. The company's **Waypoint** improvement program draws three rules from this. The system that knows a fact is its only writer: for returns, the warehouse's returns bench, where items are inspected. A promise such as a delivery date or a refund is computed from that writer's events. Messages, the status page and the support agent read one order record.
 
 The chapters follow Eva's parcel out and back: warehouse, carrier and delivery date, a side trip to the stores, return and refund, and the status the customer sees.
 
@@ -49,7 +49,7 @@ Last, [[customer-service-and-notifications]] aligns **messages, the status page 
 
 ## Where to Begin
 
-None of these cases needed faster work; each promise came from the wrong place, as did the opening's late delivery. Begin with [[warehouse-and-fulfillment]], where Eva's paid order reaches Duiven.
+None of these cases needed faster work; each promise, like the opening's late delivery, was made without its inputs. Begin with [[warehouse-and-fulfillment]], where Eva's paid order reaches Duiven.
 
 ## Sources and Evidence
 

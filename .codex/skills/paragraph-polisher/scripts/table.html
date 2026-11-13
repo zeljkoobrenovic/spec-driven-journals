@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paragraph Table</title>
+<style>
+  :root {
+    --bg: #f7f6f2; --panel: #ffffff; --ink: #1d1d1b; --muted: #6b6a65; --line: #dedcd4;
+    --accent: #2f5bd3; --ok: #1f7a3a; --bad: #b3261e; --ins: #d9f2df; --del: #f8d9d6; --busy: #fff6d6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #161614; --panel: #1f1f1c; --ink: #ecebe6; --muted: #9b9a93; --line: #34332f;
+      --accent: #7f9cf5; --ok: #6cc788; --bad: #f2867c; --ins: #1f4a2b; --del: #5a2522; --busy: #3d3619;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.5 system-ui, -apple-system, sans-serif; }
+  header { position: sticky; top: 0; z-index: 2; background: var(--bg); border-bottom: 1px solid var(--line);
+           padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+  header h1 { font-size: 15px; margin: 0; }
+  header .file { color: var(--muted); font-family: ui-monospace, monospace; font-size: 12px; }
+  header .spacer { flex: 1; }
+  #status { color: var(--muted); font-size: 12px; min-width: 160px; }
+  main { padding: 12px 16px 64px; }
+  table { width: 100%; border-collapse: separate; border-spacing: 0 8px; table-layout: fixed; }
+  th { text-align: left; font-size: 12px; color: var(--muted); font-weight: 600; padding: 0 8px; }
+  th.n, td.n { width: 84px; }
+  th.cur, th.sug { width: 36%; }
+  td { background: var(--panel); vertical-align: top; padding: 8px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  td:first-child { border-left: 1px solid var(--line); border-radius: 8px 0 0 8px; }
+  td:last-child { border-right: 1px solid var(--line); border-radius: 0 8px 8px 0; }
+  td.n { color: var(--muted); font-size: 12px; }
+  td.n .kind { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .04em; }
+  tr.busy td { background: var(--busy); }
+  tr.title td.cur textarea { font-weight: 700; }
+  textarea { width: 100%; resize: vertical; border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px;
+             background: transparent; color: var(--ink); font: inherit; min-height: 2.6em; }
+  textarea:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .diff { white-space: pre-wrap; padding: 6px 8px; border: 1px dashed var(--line); border-radius: 6px; min-height: 2.6em; }
+  .diff ins { background: var(--ins); text-decoration: none; }
+  .diff del { background: var(--del); color: var(--muted); }
+  .empty { color: var(--muted); font-style: italic; }
+  .actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  button { font: inherit; font-size: 12px; padding: 3px 10px; border-radius: 6px; border: 1px solid var(--line);
+           background: var(--panel); color: var(--ink); cursor: pointer; }
+  button:hover:not(:disabled) { border-color: var(--accent); }
+  button:disabled { opacity: .45; cursor: default; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button.ok { color: var(--ok); border-color: var(--ok); }
+  button.bad { color: var(--bad); }
+  .hidden { display: none !important; }
+  label { font-size: 12px; color: var(--muted); display: flex; gap: 4px; align-items: center; }
+  .err { color: var(--bad); font-size: 12px; margin-top: 4px; }
+  @media (max-width: 760px) {
+    table, tbody, tr, td { display: block; width: 100%; }
+    thead { display: none; }
+    td { border: 1px solid var(--line) !important; border-radius: 0 !important; }
+    tr { margin-bottom: 12px; }
+    td.n { width: auto; }
+    td[data-h]::before { content: attr(data-h); display: block; font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Paragraph Table</h1>
+  <span class="file" id="file"></span>
+  <span class="spacer"></span>
+  <label><input type="checkbox" id="hideFig"> hide figures/HTML</label>
+  <label>parallel <input type="number" id="par" value="3" min="1" max="8" style="width:44px"></label>
+  <button class="primary" id="suggestAll">Suggest all missing</button>
+  <button id="stopAll" class="hidden">Stop</button>
+  <span id="status"></span>
+</header>
+<main>
+  <table>
+    <thead><tr><th class="n">#</th><th class="cur">Current text</th><th class="sug">Suggestion: “This is a bit vague”</th><th>My comments</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+</main>
+<script>
+const TOKEN = "__TOKEN__";
+let rows = [];
+const busy = new Set();
+let stopping = false;
+
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => s.replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const status = t => { $("#status").textContent = t; };
+
+async function api(action, body = {}) {
+  const r = await fetch("/api/" + action, {method: "POST", headers: {"Content-Type": "application/json", "X-Token": TOKEN},
+                                           body: JSON.stringify(body)});
+  const data = await r.json();
+  if (data.rows) update(data.rows);
+  if (!r.ok) throw new Error(data.error || r.statusText);
+  return data;
+}
+
+function diff(a, b) {
+  const A = a.split(/(\s+)/), B = b.split(/(\s+)/), n = A.length, m = B.length;
+  if (n * m > 400000) return esc(b);
+  const L = Array.from({length: n + 1}, () => new Uint16Array(m + 1));
+  for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--)
+    L[i][j] = A[i] === B[j] ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+  let i = 0, j = 0, out = "";
+  while (i < n || j < m) {
+    if (i < n && j < m && A[i] === B[j]) { out += esc(A[i]); i++; j++; }
+    else if (j < m && (i >= n || L[i][j + 1] > L[i + 1][j])) { out += "<ins>" + esc(B[j++]) + "</ins>"; }
+    else { out += "<del>" + esc(A[i++]) + "</del>"; }
+  }
+  return out.replace(/<\/ins><ins>|<\/del><del>/g, "");
+}
+
+// Cmd/Ctrl+B: wrap the selection in **…**, or unwrap it when it is already bold.
+function toggleBold(t) {
+  let a = t.selectionStart, b = t.selectionEnd;
+  const v = t.value, sel = v.slice(a, b);
+  let text, ca, cb;
+  if (v.slice(a - 2, a) === "**" && v.slice(b, b + 2) === "**") {
+    a -= 2; b += 2; text = sel; ca = a; cb = a + sel.length;
+  } else if (sel.length >= 4 && sel.startsWith("**") && sel.endsWith("**")) {
+    text = sel.slice(2, -2); ca = a; cb = a + text.length;
+  } else {
+    text = "**" + sel + "**"; ca = a + 2; cb = ca + sel.length;
+  }
+  t.focus(); t.setSelectionRange(a, b);
+  if (!document.execCommand("insertText", false, text)) t.setRangeText(text, a, b, "end");  // execCommand keeps native undo
+  t.setSelectionRange(ca, cb);
+  t.dispatchEvent(new Event("input"));
+}
+
+function grow(t) { t.style.height = "auto"; t.style.height = (t.scrollHeight + 2) + "px"; }
+
+function rowHtml(r) {
+  const sug = r.suggestion
+    ? `<div class="diff">${diff(r.text, r.suggestion)}</div><textarea class="sugEdit hidden">${esc(r.suggestion)}</textarea>`
+    : `<div class="empty">${busy.has(r.n) ? "Working…" : "No suggestion yet."}</div>`;
+  return `
+    <td class="n">${r.n}<span class="kind">${r.kind}</span></td>
+    <td class="cur" data-h="Current text">
+      <textarea class="curEdit">${esc(r.text)}</textarea>
+      <div class="actions"><button class="save primary" disabled title="Cmd/Ctrl+Enter">Apply my edits</button><button class="revert hidden">Revert</button>
+        <button class="undo bad ${r.undo ? "" : "hidden"}">Undo last change</button></div>
+    </td>
+    <td class="sug" data-h="Suggestion">${sug}
+      <div class="actions">
+        <button class="gen">${r.suggestion ? "Regenerate" : "Suggest"}</button>
+        <button class="accept ok" ${r.suggestion ? "" : "disabled"}>Accept</button>
+        <button class="reject bad" ${r.suggestion ? "" : "disabled"}>Delete</button>
+        <button class="edit" ${r.suggestion ? "" : "disabled"}>Edit</button>
+      </div>
+    </td>
+    <td class="com" data-h="My comments">
+      <textarea class="comEdit" placeholder="Feedback for this block…">${esc(r.comment)}</textarea>
+      <div class="actions"><button class="apply primary" ${r.comment.trim() ? "" : "disabled"}>Update text from comment</button></div>
+      <div class="err"></div>
+    </td>`;
+}
+
+function renderRow(r) {
+  let tr = document.getElementById("r" + r.n);
+  if (!tr) { tr = document.createElement("tr"); tr.id = "r" + r.n; }
+  tr.className = r.kind + (busy.has(r.n) ? " busy" : "") + (r.kind === "figure" && $("#hideFig").checked ? " hidden" : "");
+  tr.innerHTML = rowHtml(r);
+  tr.querySelectorAll("textarea").forEach(t => { requestAnimationFrame(() => grow(t)); t.addEventListener("input", () => grow(t)); });
+  wire(tr, r.n);
+  return tr;
+}
+
+function renderAll() {
+  const tb = $("#rows");
+  tb.innerHTML = "";
+  rows.forEach(r => tb.appendChild(renderRow(r)));
+  count();
+}
+
+function update(newRows) {
+  if (newRows.length !== rows.length) { rows = newRows; return renderAll(); }
+  newRows.forEach((r, i) => {
+    const old = rows[i];
+    rows[i] = r;
+    const tr = document.getElementById("r" + r.n);
+    const typing = tr && tr.contains(document.activeElement);
+    if (JSON.stringify(old) !== JSON.stringify(r) && !typing) renderRow(r);
+  });
+  count();
+}
+
+function count() {
+  const done = rows.filter(r => r.suggestion).length;
+  if (!busy.size) status(`${rows.length} blocks · ${done} with suggestions`);
+}
+
+function setBusy(n, on) {
+  on ? busy.add(n) : busy.delete(n);
+  const r = rows[n - 1];
+  if (r) renderRow(r);
+}
+
+async function run(n, fn) {
+  const r = rows[n - 1];
+  setBusy(n, true);
+  try { await fn(r); }
+  catch (e) { setBusy(n, false); const tr = document.getElementById("r" + n); if (tr) $(".err", tr).textContent = e.message; return; }
+  setBusy(n, false);
+  count();
+}
+
+async function suggest(n) {
+  await run(n, async r => {
+    const d = await api("suggest", {n, text: r.text});
+    if (rows[n - 1] && rows[n - 1].text === r.text) rows[n - 1].suggestion = d.suggestion;
+  });
+}
+
+function wire(tr, n) {
+  const r = rows[n - 1];
+  const cur = $(".curEdit", tr), com = $(".comEdit", tr);
+  const dirty = () => { const d = cur.value !== r.text; $(".save", tr).disabled = !d; $(".revert", tr).classList.toggle("hidden", !d); };
+  cur.addEventListener("keydown", e => {
+    if ((e.metaKey || e.ctrlKey) && !e.shiftKey && !e.altKey && e.key.toLowerCase() === "b") { e.preventDefault(); toggleBold(cur); }
+  });
+  cur.addEventListener("keydown", e => { if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && cur.value !== r.text) { e.preventDefault(); $(".save", tr).click(); } });
+  cur.addEventListener("input", dirty);
+  $(".revert", tr).onclick = () => { cur.value = r.text; grow(cur); dirty(); };
+  $(".save", tr).onclick = () => run(n, x => api("write", {n, text: x.text, new: cur.value}));
+  $(".undo", tr).onclick = () => run(n, x => api("undo", {n, text: x.text}));
+  $(".gen", tr).onclick = () => suggest(n);
+  $(".reject", tr).onclick = () => run(n, x => api("reject", {n, text: x.text}));
+  $(".accept", tr).onclick = () => {
+    const ed = $(".sugEdit", tr);
+    run(n, x => api("accept", {n, text: x.text, suggestion: ed ? ed.value : x.suggestion}));
+  };
+  $(".edit", tr).onclick = () => {
+    const ed = $(".sugEdit", tr), dv = $(".diff", tr);
+    if (!ed) return;
+    ed.classList.toggle("hidden"); dv.classList.toggle("hidden"); requestAnimationFrame(() => grow(ed));
+    if (!ed.classList.contains("hidden")) ed.focus(); else dv.innerHTML = diff(r.text, ed.value);
+  };
+  let timer;
+  com.addEventListener("input", () => {
+    $(".apply", tr).disabled = !com.value.trim();
+    clearTimeout(timer);
+    timer = setTimeout(() => { r.comment = com.value; api("comment", {n, text: r.text, comment: com.value}).catch(() => {}); }, 600);
+  });
+  $(".apply", tr).onclick = () => {
+    clearTimeout(timer);
+    run(n, x => api("revise", {n, text: x.text, comment: com.value}));
+  };
+}
+
+$("#suggestAll").onclick = async () => {
+  const queue = rows.filter(r => !r.suggestion && r.kind !== "figure" && !busy.has(r.n)).map(r => r.n);
+  const total = queue.length;
+  let done = 0;
+  stopping = false;
+  $("#suggestAll").disabled = true; $("#stopAll").classList.remove("hidden");
+  const worker = async () => {
+    while (queue.length && !stopping) {
+      await suggest(queue.shift());
+      status(`Suggesting… ${++done}/${total}`);
+    }
+  };
+  await Promise.all(Array.from({length: Math.max(1, +$("#par").value || 3)}, worker));
+  $("#suggestAll").disabled = false; $("#stopAll").classList.add("hidden");
+  count();
+};
+$("#stopAll").onclick = () => { stopping = true; status("Stopping after running requests…"); };
+$("#hideFig").onchange = renderAll;
+
+api("blocks").then(d => { $("#file").textContent = d.file + " · " + d.model; rows = d.rows; renderAll(); })
+             .catch(e => status(e.message));
+</script>
+</body>
+</html>

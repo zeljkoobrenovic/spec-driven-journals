@@ -26,7 +26,7 @@ Part I argues that a commerce platform is the whole set of systems that make and
 ![Diagram: The order's journey as a chain of promises](assets/images/part-1-intro/fig01-order-s-journey-chain-promises-storefront.jpeg)
 **Figure 2:** *The order's journey as a chain of promises: the storefront makes them early, the other systems keep them late, and every arrow is a handoff that can be late, lost, duplicated or misread.*
 
-The example is **Kestrel & Pine, a fictional outdoor brand** with €48 million in 2026 revenue, thirteen systems, 34 integrations and 41 apps. Orders and product data each live in four places; six writers, systems or people, change warehouse stock. Its **Waypoint** improvement program begins in March 2027 by deciding who owns what and how other systems learn of changes.
+The example is **Kestrel & Pine, a fictional outdoor brand** with €48 million in 2026 revenue, thirteen systems, 34 integrations and 41 apps. Orders and product data each live in four places; six writers (systems or people) change warehouse stock. Its **Waypoint** improvement program begins in March 2027 by deciding who owns what and how other systems learn of changes.
 
 Part I asks Kestrel & Pine five questions, each answer giving the next its vocabulary: what happens to an order, who sells what to whom, what the parts are, who owns each fact, and which platforms the market sells.
 
@@ -35,9 +35,9 @@ Part I asks Kestrel & Pine five questions, each answer giving the next its vocab
 
 ## Chapters in this part
 
-[[journey-of-an-order]] follows **one purchase through thirteen steps**, through payment, delivery, return and accounting. One jacket order shows the normal path; another, which three systems show at once as delivered, in picking and not invoiced, shows why one status word cannot explain everything.
+[[journey-of-an-order]] follows **one purchase through thirteen steps**, through payment, delivery, return and accounting. One jacket order shows the normal path; another, shown at once as delivered by the shop, in picking by the warehouse and not invoiced by finance, shows why one status word cannot explain everything.
 
-[[commerce-business-models]] keeps those steps but shows that **the shape of the business decides the systems**: selling one jacket to a consumer, a wholesaler, a marketplace shopper or a store visitor changes who prices, sells, stocks and ships. As it grows, a merchant moves through four scale stages, from Starting to Group, by adding channels, locations, countries and brands, not revenue.
+[[commerce-business-models]] keeps those steps but shows that **the shape of the business decides the systems**: selling one jacket to a consumer, a wholesaler, a marketplace shopper or a store visitor changes who prices, sells, stocks and ships. As a merchant grows, that shape changes: it adds channels, locations, countries and brands. The book calls these steps four scale stages, from Starting (one online shop) to Group (several brands).
 
 [[commerce-capability-map]] then maps **the jobs a merchant must perform**. Head of Engineering Noor Visser places Kestrel & Pine's systems on it and finds missing capabilities and overlapping writers.
 

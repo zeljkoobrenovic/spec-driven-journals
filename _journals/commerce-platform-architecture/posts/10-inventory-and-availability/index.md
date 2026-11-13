@@ -40,7 +40,7 @@ Duiven's **warehouse management system (WMS)** knows which bin holds each unit a
 
 A storefront sale lowered the shop platform's own count at once, and nothing else. The warehouse's count and marketplace sales reached the platform only through the chain; storefront sales reached the marketplaces the same way. So each channel kept selling units another had sold. A sale took up to two hours to reach every channel.
 
-On Friday 27 November the Ridgewalker jacket, the hero product, was the deal of the week. The timeline's times are illustrative, its totals those recorded in [[meet-kestrel-and-pine]]. Of the 1,340 units oversold that evening, about 790 were sold on the storefronts and 550 on the marketplaces (illustrative split); the marketplace share carried the penalties.
+On Friday 27 November the Ridgewalker jacket, the hero product, was the deal of the week. The timeline's times are illustrative, its totals those recorded in [[meet-kestrel-and-pine]]. Of the 1,340 units oversold that evening, about 790 were sold on the storefronts and 550 on the marketplaces (illustrative split); the marketplace share carried the penalties. Read the timeline row by row: each system still believed the jacket was in stock until its scheduled copy arrived, so the storefronts kept selling for about 50 minutes after the 19:40 sell-out and the marketplaces until after 21:05.
 
 | Time (27 Nov 2026) | What happened | What the channels believed about the Ridgewalker |
 | --- | --- | --- |
@@ -54,7 +54,7 @@ On Friday 27 November the Ridgewalker jacket, the hero product, was the deal of 
 ![A relay race where the news of an empty shelf passes from the warehouse through ERP and platform to marketplaces while carts keep arriving.](assets/images/10-inventory-and-availability/10-oversell-relay.jpeg)
 **Figure 1:** *The Black Friday Oversell as a relay: each hand-off waited for its schedule, so the channels kept selling for up to two hours after Duiven ran out, and 1,340 units were oversold.*
 
-Two things made it worse. The order queue from the platform to the WMS backed up for four hours that evening ([[warehouse-and-fulfillment]]), so the WMS's count fell later than the sales it reflected. And three of the shop platform's 41 installed apps could write inventory, so the warehouse feed was not the number's only writer; with the connector's sync, those apps used about half the platform's API budget that evening ([[multi-tenancy-and-isolation]]). One, a pre-order app, had already caused the App That Wrote Stock in March 2026: two weeks of wrong stock figures on about 600 variants, because the app and the WMS feed both wrote the same number and each undid the other.
+Two things made it worse. The order queue from the platform to the WMS backed up for four hours that evening ([[warehouse-and-fulfillment]]), so the WMS's count fell later than the sales it reflected. And three of the shop platform's 41 installed apps could write inventory, so the warehouse feed was not the number's only writer; with the connector's sync, those apps used about half the platform's API budget (the number of calls the platform accepts per period) that evening, calls the stock chain also needed ([[multi-tenancy-and-isolation]]). One, a pre-order app, had already caused the App That Wrote Stock in March 2026: two weeks of wrong stock figures on about 600 variants, because the app and the WMS feed both wrote the same number and each undid the other.
 
 Mara Lindqvist, the CEO, asked the question every CEO asks after an oversell: "Why did the website not know?" Noor's answer, which became Waypoint decision W1, was that the website could not know, because nobody had decided who owned the number and nothing carried changes fast enough. This chapter is that answer in full.
 
@@ -89,7 +89,7 @@ Shopify's developer documentation (n.d., accessed November 2026) states the arit
 
 Each of these numbers needs an owner, and the rule is short. **The warehouse owns on hand. The order-taking system owns committed. Nobody should own "available", because it is a computation.** Most oversells begin when a system stores "available" as a fact and lets another system overwrite it.
 
-The owner of a number also controls what it means. On 5 August 2026 Shopify moved the units held for draft orders and transfers from its `reserved` state to `committed`, while `available` and `on_hand` stayed the same. An integration that computed its own figure by subtracting `reserved` got a different answer that day without any change to its code ([[api-contracts-and-versioning]]).
+The owner of a number also controls what it means. On 5 August 2026 Shopify moved the units held for draft orders and transfers from its `reserved` state to `committed`, while `available` and `on_hand` stayed the same. An integration that computed its own figure by subtracting `reserved` got a different answer that day without any change to its code ([[api-contracts-and-versioning]]). Shopify now calls committed some of what this chapter calls reserved; the chapter keeps its own definitions, and an integration should read the owner's published figure rather than recompute it from the owner's states.
 
 ## When a Unit Becomes Promised: Reservations and Allocations
 
@@ -131,7 +131,7 @@ A **channel** is a place where a promise is made: a storefront, a marketplace li
 
 ## How the Pieces Fit: The Availability Service
 
-With several locations and channels, the clean arrangement separates three responsibilities (counting stock, taking orders and deriving availability) and connects them with events. A **stock event** is a message sent the moment a stock quantity changes, saying which stock-keeping unit (**SKU**, one sellable variant such as the Ridgewalker women's M in moss), at which location, changed by how much, why, and when. A **queue** holds events until each consumer has processed them. A **reconciliation job** compares, on a schedule, the service's copies with the systems that count and commit.
+With several locations and channels, the clean arrangement separates three responsibilities (counting stock, taking orders and deriving availability) and connects them with events. A **stock event** is a message sent the moment a stock quantity changes, saying which stock-keeping unit (**SKU**, one sellable variant such as the Ridgewalker women's M in moss), at which location, changed by how much, why, and when. A **queue** holds events until each consumer has processed them. A **reconciliation job** compares, on a schedule, the service's copies with the systems that count and commit. The table shows the rule behind the arrangement: every number has exactly one writer, and only the availability service writes available.
 
 | Component | Responsibility | Writes | Never writes |
 | --- | --- | --- | --- |

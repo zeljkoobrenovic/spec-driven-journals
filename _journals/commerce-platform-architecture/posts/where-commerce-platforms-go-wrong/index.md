@@ -349,7 +349,7 @@ A second brand, fourth country or revenue near €200 million would trigger a re
 
 **What it costs.** Outages as long as one person's absence, and programs that end on the vendor's date: Shopify sold its logistics business to Flexport in a deal that closed on 6 June 2023 (Shopify; dated), and Zalando's Connected Retail program, through which physical shops sold branch stock on its platform, ends by the end of June 2027 (TextilWirtschaft, 24 April 2026).
 
-**At Kestrel & Pine (fictional).** The EDI mappings for Bergzicht Outdoor, worth €2.1 million a year, were built in 2025 by one external consultant; when despatch advices and pallet labels disagreed, the fix waited on him. In April 2027, after the ownership map had assigned the rest, **5 integrations still had no named owner**, among them the scripts behind the stale bol stock and the nine-day German price above. The ERP partner's platform-to-ERP connector was undocumented and could be retired only after the lead integration engineer wrote its contract in Q3 2027.
+**At Kestrel & Pine (fictional).** The EDI mappings for Bergzicht Outdoor, worth €2.1 million a year, were built in 2025 by one external consultant; when despatch advices and pallet labels disagreed, the fix waited on him. In April 2027, after Waypoint's map of owners had assigned the rest, **5 integrations still had no named owner**, among them the scripts behind the stale bol stock and the nine-day German price above. The ERP partner's connector was undocumented and could be retired only once the lead integration engineer documented it in Q3 2027.
 
 **In public.** Shopify Logistics changed hands on Shopify's date, and Connected Retail ends on Zalando's: each was a capability merchants depended on and did not control.
 
@@ -426,7 +426,7 @@ The four scale stages ([[commerce-scaling-stages]]) run from Starting (one chann
 | The Long Fuse | Platform defaults, per country | **Born**: second country, first B2B mandate | **Hurts**: many rules, many countries | Compliance function |
 | The Secret Agent | Apps with wide permissions | **Born**: scripts and apps that write | **Hurts**: six writers of stock | Agents at scale |
 
-Kestrel & Pine enters Waypoint (March 2027) with ten incidents on record, listed on the next page. Nine are met above under their patterns; the tenth, the Store Stock Mirage of December 2026, is the Phantom Stock seen from a store. The stacking bug and the order backlog of Black Friday week are not counted among the ten. Its April 2027 stage map traces eight of the ten to Growing-stage designs still running in 2026.
+Kestrel & Pine bears this out: it enters Waypoint (March 2027) with ten incidents, listed on the next page. Nine appear above, in the "At Kestrel & Pine" paragraphs; the tenth, the Store Stock Mirage of December 2026 (Utrecht promising sold stock), is the Phantom Stock seen from a store. Black Friday week's stacking bug and order backlog are not among them. Its April 2027 stage map traces eight of the ten to Growing-stage designs still running in 2026.
 
 ![Four steps labeled Starting, Growing, Omnichannel and Group: seeds planted on Growing grow into a thorny vine and a bill on Omnichannel.](assets/images/where-commerce-platforms-go-wrong/where-commerce-platforms-go-wrong-born-and-paid.jpeg)
 **Figure 17:** *Most failure patterns are born at the Growing stage and paid for at the Omnichannel stage.*
@@ -444,9 +444,9 @@ The stage table treats each pattern alone. In practice one sets up the next, in 
 ![Diagram: The patterns travel in chains](assets/images/where-commerce-platforms-go-wrong/fig01-patterns-travel-chains-integration-chain-runs.jpeg)
 **Figure 18:** *The patterns travel in chains: the integration chain runs from the Spaghetti Junction through the Message in a Bottle to phantom stock, undecidable orders and double refunds; the governance chain runs from the Lynchpin to the Pulled Rug and the Secret Agent; the platform chain runs from the Giant's Boots to the fork or the burned bridge; the First Snowfall amplifies whatever is already there.*
 
-**The identity thread.** The Familiar Stranger runs under all three chains, because nobody owns the customer match, so each chain's repair still has to guess which records are one person.
+**The identity thread.** Outside the figure, the Familiar Stranger runs under all three chains: nobody owns the customer match, so every repair, of refunds, apps or platforms, guesses which records are one person.
 
-Kestrel & Pine's incidents start at such origins: unowned scripts, an app writing stock, one EDI consultant. So Waypoint decides ownership first (W1 for stock, W5 for every integration), then adds the hubs (W2, an OMS for orders; W3, a PIM for product content), then makes the copies trustworthy, and keeps the platform (W4).
+Kestrel & Pine's incidents start at such origins: unowned scripts, an app writing stock, one EDI consultant. So Waypoint decides ownership first (W1 for stock, W5 for every integration), then adds the hubs (W2, an OMS for orders; W3, a PIM for product content), then makes the copies trustworthy (W6, W7), and keeps the platform (W4).
 
 ## Using the Patterns
 

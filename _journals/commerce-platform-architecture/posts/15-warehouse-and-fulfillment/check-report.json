@@ -1,315 +1,330 @@
 {
   "spec": "_journals/commerce-platform-architecture/posts/15-warehouse-and-fulfillment/spec.json",
   "draft": "_journals/commerce-platform-architecture/posts/15-warehouse-and-fulfillment/index.md",
-  "spec_sha": "02bf6e14c55bcc2c",
-  "draft_sha": "5b6c412075388aac",
-  "run_at": "2026-11-12T22:09:59+01:00",
-  "round": 3,
+  "spec_sha": "f3305f7a040fad53",
+  "draft_sha": "44e3f066fe07d26b",
+  "run_at": "2026-11-13T12:31:31+01:00",
+  "round": 5,
   "verdict": "escalate",
   "reverse_outline": [
     {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter goals: follow an order through the warehouse and learn the WMS interface",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Key points: fulfillment order lifecycle, WMS owns physical stock, promises depend on capacity and cut-offs",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: peak-load order feed, lost confirmations, phantom stock",
+      "matched_spec_paragraph": null
+    },
+    {
       "draft_locator": "Introduction ¶1",
-      "summary": "an empty shelf at pick time turns a stock error into a late delivery",
+      "summary": "A missing jacket at pick time turns a stock error into a delivery problem",
       "matched_spec_paragraph": "p01"
     },
     {
       "draft_locator": "Introduction ¶2",
-      "summary": "the WMS needs a precise, retry-safe fulfillment order and must report packing, stock and capacity back",
+      "summary": "Thesis: WMS needs an acceptable, keyed fulfillment order and must report packing, stock and capacity",
       "matched_spec_paragraph": "p02"
     },
     {
       "draft_locator": "Introduction ¶3",
-      "summary": "Eva's order reaches the Duiven warehouse in the book's running journey",
+      "summary": "Eva's order at the warehouse stage of its journey",
       "matched_spec_paragraph": "p03"
     },
     {
       "draft_locator": "Introduction ¶4",
-      "summary": "roadmap of the chapter's sections and evidence",
+      "summary": "Roadmap of the chapter and its evidence",
       "matched_spec_paragraph": "p04"
     },
     {
       "draft_locator": "Setting the Scene: Duiven's Day ¶1",
-      "summary": "Kestrel & Pine's own Duiven warehouse replaced a 3PL",
+      "summary": "Duiven warehouse background and move from a 3PL to owning it",
       "matched_spec_paragraph": "p05"
     },
     {
       "draft_locator": "Setting the Scene: Duiven's Day ¶2",
-      "summary": "Noor's visit and the wave-based daily rhythm",
+      "summary": "Noor's visit and Duiven's wave-based daily rhythm",
       "matched_spec_paragraph": "p06"
     },
     {
       "draft_locator": "Setting the Scene: Duiven's Day ¶3",
-      "summary": "tour of warehouse steps and the ERP's role in inbound",
+      "summary": "Tour of warehouse processes and ERP purchase orders",
       "matched_spec_paragraph": "p07"
     },
     {
       "draft_locator": "Setting the Scene: Duiven's Day ¶4",
-      "summary": "Black Friday: orders reached the WMS four hours late while next-day was still promised",
+      "summary": "Black Friday: orders reached the WMS four hours late while promises held",
       "matched_spec_paragraph": "p08"
     },
     {
       "draft_locator": "Setting the Scene: Duiven's Day ¶5",
-      "summary": "naming the incident and setting up the interface question",
+      "summary": "Naming the incident and setting up the question of warehouse interfaces",
       "matched_spec_paragraph": "p09"
     },
     {
       "draft_locator": "What a Warehouse Management System Does ¶1",
-      "summary": "a WMS directs work and records physical results",
+      "summary": "A WMS directs warehouse work and records results",
       "matched_spec_paragraph": "p10"
     },
     {
       "draft_locator": "What a Warehouse Management System Does ¶2",
-      "summary": "picking methods and vendor examples",
+      "summary": "Picking methods: cluster, batch, waves and order streaming",
       "matched_spec_paragraph": "p11"
     },
     {
       "draft_locator": "What a Warehouse Management System Does ¶3",
-      "summary": "WMS products span simple to automated buildings; Duiven is manual",
+      "summary": "WMS products span complexity levels; Duiven is unautomated",
       "matched_spec_paragraph": "p12"
     },
     {
       "draft_locator": "What a Warehouse Management System Does ¶4",
-      "summary": "release policy, capacity and physical truth make the WMS the stock system of record",
+      "summary": "Three facts of warehouse work: release policy, capacity, physical stock as system of record",
       "matched_spec_paragraph": "p13"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶1",
-      "summary": "the warehouse's four interfaces and the order of the subsections",
+      "summary": "The warehouse's four interfaces and the order of subsections",
       "matched_spec_paragraph": "p14"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶2",
-      "summary": "per-interface requirements table introduced",
+      "summary": "Table of requirements per interface",
       "matched_spec_paragraph": "p15"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶3",
-      "summary": "what a fulfillment order contains, excludes, and its lifecycle",
+      "summary": "Definition and lifecycle of a fulfillment order",
       "matched_spec_paragraph": "p16"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶4",
-      "summary": "Shopify's fulfillment-service request and acceptance model",
+      "summary": "Shopify's fulfillment request and acceptance contract",
       "matched_spec_paragraph": "p17"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶5",
-      "summary": "Kibo's comparable acceptance sequence",
+      "summary": "Kibo's similar acceptance step",
       "matched_spec_paragraph": "p18"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶6",
-      "summary": "acceptance precedes work because physical work can't be undone by a status change",
+      "summary": "Why acceptance precedes work and cancellation needs warehouse confirmation",
       "matched_spec_paragraph": "p19"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶7",
-      "summary": "sequence diagram of the planned handshake with idempotency keys and a late cancellation",
+      "summary": "Sequence diagram of the handshake with idempotency keys",
       "matched_spec_paragraph": "p20"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶8",
-      "summary": "four problems the contract prevents",
+      "summary": "Four problems the contract prevents",
       "matched_spec_paragraph": "p21"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶9",
-      "summary": "per-parcel shipment confirmations from actual packing, partial not whole",
+      "summary": "Per-parcel shipment confirmation and partial shipments",
       "matched_spec_paragraph": "p22"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶10",
-      "summary": "the contract survives swapping the sender to an OMS",
+      "summary": "The contract survives the switch to an OMS sender",
       "matched_spec_paragraph": "p23"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶11",
-      "summary": "on hand, committed and available defined",
+      "summary": "Three meanings of stock: on hand, committed, available",
       "matched_spec_paragraph": "p24"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶12",
-      "summary": "one writer per stock state, with incidents from breaking it",
+      "summary": "One writer per stock state, shown by the app that wrote stock",
       "matched_spec_paragraph": "p25"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶13",
-      "summary": "periodic full sync versus stock events for propagating on-hand changes",
+      "summary": "Two patterns for propagating stock changes: full sync vs events",
       "matched_spec_paragraph": "p26"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶14",
-      "summary": "events need reconciliation and a daily snapshot baseline",
+      "summary": "Events need reconciliation and a daily snapshot baseline",
       "matched_spec_paragraph": "p27"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶15",
-      "summary": "cut-off, capacity and release policy as the warehouse's timing facts",
+      "summary": "The warehouse's day: cut-off, capacity, release policy",
       "matched_spec_paragraph": "p28"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶16",
-      "summary": "delivery promises should be computed from those facts",
+      "summary": "These facts must feed the computed delivery promise",
       "matched_spec_paragraph": "p29"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶17",
-      "summary": "wholesale pallets need labels and an advance message",
+      "summary": "Wholesale pallets need labels and an announcing message",
       "matched_spec_paragraph": "p30"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶18",
-      "summary": "SSCC and DESADV defined",
+      "summary": "Definitions of SSCC and despatch advice",
       "matched_spec_paragraph": "p31"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶19",
-      "summary": "retailers enforce labels and DESADV with refusals and fees",
+      "summary": "Retailers like bol and Jumbo enforce SSCC and DESADV",
       "matched_spec_paragraph": "p32"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶20",
-      "summary": "two families of chargebacks: delivery performance and data compliance",
+      "summary": "Chargebacks in two families: delivery performance and data compliance",
       "matched_spec_paragraph": "p33"
     },
     {
       "draft_locator": "How the Warehouse Connects to Everything Else ¶21",
-      "summary": "generate DESADV from what was packed, shown by the ASN chargeback and its fix",
+      "summary": "Generate DESADV from what was packed, shown by the ASN chargeback",
       "matched_spec_paragraph": "p34"
     },
     {
-      "draft_locator": "Warehouse Automation and Robotics ¶1",
-      "summary": "automation saves walking but adds coordination work",
-      "matched_spec_paragraph": "p35"
-    },
-    {
-      "draft_locator": "Warehouse Automation and Robotics ¶2",
-      "summary": "main kinds of warehouse automation",
-      "matched_spec_paragraph": "p36"
-    },
-    {
-      "draft_locator": "Warehouse Automation and Robotics ¶3",
-      "summary": "software layers under the WMS introduced",
-      "matched_spec_paragraph": "p37"
-    },
-    {
-      "draft_locator": "Warehouse Automation and Robotics ¶4",
-      "summary": "vendor sources for WMS/WES/WCS split and robot task flow",
-      "matched_spec_paragraph": "p38"
-    },
-    {
-      "draft_locator": "Warehouse Automation and Robotics ¶5",
-      "summary": "explicit task contract for automation: identity, confirmed outcome, recovery",
-      "matched_spec_paragraph": "p39"
-    },
-    {
-      "draft_locator": "Warehouse Automation and Robotics ¶6",
-      "summary": "hypothetical robot losing connectivity shows recovering rather than reissuing tasks",
-      "matched_spec_paragraph": "p40"
-    },
-    {
-      "draft_locator": "Warehouse Automation and Robotics ¶7",
-      "summary": "find bottlenecks before buying automation and feed equipment capacity into promises",
-      "matched_spec_paragraph": "p41"
-    },
-    {
       "draft_locator": "The Choices: Who Runs the Warehouse Software ¶1",
-      "summary": "four ways to get warehouse software run",
-      "matched_spec_paragraph": "p42"
+      "summary": "Four ways to get warehouse software run",
+      "matched_spec_paragraph": "p35"
     },
     {
       "draft_locator": "The Choices: Who Runs the Warehouse Software ¶2",
       "summary": "ERP warehouse module: fit and limits",
-      "matched_spec_paragraph": "p43"
+      "matched_spec_paragraph": "p36"
     },
     {
       "draft_locator": "The Choices: Who Runs the Warehouse Software ¶3",
-      "summary": "dedicated WMS from small cloud to enterprise",
-      "matched_spec_paragraph": "p44"
+      "summary": "Dedicated WMS from small cloud to enterprise",
+      "matched_spec_paragraph": "p37"
     },
     {
       "draft_locator": "The Choices: Who Runs the Warehouse Software ¶4",
-      "summary": "3PL: same integration, different ownership, and when it fits",
-      "matched_spec_paragraph": "p45"
+      "summary": "3PL: same integration, different ownership",
+      "matched_spec_paragraph": "p38"
     },
     {
       "draft_locator": "The Choices: Who Runs the Warehouse Software ¶5",
-      "summary": "marketplace fulfillment programs and their fees",
-      "matched_spec_paragraph": "p46"
+      "summary": "Marketplace fulfillment programs like FBA and ZFS with their fees",
+      "matched_spec_paragraph": "p39"
     },
     {
       "draft_locator": "The Choices: Who Runs the Warehouse Software ¶6",
-      "summary": "Zalando's ZEOS as a provider-run shared stock pool",
-      "matched_spec_paragraph": "p47"
+      "summary": "ZEOS as a shared-stock fulfillment network",
+      "matched_spec_paragraph": "p40"
     },
     {
       "draft_locator": "The Choices: Who Runs the Warehouse Software ¶7",
-      "summary": "marketplace stock as a visible but uncountable location",
-      "matched_spec_paragraph": "p48"
+      "summary": "Marketplace stock as a location the merchant cannot count",
+      "matched_spec_paragraph": "p41"
     },
     {
       "draft_locator": "The Choices: Who Runs the Warehouse Software ¶8",
-      "summary": "recommendation by requirements and never letting the WMS become an order system",
-      "matched_spec_paragraph": "p49"
+      "summary": "Recommendation by requirements; never let the WMS become a second order system",
+      "matched_spec_paragraph": "p42"
     },
     {
       "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
-      "summary": "scale-stage table of setups and warning signs",
-      "matched_spec_paragraph": "p50"
+      "summary": "Table of setups across scale stages",
+      "matched_spec_paragraph": "p43"
     },
     {
       "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶2",
-      "summary": "Kestrel & Pine's integration lagged behind its operational complexity",
+      "summary": "Integration must match complexity; Kestrel & Pine kept an early-stage connection",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Warehouse Automation and Robotics ¶1",
+      "summary": "Automation saves walking but adds coordination work",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Warehouse Automation and Robotics ¶2",
+      "summary": "Main automation uses: transport, goods-to-person, robotic picking, sortation",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Warehouse Automation and Robotics ¶3",
+      "summary": "Division of software responsibilities in automated warehouses",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Warehouse Automation and Robotics ¶4",
+      "summary": "Vendor sources for WMS/WES/WCS and robot task flow",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Warehouse Automation and Robotics ¶5",
+      "summary": "Contract for automated tasks: identity, confirmed outcome, recovery",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Warehouse Automation and Robotics ¶6",
+      "summary": "Hypothetical robot transfer that must be recovered, not reissued",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Warehouse Automation and Robotics ¶7",
+      "summary": "Measure bottlenecks first and feed equipment capacity into promises",
       "matched_spec_paragraph": "p51"
     },
     {
       "draft_locator": "In Practice ¶1",
-      "summary": "Eva's order misses the last wave and arrives a day after the promise",
+      "summary": "Eva's order misses the promised day because the promise ignored the warehouse",
       "matched_spec_paragraph": "p52"
     },
     {
       "draft_locator": "In Practice ¶2",
-      "summary": "Black Friday: a rate-limited one-by-one feed built a four-hour backlog",
+      "summary": "Black Friday order feed throttled into a four-hour backlog",
       "matched_spec_paragraph": "p53"
     },
     {
       "draft_locator": "In Practice ¶3",
-      "summary": "fix: growable queue, batching, queue-age monitor and moving cut-off",
+      "summary": "Prevention: growing queue, batches, age monitor, moving cut-off",
       "matched_spec_paragraph": "p54"
     },
     {
       "draft_locator": "When It Goes Wrong ¶1",
-      "summary": "introduces the other failure modes",
+      "summary": "Introduces other recognizable failure modes",
       "matched_spec_paragraph": "p55"
     },
     {
       "draft_locator": "When It Goes Wrong ¶2",
-      "summary": "duplicate fulfillment orders",
+      "summary": "Duplicate fulfillment orders",
       "matched_spec_paragraph": "p56"
     },
     {
       "draft_locator": "When It Goes Wrong ¶3",
-      "summary": "cancellation arriving after the pick",
+      "summary": "Cancellation arriving after the pick",
       "matched_spec_paragraph": "p57"
     },
     {
       "draft_locator": "When It Goes Wrong ¶4",
-      "summary": "lost or wrongly collapsed shipment confirmations",
+      "summary": "Lost or collapsed shipment confirmations",
       "matched_spec_paragraph": "p58"
     },
     {
       "draft_locator": "When It Goes Wrong ¶5",
-      "summary": "short picks and how the order system decides",
+      "summary": "Short picks and partial shipments",
       "matched_spec_paragraph": "p59"
     },
     {
       "draft_locator": "When It Goes Wrong ¶6",
-      "summary": "missing or out-of-order stock events",
+      "summary": "Out-of-order or missing stock events",
       "matched_spec_paragraph": "p60"
     },
     {
       "draft_locator": "When It Goes Wrong ¶7",
-      "summary": "SKU identifier mismatches",
+      "summary": "SKU identifier mismatch",
       "matched_spec_paragraph": "p61"
     },
     {
@@ -319,32 +334,32 @@
     },
     {
       "draft_locator": "What to Take Away ¶1",
-      "summary": "the three opening faults share one cause and one contract fixes them",
+      "summary": "Three faults share one cause and one contract remedy",
       "matched_spec_paragraph": "p63"
     },
     {
       "draft_locator": "What to Take Away ¶2",
-      "summary": "established facts with sources",
+      "summary": "Established findings",
       "matched_spec_paragraph": "p64"
     },
     {
       "draft_locator": "What to Take Away ¶3",
-      "summary": "context-dependent choices",
+      "summary": "Context-dependent findings",
       "matched_spec_paragraph": "p65"
     },
     {
       "draft_locator": "What to Take Away ¶4",
-      "summary": "author's synthesis: stable contract and computed promises",
+      "summary": "Author's synthesis: stable contract and computed promises",
       "matched_spec_paragraph": "p66"
     },
     {
       "draft_locator": "Questions to Ask ¶1",
-      "summary": "ten questions to audit a warehouse integration",
+      "summary": "Ten questions to audit the warehouse integration",
       "matched_spec_paragraph": "p67"
     },
     {
       "draft_locator": "Questions to Ask ¶2",
-      "summary": "hand-off to the shipping chapter",
+      "summary": "Hand-off to the shipping and delivery chapter",
       "matched_spec_paragraph": "p68"
     }
   ],
@@ -360,145 +375,198 @@
       "criterion": "reverse_outline_matches_spec",
       "check": "reverse_outline_matches_spec",
       "verdict": "pass",
-      "finding": "All 68 outline summaries match the controlling idea of the aligned spec paragraph, in spec order (p01-p68).",
+      "finding": "All 68 aligned summaries match their spec paragraphs' controlling ideas in the same order (the three callouts are unaligned front matter); only small drift, e.g. the outliner's p42 summary foregrounds the 'second order system' rule, which the spec's p42 also carries.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "The cold reverse outline lists the spec's controlling ideas p01-p68 in spec order, section by section, with no missing, merged or reordered unit.",
       "severity": "blocker"
     },
     {
       "criterion": "one_controlling_idea_per_paragraph",
       "check": "one_controlling_idea_per_paragraph",
       "verdict": "pass",
-      "finding": "The outliner marked no unit as two_ideas.",
+      "finding": "The only unit marked two_ideas is The Choices ¶8 (recommendation plus 'never let the warehouse system become a second order system'); the spec's p42 controlling idea deliberately joins the recommendation and its one rule with the Kestrel & Pine example, so the paragraph carries the declared single idea.",
       "severity": "major"
     },
     {
       "criterion": "paragraph_traces_to_thesis",
       "check": "paragraph_traces_to_thesis",
       "verdict": "pass",
-      "finding": "Every unit traces to S1-S6: scene and wms to S1/S5, the fulfillment-order units to S2, stock to S3, confirmation and wholesale to S4, the working day and in-practice to S5, choices and stages to S6, failures to S2-S5.",
+      "finding": "Every unit traces to a supporting claim: scene and WMS sections to S1 and S5, fulfillment order to S2, stock to S3, day to S5, wholesale to S4, choices and stages to S6, automation to S1/S2, In Practice to S5, failures to S2-S5; the Zalando ZEOS paragraph is the thinnest link (S6 via the uncountable location) but still traces.",
       "severity": "major"
     },
     {
       "criterion": "evidence_is_explained",
       "check": "evidence_is_explained",
       "verdict": "pass",
-      "finding": "All other evidence (tables, Figures 1-8, the GS1 and Zalando quotations, the vendor sources and the Kestrel & Pine cases) is introduced and its point stated.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "fail",
-      "spec_locus": "p11",
-      "draft_locus": "What a Warehouse Management System Does ¶2",
-      "quote": "Picqer describes batch pick lists and planned routes, while Manhattan's Order Streaming coordinates wholesale, retail and direct orders",
-      "finding": "The Manhattan source is cited in a paragraph about how picking methods organize travel, but what it shows (coordinating wholesale, retail and direct orders) is not about cluster or batch picking and is not connected to the controlling idea; a flow reader (flowB) also reported the vendor list as breaking the explanation.",
-      "fault": "draft",
+      "finding": "Each table and figure is introduced or followed by a sentence saying what it shows (e.g. 'The table sets the four side by side: in every row the integration is the same contract'), quotations (GS1, Zalando) are glossed, and the DeHoratius figure is qualified; the scene's daily-rhythm table has only a lead-in ('Its daily rhythm below is illustrative'), which is thin but adequate since ¶4 uses its 21:00 wave.",
       "severity": "major"
     },
     {
       "criterion": "transition_expresses_declared_relationship",
       "check": "transition_expresses_declared_relationship",
       "verdict": "pass",
-      "finding": "Every declared transition_in is expressed at its boundary (e.g. 'similarly' p02, 'Then Daniel shows ... but' p08, 'Those steps ... lead to' p13, 'Both models put acceptance before the work, for a physical reason' p19, 'Beyond the Black Friday queue' p55).",
+      "finding": "Every declared transition_in is expressed at its boundary: 'similarly' (p02), 'Then Daniel shows... but' (p08 contrast), 'Those steps... lead to' (p13), 'for a physical reason' (p19), 'Besides its stock' (p28), 'With the contract in place' (p35), 'Back at Duiven, which has no robots' (in-practice), 'Beyond the Black Friday queue' (wrong); the Questions list (p67) relies on its heading for the cause_effect link, which is adequate.",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "pass",
-      "finding": "Both readers describe problem -> mechanism (WMS, then interfaces in prerequisite order) -> options and stages -> worked cases -> failures, which agrees with the declared prerequisite_order with problem_solution (scene/in-practice) and comparison (choices/stages). No section's position was 'unclear'. Points both readers raised about Waypoint, Duiven, on-hand and EDI concern terms on intent.audience.already_knows (Waypoint decisions W1-W8, Kestrel & Pine, on hand from Part II, the EDI gloss) and are not material for the declared audience; the deferred Black Friday cause was judged deliberate by both.",
+      "finding": "Both readers describe the declared prerequisite order (problem/scene, then what a WMS does, then the contract, then options, scale, automation, worked cases, failures), with the interface subsections in the announced order; no section is unclear to both, and the material lost-thread points are recorded separately below.",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/flow",
-      "draft_locus": "Warehouse Automation and Robotics ¶1",
-      "quote": "The same contract applies one level down, inside an automated warehouse.",
-      "finding": "Both readers found the automation section the weakest placement: Duiven has no automation, the section is hypothetical, and it interrupts the move from what the warehouse must exchange to who runs it; both proposed moving it after Across Scale Stages. flowA also had to work out which 'same contract' was meant, two subsections back. Both call the position signalled and workable, so the cost is mild, but the order itself causes it.",
+      "spec_locus": "/flow/rationale; sections automation and in-practice",
+      "draft_locus": "Setting the Scene: Duiven's Day ¶5 to In Practice ¶1",
+      "quote": "Why the feed fell behind is worked through in In Practice, once the warehouse's interfaces are clear.",
+      "finding": "Both readers report that the Black Friday payoff promised in the scene arrives only after Choices, Scale Stages and Automation, and that the robot section is a detour before 'Back at Duiven, which has no robots'; flow-A: 'the Black Friday explanation, promised at line 43, has been waiting since Setting the Scene'. The difficulty comes from the declared section order, not the prose.",
       "fault": "spec",
-      "corroborated_by": "flowB item 2 and 4: Automation 'Partly clear' ... 'Move Warehouse Automation and Robotics after Across Scale Stages ... It is hypothetical for Duiven and interrupts the move from contract to buying choice.'",
+      "corroborated_by": "flow-B item 31: 'The interfaces are clear at line 150, but the payoff arrives only at line 235, after Choices, Scale Stages and Automation' (also item 8, automation 'interrupts the return to the Black Friday story')",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "p23",
-      "draft_locus": "How the Warehouse Connects to Everything Else ¶10",
-      "quote": "The same contract, both ways, can survive Waypoint decision W2: an OMS replaces the shop platform as the sender in Q4 2027 without changing the warehouse's responsibilities.",
-      "finding": "Both readers re-read this sentence: 'can survive' hedges what the spec states as a fact, and 'both ways' has no clear referent. State plainly that the contract (instruction in, confirmations out) stays the same when the OMS becomes the sender.",
+      "spec_locus": "/introduction/paragraphs/1 (p02)",
+      "draft_locus": "Introduction ¶2",
+      "quote": "A retried request with that key creates no second pick list.",
+      "finding": "Both readers had to re-read the thesis paragraph because it packs two failure examples, the WMS, the fulfillment order, the key, retries, the single writer and three reporting duties into one block; flow-A: 'This paragraph introduces too many new ideas at once'. The spec's claim is fine; the prose crowds it.",
       "fault": "draft",
-      "corroborated_by": "flowB item 3: \"'The same contract, both ways, can survive Waypoint decision W2' is unclear: I could not tell what 'both ways' means.\"",
+      "corroborated_by": "flow-B item 12: 'packs two new failure examples, the WMS definition, the fulfillment order, the key, retries, the single writer and the reporting duties into one block. I had to re-read it.'",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "p25",
-      "draft_locus": "How the Warehouse Connects to Everything Else ¶12",
-      "quote": "The rule I give every merchant",
-      "finding": "The first-person voice arrives unannounced, and the same paragraph's last sentence packs two incidents (the App That Wrote Stock of March 2026 and the May 2027 reconciliation, a date after the April 2027 scene) into one long clause; flowA re-read it, flowB re-read it to check the timeline.",
-      "fault": "draft",
-      "corroborated_by": "flowB item 3: \"'The rule I give every merchant' is the first time the author's voice appears\" and \"'the first reconciliation of May 2027' comes in a scene set during an April 2027 visit ... I re-read it to check the timeline.\"",
+      "spec_locus": "/sections/3/paragraphs/4-5 (p39, p40)",
+      "draft_locus": "The Choices: Who Runs the Warehouse Software ¶5-¶6",
+      "quote": "Zalando Fulfillment Solutions (ZFS) launched in autumn 2017 and served over 100 partner brands by June 2019.",
+      "finding": "Both readers found the Zalando history and figures (ZFS launch, ZEOS, NEXT, 24 markets) a digression that broke the comparison of the four choices; the spec assigns this evidence to p39 and p40, so the load comes from the spec.",
+      "fault": "spec",
+      "corroborated_by": "flow-B item 19: 'the history of the Zalando programme ... is a digression. I lost the thread of \"four ways to get warehouse software run.\"'",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "p49",
+      "spec_locus": "/sections/3/paragraphs/7 (p42)",
       "draft_locus": "The Choices: Who Runs the Warehouse Software ¶8",
-      "quote": "Kestrel & Pine shows where that leads: its shop platform, its ERP and its warehouse report each count orders by a different definition.",
-      "finding": "Neither reader could connect this example to the warning before it (never let the WMS become a second order system); the draft does not say how the three order counts follow from that, so it reads as a new, unfollowed claim at the end of the recommendation.",
-      "fault": "draft",
-      "corroborated_by": "flowB item 3: \"I could not connect this to the warning that comes just before it, about the WMS becoming a second order system.\"",
+      "quote": "Kestrel & Pine shows where a second order system leads: once several systems held order status, each came to count orders its own way",
+      "finding": "Both readers felt the 'three definitions of an order' incident, brought in at the end of the recommendation and not followed up, was out of place; the spec's p42 controlling idea assigns exactly this example to the paragraph.",
+      "fault": "spec",
+      "corroborated_by": "flow-B item 20: 'This is new, unexplained evidence at the end of a recommendation paragraph, and it feels out of place.'",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "p30",
-      "draft_locus": "How the Warehouse Connects to Everything Else ¶17",
-      "quote": "A parcel for Eva and a pallet for Bergzicht Outdoor leave the same building through different processes.",
-      "finding": "Bergzicht Outdoor is named with no word on who it is; both readers had to infer from the later chargeback paragraph that it is a retail (wholesale) customer. A short appositive ('Kestrel & Pine's retail customer') fixes it.",
+      "spec_locus": "/sections/2/paragraphs/11 (p25)",
+      "draft_locus": "How the Warehouse Connects to Everything Else ¶12",
+      "quote": "the first reconciliation, run in May 2027 after Noor's visit, found 2.3% of active variants",
+      "finding": "Both readers had to re-check the timeline because the paragraph jumps from March 2026 to a May 2027 result that lies after the April 2027 scene being narrated; the spec's facts are fine, but the prose does not place the later reconciliation relative to the visit clearly enough.",
       "fault": "draft",
-      "corroborated_by": "flowB item 3: \"'a pallet for Bergzicht Outdoor' introduces Bergzicht with no word on who it is. I inferred it is a retail customer only from the chargeback paragraph.\"",
+      "corroborated_by": "flow-B item 16: 'The dates jump from March 2026 to a May 2027 event that happens after the April 2027 visit the chapter is narrating. I had to re-check the timeline.'",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/introduction",
-      "draft_locus": "Introduction, FAILURE PATTERNS callout",
-      "quote": "The First Snowfall",
-      "finding": "The callout names The First Snowfall, Schrödinger's Order and The Phantom Stock, but the body never uses these names and uses its own incident names (the Queue That Waited, the Three-Status Order, App That Wrote Stock), so the reader has to map the two naming systems. Reported by flowB only; minor.",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "p13",
-      "draft_locus": "What a Warehouse Management System Does ¶4",
-      "quote": "a reminder to count rather than a rate to assume. That makes it Duiven's **system of record**",
-      "finding": "One bullet packs a study, a caveat and a definition; 'it' (the WMS) is ambiguous after the study sentence. Reported by flowB only; minor.",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "p33",
+      "spec_locus": "/sections/2/paragraphs/19 (p33)",
       "draft_locus": "How the Warehouse Connects to Everything Else ¶20",
       "quote": "€250 per order below 90% delivered on time and in full on an order line",
-      "finding": "flowA had to re-read the penalty sentence to parse it. Reported by flowA only; minor.",
+      "finding": "Both readers stumbled on the chargeback paragraph: flow-A could not parse what is measured per order and per line, and flow-B had to map the €70 and €250 back to the two families named only afterwards.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 18: 'The distinction comes after the examples, and I had to map the €70 and €250 back to the families.'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/1 (p53)",
+      "draft_locus": "In Practice ¶2",
+      "quote": "Picqer's is about 500 requests per minute",
+      "finding": "Both readers re-read the throttling sentence: flow-A because the long parenthetical breaks it, flow-B because 38 orders a minute with 'several calls per order' seems to stay under 500 requests a minute, so the throttling does not add up. The spec's evidence item sets these two figures side by side, so the arithmetic tension originates in the spec.",
+      "fault": "spec",
+      "corroborated_by": "flow-B item 22: 'At 38 orders a minute, \"several calls per order\" seems to stay under 500 requests a minute, so the throttling does not add up' (flow-A item 23 on the same parenthetical)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/1 (p11)",
+      "draft_locus": "What a Warehouse Management System Does ¶2",
+      "quote": "Larger products also release different order types together",
+      "finding": "flow-A found 'products' ambiguous (software or merchandise) and the Manhattan Order Streaming detail an unused aside; only one reader reported it.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3 (p04)",
+      "draft_locus": "Introduction ¶4",
+      "quote": "It compares the four ways to get warehouse software run and how the setup changes as a merchant grows",
+      "finding": "flow-B found the roadmap long and its parenthetical list of items hard to hold in mind; only one reader reported it.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/3 (p13)",
+      "draft_locus": "What a Warehouse Management System Does ¶4",
+      "quote": "so a reminder to count rather than a rate to assume",
+      "finding": "flow-B re-read the third bullet, which carries a study, a caveat, a definition and a decision reference; only one reader reported the density.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/3 (p17)",
+      "draft_locus": "How the Warehouse Connects to Everything Else ¶4",
+      "quote": "`CANCELLATION_REQUESTED`, `CANCELLATION_ACCEPTED` or `CANCELLATION_REJECTED`",
+      "finding": "flow-B found the run of Shopify state names dense and adding little to the point made two paragraphs later; only one reader reported it.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/12 (p26)",
+      "draft_locus": "How the Warehouse Connects to Everything Else ¶13",
+      "quote": "the stock lag Daniel's chart also showed, separate from the four-hour order backlog",
+      "finding": "flow-B had to hold the two Black Friday lags apart because the stock-lag half is resolved here while the order-feed half waits for In Practice; only one reader reported it.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0 (p45)",
+      "draft_locus": "Warehouse Automation and Robotics ¶1",
+      "quote": "the same contract then applies one level down, inside the building",
+      "finding": "flow-B paused to work out which contract is meant until the task contract appears in ¶5; only one reader reported it.",
       "fault": "draft",
       "severity": "minor"
     },
@@ -506,71 +574,76 @@
       "criterion": "known_before_new",
       "check": "known_before_new",
       "verdict": "pass",
-      "finding": "Every does_not_know term is explained at or before first use (location, put-away, slotting, waves, cluster and batch picking, cartonization, cycle counting, AMR, goods-to-person, robotic picking, sortation, WES, WCS, fleet management, the fulfillment-order lifecycle, cut-off, capacity, release policy, SSCC, DESADV/ASN, EDIFACT, marketplace programs and the see-but-not-count location). Terms the flow readers found unexplained (Waypoint W-decisions, on hand, EDI, Duiven) are on already_knows.",
+      "finding": "Terms the readers flagged as never explained (Waypoint and its W-decisions, D2C, EDI, order hub, the four scale stages, on hand, reconciliation, idempotency) are on audience.already_knows from Part I-III, and the does_not_know warehouse, automation, SSCC/DESADV and marketplace-program terms are glossed at first substantive use.",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience/does_not_know (cut-off, capacity and release policy as the warehouse's day)",
+      "draft_locus": "Introduction ¶1",
+      "quote": "may push the parcel past its dispatch cutoff",
+      "finding": "'Cut-off' is on does_not_know but is used in the intro, the thesis paragraph and the scene before it is defined in How the Warehouse Connects ¶15; the meaning is guessable, but no early gloss is given.",
+      "fault": "draft",
+      "corroborated_by": "flow-A item 26 ('\"dispatch cutoff\" (line 15) and \"cut-off\" (line 17). The cut-off is defined at line 133') and flow-B item 24",
       "severity": "major"
     },
     {
       "criterion": "no_weak_introduction_pattern",
       "check": "no_weak_introduction_pattern",
       "verdict": "pass",
-      "finding": "Opens on a puzzling scenario (the picker who finds no jacket), then the claim and the roadmap; no weak pattern.",
+      "finding": "The introduction opens with a concrete puzzling scenario (the picker who finds no jacket) and moves to a specific claim; no placeholder, restated question, dictionary or 'dawn of man' opening.",
       "severity": "major"
     },
     {
       "criterion": "no_weak_conclusion_pattern",
       "check": "no_weak_conclusion_pattern",
       "verdict": "pass",
-      "finding": "The conclusion synthesizes the three opening faults into one cause and one contract, then sorts what is established, what depends on context and the author's judgement; no weak pattern.",
+      "finding": "The conclusion does not open with 'in conclusion' or merely restate the thesis; it synthesizes the three opening faults into one cause and sorts what holds by how settled it is, with no new idea or body evidence.",
       "severity": "major"
     },
     {
       "criterion": "conclusion_synthesizes_and_answers_so_what",
       "check": "conclusion_synthesizes_and_answers_so_what",
       "verdict": "pass",
-      "finding": "p63 names the common cause and the contract, and states what a merchant should write down before buying a WMS, a 3PL or robots, with the Black Friday remedy.",
+      "finding": "What to Take Away ¶1 reads the missing jacket, Eva's Wednesday promise and the Black Friday queue as one failure ('a promise made from a copy or a sentence') and states the so-what: write the contract before buying a WMS, a 3PL or robots.",
       "severity": "major"
     },
     {
       "criterion": "conclusion_calls_back_to_introduction",
       "check": "conclusion_calls_back_to_introduction",
       "verdict": "pass",
-      "finding": "p63 opens with 'The picker who found no jacket', the opening hook, set against Eva's promise and the Black Friday queue.",
+      "finding": "The conclusion's first sentence returns to 'The picker who found no jacket', the opening's element named in conclusion.callback.to, and names the warehouse fact each failure ignored.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted the Duiven Black Friday opening, what a WMS does, the fulfillment order with acceptance, the stock count, cut-off/capacity/release feeding the promise, wholesale labels, choices and scale, automation, Eva's order, the failures, and Kestrel & Pine plus vendor/standards documentation as evidence: the substance of expected.",
       "severity": "major"
     },
     {
       "criterion": "AC-1",
       "check": "custom",
       "verdict": "pass",
-      "finding": "Reader places the fault in the order feed (one-at-a-time creation, several calls, vendor rate limit) and in a promise that ignored the real cut-off and queue, and names all four remedies and 'not a faster warehouse'.",
+      "finding": "The reader places the fault in the order feed (one-at-a-time creation, several calls, vendor rate limit) and in a promise that ignored the queue, says the warehouse was never the limit, and names all four remedies: growing queue, batches within the limit, oldest-order age monitor, moving cut-off.",
       "severity": "major"
     },
     {
       "criterion": "AC-2",
       "check": "custom",
       "verdict": "pass",
-      "finding": "Reader gives the idempotency key and reuse of the existing instruction (no second pick list or jacket), and the cancellation as a request the warehouse may refuse, with the order staying in progress, support telling the customer and the item returning.",
+      "finding": "The reader says the idempotency key makes the WMS reuse the existing order (one jacket, alert on repeat) and that a cancellation after acceptance is a request the warehouse answers; if refused the order stays in progress, support tells the customer and the item returns.",
       "severity": "major"
     },
     {
       "criterion": "AC-3",
       "check": "custom",
       "verdict": "pass",
-      "finding": "Reader names the WMS, at pack time, from what was actually packed, never the order or the ERP view, with the €14,200 ASN Chargeback and W6.",
+      "finding": "The reader names the WMS, at pack time, from what was actually packed, never from the order or the ERP's view, citing the €14,200 ASN Chargeback and W6.",
       "severity": "minor"
-    },
-    {
-      "criterion": "AC-4",
-      "check": "intro_predicts_content",
-      "verdict": "pass",
-      "finding": "From the introduction alone the reader predicted the sections in order (Duiven Black Friday, what a WMS does, fulfillment order, stock, working day, wholesale, automation, four choices, scale, Eva and Black Friday worked through, failures) and the evidence (Kestrel & Pine's Duiven case and vendor and standards documentation).",
-      "severity": "major"
-    },
-    {
-      "criterion": "AC-5",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "finding": "The reverse outline lists the same 68 controlling ideas in the same order as the spec's paragraphs.",
-      "severity": "blocker"
     }
   ]
 }

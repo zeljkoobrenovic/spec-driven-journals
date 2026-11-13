@@ -69,7 +69,7 @@ Commerce platforms break promises through recurring patterns, each of which look
 - **Platform and change**, a decision copied from a bigger company or carried out all at once on a single day: **The First Snowfall**, **The Giant's Boots**, **The Burned Bridge**, **The Forked Platform** and **One Size Fits None**.
 - **Governance**, a dependency, a deadline or an actor nobody owns: **The Lynchpin**, **The Long Fuse** and **The Secret Agent**.
 
-The patterns travel in chains, and a chain starts at a connector nobody owns, a dependency nobody watches or a decision copied without its reasons. A Spaghetti Junction of unowned connectors breeds Messages in a Bottle, messages sent once and trusted, which breed Phantom Stock, stock only a copy holds, and Boomerangs, returns refunded twice. Kestrel & Pine's Black Friday 2026 met two at once: **The Phantom Stock** in the two-hour-old copy and **The First Snowfall** in a chain of stock syncs that met real load for the first time on the day itself. Every chapter names the patterns it works on, so you can use the list as an index.
+The patterns travel in chains, and a chain starts at a connector nobody owns, a dependency nobody watches or a decision copied without its reasons. A Spaghetti Junction, a tangle of connectors nobody owns, breeds Messages in a Bottle: messages sent once and trusted to arrive. Those in turn breed Phantom Stock (stock that only a copy holds) and Boomerangs (returns refunded twice). Kestrel & Pine's Black Friday 2026 met two at once: **The Phantom Stock** in the two-hour-old copy and **The First Snowfall** in a chain of stock syncs that met real load for the first time on the day itself. Every chapter names the patterns it works on, so you can use the list as an index.
 
 ## Four Scale Stages, and Why Every Chapter Compares Them
 
@@ -100,7 +100,7 @@ Kestrel & Pine is a composite of patterns common among growing omnichannel brand
 
 At that merchant the book follows **the order's journey**: the path one order takes from a shopper's search to the doorstep, back again as a return, and into the books. Eva's jacket is that order. Its canonical facts never change: ordered Tuesday 13 April 2027 at 21:14, picked and packed at Kestrel & Pine's Duiven warehouse on Wednesday, delivered by PostNL on Thursday 15 April, and exchanged for a size L through the returns portal on Monday 19 April.
 
-The parts follow that journey: three preface pages, eleven parts, an appendix tutorial and four reference pages. Each part asks one question:
+The book is laid out around that journey: three preface pages, eleven parts, an appendix tutorial and four reference pages. Each part asks one question:
 
 | Section | The question it answers | Chapters |
 | --- | --- | --- |

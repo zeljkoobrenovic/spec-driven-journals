@@ -11,8 +11,8 @@ logo: "assets/images/part-5-intro/logo.jpeg"
 
 > **KEY POINTS:**
 >
-> * **Every outside channel is a way into the same order record.** Marketplace, portal, email and electronic trading-partner orders should all create one kind of order, flagged by channel.
-> * **The intermediaries translate; they must not own.** Connectors and electronic document providers carry facts between owners, and each fact keeps one honest source.
+> * **Every outside channel is a way into the same order record.** Marketplace, portal, email and EDI orders should all create one kind of order, flagged by channel.
+> * **The intermediaries translate; they must not own.** Connectors and EDI providers carry facts between owners, and each fact keeps one honest source.
 > * **Outside parties keep score and set the calendar.** Marketplaces grade, retail chains charge back (deduct payments) and e-invoicing mandates arrive with legal dates, so availability must never wait on a scheduled finance-system update.
 
 <br>
@@ -25,7 +25,7 @@ A merchant can sell the same jacket through its own shop, a marketplace or a ret
 
 Unlike in Parts II to IV, someone else's system creates the order, and a connector or an **electronic data interchange (EDI)** provider translates it. The part's examples are routes for the same jacket: two Amazon.de orders on 13 April 2027; a pre-season purchase by De Kaap Buitensport, an outdoor shop; and a **240-unit reorder on three pallets** by Bergzicht Outdoor, a retail chain. All share the warehouse and books of Eva's order.
 
-The keyed orders and the opening's penalties come from one decision: where each order becomes authoritative. Every channel's order should be created in the order record. Connectors should translate channel requirements while preserving ownership of prices, stock and orders: each promise sent out (stock, price and credit, pallet contents, the invoice) comes from its owner. The chapters take marketplaces, business buyers, trading-partner documents, then the ERP.
+The keyed orders and the opening's penalties come from one decision: where each order becomes authoritative. Every channel's order should be created in the order record. Connectors should translate channel requirements but never own a fact: every promise sent out (stock, price and credit, pallet contents, the invoice) comes from the system that owns it. The chapters take marketplaces, business buyers, trading-partner documents, then the ERP.
 
 ![Diagram: The outside channels of Part V](assets/images/part-5-intro/fig01-outside-channels-part-v-three-kinds.jpeg)
 **Figure 2:** *The outside channels of Part V: three kinds of outside party, three intermediaries that translate (the marketplace connector, the B2B portal and the EDI provider), one order record that every channel's order is created in, and an ERP that receives daily batches and feeds no channel directly: its wholesale prices and credit limits leave it only as events.*
@@ -35,13 +35,13 @@ The keyed orders and the opening's penalties come from one decision: where each 
 
 ## Chapters in this part
 
-[[marketplaces-and-channel-integration]] explains **listings, imported orders, stock allocation and seller performance**. Stale stock causes cancellations and penalties; a retired connector interface leaves one channel outdated for two days. The connector needs a technical contract and a responsible owner.
+[[marketplaces-and-channel-integration]] explains **listings, imported orders, stock allocation and seller performance**. Stale stock causes cancellations and penalties; a retired connector interface leaves one channel's stock two days old. The connector needs a technical contract and a responsible owner.
 
 [[b2b-commerce]] turns from consumers to companies: **company accounts, negotiated prices, payment terms and credit limits**. De Kaap's purchase, held over its credit limit, shows why accepting an order requires more than checking stock. Finance's terms must reach the portal reliably.
 
 For the largest buyers, [[edi-and-e-invoicing]] follows **structured orders, despatch advices (shipment notices) and invoices**. Bergzicht's €14,200 deduction for mismatched pallet labels shows why the shipment notice must describe what was packed. It also separates trading-partner requirements from dated e-invoicing mandates.
 
-Last, [[erp-and-back-office-integration]] assigns **the ERP a clear financial and purchasing role**. The ERP partner's connector, which took three weeks to understand, illustrates the cost of undocumented ownership. Finance can consume complete batches while stock availability needs a faster route.
+Last, [[erp-and-back-office-integration]] assigns **the ERP a clear financial and purchasing role**. A connector its ERP partner built, which took three weeks to understand, illustrates the cost of undocumented ownership. Finance can consume complete batches while stock availability needs a faster route.
 
 ## Where to Begin
 
