@@ -48,11 +48,11 @@ The January inventory had found **13 of 34 integrations unowned**. The map gives
 
 | What | Count | Owned by the integration team | Owned by the agency | Owned by a vendor or partner | No named owner |
 | --- | --- | --- | --- | --- | --- |
-| Integrations | 34 | 14 (flows in the iPaaS, the integration team under Ruben Alves) | 9 (scripts, mostly from 2019–2022) | 6 (vendor connectors, including the ERP partner's platform↔ERP connector) | **5** |
+| Integrations | 34 | 14 (flows in the iPaaS, the integration team under Ruben Alves) | 9 (agency scripts with a named owner, mostly from 2019–2022) | 6 (vendor connectors, including the ERP partner's platform↔ERP connector) | **5** |
 | Installed apps | 41 | — | 22 installed by the agency | — | 19 installed by various people. Of all 41: 6 unused, **3 write inventory** |
 | Systems | 13 | Business owner known for all; technical owner known for 8 | — | — | 5 systems with no technical owner inside the company |
 
-The five integrations still unowned in April included the bol stock script, a price-list export to the German storefront (the one behind the **Price Drift** of October 2026: €179 instead of €199 for nine days, about €8,200 of margin) and the pre-order app's inventory write, an app's write into stock that the map counts as an integration (the **App That Wrote Stock**, March 2026). Three of Kestrel & Pine's ten incidents sat in the blank cells of one spreadsheet. That is the whole case for the map: **the incidents were not caused by bad code; they were caused by code with no owner.**
+The five integrations still unowned in April included the bol stock script, which the agency built but nobody owned, a price-list export to the German storefront (the one behind the **Price Drift** of October 2026: €179 instead of €199 for nine days, about €8,200 of margin) and the pre-order app's inventory write, an app's write into stock that the map counts as an integration (the **App That Wrote Stock**, March 2026). Three of Kestrel & Pine's ten incidents sat in the blank cells of one spreadsheet. That is the whole case for the map: **the incidents were not caused by bad code; they were caused by code with no owner.**
 
 ## What Owning Means
 

@@ -22,7 +22,7 @@ TOPDESC = [
     'Integration styles and iPaaS, events, consistency and reconciliation, API contracts and versioning, identity and master data, and the commerce data platform.',
     'Architecture styles from monolith to microservices, multi-tenancy and rate limits, extensibility and app ecosystems, storefront delivery and web performance, and peak load and reliability.',
     'Card-data security, bots, account takeover and skimmers, privacy, consent and data transfers, and the consumer, payment, accessibility and platform law (with its guidance and decisions) that turns into requirements.',
-    'The four end-to-end journeys mostly reuse sources listed under the parts above; this topic holds only the sources a journey alone cites.',
+    'The four end-to-end journeys mostly reuse sources listed under the parts above; this topic holds the sources the journeys cite most.',
     'Build, buy or assemble, replatforming and migration, scaling stages, team design and engineering organization, and AI assistants, agents and agentic payment protocols as of 2026.',
     'Filings, results, annual reports, shareholder letters and corporate announcements of Shopify, Amazon, Zalando, commercetools and Shopware, and the engineering, press and product sources the four case studies use alone.',
 ]
@@ -97,16 +97,18 @@ types = Counter(s['type'] for s in srcs)
 cited_pages = [pm for f, pm, t in chap if any(pm in s['chapters'] for s in srcs)]
 body = []
 body.append('## How to Read This Register\n')
-body.append(f"**R** marks a consulted source; the numbers identify, they do not rank. The register holds **{len(srcs)} sources** harvested from the **Sources and Evidence** sections of {len(cited_pages)} pages, deduplicated by normalized URL (scheme, `www.`, trailing slash, fragment and `.html` suffix ignored); where chapters cited the same legal text, filing or post under two URLs, the entry keeps both. Identifiers were assigned in topic order for this first edition and stay stable: **new sources append from the next free R-number and are never renumbered**, and a removed source's number is retired rather than reused, so a reference to an identifier keeps meaning the same document.\n")
-body.append("Each entry gives the identifier, the linked title, the author or publisher, the **publication year as the citing chapter gave it** (\"n.d.\" where the source carries no date, with access or update dates kept where the chapter recorded them), one clause on what the source supports, the evidence type and the chapters that cite it. Company engineering evidence carries its year because old posts may describe systems that have since been replaced; a post more than about three years old is a record of that date, not of today. Where chapters cited one source with slightly different metadata, the entry keeps the wording most chapters used, and where they gave different years it keeps the most specific citation.\n")
+body.append(f'**R-numbers identify sources; they do not rank them.** The register contains **{len(srcs)} sources** from the Sources and Evidence sections of **{len(cited_pages)} pages**. Equivalent URLs were consolidated, with alternate links retained where relevant.\n')
+body.append('Identifiers stay stable. New sources receive the next unused number; removed numbers are retired. Existing references therefore continue to identify the same document.\n')
+body.append("Each entry provides a linked title, publisher or author, date, supported claim, evidence type and citing chapters. Metadata follows the chapters' citations, retaining the most specific date where they differ. **An old architecture post describes its period, not necessarily the company's present system.**\n")
 body.append('| Evidence type | Sources | What it is | How to read it |')
 body.append('| --- | --- | --- | --- |')
 for t, (what, how) in TYPEDESC.items():
     if types.get(t): body.append(f"| {t} | {types[t]} | {what} | {how} |")
 body.append('')
-body.append("The chapters also rely on the book's own research briefs and plan, written in November 2026 to collect and check the company, platform, regulatory and practice facts the chapters use. Those are working notes, not public evidence, and are not listed; wherever a brief's fact matters, the chapter cites the public source behind it, and that source is listed below. Links to the companion books (RECONCILED, LISTED and others) are cross-references to published pages, not external evidence, and are not listed either.\n")
+body.append("Private research notes and the book plan are excluded. Their claims point to public sources, which are listed here. The author's Productscape domain models (the last row of the table) appear once as planning material, not evidence of a company's internal design. Links to companion books such as RECONCILED and LISTED are reading cross-references and are also excluded from this external-source register.\n")
 body.append('## Topic Index\n')
-body.append("Identifiers run in topic order, so each topic is one contiguous block. The first ten topics follow the book's parts: a source sits under the part whose chapters cite it most, and its **Cited in** line lists every page that uses it. Legal texts, regulator guidance and decisions cited by [[commerce-security]], [[privacy-and-customer-data]] or [[commerce-regulation]] sit together under Part VIII, so the law is found in one place, unless one other part cites them in more pages (VAT and e-invoicing law stays with the tax and EDI chapters that lean on it). The eleventh topic collects the filings, results and announcements of Shopify, Amazon, Zalando, commercetools and Shopware, which chapters across the book cite, together with the sources only the case studies in Part XI use. Engineering posts and product documentation by a case company sit under the part they inform.\n")
+body.append("Browse by topic or use **Sources by Chapter** near the end. A source sits under the topic citing it most; its **Cited in** field lists all uses. Most legal sources sit with security, privacy and regulation, while most tax and electronic-invoicing texts remain with those specialist topics. Each range below runs from a topic's lowest to its highest identifier; because new sources take the next unused number, ranges are not contiguous and can overlap.\n")
+body.append('The final topic collects company filings, results and announcements, plus evidence used only in case studies. Engineering posts and product documentation remain under the technical subject they support.\n')
 for i, T in enumerate(TOPICS):
     ts = [s for s in srcs if s['topic'] == i]
     if not ts: continue
@@ -124,17 +126,20 @@ for f, pm, t in chap:
     idl = sorted((s['id'] for s in srcs if pm in s['chapters']), key=num)
     if idl: body.append(f"- [[{pm}]] ({len(idl)}): " + ', '.join(idl) + '.')
 body.append('')
-body.append("Kestrel & Pine is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.")
+body.append("No source above describes Kestrel & Pine, which is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.")
+body.append('')
+body.append("This register closes the four reference pages, which answer the four lookups a chapter leaves you with: where a topic is covered ([[domain-coverage]]), which record a decision needs ([[toolkit]]), what a word means ([[glossary]]) and which source backs a claim (this page). Each answer points back to the chapter that owns it, so a disagreement between a chapter and a reference page is a defect to fix in one of them. As [[domain-coverage]] says at the start of these pages, the book does not cover every business job equally: check coverage before treating it as a complete map. Before relying on a figure or a rule from the book, find its source here, check the source's type and date, and keep documented facts, labeled inferences and Kestrel & Pine apart.")
 body_txt = '\n'.join(body)
 
-words = len(re.sub(r'\(https?://[^)]+\)', '', body_txt).split()) + 500
 head = f'''---
 title: "Bibliography: Every Source the Book Cites"
 date: 2026-11-07
 author: Željko Obrenović
 excerpt: "Where does the book's evidence come from? Every public source the chapters cite, listed once with its year, its evidence type and the pages that rely on it, findable by topic or by chapter. Nothing is added as further reading."
 permalink: bibliography
-timetoread: {round(words / 230 / 5) * 5} min read
+timetoread: __TTR__ min read
+icon: "assets/icons/bibliography.png"
+logo: "assets/images/bibliography/logo.jpeg"
 ---
 
 > **IN THIS SECTION, YOU WILL:** Find the public source behind any claim in the book, with its date, its evidence type and every chapter that relies on it, by topic or by chapter.
@@ -146,11 +151,16 @@ timetoread: {round(words / 230 / 5) * 5} min read
 > * **Keep documented facts, inferences and Kestrel & Pine distinct.** The sources support the documented facts. Reference architectures for real platforms are labeled inferences, the recommendations are my judgement, and Kestrel & Pine, the omnichannel brand the book follows, is fictional: no source here describes it.
 
 <br>
-This page lists the external sources the chapters cite. The research was conducted in **November 2026**, and most entries were consulted then; where a chapter recorded an access date, a version or a "last updated" date, the entry keeps it. Many sources are in **Dutch, German, French or Polish** (tax-authority guidance, statutes, retailer supplier manuals and trade press); the citing chapters translated what they use. Much vendor documentation is living and undated, so those entries carry **"n.d." with the month it was read**. The starting map for the research was a set of **Productscape domain models of commerce products, inferred from public product behavior**; they are listed once as the author's working model and are not evidence about any company's systems.
+Use this register to trace a claim in any chapter to its public source and see when that evidence was published or checked: look the source up by topic, or find a chapter's identifiers under **Sources by Chapter** near the end. The chapters draw on company accounts, technical documentation, research and official rules. Research took place in **November 2026**; entries retain publication, access, update and version dates. **'n.d.' means undated**, so the access month is the indication of when that documentation was read.
+
+Some sources are in Dutch, German, French or Polish, with translations used in the chapters. The page first explains how to read an entry (its R-number, fields and evidence type), then gives a topic index, the entries by topic and, near the end, the sources by chapter.
 
 '''
 os.makedirs(os.path.join(ROOT, 'posts', 'bibliography'), exist_ok=True)
-open(os.path.join(ROOT, 'posts', 'bibliography', 'index.md'), 'w').write(head + body_txt + '\n')
+text = head + body_txt + '\n'
+words = len(re.sub(r'\(https?://[^)]+\)', '', text.split('\n---\n', 1)[1]).split())  # the whole page after the front matter
+text = text.replace('__TTR__', str(round(words / 230 / 5) * 5))
+open(os.path.join(ROOT, 'posts', 'bibliography', 'index.md'), 'w').write(text)
 print(len(srcs), 'sources;', dict(types))
 for i, T in enumerate(TOPICS):
     ts = [s['id'] for s in srcs if s['topic'] == i]

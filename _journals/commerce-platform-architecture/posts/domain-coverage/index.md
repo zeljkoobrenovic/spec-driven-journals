@@ -1,5 +1,5 @@
 ---
-title: "Domain Coverage: From Three Model Families to Forty-Nine Chapters"
+title: "Domain Coverage: From Three Model Families to the Book's Chapters"
 date: 2026-11-07
 author: Željko Obrenović
 excerpt: "Which chapter covers which part of a commerce platform? This reference page maps the three research model families behind the book's planning, a merchant platform model, a retail marketplace model and nine specialist-product models, to the chapters that cover their capabilities, lists what the models lack and what the book added, and says what it leaves out on purpose."
@@ -22,7 +22,7 @@ Use this page to find the chapter that covers a business job, or to learn that t
 
 This page opens the book's four reference pages, which gather for lookup what the chapters introduce where they need it. Domain coverage, this page, sends a capability to the chapter that covers it. The [[toolkit]] answers sixteen recurring questions with a card that names an owner, a system of record and a date, each filled once with Kestrel & Pine's facts. The [[glossary]] gives each term one plain meaning and the chapter that owns it. The [[bibliography]] lists every cited source once, with its date and the pages that cite it. Each page is drawn from the chapters, so a disagreement between a chapter and a reference page is a defect to fix.
 
-The page answers where a topic is covered, how the book differs from its planning models and what it leaves out. For the architectural argument, use [[commerce-capability-map]] to map the business jobs and [[boundaries-and-systems-of-record]] to assign ownership of facts.
+For the architectural argument behind the map, use [[commerce-capability-map]] to map the business jobs and [[boundaries-and-systems-of-record]] to assign ownership of facts.
 
 ## Where the Models Come From
 
@@ -46,6 +46,13 @@ Four rules follow from what the models are:
 In each row, the short codes identify source models. The **first linked chapter** gives the main treatment; chapters in parentheses cover a related part or use the capability. Placements came from the research inventory and the chapter contracts (the plan's statement of what each chapter owns) and were checked against the written chapters, including the security, regulation, return journey, AI commerce and Shopify case chapters; where a chapter does not cover what its contract promised, the row now says so.
 
 Three broad treatments are omitted from repeated rows: [[commerce-capability-map]] for the overall map, [[boundaries-and-systems-of-record]] for ownership, and [[commerce-scaling-stages]] for growth. Journey and case chapters appear where they make a specific contribution; Parts I and IX have no rows of their own because their chapters frame or walk across all capabilities. LISTED and RECONCILED, named in some rows, are companion books on marketplace and finance-systems architecture.
+
+## How to Use This Map
+
+1. **Match by meaning, not by name.** For each system you own, find the row in the tables below that does the same job and read its primary chapter first.
+2. **Read the departures before you copy a decomposition.** An order record in seven systems or a stock ledger in five is not a design; it is the models' shape, and the departures table names the chapters that explain what to do about it.
+3. **Check the left-out list against your business.** If you sell food, pharma or cosmetics, lots are not optional; if you run a workshop or your own vans, the book leaves you a sidebar to write.
+4. **Use the persona table as a reading route.** Find your seat at Kestrel & Pine and start with the chapters in its row.
 
 ## Coverage by Capability
 
@@ -250,12 +257,9 @@ Four needs recur: reliable stock, orders without retyping, safe changes and an e
 
 The models describe each product's customer. This book adds the architect's question: **how should the products work together?**
 
-## How to Use This Map
+## Four Ways Into One Map
 
-1. **Match by meaning, not by name.** For each system you own, find the row that does the same job and read its primary chapter first.
-2. **Read the departures before you copy a decomposition.** An order record in seven systems or a stock ledger in five is not a design; it is the models' shape, and the departures table names the chapters that explain what to do about it.
-3. **Check the left-out list against your business.** If you sell food, pharma or cosmetics, lots are not optional; if you run a workshop or your own vans, the book leaves you a sidebar to write.
-4. **Use the persona row as a reading route.** Find your seat at Kestrel & Pine and start with the chapters in its row.
+The capability rows, the left-out list, the departures and the personas are four ways into one map: by the job, by what is missing, by what the book changes and by the reader's seat. Commerce spans more business jobs than one book can cover equally, and the left-out list lets you check that against your own business before you rely on the book.
 
 For practical records, continue to [[toolkit]]. Use [[glossary]] to look up terms and [[bibliography]] to trace the public sources.
 

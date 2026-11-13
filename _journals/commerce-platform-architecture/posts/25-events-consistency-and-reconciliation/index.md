@@ -156,7 +156,7 @@ Every reconciliation job can be written on one card, and I would require the car
 
 | Card field | Stock (Kestrel & Pine, from May 2027) | Refunds (from February 2027) | Orders (from Q4 2027) | PSP payouts |
 | --- | --- | --- | --- | --- |
-| **What two sets are compared** | WMS on-hand minus reservations vs platform available, per active variant | Refunds issued by the PSP vs refunds recorded by the platform, per day | Platform orders of the day vs OMS orders of the day | PSP payout lines vs ERP receivables |
+| **What two sets are compared** | WMS on-hand minus reservations vs platform available, per active variant (adopted after the first run, which compared on-hand) | Refunds issued by the PSP vs refunds recorded by the platform, per day | Platform orders of the day vs OMS orders of the day | PSP payout lines vs ERP receivables |
 | **Matching key** | SKU and location | Order number and amount | Order number | Balance transaction id or order id |
 | **Tolerance** | Zero per variant | Zero | Zero | Zero to the cent |
 | **Cadence** | Weekly, Sunday 03:00; daily in November; the availability service closes the gap by events in between | Daily | Nightly | Per payout, and monthly close |

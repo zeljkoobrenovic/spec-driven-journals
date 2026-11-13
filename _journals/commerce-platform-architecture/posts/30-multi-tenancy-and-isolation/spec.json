@@ -6,7 +6,7 @@
  "part": "part-7",
  "title": "Many Merchants, One Platform: Multi-Tenancy, Pods and Isolation",
  "status": "draft",
- "revised": "2026-11-12",
+ "revised": "2026-11-13",
  "basis": "Reconstructed from the published chapter (posts/30-multi-tenancy-and-isolation/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (a roadmap announcing every section and a conclusion paragraph that answers the opening); these are listed in the decision log.",
  "intent": {
   "outcome": {
@@ -1377,11 +1377,9 @@
  ],
  "modalities": [],
  "open_questions": [
-  "Needs the author: the ledger's multi-tenancy line says the platform's API budget is granted 'per app per store' and also that 'nine consumers shared it' and that the stock apps and the connector's sync took 'about 55% of the budget'. Under the cited Shopify documentation each app has its own bucket per store, so nine apps do not share one budget. The chapter now states the vendor's limits only as the sources do and describes the evening as shares of recorded API usage (about 55% and 20%), which is what the journal-spec thesis says. The fact needed: whether the ledger line should read 'shares of recorded API usage' (or name a shared credential, for example several flows running under one iPaaS app, if that was the scenario).",
-  "Needs the author: Figure 1 (formerly Figure 4) still labels its source box 'Kestrel and Pine API budget on the platform, per app per store' and the order-flow edge '20 percent of the budget'; the caption and alt text now speak of shares of recorded calls. The artwork should be redrawn once the ledger wording is settled (the fact needed: whether the ledger keeps 'budget' or 'recorded usage').",
-  "Needs the author (carried from spec.md): Shopify's pod topology after the Google Cloud migration and current pod or shard counts are undocumented (last first-party description 2021); the chapter labels this as an inference. The fact needed: a first-party Shopify post after 2021 on pods or shards, if one exists.",
-  "Needs the author (carried from spec.md): all rate-limit figures are volatile and dated to November 2026. The fact needed: a re-check of the Shopify, Amazon SP-API, BigCommerce and commercetools pages at the next revision.",
-  "Needs the author: round-3 points no rule settles: why sharding alone reduced resilience (the fact needed: the reason given in Shopify's 2018 pods post, to state it in one clause); where the webhook paragraph belongs (both round-3 readers found it an add-on at the end of the rate-limit section; round-2 readers found it a detour before the four flows; When It Goes Wrong already has its failure); and minor single-reader points: 'smoothed' unexplained, the batch size behind the 120-orders-a-minute test, the relevance of Managed Markets being unavailable in the EU, and the June 2027 time frame of Ruben's analysis."
+  "Figure redraw (needs the author's approval to run image generation): Figure 1 (fig03-black-friday-2026-nine-consumers-spent.jpeg) must show the nine consumers calling one store's API with the source box labelled 'share of recorded API calls' instead of 'Kestrel and Pine API budget on the platform, per app per store', and the order-flow edge labelled 'about 20 percent of recorded API calls' instead of '20 percent of the budget' (consistency ruling 24); the caption and alt text already match.",
+  "Before print: Shopify's pod topology after the Google Cloud migration and current pod or shard counts are undocumented (last first-party description 2021); the chapter labels this as an inference. Re-check for a first-party Shopify post after 2021 on pods or shards.",
+  "Before print: all rate-limit figures are volatile and dated to November 2026; re-check the Shopify, Amazon SP-API, BigCommerce and commercetools pages."
  ],
  "decision_log": [
   {
@@ -1460,6 +1458,21 @@
     "Explaining why sharding alone reduced resilience (both round-3 readers): the published sentence follows Shopify's 2018 post and the reason is not in the cited text the chapter quotes; left for the author.",
     "Moving the webhook paragraph again (both readers found it tacked on at the end of the rate-limit section): round 2's readers asked for it to leave its former place; its current place follows reader B of round 2 (rule 10, current position stands)."
    ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Auto-resolved by the author's instruction of 2026-11-13: consistency ruling 24: the multi-tenancy line's 'budget' is read as shares of recorded API usage on the evening (about 55% and 20%), and per-app buckets per store stand as Shopify documents them; the ledger line is marked '[superseded in part by ruling 24]'. The page already says this; no text change.",
+   "rejected": [
+    "Naming a shared credential (several flows under one iPaaS app).",
+    "Stating that nine apps shared one budget."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Accepted reader findings, for a later sharpen pass: Needs the author: round-3 points no rule settles: why sharding alone reduced resilience (the fact needed: the reason given in Shopify's 2018 pods post, to state it in one clause); where the webhook paragraph belongs (both round-3 readers found it an add-on at the end of the rate-limit section; round-2 readers found it a detour before the four flows; When It Goes Wrong already has its failure); and minor single-reader points: 'smoothed' unexplained, the batch size behind the 120-orders-a-minute test, the relevance of Managed Markets being unavailable in the EU, and the June 2027 time frame of Ruben's analysis.",
+   "rejected": [
+    "Another draft-check round now."
+   ]
   }
  ],
  "sources": [
@@ -1533,6 +1546,10 @@
   {
    "date": "2026-11-12",
    "change": "Confirming round 3 (escalate, 16 passed, 28 failed); closing fixes applied without another round (quota caveat moved into the rate-limit rules, Figure 2 caption, four glosses, two openers); check-report.json is stale after these fixes."
+  },
+  {
+   "date": "2026-11-13",
+   "change": "API-budget question closed by consistency ruling 24 (no page change); Figure 1 redraw and the two volatile-fact notes relabelled; round-3 reader points moved to decision_log."
   }
  ],
  "length": {

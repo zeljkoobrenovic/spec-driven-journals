@@ -54,9 +54,9 @@ Eva Janssen shows why. She is one person in Nijmegen. In Kestrel & Pine's system
 
 | Where | What the record says | What it does not know |
 | --- | --- | --- |
-| The shop platform | An account from 2024 under her personal e-mail; three orders, the latest #1072455 of 13 April 2027; an address in Nijmegen and her mobile number | That she shops in the Nijmegen store |
-| The POS loyalty list | "E. Janssen", joined at the Nijmegen store in 2023 with her mobile number; four purchases, the latest socks in February 2027 | Her e-mail; her online orders |
-| The newsletter tool | A subscriber since 2022 under an older e-mail address, with her name and street address | That she is a customer at all |
+| The shop platform | An account from 2024 under her personal e-mail; three orders, the latest #1072455 of 13 April 2027; an address in Nijmegen | That she shops in the Nijmegen store |
+| The POS loyalty list | "E. Janssen", joined at the Nijmegen store in 2023; four purchases, the latest socks in February 2027 | Her e-mail; her online orders |
+| The newsletter tool | A subscriber since 2022 under an older e-mail address | That she is a customer at all |
 | The returns portal | A contact created on 19 April 2027 from order #1072455, with her personal e-mail | Nothing else about her |
 
 No field is shared by all four records. **The Familiar Stranger** is the book's name for this problem: a merchant repeatedly encounters a person its systems cannot reliably connect. Milan and Noor defer online loyalty until the link between her records can be maintained ([[commerce-promotions]]).
@@ -153,7 +153,7 @@ Merging customer records must preserve what the person agreed to. An address sup
 
 ### How a new record finds its master
 
-The sequence in the figure below shows how a new record should find its master under the design rule and the matching rules above. The example replays a store purchase like Eva's socks in the Nijmegen store in February 2027 as it would run under them; no such rule existed then.
+The sequence in the figure below shows how a new record should find its master under the design rule and the matching rules above. The example is a loyalty member's store purchase, like Eva's socks in the Nijmegen store in February 2027, as it would run under them; no such rule existed then.
 
 ![Diagram: A store purchase is matched on a normalized phone number](assets/images/27-identity-and-master-data/fig02-store-purchase-matched-normalized-phone-number.jpeg)
 **Figure 4:** *A store purchase is matched on a normalized phone number; the loyalty entry is linked to the master, and consent is read from the master rather than recreated.*
@@ -246,7 +246,7 @@ In **June 2027**, at the weekly architecture hour, Noor Visser, Milan Petrov and
 
 The first run, in **July 2027**, linked about **21,000** of the 38,000 loyalty entries to a platform customer by exact phone or e-mail, sent about **4,100** to the review queue and left the rest unlinked. Of the 165,000 newsletter subscribers, about **96,000** matched a platform customer.
 
-Eva Janssen's four records became one master with three links: her loyalty entry by phone, her returns contact by its e-mail address, the same as her account's, and her older newsletter address by a reviewer who saw the same name, street and postal code.
+Eva Janssen's four records became one master with three links: her returns contact automatically, on the e-mail address it shares with her account, and the other two under the weekly rules, one of them through the review queue.
 
 The product side waited for the PIM: its July 2027 load from the four copies of product data found 1,900 variants with conflicting attributes ([[replatforming-and-migration]]), and the cross-reference of GTIN, SKU, platform, ERP, WMS and marketplace ids, the Ridgewalker women's M moss among its rows, was built in the PIM at the same time (W3).
 

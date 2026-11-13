@@ -72,8 +72,10 @@ In plain words: start at the entity–owner table. A fact with no row, or a row 
 | **The fact it is the natural home for** | The business fact this capability should own; mark computed facts such as availability and the delivery promise |
 | **Systems today** | Every system that does any part of the job; two or more is an overlap, none is an empty box |
 | **Writers** | Every system or person that changes the fact |
+| **System of record** | The one system whose value wins for that fact, or none |
 | **Status and evidence** | Covered, overlap or empty, with the incident or number behind it |
 | **Owner** | One named person accountable for the capability |
+| **Date** | When the row was last checked |
 
 **How to use it.** Draw it before reading any vendor's diagram; review it yearly and after any new channel or country.
 
@@ -84,8 +86,10 @@ In plain words: start at the entity–owner table. A fact with no row, or a row 
 | Fact it is the home for | Available-to-promise per channel, derived from physical stock |
 | Systems today | Stock on hand in the WMS, the ERP, the shop platform and the POS; **nobody computes availability** |
 | Writers | Six writers of Duiven stock: the WMS feed, manual ERP entry, manual platform entry and three apps; the POS writes store stock separately |
+| System of record | None for availability; none agreed for stock until W1 named the WMS |
 | Status and evidence | **Empty box** for availability, overlap for stock; the Black Friday Oversell, 1,340 units oversold on 27 November 2026 |
 | Owner | Daniel Okafor for stock; Ruben Alves for the availability service once W1 delivers it |
+| Date | February 2027 |
 
 The whole map had about two dozen capabilities with thirteen systems placed on them and four empty boxes: product information, order management, availability and customer identity.
 
@@ -205,13 +209,15 @@ It replaced a 2021 agency script whose API version was retired on 8 February 202
 | **Who gets the exceptions** | A named person or team |
 | **The fix** | Which side is corrected (always the copy, from the system of record) and how the cause is hunted |
 
-**How to use it.** Let the system of record decide the direction of the fix: the copy is overwritten, then the writer that caused the difference is found and removed. A zero tolerance is a choice; for stock it is zero because one wrong variant at peak is one oversell.
+**How to use it.** Let the system of record decide the direction of the fix: the copy is overwritten, then the writer that caused the difference is found and removed.
+
+**Tolerance is a choice.** Set it per card and say why; for stock it is zero because one wrong variant at peak is one oversell.
 
 **Kestrel & Pine example** (fictional; the stock reconciliation from May 2027):
 
 | Field | Value |
 | --- | --- |
-| Compared | WMS on hand minus reservations vs platform available, per active variant |
+| Compared | WMS on hand vs platform available, per active variant (the first run; subtracting reservations was adopted after it) |
 | Matching key | SKU and location |
 | Tolerance | Zero per variant |
 | Cadence | Weekly, Sunday 03:00; daily in November |
@@ -270,6 +276,9 @@ The same 23 is what the storefront showed the customer Eva Janssen on 13 April 2
 | **Customer-facing summary rule** | How "Shipped" or "Delivered" is computed; for a split order, the least-advanced shipment |
 | **Split rule** | When to split a shipment and when to wait; the message the customer gets |
 | **Invoice trigger** | Per shipment or per order; one finance decision, recorded once |
+| **System of record** | The one system whose order state wins when the others disagree |
+| **Owner** | One named person accountable for the state model and its rules |
+| **Date** | When the card was agreed, and when it is next reviewed |
 
 **How to use it.** "Fulfilled" is not "delivered" unless the carrier's events are fed back, and a two-parcel order is delivered only when both parcels are.
 
@@ -280,6 +289,7 @@ The same 23 is what the storefront showed the customer Eva Janssen on 13 April 2
 | Order | Trailhead fleece €119 and merino socks €18, €137, paid in full |
 | What went wrong | The fleece shipped 7 December and was delivered 8 December; the socks shipped 14 December. Platform *Delivered*, WMS *In picking*, ERP *Not invoiced*; 11 tickets |
 | Machines under W2 | Separate money, goods (per fulfillment order) and return machines in the OMS |
+| System of record | The OMS from Q4 2027 (W2); in December 2026 none, so three systems each published a status |
 | Summary rule | Least-advanced shipment: "Partially delivered: 1 of 2 parcels" |
 | Split rule | Two-line D2C order under €150: wait up to one working day for replenishment, then split and emit "ships in two parcels" |
 | Invoice trigger | One invoice per shipment at dispatch, from a "shipment to invoice" event idempotent on the shipment id; a split order has two invoices and stays one order |
@@ -502,7 +512,7 @@ Four of the eight rungs:
 | **Differentiation** | What a customer would notice if you did it better than anyone; build only that |
 | **Time and risk** | The next peak; the cost of a failed cutover; whether each step is reversible |
 
-Page two prices each option over three years: subscriptions and any share of gross merchandise value (GMV); build, implementation and migration; the agency after go-live; people added; revenue at risk during cutover; and the exit cost at the next review.
+Page two prices each option over three years: subscriptions and any share of gross merchandise value (GMV); build, implementation and migration; the agency after go-live; people added; revenue at risk during cutover; and the exit cost at the next review. The card closes with the decision's owner, its date, its review date, and the system of record the chosen option names for each fact it changes.
 
 **How to use it.** Price every option as incremental cost over today's run rate and label every figure that is not a quote as an assumption.
 
@@ -514,6 +524,7 @@ Page two prices each option over three years: subscriptions and any share of gro
 | Revenue at risk | €540k *(assumption)* | €540k *(assumption)* | about €50k |
 | Exit at the 2029 review | High | High | Moderate |
 | Decision | — | — | **Chosen**: OMS with availability module (€4,500/month, €320k to implement), PIM (€1,800/month, €110k), integration standards €150k; recorded as KP-004 |
+| Owner, date and systems of record | — | — | Mara Lindqvist, March 2027, review in 2029; order to the OMS, product content to the PIM, availability per channel to the availability service |
 
 **Used in:** [[build-buy-or-assemble]], [[commerce-platform-landscape]], [[case-composable-movement]], [[commerce-scaling-stages]].
 
@@ -591,6 +602,9 @@ Deciders:     Mara Lindqvist, Noor Visser; business owner: Mara Lindqvist
 ## Context       Two February 2027 replatforming pitches cited the Black Friday
                  Oversell (about €96,000). The platform held; the chain behind it
                  failed. Four empty boxes on the capability map.
+## Drivers       Fix what failed: stock propagation, order ownership, product
+                 data. Checkout held at 38 orders a minute. Prevents the
+                 Giant's Boots and the Lynchpin.
 ## Options       Composable rebuild (about €3.2M); enterprise suite (about €3.19M);
                  stay and surround (about €1.33M); do nothing.
 ## Decision      We will stay on the shop platform. OMS, PIM and availability are added
@@ -599,6 +613,8 @@ Deciders:     Mara Lindqvist, Noor Visser; business owner: Mara Lindqvist
                  availability per channel -> availability service (Q4 2027).
 ## Consequences  Better: no cutover; each step reversible. Worse: more systems to
                  integrate. New work: integration standards (W5), two engineers.
+## Vendors       The shop platform, unchanged; OMS with availability module
+                 (€4,500/month); PIM (€1,800/month); each keeps its own export.
 ## Confirmation  Order, stock and price reconciliation cards; the 2027 peak plan.
 ## Review        The 2029 review.
 ```

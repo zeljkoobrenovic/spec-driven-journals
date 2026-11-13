@@ -13,6 +13,12 @@ D = json.load(open(os.path.join(HERE, 'srcs3.json')))
 
 # URL substring -> (topic or None, type or None)
 FIX = {
+    # evidence types the 2026-11 readers found wrong (fixed 2026-11-13)
+    'acm.nl/nl/publicaties/acm-wil-einde-aan-nepkortingen': (None, 'Regulation and official source'),  # a regulator's announcement, not a decision
+    'gorgias.com/blog/automate-wismo-requests': (None, PRAC),  # one helpdesk vendor's blog post with its customer data
+    'segment.com/blog/goodbye-microservices': (None, ENG),  # Segment's engineers on what they built
+    'infoq.com/news/2023/05/prime-ec2-ecs-saves-costs': (None, PRAC),  # news summary of a removed Prime Video post
+    'infoq.com/news/2016/04/zalando-stups-aws': (None, PRAC),  # InfoQ news, same kind as the Prime Video summary
 }
 # URL substring (a trailing $ anchors it at the end of the URL) -> display title (secondary links in multi-link lines, generic filing titles, ambiguous titles)
 TITLE = {
@@ -55,7 +61,7 @@ TITLE = {
     'standardwebhooks.com': 'Standard Webhooks (project site)',
     'Universal-Commerce-Protocol/ucp$': 'Universal Commerce Protocol repository',
     # same title, different documents: name the publisher
-    'docs.mollie.com/docs/webhooks': 'Mollie: Webhooks',
+    'docs.mollie.com/docs/webhooks$': 'Mollie: Webhooks',
     'shopify.dev/docs/apps/build/webhooks$': 'Shopify: Webhooks',
     'docs.adyen.com/development-resources/webhooks': 'Adyen: Webhooks',
     'docs.stripe.com/api/idempotent_requests': 'Stripe: Idempotent requests',
@@ -91,7 +97,28 @@ META_URL = {
     'celex/32026R1744': 'Official Journal of the EU, 2026',
     'cmrc-q2-earnings-call-flags-softer-b2c-demand-outlook-cut': 'Nasdaq, 2026',
     'digitalcommerce360.com/2026/02/17/shopify-revenue-gmv-q4-2025': 'Digital Commerce 360, 2026-02-17',
+    'press-room/20251121IPR31540': 'European Parliament, 2025-11-21',  # the press release's own date (chapters differ)
+    'attorney-general-bonta-announces-settlement-sephora': 'California Attorney General, 2022-08-24',
 }
+# URL substring (trailing $ anchors the end) -> claim clause, where a multi-link line gave several sources one shared
+# claim: each entry takes its own part of the citing line (first citing chapter), or the hand-shortened clause.
+SUP_URL = {
+    'chapter_7_options_to_US/74unexercised_rights_US': 'The ASC 606 breakage rules',
+    'revenue-from-customers-unexercised-rights-breakage': 'Secondary summary of IFRS 15 B44–B47 and material rights',
+    'managing-orders/order-status': 'Separate status families',
+    'notifications/customer-notifications': 'No tracking number, no updates',
+    'docs.stripe.com/refunds$': 'Double-refund risk',
+    'docs.stripe.com/webhooks$': 'Three-day retries',
+    'docs.stripe.com/checkout/fulfillment.md': 'Fulfillment from webhooks',
+    'docs.mollie.com/docs/refunds.md$': 'Duplicate blocking, "do not retry automatically"',
+    'docs.mollie.com/docs/webhooks$': 'Ten retries over 26 hours',
+    'shopify.dev/docs/apps/build/webhooks$': 'Duplicate and unordered deliveries',
+    'shopify.dev/docs/apps/build/webhooks/subscribe/https': '8 retries over 4 hours',
+    'accounting/customer_invoices.html': 'Sequential numbering on confirmation, immutability',
+    'customer_invoices/credit_notes.html': 'Credit notes as the only correction',
+}
+# alternate links on a host that does not resolve; the entry keeps its working primary link
+DROP_EXTRA_HOST = ['https://developer-docs.amazon/']
 TITLE_KEY = {
     'nourl:productscape': 'Productscape domain models of eleven commerce products, inferred from public product behavior',
 }
@@ -152,6 +179,10 @@ for s in D['srcs']:
     for k, mt in META_URL.items():
         if k in u: s['meta'] = mt; settled = True
     if s['key'] in SUP_KEY: s['sups'] = [SUP_KEY[s['key']]] + s['sups']
+    for k, sp in SUP_URL.items():
+        if hit(k, u): s['sups'] = [sp] + s['sups']
+    if s.get('extra') and u and not any(u.startswith(h) for h in DROP_EXTRA_HOST):
+        s['extra'] = [x for x in s['extra'] if not any(x[1].startswith(h) for h in DROP_EXTRA_HOST)]
     m = re.match(r'(.*?n\.d)\.?:\s+(.*)$', s['meta'])
     if m: s['meta'] = m.group(1); s['sups'] = [m.group(2)] + s['sups']
     years = sorted(set(YEAR.findall(clean_meta(m))[0] for m in s['metas'] if YEAR.search(clean_meta(m))))  # first year in each citation

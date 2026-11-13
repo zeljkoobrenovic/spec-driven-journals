@@ -14,7 +14,7 @@ logo: "assets/images/where-commerce-platforms-go-wrong/logo.jpeg"
 > **KEY POINTS:**
 >
 > * **Nearly every pattern is a promise one system made and another could not keep.** A storefront promises a unit the warehouse no longer has, a portal promises a refund the payment provider already sent, a page promises a delivery the warehouse's cut-off cannot meet. The sixteen patterns are the recurring ways the promise and its keeper come apart.
-> * **The patterns fall into four families, and the family tells you where to look.** Truth patterns are a fact with two writers (systems that may change it) or no owner; integration patterns are a message with no key (an id that marks a repeat), no contract (agreed fields and rules) or no owner; platform-and-change patterns are a decision copied from a bigger company or made on one date; governance patterns are a dependency, a deadline or an actor nobody owns.
+> * **The patterns fall into four families, and the family tells you where to look.** Truth patterns are a fact with two writers (systems that may change it) or no owner; integration patterns are a message with no key (an id that marks a repeat), no contract (agreed fields and rules) or no owner; platform-and-change patterns are a decision sized or copied for a different business, or made on one date; governance patterns are a dependency, a deadline or an actor nobody owns.
 > * **The patterns travel in chains, which start at an unowned connector, an unwatched dependency or a decision copied without its reasons.** Fixing the downstream symptom rarely holds; naming the origin usually does.
 
 <br>
@@ -112,7 +112,7 @@ December's store-pickup pilot repeats the problem: nightly store-stock updates l
 
 **Remedy direction.** A customer master with one identifier per person, written matching rules, channel records linked to it, privacy requests served from it.
 
-**Where this book helps:** [[identity-and-master-data]] owns the customer master and matching; [[privacy-and-customer-data]] serves data-subject requests across systems; [[commerce-promotions]] explains why loyalty waits for it.
+**Where this book helps:** [[identity-and-master-data]] owns the customer master and matching; [[privacy-and-customer-data]] serves data-subject requests across systems; [[stores-and-omnichannel]] meets the same shopper in the store's loyalty list.
 
 ### The Boomerang
 
@@ -158,7 +158,7 @@ In Black Friday week a 20% outerwear discount stacked with a 10% welcome code on
 
 **Remedy direction.** One owner per price kind, price events with effective dates, campaigns as dated records, a 30-day price history, promotions applied in a fixed order, with combination rules, daily reconciliation, prices frozen on the order.
 
-**Where this book helps:** [[pricing-architecture]] owns price ownership, price lists and the price history; [[commerce-promotions]] owns stacking rules and line-level allocation; [[marketplaces-and-channel-integration]] handles parity and channel price rules.
+**Where this book helps:** [[pricing-architecture]] owns price ownership, price lists and the price history; [[commerce-promotions]] owns stacking rules and line-level allocation; [[b2b-commerce]] traces a wholesale price the portal and the ERP disagree on.
 
 ### The Spaghetti Junction
 
@@ -334,7 +334,7 @@ A second brand, fourth country or revenue near €200 million would trigger a re
 
 **Remedy direction.** Decide sharing per capability: share what has scale economics and the same rules (payments, logistics), keep apart what differs by brand, and write the benefit as a number first.
 
-**Where this book helps:** [[multi-tenancy-and-isolation]] owns tenancy and isolation; [[commerce-scaling-stages]] names the Group-stage signals; [[case-zalando]] reads a group's sharing decisions.
+**Where this book helps:** [[multi-tenancy-and-isolation]] owns tenancy and isolation; [[commerce-scaling-stages]] names the Group-stage signals; [[commerce-business-models]] asks what business lines with different promises share.
 
 ### The Lynchpin
 
@@ -378,7 +378,7 @@ The 2027 regulatory calendar, kept by the head of engineering with the finance d
 
 **Remedy direction.** A regulatory calendar with a named owner, listing each rule's countries, date and systems; vendor conformance as a procurement item.
 
-**Where this book helps:** [[commerce-regulation]] owns the calendar; [[edi-and-e-invoicing]] and [[tax-invoicing-and-ledger]] implement e-invoicing; [[commerce-security]] covers the PCI requirements.
+**Where this book helps:** [[commerce-regulation]] owns the calendar; [[edi-and-e-invoicing]] and [[tax-invoicing-and-ledger]] implement e-invoicing; [[privacy-and-customer-data]] meets the one-month clock of a data subject request.
 
 ### The Secret Agent
 

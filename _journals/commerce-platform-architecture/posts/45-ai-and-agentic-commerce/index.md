@@ -26,7 +26,7 @@ logo: "assets/images/45-ai-and-agentic-commerce/logo.jpeg"
 <br>
 A shop can use AI to **recommend a jacket** or authorize it to **place an order for that jacket**. A shopper can ignore a recommendation. Placing the order can reserve stock and initiate a payment. Permissions and spending limits bound what the software may commit to; an accountable owner must be able to investigate and correct a mistaken action.
 
-Software that helps someone decide is an **assistant**; software with tools and permission to carry out the decision is an **agent**. Both need reliable data. If the stock count is two hours old, an assistant may recommend a sold-out jacket; an agent may order it. The merchant still has to explain the cancellation to the customer. Before adding either, establish where product, price and stock answers come from, and who may change them.
+An **assistant** helps someone decide; an **agent** carries the decision out (defined in full under Two Kinds of AI). Both need reliable data. If the stock count is two hours old, an assistant may recommend a sold-out jacket; an agent may order it. The merchant still has to explain the cancellation to the customer. Before adding either, establish where product, price and stock answers come from, and who may change them.
 
 **Where we are in the order's journey.** An assistant and an agent can both appear in the order's journey. A shopper might ask an assistant for a waterproof jacket under €200, delivered by Thursday. Authorized software might then place the order or request an exchange later. Each step needs current product facts, a clear permission and a confirmed result.
 
@@ -40,7 +40,7 @@ The chapter starts with Kestrel & Pine's agent test and then separates the two k
 
 Kestrel & Pine, the fictional outdoor brand, faces three AI decisions in February 2027. Its agency offers a shopping assistant for **€60,000 to build and €2,500 monthly to run**, both illustrative assumptions. A board observer asks CEO Mara Lindqvist whether shoppers can find the brand in ChatGPT. And the platform vendor has switched on an AI channel by default, with checkout limited to US shoppers, an assumption modeled on the documented programs below.
 
-Head of Engineering Noor Visser tests the underlying data before judging the proposals. She asks five product questions about the Ridgewalker women's M in moss at two moments: the Black Friday oversell at 20:00 on 27 November 2026 and Eva's order at 21:14 on 13 April 2027.
+Head of Engineering Noor Visser tests the underlying data before judging the proposals. In April 2027 she asks five product questions about the Ridgewalker women's M in moss at two moments: the Black Friday oversell at 20:00 on 27 November 2026 and Eva's order at 21:14 on 13 April 2027.
 
 The existing platform, **warehouse management system (WMS)** and returns portal must supply the answers. An **integration platform as a service (iPaaS)** carries data between them. **Waypoint**, the improvement program, adds **product information management (PIM)** for content and an **order management system (OMS)** for shared orders. The question is whether those records can support a reliable action.
 
@@ -52,7 +52,7 @@ The existing platform, **warehouse management system (WMS)** and returns portal 
 | What does it cost delivered, can I return it? | Price in the platform; policies in page text | Price yes; policies not machine-readable | Same |
 | Where is my order, can I exchange it? | Platform, WMS via the iPaaS, returns portal: no single answer | Partly: three systems, no single answer (the Three-Status Order followed in December) | Mostly: right for a one-parcel order |
 
-Two of five answers were wrong on the Oversell night, one on an ordinary evening, and none came from a system that owned the fact. **An agent would not have fixed any of this; it would have broadcast it.** Noor's memo ended with one line, which became Waypoint decision **W8**: agent readiness, not agents. The agency's assistant was declined; the vendor's AI channel stayed on for discovery only.
+Two of five answers were wrong on the Oversell night, one on an ordinary evening, and none came from a system that owned the fact. **An agent would not have fixed any of this; it would have broadcast it.** Noor's memo ended with the line Waypoint decision **W8** records: agent readiness, not agents. The agency's assistant was declined; the vendor's AI channel stayed on for discovery only.
 
 ## Two Kinds of AI, and Why the Difference Is Architectural
 

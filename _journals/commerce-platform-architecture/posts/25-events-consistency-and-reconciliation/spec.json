@@ -7,7 +7,7 @@
   "part": "part-6",
   "title": "Built to Disagree and Recover: Events, Eventual Consistency and Reconciliation",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed from the published chapter (posts/25-events-consistency-and-reconciliation/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (the thesis paragraph, a roadmap and a conclusion paragraph that answers the opening); these are listed in decision_log.",
   "intent": {
     "outcome": {
@@ -1478,12 +1478,7 @@
     }
   ],
   "modalities": [],
-  "open_questions": [
-    "Carried from spec.md: the cause breakdown of the 390 variants (240 from three apps, 90 in flight, 40 manual, 20 unexplained) is an illustrative fact in the ledger; the job's cadence (weekly, daily in November) and the removal of the apps' stock-write permission follow the inventory-and-availability ledger addition.",
-    "Carried from spec.md: the refund-path design (return id as key, one writer, daily refund reconciliation from February 2027) is labeled illustrative; returns-and-exchanges and commerce-payments should keep the same shape.",
-    "Carried from spec.md: no public benchmark exists for WMS-to-shop stock disagreement rates; the chapter says so. A reviewer may know of one.",
-    "Needs the author (rule 12): the stock card's first row compares 'WMS on-hand minus reservations' with platform available, while the scene says the May 2027 job read the WMS's on-hand quantity (both round-3 flow readers noticed). The ledger does not say which the job compares; the fact needed is whether reservations were subtracted in the first run."
-  ],
+  "open_questions": [],
   "decision_log": [
     {
       "date": "2026-11-07",
@@ -1591,6 +1586,35 @@
         "Moving p11.",
         "Moving the circuit breaker."
       ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's instruction of 2026-11-13: consistency ruling 28: the first run (May 2027) compared the WMS's on-hand quantity with the platform's figure, and 'on-hand minus reservations against platform available' is the rule adopted after that run. The scene keeps the first run; the card's first row now says the rule was adopted after the first run, which compared on-hand.",
+      "rejected": [
+        "Saying the first run subtracted reservations.",
+        "Dropping reservations from the card."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's instruction of 2026-11-13: record-only note closed: the 390-variant breakdown, the job's cadence and the withdrawal of the apps' stock-write permission are ledger facts (events-consistency-and-reconciliation and inventory-and-availability lines) and the page states them as the ledger does.",
+      "rejected": [
+        "Keeping a note that needs no decision open."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's instruction of 2026-11-13: record-only note closed: the refund-path design is the ledger's (events-consistency-and-reconciliation line, labelled illustrative); returns-and-exchanges and commerce-payments carry the same shape.",
+      "rejected": [
+        "Keeping a note that needs no decision open."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's instruction of 2026-11-13: record-only note closed: the page says no public benchmark exists; a reviewer who knows one can add it in a later revision.",
+      "rejected": [
+        "Keeping a note that needs no decision open."
+      ]
     }
   ],
   "sources": [
@@ -1672,6 +1696,10 @@
     {
       "date": "2026-11-12",
       "change": "Confirming round 3 (escalate: 210 pass, 21 fail; 11 blocking, 5 of them spec faults). Closing fixes without another round: Eva's refund hypothetical removed from the introduction; p05, p11, p14, p41 wording; golden signals no longer named before In Practice; Questions to Ask lead-in; mutations and 429 glossed; 'not paid it again'; retry window per provider. The check report is stale against these edits."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Stock card's first row now says the on-hand-minus-reservations rule was adopted after the first run (consistency ruling 28); open questions closed."
     }
   ],
   "length": {

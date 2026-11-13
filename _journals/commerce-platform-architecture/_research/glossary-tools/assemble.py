@@ -31,7 +31,7 @@ for anchor, title, intro, rows in S:
 # standards, protocols and regulations
 anchor, title, intro, rows = REG
 body += [f"## <a id=\"{anchor}\"></a>{title}", "", intro, "",
-         "| Term | Scope | Short name | Meaning | Chapter |", "| --- | --- | --- | --- | --- |"]
+         "| Term | Scope | Name | Meaning | Chapter |", "| --- | --- | --- | --- | --- |"]
 for term, scope, short, meaning, chs in rows:
     body.append(f"| **{term}** | {scope} | {short} | {meaning} | {links(chs)} |")
     index.append((term, anchor))
@@ -59,7 +59,7 @@ for label, anc in sorted(index, key=lambda x: key(x[0])):
     groups.setdefault(letter, []).append(f"[{label}](#{anc})")
 
 order = ["0–9"] + [chr(c) for c in range(65, 91)]
-idx = ["## <a id=\"g-index\"></a>Alphabetical Index", ""]
+idx = ["## <a id=\"g-index\"></a>Alphabetical Index", "", "Every term and alias in the tables above, from A to Z, with a link to the section that defines it.", ""]
 for L in order:
     if L in groups:
         idx.append(f"- **{L}** — " + " · ".join(groups[L]))
@@ -67,7 +67,7 @@ idx.append("")
 
 head = open(os.path.join(os.path.dirname(__file__), "head.md")).read()
 tail = open(os.path.join(os.path.dirname(__file__), "tail.md")).read()
-text = head + "\n".join(body) + "\n".join(idx) + "\n" + tail
+text = head + "\n".join(body) + "\n" + "\n".join(idx) + "\n" + tail
 words = len(re.sub(r"\[\[[^\]]+\]\]|\(#g-[a-z]+\)", "", text).split())
 text = text.replace("__TTR__", str(round(words / 200)))
 text = text.replace("__NROWS__", str(nrows))

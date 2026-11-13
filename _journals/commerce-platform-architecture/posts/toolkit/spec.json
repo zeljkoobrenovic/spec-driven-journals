@@ -270,7 +270,7 @@
         },
         {
           "id": "p08",
-          "controlling_idea": "The template records per capability its layer, natural fact, systems today, writers, status with evidence and an owner.",
+          "controlling_idea": "The template records per capability its layer, natural fact, systems today, writers, system of record, status with evidence, an owner and the date it was checked.",
           "function": "description",
           "evidence": [
             {
@@ -301,7 +301,7 @@
         },
         {
           "id": "p10",
-          "controlling_idea": "Kestrel & Pine's inventory-and-availability row shows an empty box for availability and six writers of Duiven stock, with the Black Friday Oversell as evidence.",
+          "controlling_idea": "Kestrel & Pine's February 2027 inventory-and-availability row shows an empty box for availability, six writers of Duiven stock and no agreed system of record, with the Black Friday Oversell as evidence.",
           "function": "example",
           "evidence": [
             {
@@ -692,6 +692,18 @@
           }
         },
         {
+          "id": "p32a",
+          "controlling_idea": "Tolerance is a choice made per card with its reason; for stock it is zero because one wrong variant at peak is one oversell.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "How the fix is directed.",
+            "introduces": "How tolerance is set.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p33",
           "controlling_idea": "Kestrel & Pine's May 2027 stock reconciliation found 2.3% of active variants different, mostly from the three apps that wrote stock.",
           "function": "example",
@@ -705,7 +717,7 @@
           ],
           "transition_in": {
             "relationship": "example",
-            "carries_over": "The card and its use.",
+            "carries_over": "The card, its use and its tolerance.",
             "introduces": "A filled Kestrel & Pine example.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -852,7 +864,7 @@
         },
         {
           "id": "p42",
-          "controlling_idea": "The template records the order number family, machines, movers, summary rule, split rule and invoice trigger.",
+          "controlling_idea": "The template records the order number family, machines, movers, summary rule, split rule, invoice trigger, system of record, owner and date.",
           "function": "description",
           "evidence": [
             {
@@ -883,7 +895,7 @@
         },
         {
           "id": "p44",
-          "controlling_idea": "Order #1052877 showed three statuses in three systems; under W2 the OMS keeps separate machines, the least-advanced-shipment rule and one invoice per shipment.",
+          "controlling_idea": "Order #1052877 showed three statuses in three systems because no system of record held the order state; under W2 the OMS is that record, with separate machines, the least-advanced-shipment rule and one invoice per shipment.",
           "function": "example",
           "evidence": [
             {
@@ -1526,7 +1538,7 @@
         },
         {
           "id": "p80",
-          "controlling_idea": "Page two prices each option over three years, including the lines a vendor's quote leaves out.",
+          "controlling_idea": "Page two prices each option over three years, including the lines a vendor's quote leaves out, and the card closes with the decision's owner, date, review date and the systems of record it names.",
           "function": "explanation",
           "transition_in": {
             "relationship": "elaboration",
@@ -1550,7 +1562,7 @@
         },
         {
           "id": "p82",
-          "controlling_idea": "Kestrel & Pine's February 2027 review chose stay and surround at about €1.33M over two options above €3M, recorded as KP-004.",
+          "controlling_idea": "Kestrel & Pine's February 2027 review chose stay and surround at about €1.33M over two options above €3M, owned by Mara Lindqvist, decided March 2027 and recorded as KP-004 with its systems of record.",
           "function": "example",
           "evidence": [
             {
@@ -1741,7 +1753,7 @@
         },
         {
           "id": "p93",
-          "controlling_idea": "KP-004 records W4: stay on the shop platform and add OMS, PIM and availability beside it.",
+          "controlling_idea": "KP-004 records W4 in every section of the template: stay on the shop platform and add OMS, PIM and availability beside it, driven by what failed and depending on the platform, OMS and PIM contracts.",
           "function": "example",
           "evidence": [
             {
@@ -1868,13 +1880,7 @@
     }
   ],
   "modalities": [],
-  "open_questions": [
-    "Chapters 10, 13, 16 and 20 teach their content without a named card; the ATP, order state, delivery promise and channel allocation cards are this page's distillation and should be cross-checked if those chapters add a card later.",
-    "Needs the author: chapters' open questions name further possible toolkit items, the contract card of api-contracts-and-versioning (chapter 26) in its fuller form and the W7 metric-definition table of commerce-data-and-analytics (chapter 28). They were not added in this pass; the author decides whether the page should hold them.",
-    "Round 1 left unfixed: Tool 5's how-to paragraph holds two ideas (fix direction; zero tolerance as a choice) — splitting it means a spec change, needs the author.",
-    "Needs the author: the Tool 1 and Tool 7 templates have no named owner or system-of-record row, and the KP-004 example omits its template's Drivers and Vendors sections, which weakens 'every card names an owner, a system of record and a date'.",
-    "Draft-check round 2 (ESCALATE, 18 pass / 22 fail, 0 waived): the three spec faults are the open question on owner / system-of-record / date fields (Tools 1, 7 and 14 templates); needs the author."
-  ],
+  "open_questions": [],
   "decision_log": [
     {
       "date": "2026-11-13",
@@ -1918,6 +1924,36 @@
     {
       "date": "2026-11-07",
       "decision": "Extended Nygard's ADR with ownership, vendor, confirmation and review fields, matching how organizing-commerce-engineering uses decision records."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's instruction of 2026-11-13: no new templates are added; the contract card stays in api-contracts-and-versioning (chapter 26) and the W7 metric-definition table in commerce-data-and-analytics (chapter 28).",
+      "rejected": [
+        "Adding the contract card and the W7 table as Tools 17 and 18."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's instruction of 2026-11-13: Tool 5's how-to paragraph is split: p32 (the system of record sets the direction of the fix) and new p32a (tolerance is a choice, zero for stock).",
+      "rejected": [
+        "Keeping one paragraph with two ideas."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's instruction of 2026-11-13: owner, system-of-record and date fields added: Tool 1 template gains System of record and Date (example: none agreed; February 2027); Tool 7 template gains System of record, Owner and Date (example: the OMS from Q4 2027, none in December 2026; the ledger names no order owner, so the example gives none); Tool 14's card closes with owner, date, review date and systems of record (example: Mara Lindqvist, March 2027, 2029 review, from KP-004). The KP-004 example gains Drivers (what failed; the Giant's Boots and the Lynchpin, from build-buy-or-assemble) and Vendors (platform, OMS €4,500/month, PIM €1,800/month, each with its own export).",
+      "rejected": [
+        "Dropping the claim that every card names an owner, a system of record and a date.",
+        "Inventing a named owner for the order state card."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's instruction of 2026-11-13: the round-2 spec faults (owner, system-of-record and date fields on Tools 1, 7 and 14) are settled by the decision above."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's instruction of 2026-11-13: record kept, not a question: the ATP, order state, delivery promise and channel allocation cards are this page's distillation of chapters 10, 13, 16 and 20; cross-check them if those chapters add a named card."
     }
   ],
   "sources": [
@@ -1963,6 +1999,14 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Tool 5 example: the May 2027 first run compared WMS on hand with the platform's figure; reservations were subtracted from then on (ruling 28)."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Open questions closed at the author's instruction: no new templates; owner, system-of-record and date fields added to Tools 1, 7 and 14 (templates and examples, from ledger facts only); Drivers and Vendors added to the KP-004 example; Tool 5's how-to paragraph split (new p32a)."
+    },
     {
       "date": "2026-11-13",
       "change": "Draft-check round 2 (ESCALATE, 18 pass / 22 fail, 0 waived). Cheap fixes after the round, report left stale: W1-W8 key, Bergzicht Outdoor, Mara Lindqvist and Hanna Berg introduced in the cast paragraph; the intro sentence that fused two lists split and the chapter order of the cards stated; gloss for the App That Wrote Stock in KEY POINTS and for the iPaaS in Tool 3."

@@ -7,7 +7,7 @@
  "part": "part-2",
  "title": "What Does It Cost? Price Lists, Contract Prices, Currencies and Tax",
  "status": "draft",
- "revised": "2026-11-12",
+ "revised": "2026-11-13",
  "basis": "Reconstructed from the published chapter (posts/07-pricing-architecture/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter. It is a contract, not a description: the places where the chapter did not do what the spec asks are listed under open_questions and decision_log.",
  "intent": {
   "outcome": {
@@ -746,7 +746,7 @@
      "evidence": [
       {
        "kind": "fact",
-       "what": "Amazon dropped its price parity clauses in November 2013; the Bundeskartellamt prohibited its price control mechanisms on 5 February 2026 (finality not stated); the PRICING_HEALTH notification reports an offer ineligible for the Buy Box.",
+       "what": "Amazon dropped its price parity clauses in November 2013; the Bundeskartellamt prohibited its price control mechanisms on 5 February 2026 (finality not stated); the PRICING_HEALTH notification reports an offer ineligible for the Buy Box; the cited sources do not settle whether the decision covers that notice.",
        "shows": "The rules that bound a channel price change on regulators' dates, and the marketplace reports price state as a machine signal.",
        "source": "Bundeskartellamt (2013, 2026); Amazon SP-API documentation, accessed November 2026"
       }
@@ -1514,9 +1514,7 @@
   }
  ],
  "modalities": [],
- "open_questions": [
-  "Needs the author: whether Amazon's Buy Box notice (`PRICING_HEALTH`, an offer 'ineligible for the Featured Offer because its price is uncompetitive') is part of the 'price control mechanisms' the Bundeskartellamt prohibited on 5 February 2026, and so how a 2026 parity warning fits clauses deleted in 2013 (one round-3 reader, minor). The fact needed: the decision's text on which Amazon mechanisms it covers."
- ],
+ "open_questions": [],
  "decision_log": [
   {
    "date": "2026-11-12",
@@ -1656,6 +1654,14 @@
   {
    "date": "2026-11-12",
    "decision": "p28's controlling idea restated as one idea (a loop with each marketplace: channel rules out as configuration, price-state events back) after round 2 of the draft check found the old wording joined two requirements with 'and'. Order, thesis and acceptance criteria unchanged; done without review because the author asked for the pass to run unattended."
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Auto-resolved by the author's instruction of 2026-11-13: the Buy Box sentence is narrowed: the page no longer says the PRICING_HEALTH notice shows the prohibited mechanism, and states that the cited sources do not settle whether the 5 February 2026 decision covers the notice.",
+   "rejected": [
+    "Asserting that the decision covers the notice (no cited source says so).",
+    "Dropping the PRICING_HEALTH sentence (it is sourced and teaches the price-state event)."
+   ]
   }
  ],
  "sources": [
@@ -1716,6 +1722,10 @@
   }
  ],
  "changelog": [
+  {
+   "date": "2026-11-13",
+   "change": "Open question on the Buy Box notice closed: the sentence no longer claims the Bundeskartellamt decision covers the notice and says its scope is not settled in the cited sources; two transition sentences trimmed to stay at 6,500 words."
+  },
   {
    "date": "2026-11-12",
    "change": "Round 4 (escalate: 17 passed, 7 failed, 4 blocking). Cheap draft-fault fixes applied after the round without another check (see decision_log): intro transitions into Eva's order and the product-information bridge, ERP connector naming, three minor flow sentences. 6,500 words."

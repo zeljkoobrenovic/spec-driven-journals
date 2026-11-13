@@ -28,7 +28,7 @@ The previous chapter's storefront survives a peak hour because most of its pages
 
 **Where we are in the order's journey.** Eva's April 2027 jacket order, the order this book follows, reached the warehouse within minutes on an ordinary evening, through the same chain that had failed in November 2026. Here we ask what happens when thousands of orders take that path in an hour. The steps stay the same; queues and delays become decisive.
 
-This chapter's answer, in short: the shop platform shares its capacity across many merchants, so its storefront and checkout usually hold, while the merchant's own chain meets its spike alone and fails first. The rest of the chapter shows how to prepare that chain, with every link measured in **orders per minute**.
+In short: the shop platform shares its capacity across many merchants, so its storefront and checkout usually hold, while the merchant's own chain meets its spike alone and fails first. The rest of the chapter shows how to prepare that chain, with every link measured in **orders per minute**.
 
 The chapter starts from Kestrel & Pine's Black Friday 2026 post-mortem, the written review of what went wrong. It then explains why the platform's peak is not the merchant's and where along the chain a peak day breaks. It follows the day in order: preparing the chain, running the peak, observing it and recovering afterwards, using dated figures and practices published by large operators such as Shopify, Zalando and Amazon. Last come the choices of how far to go, how they change with scale, and Kestrel & Pine's 2027 plan.
 
@@ -89,7 +89,7 @@ The requirements table sets out what each flow needs at peak: checkout, payment 
 | Flow | Freshness needed at peak | Consistency | Latency target *(assumption)* | If it cannot keep up |
 | --- | --- | --- | --- | --- |
 | Product page and search | Minutes (cached) | Eventual | Under 1 s | Serve cached; drop personalization |
-| Stock shown on the product page | Minutes, with a buffer | Eventual, but bounded | Under 2 min from the WMS event | Show "low stock" from the buffer; never "in stock" from a stale copy |
+| Stock shown on the product page | Minutes, with a buffer | Eventual, but bounded | Under 2 min from the WMS event | Hide the stock count; show "in stock / low stock" from a per-channel buffer |
 | Checkout, payment authorization, order record | Immediate | Strong (one order, one payment) | Under 3 s | **Never degrade**; queue everything after it |
 | Order to the WMS | Minutes | At-least-once, idempotent | Under 10 min from order to warehouse | Let the queue grow; widen the delivery promise |
 | Stock from the WMS to every channel | Minutes | Eventual with a per-channel buffer | Under 2 min | Pause marketplace listings of low-stock SKUs |

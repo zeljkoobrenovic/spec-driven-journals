@@ -168,7 +168,7 @@ The **degradation ladder** (switching off non-essential features in a planned or
 | --- | --- | --- | --- | --- |
 | 1 | Recommendations and "recently viewed" off | Milan | Storefront p95 response (the time 95% of page responses stay under) over 2 s, or a platform status notice | Removes the personalized calls from every page |
 | 2 | Search facets reduced to size, color and price; two sort options | Milan | Same as 1 | Cuts the search service's load per query |
-| 3 | Stock badges from the buffered copy | Ruben | Availability event lag over 2 minutes | Shows "low stock" under 10 units; never "in stock" from a stale figure |
+| 3 | Stock badges from the buffered copy | Ruben | Availability event lag over 2 minutes | Hides the stock count; shows "in stock / low stock" from a per-channel buffer ("low stock" under 10 units), never from a stale figure |
 | 4 | Marketplace buffer raised to 25 units for hero SKUs; listings paused below it | Milan | Lag over 2 minutes, or orders for a SKU exceeding its available-to-promise | Protects the channel that is measured for cancellations |
 | 5 | Delivery promise widened: "tomorrow" becomes "within three working days" | Daniel | Oldest unsent order over 10 minutes, or the Friday pick plan over 80% consumed | The page tells the truth the warehouse can keep |
 | 6 | Non-essential checkout options off (gift wrap, gift message); a single payment method off if the PSP reports it degraded | Sanne's team with Milan | Checkout error rate over 1%, or a PSP notice | Shortens the checkout; removes a failing method |
