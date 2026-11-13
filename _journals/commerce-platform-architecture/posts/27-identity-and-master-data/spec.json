@@ -6,7 +6,7 @@
  "part": "part-6",
  "title": "One Customer, One Product: Identity and Master Data Across Systems",
  "status": "draft",
- "revised": "2026-11-12",
+ "revised": "2026-11-13",
  "basis": "Reconstructed from the published chapter (posts/27-identity-and-master-data/index.md) and its former spec.md, whose Non-goals, Modalities, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (a thesis paragraph p05, a roadmap p06 and a conclusion paragraph that answers the opening, p52); see decision_log.",
  "intent": {
   "outcome": {
@@ -1348,7 +1348,7 @@
   "The June 2027 identity rule is recorded as an addition to Waypoint, not a new W-decision, so as not to change the canonical W1–W8; a reviewer may prefer it named as a ninth ADR in organizing-commerce-engineering's KP series (needs the author).",
   "Fellegi and Sunter (1969) is cited through a secondary source because the paper is paywalled; a reviewer with access could add the primary citation.",
   "Salesforce Data Cloud's identity resolution rested on search summaries in the brief and is therefore not cited.",
-  "The front-matter excerpt still asks whether two records are 'the same customer, product or order', while the journal spec's question is about customers and products only; the brief keeps front matter unchanged, so the excerpt is left for the author (needs the author: drop 'or order' from the excerpt or keep it)."
+  "Needs the author: to make Eva's links traceable, an earlier pass added details the ledger does not state (her mobile number on the platform account and the POS loyalty entry; her name and street address on the newsletter record; Eva table and p49 linking). The ledger says only that her four records became one master with three links. Settle by adding these details to the ledger or by naming another basis for each link."
  ],
  "decision_log": [
   {
@@ -1434,6 +1434,14 @@
   {
    "date": "2026-11-12",
    "decision": "Fact fixes against the ledger and the chapter's own rule: Eva's returns contact is linked by its e-mail address, not by order number, because the chapter's rule links automatically only on exact e-mail or phone and the contact carries her personal e-mail (Eva table; ledger: 'Eva Janssen's four records became one master with three links'); the requirements-table row for returns-portal contacts says the same. Kestrel & Pine's hosted product is 'the shop platform' at first use and wherever the text means it (rule 11); W-decisions glossed by content at first use (rule 6)."
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Auto-resolved in the cleanup pass, 2026-11-13: the front-matter excerpt asks whether two records are 'the same customer or product', dropping 'or order', to match the journal spec's question (rule 1 by analogy: the page follows the canonical question; the one front-matter change this pass allows). Eva's returns contact was already linked by e-mail (no change). The fictional linking details not in the ledger stay and are recorded in open_questions for the author (rule 12). Check report is stale and no new round was run.",
+   "rejected": [
+    "Keeping 'or order' in the excerpt.",
+    "Removing the mobile number and newsletter address without the author (the walk-through's three links rest on them)."
+   ]
   }
  ],
  "sources": [
@@ -1494,6 +1502,10 @@
   }
  ],
  "changelog": [
+  {
+   "date": "2026-11-13",
+   "change": "Cleanup pass: excerpt drops 'or order'; ledger-less linking details flagged for the author."
+  },
   {
    "date": "2026-11-12",
    "change": "Converted spec.md to spec.json (reconstructed from the published chapter); added the contracts pick-up in p01, the thesis paragraph p05, the roadmap p06 and the conclusion answer p52; Eva's returns contact linked by e-mail, not order number; 'the shop platform' at first use. Flow rubric (sound with notes): GTIN glossed in p14; p20 no longer applies the June 2027 design early; consent paragraphs p32 and p33 merged; option count reconciled in p42; Ridgewalker named in p49. Rubric rerun (sound with notes): product matching p31 moved after consent p32 with its own subheading; p20 marked as a replay. Round 1 (ESCALATE, spec faults fixed under the brief): walk-through and per-flow requirements moved to the end of Matching and Merging (figures renumbered in reading order: the walk-through's figure is now Figure 5); MDM before the product options; transitions and redefinitions fixed. Round 2 (ESCALATE): resolved by the standing instruction: Why opens with the losses; product matching last in Matching and Merging; bridges, transitions and wording fixed; Eva's scene table shows the phone and newsletter name and address her links use. Round 3 (confirming, ESCALATE): closing fixes: matching paragraphs in process order (p24, p27, p26, p25), p22 and p42 transitions, 'master' glossed in p05, p37 wording."

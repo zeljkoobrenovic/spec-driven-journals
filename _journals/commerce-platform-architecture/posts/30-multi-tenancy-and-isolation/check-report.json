@@ -1,0 +1,732 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/30-multi-tenancy-and-isolation/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/30-multi-tenancy-and-isolation/index.md",
+  "spec_sha": "5b43b845c35e3bb2",
+  "draft_sha": "97da1763e8c9ed6a",
+  "run_at": "2026-11-12T23:56:54+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter goal: how SaaS sharing affects a merchant's limits, neighbors and peak",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three key points: vendor tenancy, rate limit as the felt mechanism, shared peak across rented SaaS",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: first peak surprise, uncounted API callers, wrong tenant split",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Rate limits can stall integrations at peak, so renting does not remove capacity planning",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Defines multi-tenancy, isolation, shards, pods and rate limits; merchant meets them as budgets to plan",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Roadmap of the chapter's sections",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Eva's order at the integration step, where API limits bite at peak",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Two Rate Limits on One Friday Evening ¶1",
+      "summary": "Black Friday 2026: WMS throttled the order export, four-hour backlog",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Two Rate Limits on One Friday Evening ¶2",
+      "summary": "Ruben reconstructs the evening from logs in June 2027",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Two Rate Limits on One Friday Evening ¶3",
+      "summary": "WMS per-customer limit capped the order flow at about seven orders a minute",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Two Rate Limits on One Friday Evening ¶4",
+      "summary": "Nine platform API consumers and how rate-limit scope (per app, per store) works",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Two Rate Limits on One Friday Evening ¶5",
+      "summary": "Most API use went to stock sync while the throttled order flow made a fifth; no priorities set",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Two Rate Limits on One Friday Evening ¶6",
+      "summary": "Limits worked as designed; the merchant must decide how to spend its share",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Why Platforms Share: Tenancy in Plain Words ¶1",
+      "summary": "Vendors pool tenants for lower cost and a single always-current version",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Why Platforms Share: Tenancy in Plain Words ¶2",
+      "summary": "AWS SaaS Lens models: silo, pool and bridge",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Why Platforms Share: Tenancy in Plain Words ¶3",
+      "summary": "Pooling creates the noisy-neighbor risk; silos avoid it at high cost",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Why Platforms Share: Tenancy in Plain Words ¶4",
+      "summary": "Vendor offerings map onto the spectrum; pools force extension by API rather than plugin",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "How a Shared Platform Keeps Tenants Apart ¶1",
+      "summary": "Setup: shared platforms must route requests and cap one tenant's load",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "How a Shared Platform Keeps Tenants Apart ¶2",
+      "summary": "Shopify sharded its database, which alone hurt resilience",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "How a Shared Platform Keeps Tenants Apart ¶3",
+      "summary": "Shopify pods: isolated datastores, a router, and fast pod moves",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "How a Shared Platform Keeps Tenants Apart ¶4",
+      "summary": "Shop as sharding unit with shop_id and an unsharded routing table",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "How a Shared Platform Keeps Tenants Apart ¶5",
+      "summary": "Shards become unevenly loaded as shops grow",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "How a Shared Platform Keeps Tenants Apart ¶6",
+      "summary": "Moving live shops between shards with Ghostferry, guided by measured load",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "How a Shared Platform Keeps Tenants Apart ¶7",
+      "summary": "Salesforce: pure pool isolated by OrgID and governor limits",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "How a Shared Platform Keeps Tenants Apart ¶8",
+      "summary": "commercetools projects and isolated regions; region choice fixes data residency",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Rate Limits: The Tenancy Tool You Meet ¶1",
+      "summary": "Defines rate limits, buckets, bursts and bulk operations across four vendors",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Rate Limits: The Tenancy Tool You Meet ¶2",
+      "summary": "Limits belong to the store and app; Shopify's rules on per-app budgets, reductions and buyer priority",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Rate Limits: The Tenancy Tool You Meet ¶3",
+      "summary": "Platform peak is pooled so storefront held; fixed integration limits did not",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Rate Limits: The Tenancy Tool You Meet ¶4",
+      "summary": "Webhooks save budget but have weak delivery guarantees and can auto-unsubscribe",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Tenancy in the SaaS You Also Rent ¶1",
+      "summary": "Every rented operational SaaS is also multi-tenant",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Tenancy in the SaaS You Also Rent ¶2",
+      "summary": "Specialist vendors' customers all peak on the same day",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Tenancy in the SaaS You Also Rent ¶3",
+      "summary": "Per-order pricing reveals what the vendor meters",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Tenancy in the SaaS You Also Rent ¶4",
+      "summary": "Data region is set per SaaS component and costly to change",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Tenancy in the SaaS You Also Rent ¶5",
+      "summary": "Four tenancy questions to ask every vendor",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "The Merchant's Choices and Their Trade-Offs ¶1",
+      "summary": "Merchant has four responses to sharing",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "The Merchant's Choices and Their Trade-Offs ¶2",
+      "summary": "Govern the API budget within the pool",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "The Merchant's Choices and Their Trade-Offs ¶3",
+      "summary": "Pay for a bigger limit, which helps only the platform",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "The Merchant's Choices and Their Trade-Offs ¶4",
+      "summary": "Rent or run a dedicated silo at operational cost",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "The Merchant's Choices and Their Trade-Offs ¶5",
+      "summary": "Split into several tenants (pointer to next section)",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "The Merchant's Choices and Their Trade-Offs ¶6",
+      "summary": "Recommended order: govern, then buy, then silo or split; measure first",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "One Tenant or Many ¶1",
+      "summary": "Multi-country merchant chooses one tenant or several; Kestrel & Pine uses one",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "One Tenant or Many ¶2",
+      "summary": "Shopify Markets lets one shop vary per country; Managed Markets not in EU",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "One Tenant or Many ¶3",
+      "summary": "Rule for staying in one tenant and how to split when needed",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "Same first move at every stage; only the number of budgets and markets grows",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "In Practice: Kestrel & Pine's API Budget for 2027 ¶1",
+      "summary": "2027 peak plan: order flow first, batched WMS calls, event-based stock, load tests",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "In Practice: Kestrel & Pine's API Budget for 2027 ¶2",
+      "summary": "Stay in one tenant and record every SaaS data region",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "Failure: a neighbor's flash sale on your pod",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶2",
+      "summary": "Failure: write errors during a vendor shard move",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶3",
+      "summary": "Failure: your own stock app crowding the order flow",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶4",
+      "summary": "Failure: vendor lowers the rate limit under load",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶5",
+      "summary": "Failure: webhook subscription silently deleted",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶6",
+      "summary": "Failure: specialist vendor slows on the shared peak",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "Recap: pooled capacity held, per-caller limits did not; merchant controls its callers",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "Established facts on tenancy models, rate limits and webhooks",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "Context-dependent choices: one tenant, bigger budget, silo",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "Author's synthesis: plan the API budget, ask vendors four questions",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Eight questions on callers, limits, isolation, region, tenants and reconciliation",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Hand-off to the next chapter on apps and extensibility",
+      "matched_spec_paragraph": "p55"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 52 aligned outline summaries state the controlling idea of their spec paragraph (p01-p55), in spec order; the three introduction callouts match no paragraph, as expected.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Two Rate Limits on One Friday Evening ¶4",
+      "quote": "Rate-limit scope matters: a budget may apply to an app, a store or another vendor-defined unit, so consumers do not necessarily share one quota.",
+      "finding": "The outliner needed two phrases (the nine consumers; how rate-limit scope works). The spec's controlling idea for p08 joins the platform-side consumer list with a general rule about quota scope, and the draft states that rule as a free-standing principle, two sections before buckets are defined. The same placement is the corroborated flow problem below.",
+      "fault": "spec",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "The other two units marked two_ideas hold one idea each: 'Why Platforms Share ¶4' ties Adobe and Shopware to one spectrum ('Shopware draws the same line'), with extension-by-API as its consequence, as p14 declares; 'In Practice ¶2' is one announced pair ('Two decisions carry over'), as p43 declares.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit traces to a supporting claim: intro and friday to S3/S5; why-share to S1; keep-apart to S2; rate-limits to S3; saas to S4; choices and in-practice to S5; one-tenant to S6; stages to S5/S6; wrong to S2-S4; conclusion and questions to S3-S6.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "Why Platforms Share: Tenancy in Plain Words, Figure 2 caption",
+      "quote": "a bridge pools the compute while grouping tenants into isolated sets of databases",
+      "finding": "Figure 2's caption explains the bridge model differently from the text it illustrates: the text quotes the SaaS Lens definition (some microservices siloed, others pooled), while the caption describes a Shopify pod, which has not been introduced yet and which the later 'INFERENCE, NOT DOCUMENTED' box presents only as an inference. Both flow readers stumbled on it.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "All other evidence is explained where it appears: the FY2025 report, the 38/30/4/7 and 55%/20%/1,900 figures, the SaaS Lens, Adobe, Shopware, Shopify 2018/2021, Salesforce and commercetools quotations, the inference callout, Picqer pricing, Shopify Markets, Figures 1, 3, 4 and 5, and the mechanism, rate-limit, four-flows, choices, one-tenant, stage and 2027-plan tables, each introduced or read out by the adjacent prose or caption.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "How a Shared Platform Keeps Tenants Apart ¶3",
+      "quote": "In 2016 Shopify reorganized into **pods**",
+      "finding": "Declared problem_solution (sharding's loss of resilience -> pods as the answer). The paragraph opens with a date, so the boundary reads as chronology; nothing says the pods answered the resilience problem the previous sentence ends on.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/1",
+      "draft_locus": "In Practice: Kestrel & Pine's API Budget for 2027 ¶2",
+      "quote": "Two decisions carry over.",
+      "finding": "Declared elaboration: two decisions that outlast the peak plan, after the per-consumer rules. 'Carry over' reads as 'carried over from something earlier' and names no source; flow reader B could not tell what they carry over from.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other section- and paragraph-level transitions express their declared relationship at the boundary (e.g. 'Rate limits exist because the platform is shared'; 'On the WMS side' / 'On the platform side'; 'The pool creates a risk'; 'The questions for every vendor are the same four'; 'Splitting tenants is a decision the merchant takes alone'; 'Even with a plan, tenancy fails in six ways').",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both readers describe the declared order: incident first (problem_solution), then why share -> how kept apart -> the rate limit -> other SaaS (prerequisite_order), then ranked choices -> one tenant -> stages -> 2027 plan, failures last. Neither marks any section's position unclear, and neither would move a whole section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Two Rate Limits on One Friday Evening ¶4-¶5",
+      "quote": "so it does not show the stock apps using up the order flow's quota; where each app has its own bucket, they could not.",
+      "finding": "Reader A: 'The story builds up the stock apps as the culprits, then takes that back. Afterwards I could not tell why the order flow was throttled 1,900 times at the platform if it made only 20% of the calls and had its own bucket.' The quota-scope caveat sits in the opening incident, before buckets are defined, and the spec (p08, p09) places it there; both readers propose moving it to the rate-limit section or stating that the order flow throttled on its own bucket.",
+      "fault": "spec",
+      "corroborated_by": "reader-flowB, section 3 item 1 ('the story sets the stock apps up as the culprits, then says they may not have caused the order flow's throttling') and section 4 item 1",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "Why Platforms Share: Tenancy in Plain Words, Figure 2 caption",
+      "quote": "a bridge pools the compute while grouping tenants into isolated sets of databases",
+      "finding": "Reader A: 'The text defines bridge as mixing silo and pool per microservice. The caption describes Shopify pods, which have not been introduced yet. The two descriptions clash.'",
+      "fault": "draft",
+      "corroborated_by": "reader-flowB, section 3 item 5 (Figure 2 caption does not match the AWS definition)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "How a Shared Platform Keeps Tenants Apart ¶2",
+      "quote": "Sharding alone reduced resilience, because one failed shard could stop a kind of request from working for every shop.",
+      "finding": "Reader A: 'the reason is not explained. Why would one shard's failure affect every shop?'",
+      "fault": "draft",
+      "corroborated_by": "reader-flowB, section 3 item 3 ('I re-read it and still could not tell')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "Rate Limits: The Tenancy Tool You Meet ¶4",
+      "quote": "They also work in the other direction: here the platform spends its own capacity calling you, and limits how long it keeps trying.",
+      "finding": "Reader A: 'the webhook paragraph at the end of the rate-limit section feels attached afterwards. \"The other direction\" took a moment to parse.' The paragraph does not tie back to the polling stock sync of the four-flows table it follows.",
+      "fault": "draft",
+      "corroborated_by": "reader-flowB, section 3 item 11 ('felt slightly tacked on. Its purpose became clear only when the \"unsubscribed itself\" failure mode appeared')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "One Tenant or Many ¶3",
+      "quote": "My rule:",
+      "finding": "Reader A: '\"My rule:\" is a sudden switch to the first person, the only one in the chapter.' The spec calls it the author's rule; the conclusion labels it 'The author's synthesis'.",
+      "fault": "draft",
+      "corroborated_by": "reader-flowB, section 3 item 7 ('the first use of the first person. It is a little jarring')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/2",
+      "draft_locus": "When It Goes Wrong ¶3",
+      "quote": "the gauge Kestrel & Pine lacked in 2026, which shows the queue's depth beside the rate-limit headroom",
+      "finding": "Reader A: 'this gauge is new here. The incident section never mentioned that it was missing.'",
+      "fault": "draft",
+      "corroborated_by": "reader-flowB, section 3 item 10 ('uses \"the\" as if the gauge had already been mentioned. It had not')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "quote": "Vendors may split databases into **shards**, group tenants into isolated **pods**, and impose **rate limits**, budgets for API use.",
+      "finding": "Reader A: 'three new terms arrive in one sentence, before the reader has any picture to hang them on. The Shopify report sentence before it also interrupts the definition of multi-tenancy.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Why Platforms Share: Tenancy in Plain Words ¶1",
+      "quote": "At a commerce platform the tenant the introduction named is one shop",
+      "finding": "Reader A: 'an awkward back-reference. I had to recall which introduction it meant.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Why Platforms Share: Tenancy in Plain Words ¶2",
+      "quote": "noisy-neighbor risk (the risk defined next)",
+      "finding": "Reader A: 'a forward reference inside a quote list, which slows reading.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/5",
+      "draft_locus": "How a Shared Platform Keeps Tenants Apart ¶5-¶6",
+      "quote": "placement uses measured utilization, not shop counts.",
+      "finding": "Reader A: 'The Ghostferry paragraph and the one-sentence paragraph about shard load differing \"almost four times\" are more mechanics than a newcomer needs. I lost the \"so what for the merchant\" here until the table restored it.' The prose never says what a move means for the merchant until the mechanism table and the failure section.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "In Practice: Kestrel & Pine's API Budget for 2027 ¶1",
+      "quote": "W1, W2 and W5 are Waypoint decisions:",
+      "finding": "Reader A: 'the reminder comes after the plan paragraph has already started. It would read better before the table' (reader A suggests moving it to the start of the section).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Two Rate Limits on One Friday Evening ¶2",
+      "quote": "In June 2027, Lead Integration Engineer Ruben Alves examined logs from both ends before planning the next peak.",
+      "finding": "Reader B: 'The time frame is unclear. The chapter's present seems to be after June 2027, yet the 2027 plan is a forecast. I had to work out when \"now\" is.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "How a Shared Platform Keeps Tenants Apart ¶3",
+      "quote": "That post is eight years old and describes the topology before Shopify moved to Google Cloud.",
+      "finding": "Reader B: 'The move to Google Cloud has not been introduced. It appears as if it were known.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "One Tenant or Many ¶2",
+      "quote": "is offered to merchants in the United States, Canada and the United Kingdom, not the EU.",
+      "finding": "Reader B: 'It is unclear why this matters here. I assume it means the option is not open to Kestrel & Pine, but the text does not say so.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "In Practice: Kestrel & Pine's API Budget for 2027 ¶1",
+      "quote": "Every link is tested at 80 orders a minute, and the link from the OMS to the WMS at 120, using test orders marked so the WMS recognizes them and ships nothing.",
+      "finding": "Reader B: 'With a WMS limit of about 30 calls a minute, I could not see how batching reaches 120 orders a minute. The batch size is never given.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/1",
+      "draft_locus": "In Practice: Kestrel & Pine's API Budget for 2027 ¶2",
+      "quote": "Two decisions carry over.",
+      "finding": "Reader B: 'I could not tell what they carry over from. They seem to be additional decisions, not ones carried over.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "quote": "listed in the order the chapter introduced the mechanisms. **A neighbor's flash sale on your pod.**",
+      "finding": "Reader B: 'The first failure mode starts in the same paragraph as the introductory sentence. It reads briefly as part of the intro.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "quote": "Vendors may split databases into **shards**, group tenants into isolated **pods**",
+      "finding": "'Shard' and 'pod' are on does_not_know. They are named in bold in the introduction with no gloss and explained only in 'How a Shared Platform Keeps Tenants Apart'.",
+      "fault": "draft",
+      "corroborated_by": "reader-flowA, section 3 item 1 ('three new terms arrive in one sentence, before the reader has any picture to hang them on')",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Two Rate Limits on One Friday Evening ¶4",
+      "quote": "On Shopify, for example, each app has its own bucket of calls on each store.",
+      "finding": "'Bucket' (leaky/token bucket is on does_not_know) is used in the incident and in ¶5 ('where each app has its own bucket') before 'Rate Limits: The Tenancy Tool You Meet ¶1' defines it.",
+      "fault": "draft",
+      "corroborated_by": "reader-flowB, section 4 item 1 ('the hedge undercuts the case before the reader has the concept'; move the caveat 'to the rate-limit section, where per-app buckets are explained')",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/3",
+      "draft_locus": "What to Take Away ¶4",
+      "quote": "the answers belong in the vendor card next to the price",
+      "finding": "'Vendor card' is not on already_knows and is never explained in this chapter.",
+      "fault": "draft",
+      "corroborated_by": "reader-flowA, section 3 item 13 ('\"vendor card\" is unexplained in this chapter')",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Rate Limits: The Tenancy Tool You Meet ¶3",
+      "quote": "The platform's own peak is shared across every tenant and smoothed, which is why the storefront held",
+      "finding": "'Smoothed' carries the chapter's central explanation (why the storefront held) but is never explained. Reported by flow reader A only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Rate Limits: The Tenancy Tool You Meet, four-flows table",
+      "quote": "Which apps call the store's API, batching, webhooks instead of polling",
+      "finding": "'Polling' is used in the four-flows table before the webhooks paragraph defines it ('asking again and again whether anything has changed'). Reported by the terms reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/3",
+      "draft_locus": "When It Goes Wrong ¶4",
+      "quote": "a flow that reads the budget headers and slows itself",
+      "finding": "'Budget headers' / 'response headers' are never explained; the reader is not told the remaining budget comes back with each response. Reported by the terms reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction",
+      "draft_locus": "Introduction callout (KEY POINTS)",
+      "quote": "the unit of isolation is invisible to you and the vendor may move you between units",
+      "finding": "'Unit of isolation' is the subject of the first vendor question but is never defined; the mechanism table shows it only by example. Reported by the terms reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Other terms from reader-terms.md are either glossed before use or soon after (rate limit, tenant, tenant identifier, noisy neighbor, throttle, HTTP 429, region, data residency, governor limit, merchant of record, platform-as-a-service, app, cutover) or are incidental detail inside vendor quotations and tables (codebase, stack, microservices, datastore, MySQL/Redis/Memcached, kernel, GraphQL, API Extensions, content delivery network, theme weight) that the argument does not depend on.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The introduction opens on a puzzling scenario (an order export waiting while the shop keeps selling), not on a definition, history or announcement.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion explains the opening case and sorts what holds into established, context-dependent and the author's synthesis; it is not a bare summary or a new topic.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "p50 synthesizes (pooled, smoothed capacity vs fixed per-caller limits; the merchant controls its own side); p52-p53 give the so-what: owner per caller, order flow first, four vendor questions, buying more is no substitute.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "'The order export that waited while the shop kept selling is now explained.' calls back to Introduction ¶1.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted the incident, why platforms share and how they keep tenants apart, the rate limit at platform and other vendors, the merchant's decisions (budget, one tenant or several, scale, 2027 plan) and failure modes, in roadmap order, with the running Kestrel & Pine case, Eva's order and dated vendor accounts as evidence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader explains why the storefront held (pooled, smoothed capacity; buyers first) and the flow did not (fixed budgets per app/store/customer; ~7 orders a minute), and plans: callers with owners, order flow first, WMS batches, events and bulk instead of full-catalog syncs, test above peak, ask the WMS vendor; 'A bigger plan does not raise the WMS limit.' It omits moving finance to a daily batch, a detail of the expected plan.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader gives both conditions for one tenant, the split triggers (legal entity, assortment, operations team), the costs both ways and the PIM and OMS beneath all tenants.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader lists the four questions (isolation unit and move/restore alone; limits and their change under load; region; busiest day) and why: each vendor pools the merchant with customers who peak on the same Friday.",
+      "severity": "minor"
+    }
+  ]
+}

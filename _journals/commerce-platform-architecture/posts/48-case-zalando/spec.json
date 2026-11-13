@@ -1,0 +1,1470 @@
+{
+ "spec_version": "0.1",
+ "kind": "post",
+ "id": "case-zalando",
+ "journal": "commerce-platform-architecture",
+ "part": "part-11",
+ "title": "Case: Zalando, Microservices, Platform Strategy and the Return to Discipline",
+ "status": "draft",
+ "revised": "2026-11-13",
+ "basis": "Reconstructed from the published chapter (posts/48-case-zalando/index.md) and its former spec.md, whose Non-goals, Modalities, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (a thesis paragraph, a roadmap that announces every section, and a synthesis that answers the opening question). Two units were moved inside their sections (the Tech Radar paragraph before the change rules; the terms paragraph before the discipline timeline); these are recorded in decision_log.",
+ "intent": {
+  "outcome": {
+   "know": [
+    "The 2015 split: the monolith Jimmy blocked teams through slow startup and deployments; Radical Agility and autonomous teams, 85-plus teams by February 2016 and about 110 by December 2016, each with its own AWS account on STUPS, an audited internal platform-as-a-service; the shop rebuilt as fragments behind the Skipper router; the September 2015 statement that distributed data needs an event stream (Kafka, then the Nakadi event bus).",
+    "The API Guild (2015) and the RESTful API and Event Guidelines (open since 2016, maintained in 2026): API first in OpenAPI; never break consumers; prefer compatible extension to versioning; tolerant readers; no shutdown without client consent on a sunset date; deprecation in the specification, Deprecation and Sunset headers, usage monitoring; no new use of deprecated APIs.",
+    "The narrowing that followed, which no Zalando post names as such: alignment over raw autonomy (2018), technology selection principles and fewer languages (2020, with 1,200-plus developers and 4,000-plus applications), the Sunrise developer portal replacing more than 100 interfaces (2023), and in March 2025 a synchronous Product Read API replacing a price-and-stock event stream that reprocessed payloads over 90% unchanged, lagged up to 30 minutes at Cyber Week and led teams to divergent copies of product data.",
+    "Which open-source pieces survived (Skipper, Patroni, the guidelines) and which were archived (STUPS's Senza, Nakadi, Zalenium); the platform built through logistics (partner program 2011, Connected Retail 2018 to be discontinued by 30 June 2027, ZEOS fulfillment for any channel 2023, SCAYLE, ABOUT YOU in 2025, partners at 32.1% of 2025 GMV); the 2023 assistant and the 2026 Agentic Identity Broker.",
+    "Where the evidence stops: no published service inventory, order or pricing architecture, or account of how the read API and event streams coexist."
+   ],
+   "believe": [
+    "Events say what happened; a read API on the owner says what a value is now; a reconciliation says whether the copies still agree.",
+    "Ownership is decided before decomposition, and a written rule for change outlives the architecture it was written for."
+   ],
+   "can_do": [
+    "Write compatibility and deprecation demands into a vendor contract.",
+    "Name, for price and stock, which system answers 'what is it now' and how far each copy lags on the peak hour."
+   ]
+  },
+  "audience": {
+   "who": "Newcomers to commerce architecture; most of all the integration engineer or architect who must write contracts with vendors and marketplaces (the guidelines table is written as a list of demands). The leader deciding how far to decentralize a growing team reads the discipline timeline; the product manager running a marketplace channel reads the platform timeline.",
+   "already_knows": [
+    "What buying something online is like from the shopper's side; roughly what an API, a database and a queue are.",
+    "Kestrel & Pine, its fourteen-person technology team, its thirteen systems, its ten incidents in outline (among them the Black Friday Oversell and the Deprecated Endpoint) and the names of the sixteen failure patterns (among them the Giant's Boots, the Pulled Rug and the Message in a Bottle).",
+    "From Part I: the thirteen steps of an order, promise and handoff, 'system', 'the shop platform' for the hosted product Kestrel & Pine rents and 'commerce platform' for the whole set of systems, the four scale stages (Starting, Growing, Omnichannel, Group), bounded context, system of record, single writer, events, idempotency and reconciliation, the Waypoint decisions W1 to W8.",
+    "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+    "From the Part XI introduction and chapters 46 and 47: the cases are read from dated sources researched on 7 November 2026, with documented, widely reported and inferred claims kept apart; Shopify as the hosted platform; Amazon's move from one application to services after a scaling wall and from retailer to platform, its internals documented only up to 2007."
+   ],
+   "does_not_know": [
+    "Monolith, microservices, autonomous team, internal platform-as-a-service, fragments, GMV.",
+    "Event bus, schema, Kafka, Nakadi.",
+    "API First, OpenAPI, compatible extension, versioning, deprecation, sunset, tolerant reader, technology radar.",
+    "Paved road, technology radar with teeth, synchronous read API, Product Read API.",
+    "Partner program, seller of record, wholesale, ship-from-store, logistics as a service, ZEOS, SCAYLE.",
+    "Delegated access, token exchange."
+   ]
+  },
+  "acceptance_criteria": [
+   {
+    "id": "AC-1",
+    "statement": "Given a proposal to replace a chain of stock copies with an event stream that every consumer rebuilds its own copy from, the reader explains what Zalando's 2025 experience shows and what to build instead.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "A merchant's stock reaches its storefront and marketplaces as a chain of copies: the warehouse system to the ERP every 15 minutes, then hourly to the platform and hourly to a marketplace connector. Its integration partner proposes an event stream to which every system subscribes and from which each keeps its own copy. Using only this chapter: what does Zalando's experience say about that design, and what should the merchant build instead?",
+    "expected": "Zalando published price and stock as events that consumers turned into their own copies; at scale over 90% of each payload was unchanged but reprocessed, events were delayed up to 30 minutes at Cyber Week, and teams that could not keep up used other sources, producing divergent product data; in 2025 it replaced the pipeline with a synchronous Product Read API (its internals are not published). Events are right for telling others that something changed and wrong as the only place to learn the current value, because every consumer becomes a copy that lags most on the busiest day. Build a system of record for stock and price, an availability service that answers current availability through an API, events to propagate change and feed reconciliation, and a reconciliation job (Kestrel & Pine's W1)."
+   },
+   {
+    "id": "AC-2",
+    "statement": "The reader can state what to demand of a vendor about API change and show how it would have caught a retired-version incident.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "Using only this chapter: what should a merchant demand of a marketplace connector vendor about API changes, and how would that have prevented a stale-stock incident caused by a script calling a retired API version?",
+    "expected": "From Zalando's guidelines: never break backward compatibility; add compatible extensions instead of new versions; clients tolerate unknown fields; when a version is unavoidable, a stated scheme; no shutdown until clients consent to a sunset date; deprecation marked in the specification with migration guidance and Deprecation and Sunset headers on every response; the provider monitors who still calls a deprecated API; clients never start using a deprecated API. In Kestrel & Pine's Deprecated Endpoint (February 2027, two days of stale stock to bol), a header the script could log, or the vendor's usage monitoring showing the script still calling, would have warned before the sunset; W5 makes integration owners track API versions and retirement notices."
+   },
+   {
+    "id": "AC-3",
+    "statement": "The reader can correct the claim that Zalando shows microservices failed, from the chapter's sources.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "minor",
+    "probe": "A board member says: 'Zalando shows microservices failed.' Using only this chapter: is that what the record shows?",
+    "expected": "No. Zalando split in 2015 for team autonomy, because all the shop teams shared one codebase with slow startup and complicated deployments (a talk of February 2016 counts 85-plus teams), and did it organization first (teams, an account each, an audited platform). The later posts narrow one choice at a time: alignment over raw autonomy (2018), fewer languages (2020), one developer portal (2023), a read API on one critical path (2025). No post declares the autonomy era over; 'return to discipline' is the chapter's own reading. What the record supports is that autonomy produced too many technologies, too many tools and one integration that could not keep up; what transfers is the order of operations and the written API standard, while the service count applies only at a much larger size."
+   },
+   {
+    "id": "AC-4",
+    "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+    "check": "intro_predicts_content",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+    "expected": "That a merchant listing on Zalando depends on a platform serving shoppers, connecting sellers and offering fulfillment, at 2025 scale (€17.6 billion GMV, 62 million active customers, 278.6 million orders); the 2015 move to independently deployed services and autonomous teams, then shared standards, fewer technologies and common tools, and a 2025 replacement of an event integration with direct API calls; the 2015–2017 accounts read as history, 'return to discipline' as the chapter's interpretation; price, stock, imported orders and API contracts from the merchant's side; the split made for autonomy, the API standard as the durable export, and the 30-minute event lag; failure patterns The Giant's Boots, The Pulled Rug and The Message in a Bottle. Evidence: Zalando's own dated posts and filings, its open-source repositories and trade press, with inferences labeled."
+   },
+   {
+    "id": "AC-5",
+    "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+    "check": "reverse_outline_matches_spec",
+    "method": "reverse_outline",
+    "severity": "blocker"
+   }
+  ]
+ },
+ "thesis": {
+  "question": "What does Zalando's public record from the 2015 microservices split to 2026, including the later corrections, show a merchant about modularity, API contracts and the source of current state?",
+  "claim": "Zalando split its shop in 2015 for team autonomy, not load, then narrowed choices for a decade: alignment over raw autonomy, fewer languages, one developer portal, and in 2025 a read API replacing a price-and-stock event stream that lagged up to 30 minutes at Cyber Week. A merchant should take its written rules for API compatibility and deprecation, and ask the system that owns each price and stock figure for it, not copy Zalando's thousands of applications.",
+  "disputed_by": "The view that Zalando's 2015 shape is the model for a modern commerce platform: autonomous teams with free choice of technology, many small services and event streams between them, so that a merchant modernizing its stack should move toward that shape.",
+  "so_what": "A merchant that accepts the claim adopts compatibility and deprecation rules (no breaking changes, tolerant readers, a sunset only with consent, a date, headers and usage monitoring) as the baseline for every vendor contract, and asks for price and stock which system can answer 'what is it now' rather than which copy an event feeds. Kestrel & Pine takes two such lessons, both already in Waypoint: W5's tracking of API versions and retirement notices, which would have caught the Deprecated Endpoint of February 2027, and W1's availability service, answering current availability through an API with stock events and reconciliation behind it, in place of the chain of copies that kept selling the Ridgewalker for two hours after it sold out on 27 November 2026.",
+  "how_why": "Autonomy multiplied what each team chose (languages, tools, integration styles), so the cost arrived later as software that was hard to support and tools nobody could find, which Zalando reduced by narrowing one choice at a time. An event that carries the whole record is the right way to say that something changed and the wrong way to be the only source of the current value: every consumer becomes a copy that can lag, the lag is largest in the busiest week, and teams that fell behind used other sources until the copies diverged. A written rule for change binds the interface, which outlives any implementation behind it: the guidelines are maintained in 2026 while STUPS and Nakadi are archived.",
+  "supporting_claims": [
+   {
+    "id": "S1",
+    "claim": "Zalando split its shop in 2015 because its teams shared one codebase with slow startup and complicated deployments; the fix was organizational first (autonomous teams, an AWS account each on the audited STUPS platform) and architectural second (fragments behind a router), so the service count followed the team count."
+   },
+   {
+    "id": "S2",
+    "claim": "Zalando stated the cost of distributed data in the same year: once each service owns its data there is no single place to query, so analytics and reconciliation need an event stream (Kafka, then the Nakadi event bus)."
+   },
+   {
+    "id": "S3",
+    "claim": "The durable export is a written API standard: the API Guild (2015) and the guidelines (open since 2016, maintained in 2026) set compatibility and deprecation rules a merchant can demand of every vendor, and the standard outlived the platform tooling only Zalando needed (STUPS and Nakadi archived)."
+   },
+   {
+    "id": "S4",
+    "claim": "From 2018 to 2025 Zalando narrowed one choice at a time (alignment, languages, one developer portal) and in 2025 replaced a price-and-stock event stream that lagged up to 30 minutes at Cyber Week with a read API: events propagate change, but must not be the only source of the current value."
+   },
+   {
+    "id": "S5",
+    "claim": "Zalando became a platform through logistics (partner program, ship-from-store, fulfillment for any channel, then shop software), with one stock pool serving several channels and consolidation following; its AI work moved from a discovery assistant to a published identity model for agents."
+   },
+   {
+    "id": "S6",
+    "claim": "Read with dates and with inference labeled, the case divides into disciplines that transfer to a fourteen-person team (written change rules, an owner with a read API, reconciliation), which Kestrel & Pine already has as W5 and W1, and machinery sized to Zalando; the public record stops short of Zalando's current internals."
+   }
+  ]
+ },
+ "role": {
+  "contribution": "Gives the part the fullest public record of a split and its corrections, with the written API rules a merchant can demand of vendors and the 2025 evidence that an event stream must not be the only source of current state.",
+  "supports": [
+   "P11-3",
+   "P11-5"
+  ]
+ },
+ "flow": {
+  "pattern": "chronological",
+  "additional_patterns": [
+   {
+    "pattern": "grouping",
+    "applies_to": "pieces after api (what the 2015 work left in 2026), and platform and ai: subjects read across the whole decade"
+   }
+  ],
+  "rationale": "The architecture record is told in date order (the 2015 split, the cost of distributed data stated the same year, the API standard begun in 2015, the narrowing from 2018 starting from the 2016 radar, the 2025 event stream in detail) because each correction only makes sense after the decision it corrects. What survived of the 2015 open-source pieces follows the API standard directly, because the guidelines are the survivor the section is about and STUPS, Skipper and Nakadi have just been introduced; putting it later breaks the 2018-2025 run with a jump back to 2015. The 2025 section follows the discipline timeline because it is that timeline's last row worked in detail. The business and AI threads come after the architecture story because they share no single date with it and each needs terms the architecture sections supply (the stock pool needs events and read APIs; the identity broker needs API contracts). 'What Zalando Teaches' needs all of the evidence, and 'Where the Evidence Stops' bounds it before the take-away. Putting the 2025 section before the discipline timeline would present the read API without the decade of narrowing that explains it; putting the lessons first would assert them before their evidence."
+ },
+ "introduction": {
+  "hook": {
+   "type": "direct_statement",
+   "content": "A merchant listing products on Zalando depends on a platform that serves shoppers, connects sellers and offers fulfillment, at a scale of €17.6 billion GMV, 62 million active customers and 278.6 million orders in 2025; a merchant such as Kestrel & Pine needs to know which of its engineering lessons apply to a much smaller operation."
+  },
+  "bridge": {
+   "from_reader_world": "The previous case, Amazon, moved from one application to services after a scaling wall and from retailer to platform, with its internals documented only up to 2007.",
+   "to_topic": "Zalando made similar moves and has published ten years of its decisions, including the ones it later reversed, which the chapter reads as dated history."
+  },
+  "thesis_statement": {
+   "text": "Zalando split its shop in 2015 for team autonomy, not for load, then narrowed choices for a decade: alignment over raw autonomy, fewer languages, one developer portal and, in 2025, a read API in place of a price-and-stock event stream that lagged up to 30 minutes at Cyber Week. A merchant should take Zalando's written rules for API compatibility and deprecation, and get each price and stock figure from the system that owns it, not copy Zalando's thousands of applications.",
+   "placement": "KEY POINTS callout and paragraph p05"
+  },
+  "roadmap": {
+   "placement": "Paragraph p06",
+   "promises": [
+    {
+     "promise": "The 2015 split and the cost of spreading data across services, stated the same year.",
+     "kept_in": [
+      "split",
+      "data"
+     ]
+    },
+    {
+     "promise": "The API standard that came out of that work, and which of the 2015 pieces survived.",
+     "kept_in": [
+      "api",
+      "pieces"
+     ]
+    },
+    {
+     "promise": "The decade of narrowing choices and, in detail, the 2025 event stream that fell behind.",
+     "kept_in": [
+      "discipline",
+      "event2025"
+     ]
+    },
+    {
+     "promise": "The retailer becoming a platform through logistics, and its AI work.",
+     "kept_in": [
+      "platform",
+      "ai"
+     ]
+    },
+    {
+     "promise": "What transfers to a merchant, including what Kestrel & Pine takes, and where the evidence stops.",
+     "kept_in": [
+      "teaches",
+      "evidence"
+     ]
+    }
+   ]
+  },
+  "paragraphs": [
+   {
+    "id": "p01",
+    "controlling_idea": "A merchant listing on Zalando depends on a platform that serves shoppers, connects sellers and offers fulfillment at a large scale, so a merchant such as Kestrel & Pine needs to know which of Zalando's engineering lessons apply to its smaller operation.",
+    "function": "context",
+    "evidence": [
+     {
+      "kind": "statistic",
+      "what": "€17.6 billion GMV, 62 million active customers, 278.6 million orders in 2025.",
+      "source": "Zalando FY2025 fact sheet, 12 March 2026",
+      "shows": "The scale Zalando's engineering choices answer, against which the merchant's own size is measured."
+     }
+    ]
+   },
+   {
+    "id": "p04",
+    "controlling_idea": "In the order's journey a merchant listing a jacket on Zalando needs correct price and stock, an imported order and a maintained API contract, which the linked chapters explain from the merchant's side.",
+    "function": "context",
+    "evidence": [
+     {
+      "kind": "example",
+      "what": "The jacket listed on Zalando; links to marketplaces-and-channel-integration, inventory-and-availability and api-contracts-and-versioning.",
+      "shows": "Places the case at the steps of the order the reader already knows."
+     }
+    ],
+    "transition_in": {
+     "relationship": "elaboration",
+     "carries_over": "A merchant listing on Zalando and the scale it depends on.",
+     "introduces": "What that merchant needs at each step of the order's journey.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p02",
+    "controlling_idea": "Like Amazon, Zalando moved from one application to services and from retailer to platform; unlike Amazon it has published ten years of its decisions, from the 2015 move to independent services and autonomous teams through shared standards, fewer technologies and common tools to a 2025 replacement of an event integration with direct API calls, so the case shows the costs of earlier decisions as well as their reasons.",
+    "function": "context",
+    "evidence": [
+     {
+      "kind": "fact",
+      "what": "The 2015 move, the later posts on standards, technologies and tools, and the 2025 account.",
+      "source": "Zalando Engineering, 2015-2025",
+      "shows": "Why Zalando's record, unlike Amazon's, covers its own corrections."
+     }
+    ],
+    "transition_in": {
+     "relationship": "similarity",
+     "carries_over": "Zalando as the platform the merchant depends on, and the previous case, Amazon.",
+     "introduces": "Zalando's similar moves and its ten years of published decisions, including the reversed ones.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p03",
+    "controlling_idea": "The 2015-2017 accounts are read as history beside newer filings, each claim is dated, inferences are labeled, and 'return to discipline' is the chapter's own interpretation, not a program Zalando announced.",
+    "function": "context",
+    "transition_in": {
+     "relationship": "elaboration",
+     "carries_over": "The published decisions of different ages.",
+     "introduces": "How the chapter reads them.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p05",
+    "controlling_idea": "The chapter's claim: Zalando split its shop in 2015 for team autonomy, not for load, then narrowed choices for a decade, ending in 2025 with a read API in place of a price-and-stock event stream that lagged up to 30 minutes; a merchant should take its written rules for API compatibility and deprecation and get each price and stock figure from the system that owns it, not copy its thousands of applications.",
+    "function": "claim",
+    "transition_in": {
+     "relationship": "cause_effect",
+     "carries_over": "The dated record and how it is read.",
+     "introduces": "What the record shows the merchant.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p06",
+    "controlling_idea": "The roadmap: the 2015 split and the cost of distributed data, the API standard and which 2015 pieces survived, the decade of narrowing with the 2025 event stream in detail, the retailer becoming a platform, AI, and finally what transfers to a merchant and where the evidence stops; the evidence is Zalando's dated posts, filings and repositories, with trade press where primary pages were missing.",
+    "function": "transition",
+    "transition_in": {
+     "relationship": "sequence",
+     "carries_over": "The chapter's claim.",
+     "introduces": "The order in which the chapter tests it and the evidence it uses.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   }
+  ]
+ },
+ "sections": [
+  {
+   "id": "split",
+   "heading": "2015: Jimmy, Radical Agility and the Split",
+   "controlling_idea": "Zalando split its shop in 2015 because teams sharing one codebase could not move quickly, and it did so organization first: autonomous teams, an AWS account each on an audited platform, then a page assembled from separately deployed fragments.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S1"
+    ],
+    "how": "Establishes the stated motive and the organization-first order of the split."
+   },
+   "flow": {
+    "pattern": "chronological",
+    "rationale": "Terms first, then the monolith's problem (2015), the rebuild (May 2015), the organization (March 2015 to December 2016), the platform that made accounts per team possible, the fragments one year in (October 2016) and a team's first-months lessons (April 2016), ending on the inference about the order of operations."
+   },
+   "transition_in": {
+    "relationship": "sequence",
+    "carries_over": "The roadmap's first step.",
+    "introduces": "The 2015 split, with the terms it needs.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p07",
+     "controlling_idea": "A monolith is one deployed application, microservices are separately deployed programs talking over a network, and an autonomous team owns its services in production; the question is how much independence helps teams without making coordination harder.",
+     "function": "definition"
+    },
+    {
+     "id": "p08",
+     "controlling_idea": "Zalando's monolith, Jimmy, was shared by all the shop teams and slowed them through slow startup and complicated deployments, so the stated problem was release speed and shared code rather than traffic.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "The October 2015 post: the shop teams shared the same code base and could not move quickly because of slow startup and complicated deployments.",
+       "source": "Zalando Engineering, 16 October 2015",
+       "shows": "The motive was team speed, not load."
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "The monolith and the question of independence.",
+      "introduces": "Zalando's monolith and the problem it stated.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p09",
+     "controlling_idea": "In May 2015 a small team began rebuilding the Fashion Store as services whose teams own programming, testing, deployment and operations, with a router, Skipper, that it open-sourced.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "Seven engineers and a designer; fifteen country sites, over sixteen million active customers; Skipper.",
+       "source": "Zalando Engineering, 16 October 2015",
+       "shows": "What the rebuild was and how it started."
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The monolith's problem.",
+      "introduces": "The rebuild that answered it.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p10",
+     "controlling_idea": "The organizational side, Radical Agility, made small autonomous teams the unit of trust, and the team count grew from 85-plus in February 2016 to about 110, each with its own AWS account, by December 2016.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Bowman, July 2015: 'We think of teams as a unit of trust'; 85+ teams (February 2016); about 110 teams, 1,400 people, an AWS account per team (InfoQ, December 2016); teams of three to seven (trade accounts, 2016).",
+       "source": "Zalando Engineering 2015, 2016; InfoQ 2016; Diginomica 2016",
+       "shows": "The split was organized around teams, and their number."
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "The rebuild's teams owning their services.",
+      "introduces": "The organizational program behind them and its size.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p11",
+     "controlling_idea": "STUPS, an internal platform-as-a-service, gave every team its own cloud account and made that auditable.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'a convenient and audit-compliant Platform-as-a-Service'; nearly administrative access with audit reporting for card-industry, financial-reporting and German rules; production-ready for every team in May 2015.",
+       "source": "InfoQ, 4 April 2016",
+       "shows": "Account-per-team autonomy needed a shared platform first."
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "Each team's own AWS account.",
+      "introduces": "The platform that made it possible.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p12",
+     "controlling_idea": "The shop was rebuilt as fragments, pieces of a page owned and deployed by different teams, and one year in (October 2016) the effort turned from prototyping to stable components other teams could depend on.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Project Mosaic; header and footer fragments live; 'from prototyping to performance optimization'; 'stable components that other teams can depend on'.",
+       "source": "Zalando Engineering, 5 October 2016",
+       "shows": "The architectural side followed the organizational one."
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 1: router in front, fragments per team, a cloud account per team on a shared audited platform.",
+       "shows": "The 2015-2016 shape in one picture."
+      }
+     ],
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Teams and their platform.",
+      "introduces": "How the shop itself was rebuilt.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p13",
+     "controlling_idea": "A team's April 2016 account shows the first months: two services became eight once boundaries were modeled, and weekly goals replaced a failed upfront plan; the labeled inference draws the lesson that ownership is decided before decomposition and that the service count followed the team count.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "case",
+       "what": "The Dortmund team's two services that became eight.",
+       "source": "Zalando Engineering, 27 April 2016",
+       "shows": "Boundaries had to be learned."
+      },
+      {
+       "kind": "reasoning",
+       "what": "INFERENCE callout: 85-plus teams (2016), about 110, then 4,000+ applications for 1,200+ developers (2020); Kestrel & Pine's fourteen people are below that count; the order of operations transfers.",
+       "shows": "What a merchant can take from the split and what it cannot."
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "The rebuild as Zalando described it.",
+      "introduces": "One team's first months and the lesson the chapter draws.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "data",
+   "heading": "The Cost of Distributed Data, Stated Early",
+   "controlling_idea": "Zalando said in 2015 that once each service owns its data, analytics and reconciliation need an event stream, and built one.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S2"
+    ],
+    "how": "Shows the event stream as the answer to distributed data, the premise the 2025 correction later qualifies."
+   },
+   "flow": {
+    "pattern": "chronological",
+    "rationale": "The September 2015 statement of the cost, the terms, the October 2015 event bus, the 2017 intent, then the inference for a merchant."
+   },
+   "transition_in": {
+    "relationship": "cause_effect",
+    "carries_over": "Services owned by separate teams.",
+    "introduces": "What spreading data across them cost.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p14",
+     "controlling_idea": "When services own separate databases, reports must bring their facts back together, and Zalando's September 2015 post said so and answered with Kafka and a planned data lake.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'consolidation of data in a single place makes business intelligence fairly simple'; article and order data across eight PostgreSQL databases; Kafka 'to make our event data available for downstream systems'.",
+       "source": "Zalando Engineering, 21 September 2015",
+       "shows": "The cost was stated early, by Zalando."
+      }
+     ]
+    },
+    {
+     "id": "p15",
+     "controlling_idea": "An event is a message sent when something happens, and an event bus is the shared channel on which services publish and subscribe to events.",
+     "function": "definition",
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "Event data made available downstream.",
+      "introduces": "The two terms the rest of the chapter needs.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p16",
+     "controlling_idea": "Zalando's event bus, Nakadi (October 2015), put a REST interface over Kafka-like queues and validated every event against a registered schema.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'a distributed event bus that implements a RESTful API abstraction on top of Kafka-like queues'; schema registry.",
+       "source": "Nakadi README",
+       "shows": "What Zalando built to carry events."
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "The event bus as a term.",
+      "introduces": "Zalando's own event bus.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p17",
+     "controlling_idea": "By 2017 Zalando described event streaming as the intended style of its services; the labeled inference reads this as the book's reconciliation rule, met by Kestrel & Pine without a single microservice.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Services 'process incoming events and data from other services'; streaming 'a central part of the service fabric'.",
+       "source": "Zalando Engineering, 26 May 2017",
+       "shows": "Events became the intended style."
+      },
+      {
+       "kind": "reasoning",
+       "what": "INFERENCE callout: thirteen systems, orders and product data each in four places, three definitions of an order (W7).",
+       "shows": "An Omnichannel merchant meets the data problem before the team problem."
+      }
+     ],
+     "transition_in": {
+      "relationship": "time",
+      "carries_over": "Nakadi in 2015.",
+      "introduces": "The event-driven intent of 2017.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "api",
+   "heading": "The API Guild and the Guidelines",
+   "controlling_idea": "Zalando's API standard, begun by a guild in 2015 and maintained in 2026, writes down how APIs may change, and its compatibility and deprecation rules are what a merchant should demand of every vendor.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S3"
+    ],
+    "how": "Gives the rules that transfer and ties them to a Kestrel & Pine incident."
+   },
+   "flow": {
+    "pattern": "chronological",
+    "rationale": "Why shared rules matter, the 2015 guild, API First and the 2016 open guidelines, then the change rules in detail and the incident they would have caught, so the section ends on the merchant."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "Many teams and services, each with its own data and events.",
+    "introduces": "The shared rules that kept their interfaces consistent.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p18",
+     "controlling_idea": "Shared API rules let teams and partners integrate without relearning each interface and catch incompatibilities before release.",
+     "function": "context"
+    },
+    {
+     "id": "p19",
+     "controlling_idea": "The API standard began in March 2015 as an API Guild that reviewed rather than approved, because Zalando's open platform depended on partners and it could not afford to break its APIs.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'a sounding board and review resource, not an approval board'; 'We cannot afford to break our APIs'; 'all Zalando APIs should look like the same author created them'.",
+       "source": "Zalando Engineering, 3 September 2015",
+       "shows": "The business reason for the standard."
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "Shared API rules in general.",
+      "introduces": "Zalando's guild that began them.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p20",
+     "controlling_idea": "The principle is API First: the interface is designed and reviewed as an OpenAPI document before code, open-sourced in 2016 and still required in the current guidelines.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'a source truth, part of a contract between a service provider and consumers' (2016); 'must define APIs first, before coding its implementation' (current guidelines).",
+       "source": "InfoQ, 24 December 2016; Zalando guidelines, accessed November 2026",
+       "shows": "The interface is the contract."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The guild's standard.",
+      "introduces": "Its principle and its open publication.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p22",
+     "controlling_idea": "The rules that matter most to a merchant are those about change: extend compatibly instead of versioning, tolerate unknown fields, and retire an API only with client consent on a date, machine-readable deprecation, headers and usage monitoring.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Rules #106-#115 and #185-#191 with plain words and what Kestrel & Pine should demand of a vendor.",
+       "source": "Zalando RESTful API and Event Guidelines, accessed November 2026",
+       "shows": "Each rule turned into a vendor demand."
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 2: announce, obtain consent, signal in headers, monitor, sunset.",
+       "shows": "Deprecation as a sequence of chances to avoid the Pulled Rug."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "API First and the guidelines as a contract.",
+      "introduces": "The guidelines' rules on change, the ones that matter most to a merchant.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p23",
+     "controlling_idea": "Kestrel & Pine's Deprecated Endpoint of February 2027 shows the cost of lacking these rules: every row of the table describes a step that would have caught the script still calling a retired version.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "The marketplace connector retired an API version on a published date; the agency script was not updated; stock to bol was stale for two days (fictional).",
+       "source": "scenario-ledger.md, incident 10",
+       "shows": "The rules are cures for a failure the reader has already met."
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "The change rules.",
+      "introduces": "The incident they would have prevented.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "pieces",
+   "heading": "The Platform Pieces: What Survived",
+   "controlling_idea": "The open-source pieces with users outside Zalando survived and the ones tied to its own 2015 model were archived, a warning against platform tooling only one company needs.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S3"
+    ],
+    "how": "Shows the written standard outliving the tooling built for one company."
+   },
+   "transition_in": {
+    "relationship": "time",
+    "carries_over": "The guidelines and the 2015 platform pieces met so far (STUPS, Skipper, Nakadi).",
+    "introduces": "Their status in November 2026: what survived and what was archived.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p30",
+     "controlling_idea": "The November 2026 status of what Zalando open-sourced from 2015 is itself evidence: the router (Skipper), a PostgreSQL failover template (Patroni) and the written standard are active, while STUPS, Nakadi and a test grid (Zalenium) are archived.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "STUPS (Senza archived), Skipper (active), Patroni (active), Nakadi (archived June 2024), guidelines (active), Tech Radar (active), Zalenium (archived 2021).",
+       "source": "GitHub repositories, status on 7 November 2026",
+       "shows": "Which pieces survived."
+      },
+      {
+       "kind": "reasoning",
+       "what": "INFERENCE callout: pieces with a life outside Zalando survived; archiving Nakadi says nothing about internal use.",
+       "shows": "The transferable warning, with its limit."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "discipline",
+   "heading": "The Return to Discipline, 2018 to 2026",
+   "controlling_idea": "No post declares the autonomy era over, but from 2018 each post narrows a choice, and the record supports not 'microservices failed' but autonomy that produced too many technologies, too many tools and one integration that could not keep up.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S4"
+    ],
+    "how": "Lays out the decade of narrowing that the thesis names."
+   },
+   "flow": {
+    "pattern": "assertion_evidence_reasoning",
+    "rationale": "The 2016 radar as the baseline first, then the terms the timeline uses, then the timeline (2018 to 2026, each row naming what narrowed), then what it does and does not support. The radar sits here, not in the API section, because its 2020 change is a row of this timeline; in the API section it pointed forward to a change the reader had not met."
+   },
+   "transition_in": {
+    "relationship": "time",
+    "carries_over": "What the 2015 work left behind by 2026.",
+    "introduces": "What changed from 2018, starting from the advisory radar of 2016.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p21",
+     "controlling_idea": "From 2018 Zalando's posts narrow what 2015 left open, and the starting point for technology choices was the 2016 Tech Radar, which rated technologies by ring as one input to each team's choice, wording the 2020 row of the timeline replaces.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "ADOPT, TRIAL, ASSESS, HOLD; 'Teams must use the Tech Radar as one input source'.",
+       "source": "Zalando Engineering, 17 May 2016; Tech Radar page",
+       "shows": "Technology choice was advised, not mandated, in 2016."
+      }
+     ]
+    },
+    {
+     "id": "p24",
+     "controlling_idea": "Three terms help read the timeline: a paved road is one supported way to build, deploy and find services; a technology radar with teeth is a list teams must follow, as Zalando's radar became in 2020; a synchronous read API answers 'what is the price now' when asked.",
+     "function": "definition",
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The advisory radar of 2016.",
+      "introduces": "The terms the timeline of its narrowing uses.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p25",
+     "controlling_idea": "No single Zalando post declares that the autonomy era ended, but the posts that follow each narrow a choice and, read in order, tell one story: alignment over raw autonomy and principles over one method (2018), technology selection principles and fewer languages (2020), one developer portal and fewer overhead roles (2023), a read API (2025) and Connected Retail folded into the partner program (2026).",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "2018 alignment (Bowman), 2018 principles over frameworks, 2020 language set, 2023 Sunrise, 2023 overhead roles, 2025 Product Read API, 2026 Connected Retail folded in.",
+       "source": "InfoQ 2018; Zalando Engineering 2018, 2020, 2023, 2025; Retail Gazette 2023; FashionUnited 2026",
+       "shows": "Each year narrowed one choice."
+      }
+     ],
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "The three terms.",
+      "introduces": "The timeline that uses them.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p26",
+     "controlling_idea": "The evidence does not support 'microservices failed at Zalando'; it supports that autonomy produced too many technologies, too many tools and one integration that could not keep up, each fixed by narrowing a choice at a company that is still large.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "statistic",
+       "what": "More than 17,000 employees, around 3,000 in technology, more than 7,000 in fulfillment centers.",
+       "source": "Zalando annual report 2025, March 2026",
+       "shows": "The company that made these corrections is still large."
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 3: scattered paths merging past 2018, 2020, 2023 and 2025 into one paved road.",
+       "shows": "The narrowing one choice at a time."
+      }
+     ],
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The timeline.",
+      "introduces": "What it supports and what it does not.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "event2025",
+   "heading": "2025: When the Event Stream Fell Behind",
+   "controlling_idea": "Zalando's 2025 account shows that an event stream must not be the only source of the current price and stock, because every consumer becomes a copy that lags most on the busiest day.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S4"
+    ],
+    "how": "Works the timeline's 2025 row in detail and ties it to Kestrel & Pine's stock chain."
+   },
+   "flow": {
+    "pattern": "assertion_evidence_reasoning",
+    "rationale": "The mechanism, then Zalando's evidence, then the rule and Kestrel & Pine's version of the same failure."
+   },
+   "transition_in": {
+    "relationship": "elaboration",
+    "carries_over": "The 2025 row of the timeline and the term 'synchronous read API'.",
+    "introduces": "That correction in detail, starting from the mechanism.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p27",
+     "controlling_idea": "Publishing every change as an event gives each receiving system a copy to keep, so if receivers fall behind an answer can be stale while the source is correct.",
+     "function": "explanation"
+    },
+    {
+     "id": "p28",
+     "controlling_idea": "Zalando's March 2025 post reports that its price and stock event stream reprocessed mostly unchanged payloads, fell up to 30 minutes behind at Cyber Week and led teams to divergent copies, and was replaced by a synchronous Product Read API.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'over 90% of each payload unchanged'; 'could be delayed by up to 30 minutes'; 'divergent versions of product data'; Product Read API (PRAPI).",
+       "source": "Zalando Engineering, 7 March 2025",
+       "shows": "The failure, in Zalando's own words."
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 4: before, every consumer rebuilds its own copy; after, consumers ask the owner.",
+       "shows": "The documented before and after."
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "Copies that can fall behind.",
+      "introduces": "Zalando's price and stock stream that did.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p29",
+     "controlling_idea": "An event is the right way to say that something changed and the wrong way to be the only source of the current value; Kestrel & Pine's hourly stock chain is a slower version of the same design, and W1 is the rule the chapter draws: an owner answering through an API, events for change, reconciliation for agreement.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "WMS to ERP every 15 minutes, ERP to the shop platform hourly, the shop platform to the connector hourly; the Ridgewalker sold for up to two hours after it sold out at 19:40 on 27 November 2026 (fictional).",
+       "source": "scenario-ledger.md, Black Friday and incident 1",
+       "shows": "The reader's own example of the same failure."
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 5: the chain of copies.",
+       "shows": "Each hop as a stale copy."
+      },
+      {
+       "kind": "reasoning",
+       "what": "INFERENCE callout: PRAPI internals unpublished; W1's system of record, availability service and reconciliation.",
+       "shows": "What to build instead, kept apart from what Zalando documents."
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "Zalando's lagging copies.",
+      "introduces": "The rule they show and the merchant's version of the failure.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "platform",
+   "heading": "A Retailer Becoming a Platform",
+   "controlling_idea": "Zalando became a platform through logistics, one stock pool serving several sellers and channels, and consolidated what a general program could do.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S5"
+    ],
+    "how": "Gives the business side of the case and its architectural consequence."
+   },
+   "flow": {
+    "pattern": "chronological",
+    "rationale": "The link between the two stories, the terms and the 2011-2026 timeline, then the 2025 figures and the inference."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "The architecture story told so far.",
+    "introduces": "The business story that runs beside it.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p31",
+     "controlling_idea": "Zalando's business story runs beside its architecture story, and the two meet at the warehouse.",
+     "function": "transition"
+    },
+    {
+     "id": "p32",
+     "controlling_idea": "In the partner program a brand is the seller of record and Zalando takes a commission, against wholesale; ship-from-store and logistics as a service extend it, and the 2011-2026 timeline shows each step with its documented figures, ending with Connected Retail folded into the partner program and its technology discontinued by June 2027.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Partner Program 2011; Connected Retail 2018; ZFS by 2021; ZEOS 2022-2023; ABOUT YOU 2025; B2B segment 2025; Connected Retail folded in 2026.",
+       "source": "Zalando corporate pages 2020-2025; annual report 2025; ChannelX 2023; FashionUnited 2026",
+       "shows": "The retailer's steps toward a platform."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The warehouse as the meeting point.",
+      "introduces": "The terms and the timeline.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p33",
+     "controlling_idea": "The FY2025 figures give the scale around this, with reported growth inflated by ABOUT YOU, a falling partner share and two partner counts Zalando has not reconciled; the labeled inference reads the timeline as Amazon's path in European form, with one stock pool for several channels and two cautions.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "statistic",
+       "what": "GMV €17,560.2 million, revenue €12,346.1 million, adjusted EBIT €590.7 million; 2026 pro-forma guidance 5-10%; partner share 32.1% from 34.2%; 'over 60' fulfillment merchants.",
+       "source": "FY2025 fact sheet, 12 March 2026; annual report 2025; strategy note, 10 December 2025",
+       "shows": "The scale, read honestly."
+      },
+      {
+       "kind": "reasoning",
+       "what": "INFERENCE callout: marketplace, ship-from-store, fulfillment, software; Connected Retail consolidated; a merger imports its model mix.",
+       "shows": "The Omnichannel-stage problem at Zalando's scale."
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "The timeline of moves.",
+      "introduces": "The 2025 figures and what they mean.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ai",
+   "heading": "AI at Zalando: Discovery First, Then Identity",
+   "controlling_idea": "Zalando's AI record moves from a 2023 shopping assistant for discovery to a 2026 identity model that lets agents act for users without holding their credentials.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S5"
+    ],
+    "how": "Adds the latest thread of the record and its link to W8."
+   },
+   "flow": {
+    "pattern": "chronological",
+    "rationale": "The distinction between helping and acting, the 2023 assistant, the 2026 broker, its terms and its consent rule, then the inference."
+   },
+   "transition_in": {
+    "relationship": "sequence",
+    "carries_over": "The platform's business thread.",
+    "introduces": "The newest thread beside it, AI.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p34",
+     "controlling_idea": "An assistant that helps a customer search differs from software that acts for the customer, which must carry the customer's permissions without exposing credentials.",
+     "function": "context"
+    },
+    {
+     "id": "p35",
+     "controlling_idea": "Zalando's 2023 assistant was a discovery feature used by over 6 million customers in 2025, and its annual report sees agentic commerce as both an opportunity and a gatekeeping risk.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "Beta 'fashion assistant powered by ChatGPT', 19 April 2023, four countries; 'used by over 6 million customers'; agents as 'digital gatekeepers'.",
+       "source": "Zalando, 19 April 2023; annual report 2025",
+       "shows": "The discovery side."
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "Helping a customer search.",
+      "introduces": "Zalando's assistant.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p36",
+     "controlling_idea": "In September 2026 Zalando open-sourced an Agentic Identity Broker that lets agents act for users without holding provider tokens.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'lets agents act on behalf of users without ever holding provider tokens'.",
+       "source": "Zalando Engineering, 25 September 2026",
+       "shows": "The acting side."
+      }
+     ],
+     "transition_in": {
+      "relationship": "time",
+      "carries_over": "The 2023 discovery feature.",
+      "introduces": "The 2026 engineering for agents that act.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p37",
+     "controlling_idea": "Delegated access is the intersection of the user's and the agent's permissions, and token exchange swaps the agent's identity for a short-lived credential scoped to one action.",
+     "function": "definition",
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The broker.",
+      "introduces": "The two mechanisms it uses.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p38",
+     "controlling_idea": "The post adds that consent should name a business capability rather than a raw scope, and that stronger approval is planned for high-risk transactions; the labeled inference ties this to W8.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "reasoning",
+       "what": "INFERENCE callout: Amazon's rule for external agents beside Zalando's identity model for internal ones; W8's agent identity, named person and readable scope.",
+       "shows": "What a merchant needs before an agent may act on an order."
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "Delegated access and token exchange.",
+      "introduces": "How consent is presented and its lesson for the merchant.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "teaches",
+   "heading": "What Zalando Teaches",
+   "controlling_idea": "Each lesson of the case names its evidence and its size, and Kestrel & Pine takes two of them, both already Waypoint decisions (W5 and W1).",
+   "function": "synthesis",
+   "advances_thesis": {
+    "supports": [
+     "S6"
+    ],
+    "how": "Separates what transfers from what does not and shows the merchant's two lessons."
+   },
+   "flow": {
+    "pattern": "large_to_small",
+    "rationale": "All lessons first, then the two Kestrel & Pine takes, in the order of the sections that gave them."
+   },
+   "transition_in": {
+    "relationship": "conclusion_summary",
+    "carries_over": "The evidence of all the preceding sections.",
+    "introduces": "The lessons drawn from it.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p39",
+     "controlling_idea": "The lessons table is the author's synthesis, each row naming its evidence and whether it transfers to a merchant.",
+     "function": "synthesis",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Eight lessons with evidence and transfer: ownership before decomposition, the written standard, deprecation, the event stream for analytics, not as the only source, alignment, tooling only one company needs, logistics to platform.",
+       "shows": "What transfers and at which stage."
+      }
+     ]
+    },
+    {
+     "id": "p40",
+     "controlling_idea": "Kestrel & Pine's first lesson is W5: integration owners track API versions and retirement notices, which addresses the Deprecated Endpoint.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "The lessons that transfer.",
+      "introduces": "The first that Kestrel & Pine takes.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p41",
+     "controlling_idea": "Its second lesson is W1: stock events feed an availability service that answers through an API with reconciliation behind it, so neither lesson needs Zalando's scale.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "The first lesson.",
+      "introduces": "The second, and what neither requires.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "evidence",
+   "heading": "Where the Evidence Stops",
+   "controlling_idea": "The public record stops short of Zalando's current architecture, any declared end of Radical Agility, stable open-source status, comparable growth figures and the primary Connected Retail notice.",
+   "function": "context",
+   "advances_thesis": {
+    "supports": [
+     "S6"
+    ],
+    "how": "Bounds every claim the chapter has made."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "The lessons drawn.",
+    "introduces": "The limits of the evidence behind them.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p42",
+     "form": "list",
+     "controlling_idea": "The lessons rest on public sources that stop short in five places: no current architecture published; no source ending Radical Agility or describing a reorganization (the 'return to discipline' rests on posts and Bowman's 2019 departure); open-source status dated 7 November 2026; 2025 figures including ABOUT YOU and partner counts Zalando has not reconciled; the Connected Retail wind-down known from trade press.",
+     "function": "context"
+    }
+   ]
+  }
+ ],
+ "conclusion": {
+  "heading": "What to Take Away",
+  "synthesis": "The split, the guidelines, the decade of narrowing and the 2025 read API give one answer to the opening question: Zalando's lasting results are written rules for the joins between systems (how an API may change, which system answers for the current price and stock), while the shape around them (the teams, the services, the account-per-team tooling) was sized to Zalando and corrected as it grew.",
+  "so_what": "A merchant takes the rules and leaves the shape: it makes compatibility and deprecation rules the baseline of every vendor contract and gets current price and stock from their owner, without copying Zalando's thousands of applications.",
+  "callback": {
+   "to": "The opening question: which of Zalando's engineering lessons apply to a much smaller merchant.",
+   "how": "p43 answers it: the rules for the joins apply at any size; the shape does not."
+  },
+  "takeaway": {
+   "type": "course_of_action",
+   "content": "Adopt the compatibility and deprecation rules for every vendor contract, name the system that answers 'what is it now' for price and stock, measure how far each copy lags at peak, and check the questions to ask."
+  },
+  "hand_off": {
+   "to": "case-composable-movement",
+   "relationship": "contrast",
+   "carries_over": "Large companies that built services for their own size and then corrected them over a decade, Amazon and Zalando, read beside the hosted platform of chapter 46.",
+   "introduces": "Vendors that sold the services shape to every merchant as composable commerce, what it costs the merchant, and their 2025-2026 turn toward working beside the systems merchants already have."
+  },
+  "transition_in": {
+   "relationship": "conclusion_summary",
+   "carries_over": "Where the evidence stops.",
+   "introduces": "What the chapter establishes inside those limits.",
+   "form": "sentence",
+   "placement": "start_of_this"
+  },
+  "paragraphs": [
+   {
+    "id": "p43",
+    "controlling_idea": "The record answers the opening question: Zalando's lasting results are written rules for the joins between systems, while the shape around them was sized to Zalando and corrected as it grew, so a merchant takes the rules and leaves the shape.",
+    "function": "synthesis",
+    "evidence": [
+     {
+      "kind": "reasoning",
+      "what": "The opening question, the sections' findings, the thesis.",
+      "shows": "The chapter's answer applies to the question it opened with."
+     }
+    ]
+   },
+   {
+    "id": "p44",
+    "form": "list",
+    "controlling_idea": "Established: the 2015 split for team autonomy on an audited platform; the guidelines' compatibility and deprecation rules; a decade of narrowing ending with the 2025 read API; the platform built through logistics.",
+    "function": "synthesis",
+    "transition_in": {
+     "relationship": "conclusion_summary",
+     "carries_over": "The chapter's answer.",
+     "introduces": "The points that are established, with their sources.",
+     "form": "phrase",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p45",
+    "form": "list",
+    "controlling_idea": "Depends on context: team-sized modularity at the Group stage, an event bus at the Omnichannel stage but not as the source of current state, the change rules at every stage in different directions, and a channel-specific technology only until the general program can serve it.",
+    "function": "analysis",
+    "transition_in": {
+     "relationship": "contrast",
+     "carries_over": "What is established.",
+     "introduces": "What depends on the merchant's situation.",
+     "form": "phrase",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p46",
+    "form": "list",
+    "controlling_idea": "The author's synthesis: Zalando's most valuable export is a habit of writing down the rules for change and publishing corrections, and its 2025 post states the book's thesis that a copy is not a system of record.",
+    "function": "synthesis",
+    "transition_in": {
+     "relationship": "sequence",
+     "carries_over": "Established and context-dependent points.",
+     "introduces": "The author's own reading.",
+     "form": "phrase",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p47",
+    "form": "list",
+    "controlling_idea": "Eight questions turn the chapter into checks a merchant runs: vendor deprecation policies, logged headers, who answers 'what is it now', copy lag at peak, tolerant readers, an API standard, channel-specific technology, and agent identity.",
+    "function": "recommendation",
+    "transition_in": {
+     "relationship": "cause_effect",
+     "carries_over": "What the chapter establishes and the author's reading.",
+     "introduces": "The questions a merchant asks of its own systems and vendors.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p48",
+    "controlling_idea": "The three cases so far are a hosted platform and two large companies that built services for their own size and corrected them over a decade; the next case contrasts them with vendors that sold that shape to every merchant as composable commerce, its costs and its 2025-2026 turn toward working beside the systems merchants already have.",
+    "function": "transition",
+    "transition_in": {
+     "relationship": "contrast",
+     "carries_over": "Amazon and Zalando, read beside Shopify.",
+     "introduces": "The composable movement.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   }
+  ]
+ },
+ "non_goals": [
+  {
+   "topic": "Architecture styles compared in general.",
+   "covered_in": [
+    "commerce-architecture-styles"
+   ]
+  },
+  {
+   "topic": "The book's contract, versioning, webhook and deprecation rules; this chapter supplies the Zalando specimen only.",
+   "covered_in": [
+    "api-contracts-and-versioning"
+   ]
+  },
+  {
+   "topic": "Events, outbox, idempotency and reconciliation as techniques; the chapter uses the 2025 post as evidence, not as a tutorial.",
+   "covered_in": [
+    "events-consistency-and-reconciliation"
+   ]
+  },
+  {
+   "topic": "Marketplace selling mechanics and the Zalando partner API as a channel.",
+   "covered_in": [
+    "marketplaces-and-channel-integration"
+   ]
+  },
+  {
+   "topic": "Team topologies and governance for a merchant; multi-brand and acquisition questions.",
+   "covered_in": [
+    "organizing-commerce-engineering",
+    "commerce-scaling-stages"
+   ]
+  },
+  {
+   "topic": "Agentic commerce protocols and the merchant's readiness list.",
+   "covered_in": [
+    "ai-and-agentic-commerce"
+   ]
+  },
+  {
+   "topic": "Any description of Zalando's current service inventory, order or pricing architecture, or ZEOS internals."
+  }
+ ],
+ "modalities": [],
+ "open_questions": [],
+ "decision_log": [
+  {
+   "date": "2026-11-13",
+   "decision": "Converted spec.md to spec.json from the published chapter, one spec paragraph per unit. Intent outcome, the five acceptance criteria, thesis and role copied unchanged from journal-spec.json; audience and the six supporting claims written for this chapter. The old success criteria were inventories (facts dated and sourced, inferences in labeled blocks, terms glossed, named tables and diagrams present, the 2025 post worked as the central example, the evidence section, take-away tiers, 6-10 questions, the Kestrel & Pine paragraph, 4,500-6,000 words) and are dropped as criteria: their outcomes are covered by AC-1 to AC-5, the audience's does_not_know list, the evidence items and length.max_words.",
+   "rejected": [
+    "Keeping the inventory criteria as minor criteria (rule 7 of the standing instruction drops criteria added by agents)."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Word limit kept at the old spec's 6,000 (the published chapter has 5,575 by the checker's count). The added units (thesis p05, roadmap p06, synthesis p43, the similarity to Amazon in p02) fit within it.",
+   "rejected": [
+    "Raising the limit by 10% before it was needed."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Added the units the contract asks for and the published chapter lacked: p05 (thesis statement from the journal spec's claim), p06 (a roadmap announcing every section), p43 (a synthesis answering the opening question). p02 now states the similarity with Amazon that the journal spec's transition_in declares. p48 rewrites the hand-off: it said 'The two cases so far' after three cases; it now names the hosted platform and the two large companies, as case-composable-movement's transition_in declares.",
+   "rejected": [
+    "Treating the author's synthesis bullets as the conclusion synthesis: they do not answer the opening question."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Facts checked against the cited sources and _research/brief-cases-amazon-zalando.md: the 2015 motive is that all the shop teams shared one codebase with slow startup and complicated deployments; the 85-plus count is from February 2016 and is no longer attached to the 2015 motive (KEY POINTS, the Giant's Boots callout, the first 'Established' bullet). 'fell 30 minutes behind' became 'lagged up to 30 minutes' (the post says 'up to'). Skipper 'directed requests between the old and new parts' was not in the sources; the sentence now says only that the team chose Skipper and open-sourced it. ZFS's '2010s-2021' (no start date in the sources) became 'By 2021'. The Ridgewalker 'kept selling for two hours' became 'up to two hours' (ledger, incident 1). 'Platform' meaning Kestrel & Pine's hosted product became 'the shop platform' (rule 11). The W1 inference no longer says W1 covers price (W1 is stock ownership).",
+   "rejected": []
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Note for the journal-spec step (not edited here): AC-3's expected answer says 'a shared codebase and slow deployments blocked 85-plus teams'; the sources date the 85-plus count to February 2016, not to the 2015 motive. A reader answering from the corrected chapter may give the count with its date.",
+   "rejected": []
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Order moves inside sections, made before the flow rubric: the Tech Radar paragraph now comes before the change rules so the guidelines table and Figure 2 lead straight into the Deprecated Endpoint; the terms paragraph of the discipline section now precedes the timeline that uses its terms (known before new).",
+   "rejected": [
+    "Leaving the deprecation figure after the Tech Radar paragraph, where it belonged to the wrong unit."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Hand-off wording kept to the next post's transition_in; chapter 49 carries the part's closing, so this chapter adds no part closing.",
+   "rejected": []
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Flow rubric (fresh agent, verdict 'sound with notes'); the author asked for the rubric notes to be taken without review (instruction of 2026-11-12). Taken: p25's controlling idea now names the timeline's rows (the rubric saw only controlling ideas and missed the table that carries them); p30 introduces Patroni and Zalenium; p32 names the Connected Retail wind-down that the evidence section and the take-away rely on; the post-level rationale now says why business and AI follow the architecture story and why the open-source table precedes them. No order changed, so the rubric was not rerun.",
+   "rejected": [
+    "Folding the one-unit 'What Survived' section into the discipline section: the table covers 2015-2026 projects, not a narrowing, and its heading is the author's.",
+    "Naming W5 in the Deprecated Endpoint paragraph (p23): p40 makes that link; adding it to p23 would repeat it.",
+    "Adding the AI thread to 'Established': the author's take-away tiers are kept as published; agent identity is in the questions."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Round 1 of the draft check (ESCALATE: one blocking failure at fault in the spec). Spec changes, pre-approved by the brief: the journey paragraph (p04) moved to follow the hook, so the reading guidance, thesis and roadmap run together (both flow readers); 'The Platform Pieces: What Survived' moved to follow the API section (both flow readers asked for it; rule 3), with the roadmap, flow rationale and the transitions into pieces and discipline rewritten. p24 now says the radar with teeth is what the 2020 update became, p26 says what the headcount shows, and the evidence list introduces Bowman's departure through the 2018 row. length.max_words raised to 6,300 (old limit 6,000 plus 5%) for the glosses readers asked for (GMV, paved road, router, bol, the agency, Connected Retail, compatible extension, read API, content type, data lake); no new material.",
+   "rejected": [
+    "Moving the Tech Radar paragraph into the discipline section (one reader only; rule 10 keeps the current position).",
+    "Introducing Waypoint, the stages and the Ridgewalker in the opening: they are on already_knows from earlier chapters; W-codes keep their one-clause glosses where used."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Round 2 of the draft check (ESCALATE: a spec-fault failure and the revision budget spent). Rule 3 (two readers in two rounds asked for the same move): the Tech Radar paragraph (p21) moved from the API section to open the discipline section, where its 2020 change is a timeline row; p22's and p24's transitions and both sections' flow rationales rewritten. Draft fixes for the round-2 failures: a link from the timeline's 2025 row into the 2025 section; one-sentence lead-ins to the evidence list and to the questions; the 'expanded too much' caveat now says why the chapter does not use that wording; the overhead row labeled as the one row about people; B2C and response headers glossed; the 'thirteen-year lag' (2001 to 2015 is fourteen years and the brief does not reproduce thirteen) replaced by 'more than a decade later' (rule 1); the team-size caveat says Zalando's posts give only the team count.",
+   "rejected": [
+    "Moving 'Where the Evidence Stops' after the take-away (one reader only; rule 10).",
+    "Introducing Waypoint, the stages and the Ridgewalker in the opening: on already_knows, and the judge did not fail them."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the 'over 60' versus 'over 600' question. The annual report's 'over 600 partners' is stated for ZEOS Fulfilment, so the page's reading that the 600 'span all B2B services' was not what the source says (rule 1/2). The page now gives both figures with their sources and says Zalando has not reconciled them; it no longer asserts different scopes.",
+   "rejected": [
+    "Keeping the brief's 'different scopes' reading (not stated by either source).",
+    "Dropping the 'over 60' figure (sourced; rule 2 keeps it)."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the McKinsey 2018 interview that timed out. Rule 2: the page keeps 'return to discipline' as the chapter's own reading of dated posts, labeled as such; no claim rests on the unfetched interview.",
+   "rejected": [
+    "Citing the interview without having read it."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the drifting open-source status table. Rule 2: the table keeps its statuses dated 7 November 2026, as cited; the 'Where the Evidence Stops' list already says they will change. Re-checking before a print edition is a production task, not a question for this spec.",
+   "rejected": []
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Confirming round 3 (ESCALATE, 12 pass, 18 fail: 8 blocking). Cheap fixes applied afterwards without another round, so check-report.json is stale: the split section opens by taking up the roadmap's first step; the rebuild paragraph says it answered Jimmy; 'That last fact' names the AWS account; the survival table's Tech Radar row points to the next section; the 2020 row says the radar got teeth; the 'Radical Agility' bullet rewritten plainly without answering an unmade 2019 claim; 'the diagram' named as Figure 4; 'What Zalando Teaches' opens by gathering the sections. Auto-resolved by the author's standing instruction of 2026-11-12 (rule 10): the position of 'What Zalando Teaches' and 'Where the Evidence Stops' before 'What to Take Away' stays, because the old spec, the author's, required the evidence section to precede the take-away; the readers' overlap point is recorded, not acted on. Left as minor (one reader only): survival-table infrastructure terms quoted from READMEs (reverse proxy, ingress controller, HA clusters, test grid), financial terms (adjusted EBIT, pro-forma growth, squeeze-out), the key points using terms the body defines later, and the density of the FY2025 figures.",
+   "rejected": [
+    "A fourth round (the brief allows one confirming round).",
+    "Moving the evidence section after the take-away (reverses the author's order)."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: AC-3's expected answer, copied unchanged from the journal spec, gives the 2015 motive (one shared codebase with slow startup and deployments) and dates the 85-plus team count to February 2016, as decision_log noted for the journal-spec step.",
+   "rejected": [
+    "Keeping 'blocked 85-plus teams' as the 2015 motive."
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "kind": "internal",
+   "ref": "_research/brief-cases-amazon-zalando.md (Part B, Part C, key numbers, open questions)",
+   "contributed": "Every Zalando fact and its tag; the summary the chapter was written from."
+  },
+  {
+   "kind": "internal",
+   "ref": "_research/scenario-ledger.md and _research/consistency-issues.md",
+   "contributed": "The Zalando channel, the stock sync chain, the Black Friday figures, the Deprecated Endpoint, W1, W5, W7, W8, the team of fourteen."
+  },
+  {
+   "kind": "internal",
+   "ref": "journal-spec.json (case-zalando; part-11; case-composable-movement transition_in)",
+   "contributed": "Intent, thesis, role, acceptance criteria and the hand-off."
+  },
+  {
+   "kind": "internal",
+   "ref": "case-amazon, api-contracts-and-versioning, events-consistency-and-reconciliation, commerce-architecture-styles, organizing-commerce-engineering, commerce-scaling-stages, ai-and-agentic-commerce",
+   "contributed": "The companion case and the owning chapters, linked rather than re-taught."
+  },
+  {
+   "kind": "external",
+   "ref": "Zalando Engineering blog posts 2015-2026",
+   "contributed": "The architecture record (Radical Agility on AWS; API Guild; Data Integration; From Jimmy to Microservices; Four Lessons; Tech Radar; One Year Later; Third Generation Microservices; Principles over Frameworks; Tech Radar Update 2020; Sunrise; From Event-Driven to API; Agentic Identity Broker)."
+  },
+  {
+   "kind": "external",
+   "ref": "Zalando RESTful API and Event Guidelines; Tech Radar; GitHub repositories (Skipper, Patroni, Nakadi, Zalenium, STUPS)",
+   "contributed": "Governance rules and project status."
+  },
+  {
+   "kind": "external",
+   "ref": "Zalando corporate pages 2020-2025, FY2025 fact sheet and Annual Report 2025; ABOUT YOU press release 2025",
+   "contributed": "The platform strategy and figures."
+  },
+  {
+   "kind": "external",
+   "ref": "InfoQ (2016, 2016, 2018), Diginomica (2016), ChannelX (2023), Retail Gazette (2023), FashionUnited (2026)",
+   "contributed": "Secondary accounts where primary pages were absent."
+  }
+ ],
+ "changelog": [
+  {
+   "date": "2026-11-13",
+   "change": "AC-3 expected answer copied from the journal spec (85-plus teams dated to February 2016)."
+  },
+  {
+   "date": "2026-11-13",
+   "change": "After the confirming round 3: closing fixes to transitions, the survival table, the 2020 row and the evidence list; final length 6,249 words against 6,300."
+  },
+  {
+   "date": "2026-11-13",
+   "change": "After draft-check round 2: Tech Radar paragraph moved into the discipline section; transitions and lead-ins fixed; open questions auto-resolved under the standing instruction of 2026-11-12."
+  },
+  {
+   "date": "2026-11-13",
+   "change": "After draft-check round 1: journey paragraph and the open-source section moved; roadmap, flow and transitions rewritten; length.max_words 6,300."
+  },
+  {
+   "date": "2026-11-13",
+   "change": "Converted spec.md to spec.json (outcome-spec pass): reconstructed from the published chapter; added thesis, roadmap and synthesis units, the similarity with Amazon and the corrected hand-off; two units moved inside their sections; facts checked against the cited sources. Flow rubric notes taken (sound with notes)."
+  },
+  {
+   "date": "2026-11-07",
+   "change": "Visual layer: redrew 3 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator)."
+  },
+  {
+   "date": "2026-11-07",
+   "change": "Initial spec and article."
+  }
+ ],
+ "length": {
+  "max_words": 6300
+ }
+}

@@ -1,0 +1,2286 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/35-privacy-and-customer-data/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/35-privacy-and-customer-data/index.md",
+  "spec_sha": "7eb55f8efa93893f",
+  "draft_sha": "8579051602816050",
+  "run_at": "2026-11-13T00:38:48+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "What the reader will learn: personal data locations, rules, consent, retention, deletion",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Key points: legal roles per integration, order vs profile, deletion fan-out",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: unrecognized person, unowned data copiers, late-discovered legal clocks",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Deletion request shows customer data copied across many systems needing a map",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Thesis: different purposes per system, answered by four design moves",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Roadmap of chapter sections and the sources used as evidence",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Eva's jacket order spreads her data into several systems",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Request From Ghent ¶1",
+      "summary": "Belgian customer Lotte asks for deletion and an end to emails",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Request From Ghent ¶2",
+      "summary": "Lotte's many relationships mean deleting the storefront account is insufficient",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Request From Ghent ¶3",
+      "summary": "Seventeen-day search found her in nine systems, some outside reach",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Request From Ghent ¶4",
+      "summary": "Remaining systems handled ad hoc; reply met deadline but no process existed",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "What Personal Data a Commerce Platform Holds, and Under Which Rules ¶1",
+      "summary": "Defines personal data and the GDPR's rights and duties",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "What Personal Data a Commerce Platform Holds, and Under Which Rules ¶2",
+      "summary": "Defines controller, processor, DPA, lawful basis, DSR and retention",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "What Personal Data a Commerce Platform Holds, and Under Which Rules ¶3",
+      "summary": "Table of data a merchant holds, by purpose",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "What Personal Data a Commerce Platform Holds, and Under Which Rules ¶4",
+      "summary": "Order record and marketing profile need separate bases and clocks",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "What Personal Data a Commerce Platform Holds, and Under Which Rules ¶5",
+      "summary": "GDPR fine ceilings and their application to Kestrel & Pine",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Controller, Processor and the Commerce Supply Chain ¶1",
+      "summary": "Merchant is controller; EDPB test of purpose and essential means",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Controller, Processor and the Commerce Supply Chain ¶2",
+      "summary": "Table of usual legal roles across the commerce supply chain",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Controller, Processor and the Commerce Supply Chain ¶3",
+      "summary": "Shopify's compliance webhooks and data program police apps as sub-processors",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Controller, Processor and the Commerce Supply Chain ¶4",
+      "summary": "System map needs legal-role column; many integrations lacked owners",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Sharing and Transfers ¶1",
+      "summary": "Sharing with partners requires minimization, recorded roles and contracts",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Sharing and Transfers ¶2",
+      "summary": "Lawful routes for transferring data to the US and elsewhere",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Sharing and Transfers ¶3",
+      "summary": "Court challenge to the EU-US Data Privacy Framework is pending",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Sharing and Transfers ¶4",
+      "summary": "A transfer inventory makes court decisions a quick filter",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Sharing and Transfers ¶5",
+      "summary": "Vendor processor obligations and the 72-hour breach notification clock",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Lawful Bases: The Order Versus the Marketing ¶1",
+      "summary": "Table of how four lawful bases apply in commerce",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Lawful Bases: The Order Versus the Marketing ¶2",
+      "summary": "Soft opt-in rule; order email and marketing permission are separate facts",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Consent, Cookies and Tracking ¶1",
+      "summary": "Consent choices must actually control tags and connected tools",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Consent, Cookies and Tracking ¶2",
+      "summary": "GDPR definition of consent and ePrivacy device-access rule",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Consent, Cookies and Tracking ¶3",
+      "summary": "Which cookies need consent, per EDPB, Dutch and Belgian regulators",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Consent, Cookies and Tracking ¶4",
+      "summary": "Consent platforms explained; server-side tagging does not bypass consent",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Consent, Cookies and Tracking ¶5",
+      "summary": "Digital Omnibus proposal could change cookie consent rules",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Consent, Cookies and Tracking ¶6",
+      "summary": "US opt-out model and the Sephora enforcement on trackers",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Consent, Cookies and Tracking ¶7",
+      "summary": "In-store consent at the till and Kestrel & Pine's POS rule",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Consent, Cookies and Tracking ¶8",
+      "summary": "Consent is state that must travel from customer master to all tools",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Retention: The Person Versus the Transaction ¶1",
+      "summary": "Tax record retention periods in the Netherlands, Germany and Belgium",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Retention: The Person Versus the Transaction ¶2",
+      "summary": "Conflict arises when the invoice doubles as the customer record",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Retention: The Person Versus the Transaction ¶3",
+      "summary": "Split person from transaction; retention set per record type",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Retention: The Person Versus the Transaction ¶4",
+      "summary": "Backups handled by a bounded, documented exception with log replay",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Data Subject Requests Across Many Systems ¶1",
+      "summary": "One-month deadline; the hard part is fan-out across systems",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Data Subject Requests Across Many Systems ¶2",
+      "summary": "Identity index shows which systems hold the person",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Data Subject Requests Across Many Systems ¶3",
+      "summary": "Request orchestrator verifies, fans out, records and replies",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Data Subject Requests Across Many Systems ¶4",
+      "summary": "Per-system action table decided in advance",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Data Subject Requests Across Many Systems ¶5",
+      "summary": "Extra answers: refer to independent controllers, except backups",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Data Subject Requests Across Many Systems ¶6",
+      "summary": "What the reply should say and why the record matters",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Requirements per Flow ¶1",
+      "summary": "Requirements table for four privacy flows; consent fails toward no consent",
+      "matched_spec_paragraph": "p34b"
+    },
+    {
+      "draft_locator": "The Choices ¶1",
+      "summary": "Four designs for handling data subject requests",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "The Choices ¶2",
+      "summary": "Map data before choosing a product; comparison table of options",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "Table of privacy practices needed at each scale stage",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "summary": "Duties constant across scale; data location shifts responsibility to merchant",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "In Practice ¶1",
+      "summary": "June 2027 identity rule and July matching run built the index",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "In Practice ¶2",
+      "summary": "October 2027 orchestrator built as an iPaaS flow with verification",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "In Practice ¶3",
+      "summary": "What each internal system does on a deletion request",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "In Practice ¶4",
+      "summary": "External controllers notified; backups kept 35 days with log replay",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "In Practice ¶5",
+      "summary": "Second request took two days; map now on ownership map",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "Six recurring failures; missed copy most common, so map lives with inventory",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "Recap: why the request took seventeen days and how the map fixes it",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "Established facts on roles, bases, deadlines, retention and platform webhooks",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "Context-dependent points: scale stage, soft opt-in, retention periods",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "Author's synthesis: privacy as integration problem; split person from transaction",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Eight diagnostic questions about a merchant's privacy setup",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Hand-off to the next chapter on other regulatory clocks",
+      "matched_spec_paragraph": "p64"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Introduction ¶1 matches the controlling idea of p01, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Introduction ¶2 matches the controlling idea of p05, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Introduction ¶3 matches the controlling idea of p06, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Introduction ¶4 matches the controlling idea of p04, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Setting the Scene at Kestrel & Pine: The Request From Ghent ¶1 matches the controlling idea of p07, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Setting the Scene at Kestrel & Pine: The Request From Ghent ¶2 matches the controlling idea of p08, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Setting the Scene at Kestrel & Pine: The Request From Ghent ¶3 matches the controlling idea of p09, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Setting the Scene at Kestrel & Pine: The Request From Ghent ¶4 matches the controlling idea of p10, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for What Personal Data a Commerce Platform Holds, and Under Which Rules ¶1 matches the controlling idea of p11, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for What Personal Data a Commerce Platform Holds, and Under Which Rules ¶2 matches the controlling idea of p12, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for What Personal Data a Commerce Platform Holds, and Under Which Rules ¶3 matches the controlling idea of p14, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for What Personal Data a Commerce Platform Holds, and Under Which Rules ¶4 matches the controlling idea of p15, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for What Personal Data a Commerce Platform Holds, and Under Which Rules ¶5 matches the controlling idea of p13, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Controller, Processor and the Commerce Supply Chain ¶1 matches the controlling idea of p16, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Controller, Processor and the Commerce Supply Chain ¶2 matches the controlling idea of p17, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Controller, Processor and the Commerce Supply Chain ¶3 matches the controlling idea of p18, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Controller, Processor and the Commerce Supply Chain ¶4 matches the controlling idea of p19, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Sharing and Transfers ¶1 matches the controlling idea of p39, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Sharing and Transfers ¶2 matches the controlling idea of p40, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Sharing and Transfers ¶3 matches the controlling idea of p41, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Sharing and Transfers ¶4 matches the controlling idea of p42, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Sharing and Transfers ¶5 matches the controlling idea of p44, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Lawful Bases: The Order Versus the Marketing ¶1 matches the controlling idea of p20, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Lawful Bases: The Order Versus the Marketing ¶2 matches the controlling idea of p21, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Consent, Cookies and Tracking ¶1 matches the controlling idea of p22, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Consent, Cookies and Tracking ¶2 matches the controlling idea of p23, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Consent, Cookies and Tracking ¶3 matches the controlling idea of p24, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Consent, Cookies and Tracking ¶4 matches the controlling idea of p25, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Consent, Cookies and Tracking ¶5 matches the controlling idea of p26, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Consent, Cookies and Tracking ¶6 matches the controlling idea of p51, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Consent, Cookies and Tracking ¶7 matches the controlling idea of p43, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Consent, Cookies and Tracking ¶8 matches the controlling idea of p27, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Retention: The Person Versus the Transaction ¶1 matches the controlling idea of p35, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Retention: The Person Versus the Transaction ¶2 matches the controlling idea of p36, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Retention: The Person Versus the Transaction ¶3 matches the controlling idea of p37, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Retention: The Person Versus the Transaction ¶4 matches the controlling idea of p38, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Data Subject Requests Across Many Systems ¶1 matches the controlling idea of p29, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Data Subject Requests Across Many Systems ¶2 matches the controlling idea of p30, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Data Subject Requests Across Many Systems ¶3 matches the controlling idea of p31, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Data Subject Requests Across Many Systems ¶4 matches the controlling idea of p32, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Data Subject Requests Across Many Systems ¶5 matches the controlling idea of p33, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Data Subject Requests Across Many Systems ¶6 matches the controlling idea of p34, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Requirements per Flow ¶1 matches the controlling idea of p34b, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for The Choices ¶1 matches the controlling idea of p45, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for The Choices ¶2 matches the controlling idea of p46, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Across Scale Stages: When It Fits and When It Limits ¶1 matches the controlling idea of p48, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Across Scale Stages: When It Fits and When It Limits ¶2 matches the controlling idea of p49, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for In Practice ¶1 matches the controlling idea of p53, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for In Practice ¶2 matches the controlling idea of p54, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for In Practice ¶3 matches the controlling idea of p55, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for In Practice ¶4 matches the controlling idea of p56, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for In Practice ¶5 matches the controlling idea of p57, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for When It Goes Wrong ¶1 matches the controlling idea of p58, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for What to Take Away ¶1 matches the controlling idea of p59, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for What to Take Away ¶2 matches the controlling idea of p60, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for What to Take Away ¶3 matches the controlling idea of p61, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for What to Take Away ¶4 matches the controlling idea of p62, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Questions to Ask ¶1 matches the controlling idea of p63, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Outline summary for Questions to Ask ¶2 matches the controlling idea of p64, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "The three callout entries (In this chapter, Key points, Failure patterns) have no spec paragraph; they are the callouts the thesis_statement placement names and do not break the order of the 59 aligned units.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "structure",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "The outliner marked no unit two_ideas; every unit carries one controlling idea.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Introduction ¶1 (p01) traces to context for the thesis (introduction).",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Introduction ¶2 (p05) traces to context for the thesis (introduction).",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Introduction ¶3 (p06) traces to context for the thesis (introduction).",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Introduction ¶4 (p04) traces to context for the thesis (introduction).",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Setting the Scene at Kestrel & Pine: The Request From Ghent ¶1 (p07) traces to S4, S1.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Setting the Scene at Kestrel & Pine: The Request From Ghent ¶2 (p08) traces to S4, S1.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Setting the Scene at Kestrel & Pine: The Request From Ghent ¶3 (p09) traces to S4, S1.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Setting the Scene at Kestrel & Pine: The Request From Ghent ¶4 (p10) traces to S4, S1.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "What Personal Data a Commerce Platform Holds, and Under Which Rules ¶1 (p11) traces to S1, S2.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "What Personal Data a Commerce Platform Holds, and Under Which Rules ¶2 (p12) traces to S1, S2.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "What Personal Data a Commerce Platform Holds, and Under Which Rules ¶3 (p14) traces to S1, S2.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "What Personal Data a Commerce Platform Holds, and Under Which Rules ¶4 (p15) traces to S1, S2.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "What Personal Data a Commerce Platform Holds, and Under Which Rules ¶5 (p13) traces to S1, S2.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Controller, Processor and the Commerce Supply Chain ¶1 (p16) traces to S1.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Controller, Processor and the Commerce Supply Chain ¶2 (p17) traces to S1.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Controller, Processor and the Commerce Supply Chain ¶3 (p18) traces to S1.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Controller, Processor and the Commerce Supply Chain ¶4 (p19) traces to S1.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Sharing and Transfers ¶1 (p39) traces to S1.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Sharing and Transfers ¶2 (p40) traces to S1.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Sharing and Transfers ¶3 (p41) traces to S1.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Sharing and Transfers ¶4 (p42) traces to S1.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Sharing and Transfers ¶5 (p44) traces to S1.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Lawful Bases: The Order Versus the Marketing ¶1 (p20) traces to S2.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Lawful Bases: The Order Versus the Marketing ¶2 (p21) traces to S2.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Consent, Cookies and Tracking ¶1 (p22) traces to S2.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Consent, Cookies and Tracking ¶2 (p23) traces to S2.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Consent, Cookies and Tracking ¶3 (p24) traces to S2.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Consent, Cookies and Tracking ¶4 (p25) traces to S2.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Consent, Cookies and Tracking ¶5 (p26) traces to S2.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Consent, Cookies and Tracking ¶6 (p51) traces to S2.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Consent, Cookies and Tracking ¶7 (p43) traces to S2.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Consent, Cookies and Tracking ¶8 (p27) traces to S2.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Retention: The Person Versus the Transaction ¶1 (p35) traces to S3.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Retention: The Person Versus the Transaction ¶2 (p36) traces to S3.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Retention: The Person Versus the Transaction ¶3 (p37) traces to S3.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Retention: The Person Versus the Transaction ¶4 (p38) traces to S3.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Data Subject Requests Across Many Systems ¶1 (p29) traces to S4.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Data Subject Requests Across Many Systems ¶2 (p30) traces to S4.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Data Subject Requests Across Many Systems ¶3 (p31) traces to S4.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Data Subject Requests Across Many Systems ¶4 (p32) traces to S4.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Data Subject Requests Across Many Systems ¶5 (p33) traces to S4.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Data Subject Requests Across Many Systems ¶6 (p34) traces to S4.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Requirements per Flow ¶1 (p34b) traces to S2, S3, S4.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "The Choices ¶1 (p45) traces to S4, S5.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "The Choices ¶2 (p46) traces to S4, S5.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Across Scale Stages: When It Fits and When It Limits ¶1 (p48) traces to S5.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Across Scale Stages: When It Fits and When It Limits ¶2 (p49) traces to S5.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "In Practice ¶1 (p53) traces to S4, S5.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "In Practice ¶2 (p54) traces to S4, S5.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "In Practice ¶3 (p55) traces to S4, S5.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "In Practice ¶4 (p56) traces to S4, S5.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "In Practice ¶5 (p57) traces to S4, S5.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "When It Goes Wrong ¶1 (p58) traces to S3, S4.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "What to Take Away ¶1 (p59) traces to S1-S5 (conclusion synthesis).",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "What to Take Away ¶2 (p60) traces to S1-S5 (conclusion synthesis).",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "What to Take Away ¶3 (p61) traces to S1-S5 (conclusion synthesis).",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "What to Take Away ¶4 (p62) traces to S1-S5 (conclusion synthesis).",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Questions to Ask ¶1 (p63) traces to S1-S5 (conclusion synthesis).",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Questions to Ask ¶2 (p64) traces to S1-S5 (conclusion synthesis).",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Setting the Scene at Kestrel & Pine: The Request From Ghent ¶3: Table of nine systems, led by the sentence saying each needed a different action and several were out of reach.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Setting the Scene at Kestrel & Pine: The Request From Ghent ¶4: Figure 1, with a caption stating the nine-of-thirteen, seventeen-day finding.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "What Personal Data a Commerce Platform Holds, and Under Which Rules ¶3: Data-by-purpose table, followed by ¶4 saying what its right-hand columns mean.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "What Personal Data a Commerce Platform Holds, and Under Which Rules ¶5: Article 83(5) fine statistic, applied to Kestrel & Pine's turnover.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Controller, Processor and the Commerce Supply Chain ¶1: EDPB quotation, explained as the line between controller and processor.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Controller, Processor and the Commerce Supply Chain ¶2: Role table, led as the usual outcome of the test.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Controller, Processor and the Commerce Supply Chain ¶3: Shopify webhooks and Figure 2, explained as a platform acting as processor; caption states the role assignment.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Controller, Processor and the Commerce Supply Chain ¶4: 13 of 34 unowned integrations, read as 13 unaccountable data flows.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Lawful Bases: The Order Versus the Marketing ¶1: Bases table, led by the sentence on why each use is allowed.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Lawful Bases: The Order Versus the Marketing ¶2: Article 13(2) quotation, followed by the architectural point it supports.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Consent, Cookies and Tracking ¶6: Sephora case, followed by 'The tag layer is a legal surface'.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Consent, Cookies and Tracking ¶8: Figure 3, caption states consent travelling from the master.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Retention: The Person Versus the Transaction ¶1: Retention facts, led by 'Tax law makes the merchant keep what privacy law makes it release'.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Retention: The Person Versus the Transaction ¶2: Figure 4, caption states the split; its placement before ¶3 is recorded under flow.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Data Subject Requests Across Many Systems ¶1: Article 12(3) quotation, followed by what makes it hard.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Data Subject Requests Across Many Systems ¶4: Action table, led as applying the retention split per system.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Data Subject Requests Across Many Systems ¶5: Figure 5, caption states the verified, fanned-out flow.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Requirements per Flow ¶1: Requirements table, led by the sentence on how the four flows differ.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "The Choices ¶2: Options table, led by the sentence naming its criteria.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Across Scale Stages: When It Fits and When It Limits ¶1: Stage table, led and followed by ¶2's judgement.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "In Practice ¶5: Two-working-day statistic set against the seventeen days.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "When It Goes Wrong ¶1: Failure table, led by the sentence on detection, recovery and the missed copy.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Introduction p05: problem_solution expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Introduction p06: sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3/transition_in",
+      "draft_locus": "Introduction ¶4",
+      "quote": "**Where we are in the order's journey.** Eva buys a jacket from Kestrel & Pine, the fictional outdoor brand, on 13 April 2027.",
+      "finding": "The declared example relationship (Eva's order as the everyday version of the roadmap's opening case) is not expressed; the paragraph opens on a book-wide label with no sentence linking it to the roadmap, and both flow readers stopped to work out whether Eva or Lotte was the subject.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Section scene: example expressed at its opening.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p08: elaboration expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p09: cause_effect expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3/transition_in",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The Request From Ghent ¶4",
+      "quote": "Kestrel & Pine had no order management system (OMS) yet. Outside those nine systems,",
+      "finding": "The additional_support link (the copies outside the table) is placed in the second sentence; the boundary opens on an unexplained aside about the OMS that both flow readers found puzzling.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Section data: elaboration expressed at its opening.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p12: sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p14: example expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p15: conclusion_summary expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p13: cause_effect expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Section roles: elaboration expressed at its opening.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p17: example expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p18: example expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p19: cause_effect expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Section sharing: elaboration expressed at its opening.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p40: additional_support expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p41: contrast expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p42: cause_effect expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p44: additional_support expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Section bases: contrast expressed at its opening.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p21: elaboration expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Section consent: elaboration expressed at its opening.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p23: elaboration expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p24: example expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p25: elaboration expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p26: contrast expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p51: contrast expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p43: example expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p27: cause_effect expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/transition_in",
+      "draft_locus": "Retention: The Person Versus the Transaction ¶1",
+      "quote": "Consent decides which marketing may run; tax law decides how long the records of a sale must be kept.",
+      "finding": "The spec declares cause_effect (the profile consent governs is the record the retention split makes erasable); the draft sets consent and tax law side by side as a parallel, so the causal link from the consent section is not stated.",
+      "fault": "unclear",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p36: cause_effect expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p37: problem_solution expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p38: contrast expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Section dsr: cause_effect expressed at its opening.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p30: sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p31: sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p32: sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p33: contrast expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p34: conclusion_summary expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Section requirements: conclusion_summary expressed at its opening.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Section choices: sequence expressed at its opening.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p46: elaboration expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Section stages: elaboration expressed at its opening.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p49: conclusion_summary expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Section practice: example expressed at its opening.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p54: time expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p55: elaboration expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p56: contrast expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p57: cause_effect expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Section wrong: contrast expressed at its opening.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Conclusion: conclusion_summary expressed ('The request from Ghent took seventeen working days for three reasons').",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p60: elaboration expressed (label or opening sentence).",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p61: contrast expressed (label or opening sentence).",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p62: contrast expressed (label or opening sentence).",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p63: cause_effect expressed (label or opening sentence).",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "p64: additional_support expressed (label or opening sentence).",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "quote": "The answer this chapter gives is that a shop holds one person in many systems for different purposes.",
+      "finding": "flowA 3.1: 'the thesis is stated about three times before the case starts' (KEY POINTS, ¶1's conclusion, ¶2, then the roadmap). The spec places the thesis in both the callout and p05 after p01's map conclusion, so the repetition comes from the declared intro structure.",
+      "fault": "spec",
+      "corroborated_by": "flowB 3.1 ('The opening says the same thing three times')",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "Next come the lawful bases and consent, including consent at a store's till; retention and the split of the person from the transaction; a request across many systems; and the requirements of the four privacy flows side by side.",
+      "finding": "flowA 3.1: the roadmap sentence 'is too long to hold, and I had to re-read it'; it also names 'the four privacy flows' before they are identified.",
+      "fault": "draft",
+      "corroborated_by": "flowB 3.2 (same sentence; 'four privacy flows' have not been named; could not hold the roadmap)",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "The chapter's case is a different customer with a longer history.",
+      "finding": "flowA 3.2: Eva's paragraph 'comes after the roadmap and just before the case, introduces Eva, then drops her at once'. The spec places p04 after the roadmap; both readers suggest moving it before the roadmap or cutting it.",
+      "fault": "spec",
+      "corroborated_by": "flowB 3.3 / 2.1 (Eva paragraph out of place between roadmap and scene)",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The Request From Ghent ¶4",
+      "quote": "Outside those nine systems, the newsletter tool, one of the shop platform's apps, unsubscribed her through the shop platform's notification;",
+      "finding": "flowA 3.3: nine systems plus the newsletter tool plus the iPaaS 'makes eleven systems that held her, yet the text says she was \"in nine of the thirteen systems\"'; the OMS sentence before it is also unexplained here.",
+      "fault": "draft",
+      "corroborated_by": "flowB 3.4 and 3.5 (nine or eleven; the OMS sentence has no reason given)",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "What Personal Data a Commerce Platform Holds, and Under Which Rules ¶1",
+      "quote": "Lotte's request used words that carry the design: controller, the one-month limit, records that must be kept.",
+      "finding": "flowA 3.4: 'Lotte's request did not use these words. The narration of the scene did.'",
+      "fault": "draft",
+      "corroborated_by": "flowB 3.6 (her request was 'delete my data and stop emailing me')",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Sharing and Transfers ¶5",
+      "quote": "such as the Dutch or Belgian one above",
+      "finding": "flowA 3.5: 'No Dutch or Belgian regulator has appeared above. They first appear later, in the Consent section.'",
+      "fault": "draft",
+      "corroborated_by": "flowB 3.11 (searched back for them)",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Sharing and Transfers ¶5",
+      "quote": "That clock runs in hours from the breach; it is separate from the one-month clock for a person's request, which comes later in the chapter.",
+      "finding": "flowA 3.6: the breach-notification paragraph 'is a different topic from sharing and transfers ... it still feels parked here'. The spec deliberately puts the breach clock in the vendor paragraph of Sharing and Transfers.",
+      "fault": "spec",
+      "corroborated_by": "flowB 3.12 (breach clock tucked into 'The vendor's side', interrupts the sharing line)",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/3",
+      "draft_locus": "Data Subject Requests Across Many Systems ¶4",
+      "quote": "Deleted the account; the shop platform anonymized the orders and notified its apps",
+      "finding": "flowA 3.7: anonymized (scene table, In Practice) and pseudonymized (action table, OMS) are used side by side; 'A newcomer cannot tell whether these are the same action or a deliberate distinction.'",
+      "fault": "draft",
+      "corroborated_by": "flowB 3.15 (anonymize, pseudonymize and hash drift)",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/3",
+      "draft_locus": "Data Subject Requests Across Many Systems ¶4",
+      "quote": "Orders in the platform and the OMS",
+      "finding": "flowA 3.8: the action table gives OMS orders as a Kestrel & Pine example although the scene said Kestrel & Pine had no OMS; the data table does the same.",
+      "fault": "draft",
+      "corroborated_by": "flowB 3.7 (data table lists the OMS two paragraphs after 'no OMS')",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Retention: The Person Versus the Transaction ¶2",
+      "quote": "**Figure 4:** *Profiles are erasable; transactions are kept with a reference that no longer points to a person once the profile is gone.*",
+      "finding": "flowA 3.10: Figure 4 'sits before the paragraph that introduces \"split the person from the transaction\". The picture comes before its explanation.' The spec attaches the figure to p36 as showing 'the split the next paragraph describes'.",
+      "fault": "spec",
+      "corroborated_by": "flowB 3.16 (the figure gives away the move one paragraph early)",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/4",
+      "draft_locus": "Consent, Cookies and Tracking ¶5-¶7",
+      "quote": "Whatever the rules become, consent has to be asked well where it is asked.",
+      "finding": "flowA 3.11: after the CMP come the Digital Omnibus and the US opt-out model with Sephora before the store paragraph 'brings it back'; 'I lost the line for a moment'. The spec's large_to_small order puts the Omnibus and US paragraphs before the till and the design consequence.",
+      "fault": "spec",
+      "corroborated_by": "flowB 3.13 (main point comes after several detours; US paragraph left the reader asking why it matters)",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8",
+      "draft_locus": "Requirements per Flow ¶1",
+      "quote": "With the request described, the chapter has covered four privacy flows: consent capture and consent withdrawal (in the consent section), the retention purge (in the retention section) and the request.",
+      "finding": "flowA 2.10: why the section comes here 'is only partly clear. It interrupts the move from \"how a request works\" to \"how to build the request handling\".' The spec places it between the request and the choices.",
+      "fault": "spec",
+      "corroborated_by": "flowB 2.10 / 4.5 (as a standalone section between the DSR and the options it breaks the line)",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Requirements per Flow ¶1",
+      "quote": "consent capture and consent withdrawal (in the consent section), the retention purge (in the retention section)",
+      "finding": "flowA 3.12: 'Consent withdrawal was not described as a flow in the consent section ... The recap therefore claims more than was shown', and the table adds new requirements in a summary position.",
+      "fault": "draft",
+      "corroborated_by": "flowB 3.17 (withdrawal had no treatment of its own; the purge was a single clause)",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/1",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "quote": "Kestrel & Pine learned the stage-3 lesson from one request from Ghent.",
+      "finding": "flowA 3.15: 'This assumes the reader knows Kestrel & Pine is at stage 3 (Omnichannel). The chapter never says so.'",
+      "fault": "draft",
+      "corroborated_by": "flowB 3.19 (the chapter never says Kestrel & Pine is at stage 3)",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/12/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "quote": "**The Long Fuse** — a data subject request has a legal clock of one month",
+      "finding": "flowA 3.16: the three failure patterns named in the header are used unevenly; the Long Fuse never reappears, so 'the header promises a thread the body does not follow'.",
+      "fault": "draft",
+      "corroborated_by": "flowB 3.20 (the six failures are not linked to the three named patterns)",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/1",
+      "draft_locus": "The Choices ¶2",
+      "quote": "The table compares the four options on when each fits, its strengths, its costs and limits, and the warning sign that a merchant has outgrown it.",
+      "finding": "flowA 3.13: the four options are listed as bullets and then repeated in a table with the same names; the reader checked whether the table held new options.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4",
+      "draft_locus": "Lawful Bases: The Order Versus the Marketing ¶1",
+      "quote": "Knowing who holds and receives the data leaves the question of why each use is allowed at all.",
+      "finding": "flowB 3.9: the bases are defined and used in the data section, then two sections on roles and transfers intervene, so returning to them 'felt like a step back'. This is the spec's declared order.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/4",
+      "draft_locus": "What Personal Data a Commerce Platform Holds, and Under Which Rules ¶5",
+      "quote": "4% would be about €1.9 million, so its ceiling is the €20 million figure",
+      "finding": "flowB 3.8: had to re-read to apply 'whichever is higher', and the fines paragraph closes the section on a tangent after its bolded main point.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "Controller, Processor and the Commerce Supply Chain ¶4",
+      "quote": "five were still unowned in April 2027, after the ownership map.",
+      "finding": "flowB 3.10: 'the ownership map' is used as if known and explained only near the end of the chapter.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/7",
+      "draft_locus": "Consent, Cookies and Tracking ¶8",
+      "quote": "[[identity-and-master-data]] put it on the customer master with its time, place, wording and source; here is why:",
+      "finding": "flowB 3.14: 'This sentence is garbled ... I read it twice to see that \"it\" is consent.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Requirements per Flow ¶1",
+      "quote": "| Flow | How fresh | How consistent | How fast | How available |",
+      "finding": "flowB 3.17: for the request, 'How fresh' is one month and 'How fast' is days, and the reader 'could not see the difference between the two columns'.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "Setting the Scene ... ¶4; What Personal Data ... ¶2; Data Subject Requests ... ¶1",
+      "quote": "\"without undue delay and in any event within one month\"",
+      "finding": "flowA 3.17: the one-month limit is restated in the scene, the definitions and the DSR section; harmless but noticeable.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction",
+      "draft_locus": "Introduction callout (Failure patterns)",
+      "quote": "a data subject request has a legal clock of one month",
+      "finding": "'Data subject request' (on does_not_know) is used in the callout before it is defined in the data section (terms 1).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "the GDPR and ePrivacy texts, the EDPB's guidelines",
+      "finding": "GDPR and ePrivacy (both on does_not_know) and the EDPB are named in the roadmap before they are expanded or defined later (terms 3-5); ePrivacy is also used unexplained in the data table.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "newsletter enrollment needs its own basis",
+      "finding": "'Basis' (lawful basis, on does_not_know) is used in the Eva paragraph before it is defined (terms 7).",
+      "fault": "draft",
+      "corroborated_by": "flowA 3.2 (uses 'its own basis' before lawful basis is defined)",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "the requirements of the four privacy flows side by side",
+      "finding": "'The four privacy flows' are referred to in the roadmap before they are named (terms 6).",
+      "fault": "draft",
+      "corroborated_by": "flowB 3.2 (the four privacy flows have not been named)",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Sharing and Transfers ¶5",
+      "quote": "such as the Dutch or Belgian one above",
+      "finding": "The Dutch and Belgian regulators are referred to as already introduced, but they first appear in the consent section (terms 9).",
+      "fault": "draft",
+      "corroborated_by": "flowA 3.5; flowB 3.11",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The Request From Ghent ¶3 (table)",
+      "quote": "the shop platform anonymized the orders",
+      "finding": "'Anonymized' is never explained or distinguished from pseudonymized and hashed, which are used beside it for the same kind of action (terms 11); pseudonymization is on does_not_know.",
+      "fault": "draft",
+      "corroborated_by": "flowA 3.7; flowB 3.15",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The Request From Ghent ¶3 (table)",
+      "quote": "Scheduled deletion for the end of the claims window",
+      "finding": "'Claims window' is never explained as a term, yet recurs in the data table, the action table and In Practice (terms 12).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The Request From Ghent ¶3 (table)",
+      "quote": "Rows keyed by e-mail in four tables and a BI extract",
+      "finding": "'Data warehouse' and 'BI' are not on already_knows and are never explained (terms 13).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The Request From Ghent ¶3 (table)",
+      "quote": "the apps' copies",
+      "finding": "Shop-platform 'apps' are never explained as third-party add-ons acting on the platform's data, though the role table and the Shopify paragraph rest on them (terms 14).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "What Personal Data a Commerce Platform Holds, and Under Which Rules ¶3 (table)",
+      "quote": "Order: the fiscal period; shipment: the claims window",
+      "finding": "'Fiscal period' is used without being tied to the statutory retention period explained later (terms 15); minor.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "Controller, Processor and the Commerce Supply Chain ¶2 (table)",
+      "quote": "Often joint or independent controllers",
+      "finding": "'Joint controllers' is never explained (terms 16).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "Controller, Processor and the Commerce Supply Chain ¶3",
+      "quote": "may decline redaction where the law requires them to retain data",
+      "finding": "'Redaction' (Shopify's term for erasure) is never explained (terms 17).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "Lawful Bases: The Order Versus the Marketing ¶2",
+      "quote": "National transpositions differ; the lawyer confirms the local reading.",
+      "finding": "'National transpositions' is never explained, and 'the lawyer' has not been introduced (terms 19).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/2",
+      "draft_locus": "Consent, Cookies and Tracking ¶3",
+      "quote": "bring tracking pixels, URL tracking and IP-only tracking within the device rule",
+      "finding": "Tracking pixels, URL tracking and IP-only tracking are not explained (terms 20); minor.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/11/paragraphs/1",
+      "draft_locus": "In Practice ¶2",
+      "quote": "a signed e-mail reply",
+      "finding": "What makes a reply 'signed' and how it verifies the requester is not explained (terms 21).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶1 (table)",
+      "quote": "a data protection officer where required; group-wide records of processing",
+      "finding": "'Data protection officer' and 'records of processing' are GDPR terms the reader has not met (terms 22); minor, one table cell.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Sharing and Transfers ¶2",
+      "quote": "(a Commission decision that a country outside the EU",
+      "finding": "'Commission' (the European Commission) is used before it is named in full in the consent section (terms 8); minor.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/5",
+      "draft_locus": "Consent, Cookies and Tracking ¶6",
+      "quote": "That model has already been enforced on the tag layer.",
+      "finding": "'Tag layer' is used two paragraphs before it is glossed, and the tool that loads tags is never named (terms 10); minor.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "What to Take Away ¶2",
+      "quote": "EDPB Guidelines 07/2020",
+      "finding": "The guideline numbers in the conclusion are never tied to the body's 'guidelines on the two roles (version 2.0, July 2021)' and 'consent guidelines (May 2020)' (terms 24); minor.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "Controller, Processor and the Commerce Supply Chain ¶4",
+      "quote": "after the ownership map.",
+      "finding": "'The ownership map' is used as known but is glossed only in In Practice (flowB 3.10); not on already_knows by that name.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "'The identity rule' and 'the July matching run' (terms 23; flowA 3.14, flowB 3.18) are on already_knows (chapter 27's June 2027 identity rule), so they are not new to the declared audience. The right of withdrawal and the prior-price rule are forward pointers to the next chapter. Controller, processor, DPA, lawful basis, DSR, retention, consent, soft opt-in, cookie walls, CMP, server-side tagging, pseudonymization, identity index, orchestrator, action table, backup exception, adequacy, SCCs, DPF, transfer inventory and the breach clock are each defined where first needed in the body.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The introduction opens on a bridge from the previous chapter and a concrete removal scenario, then states a specific, disputable answer; no weak opening pattern. The repeated thesis is recorded under flow.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion opens by answering the opening case with three causes and one remedy, not by restating section titles, and ends on questions and a hand-off.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "What to Take Away ¶1 joins the roles, the person-on-the-order and the missing index into three reasons and one map, and gives the so-what: the second request took two working days with a record a regulator asks for.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "¶1 returns to the request from Ghent ('took seventeen working days for three reasons') and to Eva's order, and says what made the second request take two, as conclusion.callback asks.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted the copies across systems, the map of roles, actions and retention, the request reaching every system, the section order matching the roadmap, Eva's order, and the evidence (Kestrel & Pine's nine-system request and autumn 2027 design, GDPR and ePrivacy, EDPB, Dutch and Belgian regulators, national retention rules, Shopify's documentation).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader rejects deleting the web-shop account, cites nine of thirteen systems, and gives verification, the identity index, per-system erase/pseudonymize/retain, referral of bol, carrier and PSP, the backup exception with log replay, the one-month-plus-two reply saying what was erased, kept and whom to ask, and the record.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader explains the retention periods as a legal obligation, the invoice-as-customer-record conflict that deletes nothing, and the split (reference and delivery address on the order, erasable profile, hashed analytics, retention per record type with a scheduled purge).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader covers consent before device access except the cart and language, no cookie walls, scrolling or pre-ticked boxes, the soft opt-in with free objection subject to national rules, consent recorded per person and purpose with time, place, wording and source on the master reaching tags, newsletter, POS and apps, same-day withdrawal, no-consent default when the CMP is down, the store sign-up rule and server-side tagging not removing the need for consent.",
+      "severity": "major"
+    }
+  ]
+}

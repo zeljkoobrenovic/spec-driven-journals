@@ -9,7 +9,7 @@ logo: "assets/images/ucp-beginners-tutorial/logo.png"
 logo_credit: "Illustration generated with OpenAI image tools."
 ---
 
-> **IN THIS CHAPTER, YOU WILL:** Follow a purchase through Universal Commerce Protocol, read its main messages, and understand the responsibilities behind a reliable integration.
+> **IN THIS APPENDIX, YOU WILL:** Follow a purchase through Universal Commerce Protocol, read its main messages, and understand the responsibilities behind a reliable integration.
 
 > **KEY POINTS:**
 >
@@ -17,7 +17,7 @@ logo_credit: "Illustration generated with OpenAI image tools."
 > * **Agree on capabilities before using them.** Each participant describes the features and versions it supports, so the application can choose a flow both sides understand.
 > * **A request is not a confirmed purchase.** Shopper approval, payment processing and order confirmation are separate steps. The application must report the state the merchant actually returned.
 
-> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-commerce-platforms-go-wrong.html):**
+> **[FAILURE PATTERNS THIS APPENDIX ADDRESSES](where-commerce-platforms-go-wrong.html):**
 >
 > * **The Secret Agent** — a shopping assistant needs explicit authority before it can commit the customer to a purchase.
 > * **The Message in a Bottle** — a lost response must lead to a status check, not another charge.
@@ -28,19 +28,17 @@ A shopper asks an assistant to find a waterproof jacket for less than €200. Fi
 
 **Universal Commerce Protocol (UCP)** defines shared messages and rules for these exchanges. A shopping application can learn what a merchant supports and use that functionality through a common interface. The merchant keeps responsibility for its products, prices and orders. UCP gives another application a way to work with those records.
 
-I would learn UCP by tracing one purchase, including a lost response. A successful demonstration shows that two systems can exchange messages. Following the uncertain outcome shows whether the team understands what the customer has bought and what it may safely retry.
+I would learn UCP by tracing one purchase through its seven steps and then losing its completion response on purpose. At each step the application may tell the shopper only what the merchant's last response established: a ready checkout is not yet an order, and a lost completion response is resolved by reading the existing checkout, not by buying again. A successful demonstration shows that two systems can exchange messages. Following the uncertain outcome shows whether the team understands what the customer has bought and what it may safely retry.
 
-**Where we are in the order's journey.** This appendix follows discovery, checkout and the first order update. You need only a basic understanding of an **API**, an interface one program calls to request data or work from another. The broader business choices appear in [[ai-and-agentic-commerce]].
+**Where we are in the order's journey.** Chapter 45, [[ai-and-agentic-commerce]], explained why Kestrel & Pine prepares its data and order APIs before launching any shopping agent. Here we meet the purchase, its participants and the vocabulary, then follow seven steps from discovery to the first order update, with stops for the checkout states and three permissions. A lost completion response and other failures follow. An exercise, what a merchant should implement first and how UCP compares with other protocols close the page. You need only a basic understanding of an **API**, an interface one program calls to request data or work from another.
 
 ## The Purchase We Will Follow
 
 Kestrel & Pine is the fictional outdoor brand used throughout this book. Imagine a separate learning environment offering its Ridgewalker shell jacket: women's size M, moss, priced at €199 including tax. The brand's normal free-shipping threshold is €75, so this single-jacket order qualifies.
 
-For the exercise, assume the jacket is available, the test delivery address is supported and the merchant can offer Thursday delivery. Those are **illustrative lab conditions**, not evidence that a real shopping service supports this purchase. This is also separate from the book's recurring €235 order and from Kestrel & Pine's decision not to launch a shopper-facing agent in 2027.
+For the exercise, assume the jacket is available, the test delivery address is supported and the merchant can offer Thursday delivery. Those are **illustrative lab conditions**, not evidence that a real shopping service supports this purchase. (For readers of the book: this lab purchase is separate from Eva's €235 order, the book's running example, and from Kestrel & Pine's decision not to launch a shopper-facing agent in 2027.)
 
 The test shopper says, “Find this jacket, show me the delivered total, and ask before buying.” That last instruction matters. Permission to search has not authorized the application to place an order.
-
-**Technical reference.** The walkthrough uses UCP's published **2026-08-25** documentation, checked on 9 November 2026, with an [inspected source revision](https://github.com/Universal-Commerce-Protocol/ucp/tree/7dd79ea2ff0bc8bc394ac5b17ababa91284fa581). Message fragments use invented identifiers and reserved `.example` addresses. They explain the exchange; they omit fields and authentication material and are not requests to paste into a live payment service. Use the matching full schemas when implementing.
 
 ## Who Talks to Whom?
 
@@ -70,40 +68,26 @@ A merchant might support checkout but not loyalty points. It might accept a part
 | **Profile** | A document describing a participant's supported protocol features and where to reach them | The merchant publishes its UCP profile at `/.well-known/ucp` |
 | **Service** | A group of related operations exposed through an interface | The shopping service includes checkout operations |
 | **Capability** | A named piece of functionality both parties can support | Creating and completing a checkout |
-| **Extension** | Additional functionality attached to a capability | Shipping choices added to checkout |
+| **Extension** | Additional functionality attached to a capability | Shipping choices added to checkout (the fulfillment extension) |
 | **Transport** | The mechanism carrying the messages | HTTP requests using the REST interface |
 | **Schema** | A machine-readable description of a message's fields and allowed values | The checkout schema describes its status, items and totals |
 
-**REST** is the familiar API style using HTTP methods such as `GET` to read a resource and `POST` to create one or request an action. We use it throughout this tutorial because you can follow the exchange without also learning an agent framework.
-
 The [UCP overview](https://ucp.dev/2026-08-25/specification/overview/) explains how profiles declare services, capabilities and extensions. Their names are precise identifiers. For example, `dev.ucp.shopping.checkout` names the standard checkout capability. The reversed domain at the beginning identifies the namespace; you do not send a request to that string as though it were a URL.
 
-### How UCP Differs from ACP, MCP and AP2
-
-These names appear together because a purchase needs both commerce rules and a way to carry out authorized actions. They do not all solve the same part of that problem.
-
-| Protocol | What it contributes | Relationship to UCP |
-| --- | --- | --- |
-| **Agentic Commerce Protocol (ACP)** | A commerce interface maintained by OpenAI and Stripe, covering checkout, delegated payment and other shopping operations | Overlaps with UCP; supporting one does not automatically support the other |
-| **Model Context Protocol (MCP)** | A way for applications using AI models to discover and invoke tools | UCP can expose its commerce operations through MCP |
-| **Agent Payments Protocol (AP2)** | Signed records of a user's payment-related authority and intent, called mandates | UCP can use the AP2 mandates extension when that flow needs it |
-
-ACP's [April 2026 specification](https://github.com/agentic-commerce-protocol/agentic-commerce-protocol) includes cart, order and product-feed work as well as checkout and payment. It would be misleading to teach ACP as “payments” and UCP as “everything else.” Both cover commerce workflows; their contracts and integration ecosystems differ.
-
-UCP makes discoverable capabilities and agreement between participants central to its design. Its [MCP binding](https://ucp.dev/2026-08-25/specification/shopping/checkout/mcp/) carries UCP operations as tools. Its [AP2 explanation](https://ucp.dev/documentation/ucp-and-ap2/) describes an optional authorization mechanism; AP2 is not the payment processor and is not required for every UCP flow.
-
-If you need both ACP and UCP, I would map their interfaces onto shared checkout and order logic. Two adapters are manageable. Two competing definitions of what a customer owes are much harder to operate.
+For the transport, this tutorial uses **REST**, the familiar API style using HTTP methods such as `GET` to read a resource and `POST` to create one or request an action. We use it throughout because you can follow the exchange without also learning an agent framework.
 
 ## Step 1: Discover What the Merchant Supports
 
-Before creating anything, the application reads the merchant's profile. Think of it as the entrance sign for the API: it tells the caller which services exist and where their doors are.
+**Technical reference.** First, the source: the walkthrough uses UCP's published **2026-08-25** documentation, checked on 9 November 2026, with an [inspected source revision](https://github.com/Universal-Commerce-Protocol/ucp/tree/7dd79ea2ff0bc8bc394ac5b17ababa91284fa581). Message fragments use invented identifiers and reserved `.example` addresses. They explain the exchange; they omit fields and authentication material and are not requests to paste into a live payment service. Use the matching full schemas when implementing.
+
+Now the first message. Before creating anything, the application reads the merchant's profile.
 
 ```http
 GET /.well-known/ucp HTTP/1.1
 Host: kestrel-pine.example
 ```
 
-This **profile excerpt** shows only the REST service and checkout capability. The physical-goods flow also needs fulfillment support, discussed next; payment configuration and keys are omitted here.
+This **profile excerpt** shows only the REST service and checkout capability. The physical-goods flow also needs fulfillment support, the delivery options covered in Step 4; payment configuration and keys are omitted here.
 
 ```json
 {
@@ -155,7 +139,7 @@ A **cart** collects intended items while the shopper is still deciding. A **chec
 
 Creating a session asks the merchant to work out a purchase. It has not yet placed the order. This separation gives the merchant somewhere to collect the address, calculate delivery and report missing information before money is committed.
 
-The [checkout REST binding](https://ucp.dev/2026-08-25/specification/shopping/checkout/rest/) defines the endpoint. This illustrative request omits authentication headers; their presence and validation depend on the agreed authentication mechanism.
+The [checkout REST binding](https://ucp.dev/2026-08-25/specification/shopping/checkout/rest/) defines the endpoint. This illustrative request omits authentication headers; their presence and validation depend on the agreed authentication mechanism, which proves which application is calling.
 
 ```http
 POST /ucp/checkout-sessions HTTP/1.1
@@ -192,16 +176,16 @@ The merchant could return this **response excerpt**:
 }
 ```
 
-The application now has a checkout identifier and something useful to do: obtain the missing information. The merchant has communicated a business state, not just an HTTP success code. An API request can succeed while the purchase remains incomplete.
+Full responses also carry the `ucp` metadata, items, totals and other required fields. The [checkout schema](https://ucp.dev/2026-08-25/schemas/shopping/checkout.json) is the implementation contract; the excerpt above isolates the fields a beginner needs to read first.
+
+Status `incomplete` means the merchant needs more information, and a `recoverable` message is one the application can fix by supplying it, so the application now has a checkout identifier and something useful to do: obtain the missing information. The merchant has communicated a business state, not just an HTTP success code. An API request can succeed while the purchase remains incomplete.
 
 ![The shopping app asks the merchant to create a checkout. The merchant returns checkout chk_lab_001 with status incomplete because the email is missing. No order exists yet.](assets/images/ucp-beginners-tutorial/step-3-session-not-order.jpeg)
 **Figure 4:** *Creating a session starts a purchase but does not place it. The merchant reports what is still missing.*
 
-Full responses also carry the `ucp` metadata, items, totals and other required fields. The [checkout schema](https://ucp.dev/2026-08-25/schemas/shopping/checkout.json) is the implementation contract; the excerpt above isolates the fields a beginner needs to read first.
-
 ## Step 4: Supply the Address and Choose Delivery
 
-A jacket cannot be quoted for delivery without knowing where it will go. The application asks the shopper for the necessary details, submits them and lets the merchant return the available choices. It must not infer Thursday delivery from a general sentence on a product page.
+The checkout is still incomplete. A jacket cannot be quoted for delivery without knowing where it will go. The application asks the shopper for the necessary details, submits them and lets the merchant return the available choices. It must not infer Thursday delivery from a general sentence on a product page.
 
 The [fulfillment extension](https://ucp.dev/2026-08-25/specification/shopping/extensions/fulfillment/) adds the vocabulary for getting physical goods to the customer. It describes methods such as shipping or pickup, destinations, groups of items, and options within those groups. The merchant creates the groups and options; the application selects from those returned identifiers.
 
@@ -216,11 +200,11 @@ The [fulfillment extension](https://ucp.dev/2026-08-25/specification/shopping/ex
 ![The shopping app sends an address to the merchant. The merchant returns delivery options, the app selects standard free Thursday delivery, and the merchant recalculates the total to 199 euros.](assets/images/ucp-beginners-tutorial/step-4-delivery-choice.jpeg)
 **Figure 5:** *The merchant creates the delivery options and recalculates the total. The application only selects from what was returned.*
 
-An update uses `PUT /checkout-sessions/{id}`. In this release, **Update Checkout is a replacement operation**. Build the request from the latest checkout state and include previously supplied writable information you intend to retain. Sending only a changed email address can discard other information. Follow the update schema rather than blindly copying response-only fields back to the server.
+An update uses `PUT /checkout-sessions/{id}`, relative to the service endpoint. In this release, **Update Checkout is a replacement operation**. Build the request from the latest checkout state and include previously supplied writable information (the fields the application may set) you intend to retain. Sending only a changed email address can discard other information. Follow the update schema rather than blindly copying response-only fields back to the server.
 
 In our lab, the application submits the buyer details, retains the jacket line and selects the returned destination and shipping option. The merchant recalculates the purchase. We assume it returns a €199 total with free shipping and Thursday delivery, and no remaining issue prevents completion.
 
-UCP expresses money in minor units. For euros, `19900` means €199.00, not €19,900. A quote fragment might contain:
+UCP expresses money in minor units. For euros, `19900` means €199.00, not €19,900. A quote fragment might contain the new status `ready_for_complete`, meaning the merchant has what it needs to attempt the order:
 
 ```json
 {
@@ -231,11 +215,13 @@ UCP expresses money in minor units. For euros, `19900` means €199.00, not €1
 }
 ```
 
-This fragment omits the tax breakdown and fulfillment fields. For a consumer price that already includes tax, do not add the displayed tax component again. The app presents the merchant's returned total and the chosen delivery terms, then asks the shopper to approve those terms.
+This fragment omits the tax breakdown and fulfillment fields. If the merchant's full response lists the tax as a separate line, the app must not add it again to a price that already includes tax. The app presents the merchant's returned total and the chosen delivery terms, then asks the shopper to approve those terms.
 
 ## Read the Checkout State Before Taking the Next Step
 
 The checkout's status tells the application what kind of work remains. It does not tell you whether the shopper is happy, whether a parcel has shipped or whether money has settled into the merchant's bank account.
+
+Some of that work may belong to the buyer, and a handoff is a normal outcome. The merchant can supply a `continue_url` so the buyer can finish required work in a supported interface. I would preserve that route in an initial integration: forcing every exception through a chat conversation usually makes the exceptions harder for the customer.
 
 The [checkout lifecycle](https://ucp.dev/2026-08-25/specification/shopping/checkout/#checkout-status-lifecycle) defines six states:
 
@@ -253,8 +239,6 @@ The [checkout lifecycle](https://ucp.dev/2026-08-25/specification/shopping/check
 
 The practical mistake to avoid is displaying “Purchased” after receiving `ready_for_complete`. That state is closer to a checkout form being ready for its final button. The shopper still needs to authorize the attempt, and the merchant still needs to accept it.
 
-A handoff is also a normal outcome. The merchant can supply a `continue_url` so the buyer can finish required work in a supported interface. I would preserve that route in an initial integration: forcing every exception through a chat conversation usually makes the exceptions harder for the customer.
-
 ## Step 5: Arrange Payment Without Giving the Model Card Details
 
 Before asking a payment provider to charge, the participants need to agree how payment credentials will be obtained and passed. A **payment instrument** describes what pays, such as a card. A **payment handler** defines the procedure the participants use to work with that instrument. The [handler guide](https://ucp.dev/2026-08-25/specification/payment/guide/) separates these responsibilities.
@@ -266,13 +250,13 @@ The application passes the credential to the merchant as the handler specifies. 
 ![The shopper approves a wallet interaction. The wallet supplies a token to the shopping application, which sends it to the merchant. The merchant processes payment with its provider and receives the result.](assets/images/ucp-beginners-tutorial/payment-token-flow.png)
 **Figure 7:** *The application carries the agreed credential; the merchant's payment integration determines the payment result.*
 
-The [tokenization guide](https://ucp.dev/2026-08-25/specification/payment/tokenization/) explains the distinction between obtaining a token and processing it. Keep raw card details out of prompts, model context and ordinary application logs. A payment form or wallet component should handle the sensitive interaction through the provider's supported integration.
+Because only the token travels, card details can stay out of the conversation. The [tokenization guide](https://ucp.dev/2026-08-25/specification/payment/tokenization/) explains the distinction between obtaining a token and processing it. Keep raw card details out of prompts, model context and ordinary application logs. A payment form or wallet component should handle the sensitive interaction through the provider's supported integration.
 
 Payment can require additional buyer interaction. UCP's [payment authentication extension](https://ucp.dev/2026-08-25/specification/payment/extensions/authentication/) describes actions such as collecting device data or conducting a cardholder challenge. The application must handle the negotiated action or use the supported handoff. It cannot treat the shopper's earlier chat message as proof that every payment requirement has been satisfied.
 
-### Three Permissions That Are Easy to Confuse
+## Three Permissions That Are Easy to Confuse
 
-Trusting the application, accessing the buyer's account and authorizing a purchase are different decisions. Conflating them can give a useful shopping assistant far more authority than the customer intended.
+The token answers who pays, not who may act. Trusting the application, accessing the buyer's account and authorizing a purchase are different decisions. A request signature is a value the application computes over each request so the merchant can check who sent it. Conflating these decisions can give a useful shopping assistant far more authority than the customer intended.
 
 | Question | What answers it | What it does not establish |
 | --- | --- | --- |
@@ -282,7 +266,7 @@ Trusting the application, accessing the buyer's account and authorizing a purcha
 
 [Identity linking](https://ucp.dev/2026-08-25/specification/common/identity-linking/) lets a shopper authorize account access through OAuth 2.0, a protocol for granting limited access without giving the application the account password. Such access has **scopes**, named permissions limiting what can be done. A guest checkout need not link an existing account just because the application uses UCP.
 
-For a more autonomous flow, an [AP2 mandate](https://ucp.dev/2026-08-25/specification/payment/extensions/ap2-mandates/) can provide a signed record of authority. That is additional machinery to integrate and verify. Our first exercise uses a person reviewing the final purchase; it does not assume a mandate or unattended buying.
+For a more autonomous flow, an [AP2 mandate](https://ucp.dev/2026-08-25/specification/payment/extensions/ap2-mandates/), from the Agent Payments Protocol, can provide a signed record of authority. That is additional machinery to integrate and verify. Our first exercise uses a person reviewing the final purchase; it does not assume a mandate or unattended buying.
 
 ## Step 6: Complete the Checkout and Keep the Order Reference
 
@@ -310,7 +294,7 @@ Now “Your order has been placed” is supported by the merchant's response. Ke
 ![The shopper approves a medium moss jacket for 199 euros. The app sends a complete request with an idempotency key. The merchant returns completed with the checkout identifier chk_lab_001 and the order identifier ord_lab_001, which are both kept.](assets/images/ucp-beginners-tutorial/step-6-complete-and-keep.jpeg)
 **Figure 8:** *Tell the shopper the order is placed only when the response is completed and has an order reference. Keep the checkout and order identifiers.*
 
-If the response instead says `complete_in_progress`, the application must say the purchase is still processing. Follow the status and any required actions; do not repeatedly call completion to make it hurry. A **payment authorization** reserves or approves funds, **capture** collects them, and **fulfillment** prepares and delivers goods. An order confirmation does not collapse those later activities into a single completed event. [[commerce-payments]] explains their operational consequences.
+If the response instead says `complete_in_progress`, the application must say the purchase is still processing. Follow the status and any required actions; do not repeatedly call completion to make it hurry. A **payment authorization**, not the shopper's approval, reserves or approves funds, **capture** collects them, and **fulfillment** prepares and delivers goods. An order confirmation does not collapse those later activities into a single completed event. [[commerce-payments]] explains their operational consequences.
 
 ## Step 7: Follow the Order After Checkout
 
@@ -320,7 +304,7 @@ The [UCP order capability](https://ucp.dev/2026-08-25/specification/shopping/ord
 
 Order updates can arrive through a **webhook**, an HTTP notification sent by the merchant to the platform. The platform can also retrieve current state through `GET /orders/{id}` when authorized. The [order REST binding](https://ucp.dev/2026-08-25/specification/shopping/order/rest/) defines that retrieval interface.
 
-For our lab, retain a small correlation record:
+For our lab, retain a small correlation record. This is an implementation recommendation, not an extra UCP message format. The goal is that support can connect “the assistant says I bought it” to a concrete order and payment result:
 
 | Reference | Example | Why retain it? |
 | --- | --- | --- |
@@ -332,24 +316,26 @@ For our lab, retain a small correlation record:
 ![The merchant sends order updates to the shopping app by webhook, and the app can retrieve the order. A correlation record links the checkout, completion key, order and payment reference.](assets/images/ucp-beginners-tutorial/step-7-follow-the-order.jpeg)
 **Figure 9:** *Order updates arrive by webhook or retrieval. A small correlation record links what the assistant said to an actual order and payment.*
 
-This is an implementation recommendation, not an extra UCP message format. Choose storage and retention appropriate to the merchant's obligations. The goal is that support can connect “the assistant says I bought it” to a concrete order and payment result.
-
 An order API also needs access checks. Knowing `ord_lab_001` must not be enough to read its address. Likewise, an order adjustment describing a refund does not by itself mean the application has an API permission to initiate arbitrary refunds. Verify the supported operation and authority separately.
 
 ## When the Completion Response Disappears
 
 Suppose the merchant creates the order, but the network connection drops before the application receives the response. The application cannot safely conclude either “failed” or “purchased.” It knows only that the outcome is uncertain.
 
-**Reconciliation** means comparing records to establish what actually happened. Here, begin by reading the existing checkout. If it is completed, recover its order reference. If completion is in progress, wait and check again with a bounded delay. Stop automatic attempts when the checkout expires; an unresolved case needs investigation. Do not create a fresh checkout simply to escape uncertainty.
+**Reconciliation** means comparing records to establish what actually happened. Here, begin by reading the existing checkout. If it is completed, recover its order reference. If completion is in progress, wait and check again with a bounded delay. Stop automatic attempts when the checkout expires and turns `canceled`; an unresolved case needs investigation. Do not create a fresh checkout simply to escape uncertainty.
 
 ![The application asks the merchant to complete checkout. The merchant creates one order, but the response is lost. The application retrieves that checkout and receives confirmation of the same order.](assets/images/ucp-beginners-tutorial/lost-response.png)
 **Figure 10:** *Losing the response does not undo the purchase. Retrieve the existing checkout before deciding whether a retry is necessary.*
 
 The [completion contract](https://ucp.dev/2026-08-25/specification/shopping/checkout/#complete-checkout) directs the caller to retrieve state after an unanswered completion request. Only if that still fails to establish the outcome may it retry the identical original completion with the same idempotency key. A genuinely new completion operation uses a new key; a retry does not.
 
-UCP's [signature and replay rules](https://ucp.dev/2026-08-25/specification/signatures/) also matter here. The logical operation identity is different from the authentication material for an individual network attempt. An implementation must handle both correctly. Generate a sufficiently random, unique operation key as the specification requires, and persist its result; merely putting an identifier in a header does not prevent a second charge.
+UCP's [signature and replay rules](https://ucp.dev/2026-08-25/specification/signatures/) also matter here. The operation key stays the same on a retry. Each network attempt also carries its own signed authentication headers, which Step 3 left out; the replay rules reject an old attempt sent again. An implementation must handle both correctly. Generate a sufficiently random, unique operation key as the specification requires, and have the application persist the key with its result; merely putting an identifier in a header does not prevent a second charge.
 
 I would make this the first failure exercise in a team demonstration. Disconnect after the merchant accepts completion, then recover the order. It forces the interface, storage, payment integration and customer message to agree about the same event.
+
+## Other Things That Go Wrong
+
+In each of these five situations, too, the application must not invent an outcome.
 
 | Situation | What to do | What the customer needs to hear |
 | --- | --- | --- |
@@ -363,11 +349,11 @@ These responses are design recommendations for the application. The exact errors
 
 ## Try It: A Small Learning Exercise
 
-You can learn the message flow without a language model. A regular API client makes it easier to inspect which state changed after each request. Add conversational interaction after you understand the purchase contract.
+Practise all of these on a test system. You can learn the message flow without a language model. A regular API client makes it easier to inspect which state changed after each request. Add conversational interaction after you understand the purchase contract.
 
 The official [UCP samples repository](https://github.com/Universal-Commerce-Protocol/samples) provides REST server and client examples. Its [Python server instructions](https://github.com/Universal-Commerce-Protocol/samples/tree/main/rest/python/server) explain local setup, and the client directory contains a happy-path walkthrough. Check the sample's pinned dependencies and advertised version before comparing it with this appendix; examples on a moving branch may use a different release.
 
-Use a local sample or provider test environment with fake customers and test payment credentials. Then perform these exercises in order:
+Use a local sample or provider test environment with fake customers and test payment credentials. The full profiles there also show the payment handlers the Step 1 excerpt left out. Then perform these exercises in order:
 
 1. **Read both profiles.** Write down the shared protocol version, checkout capability, fulfillment extension and payment handler. Explain why each is needed for your chosen product.
 2. **Create a session with missing information.** Find the returned identifier, status and message. Ask what the application should request from the shopper next.
@@ -380,9 +366,9 @@ Your output should be a short trace of request, response, customer message and r
 
 ## What a Merchant Should Implement First
 
-A merchant with dependable checkout and order APIs can often begin by adapting them. A merchant whose website already shows stale stock needs to address that problem too: giving the same stale answer in UCP format does not improve the promise.
+Such a trace shows what a first integration has to prove. A merchant with dependable checkout and order APIs can often begin by adapting them. A merchant whose website already shows stale stock needs to address that problem too: giving the same stale answer in UCP format does not improve the promise.
 
-For a first integration, I would choose one product type, one market, one supported payment route and explicit shopper approval. Establish the recovery path before adding loyalty, split shipments or unattended purchases. This recommendation fits a team learning the protocol; a merchant with those requirements from day one must include them in its first scope.
+For a first integration, I would choose one product type, one market, one supported payment route and explicit shopper approval. Establish the recovery path before adding loyalty, split shipments or unattended purchases. This recommendation fits a team learning the protocol; a merchant with those requirements from day one must include them in its first scope. The first integration should prove six responsibilities, each with a useful first proof:
 
 | Responsibility | A useful first proof |
 | --- | --- |
@@ -397,7 +383,25 @@ A hosted commerce vendor may provide much of this. The merchant still needs to v
 
 There is no need to adopt every capability to learn UCP. There is a need to be honest about the capabilities a particular purchase depends on. A digital download and a physical jacket have different fulfillment requirements even when their checkout messages share a base structure.
 
+## How UCP Differs from ACP, MCP and AP2
+
+A merchant may be asked to support more than one protocol, so it needs to know how UCP differs from three others. They appear together because a purchase needs both commerce rules and a way to carry out authorized actions. They do not all solve the same part of that problem.
+
+| Protocol | What it contributes | Relationship to UCP |
+| --- | --- | --- |
+| **Agentic Commerce Protocol (ACP)** | A commerce interface maintained by OpenAI and Stripe, covering checkout, delegated payment and other shopping operations | Overlaps with UCP; supporting one does not automatically support the other |
+| **Model Context Protocol (MCP)** | A way for applications using AI models to discover and invoke tools | UCP can expose its commerce operations through MCP |
+| **Agent Payments Protocol (AP2)** | Signed records of a user's payment-related authority and intent, called mandates | UCP can use the AP2 mandates extension when that flow needs it |
+
+ACP's [April 2026 specification](https://github.com/agentic-commerce-protocol/agentic-commerce-protocol) includes cart, order and product-feed work as well as checkout and payment. It would be misleading to teach ACP as “payments” and UCP as “everything else.” Both cover commerce workflows; their contracts and integration ecosystems differ.
+
+UCP makes discoverable capabilities and agreement between participants central to its design. Its [MCP binding](https://ucp.dev/2026-08-25/specification/shopping/checkout/mcp/) carries UCP operations as tools. Its [AP2 explanation](https://ucp.dev/documentation/ucp-and-ap2/) describes an optional authorization mechanism; AP2 is not the payment processor and is not required for every UCP flow.
+
+Because the two overlap, if you need both ACP and UCP, I would map their interfaces onto shared checkout and order logic. Two adapters are manageable. Two competing definitions of what a customer owes are much harder to operate.
+
 ## What to Take Away
+
+Go back to the shopper who said, “Find this jacket, show me the delivered total, and ask before buying.” The agreed profiles say what the application may ask for. The checkout status says what work remains; only a completed checkout with an order reference says the jacket is bought. After a lost response, reading the existing checkout says whether the order exists. Permission to search never became authority to buy, and a request was never a confirmed purchase.
 
 **Established.**
 
@@ -427,7 +431,9 @@ There is no need to adopt every capability to learn UCP. There is a need to be h
 - What happens when the completion response is lost after the merchant creates an order?
 - Can support retrieve a current, authorized order view without reading the model's conversation history?
 
-For the wider decision about introducing shopping agents, return to [[ai-and-agentic-commerce]]. For the mechanics that make any such integration dependable, continue with [[events-consistency-and-reconciliation]] and [[api-contracts-and-versioning]].
+Before your design review, run the six exercises with test credentials, including the lost completion response, and bring the trace and these questions. For the wider decision about introducing shopping agents, return to [[ai-and-agentic-commerce]]. For the mechanics that make any such integration dependable, see [[events-consistency-and-reconciliation]] and [[api-contracts-and-versioning]].
+
+The Reference part that follows gathers the cards (fill-in templates), terms and sources the chapters introduced one at a time. It starts with [[domain-coverage]], which sends each business capability to its chapter.
 
 ## Sources and Evidence
 

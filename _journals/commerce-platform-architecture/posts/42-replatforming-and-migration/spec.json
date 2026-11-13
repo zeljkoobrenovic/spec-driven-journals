@@ -1,0 +1,1451 @@
+{
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "replatforming-and-migration",
+  "journal": "commerce-platform-architecture",
+  "part": "part-10",
+  "title": "Moving Without Burning the Bridge: Replatforming and Migration",
+  "status": "draft",
+  "revised": "2026-11-13",
+  "basis": "Reconstructed from the published chapter (posts/42-replatforming-and-migration/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (a thesis paragraph, a roadmap and a conclusion paragraph that answers the opening); these are recorded in decision_log.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Which reasons justify a platform change (the core itself limits the business: a vendor ending the product, a forked core, a B2B model no layer can express, a competitor running the platform) and which point to the joins instead (stock wrong across channels, support unable to find an order, an agency's recommendation alone).",
+        "The Burned Bridge from three dated public failures (Target 2011, Finish Line 2012, reverted after 17 days at about $3M, Marks & Spencer 2014, M&S.com down 8.1% for a quarter) and one avoided case (Hobbycraft 2013); the strangler approach with seams by channel, capability and traffic slice; the phases from shadow to decommission; parallel runs against dual writes; the separate data migrations; the five parts of a cutover; and migrating the integrations.",
+        "Kestrel & Pine's 2027 introductions: the PIM loaded in July (1,900 variants with conflicting attributes resolved before publishing), the DE storefront first in August, NL/BE and the connector in September; the OMS shadow in August, a parallel run from 1 to 14 September (differences on about 1.4% of orders in week one), marketplace orders from 15 September, D2C from 13 October, a freeze from 15 November to 5 December around Black Friday, EDI and wholesale from 8 December, the old paths retired in January 2028 and 2026 orders imported as read-only history."
+      ],
+      "believe": [
+        "The documented replatforming failures broke on load, timing and customer habit, not on missing features.",
+        "Every step must stay reversible through one peak, and the reconciliation job is the migration's main deliverable.",
+        "The migration technique does not change with scale; the thing being migrated does."
+      ],
+      "can_do": [
+        "Plan a migration backwards from the first peak the new owner must survive, as a sequence of seams with written go/no-go criteria and a rehearsed rollback.",
+        "Write a separate plan and check for each kind of data and for every integration that reads or writes the fact being moved."
+      ]
+    },
+    "audience": {
+      "who": "Newcomers to commerce architecture; most of all the engineering lead or integration engineer who will plan or run a hub introduction or a replatforming (Noor Visser at Kestrel & Pine). Product managers, operations leads and finance partners who must sign off go/no-go criteria, gift-card balances and the change freeze are the second readers.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side; roughly what an API, a database and a queue are.",
+        "Kestrel & Pine, its people, its 2026 and early 2027 incidents in outline (among them the App That Wrote Stock, the Price Drift and the Deprecated Endpoint) and the names of the sixteen failure patterns.",
+        "From Part I: the thirteen steps of an order, promise and handoff, the three status lines, 'system', 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, the four scale stages (Starting, Growing, Omnichannel, Group), the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation, the Waypoint decisions W1 to W8.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system (OMS), availability service, D2C, B2B, PIM, POS.",
+        "From Parts II and III: product, variant, SKU and GTIN with one owning system per attribute; prices frozen at order placement; gift cards and points as liabilities; available-to-promise; checkout creating the order once; one order record with an OMS once two of four conditions hold.",
+        "From chapter 41 (build-buy-or-assemble): the February 2027 platform review and W4, stay and surround: keep the shop platform, buy the hubs beside it, own the joins."
+      ],
+      "does_not_know": [
+        "Replatforming, the strangler fig, transitional architecture, event interception, divert the flow, legacy mimic, dark launch, canary release, feature parity.",
+        "Shadow copy, parallel run, dual write, cutover, go/no-go criteria, rollback, change freeze, decommissioning.",
+        "Redirects and the 404 and 410 responses; technical search-engine optimization (SEO).",
+        "The public replatforming cases (Target, Finish Line, Marks & Spencer, Hobbycraft) and Zalando's router-fronted rebuild."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a single-weekend migration plan with dual writes, the reader names its failures and replaces it with a seam-by-seam plan, rather than adding more testing to the same plan.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A merchant plans to move to a new order system: create its historical orders in the new system over a weekend, switch every channel to it on the Monday before Black Friday, and have the integration write each new order to both the old path and the new system 'to be safe'. Using only this chapter: what is wrong, and what should the plan be?",
+        "expected": "It is the Burned Bridge: everything moves on one date near a peak, the new system meets real load for the first time in public, and there is no rehearsed way back. Creating historical orders fires their side effects again (confirmations, reservations, fulfillment requests, invoices); history is imported read-only with its original numbers. Writing to both is two writers with no transaction across them, which diverge silently (the App That Wrote Stock); prefer one writer and a copied flow. The plan: a shadow copy, a parallel run whose reconciliation lists differences by cause, the smallest channel first, written go/no-go criteria, a rehearsed and timed rollback, continuity of order numbers, a change freeze around peak, and the old path kept receiving copies and operable through one peak."
+      },
+      {
+        "id": "AC-2",
+        "statement": "The reader can sort the reasons given for a replatforming into those the core causes and those the joins cause.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A team argues for a new platform because stock is wrong across channels, support cannot find orders, the site was slow on Black Friday, the vendor is ending the product, the core has been customized until it cannot be upgraded, and the agency recommends it. Using only this chapter: which are reasons to replatform, and what should be checked first for each?",
+        "expected": "A change is justified only when the core limits the business and no layer beside it can fix that. Wrong stock is an ownership and availability problem (who is the system of record and how the others learn); unfindable orders an order-hub problem an OMS beside the platform can solve; the slow peak a maybe, usually the integrations. A vendor ending the product is a reason, on the vendor's date (Magento 1 ended on 30 June 2020). A forked core is a reason, but the choice is between rebuilding on the current version and leaving. The agency's recommendation is not a reason by itself: check who is paid for the build and who owns the joins after it."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can say why a migration's data is several migrations and why a rollback has a time limit.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Using only this chapter: why is moving a platform's data more than one export, and why is the old system kept operable through one peak but not forever?",
+        "expected": "Each kind of data has its own identifiers, owner and trap: products must keep their SKUs and GTINs; prices can drift silently; customers' password hashes usually cannot move and consent must move with its proof; orders are imported as read-only history because re-creating them fires side effects; gift-card and store-credit balances are liabilities that must sum to the cent; every old URL needs a redirect or an intended removal; and each integration pointing at the old owner needs a cutover task or a legacy mimic. The longer the new system owns a seam, the more records exist only there, so routing back gets more expensive; keeping the old path receiving copies through the first peak keeps the rollback cheap while it matters, after which the window closes on its own."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "That while an order hub is introduced, old and new systems may both send work to the warehouse, risking two parcels or missed orders, so each step needs a clear transfer of responsibility and a recovery; that the plan starts from the fact whose owner changes and every integration that reads or writes it, with small reversible steps; that Kestrel & Pine's February 2027 platform review decided to keep the shop platform (W4, stay and surround, adopted in March) but it introduces a PIM in Q3 and an OMS by Q4 while about 800 storefront orders a day continue; that documented failures were not feature failures, that the strangler approach moves one seam at a time with a reconciliation and the old system kept operable, and that data migration is several migrations. Evidence: dated public failures (Target, Finish Line, Marks & Spencer), Fowler's and Thoughtworks' patterns, Zalando's rebuild and Kestrel & Pine's 2027 timeline."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "When a platform must change, how do you move without a big-bang cutover?",
+    "claim": "Move one seam at a time (a channel, a capability or a slice of traffic), so that each step changes the owner of one fact for one part of the business: copy the flow in shadow, run old and new in parallel with a reconciliation that explains differences by cause, migrate each kind of data on its own plan, cut over with written criteria and a rehearsed rollback, and keep the old owner operable through the first peak after cutover.",
+    "disputed_by": "The view that a migration is a project with one go-live date: build the new system to feature parity, move all the data over a weekend and switch everything at once, because running two systems side by side doubles the cost and a clean cut avoids confusion.",
+    "so_what": "A merchant that accepts the claim plans every move backwards from the first peak the new owner must survive, and applies it when it introduces a hub such as a PIM or an OMS beside a running platform, not only when it replatforms. Kestrel & Pine's PIM found 1,900 variants with conflicting attributes at its July 2027 load and fixed them before publishing; the OMS parallel run from 1 to 14 September found differences on about 1.4% of orders in its first week, mostly status mapping and timing, plus one order the old path had fulfilled twice; marketplace orders moved on 15 September, D2C on 13 October, EDI and wholesale on 8 December, around a freeze from 15 November to 5 December. Target (2011), Finish Line (2012, reverted after 17 days) and Marks & Spencer (2014, online sales down 8.1% for a quarter) each moved on one date and broke on load, performance, timing or customer habit rather than on missing features, with no rehearsed way back.",
+    "how_why": "During a migration two systems hold the same fact and only one may be right. A seam limits that to one fact for one channel, so a parallel run can compare results before anything is acted on, while dual writes create two writers with no transaction across them. Each kind of data has its own identifiers and legal constraints (product identifiers feed every integration, customer consent must move with its proof, gift-card balances are liabilities), and re-created orders fire their side effects again. The longer the new system owns a seam, the more records exist only there, so a rollback is cheap only while the old path still receives the copies.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "A platform change is justified only when the core itself limits the business and no layer beside it can fix that; problems in the joins (wrong stock across channels, orders support cannot find, an agency's recommendation) call for owners and hubs, not a new platform."
+      },
+      {
+        "id": "S2",
+        "claim": "The documented replatforming failures (Target 2011, Finish Line 2012, Marks & Spencer 2014) moved on one date into or near a peak and broke on load, performance, timing or customer habit rather than on missing features; the one recovery depended on the old platform having been kept operable. This is the Burned Bridge."
+      },
+      {
+        "id": "S3",
+        "claim": "The strangler approach moves one seam (a channel, a capability or a slice of traffic) at a time, through phases from shadow to decommission in which one system owns each fact; a parallel run compares results before they are acted on, while dual writes create two writers that diverge silently."
+      },
+      {
+        "id": "S4",
+        "claim": "A platform's data is several migrations, not one export: products, prices, customers, orders, gift cards and credit, URLs and every integration each have their own identifiers, trap and check, and order history is imported as history, never re-created."
+      },
+      {
+        "id": "S5",
+        "claim": "Each cutover needs a window and a freeze, written go/no-go criteria, a rehearsed rollback, continuity of identifiers and a watch; because records accumulate in the new system, a rollback is cheap only while the old path still receives copies, so the old owner is kept operable through one peak."
+      },
+      {
+        "id": "S6",
+        "claim": "The migration technique does not change with scale; what changes is the thing being migrated (a shop, the owner of a fact, a brand) and the number of seams and integrations each move drags along."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Shows how a merchant moves a platform or a fact's owner without a single cutover date, using Kestrel & Pine's 2027 PIM and OMS introductions as the worked example.",
+    "supports": [
+      "P10-2"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "assertion_evidence_reasoning",
+        "applies_to": "failures: three dated cases and one avoided case, then the pattern they share (The Burned Bridge)"
+      },
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "strangler to cutover: the seam first, then what holds during each phase, then the data each seam carries, then the integrations re-pointed at the new owner, then the cutover that ends a phase"
+      },
+      {
+        "pattern": "chronological",
+        "applies_to": "practice: the PIM from its July load to September, then the OMS from shadow to decommission"
+      }
+    ],
+    "rationale": "'Reasons to Replatform' comes first because it is the question every migration plan presupposes: whether the platform itself should change. 'Three Documented Failures' then shows the danger in how a move is made and names the Burned Bridge, which every later section is built to avoid. 'Setting the Scene' follows with Kestrel & Pine, which answered the first question by keeping its platform and still has two hubs to introduce, and Noor's three rules, each an answer to the Burned Bridge the reader has just met. 'The Strangler Approach' gives the published method the rules apply; 'How the Pieces Fit' names the five phases and separates the parallel run from dual writes; the data migrations need the phases, because each check is stated per phase; 'Migrating the Integrations' expands the data table's last row and sits beside it; 'Cutover and Rollback' comes once everything that moves has been planned, and its rollback limit needs the cutover. The worked example ('In Practice') follows the method directly, so every phase it names is fresh; 'Across Scale Stages' then generalizes from Kestrel & Pine's Omnichannel case to the other stages; 'When It Goes Wrong' comes last because each failure is read against the rule that prevents it. Putting the scene before the failures (the round-3 order) gave Noor's rules before the evidence that motivates them, as both round-3 readers reported; putting the scene before the reasons (the round-1 order) made the reasons read as a step back behind a plan already made, as readers in two rounds reported; moving the documented failures after the method would leave the strangler approach answering a danger the reader has not yet seen; moving the worked example before the method would use phase names, reconciliations and rollbacks before they are defined; putting the stage table between the method and the example separated the two, as both round-1 readers reported; putting the integrations after the cutover split them from the data table's row about them."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "During a move to a new order system, both the old and the new system may be able to send work to the warehouse: let both send the same order and two parcels leave; stop the old one too early and orders are missed."
+    },
+    "bridge": {
+      "from_reader_world": "Anyone who has changed a tool at work while the work continued knows the awkward period when the old and the new are both partly in use.",
+      "to_topic": "In commerce that period decides who is allowed to act on an order or a product while the shop keeps trading, so a migration is planned as a series of transfers of responsibility, each with a way to recover."
+    },
+    "thesis_statement": {
+      "text": "Move one seam at a time (a channel, a capability or a slice of traffic), so that each step changes the owner of one fact for one part of the business: copy the flow in shadow, run old and new in parallel with a reconciliation that explains differences by cause, migrate each kind of data on its own plan, cut over with written criteria and a rehearsed rollback, and keep the old owner operable through the first peak after cutover.",
+      "placement": "KEY POINTS callout and paragraph p05"
+    },
+    "roadmap": {
+      "placement": "Paragraph p06",
+      "promises": [
+        {
+          "promise": "Sort the reasons given for a new platform into those the core causes and those the joins cause.",
+          "kept_in": [
+            "reasons"
+          ]
+        },
+        {
+          "promise": "Show three documented failures and one avoided case, and name the pattern they share.",
+          "kept_in": [
+            "failures"
+          ]
+        },
+        {
+          "promise": "Start from the plan Noor Visser writes for the PIM and the OMS.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Explain the strangler approach, what holds in each phase, the separate data migrations, the integrations, and cutover and rollback.",
+          "kept_in": [
+            "strangler",
+            "pieces",
+            "data",
+            "integrations",
+            "cutover"
+          ]
+        },
+        {
+          "promise": "Follow Kestrel & Pine's 2027 timeline, say how the method changes with scale, and end with what goes wrong.",
+          "kept_in": [
+            "practice",
+            "stages",
+            "wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "During a move to a new order system both systems may be able to send work to the warehouse, so two parcels can leave or orders can be missed; a migration changes who is allowed to act while the shop keeps trading, and each step needs a clear transfer of responsibility and a way to recover.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Old and new order systems both able to send the same order to the warehouse; the old one stopped too early.",
+            "shows": "The chapter's problem in one case: during a migration, who may act is the risk."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "A migration plan therefore starts from one question, which system may act on a given fact (here, which system may send an order to the warehouse) and which integrations read or write it, and decides how the new system is populated, compared, allowed to act and recovered; smaller, reversible steps expose those questions before the whole business depends on the new path.",
+        "function": "explanation",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The risk of two systems acting on the same order.",
+          "introduces": "The questions a plan answers for the fact whose owner changes.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Kestrel & Pine keeps the shop platform after its February 2027 review (W4, stay and surround, adopted in March) and still introduces a PIM in Q3 and an OMS by Q4 while about 800 storefront orders a day keep arriving; in the order's journey, a jacket order is copied to the OMS for comparison before the OMS may send warehouse work, and product data is prepared in the PIM before publication switches.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "fact",
+            "what": "W4 decided in March 2027 after the February review; PIM in Q3 2027, OMS by Q4 2027; about 800 online orders a day.",
+            "shows": "Staying on a platform still means migrations, at a volume where a stop is costly.",
+            "source": "Kestrel & Pine scenario ledger"
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The questions a migration plan answers.",
+          "introduces": "The merchant whose two migrations the chapter follows.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "The chapter's answer is to move one seam at a time, so each step changes the owner of one fact for one part of the business: copy the flow in shadow, run old and new in parallel with a reconciliation that explains differences by cause, migrate each kind of data on its own plan, cut over with written criteria and a rehearsed rollback, and keep the old owner operable through the first peak.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The two migrations and where they touch the order's journey.",
+          "introduces": "The claim about how to reach that: one seam at a time.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p06",
+        "controlling_idea": "The chapter first sorts the reasons given for a new platform, then shows three documented failures and Noor Visser's plan for avoiding them, explains the strangler approach, the phases, the data migrations, the integrations and cutover and rollback, follows Kestrel & Pine's 2027 timeline, says how the method changes with scale and ends with what goes wrong; its evidence is dated public reports, published patterns, Zalando's engineering posts and Kestrel & Pine's timeline.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The chapter's claim.",
+          "introduces": "The order in which the chapter argues it, and the evidence.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "reasons",
+      "heading": "Reasons to Replatform, and Reasons That Are Not",
+      "controlling_idea": "A platform change is justified when the core itself limits the business and no layer beside it can fix that, not when the problems live in the joins.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Settles whether a move of the core is needed before the chapter explains how to move anything."
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "Before any migration plan comes the question whether a change of platform is justified at all, which Kestrel & Pine settled in February: it is justified when the core itself limits the business and no layer beside it can fix that, and not when the problems live in the joins, where most Omnichannel-stage problems live.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eight reasons given for replatforming, each marked as a reason or not, with what to check first: stock wrong, support cannot find an order, a slow Black Friday, the vendor ending the product (Magento 1, 30 June 2020), a forked core, a B2B model, a competitor running the platform, the agency's recommendation.",
+              "shows": "The reader can sort a pitch's reasons into core and joins and knows the first check for each.",
+              "source": "Help Net Security (2020); chapters 10, 13, 31, 33, 21, 44"
+            }
+          ]
+        }
+      ],
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The chapter's claim and roadmap, which start from the reasons for a new platform.",
+        "introduces": "The question that comes before any migration plan.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      }
+    },
+    {
+      "id": "failures",
+      "heading": "Three Documented Failures, and What They Share",
+      "controlling_idea": "Target, Finish Line and Marks & Spencer each moved on one date and broke on load, performance, timing or habit rather than features; Finish Line recovered because its old platform was kept operable, and Hobbycraft avoided the risk by not launching into a peak: together they define the Burned Bridge.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Grounds the danger the method avoids in dated, sourced cases and names the pattern."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The limits of the evidence first, so the reader weighs the cases correctly; then the cases in date order, the avoided case, the comparison table and the pattern they share, so the definition of the Burned Bridge rests on all four."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The reasons that do justify a change of platform.",
+        "introduces": "The danger in how a move is made, whether of a platform or of a fact to a new hub.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "controlling_idea": "When a change of platform is justified, or a hub is introduced beside the platform, the danger is in how the move is made; the public record is thin because merchants do not publish post-mortems, three cases are documented well enough to use, and because all are older than a decade the lesson is in their shape, not their software.",
+          "function": "context"
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Amazon had run Target.com since 2001, and on 7 August 2009 Target announced it would build and manage its own online platform, to launch before the 2011 holiday season.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"build and manage its own online platform\"; \"e-commerce technology platform, fulfillment and guest services operations\".",
+              "shows": "The decision and its timing, dated and sourced.",
+              "source": "InternetNews, 2009-08-07"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Three documented cases.",
+            "introduces": "The first: Target's decision.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "The new site launched in August 2011; weeks later, on 13 September, the Missoni for Target launch crashed it for most of the day, and a second outage of about two and a half hours followed on 25 October.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Target's banner \"we are suddenly extremely popular\"; the outages of 13 September and 25 October 2011.",
+              "shows": "The new platform's first real peak was its first real test.",
+              "source": "MPR News (AP), 2011-09-13 and 2011-10-25"
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The 2009 decision.",
+            "introduces": "The 2011 launch and outages.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Because the press disagreed on the cause and Target never confirmed it, the verified chain is the decision, the launch and the two outages, and its shape is the First Snowfall on a new platform.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The two outages.",
+            "introduces": "What can and cannot be concluded from them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Finish Line switched site technology on 19 November 2012 and reverted seventeen days later to the former platform it had kept operable, at a cost of about $3 million in quarterly sales; it is the one recovery, and the reason is that clause.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"which it had kept operable\"; about $3 million \"despite a 25% increase in online sales for the quarter\".",
+              "shows": "A kept-operable old platform is what made the way back possible.",
+              "source": "Retail Dive, 2013-01-08"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "A new platform failing at its first peak.",
+            "introduces": "A second case, with a way back.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Marks & Spencer's 2014 relaunch crashed nothing, yet M&S.com sales fell 8.1% in the quarter because customers re-registered, search engines re-learned the site and habit broke: a migration can succeed technically and still cost a quarter.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "M&S.com sales down 8.1% in the quarter (trading statement of 8 July 2014); \"settle in\" over four to six months; Retail Week's \"timely reminder\".",
+              "shows": "The cost of a migration can be customer habit and search visibility, not a crash.",
+              "source": "CNBC (Reuters), 2014-07-08; Retail Week, 2014-07-10"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Two cases that broke on load or performance.",
+            "introduces": "A case where nothing crashed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Hobbycraft delayed its relaunch past Christmas 2012 because launching in peak trading was too risky, a sourced example of the simplest rule: never cut over into a peak.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"too risky to launch the website in peak trading\".",
+              "shows": "The avoided case: moving the launch off the peak.",
+              "source": "Retail Week, 2013-02-19"
+            },
+            {
+              "kind": "table",
+              "what": "The four cases with date, what failed, cost and whether there was a way back.",
+              "shows": "Side by side, the failures broke on capacity, performance and habit, and only the kept-operable platform gave a way back."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Three cases that moved on one date.",
+            "introduces": "The case that did not.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "The cases share the Burned Bridge: everything moves on one date, into or near a peak, with the new system meeting real load in public and no rehearsed way back; Finish Line is the Burned Bridge without the burning, and the rest of the chapter generalizes its \"kept operable\", starting with Kestrel & Pine's plan.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: a collapsed new bridge with the old one burning, against an old bridge kept standing beside the new one.",
+              "shows": "Keeping the old bridge until the new one has carried real load is what leaves a way back."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The four cases and the table.",
+            "introduces": "The pattern they share.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "scene",
+      "heading": "Setting the Scene: Two Hubs Beside a Running Shop",
+      "controlling_idea": "Having kept its platform, Kestrel & Pine still has two hubs to introduce; a first stock comparison and two migration plans that name dates but not failure behavior lead Noor Visser to three rules: every step reversible for one peak, old and new side by side with a job that proves they agree, and the smallest channel first.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S5"
+        ],
+        "how": "Gives the case the chapter answers and states the seam-by-seam rules the rest of the chapter justifies."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The warning from the stock comparison first, then the plans that ignore it, then Noor's rules that answer both; the rules only make sense after the reader has seen what they guard against."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The Burned Bridge and the first question, which Kestrel & Pine answered in February by keeping its platform.",
+        "introduces": "Noor's plan for the two hubs it still has to introduce, whose rules answer the Burned Bridge.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p07",
+          "controlling_idea": "Kestrel & Pine answered the first question by keeping the platform, and Noor Visser's plan for its two hubs starts from two warnings; the first is the May 2027 stock comparison, which finds differences on 2.3% of active variants, many caused by three apps that wrote stock, and since both hubs will be loaded from such records, loading a new hub from them also loads their disagreements.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "2.3% of active variants differ in the May 2027 stock reconciliation, most from the three apps that wrote stock.",
+              "shows": "Existing records disagree, so a hub loaded from them inherits the disagreement.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The second warning is the migration plans of Kestrel & Pine's two outside partners, the storefront and apps agency and the ERP implementation partner: both name dates, not failure behavior, and neither says how an order sent twice or not sent at all would be detected.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The agency: historical orders loaded over a weekend, order export redirected Monday, warehouse feed switched Tuesday; the ERP partner: export the catalog, import it into the PIM, redirect the storefronts.",
+              "shows": "Plans built around dates leave the failure cases unplanned."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The warning that existing records disagree.",
+            "introduces": "A second warning: the plans on the table ignore failure.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Noor's plan, which the chapter follows, has three rules (every step reversible for at least one peak, old and new side by side with a job that proves they agree, the smallest channel first), each an answer to the Burned Bridge, so the marketplace orders move first, the D2C storefronts next, EDI and manual wholesale last in December, and Black Friday falls inside a change freeze, a period in which no system or integration is changed.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Marketplace 43,000 orders a year (about 120 a day); D2C 293,000 a year; stores deferred to the 2028 POS evaluation.",
+              "shows": "Why the marketplace is the smallest and therefore first seam.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Plans that name dates and not failure behavior.",
+            "introduces": "Noor's three rules and the order of the seams.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "strangler",
+      "heading": "The Strangler Approach for Commerce",
+      "controlling_idea": "The strangler approach replaces a system one seam at a time behind a router or a copied flow, using temporary transitional architecture and resisting feature parity; in commerce the seams are channels, capabilities and traffic slices, and Zalando's rebuild shows it in production.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Gives the method that replaces the single cutover date."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The approach, then its named moves, then the warning it answers (feature parity), then the commerce seams, then a public example that uses all three kinds of seam."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Noor's three rules.",
+        "introduces": "The published method they apply: the strangler approach.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "controlling_idea": "Noor's rules apply a published method: the strangler approach replaces a system one piece at a time behind a routing layer, checking each transfer and retiring the old system when nothing depends on it, so the merchant keeps trading; Martin Fowler described it in 2004 and restated it in 2024, warning that wholesale replacement plans tend to fail.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Fowler's warning that wholesale replacement plans tend to \"go down in flames\".",
+              "shows": "The gradual approach is the established alternative to the big bang.",
+              "source": "Fowler, Strangler Fig Application, 2024-08-22"
+            }
+          ]
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Thoughtworks' Patterns of Legacy Displacement names the moves: transitional architecture, event interception, divert the flow, legacy mimic, dark launching and canary release.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Cartwright, Horn and Lewis, Patterns of Legacy Displacement (2021, revised 2024).",
+              "shows": "Each move has a published name and definition the reader can look up.",
+              "source": "martinfowler.com"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The strangler approach.",
+            "introduces": "Its named moves.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "The same authors warn that the alternatives to seams often end in feature parity and big-bang releases; rebuilding everything before switching postpones every risk to one date, which is how the Burned Bridge of the previous section comes about.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Defining \"as is\" functionality \"was a huge effort\"; alternatives \"all too often result in Feature Parity and Big Bang releases\".",
+              "shows": "Feature parity is the plan that leads to the single cutover date.",
+              "source": "Patterns of Legacy Displacement"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The moves of seam-based displacement.",
+            "introduces": "The alternative they warn against: feature parity.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "form": "list",
+          "controlling_idea": "In commerce there are three kinds of seam: by channel (each with its own entry point and volume, so the smallest can go first), by capability (the stay-and-surround program), and by traffic slice (the canary, which needs a router in front of the storefront).",
+          "function": "definition",
+          "organization": "classification",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Seam-based decomposition.",
+            "introduces": "The seams commerce offers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Zalando's 2015–2016 rebuild of its Fashion Store behind the Skipper router, fragment by fragment, is the public example of the strangler in commerce: in production at a large retailer.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Zalando Engineering posts of 16 October 2015 and 5 October 2016: a Go-based router, Skipper, in front of the shop; header and footer first, then product pages and wish lists.",
+              "shows": "The strangler in production at a large retailer.",
+              "source": "Zalando Engineering"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: a router or copied flow sends one seam at a time to the new owner; a reconciliation proves agreement; disagreement routes back.",
+              "shows": "The shape of the strangler applied to commerce."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The three kinds of seam.",
+            "introduces": "A public example of all three.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pieces",
+      "heading": "How the Pieces Fit During a Migration",
+      "controlling_idea": "During a migration two systems hold the same fact and only one may be right, so each phase from shadow to decommission names the owner and the check, and a parallel run (both compute, one is used) is safe where dual writes (one actor writes to both) are not.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "States what holds while a seam moves and separates the safe comparison from the dangerous double writer."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Moving one seam at a time.",
+        "introduces": "What holds while a seam is moving.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p24",
+          "controlling_idea": "A migration is a period in which two systems hold the same fact and only one is allowed to be right, so each of five phases (shadow, parallel run, divert one seam, divert all, decommission) says who owns the fact, how fresh it must be, how agreement is checked and what must stay available.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five phases (shadow, parallel run, divert one seam, divert all, decommission) with owner, freshness, consistency check, latency and availability; two values marked as assumptions.",
+              "shows": "The requirements change by phase and the old path stays available until the peak has passed."
+            }
+          ]
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Of the two mechanisms that carry these phases, a parallel run has both systems process the same input while only one result is acted on; it is the safest way to learn whether they agree, but its reconciliation must say which records differ and why.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The parallel-run phase in the table.",
+            "introduces": "The two mechanisms, starting with the parallel run.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Dual writes, one actor writing the same change to both systems, sound like a parallel run but are the opposite in risk: two writers with no transaction across them diverge silently, as the App That Wrote Stock showed, so prefer one writer and a copied flow, and make unavoidable dual writes idempotent and reconciled.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The App That Wrote Stock (March 2026): a pre-order app and the WMS feed both wrote stock in the platform; two weeks of phantom reservations on 600 variants.",
+              "shows": "Two writers diverge and nobody is told.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The parallel run, where only one result is used.",
+            "introduces": "Dual writes, where both are written.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The phase table first, because both mechanisms are named by the phase they serve; then the parallel run, the safe mechanism; then dual writes, defined against it. Putting dual writes first would describe the danger before the reader has the safe alternative to compare it with."
+      }
+    },
+    {
+      "id": "data",
+      "heading": "Data Migration Is Seven Migrations",
+      "controlling_idea": "A platform's data is seven migrations, not one export: products, prices, customers, orders, gift cards and credit, URLs and the integrations each have their own owner, identifiers, trap and check, and order history is imported as history.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Shows why each kind of data needs its own plan and check."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The table of all seven first, then the two rows that need more than a cell, in the table's own order: the order history that must not be replayed, then the search presence that goes with the URLs."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The phases in which one system owns each fact.",
+        "introduces": "The data the new owner must be loaded with.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p28",
+          "controlling_idea": "A platform's data is not one export: each of seven kinds (products, prices, customers, orders, gift cards and credit, URLs, integrations) has its own owner, identifiers, legal constraints, trap and check, such as identical SKUs and GTINs or gift-card balances that sum to the cent, so each is planned separately.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven rows (products and variants; prices and promotions; customers; orders; gift cards, store credit and points; URLs and search presence; integrations and apps), each with what moves, the trap and the check; Kestrel & Pine's 3,400 products, 26,000 variants, the Price Drift's nine days, the 34 flows and the Deprecated Endpoint.",
+              "shows": "Each kind of data fails differently and is proved by a different check."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: five of the seven migrations as separate handcarts.",
+              "shows": "The data moves as separate loads, each with its own check."
+            }
+          ]
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Creating historical orders in the new system fires every side effect again (293,000 D2C orders would be 293,000 e-mails), so history is imported as history, flagged and read-only with its original numbers, or left in the old system behind a read-only link.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Every created order fires a confirmation, a reservation, a fulfillment request and an invoice; 293,000 D2C orders a year.",
+              "shows": "Re-creating history is not a neutral copy."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The orders row of the table.",
+            "introduces": "Why history must not be re-created.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Search visibility moves with the URLs: localized-page links, product markup and crawl rules move too, and a removed page without a replacement returns 404 or 410 rather than redirecting to the homepage.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The rows that need more than a table cell.",
+            "introduces": "The search signals that move with the URLs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "integrations",
+      "heading": "Migrating the Integrations",
+      "controlling_idea": "The flows around the system in the middle do not know it changed, so an inventory with owners, a legacy mimic with a removal date and deprecation with notice turn re-pointing them into a list of tasks.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S5"
+        ],
+        "how": "Treats every integration that reads or writes the moving fact as part of the migration and of each cutover."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The seventh row of the data table: the integrations.",
+        "introduces": "How the flows around the moving system are re-pointed.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p33",
+          "form": "list",
+          "controlling_idea": "The data table's last row needs its own section: about fourteen of Kestrel & Pine's thirty-four integrations must be re-pointed when the OMS and PIM arrive, and three rules from W5 (an inventory first, a legacy mimic where a flow cannot change in time, deprecation with notice in both directions, as in Zalando's announced retirement of Connected Retail) make that a list of tasks rather than a season of incidents.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "About 14 of the 34 integrations re-pointed (illustrative); the Deprecated Endpoint of February 2027.",
+              "shows": "The scale of the re-pointing and the failure the rules prevent.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "fact",
+              "what": "FashionUnited, 23 April 2026: Zalando's Connected Retail technology discontinued by 30 June 2027.",
+              "shows": "A retirement announced with fourteen months' notice, the deprecation rule seen from the other side.",
+              "source": "FashionUnited"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cutover",
+      "heading": "Cutover and Rollback",
+      "controlling_idea": "Each small cutover needs a window and a freeze, written go/no-go criteria, a rehearsed rollback, continuity of identifiers and a watch, and the rollback has a time limit because records accumulate in the new system.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Says how one seam changes owner safely and why the old owner is kept operable through one peak and not forever."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The data loaded and the integrations listed.",
+        "introduces": "The moment a seam's traffic moves to the new owner.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p31",
+          "form": "list",
+          "controlling_idea": "A cutover routes a seam's traffic to the new owner, and even small ones need five things: a window and a freeze, written go/no-go criteria, a timed and rehearsed rollback, continuity of identifiers, and a watch through the first hours and the first peak.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: one seam's cutover at Kestrel & Pine: marketplace orders copied to the OMS in shadow, reconciled against the WMS for two weeks, then routed through the OMS; a difference routes the seam back.",
+              "shows": "The five parts in one concrete cutover."
+            }
+          ]
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The longer the new system owns a seam, the more records exist only there, so a rollback gets more expensive; the parallel run narrows the gap but does not close it, which is why the old system stays operable through one peak and not forever.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The rehearsed rollback.",
+            "introduces": "Its limit in time.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The five parts of a cutover first, including the rehearsed rollback; then the rollback's time limit, which follows from records accumulating in the new system and explains why the old system is kept through one peak and not forever."
+      }
+    },
+    {
+      "id": "practice",
+      "heading": "In Practice: The OMS and PIM Introductions at Kestrel & Pine",
+      "controlling_idea": "Kestrel & Pine introduces the PIM consumer by consumer from July to September 2027 and the OMS seam by seam from August 2027 to January 2028 around a Black Friday freeze, and the parallel run finds an existing defect before the new owner takes over.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Shows every part of the method applied with dates, figures and recovery steps."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The PIM first because it starts first (July); then the OMS phases in date order; then what the parallel run found and how the history was imported, which close the OMS story."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The method from seams to cutover and rollback.",
+        "introduces": "Kestrel & Pine's two 2027 migrations, which use every step.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p35",
+          "controlling_idea": "The figures that follow are illustrations, and the dates follow Waypoint's timeline (W3: a PIM in Q3 2027; W2: an OMS as the order hub by Q4 2027).",
+          "function": "context"
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "The PIM's first load in July 2027 combines four copies of product data and exposes 1,900 variants with conflicting attributes, the same kind of disagreement as May's stock comparison, which Teun Baas's team resolves before publication, keeping every SKU and GTIN.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "1,900 variants with conflicting attributes (illustrative); platform, ERP, spreadsheet and marketplace data.",
+              "shows": "A hub loaded from existing records inherits their disagreements unless someone resolves them first.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Waypoint's timeline.",
+            "introduces": "The first migration: the PIM load.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "The German storefront becomes the PIM's first consumer in August, with a fallback copy in the platform and a nightly comparison; the Dutch and Belgian storefronts and the marketplace listings follow in September, and the spreadsheets become read-only.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The July load.",
+            "introduces": "The consumers in August and September.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "At each PIM step recovery means stopping publication and keeping the platform's last copy, so a catalog correction never needs a weekend switch for every channel.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Consumers moved one at a time with a fallback copy.",
+            "introduces": "What recovery means at each step.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The OMS table follows the phase table in 'How the Pieces Fit': shadow, the parallel run, one row per diverted seam (marketplace, D2C and wholesale, smallest first) with the change freeze between them, then decommissioning in January 2028, and its last column says how each step could be reversed: shadow in August, a parallel run from 1 to 14 September, marketplace orders from 15 September, D2C from 13 October, a freeze from 15 November to 5 December in which the old path still receives copies through Black Friday, wholesale from 8 December.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven rows: phase, dates, what happened and what reverses it; order numbers continue the platform's sequence; the freeze over Black Friday (26 November 2027).",
+              "shows": "The OMS follows the phase table seam by seam, smallest first, with a way back at each step.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The PIM's consumer-by-consumer move.",
+            "introduces": "The OMS's seam-by-seam move.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "In its first week the parallel run found differences on about 1.4% of orders, nearly all status mapping and timing, plus one order the connector had delivered twice, which the old path had fulfilled twice and the OMS created once: the migration found an existing defect before it caused a new one.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "About 1.4% of orders differ in week one (illustrative): the WMS's 'packed' with no platform equivalent, orders created just before the nightly comparison, one order delivered twice by the connector.",
+              "shows": "A reconciliation that explains differences by cause finds real defects, not only migration noise.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The parallel-run phase in the table.",
+            "introduces": "What it found.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "The 2026 orders were imported into the OMS as flagged, read-only history with no side effects, while the platform kept its own history for the account pages, so support looked in one place from October.",
+          "function": "example",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The new orders reconciled in the parallel run.",
+            "introduces": "The old orders imported as history.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "2026 orders imported with original numbers, dates and statuses, flagged as imported, no side effects; the platform keeps its own history for account pages (W2).",
+              "shows": "History imported as history, as the data section prescribes.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Across Scale Stages: When It Fits and When It Limits",
+      "controlling_idea": "The migration technique does not change with scale, but the thing being migrated does: a shop, the owner of a fact, a brand.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Shows the method holds at every stage and what grows with scale."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Kestrel & Pine's migrations, those of an Omnichannel merchant moving the owner of a fact.",
+        "introduces": "How the same method applies at the other stages.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p34",
+          "controlling_idea": "Kestrel & Pine's migrations are an Omnichannel merchant's; across all four stages the technique does not change but the thing being migrated does: a Starting merchant moves a shop, an Omnichannel merchant moves ownership of a fact, a Group moves brands, and what grows is the number of seams and the integrations each drags along.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four stages with what a migration usually is, what becomes necessary and the warning signs.",
+              "shows": "The same techniques apply at each stage to different objects."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "Eight failures recur across a seam's move (duplicates, the gap, stale copies, the rollback that cannot roll back, a vendor outage, the redirect map with holes, unbalanced gift cards, the forgotten integration), and each has a detection and a recovery.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Shows each failure is caught by a reconciliation, inventory or watch and recovered without a big bang."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Kestrel & Pine's migrations that went to plan, and the method at every stage.",
+        "introduces": "The failures that recur when a migration does not go to plan, with detection and recovery.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "form": "list",
+          "controlling_idea": "Eight failures recur, each with its detection and recovery: duplicates across the seam, the gap, stale copies downstream, the rollback that cannot roll back, the vendor outage mid-cutover, the redirect map with holes, gift cards that do not balance, and the agency script still pointing at the old endpoint.",
+          "function": "evidence",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Eight failures, each with Detect and Recover: duplicates, the gap, stale copies, the rollback that cannot roll back, the vendor outage, redirect holes (the M&S quarter), unbalanced gift cards, the agency script (the Deprecated Endpoint in reverse).",
+              "shows": "Each failure is caught by a reconciliation, inventory, crawl or watch and recovered one seam at a time."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "Every part of the method answers one question for each fact: which system may act on it now. Kestrel & Pine never let two systems send the same order to the warehouse: in shadow and in the parallel run only the old path sent work, from each seam's date only the OMS did, and the old path kept receiving copies so it could take a seam back through Black Friday. The documented failures skipped those steps; they did not lack features.",
+    "so_what": "A migration is planned backwards from the first peak the new owner must survive, as a sequence of seams with a reconciliation that explains differences, written criteria and a rehearsed rollback, and the same plan applies to introducing a hub beside a running platform, not only to replatforming.",
+    "callback": {
+      "to": "The introduction's old and new order systems that could both send work to the warehouse: two parcels, or missed orders.",
+      "how": "Paragraph p43 says how Kestrel & Pine kept one sender per seam and notes that the parallel run found an order the old path had already sent twice."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Plan the next migration backwards from the first peak, and ask the ten questions: the smallest seam, the rehearsed way back, the role of the old system, the reconciliation, any second writer, how orders are imported, the gift-card sums, the redirect map, the integrations that touch the moving fact, and the freeze around the next peak."
+    },
+    "hand_off": {
+      "to": "commerce-scaling-stages",
+      "relationship": "elaboration",
+      "carries_over": "The migrations of this chapter, named as the moments a merchant moves from one scale stage to the next and feels it.",
+      "introduces": "The stages themselves: which decisions change at each, the signals that a stage is ending, and Kestrel & Pine's own path from a web shop to an omnichannel brand."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The failures and their recoveries.",
+      "introduces": "What the chapter establishes.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p43",
+        "controlling_idea": "The opening's risk of two parcels or missed orders is answered by giving each seam one system that may act: at Kestrel & Pine only the old path sent work in shadow and the parallel run and only the OMS from each seam's date, and the parallel run even found an order the old path had sent twice; the documented failures skipped these steps rather than lacking features.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The hook's two senders; the OMS phases; the order fulfilled twice; the failures of Target, Finish Line and Marks & Spencer.",
+            "shows": "The method is one rule, one sender per fact per seam, applied step by step."
+          }
+        ]
+      },
+      {
+        "id": "p44",
+        "form": "list",
+        "controlling_idea": "Established: the documented failures broke on capacity, performance, timing and habit and the one recovery needed a kept-operable platform; the strangler fig and the patterns of legacy displacement are the alternative to the big bang; history is imported as history, balances must match to the cent, and identifiers do not change.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "The points that are established.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p45",
+        "form": "list",
+        "controlling_idea": "Depends on context: whether a parallel run is worth its cost, how long the old system stays operable, which seam moves first, and which risk dominates at the Starting and Group stages.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established.",
+          "introduces": "What depends on the merchant's situation.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p46",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: plan every migration backwards from the first peak the new owner must survive, move no seam until the previous one is reconciled and its route back rehearsed, and treat the reconciliation job as the main deliverable because it stays in production and makes the next migration cheaper.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established and what depends on context.",
+          "introduces": "The author's own judgement, labelled as such.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p47",
+        "form": "list",
+        "controlling_idea": "Ten questions let the reader test a migration plan: the smallest seam, the way back, the old system's role, the reconciliation, second writers, order import, gift-card sums, the redirect map, the integrations touching the moving fact, and the next peak and its freeze.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions that apply them to the reader's own plan.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p48",
+        "controlling_idea": "Migrations are the moments a merchant moves from one scale stage to the next and feels it; the next chapter steps back to the stages themselves, the decisions that change at each, the signals that one is ending and Kestrel & Pine's own path.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The migrations of this chapter.",
+          "introduces": "The scale stages they move a merchant between.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Whether to replatform at all, the three-year cost of the options and exit cost.",
+      "covered_in": [
+        "build-buy-or-assemble"
+      ]
+    },
+    {
+      "topic": "The OMS's and PIM's own design (state models, availability computation, product model).",
+      "covered_in": [
+        "order-management",
+        "inventory-and-availability",
+        "product-information"
+      ]
+    },
+    {
+      "topic": "Reconciliation and idempotency mechanics in depth; API deprecation practice.",
+      "covered_in": [
+        "events-consistency-and-reconciliation",
+        "integration-styles",
+        "api-contracts-and-versioning"
+      ]
+    },
+    {
+      "topic": "Peak planning and load testing for the migrated system.",
+      "covered_in": [
+        "peak-load-and-reliability",
+        "journey-peak-day"
+      ]
+    },
+    {
+      "topic": "The architectural histories of Amazon and Zalando beyond the migration shape.",
+      "covered_in": [
+        "case-amazon",
+        "case-zalando"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Needs the author (rule 12): consistency ruling 4 says 'PIM live 15 September 2027', while the replatforming-and-migration ledger line, which ruling 4 itself names as canonical, has the PIM loaded in July, the DE storefront its first consumer in August and NL/BE and the connector in September. The chapter states the PIM's dates only as the ledger line does. The fact needed: whether ruling 4's '15 September' means the last PIM consumer (NL/BE and the connector) going live, in which case the ruling could be reworded to match the ledger line."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming round 3 (escalate: 17 passed, 19 failed; 8 major, all corroborated by both flow readers, one at fault in the spec; 11 minor), the closing fixes were made without another round: (rule 3, both round-3 readers) 'Three Documented Failures' moves before 'Setting the Scene', so Noor's rules follow the evidence they answer; the roadmap, the failures opener ('or a hub is introduced beside the platform', which also answers one reader's point that the failures were about whole platforms), the Burned Bridge paragraph's last sentence, the scene's and the strangler section's openers and the flow rationale rewritten for it; the OMS table's lead-in now describes the table's rows and says reversal applies 'where there was anything to reverse' instead of 'every step had a way back'; the intro dates the decision to the February review with W4 adopted in March (ledger: February 2027 platform review; Waypoint launched March 2027), so the chapter no longer dates it both ways; the intro's 'fact whose owner changes' becomes a concrete question; the integrations table cell loses its chained colons; the deprecation bullet credits the connector's vendor, which announced in November 2026 the version it retired in February 2027 (ledger, api-contracts-and-versioning line); the rollback failure points back to the rollback limit; glosses for cache, data warehouse and the hosted hub vendor (SaaS); the till evaluation is 'which W4 schedules'. 6,500-word limit kept.",
+      "rejected": [
+        "A fourth round (the brief allows one confirming round).",
+        "Glossing the six Thoughtworks terms differently, the Figure 2 caption, the order-history paragraph's October, and the go/no-go item that repeats the rehearsed rollback (single-reader minors; left as they are)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Flow rubric after the round-2 reorder (fresh agent): sound with notes. Not taken: glossing W4 and 'Omnichannel-stage' and the First Snowfall and the App That Wrote Stock (the reader knows them from earlier chapters, audience.already_knows); having 'When It Goes Wrong' name the rule per failure (a rewrite of the author's list, not a cheap fix)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after round 2 (escalate: 16 passed, 23 failed, 13 major; two spec faults), (rule 3, the same move asked by both readers in round 1 and round 2) 'Reasons to Replatform' moves to the first section, before 'Setting the Scene', whose opener now says Kestrel & Pine answered the question in February and still has two hubs to introduce; the failures section opens from Noor's rules; (rule 3, both round-2 readers) the separate 'Where we are in the order's journey' paragraph (p04) is merged into p03 and loses its repetition of the opening; roadmap, flow rationale and the transitions these moves invalidated rewritten. Draft fixes from round 2: Noor's plan in the present tense; 'change freeze' glossed at first use; the 2.3% comparison picked up in the PIM load; Amazon named as a competing retailer in the Target row and paragraph (rule 2: a gloss of what kind of company, from the cited InternetNews report); 'the Deprecated Endpoint in reverse' explained in the data table and the failure list; the agency-script sentence split; 'parallel run' no longer used for the divert phase; Zalando called the public example of the strangler rather than of 'all three' seams; the OMS table's seven rows tied to the five phases; '800 daily online orders' becomes 'about 800 storefront orders a day' (293,000 D2C orders a year); the Spaghetti Junction named in the integrations section; dark launching tied to the shadow phase; glosses for redirect, monolith, 'the 34 flows', search positions and visits from search engines; Magento 1 'an e-commerce platform product' (rule 11 keeps 'the shop platform' for Kestrel & Pine's product); 'reconciled to zero known causes' becomes 'with every difference explained by a known cause'; the data section opens from the phases. 6,500-word limit kept.",
+      "rejected": [
+        "A third revision round (the brief allows rounds 1–2, then one confirming round).",
+        "Moving the failure list's repeated items (the gap, the rollback, gift cards) back into their sections (one reader, optional)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Flow rubric rerun after the round-1 reorder (fresh agent): sound with notes. Taken: section flows declared for 'How the Pieces Fit' and 'Cutover and Rollback'; the rationale says what breaks if 'Reasons to Replatform' moves. Not taken: folding 'Reasons to Replatform' into the scene (optional; the house section and its table carry AC-2); trimming p43's last clause (it is the callback's link to the failures, kept until readers ask).",
+      "rejected": [
+        "Naming the App That Wrote Stock in the scene: the reader knows it from earlier chapters (audience.already_knows)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round 1 escalated on spec faults (both flow readers, corroborated). Changed under the brief's pre-approval to change order, paragraph ideas and transitions when a blocking failure is at fault in the spec: 'Migrating the Integrations' moves to right after the data migrations (before 'Cutover and Rollback'); 'Across Scale Stages' moves to after 'In Practice'; in the data section the order-history paragraph now precedes the search paragraph, matching the table; the Connected Retail sentence leaves the Zalando paragraph (p23) and becomes the example of deprecation with notice in the integrations list (p33), keeping the author's fact and its cited source. Roadmap, flow rationale and every transition_in the moves invalidated rewritten. Draft-fault fixes: the scene names its two warnings and the two partners; Reasons opens from W4's February review; Failures opens from 'when a change is justified'; the intro's advice names the fact (which system may send an order to the warehouse); the OMS table is introduced by what it shows and names its phase table; 'first fortnight' becomes 'first week'; the twice-fulfilled order is stated plainly; When It Goes Wrong opens with a contrast sentence. Glosses: technical SEO, the Deprecated Endpoint, punchout, Magento 1, identity map, sitemap; 'router' becomes 'routing layer'; 'Two mechanisms carry' becomes 'are proposed for'.",
+      "rejected": [
+        "Cutting the Connected Retail sentence (an author sentence with a cited source; it fits the deprecation rule).",
+        "Moving 'Reasons to Replatform' before 'Setting the Scene' (one reader's suggestion; the opening sentence tying it to W4 answers both readers' complaint)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Flow rubric (fresh agent, outline only): sound with notes. Taken without review, as the author asked on 2026-11-12: p24 names all five phases so p39's 'phases defined earlier' has a referent; p28 names the gift-card sum-to-the-cent check that the conclusion recalls; p39 carries the old path receiving copies through Black Friday, so p43 only recalls it; p21 points back to the Burned Bridge instead of restating it; the flow rationale names the sections it reasons about and says what breaks if 'Reasons to Replatform' moves. No order change, so the rubric was not rerun.",
+      "rejected": [
+        "Moving 'Across Scale Stages' after 'When It Goes Wrong' (optional note; see open_questions).",
+        "Merging 'Reasons to Replatform' into the scene (see open_questions)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Converted spec.md to spec.json from the published chapter, one spec paragraph per unit. Intent, the five acceptance criteria, thesis and role copied unchanged from journal-spec.json. The old success criteria were inventories (term list, case dates, tables, diagrams, word count) and are dropped as criteria: their outcomes are covered by AC-1 to AC-5, the case dates by the evidence items, and the word limit by length.max_words (6,500, the old limit).",
+      "rejected": [
+        "Keeping the inventory criteria as minor criteria (rule 7 would drop them)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Added the units the contract asks for and the published chapter lacked: p05 (thesis statement), p06 (roadmap announcing every section) and p43 (a conclusion paragraph with synthesis and a callback to the opening's two senders). Merged the one-sentence unit 'Two mechanisms carry these phases, and they are easy to confuse.' into the parallel-run paragraph (p26), since it only announced p26 and p27.",
+      "rejected": [
+        "Leaving the introduction without a thesis paragraph or roadmap (AC-4 needs the sections predicted).",
+        "Treating 'What to Take Away' lists as the synthesis: none of them answers the opening."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Made 'five migrations' agree with the data table's seven rows: the KEY POINTS bullet, the section heading ('Data Migration Is Seven Migrations') and the stage table now say seven and list prices and integrations; Figure 3's caption says it shows five of the seven. The figure itself still draws five carts; redrawing it with seven is a visual-layer task outside this pass.",
+      "rejected": [
+        "Dropping the prices and integrations rows to keep 'five' (they carry the Price Drift and the 34 flows, which AC-3 expects).",
+        "Saying 'several' (vaguer than the table)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Vocabulary and canonical facts: 'its commerce platform' becomes 'the shop platform' (rule 11). The introduction's 'after a March 2027 review' becomes 'decides in March 2027, after its February platform review' (ledger: February 2027 platform review; Waypoint and W4 launched March 2027; chapter 41 says the same). 'The dates fit the ledger's Waypoint timeline' becomes Waypoint's timeline with W2 and W3 glossed, since readers do not know the ledger. W5 is glossed at first use. The OMS freeze row says Black Friday (26 November 2027) instead of 'Black Friday week (26 November 2027)', since the ledger's peak week is 22–28 November. The PIM dates are stated only as the ledger line states them (see open_questions on ruling 4). The agency's and ERP partner's migration plans in 'Setting the Scene' are not the February 2027 pitches of ruling 13a and are kept.",
+      "rejected": [
+        "Writing 'PIM live 15 September 2027' as in ruling 4 (the caller's brief and the ledger line say to keep the ledger's dates)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Open questions of the former spec.md resolved: the OMS and PIM phase dates now agree with the product-information and order-management ledger lines, which cite this chapter's line; Target's relaunch is stated as 'August 2011' without a day, as the cited sources allow (rule 2); the paywalled Retail Week leads stay cited as the page has them (rule 2).",
+      "rejected": [
+        "Adding a day to Target's relaunch from a single uncited outlet."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Opened with three documented failures rather than with method, because the reader needs to believe the Burned Bridge is real before investing in seams and reconciliations; chose only cases with a verifiable chain of events and refused ASOS and Boots, for which the brief found no sourced outcome."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Made the OMS introduction, not a hypothetical replatforming, the worked example, because W4 rules out replatforming and the OMS is the migration Kestrel & Pine actually runs in 2027; the marketplace channel (43,000 orders a year) moves first because it is the smallest."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Treated dual writes as the opposite of a parallel run rather than a variant, and tied the warning to the App That Wrote Stock, so the newcomer does not leave thinking 'write to both' is the safe option."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Kept the 'Across Scale Stages' section although Part X is outside the required range; the judgement that technique is constant while the migrated thing changes is the stage-specific content."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: AC-4's expected answer, copied unchanged from the journal spec, now says the February 2027 platform review decided and W4 was adopted in March, as the introduction says.",
+      "rejected": [
+        "Keeping 'after the March 2027 review', which the page and the ledger no longer support."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md and _research/consistency-issues.md (rulings 4, 10, 13a, 16)",
+      "contributed": "The replatforming-and-migration line (PIM and OMS dates, 1,900 variants, 1.4%, 14 of 34 integrations), Waypoint W2–W5, volumes, the May 2027 stock reconciliation, the App That Wrote Stock, the Price Drift, the Deprecated Endpoint."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (replatforming-and-migration; commerce-scaling-stages transition_in; part-10)",
+      "contributed": "Intent, thesis, role, acceptance criteria and the hand-off to chapter 43."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-commerce-business-models.md (Part 5.2–5.4) and _research/brief-cases-amazon-zalando.md (B1, B4, Part C); PLAN.md contract 42; _research/style-guide.md",
+      "contributed": "Replatforming stories, strangler and legacy displacement, the Data Act, Zalando's fragment-by-fragment rebuild and Connected Retail wind-down."
+    },
+    {
+      "kind": "internal",
+      "ref": "build-buy-or-assemble, order-management, product-information, events-consistency-and-reconciliation, integration-styles, api-contracts-and-versioning, peak-load-and-reliability, meet-kestrel-and-pine",
+      "contributed": "Cross-references and the facts other chapters establish."
+    },
+    {
+      "kind": "external",
+      "ref": "InternetNews (2009-08-07); MPR News/AP (2011-09-13, 2011-10-25)",
+      "contributed": "Target's build decision and outages."
+    },
+    {
+      "kind": "external",
+      "ref": "Retail Dive (2013-01-08)",
+      "contributed": "Finish Line's reversion to a platform 'kept operable'."
+    },
+    {
+      "kind": "external",
+      "ref": "CNBC/Reuters (2014-07-08); Retail Week (2014-07-10, 2013-02-19)",
+      "contributed": "Marks & Spencer's 8.1% fall; Hobbycraft's deferred launch."
+    },
+    {
+      "kind": "external",
+      "ref": "Martin Fowler, Strangler Fig Application (2024, orig. 2004); Cartwright, Horn, Lewis, Patterns of Legacy Displacement (2021, rev. 2024)",
+      "contributed": "The method and its named moves."
+    },
+    {
+      "kind": "external",
+      "ref": "Zalando Engineering (2015-10-16, 2016-10-05); FashionUnited (2026-04-23)",
+      "contributed": "The public commerce example and the channel retired with notice."
+    },
+    {
+      "kind": "external",
+      "ref": "Help Net Security (2020); Shopify Enterprise blog (2026-03-18); Regulation (EU) 2023/2854",
+      "contributed": "Magento 1 end of life; migration costs; exportable data."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "AC-4 expected answer copied from the journal spec (February 2027 review, W4 adopted in March)."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Confirming round 3 (escalate: 17 passed, 19 failed, 8 major). Post-round fixes: failures moved before the scene; OMS table lead-in corrected; February/March dating unified; integrations cell and deprecation bullet clarified; three glosses. The check report is stale against these edits."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Round 2 (escalate: 16 passed, 23 failed). Auto-resolved under the 2026-11-12 instruction: Reasons moved to the first section; 'Where we are' merged into p03; tense, glosses and explanations fixed. Confirming round 3 follows."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Round 1 (escalate: 13 passed, 31 failed). Sections reordered (integrations before cutover; stages after the worked example); data paragraphs follow the table; Connected Retail moved to the integrations list; transitions and glosses added. Round 2 follows."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Converted spec.md to spec.json (outcome-spec pass): thesis paragraph, roadmap and a synthesis paragraph added; the 'Two mechanisms' sentence merged into the parallel-run paragraph; 'five migrations' made seven to match the table; vocabulary and date wording aligned with the ledger. spec.md removed."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator)."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: OMS order-number family aligned with chapter 13."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article."
+    }
+  ],
+  "length": {
+    "max_words": 6500
+  }
+}

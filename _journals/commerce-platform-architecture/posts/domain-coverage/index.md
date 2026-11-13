@@ -9,7 +9,7 @@ icon: "assets/icons/domain-coverage.png"
 logo: "assets/images/domain-coverage/logo.jpeg"
 ---
 
-> **IN THIS SECTION, YOU WILL:** Trace every capability of the three research model families behind this book to the chapter that covers it, see where the book departs from the models, and learn which capabilities it leaves out and why.
+> **IN THIS SECTION, YOU WILL:** Trace every capability of the three research model families behind this book to the chapter that covers it, learn which capabilities it leaves out and why, see where the book departs from the models, and find a reading route for your role.
 
 > **KEY POINTS:**
 >
@@ -18,7 +18,9 @@ logo: "assets/images/domain-coverage/logo.jpeg"
 > * **The models are maps, not evidence.** They are architectural models inferred from public product behavior, with a modeled seed value for every number. Nothing on this page, and nothing in the book, uses them as a source for a fact about Shopify, Amazon or any specialist vendor.
 
 <br>
-Commerce spans more business jobs than one book can cover equally. The tables here show which chapters cover each job and which topics are outside the book's scope. They also record how the coverage differs from the eleven Productscape domain models used in planning: a merchant platform, a retail marketplace and nine specialist products. Use them to find a topic or identify a gap before treating the book as a complete map.
+Use this page to find the chapter that covers a business job, or to learn that the book leaves it out and why: look the job up by what it does, not by a product's name, and follow the link to its chapter. Commerce spans more business jobs than one book can cover equally. The tables here show which chapters cover each job and which topics are outside the book's scope. They also record how the coverage differs from the eleven Productscape domain models used in planning (the author's research maps of commerce products, described in the next section), in three families: a merchant platform, a retail marketplace and nine specialist products. Use them to find a topic or identify a gap before treating the book as a complete map.
+
+This page opens the book's four reference pages, which gather for lookup what the chapters introduce where they need it. Domain coverage, this page, sends a capability to the chapter that covers it. The [[toolkit]] answers sixteen recurring questions with a card that names an owner, a system of record and a date, each filled once with Kestrel & Pine's facts. The [[glossary]] gives each term one plain meaning and the chapter that owns it. The [[bibliography]] lists every cited source once, with its date and the pages that cite it. Each page is drawn from the chapters, so a disagreement between a chapter and a reference page is a defect to fix.
 
 The page answers where a topic is covered, how the book differs from its planning models and what it leaves out. For the architectural argument, use [[commerce-capability-map]] to map the business jobs and [[boundaries-and-systems-of-record]] to assign ownership of facts.
 
@@ -36,14 +38,14 @@ Four rules follow from what the models are:
 
 - **Nothing in a model is a fact about a company.** The models' own notes say that the brick decomposition, module layering, data stores and deployment surfaces are "an architectural model inferred from public product behavior". The book never presents a brick, module or store as the architecture of Shopify, Amazon or any specialist vendor; facts about those companies come only from dated public sources cited in the chapters.
 - **Every number in a model is a seed value.** The models' KPI values are, in their authors' words, "illustrative modeling baselines". None is quoted anywhere in the book.
-- **The specialist models are used for their capability inventory only.** Which bricks a product has, which data it keeps, which roles it serves. Nothing about the group's or any label's plans, finances, pricing, roadmap or strategy is carried over, and the labels are not named on this page. Where a chapter names a specialist vendor, it does so from a public page verified in a research brief, like any other company.
+- **The specialist models are used for their capability inventory only.** Which bricks a product has, which data it keeps, which roles it serves. Nothing about the group's or any label's plans, finances, pricing, roadmap or strategy is carried over, and the products' own brand names are not used on this page. Where a chapter names a specialist vendor, it does so from a public page verified in a research brief, like any other company.
 - **The running example is fictional.** Kestrel & Pine, the fictional outdoor brand this book follows (see [[meet-kestrel-and-pine]]), is not a disguised customer of any vendor; its systems are named by role, and none of its figures or incidents belongs to a real company.
 
 ### How to Read the Tables
 
-In each row, the short codes identify source models. The **first linked chapter** gives the main treatment; chapters in parentheses cover a related part or use the capability. Placements came from the research inventory and chapter contracts, checked against the available drafts. At compilation, security, regulation, return journey, AI commerce and Shopify case placements still followed their contracts.
+In each row, the short codes identify source models. The **first linked chapter** gives the main treatment; chapters in parentheses cover a related part or use the capability. Placements came from the research inventory and the chapter contracts (the plan's statement of what each chapter owns) and were checked against the written chapters, including the security, regulation, return journey, AI commerce and Shopify case chapters; where a chapter does not cover what its contract promised, the row now says so.
 
-Three broad treatments are omitted from repeated rows: [[commerce-capability-map]] for the overall map, [[boundaries-and-systems-of-record]] for ownership, and [[commerce-scaling-stages]] for growth. Journey and case chapters appear where they make a specific contribution.
+Three broad treatments are omitted from repeated rows: [[commerce-capability-map]] for the overall map, [[boundaries-and-systems-of-record]] for ownership, and [[commerce-scaling-stages]] for growth. Journey and case chapters appear where they make a specific contribution; Parts I and IX have no rows of their own because their chapters frame or walk across all capabilities. LISTED and RECONCILED, named in some rows, are companion books on marketplace and finance-systems architecture.
 
 ## Coverage by Capability
 
@@ -84,7 +86,7 @@ Beyond the modeled capabilities, [[warehouse-and-fulfillment]] also explains war
 | Warehouses, locations, containers; purchase orders, goods receipt, put-away; pick-location replenishment | WMS, ERP, POS | [[warehouse-and-fulfillment]] ([[erp-and-back-office-integration]]) |
 | Batch picking; packing with barcode verification and packaging advice; cycle counting; warehouse rules; scanner app, printers and hardware | WMS, ERP, POS, SHP | [[warehouse-and-fulfillment]] |
 | Multi-client (3PL) fulfillment: client separation, portal, invoicing | WMS, SHP | [[warehouse-and-fulfillment]] ([[multi-tenancy-and-isolation]]) |
-| Shipping rules; carrier and service selection; rate cards and expected cost; booking, labels, scan-to-ship; customs and dangerous-goods documents | SHP, WMS, ERP, POS, MCP, B2B | [[shipping-and-delivery]] ([[commerce-regulation]]) |
+| Shipping rules; carrier and service selection; rate cards and expected cost; booking, labels, scan-to-ship; customs and dangerous-goods documents | SHP, WMS, ERP, POS, MCP, B2B | [[shipping-and-delivery]] |
 | Carrier connector network; tracking event hub with one status model; shipment exceptions and carrier scorecards; carrier invoice control | SHP, RET, WMS, MCP, ORM | [[shipping-and-delivery]] ([[events-consistency-and-reconciliation]]) |
 | Delivery promise calculation and promise-risk monitoring; delivery options, pickup points and lockers at checkout; address validation | ORM, SHP, MCP, ERP, B2B | [[shipping-and-delivery]] ([[inventory-and-availability]], [[cart-and-checkout]]) |
 | POS checkout; tenders and terminals; receipts, cashbook, day closing; store hardware; offline operation with idempotent sync | POS, ERP, MCP | [[stores-and-omnichannel]] ([[commerce-payments]], [[events-consistency-and-reconciliation]]) |
@@ -130,9 +132,9 @@ Beyond the modeled capabilities, [[warehouse-and-fulfillment]] also explains war
 
 | Capability | Models | Chapter |
 | --- | --- | --- |
-| Staff accounts, roles, OAuth scopes, API keys, audit of changes; security assurance (management system, penetration tests, incident levels, replicated data centers) | all; EDI, B2B | [[commerce-security]] ([[commerce-regulation]]) |
+| Staff accounts, roles, API keys and scopes, audit of changes; the vendor's security assurance, read as certifications under shared responsibility | all; EDI, B2B | [[commerce-security]] |
 | Consent records; data-sharing policies for third-party apps; anonymization for benchmarks | ORM, MCP, RET | [[privacy-and-customer-data]] |
-| Fiscal receipts; product-safety attributes on listings; e-invoicing mandates; the withdrawal right; accessibility; recalls and traceability | POS, ERP, MKT, EDI, B2B, ORM, WMS | [[commerce-regulation]] |
+| Product-safety attributes on listings; e-invoicing mandates; the withdrawal right; accessibility; trader traceability; fiscal receipts | POS, ERP, MKT, EDI, B2B, ORM | [[commerce-regulation]] (fiscal receipts in [[stores-and-omnichannel]]) |
 
 ### Part X — Evolution
 
@@ -151,7 +153,7 @@ The same map read from the other side. Brick ids are the models' own keys, kept 
 
 | Root group | Bricks | Chapters |
 | --- | --- | --- |
-| Storefront and buyer experience | `stfr` online store and themes, `hdrg` headless framework, `srch` search, `chkt` checkout and extensibility, `shpy` accelerated checkout and buyer identity, `shop` consumer app | [[storefront-architecture]], [[commerce-search-and-discovery]], [[cart-and-checkout]], [[identity-and-master-data]]; the consumer app as a channel in [[ai-and-agentic-commerce]] |
+| Storefront and buyer experience | `stfr` online store and themes, `hdrg` headless framework, `srch` search, `chkt` checkout and extensibility, `shpy` accelerated checkout and buyer identity, `shop` consumer app | [[storefront-architecture]], [[commerce-search-and-discovery]], [[cart-and-checkout]], [[identity-and-master-data]]; the consumer app only as a scaling story in [[case-shopify]] |
 | Commerce core and operations | `ctlg` catalog, `invt` inventory, `mkts` markets, `b2bc` wholesale, `ordr` orders, `ship` shipping and delivery promise, `rtrn` returns, `posr` POS | [[product-information]], [[inventory-and-availability]], [[pricing-architecture]], [[b2b-commerce]], [[order-management]], [[shipping-and-delivery]], [[returns-and-exchanges]], [[stores-and-omnichannel]] |
 | Money and merchant financial services | `paym` payments, `risk` fraud and chargebacks, `ledg` merchant ledger and payouts, `capl` lending, `taxc` tax and duties, `blng` platform and app billing | [[commerce-payments]], [[commerce-security]], [[tax-invoicing-and-ledger]], [[extensibility-and-app-ecosystems]]; lending left out (below) |
 | Growth, channels and AI | `mktg` marketing, `adsn` audience ads, `anly` analytics, `sdkk` admin assistant, `agnt` agentic commerce and global catalog, `chnl` channel sync | [[customer-service-and-notifications]], [[commerce-data-and-analytics]], [[ai-and-agentic-commerce]], [[marketplaces-and-channel-integration]]; ads mentioned only (below) |
@@ -185,13 +187,13 @@ Shown by capability only: each model's root groups summarized, then the chapters
 
 ## Is Anything Uncovered?
 
-The digest flagged eleven of its 152 capabilities as having no owning chapter contract. Checking the written chapters moved three into a chapter, left the rest where the digest proposed or out of the book, and found six more thin spots.
+The digest flagged eleven of its 152 capabilities as having no owning chapter contract. Checking the written chapters moved three into a chapter, left the rest where the digest proposed or out of the book, and found six more thin spots. The first eleven rows below are the digest's; the last six are the spots found in the check.
 
 | Capability | Models | Where it stands | Why |
 | --- | --- | --- | --- |
 | Reviews, ratings and Q&A | ORM, ERP | **Covered** in [[commerce-search-and-discovery]] as discovery and trust data; the fake-review rule in [[commerce-regulation]] | Reviews are the first user-generated data a merchant must moderate |
 | Paid membership programs | ORM | **Covered briefly** in [[commerce-promotions]] as a subscription the promotion engine reads as eligibility; the model in [[commerce-business-models]] | For a merchant it is a customer attribute with dates and a liability; the operator's side is Amazon's |
-| Fiscalization of receipts | POS, ERP | **Covered** in [[stores-and-omnichannel]] as a design constraint and in [[commerce-regulation]] | A receipt is a legal document in several countries |
+| Fiscalization of receipts | POS, ERP | **Covered** in [[stores-and-omnichannel]] as a design constraint | A receipt is a legal document in several countries |
 | Retail media and sponsored listings | ORM, MKT, MCP | **Mentioned only**, in [[marketplaces-and-channel-integration]], as a cost line and a data stream that never touches the order flow | A revenue line for the operator, a marketing cost for the merchant; neither changes the merchant's architecture |
 | CRM and sales pipeline | ERP | **Mentioned only**: the CRM as a candidate customer master in [[identity-and-master-data]] | Leads and activities are sales tooling; the book covers the customer record, not the selling process |
 | Merchant capital lending | MCP | **Left out** | Financial services, not commerce architecture; the platform revenue models behind it are in [[commerce-platform-landscape]] |
@@ -200,7 +202,7 @@ The digest flagged eleven of its 152 capabilities as having no owning chapter co
 | Repair and workshop management | POS, ERP | **Left out**; repair appears only as a disposition in [[returns-and-exchanges]] | A service business with its own orders, parts and labor; specialty retail needs it, an apparel brand does not |
 | Vendor managed inventory | EDI | **Left out**; its documents ride on [[edi-and-e-invoicing]] | Collaboration documents beyond ORDERS, DESADV and INVOIC are rare at the book's scale stages |
 | Collaboration on operational records | WMS | **Left out** | A feature of the warehouse system as a shared workspace; it changes no boundary or contract |
-| Batch, lot and best-before traceability | WMS | **Thin**: recalls in [[commerce-regulation]]; not modeled in [[warehouse-and-fulfillment]] | Kestrel & Pine sells apparel without lots; food, cosmetics and pharma readers should treat the lot as a dimension of the stock ledger |
+| Batch, lot and best-before traceability | WMS | **Thin**: product-safety information in [[commerce-regulation]]; lots and recalls not modeled in [[warehouse-and-fulfillment]] or any chapter | Kestrel & Pine sells apparel without lots; food, cosmetics and pharma readers should treat the lot as a dimension of the stock ledger |
 | Dropshipping and forwarding orders to suppliers | ERP, SHP | **Left out**; the routing decision in [[order-management]] is where it would attach | A fulfillment location the merchant does not control; the running example keeps one warehouse, six stores and a marketplace program |
 | Demand forecasting and replenishment planning | ORM, WMS, ERP, POS | **Left to the ERP**, named as its duty in [[erp-and-back-office-integration]] | Planning is a supply-chain discipline; the commerce platform consumes its result |
 | Merchant onboarding and KYC for payments; seller verification | MCP, ORM | **Thin**: trader traceability in [[commerce-regulation]]; the provider's contract in [[commerce-payments]] | The provider's and the operator's obligation; the merchant meets it as a contract, not a system |
@@ -209,13 +211,13 @@ The digest flagged eleven of its 152 capabilities as having no owning chapter co
 
 ## Where the Book Departs From the Models
 
-The models were drawn one product at a time, from what each product visibly does. That gives them a shape the book deliberately does not copy.
+The left-out list names what the models have and the book drops; the departures run the other way, to what the book adds or reshapes. The models were drawn one product at a time, from what each product visibly does. That gives them a shape the book deliberately does not copy.
 
 | The models as drawn | The book's position | Where argued |
 | --- | --- | --- |
 | No integration layer as a subject: every model carries connectors inside its own bricks; the hub's bridges are the nearest thing to one | Integration is a discipline with its own styles, failure modes, contracts and inventory: Part VI | [[part-6]], [[integration-styles]], [[events-consistency-and-reconciliation]], [[api-contracts-and-versioning]] |
 | No scale-stage view: each model fixes one customer size as a persona | The right answer changes with the size and shape of the business, so every chapter in Parts II–VIII compares four stages | [[commerce-scaling-stages]], [[commerce-business-models]] |
-| Stress tests instead of failure patterns: shocks (a carrier changes its API, a mandate arrives) and the residue that survives them | Sixteen recurring failures named by their warning signs, because a newcomer meets the failure before the shock. The models' stressors cluster on The Long Fuse, The Pulled Rug, The Lynchpin and The Secret Agent and say little about Schrödinger's Order, The Familiar Stranger, The Burned Bridge or One Size Fits None; the Kestrel & Pine incidents supply those | [[where-commerce-platforms-go-wrong]] |
+| Stress tests instead of failure patterns: shocks (a carrier changes its API, a mandate arrives) and the residue, the design that survives them | Sixteen recurring failures named by their warning signs, because a newcomer meets the failure before the shock. The models' stressors (their shocks) cluster on the book's failure patterns The Long Fuse, The Pulled Rug, The Lynchpin and The Secret Agent and say little about Schrödinger's Order, The Familiar Stranger, The Burned Bridge or One Size Fits None; the Kestrel & Pine incidents supply those | [[where-commerce-platforms-go-wrong]] |
 | Each model walks its own product's journey; none follows one order across products | Part IX follows one consumer order, one return, one wholesale order and one peak day through every system | [[part-9]], [[journey-consumer-order]], [[journey-wholesale-order]], [[journey-peak-day]] |
 | Nothing about choosing, changing or organizing: a product as sold, not how a merchant decides to buy, leave or staff it | Part X: build, buy or assemble; migration; scale stages; teams and vendors; AI readiness | [[part-10]], [[build-buy-or-assemble]], [[replatforming-and-migration]], [[organizing-commerce-engineering]] |
 | An order record in seven models (platform, webshop, ERP, POS, integrator, WMS, shipping) | One order record with one state model; every other order is a copy with a declared purpose | [[boundaries-and-systems-of-record]], [[order-management]] |
@@ -228,19 +230,19 @@ The models were drawn one product at a time, from what each product visibly does
 
 ## The Models' Personas and the Book's Readers
 
-The models' roughly sixty customer descriptions group into eleven roles. The table connects those roles to readers and to fictional Kestrel & Pine characters. They are archetypes for understanding needs, not real customer accounts.
+The departures concern the models' products; their personas concern the products' customers, and the book reuses them as reading routes. The models' roughly sixty customer descriptions group into eleven roles. The table connects those roles to readers and to fictional Kestrel & Pine characters. They are archetypes for understanding needs, not real customer accounts.
 
 | Persona cluster (models) | What the models say they want | Reader | Kestrel & Pine seat | Start with |
 | --- | --- | --- | --- | --- |
 | Owner-director of a trading company or brand (B2B, ERP, HUB, POS, WMS, MCP) | Growth without back-office headcount; no rebuild in three years; predictable cost | Leader | Mara Lindqvist, CEO; Teun Baas, product and brand | [[commerce-business-models]], [[build-buy-or-assemble]], [[commerce-scaling-stages]] |
 | E-commerce and channel manager (B2B, ERP, HUB, MKT, POS, MCP) | Content correct everywhere; no rejected listings; conversion on peak days | Product manager | Milan Petrov, e-commerce and marketplaces | [[product-information]], [[marketplaces-and-channel-integration]], [[cart-and-checkout]] |
 | Operations and warehouse lead (HUB, ERP, MKT, SHP, WMS, RET) | Stock true in every system; cut-offs met at peak; fast, accurate returns | Engineer or product manager in operations | Daniel Okafor, operations | [[inventory-and-availability]], [[warehouse-and-fulfillment]], [[journey-peak-day]] |
-| IT, ERP and integration lead (B2B, EDI, HUB, MKT) | Few, stable integrations; changes that do not break the live chain; clear errors and monitoring | Engineer | Noor Visser, engineering; Ruben Alves, integration | [[integration-styles]], [[events-consistency-and-reconciliation]], [[api-contracts-and-versioning]] |
+| IT, ERP and integration lead (B2B, EDI, HUB, MKT) | Few, stable integrations; changes that do not break the live chain; clear errors and monitoring | Engineer | Noor Visser, engineering; Ruben Alves, integration | [[integration-styles]], [[events-consistency-and-reconciliation]], [[api-contracts-and-versioning]], [[erp-and-back-office-integration]] |
 | Finance (EDI, ERP, HUB) | Month close without reconciliation; invoices paid first time; true cost per order | Analyst or leader in finance | Sanne de Wit, finance | [[tax-invoicing-and-ledger]], [[erp-and-back-office-integration]], [[edi-and-e-invoicing]] |
 | Trade buyer and wholesale account manager (B2B, HUB, ERP) | Agreed prices and assortments; fast reorder; delivery certainty | Product manager or consultant on B2B | Lea Moreau, wholesale; Pieter Smit, Bergzicht | [[b2b-commerce]], [[journey-wholesale-order]] |
 | Shopper and parcel recipient (MCP, ORM, RET, SHP, HUB, POS) | One-tap payment; honest stock; a delivery moment; easy returns | Every reader, as the person the promises are made to | Eva Janssen | [[journey-of-an-order]], [[journey-consumer-order]], [[journey-return-and-exchange]] |
 | Data and merchandising analyst (RET, ORM, MKT) | Which products and reasons drive returns; whether spend is incremental; benchmarks | Analyst | Hanna Berg, data | [[commerce-data-and-analytics]], [[returns-and-exchanges]] |
-| Software, implementation and agency partner (MCP, MKT, SHP, WMS, EDI, HUB) | One API instead of fifty; predictable deprecations; billing without building payments | Consultant or engineer at a vendor or agency | The agency and the ERP partner in the ledger | [[api-contracts-and-versioning]], [[extensibility-and-app-ecosystems]], [[organizing-commerce-engineering]] |
+| Software, implementation and agency partner (MCP, MKT, SHP, WMS, EDI, HUB) | One API instead of fifty; predictable deprecations; billing without building payments | Consultant or engineer at a vendor or agency | The scenario's agency and ERP partner | [[api-contracts-and-versioning]], [[extensibility-and-app-ecosystems]], [[organizing-commerce-engineering]] |
 | Marketplace trust and resolution operator (ORM) | Catch fraud and abuse before reports; see at-risk promises early | Consultant or analyst on the operator's side | None; the book takes the seller's side | [[commerce-regulation]], [[customer-service-and-notifications]]; LISTED's [[fraud-prevention]] |
 | Counter staff, pickers and packers (POS, WMS) | A till that is never slow; know where to go and what to take; not blamed for mistakes | Engineer or product manager designing floor tools | The Duiven warehouse and the six stores | [[stores-and-omnichannel]], [[warehouse-and-fulfillment]] |
 

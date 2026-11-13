@@ -7,7 +7,7 @@
   "part": "part-1",
   "title": "Who Owns the Truth: Boundaries, Bounded Contexts and Systems of Record",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed from the published chapter (posts/04-boundaries-and-systems-of-record/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over below, then corrected after one end-to-end check run. It is a contract, not a description: in the places listed under open_questions the published chapter does not yet do what the spec asks.",
   "intent": {
     "outcome": {
@@ -154,7 +154,7 @@
     },
     "bridge": {
       "from_reader_world": "Anyone who has contacted support about an order, or answered such a contact, has seen two screens disagree.",
-      "to_topic": "Until someone knows which value is authoritative, copying either status faster only spreads the wrong answer; that authority is what a system of record is."
+      "to_topic": "Until someone knows which value is authoritative for which fact, support cannot tell a stale copy from a status that is true of a different part of the order, and copying either status faster only spreads the confusion; naming that authority per fact is what a system of record is. The bridge leaves the parcel's answer open: the chapter returns to it under bounded contexts and in the conclusion's callback, where both statuses turn out to be true of different objects."
     },
     "thesis_statement": {
       "text": "Copies are unavoidable; unowned copies are the failure. Name one system of record per fact, decide who may change it, how copies learn and how errors are repaired.",
@@ -222,11 +222,11 @@
       {
         "id": "p02",
         "function": "claim",
-        "controlling_idea": "A system of record is the system whose value is authoritative for one fact, and naming it forces three further decisions: who may change the fact, how copies are updated, how errors are repaired.",
+        "controlling_idea": "A system of record is the system whose value is authoritative for one fact; naming one per fact lets support tell a stale copy from a status that describes a different part of the order, and forces three further decisions: who may change the fact, how copies are updated, how errors are repaired.",
         "transition_in": {
           "relationship": "problem_solution",
-          "carries_over": "The unresolved question of which status to trust.",
-          "introduces": "The system of record as the thing that settles it.",
+          "carries_over": "The unresolved question of whether one status is stale or both describe different parts of the order.",
+          "introduces": "The system of record as the thing that lets support answer it.",
           "form": "sentence",
           "placement": "start_of_this"
         }
@@ -1382,6 +1382,14 @@
   "open_questions": [],
   "decision_log": [
     {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved in the cleanup pass, 2026-11-13: the introduction's bridge and p02 now frame the parcel as the conclusion's callback resolves it (rule 3: both round-2 flow readers found the bridge steered them to read the parcel as a stale-record problem, while the callback resolves it as two true statuses of different objects, judged fault 'unclear'). The bridge and p02 say the system of record lets support tell a stale copy from a status true of a different part of the order, which is what the draft's p02 already says; no prose change was needed.",
+      "rejected": [
+        "Keeping the spec bridge as a pure authority problem, which contradicts its own callback.",
+        "Changing the hook to a stock example, which would reverse the author-approved parcel opening."
+      ]
+    },
+    {
       "date": "2026-11-12",
       "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the six-quantity reconstruction stays labelled illustrative and states only what the scenario ledger states (six systems, six quantities, zero in the WMS to a double-digit storefront figure); no individual quantities are given (rule 1). Reuse by later chapters is their concern.",
       "rejected": [
@@ -1539,6 +1547,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Cleanup pass: introduction bridge and p02 aligned with the callback (parcel statuses true of different objects); prose unchanged."
+    },
     {
       "date": "2026-11-12",
       "change": "Confirming check round 2 (verdict revise: eight corroborated flow findings, one corroborated term, one of them fault unclear); its cheap draft-side fixes applied without a further round: Duiven glossed as the warehouse, the second 'system of record' definition reworded, ERP and PSP not re-expanded, the Microsoft sentence split with Business Central glossed, 'those columns' referent fixed, One Size Fits None and the Store Stock Mirage explained, p02 says naming a record also separates stale copies from different objects; minor fixes for the fleece-and-socks order, Schrödinger's Order pairing, RECONCILED and the vendor dates. The check report predates these fixes and is stale."

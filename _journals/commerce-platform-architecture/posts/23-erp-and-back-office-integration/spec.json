@@ -6,7 +6,7 @@
   "part": "part-5",
   "title": "The Back Office: ERP Integration and Who Is the Hub",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed from the published chapter (posts/23-erp-and-back-office-integration/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (a thesis paragraph p04, a roadmap p06, a conclusion paragraph that answers the opening p52, and Part V's closing p57-p58); see decision_log.",
   "intent": {
     "outcome": {
@@ -129,7 +129,7 @@
         "applies_to": "hub, trade-offs and stages: the hub answers, then compared on the same criteria, then by scale stage"
       }
     ],
-    "rationale": "The scene comes first so that every term arrives as part of the answer to Sanne's question of what the ERP should be the truth for. The ERP's four jobs come next because the flows section uses them (what each job needs from commerce). Batch and events follow the flows because they name the cadences the flows table assigns and give the rule (finance can be batch, availability cannot) that the hub question then rests on. The hub answers follow, and the trade-offs and stages come at once after them, because they turn the answers into a rule for choosing and place it on the book's stages. Connectors follow the stages because the first two stages rest on connectors, and a connector is where each flow's direction, cadence and owner are configured; master data follows connectors because the connectors raise, entity by entity, the question the ownership table settles. What never belongs in the ERP comes after the table that settles its grey area, and the partner dependency with it; the worked cases then apply the rule and the owned contract, and the failures come last because each is read against the design that detects it. Putting the hub before the flows and their cadences would argue a hub without the requirements that decide it (readers in round 1 found batch and events, placed after the stages, came too late for terms the flows and hub already used); separating the trade-offs and stages from the hub leaves the answers without a rule for choosing; putting master data before connectors presents the ownership table before the reader sees why a connector forces the choice; putting the cases before the partner remedy (the round-1 order) applied the remedy before stating it; putting the failures earlier would describe detections for a design not yet explained."
+    "rationale": "The scene comes first so that every term arrives as part of the answer to Sanne's question of what the ERP should be the truth for. The ERP's four jobs come next because the flows section uses them (what each job needs from commerce). Batch and events follow the flows because they name the cadences the flows table assigns and give the rule (finance can be batch, availability cannot) that the hub question then rests on. The hub answers follow, and the trade-offs and stages come at once after them, because they turn the answers into a rule for choosing and place it on the book's stages. Connectors follow the stages because the first two stages rest on connectors, and a connector is where each flow's direction, cadence and owner are configured; master data follows connectors because the connectors raise, entity by entity, the question the ownership table settles. The partner-built connector closes the connectors section, set against the documented vendor connectors (both readers of round 3 asked for it there); what never belongs in the ERP comes after the table that settles its grey area; the worked cases then apply the rule and the owned contract, and the failures come last because each is read against the design that detects it. Putting the hub before the flows and their cadences would argue a hub without the requirements that decide it (readers in round 1 found batch and events, placed after the stages, came too late for terms the flows and hub already used); separating the trade-offs and stages from the hub leaves the answers without a rule for choosing; putting master data before connectors presents the ownership table before the reader sees why a connector forces the choice; putting the cases before the partner remedy (the round-1 order) applied the remedy before stating it; putting the failures earlier would describe detections for a design not yet explained."
   },
   "introduction": {
     "hook": {
@@ -175,14 +175,14 @@
           ]
         },
         {
-          "promise": "Read vendor connectors as tables of who owns what and settle master data.",
+          "promise": "Read vendor connectors as tables of who owns what, show why the ERP partner's connector is a dependency, and settle master data.",
           "kept_in": [
             "connectors",
             "master-data"
           ]
         },
         {
-          "promise": "State what never belongs in the ERP and why the ERP partner is a dependency.",
+          "promise": "State what never belongs in the ERP.",
           "kept_in": [
             "never-in-erp"
           ]
@@ -886,17 +886,18 @@
     {
       "id": "connectors",
       "heading": "Connectors as Products",
-      "controlling_idea": "A vendor-built connector writes an entity–owner table into configuration, Microsoft's Business Central Shopify Connector being the clearest example, Shopify's guidance names the two rules any contract needs, and a connector's ownership rules fit only the merchant it was built for.",
+      "controlling_idea": "A vendor-built connector writes an entity–owner table into configuration, Microsoft's Business Central Shopify Connector being the clearest example, Shopify's guidance names the two rules any contract needs, a connector's ownership rules fit only the merchant it was built for, and a partner-built connector is a dependency the merchant must turn into a contract it owns.",
       "function": "example",
       "advances_thesis": {
         "supports": [
-          "S4"
+          "S4",
+          "S5"
         ],
-        "how": "Shows ownership written per entity in a vendor's configuration and why it must be checked against the merchant."
+        "how": "Shows ownership written per entity in a vendor's configuration, why it must be checked against the merchant, and why the partner's undocumented connector must become a contract the merchant owns."
       },
       "flow": {
         "pattern": "large_to_small",
-        "rationale": "The option and its best example, then what the connector maintains and the two rules any contract needs, then the suite-era view and the judgement on fit; the judgement needs the documented rules first."
+        "rationale": "The option and its best example, then what the connector maintains and the two rules any contract needs, then the suite-era view and the judgement on fit, and last the partner-built connector, which has none of that documentation; the judgement and the contrast both need the documented rules first."
       },
       "transition_in": {
         "relationship": "cause_effect",
@@ -970,6 +971,26 @@
             "form": "sentence",
             "placement": "start_of_this"
           }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "Kestrel & Pine's connector is neither vendor's product but the ERP implementation partner's, an unlisted architectural dependency, the Lynchpin, and the remedy is to treat the connector as a contract the merchant owns, with a field-level specification, an owner, idempotent handling, a reconciliation job and a failure alert.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Waypoint's W5 (integration standards) applied to one integration.",
+              "shows": "The remedy is the program's integration standard, not firing the partner.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Vendor-built connectors whose ownership rules are documented and fit the merchant they were built for.",
+            "introduces": "The partner-built connector, documented nowhere, as a dependency.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
         }
       ]
     },
@@ -987,7 +1008,7 @@
       },
       "transition_in": {
         "relationship": "cause_effect",
-        "carries_over": "Connectors that force a choice of owner entity by entity, and Shopify's per-field rule.",
+        "carries_over": "Connectors, vendor-built or the partner's, that force a choice of owner entity by entity, and Shopify's per-field rule.",
         "introduces": "One ownership table for every kind of master record.",
         "form": "sentence",
         "placement": "start_of_this"
@@ -1029,20 +1050,19 @@
     },
     {
       "id": "never-in-erp",
-      "heading": "What Never Belongs in the ERP, and the Partner as a Dependency",
-      "controlling_idea": "Anything in the path of a sale never belongs in the ERP while postings and legal documents always do, and the partner's connector is a dependency the merchant must turn into a contract it owns.",
+      "heading": "What Never Belongs in the ERP",
+      "controlling_idea": "Anything in the path of a sale never belongs in the ERP, while postings and legal documents always do.",
       "function": "claim",
       "advances_thesis": {
         "supports": [
-          "S1",
-          "S5"
+          "S1"
         ],
-        "how": "States the boundary as a rule and names the remedy for the partner dependency."
+        "how": "States the boundary as a rule."
       },
       "transition_in": {
         "relationship": "cause_effect",
         "carries_over": "The ownership table, which settles the grey area of master data.",
-        "introduces": "What plainly never and always belongs in the ERP, and the partner who builds the link.",
+        "introduces": "What plainly never and always belongs in the ERP.",
         "form": "sentence",
         "placement": "start_of_this"
       },
@@ -1052,26 +1072,6 @@
           "controlling_idea": "With the ownership table in place the rest of the boundary is plain: things in the path of a sale never belong in the ERP; postings, stock cost, legal invoices, receivables and purchasing always do.",
           "function": "claim",
           "organization": "classification"
-        },
-        {
-          "id": "p45",
-          "controlling_idea": "Behind the line between the ERP and the commerce systems sits the ERP implementation partner, an unlisted architectural dependency, the Lynchpin, and the remedy is to treat the connector as a contract the merchant owns, with a field-level specification, an owner, idempotent handling, a reconciliation job and a failure alert.",
-          "function": "recommendation",
-          "evidence": [
-            {
-              "kind": "reasoning",
-              "what": "Waypoint's W5 (integration standards) applied to one integration.",
-              "shows": "The remedy is the program's integration standard, not firing the partner.",
-              "source": "Kestrel & Pine scenario ledger"
-            }
-          ],
-          "transition_in": {
-            "relationship": "place",
-            "carries_over": "The line between what belongs in the ERP and what does not.",
-            "introduces": "The firm that built the link across that line, as a dependency.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
         }
       ]
     },
@@ -1532,7 +1532,7 @@
     "Needs the author (record, not a decision): NetSuite/SuiteCommerce could not be fetched for the brief; the chapter makes no feature claims about it.",
     "Needs the author (record): the Business Central connector's first release date is inferred from Shopify's 2021 'early 2022' announcement; no Microsoft release note was read.",
     "Needs the author (ledger): the finance-only rule restates W1–W5 for the ERP; if a later chapter needs the ERP to feed anything to a channel (for example expected stock for pre-orders), the ledger line should be extended rather than contradicted.",
-    "Needs the author (remaining round-3 failures, both flow readers): the partner half of 'What Never Belongs in the ERP' (p45) reads as out of place; rule 3 would move it beside 'Connectors as Products', which the pass did not do because no round was left to check the move. The scene's Waypoint answer (p12, p13) restates the thesis before the concept sections, so the hub comparison reads as justifying a known result; this follows the spec's problem_solution scene and the published chapter's design. Sixteen single-reader minors are listed in check-report.json."
+    "Needs the author (record, not a decision): round-3 flow readers found the scene's Waypoint answer (p12, p13) restates the thesis before the concept sections; this follows the spec's problem_solution scene and the published chapter's design and stays (rule 10). Sixteen single-reader minors are listed in check-report.json."
   ],
   "decision_log": [
     {
@@ -1630,6 +1630,14 @@
       "rejected": [
         "A fourth round."
       ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved in the cleanup pass, 2026-11-13: the partner paragraph (p45) moved from 'What Never Belongs in the ERP' to the end of 'Connectors as Products', after the INFERENCE note, because both round-3 flow readers found it out of place there (rule 3); its opening now contrasts the partner's undocumented connector with the documented vendor connectors; the section heading becomes 'What Never Belongs in the ERP'; the roadmap, the master-data transition and the section supports updated. Check report is stale and no new round was run.",
+      "rejected": [
+        "Leaving p45 in place (both readers asked for the move).",
+        "Moving the scene's Waypoint answer after the concept sections (author's design, rule 10)."
+      ]
     }
   ],
   "sources": [
@@ -1700,6 +1708,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Cleanup pass: partner paragraph moved into 'Connectors as Products'; 'What Never Belongs in the ERP' heading shortened; roadmap and transitions updated."
+    },
     {
       "date": "2026-11-12",
       "change": "Confirming round 3 (escalate: pass 13, fail 25, of which 2 spec faults; 16 minor). Closing fixes: jobs-table pointer, p28's rule named, 'batch' glossed, 'today' dated, companion book named. The check report is stale against these edits."

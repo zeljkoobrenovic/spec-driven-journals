@@ -1,0 +1,634 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/38-journey-return-and-exchange/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/38-journey-return-and-exchange/index.md",
+  "spec_sha": "7fc12337f89a28a8",
+  "draft_sha": "2d74d82ddeb70ff9",
+  "run_at": "2026-11-13T00:59:27+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "a returned parcel leaves several decisions open across separate systems",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "return volumes at Kestrel & Pine are ordinary for the industry",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "the chapter's answer: disposition event releases three owned flows",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "roadmap of the chapter",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "where the order stands after the first journey",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "The Return, the Setting and the Rules of This Walk ¶1",
+      "summary": "Eva's jacket exchange facts",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "The Return, the Setting and the Rules of This Walk ¶2",
+      "summary": "the refund alternative branch",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "The Return, the Setting and the Rules of This Walk ¶3",
+      "summary": "the target Waypoint design the walk uses",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "The Return, the Setting and the Rules of This Walk ¶4",
+      "summary": "three dated landscapes kept apart",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "The Return, the Setting and the Rules of This Walk ¶5",
+      "summary": "table of owners for each return fact",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "The Return, the Setting and the Rules of This Walk ¶6",
+      "summary": "two refund writers caused the Double Refund",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Twelve Steps in One Table ¶1",
+      "summary": "overview table of the twelve return steps",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Twelve Steps in One Table ¶2",
+      "summary": "stock, money and books all wait for inspection",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "The Request: Eligibility, Reason and the Choice ¶1",
+      "summary": "the returns portal's limited role / the RMA term",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "The Request: Eligibility, Reason and the Choice ¶2",
+      "summary": "eligibility from three owned facts",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "The Request: Eligibility, Reason and the Choice ¶3",
+      "summary": "EU withdrawal law sets four dates to compute",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "The Request: Eligibility, Reason and the Choice ¶4",
+      "summary": "exchange modelled as a held order with committed stock",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "The Request: Eligibility, Reason and the Choice ¶5",
+      "summary": "three policies for releasing the held exchange",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "The Request: Eligibility, Reason and the Choice ¶6",
+      "summary": "return record created in the OMS",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "The Way Back: Label, Drop-off and the Scan That Ends a Right ¶1",
+      "summary": "return label carrying the return reference",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "The Way Back: Label, Drop-off and the Scan That Ends a Right ¶2",
+      "summary": "reverse fulfillment order separates warehouse work from the return / duplicate messages made harmless by the reference",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "The Way Back: Label, Drop-off and the Scan That Ends a Right ¶3",
+      "summary": "carrier acceptance scan as legal proof of sending",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "The Way Back: Label, Drop-off and the Scan That Ends a Right ¶4",
+      "summary": "parcel arrives at the warehouse",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "At the Dock: Receiving, Inspection and Disposition ¶1",
+      "summary": "receiving and inspecting the returned jacket",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "At the Dock: Receiving, Inspection and Disposition ¶2",
+      "summary": "four disposition grades / restocking before grading causes false availability",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "At the Dock: Receiving, Inspection and Disposition ¶3",
+      "summary": "grading emits a stock event and a disposition event",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "The Exchange Order ¶1",
+      "summary": "exchange as a new order at the frozen price",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "The Exchange Order ¶2",
+      "summary": "the exchange ships through the normal fulfillment path",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "The Exchange Order ¶3",
+      "summary": "why the original order is not edited",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "The Refund Alternative: One Writer, One Key ¶1",
+      "summary": "the refund branch differs only after disposition",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "The Refund Alternative: One Writer, One Key ¶2",
+      "summary": "refund triggered by inspection, not request or scan / legal deadline margin depends on dock speed",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "The Refund Alternative: One Writer, One Key ¶3",
+      "summary": "only the OMS may raise a refund",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "The Refund Alternative: One Writer, One Key ¶4",
+      "summary": "the return id as idempotency key",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "The Refund Alternative: One Writer, One Key ¶5",
+      "summary": "refunds are asynchronous and can fail late",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "The Refund Alternative: One Writer, One Key ¶6",
+      "summary": "the return's money state machine",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "The Books: Credit Note, New Invoice, Reconciliation ¶1",
+      "summary": "credit note against the unchanged original invoice",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "The Books: Credit Note, New Invoice, Reconciliation ¶2",
+      "summary": "exchange as credit note plus invoice netting to zero",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "The Books: Credit Note, New Invoice, Reconciliation ¶3",
+      "summary": "refund variant pairs credit note with PSP refund",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "The Books: Credit Note, New Invoice, Reconciliation ¶4",
+      "summary": "daily three-way refund reconciliation",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "What Each Handoff Requires ¶1",
+      "summary": "table of handoff requirements",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "What Each Handoff Requires ¶2",
+      "summary": "operations by event, finance by batch",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Two Variants: The Marketplace Return and the Store Return ¶1",
+      "summary": "two other entry points, same rest of flow",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Two Variants: The Marketplace Return and the Store Return ¶2",
+      "summary": "marketplace sets the return policy",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Two Variants: The Marketplace Return and the Store Return ¶3",
+      "summary": "Amazon's return and refund deadlines",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Two Variants: The Marketplace Return and the Store Return ¶4",
+      "summary": "marketplace-fulfilled returns handled and charged by the marketplace",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Two Variants: The Marketplace Return and the Store Return ¶5",
+      "summary": "OMS must accept externally created returns and refunds",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Two Variants: The Marketplace Return and the Store Return ¶6",
+      "summary": "stores could not process online returns in January 2027",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Two Variants: The Marketplace Return and the Store Return ¶7",
+      "summary": "store looks up the order in the OMS",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Two Variants: The Marketplace Return and the Store Return ¶8",
+      "summary": "store return inspected at counter, stock lands in store",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Two Variants: The Marketplace Return and the Store Return ¶9",
+      "summary": "store refund still goes to the original payment",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "The Same Return in January 2027 ¶1",
+      "summary": "comparison table with the January 2027 landscape",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "The Same Return in January 2027 ¶2",
+      "summary": "January landscape lacked one view of refund status",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "When It Goes Wrong Along This Path ¶1",
+      "summary": "introduces four failures",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "When It Goes Wrong Along This Path ¶2",
+      "summary": "how the Double Refund happened",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "When It Goes Wrong Along This Path ¶3",
+      "summary": "why the PSP accepted both and how it was found",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "When It Goes Wrong Along This Path ¶4",
+      "summary": "the fix: single refund writer with key and daily match",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "When It Goes Wrong Along This Path ¶5",
+      "summary": "a refund failing days after acceptance",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "When It Goes Wrong Along This Path ¶6",
+      "summary": "restocking an unsellable unit",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "When It Goes Wrong Along This Path ¶7",
+      "summary": "refund amount ignoring allocated discounts",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "synthesis: one owner and one trigger per answer",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "established facts about returns",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "choices that depend on context",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "author's review rules for the return path",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "questions to ask about a return path",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Eva's return resolved / hand-off to the wholesale journey",
+      "matched_spec_paragraph": "p66"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "reverse_outline_matches_spec",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 66 outline summaries match the controlling idea of the aligned spec paragraph, in the spec's order; structure.json confirms sections and unit counts.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "The outliner marked five units as holding two ideas (Request ¶1, Way Back ¶2, Dock ¶2, Refund ¶2, Questions ¶2); in each the second phrase is a clause the spec's controlling idea itself includes (the RMA gloss of the portal definition, the repeated-message rule of the reverse fulfillment order, why stock waits for the disposition, the deadline margin the trigger leaves, the hand-off of the closing transition), subordinate to one idea.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit ties to a supporting claim S1-S6 or to the introduction/conclusion functions declared in the spec.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Statistics, quotations (Shopify, commercetools, Stripe, Mollie, Adyen, Amazon, Zalando), the four tables and the four figures are each followed by a sentence, caption or next-paragraph 'So' that says what they show.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "The Return, the Setting and the Rules of This Walk ¶4",
+      "quote": "Three dates keep the setting apart. In **January 2027** the refund had two writers; that landscape is the comparison near the end.",
+      "finding": "Declared contrast at the start of this paragraph, carrying over the late-2027 design and introducing that Eva's real return ran before it. The opening sentence neither picks up the late-2027 design just described nor signals the contrast; it starts a list of three dates, and the contrast ('before any of the Waypoint systems above were live') arrives only mid-paragraph. Both flow readers had to re-read this paragraph.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/transition_in",
+      "draft_locus": "The Same Return in January 2027 ¶1",
+      "quote": "Run R-20270419-1 through the January 2027 landscape, and the dates stay the same while four things change.",
+      "finding": "The section's declared transition (time) carries over 'the store variant's January 2027 gap and the late-2027 joins'. The opening picks up neither: nothing connects it to the store's January 2027 sentence that ended the store return's first paragraph, so both flow readers found that January detail out of place and noted the January section does not return to it.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "The Return, the Setting and the Rules of This Walk ¶4",
+      "quote": "Three dates keep the setting apart.",
+      "finding": "Flow reader A had to re-read the three-landscape paragraph ('I needed two passes to keep the three apart') and reader B ('I had to re-read this ... Why January rather than February is never said'). The paragraph packs three landscapes and which one the walk uses into four sentences without saying why the comparison is January rather than February.",
+      "fault": "draft",
+      "corroborated_by": "flowB item 1",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/3",
+      "draft_locus": "The Books: Credit Note, New Invoice, Reconciliation ¶4",
+      "quote": "Since February 2027, after the Double Refund, a daily job matches the PSP's refunds to the refunds the shop platform recorded, on order number and amount",
+      "finding": "Both readers stumbled on this paragraph switching from the February 2027 interim job (matching on order number and amount) to the target three-leg match without signalling the time frame first; reader B thought it contradicted the return-id key until the next sentence.",
+      "fault": "draft",
+      "corroborated_by": "flowB item 9",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/5",
+      "draft_locus": "Two Variants: The Marketplace Return and the Store Return ¶6",
+      "quote": "In January 2027 a store could only take the jacket and phone head office, because the POS had no link to the shop platform.",
+      "finding": "Both readers found this January 2027 detail out of place in the variants section, before the January comparison, which then does not pick it up. The spec places it here to lead into the January section; the prose does not make that link.",
+      "fault": "draft",
+      "corroborated_by": "flowB item 7",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/7",
+      "draft_locus": "Two Variants: The Marketplace Return and the Store Return ¶8",
+      "quote": "Against the online return, three things differ.",
+      "finding": "Both readers counted three differences and found only two: the third item, the refund, 'still goes to Eva's original iDEAL payment ... exactly as above', which is not a difference. The prose needs to say what about the refund differs (e.g. a till would pay cash; the store does not) or say two things differ and one does not.",
+      "fault": "draft",
+      "corroborated_by": "flowB item 6",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "The Same Return in January 2027 ¶1",
+      "quote": "in the May 2027 stock count, about 90 of the roughly 390 variants whose shop-platform stock differed from the WMS's were returns already restocked in the WMS but not yet carried through this chain",
+      "finding": "Both readers stopped at May 2027 evidence in a column labelled January 2027; the table does not say the old chain was still running in May.",
+      "fault": "draft",
+      "corroborated_by": "flowB item 8",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/5",
+      "draft_locus": "The Return, the Setting and the Rules of This Walk ¶6",
+      "quote": "so 212 returns, €19,400 in all, were paid twice. This is the Double Refund, taken apart near the end of the chapter.",
+      "finding": "Both readers reported the Double Refund told repeatedly (setting, step-table row 12, Books, failure section) before its own account, which slowed them ('circling rather than building'). The repetition is in the spec: p11's controlling idea requires the full figures and mechanism here, and row 12 and p40 repeat it, so cutting the setup to a forward-pointing clause is a spec change. Both readers called it minor.",
+      "fault": "spec",
+      "corroborated_by": "flowB item 11",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "At the Dock: Receiving, Inspection and Disposition ¶2",
+      "quote": "Kestrel & Pine resold 61% of returned items as new in 2026, 27% after processing at a reduced price, 9% were recycled or donated and 3% were missing or the wrong item (illustrative split)",
+      "finding": "Flow reader A could not tell which figures are real: the introduction states 61% as a fact, and here the same 61% sits inside an 'illustrative split'. Reported by one reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "The Way Back: Label, Drop-off and the Scan That Ends a Right ¶3",
+      "quote": "from here the merchant may no longer withhold the refund for lack of proof",
+      "finding": "Flow reader A was left unsure whether refund-on-inspection is lawful once the scan ends the withholding right; the answer comes only in the refund section's eleven-days margin. A forward pointer would help. (The AC-3 cold reader made the same remark, but it is not a flow reader.) One flow reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/2",
+      "draft_locus": "The Exchange Order ¶3",
+      "quote": "Why not edit the line from M to L?",
+      "finding": "Flow reader A found the justification of 'an exchange is a return plus a new order' reads as an afterthought after the shipping details. The position is the spec's (section flow: release, shipment, then why the edit would fail). One flow reader only.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/3",
+      "draft_locus": "The Books: Credit Note, New Invoice, Reconciliation ¶4",
+      "quote": "The sibling book RECONCILED works the ledger side",
+      "finding": "Flow reader A: nothing in this chapter says what RECONCILED is (see known_before_new). One flow reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/6",
+      "draft_locus": "Two Variants: The Marketplace Return and the Store Return ¶7",
+      "quote": "from 2028 store receipts are imported into the OMS with their numbers",
+      "finding": "Flow reader A wondered whether the late-2027 OMS can record a store return at all, since store receipts reach it only from 2028; the sentence does not separate recording a return against a web order from importing store sales. One flow reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/11/paragraphs/2",
+      "draft_locus": "When It Goes Wrong Along This Path ¶3",
+      "quote": "Finance Director Sanne de Wit discovered duplicate ERP credits at month-end.",
+      "finding": "Flow reader A: the failure was refunds paid twice at the PSP, but 'duplicate ERP credits' sounds like duplicate credit notes, a different thing. One flow reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "The Refund Alternative: One Writer, One Key ¶2",
+      "quote": "A merchant whose dock is three days behind in January must know that number",
+      "finding": "Flow reader B: in this chapter 'January' means the January 2027 landscape, but here it means the post-holiday returns peak, and the reader stopped to work out which. One flow reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "The Exchange Order ¶2",
+      "quote": "the parcel leaves with the evening collection on 22 April. Eva gets the shipping confirmation that afternoon",
+      "finding": "Flow reader B: a confirmation sent in the afternoon for a parcel that leaves with the evening collection reads as inconsistent. One flow reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/3",
+      "draft_locus": "The Books: Credit Note, New Invoice, Reconciliation ¶4",
+      "quote": "The sibling book RECONCILED works the ledger side",
+      "finding": "'RECONCILED' is on neither audience list and is never glossed; a flow reader reported it as unexplained.",
+      "fault": "draft",
+      "corroborated_by": "flowA item 7",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "The Return, the Setting and the Rules of This Walk ¶4",
+      "quote": "From **February 2027** the returns portal was the only refund writer",
+      "finding": "'Returns portal' is on the spec's does_not_know list but is used in the failure-patterns callout, the setting, the owner table and the Double Refund paragraph before the Request section defines it. The draft does give it later and no flow reader reported it, so this is minor.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on the declared puzzling scenario (a returned jacket whose arrival decides nothing), then figures, claim and roadmap; none of the weak patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion synthesises against the opening, separates established from context-dependent points and gives the author's rule; it neither opens with 'in conclusion' nor ends on a restated thesis alone.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "What to Take Away ¶1 joins the exchange's release, the January landscape's two writers and the daily match into one rule and says why it matters (returns closed in agreement, not by hand at month-end).",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "What to Take Away ¶1 returns to the hook's three questions (resellable, replacement reserved, money due) and names the owner and event behind each.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted the sections in order (setting and owners, step table, request through books with handoffs, marketplace and store variants, January 2027 replay, four failures with the Double Refund first), the evidence (Eva's exchange, company and NRF figures, vendor documentation, the directive) and the tone.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader names two writers and no key naming the return as the cause and plans one writer with read-only console access, the return id as idempotency key, the disposition as the only trigger, a daily match to credit notes and visible receipt/inspection/refund states; it omits webhook-driven money state, but the substance of the expected answer is there.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader explains why an edit leaves an invoice for a jacket the customer no longer has, describes the held order at the frozen €199 with €0 balance and committed unit released by the disposition, the −€199 credit note and +€199 invoice netting to zero, and that the M raises stock only on a resellable grade, never at the dock scan.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader gives the refund deadline of 3 May, the end of the withholding right on 20 April at the acceptance scan, the marketplace's policy with the OMS keyed on the marketplace's return id and 'refunded externally', and the store return recorded by the POS against the order, stock in the store and the refund to the original iDEAL payment through the OMS, not cash. It omits the 29 April withdrawal window, which the probe did not ask for.",
+      "severity": "major"
+    }
+  ]
+}

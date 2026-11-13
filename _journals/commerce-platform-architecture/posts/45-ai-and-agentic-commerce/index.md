@@ -26,15 +26,19 @@ logo: "assets/images/45-ai-and-agentic-commerce/logo.jpeg"
 <br>
 A shop can use AI to **recommend a jacket** or authorize it to **place an order for that jacket**. A shopper can ignore a recommendation. Placing the order can reserve stock and initiate a payment. Permissions and spending limits bound what the software may commit to; an accountable owner must be able to investigate and correct a mistaken action.
 
-This chapter compares those two uses of AI: **helping someone decide and carrying out the decision**. Both need reliable data. If the stock count is two hours old, an assistant may recommend a sold-out jacket; an agent may order it. The merchant still has to explain the cancellation to the customer. Before adding either, establish where product, price and stock answers come from, and who may change them.
+Software that helps someone decide is an **assistant**; software with tools and permission to carry out the decision is an **agent**. Both need reliable data. If the stock count is two hours old, an assistant may recommend a sold-out jacket; an agent may order it. The merchant still has to explain the cancellation to the customer. Before adding either, establish where product, price and stock answers come from, and who may change them.
 
-This chapter explains **agentic commerce**, software acting in a shopping or merchant workflow, and the interfaces and controls a merchant needs to support it. Deeper agent design appears in [[tool-ecosystems-and-mcp]], [[side-effects-and-external-actions]] and [[agent-identity-and-least-privilege]].
+**Where we are in the order's journey.** An assistant and an agent can both appear in the order's journey. A shopper might ask an assistant for a waterproof jacket under €200, delivered by Thursday. Authorized software might then place the order or request an exchange later. Each step needs current product facts, a clear permission and a confirmed result.
 
-**Where we are in the order's journey.** A shopper might ask an assistant for a waterproof jacket under €200, delivered by Thursday. Authorized software might then place the order or request an exchange later. Each step needs current product facts, a clear permission and a confirmed result.
+Those permissions need owners. [[organizing-commerce-engineering]] gave every writer of a fact, whether a system, an integration or an app, a row on the ownership map and a named owner. AI assistants and agents are the newest actors that read and write the merchant's facts. This chapter explains **agentic commerce**, software acting in a shopping or merchant workflow, and what the systems and their owners must provide before an agent can buy. Deeper agent design appears in [[tool-ecosystems-and-mcp]], [[side-effects-and-external-actions]] and [[agent-identity-and-least-privilege]].
+
+The chapter's answer: AI in commerce is **two things with different permissions**. Assistants read and propose; agents act, and an agent that can create a cart, an order or a refund is a new writer of the merchant's facts. As of November 2026 no live consumer channel lets an agent complete a checkout for a European merchant. So a merchant first needs **correct product, availability, delivery-promise and order-status answers from one owner, by API**, and an identity and a policy for each agent.
+
+The chapter starts with Kestrel & Pine's agent test and then separates the two kinds of AI. It surveys what AI already does and what admin assistants may change, tells agentic commerce's fourteen months in date order, explains the protocols, and sets out Europe's rules. Then it lists what a merchant must have before an agent buys, places that list in the four scale stages, compares four postures, and shows W8, Kestrel & Pine's decision to make its data ready before any agent, and five ways agent work goes wrong. It ends by closing Part X. The evidence is dated vendor announcements, protocol specifications, EU law and Kestrel & Pine's test.
 
 ## Setting the Scene at Kestrel & Pine: The Agent Test
 
-Kestrel & Pine, the fictional outdoor brand, faces three requests in February 2027. Its agency offers a shopping assistant for **€60,000 to build and €2,500 monthly to run**, both illustrative assumptions. A board observer asks CEO Mara Lindqvist whether shoppers can find the brand in ChatGPT. The platform also enables an AI channel with checkout limited to US shoppers, an assumption modeled on the documented programs below.
+Kestrel & Pine, the fictional outdoor brand, faces three AI decisions in February 2027. Its agency offers a shopping assistant for **€60,000 to build and €2,500 monthly to run**, both illustrative assumptions. A board observer asks CEO Mara Lindqvist whether shoppers can find the brand in ChatGPT. And the platform vendor has switched on an AI channel by default, with checkout limited to US shoppers, an assumption modeled on the documented programs below.
 
 Head of Engineering Noor Visser tests the underlying data before judging the proposals. She asks five product questions about the Ridgewalker women's M in moss at two moments: the Black Friday oversell at 20:00 on 27 November 2026 and Eva's order at 21:14 on 13 April 2027.
 
@@ -44,15 +48,15 @@ The existing platform, **warehouse management system (WMS)** and returns portal 
 | --- | --- | --- | --- |
 | What is it? | The platform's product record; the waterproof rating only in a spreadsheet | Partly: no rating, three copies of the description | Same |
 | Is it in stock? | The platform's stock copy, up to two hours behind the WMS | **No**: sold out at 19:40; the copies said yes until about 20:30 (storefronts) and 21:35 (marketplaces) | Yes, by luck |
-| When will it arrive? | A sentence in the theme: "ordered before 22:00, delivered tomorrow" | **No**: the WMS queue was four hours behind | **No**: the 21:00 wave had gone; delivered Thursday, not Wednesday |
+| When will it arrive? | A sentence in the storefront theme: "ordered before 22:00, delivered tomorrow" | **No**: the WMS queue was four hours behind | **No**: the warehouse's 21:00 picking wave had gone; delivered Thursday, not Wednesday |
 | What does it cost delivered, can I return it? | Price in the platform; policies in page text | Price yes; policies not machine-readable | Same |
-| Where is my order, can I exchange it? | Platform, WMS via the iPaaS, returns portal: no single answer | The Three-Status Order was two weeks away | Mostly, for one parcel |
+| Where is my order, can I exchange it? | Platform, WMS via the iPaaS, returns portal: no single answer | Partly: three systems, no single answer (the Three-Status Order followed in December) | Mostly: right for a one-parcel order |
 
 Two of five answers were wrong on the Oversell night, one on an ordinary evening, and none came from a system that owned the fact. **An agent would not have fixed any of this; it would have broadcast it.** Noor's memo ended with one line, which became Waypoint decision **W8**: agent readiness, not agents. The agency's assistant was declined; the vendor's AI channel stayed on for discovery only.
 
 ## Two Kinds of AI, and Why the Difference Is Architectural
 
-In plain words: A **model** is software trained on data to produce an output from an input: a ranking, a sentence, a score. A **large language model** (LLM) is a model trained on text that can read and write natural language, which is what makes chat assistants possible. An **assistant** is an LLM wrapped in a product that helps a person. An **agent** is an assistant that has been given tools and permission to use them: it can call an API that creates a cart, places an order or changes a stock figure. **Agentic commerce** is the business term for agents that discover, compare and buy on a shopper's behalf, inside a chat product or a marketplace app.
+Noor's test needs exact terms. In plain words: A **model** is software trained on data to produce an output from an input: a ranking, a sentence, a score. A **large language model** (LLM) is a model trained on text that can read and write natural language, which is what makes chat assistants possible. An **assistant** is an LLM wrapped in a product that helps a person. An **agent** is an assistant that has been given tools and permission to use them: it can call an API that creates a cart, places an order or changes a stock figure. **Agentic commerce** is the business term for agents that discover, compare and buy on a shopper's behalf, inside a chat product or a marketplace app.
 
 The architectural question is **which actions the software is allowed to carry out**, whatever the vendor calls it. Drafting a description differs from publishing it; suggesting a refund differs from sending the money. [[boundaries-and-systems-of-record]] assigns authority over those facts, and [[organizing-commerce-engineering]] assigns accountable owners. Use the same permission checks as other integrations so an agent cannot bypass a stock or payment limit. Record its actions so the owner can explain and correct a mistaken commitment.
 
@@ -61,7 +65,7 @@ The architectural question is **which actions the software is allowed to carry o
 
 ## What AI Already Does in Commerce
 
-AI already supports several everyday commerce jobs. The first five uses below help merchants run the shop; the last describes how shoppers reach it.
+AI already supports several everyday commerce jobs, and all of them are assistant work: they read and propose. The first five run inside the merchant's own shop; the sixth brings shoppers in from AI assistants outside it.
 
 ### Search and recommendations
 
@@ -73,7 +77,7 @@ Amazon described its purchase-pattern recommender in 2003. Its 2019 history repo
 
 Content tools turn product facts or rough notes into draft titles, descriptions and translations, reducing repetitive writing. Someone must check the draft against the product facts before publication; fluent text can still describe the wrong material or feature.
 
-Amazon reported more than 100,000 sellers using its listing tools in September 2023. Save reviewed text in the authoritative product record so every channel publishes the same approved description ([[product-information]]).
+Amazon reported more than 100,000 sellers using its listing tools in September 2023, which shows adoption, not accuracy. Save reviewed text in the authoritative product record so every channel publishes the same approved description ([[product-information]]).
 
 ### Customer service bots
 
@@ -85,7 +89,7 @@ In February 2024, Klarna reported 2.3 million bot conversations in its first mon
 
 Fraud models estimate whether a payment is suspicious. The merchant or its **payment service provider (PSP)** uses that assessment to accept it, request another check or reject it. The tradeoff is catching fraudulent purchases while letting legitimate customers pay.
 
-Stripe's Radar page claims a "32% average reduction in fraud" without publishing accuracy or false-positive rates. That figure alone cannot show how often genuine purchases are blocked. Authorized shopping agents also require bot defenses to distinguish permitted automation from abuse ([[commerce-security]]).
+Stripe's Radar page claims a "32% average reduction in fraud" without publishing accuracy or false-positive rates. That figure alone cannot show how often genuine purchases are blocked ([[commerce-security]]).
 
 ### Demand forecasting
 
@@ -105,30 +109,30 @@ Across these uses, the merchant still needs reliable product, price, stock and o
 
 An admin assistant helps merchant staff inspect records and propose changes, such as a customer segment or a discount. When it can apply those changes, it becomes another writer to the merchant's systems. Shopify announced Sidekick in July 2023 and said on 21 May 2025 that it could run reports, create segments, filter orders and set up discount codes "with the merchant's approval"; its help page (accessed November 2026) describes it editing orders and presenting changes for review before applying them, and its Fall 2026 edition claims daily sessions up 4.2 times year on year, a vendor figure. Shopware (June 2026) and Salesforce (July 2026) followed with their own admin agents.
 
-Three things are the same across all of them: **the assistant acts through the platform's own APIs and permission model**; **every vendor describes a draft-and-review step**; and **the assistant's reach ends where the platform's data ends** (Sidekick cannot see Kestrel & Pine's WMS unless an app exposes it). The review step is a vendor default today and a setting someone can switch off; a merchandiser who lets an assistant "clean up" inventory has recreated the App That Wrote Stock. One writer per fact, and an assistant is not it ([[human-oversight-and-bounded-autonomy]]).
+Three things are the same across all of them: **the assistant acts through the platform's own APIs and permission model**; **every vendor describes a draft-and-review step**; and **the assistant's reach ends where the platform's data ends** (Sidekick cannot see Kestrel & Pine's WMS unless an app exposes it). The review step is a vendor default today and a setting someone can switch off; a merchandiser who lets an assistant "clean up" inventory has recreated the App That Wrote Stock, the March 2026 incident in which two systems wrote one stock figure. One writer per fact, and an assistant is not it ([[human-oversight-and-bounded-autonomy]]).
 
 ## Agentic Commerce: Fourteen Months, Told in Order
 
-On **16 September 2025** Google announced the **Agent Payments Protocol** (AP2) with more than 60 organizations, built on signed **mandates**: an intent mandate (what the user asked for, with price limits) and a cart mandate (an unchangeable record of the exact items and price). On **29 September 2025** Stripe and OpenAI launched **Instant Checkout** in ChatGPT: US users could buy from US Etsy sellers inside the chat, under the **Agentic Commerce Protocol** (ACP), with a payment token scoped to one merchant and one cart.
+Admin assistants work inside the merchant's own systems. Agentic commerce puts agents outside them, finding and buying for shoppers. On **16 September 2025** Google announced the **Agent Payments Protocol** (AP2) with more than 60 organizations, built on signed **mandates**: an intent mandate (what the user asked for, with price limits) and a cart mandate (an unchangeable record of the exact items and price). On **29 September 2025** Stripe and OpenAI launched **Instant Checkout** in ChatGPT: US users could buy from US Etsy sellers inside the chat, under the **Agentic Commerce Protocol** (ACP), a published checkout contract explained in the next section, with a payment token scoped to one merchant and one cart.
 
-On **11 January 2026** Google and Shopify announced the **Universal Commerce Protocol** (UCP), co-developed with Etsy, Wayfair, Target and Walmart, with checkout in Google's AI Mode and Gemini app for US shoppers.
+On **11 January 2026** Google and Shopify announced the **Universal Commerce Protocol** (UCP), a second such contract, co-developed with Etsy, Wayfair, Target and Walmart, with checkout in Google's AI Mode and Gemini app for US shoppers. Shopify later replaced its own agent interface, Storefront MCP (May 2025, built on MCP, the tool-calling standard explained below), with UCP endpoints.
 
 On **6 March 2026** OpenAI said it was "evolving how we approach commerce in ChatGPT", and on 12 March that Instant Checkout "is moving to Apps"; ChatGPT became a discovery channel with checkout on the merchant's own storefront. On **3 November 2026** Zalando announced Zalando Extended, with its own agent planned to check out at a pilot partner in 2027.
 
-In fourteen months the flagship in-chat checkout launched and retreated, three protocols appeared, Shopify replaced its own agent interface (Storefront MCP, May 2025) with UCP endpoints, and no party published a transaction count. **This is the most volatile part of the book, and the reason the chapter is dated to the day.**
+In fourteen months the flagship in-chat checkout launched and retreated, three protocols appeared, Shopify swapped its own agent interface for UCP, and no party published a transaction count. **This is the most volatile part of the book, and the reason the chapter is dated to the day.**
 
-Two shapes exist as of November 2026, and the difference decides what a merchant needs.
+Those fourteen months left two shapes of agentic commerce as of November 2026, and the difference decides what a merchant needs.
 
 ![Diagram: Discovery with hand-off needs only a correct feed and a stable product URL](assets/images/45-ai-and-agentic-commerce/fig01-discovery-hand-off-needs-only-correct.jpeg)
 **Figure 2:** *Discovery with hand-off needs only a correct feed and a stable product URL; checkout inside the channel needs cart, checkout, order and payment-token APIs and an identity for the agent.*
 
-**Discovery with hand-off.** The agent finds and shows the product; the shopper pays on the merchant's checkout, in an in-app browser or a new tab. The merchant needs a correct, fresh **product feed** (a machine-readable export of the catalog: identifier, title, description, URL, image, brand, price, availability, shipping, returns) and nothing else new. This is where a European merchant can be in 2026.
+**Discovery with hand-off.** The agent finds and shows the product; the shopper pays on the merchant's checkout, in an in-app browser or a new tab. The merchant needs a correct, fresh **product feed** (a machine-readable export of the catalog: identifier, title, description, URL, image, brand, price, availability, shipping, returns) and nothing else new. This is where a European merchant can be in 2026, as the Europe section explains.
 
-**Checkout inside the channel.** The agent builds the cart and pays, with the merchant remaining the **seller of record** (the party that legally sells, collects VAT and owes the withdrawal right). Google's AI Mode and Gemini, Copilot and Meta's Muse work this way, for shoppers in the United States, with Canada and Australia announced. The merchant needs cart, checkout, order and payment APIs, plus a way to know which agent is calling.
+**Checkout inside the channel.** The agent builds the cart and pays, with the merchant remaining the **seller of record** (the party that legally sells, collects VAT and owes the withdrawal right). AI assistants such as Google's AI Mode and Gemini, Copilot and Meta's Muse work this way, for shoppers in the United States, with Canada and Australia announced. The merchant needs cart, checkout, order and payment APIs, plus a way to know which agent is calling.
 
 ## The Protocols in Plain Words
 
-A **commerce protocol** is a published contract (feed, cart, checkout, order, payment token) that lets any agent talk to any merchant without a bespoke integration, as EDI lets any retailer send any supplier an order ([[edi-and-e-invoicing]]). Four names recur, in layers.
+A **commerce protocol** is a published contract (feed, cart, checkout, order, payment token) that lets any agent talk to any merchant without a bespoke integration, as EDI lets any retailer send any supplier an order ([[edi-and-e-invoicing]]). Four protocol names recur, in layers, and a fifth layer, agent identity, sits under them.
 
 ![Layers of an agent purchase: tool calls, commerce operations, payment authorization and processing, and caller identity.](assets/images/45-ai-and-agentic-commerce/fig02-mcp-carries-calls-ucp-or-acp.jpeg)
 **Figure 3:** *MCP exposes tools; UCP or ACP define commerce operations. AP2 can record payment authority, while payment providers and networks process the money. Request signatures identify the caller; buyer authentication is a separate step.*
@@ -143,13 +147,11 @@ A **commerce protocol** is a published contract (feed, cart, checkout, order, pa
 
 **AP2 (Agent Payments Protocol)** provides signed mandates recording what the shopper authorized. UCP can use it through an optional extension. AP2 does not itself process the charge; the merchant still needs a payment provider.
 
-**Agent identity** The merchant needs to identify the calling application, limit its permissions and connect each action to an accountable owner.
-
-is the layer the others assume. Cloudflare proposed **Web Bot Auth** in May 2025: an agent signs each HTTP request and publishes its keys at a well-known address, because "user agent headers alone are easily spoofed". It is now an IETF working-group draft (29 October 2026) and underpins Visa's Trusted Agent Protocol and Mastercard's Agent Pay; Shopify's agent profiles work the same way, where "higher trust tiers unlock broader access, including direct checkout completion". Amazon, which sued Perplexity in November 2025 over its shopping agent, insists third-party agents "operate openly" ([[case-amazon]]; the identity model is in [[agent-identity-and-least-privilege]]).
+**Agent identity** is the layer the others assume: the merchant needs to identify the calling application, limit its permissions and connect each action to an accountable owner. Cloudflare proposed **Web Bot Auth** in May 2025: an agent signs each HTTP request and publishes its keys at a well-known address, because "user agent headers alone are easily spoofed". It is now an IETF working-group draft (29 October 2026) and underpins Visa's Trusted Agent Protocol and Mastercard's Agent Pay; Shopify's agent profiles work the same way, with **trust tiers** (levels of access for an identified agent), where "higher trust tiers unlock broader access, including direct checkout completion". Amazon, which sued Perplexity in November 2025 over its shopping agent, insists third-party agents "operate openly" ([[case-amazon]]; the identity model is in [[agent-identity-and-least-privilege]]).
 
 ### Status as of 7 November 2026
 
-Every row is volatile; re-check the primary source before relying on it.
+The table below gives the status of these layers and of programs built on them, some missing from the timeline. Every row is volatile; re-check the primary source before relying on it. Read the table for its shape: **no protocol is governed by a standards body, no checkout program has published volumes, and the only live European transactions are pilots with the shopper present.**
 
 | Protocol or program (owner) | Launched | Status on 7 November 2026 | Buyer markets |
 | --- | --- | --- | --- |
@@ -159,15 +161,14 @@ Every row is volatile; re-check the primary source before relying on it.
 | UCP (council: Google, Shopify, Stripe, two seats open) | 11 Jan 2026 | Published specification 2026-08-25; "hundreds of thousands" of merchants enabled | US; Canada and Australia "early next year"; UK later; EU not mentioned |
 | Shopify Agentic Storefronts | 10 Dec 2025 | Live; ChatGPT discovery only; direct checkout in Google, Copilot, Meta; Storefront MCP replaced by UCP endpoints; checkout needs signed requests | ChatGPT: must sell to US; Google: US, Canada, Australia |
 | Visa Intelligent Commerce and TAP; Mastercard Agent Pay | Apr and Oct 2025 | EU pilots with the shopper authenticating each purchase (Visa July 2026; Mastercard June 2026) | Pilot |
-| Worldline, ING, Mastercard | 2 Jun 2026 | One production pilot transaction (Netherlands) | Pilot |
-| Zalando Extended | 3 Nov 2026 | Partner products in the app (Westwing pilot); agent checkout planned 2027 | Zalando markets |
+| Worldline (payment processor), ING (bank), Mastercard | 2 Jun 2026 | One production pilot transaction (Netherlands) | Pilot |
+| Zalando Extended | 3 Nov 2026 | Partner products in the app (pilot with Westwing, a retailer); agent checkout planned 2027 | Zalando markets |
 | Web Bot Auth (IETF working group) | May 2025; draft -01 29 Oct 2026 | Internet-Draft; deployed by Cloudflare, Visa, Mastercard | n/a |
 
-Read the table for its shape: **no protocol is governed by a standards body, no checkout program has published volumes, and the only live European transactions are pilots with the shopper present.**
 
 ## Europe: The Shopper Still Authenticates the Cart
 
-**Strong customer authentication.** Under PSD2's technical standards (Delegated Regulation 2018/389, in force since September 2019), a remote electronic payment needs **SCA**: two of knowledge, possession and inherence (something you know, have, are), **dynamically linked** to one amount and one payee: "any change to the amount or the payee results in the invalidation of the authentication code". None of the exemptions was written for a delegated purchase whose amount is unknown when the shopper delegates.
+The pilots keep the shopper present for a reason. **Strong customer authentication.** Under the technical standards of PSD2, the EU's second Payment Services Directive (Delegated Regulation 2018/389, in force since September 2019), a remote electronic payment needs **SCA**: two of knowledge, possession and inherence (something you know, have, are), **dynamically linked** to one amount and one payee: "any change to the amount or the payee results in the invalidation of the authentication code". None of the exemptions (cases in which SCA may be skipped) was written for a delegated purchase whose amount is unknown when the shopper delegates.
 
 That is why the European pilots authenticate at the moment of purchase: Worldline and ING's June 2026 transaction completed "only after the consumer explicitly approved it", and Visa's July 2026 pilot authenticated every purchase with a **passkey** (a device-bound credential, usually unlocked by a fingerprint or face, that counts as possession plus inherence).
 
@@ -178,15 +179,11 @@ The consequence for architecture is small and strict. **The cart the agent build
 ![Diagram: A European agent purchase as the 2026 pilots shaped it](assets/images/45-ai-and-agentic-commerce/fig03-european-agent-purchase-2026-pilots-shaped.jpeg)
 **Figure 4:** *A European agent purchase as the 2026 pilots shaped it: the agent builds the cart, the merchant finalizes price and promise, the shopper authenticates that exact cart, and the order carries the agent's identity for service and disputes.*
 
-**The AI Act.** Transparency concerns whether shoppers recognize an automated interaction and can identify generated content.
+**The AI Act.** The AI Act adds a second constraint. Transparency concerns whether shoppers recognize an automated interaction and can identify generated content. Regulation 2024/1689 applies generally from 2 August 2026. Its Article 50 is the live obligation for commerce: an AI system that interacts with people must tell them so "unless this is obvious", and generated content must be marked as artificial in a machine-readable way. Search and recommendations are not high-risk uses ([[commerce-regulation]]).
 
-Regulation 2024/1689 applies generally from 2 August 2026. Its Article 50 is the live obligation for commerce: an AI system that interacts with people must tell them so "unless this is obvious", and generated content must be marked as artificial in a machine-readable way. Search and recommendations are not high-risk uses ([[commerce-regulation]]).
+**Consumer law.** Delegated buying raises a responsibility question: which terms did the customer authorize, and who answers when the agent acts outside them? A CERRE issue paper of July 2026 argues that EU consumer law "implicitly assumes" a human makes the purchase decision; every protocol treats the agent as the consumer's instrument, a working assumption, not settled law.
 
-**Consumer law.** Delegated buying raises a responsibility question: which terms did the customer authorize, and who answers when the agent acts outside them?
-
-A CERRE issue paper of July 2026 argues that EU consumer law "implicitly assumes" a human makes the purchase decision; every protocol treats the agent as the consumer's instrument, a working assumption, not settled law.
-
-**For a Dutch, Belgian or German merchant in November 2026, no live consumer channel lets an agent complete a checkout**: ChatGPT has no in-chat checkout anywhere; Google's covers the US, Canada and Australia; Copilot, Meta, Perplexity and Amazon are US-centered; the card-network pilots authenticate the shopper each time; Zalando's agent checkout is planned for 2027. The realistic 2026–2027 work is feed quality, discovery presence, and payment-side readiness through the PSP and the card networks.
+Together, these rules mean that **for a Dutch, Belgian or German merchant in November 2026, no live consumer channel lets an agent complete a checkout**: ChatGPT has no in-chat checkout anywhere; Google's covers the US, Canada and Australia; Copilot, Meta, Perplexity and Amazon are US-centered; the card-network pilots authenticate the shopper each time; Zalando's agent checkout is planned for 2027. The realistic 2026–2027 work is feed quality, discovery presence, and payment-side readiness through the PSP and the card networks.
 
 ## What a Merchant Must Have Before an Agent Can Buy
 
@@ -196,7 +193,7 @@ Agent readiness means the five facts an agent asks for are correct, owned by one
 | --- | --- | --- | --- | --- | --- |
 | Product: title, attributes, GTIN (the barcode number), images, policies | The PIM (W3), published to platform, connector and feed | Hours; feed rebuilt at every publication | One version everywhere; a review state for generated text | Lookup under about 300 ms | Feed served from a cache, never from the PIM |
 | Availability per channel | The availability service (W1), from WMS stock events | Minutes (Shopify lets agents cache price and availability for at most 15 minutes) | Available-to-promise with a buffer, not a copy of on-hand stock | Under about 200 ms | Degrade to "check at checkout", never to a stale yes |
-| Delivery promise | The promise service (planned 2028) | Per request | The same answer to storefront, marketplaces and agent | Under about 300 ms | Fall back to a conservative lane table |
+| Delivery promise | The promise service (a first version May 2027; the API in 2028) | Per request | The same answer to storefront, marketplaces and agent | Under about 300 ms | Fall back to a conservative lane table |
 | Price and policy: price, VAT, shipping, returns | The platform's price list ([[pricing-architecture]]); policies as structured fields | Minutes; ACP asks for a feed update "when a sale starts or ends" | Checkout price equals feed price | Feed | Feed |
 | Order status, returns, refunds | The OMS (W2), with the returns portal | Seconds after a shipment event | One state model for every channel | Under about 500 ms | Read model served from the OMS, not the WMS |
 
@@ -204,9 +201,20 @@ Three observations carry the design. **The feed is most of the work, and you may
 
 To the list add **an identity and a policy for every agent**: verified agents distinguished from scrapers at the CDN (content delivery network, the edge layer in front of the storefront) or platform level, an allowed set of actions per agent (read the catalog; build a cart; complete checkout only at a trust tier the merchant chose), and no agent writing stock, prices or orders directly. And add **an "agentic" marker on the order** so service, fraud review and consumer-law disclosure can treat the channel on its own terms.
 
+## Across Scale Stages: When It Fits and When It Limits
+
+The readiness list does not change with scale; who assembles it does: the platform at the Starting stage, the merchant across PIM, OMS, WMS and PSP at the Omnichannel stage, a shared service at the Group stage.
+
+| Stage | Typical AI use | What becomes necessary | Warning signs |
+| --- | --- | --- | --- |
+| **Starting** (under about €2M) | The platform's built-in search and assistant; one feed to Google Merchant Center; the PSP's fraud scoring | A correct feed with GTINs and fresh price and stock; multi-factor authentication on the admin; the AI channel for discovery only | Product text edited in three places; the assistant given write permissions "to save time" |
+| **Growing** (€2M–€20M) | A hosted search service; reviewed generated descriptions; the platform's agent channel; a bot on the platform's inbox | Feeds from one product owner, refreshed in minutes; structured return and shipping policies | The feed publishes the ERP's hourly stock copy; a repricing app with no floor; the bot cannot read shipment events |
+| **Omnichannel** (€20M–€200M; Kestrel & Pine) | AI search shared by storefront and store staff; a bot in front of the OMS and returns portal; forecasting fed by stock events; admin assistants with review | Availability and the computed promise by API; order status by API on the OMS; an agent policy (identity, allowed actions, no writes); an "agentic" order attribute; AI Act disclosure on every bot | Agent and storefront show different availability; agent orders canceled for stock the warehouse never had; "auto-apply" switched on by a team |
+| **Group** (over about €200M or several brands) | A shared discovery platform with per-brand indexes; one order-status contract; an agent gateway per brand on one implementation | Per-brand feeds, identities and markets; one payment and disclosure policy per market; a key inventory for every agent credential | Brands implementing protocols separately; agent orders unattributable to a brand; one credential shared across brands |
+
 ## The Choices and Their Trade-offs
 
-Four realistic postures exist, and they are cumulative: a correct feed; the platform's agent channel, where the vendor carries the protocol churn but sells the platform's view of availability; an agent gateway with adapters over the merchant's own services, so a protocol change is a mapping change; and your own shopping agent, which competes with the largest technology companies for attention with none of their reach. If OpenAI found owning the checkout hard enough to retreat, a fourteen-person team should not volunteer.
+On top of that list, a merchant chooses a posture. Four realistic postures exist, and they are cumulative: a correct feed; the platform's agent channel, where the vendor carries the protocol churn but sells the platform's view of availability; an agent gateway with adapters over the merchant's own services, so a protocol change is a mapping change; and your own shopping agent, which competes with the largest technology companies for attention with none of their reach. If OpenAI found owning the checkout hard enough to retreat, a fourteen-person team should not volunteer.
 
 ![Diagram: The low-regret design](assets/images/45-ai-and-agentic-commerce/fig04-low-regret-design-adapters-per-channel.jpeg)
 **Figure 5:** *The low-regret design: adapters per channel over one internal commerce API, so a protocol that changes or disappears costs a mapping, not a rebuild, and every channel reads the same availability and promise.*
@@ -218,18 +226,7 @@ Four realistic postures exist, and they are cumulative: a correct feed; the plat
 | Agent gateway over own services | Adapters per protocol over one internal API; identity at the edge | Your OMS, PIM, availability and promise being right | Omnichannel with Waypoint-grade services; Group | You carry protocol churn; worthless over copies |
 | Own shopping agent | An LLM product with tools and a checkout | Model vendors, every fact above, and shoppers choosing you | Rarely; perhaps a Group with a destination app | The Giant's Boots |
 
-I would hold a merchant at the first two postures until a protocol has stable governance, a European checkout program with published volumes exists, and the merchant's own availability and order truth are better than the platform's copy; revisit in mid-2027. **What not to build yet**: a consumer-facing shopping agent; three protocols natively in the storefront; agent authentication from scratch; any agent or assistant that writes stock, prices or orders directly; any promise through an agent that the storefront cannot keep.
-
-## Across Scale Stages: When It Fits and When It Limits
-
-| Stage | Typical AI use | What becomes necessary | Warning signs |
-| --- | --- | --- | --- |
-| **Starting** (under about €2M) | The platform's built-in search and assistant; one feed to Google Merchant Center; the PSP's fraud scoring | A correct feed with GTINs and fresh price and stock; multi-factor authentication on the admin; the AI channel for discovery only | Product text edited in three places; the assistant given write permissions "to save time" |
-| **Growing** (€2M–€20M) | A hosted search service; reviewed generated descriptions; the platform's agent channel; a bot on the platform's inbox | Feeds from one product owner, refreshed in minutes; structured return and shipping policies | The feed publishes the ERP's hourly stock copy; a repricing app with no floor; the bot cannot read shipment events |
-| **Omnichannel** (€20M–€200M; Kestrel & Pine) | AI search shared by storefront and store staff; a bot in front of the OMS and returns portal; forecasting fed by stock events; admin assistants with review | Availability and the computed promise by API; order status by API on the OMS; an agent policy (identity, allowed actions, no writes); an "agentic" order attribute; AI Act disclosure on every bot | Agent and storefront show different availability; agent orders canceled for stock the warehouse never had; "auto-apply" switched on by a team |
-| **Group** (over about €200M or several brands) | A shared discovery platform with per-brand indexes; one order-status contract; an agent gateway per brand on one implementation | Per-brand feeds, identities and markets; one payment and disclosure policy per market; a key inventory for every agent credential | Brands implementing protocols separately; agent orders unattributable to a brand; one credential shared across brands |
-
-The readiness list does not change with scale; who assembles it does: the platform at the Starting stage, the merchant across PIM, OMS, WMS and PSP at the Omnichannel stage, a shared service at the Group stage.
+The author would hold a merchant at the first two postures until a protocol has stable governance, a European checkout program with published volumes exists, and the merchant's own availability and order truth are better than the platform's copy; revisit in mid-2027. **What not to build yet**: a consumer-facing shopping agent; three protocols natively in the storefront; agent authentication from scratch; any agent or assistant that writes stock, prices or orders directly; any promise through an agent that the storefront cannot keep.
 
 ## In Practice: Waypoint's W8 at Kestrel & Pine
 
@@ -240,18 +237,18 @@ W8 is written as prerequisites with owners and dates, and a sentence about what 
 | Product data from one owner, including the attributes shoppers search for (the Ridgewalker's 20,000 mm waterproof rating lived only in a spreadsheet) | Teun Baas, through the PIM (W3) | Q3 2027: the DE storefront in August, NL/BE and the connector in September | One feed per market from the PIM, with structured shipping and return policies |
 | Availability per channel from WMS stock events, with buffers | Daniel Okafor and Ruben Alves, through the availability service (W1) | Q4 2027 | An availability endpoint; feed availability refreshed every 10 minutes *(assumption)* |
 | A computed delivery promise | Noor Visser; the May 2027 promise service (transit table plus WMS cut-off and backlog), the promise API in 2028 | 2028 | The same date the storefront shows |
-| Order status, returns and refunds by API | The Fulfil and Return team, on the OMS (W2) | Q4 2027, after D2C orders route through the OMS on 13 October | One customer-scoped endpoint, used first by the service tool and the order page |
-| An agent policy | Milan Petrov (business), Ruben Alves (technical) | April 2027 | Verified agents may read the catalog; checkout only on the storefront in 2027; no agent or assistant holds a write scope on stock, prices or orders; every agent credential on the ownership map |
+| Order status, returns and refunds by API | The Fulfil and Return team, on the OMS (W2) | Q4 2027, after D2C orders route through the OMS on 13 October 2027 | One customer-scoped endpoint, used first by the service tool and the order page |
+| An agent policy | Milan Petrov (business), Ruben Alves (technical) | April 2027 | Verified agents may read the catalog; checkout only on the storefront in 2027; no agent or assistant holds a write scope (permission to change) on stock, prices or orders; every agent credential on the ownership map |
 | AI disclosure | The Buy team | April 2027 (Article 50 has applied since 2 August 2026) | The service chat says it is automated; generated images are marked |
 
-The policy line cost nothing and mattered most: W8 extends the ownership map of [[organizing-commerce-engineering]] to agents by a single rule: **an agent is an integration**, with a row, an owner, a contract, a pinned API version and a reconciliation. The agency's admin-assistant trial in June 2027 ran under that rule, with auto-apply disabled and every change reviewed; it drafted 1,400 product descriptions for the autumn season, about 60% accepted unchanged, and could not touch stock *(illustrative)*. What W8 does **not** do is also recorded: no storefront shopping agent, no in-channel checkout and no custom protocol work in 2027; the gateway posture is the 2028 plan if a European checkout program exists by then. Mara's answer to the board observer: "We will be the merchant whose answers are right when the agents arrive."
+The policy line cost nothing and mattered most: W8 extends the ownership map of [[organizing-commerce-engineering]] to agents by a single rule: **an agent is an integration**, with a row, an owner, a contract, a pinned API version (one fixed version, changed only on purpose) and a reconciliation. In June 2027 the agency also ran a trial of an admin assistant, a different product from the declined shopping assistant, under that rule, with auto-apply disabled and every change reviewed; it drafted about 1,400 product descriptions for the autumn season, about 60% accepted unchanged, and could not touch stock *(illustrative)*. What W8 does **not** do is also recorded: no storefront shopping agent, no in-channel checkout and no custom protocol work in 2027; the gateway posture is the 2028 plan if a European checkout program exists by then. Mara's answer to the board observer: "We will be the merchant whose answers are right when the agents arrive."
 
 ![An ownership ledger where a robot agent gets its own row with an owner, a contract and a pinned version, like every integration.](assets/images/45-ai-and-agentic-commerce/45-agent-is-an-integration.jpeg)
 **Figure 6:** *Waypoint's W8 rule: an agent is an integration, with a row on the ownership map, an owner, a contract, a pinned API version and a reconciliation.*
 
 ## When It Goes Wrong
 
-**The assistant with a write scope.** A merchandiser enables auto-apply on an admin assistant to "fix negative stock" before a campaign; the assistant sets quantities in the platform while the WMS feed also sets them. This is the App That Wrote Stock, and the detection is the same: the weekly WMS-to-platform reconciliation ([[events-consistency-and-reconciliation]]) and a rule that no assistant credential holds an inventory write scope. Recovery: revoke, overwrite from the system of record, add the credential to the ownership map.
+Without W8's rules, agent work fails in five recurring ways. **The assistant with a write scope.** A merchandiser enables auto-apply on an admin assistant to "fix negative stock" before a campaign; the assistant sets quantities in the platform while the WMS feed also sets them. This is the App That Wrote Stock, and the detection is the same: the weekly WMS-to-platform reconciliation ([[events-consistency-and-reconciliation]]) and a rule that no assistant credential holds an inventory write scope. Recovery: revoke, overwrite from the system of record, add the credential to the ownership map.
 
 **The stale feed.** The feed is rebuilt nightly from the platform's stock copy; a product sells out at 19:40 and every agent shows it in stock until morning. Detection: a feed-freshness monitor (the age of the last price and stock update per market) and rising agent cancellations. Recovery: availability in the feed from the availability service, refreshed in minutes, and "check at checkout" when the service is down.
 
@@ -262,6 +259,8 @@ The policy line cost nothing and mattered most: W8 extends the ownership map of 
 **The protocol pulled back.** A channel you built against disappears or changes its terms within a year, as Instant Checkout did in six months and Shopify's Storefront MCP within twelve: the Pulled Rug of [[api-contracts-and-versioning]] at protocol scale. Remedy: adapters over one internal API and a contract card per channel.
 
 ## What to Take Away
+
+The jacket an assistant recommends and the jacket an agent orders need the same five answers, and at Kestrel & Pine two were wrong on the Oversell night. The protocols changed within months; the answers did not. So the work that pays under any protocol is the readiness list: each fact from one owner, by API, and every agent admitted as an integration with no write scope on stock, prices or orders.
 
 **Established.**
 - AI in commerce has two kinds: assistants that read and propose (Amazon 2003 and 2019, Zalando 2023 and 2026, Klarna 2024 and 2025) and agents that act. The second adds a writer, and every writer needs an owner.
@@ -275,7 +274,7 @@ The policy line cost nothing and mattered most: W8 extends the ownership map of 
 - How much an admin assistant may apply without review depends on the fact: generated descriptions with a review state, freely; discounts and segments, with approval; stock, prices and refunds, never.
 
 **The author's synthesis.**
-- Agent readiness is the same program as fixing the Phantom Stock and Schrödinger's Order: one owner per fact, availability and promise computed rather than copied, order status from one record. A merchant that does that work is ready for whichever protocol survives; one that chases protocols without it broadcasts its drift.
+- Agent readiness is the same program as fixing the Phantom Stock and Schrödinger's Order (three systems giving three different order statuses): one owner per fact, availability and promise computed rather than copied, order status from one record. A merchant that does that work is ready for whichever protocol survives; one that chases protocols without it broadcasts its drift.
 - Treat every agent as an integration: a row on the ownership map, an identity, a contract, a pinned version, a reconciliation; the Secret Agent is a governance failure first.
 - For a European merchant in 2027 the honest plan is feed, discovery, payment-side readiness through the PSP, and a review in mid-2027; anything more is the Giant's Boots, worn early.
 
@@ -290,7 +289,13 @@ The policy line cost nothing and mattered most: W8 extends the ownership map of 
 7. Do our bots say they are AI, and are generated product images and text marked?
 8. Which vendor has published a transaction volume for its agent channel, and when will we re-check the protocol table?
 
-Part X ends here, with the newest kind of actor asking the oldest question in the book: who may make which promise, and which system has to keep it. Part XI tests the argument against the public record of real companies, starting with the platform that serves millions of merchants on one codebase. Continue with [[part-11]].
+## Closing Part X
+
+This chapter also closes Part X. The part opened with a merchant that adds a store, a channel or a brand: its systems still run, but now they must share stock and coordinate orders in ways they were never designed for. Its five chapters look like decisions about vendors, projects, growth, people and AI. At Kestrel & Pine each came down to the same act: naming which system or person owns a fact or a join, and when that changes. W4, stay and surround, kept the shop platform and took ownership of the joins. The PIM and the OMS moved in one seam at a time. The stage map traced eight of the ten incidents to Growing-stage designs still running. The ownership map gave most unowned integrations an owner. W8 gave the agent a row on that map and no write scope.
+
+A merchant facing its next change of shape can test any proposal, whether a new platform, a reorganization or an agent, with two questions before comparing products: which fact's owner does this change, and has the shape of the business changed enough to make it due? Kestrel & Pine's answers cost about €1.33 million over 2027–2029 instead of the about €3.2 million of a composable rebuild, and each decision carries a date on which it is reviewed. Before your next change of shape, apply both questions by writing two tables for your own landscape. The first is a stage map that says which stage each system was bought for and marks the leftovers to retire. The second is an ownership map with a named owner and one writer per fact for every system, integration, app and agent. Date each decision record for review at the next transition.
+
+Part X ends with the newest kind of actor asking the oldest question in the book: who may make which promise, and which system has to keep it. So far the book has made its argument with a fictional merchant and dated examples. Part XI reads four real cases in full against that argument, starting with the platform that serves millions of merchants on one codebase. Continue with [[part-11]].
 
 ## Sources and Evidence
 

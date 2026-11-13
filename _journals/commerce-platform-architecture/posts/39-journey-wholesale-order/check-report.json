@@ -1,0 +1,674 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/39-journey-wholesale-order/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/39-journey-wholesale-order/index.md",
+  "spec_sha": "1058edd8ead683eb",
+  "draft_sha": "3a20cafbd79197c1",
+  "run_at": "2026-11-13T01:08:07+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter preview: trace the reorder from order to paid invoice, despatch advice as the money-loser",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Key points: wholesale as contractual document exchange, each document owned by its own system, payment as a matched bank transfer",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: Pulled Rug, Lynchpin, Message in a Bottle",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "A physically correct delivery can be penalized when its EDI records disagree",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Wholesale is a quarter of Kestrel & Pine revenue with large orders, so errors cost a lot",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "How a business buyer's journey differs from the consumer journeys while core jobs stay the same",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Bergzicht's 240-unit commitment competes with Eva's consumer order for the same stock",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "Thesis: each document must be written by the system that knows the fact it states",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Introduction ¶6",
+      "summary": "Roadmap of the chapter's sections and its evidence base",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "The Order, the Setting and the Rules of This Walk ¶1",
+      "summary": "Profile of the buyer Bergzicht Outdoor and the people involved",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "The Order, the Setting and the Rules of This Walk ¶2",
+      "summary": "The ORDERS message: 240 units, 18 SKUs, €19,860",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "The Order, the Setting and the Rules of This Walk ¶3",
+      "summary": "Timeline of pallets, despatch advice, delivery, invoice and due date",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "The Order, the Setting and the Rules of This Walk ¶4",
+      "summary": "The walk replays the order on the late-2027 target architecture (W1-W3, W6) versus the January landscape it actually ran on",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "The Order, the Setting and the Rules of This Walk ¶5",
+      "summary": "Table of the six EDI messages in EDIFACT and X12 and their source systems",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "The Order, the Setting and the Rules of This Walk ¶6",
+      "summary": "The three GS1 identifiers GTIN, GLN and SSCC and what each identifies",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "The Order, the Setting and the Rules of This Walk ¶7",
+      "summary": "A compliant despatch advice needs a warehouse system that labels and reports each pallet",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Fifteen Steps in One Table ¶1",
+      "summary": "Fifteen-step table of the reorder from ORDERS to matched payment",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Fifteen Steps in One Table ¶2",
+      "summary": "Rows 10 and 11 are the focus: documents about goods written by systems that may not have touched them",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "ORDERS In: From Message to Order Record ¶1",
+      "summary": "The order arrives via a VAN (vs AS2) and CONTRL only confirms parsing, not acceptance",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "ORDERS In: From Message to Order Record ¶2",
+      "summary": "Per-partner mapping and the EDI partner card that replaces the consultant's knowledge",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "ORDERS In: From Message to Order Record ¶3",
+      "summary": "OMS validation of items, contract prices and credit against ERP data",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "ORDERS In: From Message to Order Record ¶4",
+      "summary": "The order record is created and owned in the OMS with typed NET 30 terms",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "ORDERS In: From Message to Order Record ¶5",
+      "summary": "Idempotent creation keyed on GLN plus PO number prevents duplicate orders",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "ORDERS In: From Message to Order Record ¶6",
+      "summary": "The ORDRSP as the first promise, backed by the availability service",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Allocation: Whose Stock Is It? ¶1",
+      "summary": "Wholesale stock is allocated days ahead while other channels sell from the same shelves",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Allocation: Whose Stock Is It? ¶2",
+      "summary": "The availability service updates every channel's available-to-promise at once, unlike the laggy January setup",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Allocation: Whose Stock Is It? ¶3",
+      "summary": "Two B2B rules: pre-season allocations for large accounts / shortfalls negotiated rather than canceled",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Pick to Pallet, Label and Despatch Advice: The Document That Costs Money ¶1",
+      "summary": "The OMS sends the WMS a wholesale fulfillment order run as a pallet wave",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Pick to Pallet, Label and Despatch Advice: The Document That Costs Money ¶2",
+      "summary": "W6 rule one: the WMS generates SSCC labels from pallets as actually packed",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Pick to Pallet, Label and Despatch Advice: The Document That Costs Money ¶3",
+      "summary": "W6 rule two: the DESADV is written from the WMS pack confirmation and sent before departure",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Pick to Pallet, Label and Despatch Advice: The Document That Costs Money ¶4",
+      "summary": "Jumbo's published rules show buyers refuse or fine deliveries lacking correct DESADV and SSCC",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Pick to Pallet, Label and Despatch Advice: The Document That Costs Money ¶5",
+      "summary": "bol and Walmart have similar compliance rules, and Bergzicht's fictional terms follow suit",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Pick to Pallet, Label and Despatch Advice: The Document That Costs Money ¶6",
+      "summary": "Delivery and SSCC-scan receiving at Zwolle, with no receiving advice returned",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Invoice, Terms and the Money Thirty Days Later ¶1",
+      "summary": "The ERP issues an immutable invoice from shipped lines with legal elements and amounts",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Invoice, Terms and the Money Thirty Days Later ¶2",
+      "summary": "The buyer's four-way match pays mismatched lines short via coded deductions",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Invoice, Terms and the Money Thirty Days Later ¶3",
+      "summary": "Revenue recognized at delivery and the sale held as a credit-risk receivable",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Invoice, Terms and the Money Thirty Days Later ¶4",
+      "summary": "Payment by SEPA transfer requires cash application / late payment triggers dunning and order holds",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "The Variant: A Belgian Shop's Peppol Invoice ¶1",
+      "summary": "Variant setup: a Belgian shop's B2B portal order following the consumer-like path to the invoice",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "The Variant: A Belgian Shop's Peppol Invoice ¶2",
+      "summary": "Belgium's 2026 structured e-invoice mandate and Kestrel & Pine's choice to comply anyway",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "The Variant: A Belgian Shop's Peppol Invoice ¶3",
+      "summary": "Plain explanation of Peppol access points and the BIS Billing 3.0 / EN 16931 format",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "The Variant: A Belgian Shop's Peppol Invoice ¶4",
+      "summary": "The Belgian invoice differs in reverse-charge VAT / and in network transmission as a tracked invoice state",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "The Variant: A Belgian Shop's Peppol Invoice ¶5",
+      "summary": "German and EU ViDA e-invoicing timelines; the invoice owner stays the same",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "What Each Handoff Requires ¶1",
+      "summary": "Table of freshness, consistency, latency and availability needs per wholesale handoff",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "What Each Handoff Requires ¶2",
+      "summary": "The DESADV handoff has zero tolerance; the safe failure is holding the truck",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "The Same Order in January 2027 ¶1",
+      "summary": "Side-by-side comparison of the order on the January landscape versus the target design",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "The Failure Path: The ASN Chargeback ¶1",
+      "summary": "The January path caused the €14,200 ASN Chargeback in Q3 2026",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "The Failure Path: The ASN Chargeback ¶2",
+      "summary": "Cause: the ERP generated the DESADV before packing while the WMS printed different labels",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "The Failure Path: The ASN Chargeback ¶3",
+      "summary": "The resulting mismatches triggered fees across nine deliveries; W6 is the fix",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "The Failure Path: The ASN Chargeback ¶4",
+      "summary": "Nobody noticed because finance, sales and warehouse views never joined, embodying the Lynchpin and Pulled Rug",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "The Failure Path: The ASN Chargeback ¶5",
+      "summary": "Detection in the target: partner scorecard, negative-acknowledgement alarm, short-payment cases",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "The Failure Path: The ASN Chargeback ¶6",
+      "summary": "Disputing deductions needs W6's evidence, which was missing for the €14,200",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "The Failure Path: The ASN Chargeback ¶7",
+      "summary": "Residual DESADV failure modes after W6 and their fixes",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "When It Goes Wrong Along This Path ¶1",
+      "summary": "Five other recurring wholesale failures with detection and recovery",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "When It Goes Wrong Along This Path ¶2",
+      "summary": "All recoveries reduce to Hohpe's write-off, retry or compensating action",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "Synthesis: penalties follow documents written by systems that did not see the fact",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "Established facts: buyer-defined EDI penalties, GS1 identifier roles, invoicing and e-invoicing rules",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "Context-dependent choices: OMS vs ERP for EDI, AS2 vs network, optional Peppol",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "Author's view: the packer writes the DESADV / every partner needs a partner card",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Eight diagnostic questions on order ownership, DESADV, partners, deductions and e-invoicing",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Hand-off to the next journey: the November 2026 peak-day sellout",
+      "matched_spec_paragraph": "p57"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 57 prose units' outline summaries match the controlling idea of the aligned spec paragraph (p01-p57) in spec order; the three introduction callouts match no spec paragraph and are recorded as null. The four units marked two_ideas join ideas their spec paragraphs join.",
+      "criterion": "AC-5",
+      "severity": "blocker"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "draft_locus": "Allocation: Whose Stock Is It? ¶3",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "finding": "Marked two_ideas, but p24 itself declares 'Two B2B rules follow': allocations for large accounts and shortfalls negotiated in the ORDRSP.",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "draft_locus": "Invoice, Terms and the Money Thirty Days Later ¶4",
+      "spec_locus": "/sections/5/paragraphs/3",
+      "finding": "Marked two_ideas, but p34 joins the transfer, cash application, reminders and the order hold as one step: the money coming back and the work it takes.",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "draft_locus": "The Variant: A Belgian Shop's Peppol Invoice ¶4",
+      "spec_locus": "/sections/6/paragraphs/3",
+      "finding": "Marked two_ideas, but p38 declares the same invoice differing in two ways (VAT and transport, with transmission as a state).",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "draft_locus": "What to Take Away ¶4",
+      "spec_locus": "/conclusion/paragraphs/3",
+      "finding": "Marked two_ideas, but p55 joins 'whatever packs the pallet writes the DESADV' and the partner card as the author's synthesis.",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit ties to S1-S5 or is a framing unit the spec declares (hook, context, thesis, roadmap, setting, step table, conclusion lists, hand-off): documents and identifiers to S1; ORDERS in and allocation to S2; despatch to S3; invoice and Peppol to S4; January comparison, chargeback and failures to S5. No orphan paragraph.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Each figure has a caption stating what it shows (Figures 1-5); each table is introduced or followed by a sentence saying what it shows (messages table: 'with the system each is generated from'; step table: 'Rows 10 and 11 are the ones the chapter is about'; Peppol table framed by 'the same invoice ... different in two ways' and 'the invoice's owner did not change'; handoff table followed by the DESADV-row paragraph; January table introduced by 'the two paths differ in ...'). Quotations (GS1, SPS Commerce, Microsoft, Shopify, Jumbo, einvoice.belgium.be, Odoo, Manhattan) are each tied to the point they support.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/1/transition_in",
+      "draft_locus": "Introduction ¶2",
+      "quote": "Kestrel & Pine, the fictional outdoor brand, earns a quarter of its revenue from **1,100 wholesale accounts**.",
+      "finding": "Declared cause_effect at the start of this paragraph, carrying over 'records that must match for a delivery to be accepted' and introducing what a mismatch costs at Kestrel & Pine's volume. The paragraph opens on revenue facts with no link to the mismatched records of ¶1 (Figure 1 also sits between them); the cause_effect only appears in the last sentence ('can therefore turn a technical error into a substantial deduction').",
+      "fault": "draft",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other boundaries express the declared relationship and pick up the declared known information (e.g. p03 'Journeys 1 and 2 followed ... Here the buyer is a company', p05 'Both orders draw on the same shelves, but ... Which system should write each of them?', p14 'With the documents and identifiers named', p20 'Idempotency protects this step', allocation 'The ORDRSP could promise 9 April honestly because', p24 'Two B2B rules follow', p27 'The DESADV is written from that record', p28 'Why the buyer cares', peppol 'The invoice step has a variant', p41 'The DESADV row is the one with no tolerance', chargeback 'That January path ... produced', p47 'Three signals replace the silence', p49 'What can still go wrong after W6', p57 'a day that was not ordinary').",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both readers describe the declared organising principle (setup, step table, the walk in time order, the invoice variant, then handoffs, the January comparison, the chargeback and further failures) and say the roadmap announces it and the draft keeps to it; their lost-thread points are recorded as separate results. Points both raised but judged not faults for the declared audience: 'ASN' and the ASN Chargeback before the messages table (the audience knows the ASN Chargeback by name), W5, 'Growing' and The Phantom Stock (Waypoint decisions, scale stages and failure-pattern names are on already_knows); the January table restating the chargeback mechanism both called repetition, not confusion, and both rows are declared in the spec.",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "The Order, the Setting and the Rules of This Walk ¶4",
+      "quote": "In April 2027 the order actually ran through the January landscape: the systems as they stood in January 2027, unchanged since they ran through 2026.",
+      "finding": "Both readers had to re-read the setting paragraph: it moves among the April 2027 order, the late-2027 target (with an 8 December 2027 routing date inside it), the January 2027 landscape 'unchanged since 2026' and the Q3 2026 failure, and adds W1, W2, W3 and W6 in one breath. The spec's content is sound; the prose packs the time frames without sorting them (which is replayed, which is real, which is past).",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 4 (A item 4)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "**Where we are in the order's journey.** The order this chapter follows, from the retail chain Bergzicht Outdoor, commits **240 units at Duiven on 6 April 2027**.",
+      "finding": "Both readers took the lead-in 'Where we are in the order's journey' as a position in a journey not yet started (A wondered whether it meant a step in the table; B re-read to see which journey was meant); the paragraph is about wholesale and consumer orders sharing stock. A also notes Duiven and Eva arrive without a reminder.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 2 (A item 3)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Allocation: Whose Stock Is It? ¶1",
+      "quote": "The ORDRSP could promise 9 April honestly because the stock behind it was already held",
+      "finding": "Both readers stopped to rebuild Tuesday's order of events: the step table numbers the ORDRSP 6 and allocation 7, and the previous section ends on the afternoon ORDRSP, but this section says the stock was already held and 'The OMS commits Bergzicht's 240 units on Tuesday morning'. The section order is the spec's; the clash comes from the table's numbering and the prose's timing, which the draft can align (state that the commitment precedes the response, or renumber).",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 12 (A item 9)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Allocation: Whose Stock Is It? ¶3",
+      "quote": "here the word is wider than this order's allocation",
+      "finding": "Both readers re-read this clause to see that 'allocation' was now used in a second, broader sense; the note on the word gets in the way of the rule.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 14 (A item 10)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "Pick to Pallet, Label and Despatch Advice: The Document That Costs Money ¶3",
+      "quote": "*(the day is an assumption; the scenario fixes only \"at pack confirmation\")*",
+      "finding": "Both readers found this author's note mid-walk: the step table had stated Thursday 8 April as fact, and the aside made them doubt the timeline.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 15 (A item 11)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "ORDERS In: From Message to Order Record ¶3",
+      "quote": "because the ERP owns B2B terms: Microsoft's documentation for its Business Central-to-Shopify connector (October 2026) states",
+      "finding": "Both readers lost the point of the Prices bullet: it turns from a validation check into a claim about who owns B2B terms backed by a vendor connector quotation (A re-read to recover 'the OMS checks the price against the ERP's contract list'; B wondered whether Kestrel & Pine runs Business Central and Shopify, and notes the bullet dwarfs Items and Credit). The spec asks for the quotation; the draft does not say what it shows for Kestrel & Pine.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 11 (A item 8)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "ORDERS In: From Message to Order Record ¶4",
+      "quote": "Shopify's Admin API (version 2026-10), for example, defines `NET` as",
+      "finding": "Both readers named the Shopify NET citation as a further vendor detour (A: NET 30 was already explained in the table; B: it reads as out of place since the text never says which platform Kestrel & Pine runs).",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 11 (A item 8)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "The Variant: A Belgian Shop's Peppol Invoice ¶2",
+      "quote": "Whether the obligation reaches a Dutch supplier without a Belgian establishment is not settled by the sources this book has read.",
+      "finding": "Both readers paused here: the hedge reads as research notes and left them unsure whether the mandate applies to Kestrel & Pine until 'either way' settles it. The spec asks for the open point; the wording ('the sources this book has read') obscures it.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 18 (A item 13)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6",
+      "draft_locus": "The Variant: A Belgian Shop's Peppol Invoice ¶1",
+      "quote": "The invoice step has a variant, because not every wholesale customer is a chain with an EDI mailbox.",
+      "finding": "Both readers stumbled on the variant's placement: A felt the step back from the money (which reads like the end of the walk) to the invoice, with a new customer, date and country, as a jump; B found the handoff section's place after the Belgian detour unclear ('I had to reload the Bergzicht path'). Both proposed moving the variant (A: between the invoice and the money, or after the failures; B: after the handoffs). The prose already signals both turns ('The invoice step has a variant', 'Back to Bergzicht's order'), so the difficulty comes from the declared section order, which the spec's flow rationale fixes deliberately.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item 17 (A item 13)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/6",
+      "draft_locus": "The Failure Path: The ASN Chargeback ¶7",
+      "quote": "And the next guideline revision, which the partner card's change contact now receives.",
+      "finding": "Both readers met two failure lists back to back ('What can still go wrong after W6' and 'Beyond the ASN path, five failures recur'), in different shapes, and checked whether the second repeated the first; the guideline revision appears in both. Both proposed one merged list. The duplication and the adjacency are in the spec itself (p49 lists 'the next guideline revision', p50 lists 'the guideline revision'), and the draft may not merge units.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item 21 (A item 17)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/1",
+      "draft_locus": "When It Goes Wrong Along This Path ¶2",
+      "quote": "Gregor Hohpe's 2004 Starbucks essay names the three recoveries all of these reduce to: write-off, retry, or compensating action.",
+      "finding": "Reader B could not map the guideline revision or the order change onto the three recoveries, so 'all of these reduce to' did not land.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/4",
+      "draft_locus": "Introduction ¶5",
+      "quote": "The order fails where a document is written by a system that did not see the fact it states.",
+      "finding": "Reader B heard the main claim three times (KEY POINTS, this paragraph, the roadmap) before the walk began and nearly skimmed past the roadmap.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/5",
+      "draft_locus": "Introduction ¶6",
+      "quote": "compares the same order on the January 2027 landscape (the systems that had already run through 2026)",
+      "finding": "Reader B stopped at the parenthesis: why does a January 2027 landscape describe 2026 systems?",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/5",
+      "draft_locus": "The Order, the Setting and the Rules of This Walk ¶6",
+      "quote": "the **SSCC** (Serial Shipping Container Code) says *this pallet*, an 18-digit serial number",
+      "finding": "Reader B read the identifiers sentence twice: one sentence carries three definitions, a release number and two quotations.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "The Order, the Setting and the Rules of This Walk ¶5",
+      "quote": "in the UN/EDIFACT standard most European retail uses (as a GS1 subset called EANCOM)",
+      "finding": "Reader B re-read to see that EANCOM is the European variant and X12 the North American one.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/3",
+      "draft_locus": "The Failure Path: The ASN Chargeback ¶4",
+      "quote": "**The Pulled Rug** was the risk of a contract nobody tracked",
+      "finding": "Reader A re-read this paragraph: two new names at once and a Pulled Rug sentence that chains three clauses with an aside.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/4",
+      "draft_locus": "Pick to Pallet, Label and Despatch Advice: The Document That Costs Money ¶5",
+      "quote": "Walmart's on-time-in-full program carried a 3% non-compliance fee at its 2017 introduction (trade press, dated)",
+      "finding": "Reader B found '(trade press, dated)' cryptic.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Fifteen Steps in One Table ¶1",
+      "quote": "the iPaaS, per the Bergzicht partner card",
+      "finding": "'Partner card' is on audience.does_not_know; before the step table it is only named ('one EDI partner card per trading partner' in the setting) and it is explained two sections later in ORDERS In ¶2, so the table's row 3 relies on it before the reader knows what it holds.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, item 7 (also B item 8)",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "The other does_not_know terms are given where first used or before: ORDERS, CONTRL, ORDRSP, DESADV, INVOIC, RECADV (messages table), GLN and SSCC (identifiers paragraph), VAN (step table gloss and ORDERS In ¶1), AS2, mapping and message implementation guideline, allocation, four-way match, receivable, cash application and dunning (Invoice ¶3-¶4), Peppol, access point, four-corner model, EN 16931, UBL, BIS Billing 3.0, reverse charge and VIES. Terms flow readers flagged that are on already_knows are not counted: the ASN Chargeback, iPaaS, W5, 'Growing', The Phantom Stock.",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on a puzzling scenario (a correct delivery penalized when records disagree), bridges to Kestrel & Pine's wholesale stakes and the contrast with Journeys 1 and 2, states the claim and gives a roadmap; none of placeholder, restated question, dictionary, 'dawn of man' or book report.",
+      "criterion": "no_weak_introduction_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion opens with the callback, synthesizes the late-2027 walk against the Q3 2026 loss, sorts established / depends on context / the author's synthesis, ends on questions and a hand-off; no 'in conclusion', no new subtopic, no body evidence.",
+      "criterion": "no_weak_conclusion_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "'the penalty follows a document written by a system that did not see the fact it states' joins the late-2027 walk, the €14,200 loss and the Peppol variant, which no single section does; the so-what follows: 'A supplier that asks of each document which system writes it, and whether that system saw the fact, finds its deductions before the buyer's receiving does.'",
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "'The chapter opened with a correct delivery that can still be held up or penalized. Bergzicht's reorder shows why' returns to the hook named in callback.to and names the record and the system at fault.",
+      "criterion": "conclusion_calls_back_to_introduction",
+      "severity": "major"
+    },
+    {
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro-only reader predicted the claim (each document written by the system that knows its fact, the despatch advice where money is lost), every section in order (order and setting, documents and identifiers, fifteen-step table, order in, allocation with Eva's shared stock, packing and despatch advice, invoice and payment, the Belgian e-invoice variant, handoffs, the January 2027 comparison, the €14,200 ASN Chargeback, five more failures), the evidence (replayed worked example, GS1, retailers' conditions, Belgian/German/EU e-invoicing rules) and a practical declarative tone. It omits the 1,100 accounts and fourteen-times order size, a minor detail.",
+      "criterion": "AC-4",
+      "severity": "major"
+    },
+    {
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader named the despatch advice written by the ERP at release from the order rather than the pack, the mismatched SSCC scans forcing manual counts and fees; why unseen (short payments on correct invoices, finance/wholesale/warehouse views never joined, one consultant reading the mapping, nobody owning the conditions); and the fix: WMS prints the SSCC and sends the DESADV from the pack confirmation before the truck leaves (truck waits), partner card with guideline version, contacts and owner, compliance scorecard, alarm on negative acknowledgements, a case per short payment with invoice, DESADV and deduction code.",
+      "criterion": "AC-1",
+      "severity": "major"
+    },
+    {
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader answered: CONTRL means parsed, not accepted; prices checked against the ERP's contract list and the mismatch answered in the ORDRSP because an unexpected price becomes a short payment; the order created once in the OMS with channel EDI and the shared number family, not the portal or the ERP; the redelivery does nothing because creation is keyed on GLN plus PO number. It does not mention the GTIN and credit checks or the allocation committed in the availability service, but the probe's points (redelivery, price mismatch, portal habit) are fully covered.",
+      "criterion": "AC-2",
+      "severity": "major"
+    },
+    {
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader answered: the ERP still writes the invoice from what shipped; format becomes Peppol BIS Billing 3.0 (UBL, EN 16931) via access points in the four-corner model; 0% intra-EU with reverse charge after a VIES check; transmission becomes a state (sent, delivered, rejected) and a rejected e-invoice is not an invoice; Belgium has required Peppol between Belgian businesses since 1 January 2026, whether it reaches a Dutch supplier is not settled, and the customer's bookkeeping expects it either way. It omits the German, Dutch and ViDA calendar, context the expected answer adds beyond the probe's three questions.",
+      "criterion": "AC-3",
+      "severity": "major"
+    }
+  ]
+}

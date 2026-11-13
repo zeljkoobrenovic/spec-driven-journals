@@ -1,0 +1,1655 @@
+{
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "journey-consumer-order",
+  "journal": "commerce-platform-architecture",
+  "part": "part-9",
+  "title": "Journey 1: Eva's Jacket, From Search to Doorstep",
+  "status": "draft",
+  "revised": "2026-11-13",
+  "basis": "Reconstructed from the published chapter (posts/37-journey-consumer-order/index.md) and its former spec.md, whose Non-goals, Modalities, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (the thesis paragraph p03, the roadmap p04 and the conclusion's synthesis p55); these are listed under decision_log.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Which system owns each fact on a consumer order in the late-2027 design (the PIM the product, the platform's price list the price, the WMS physical stock, the availability service what may be sold per channel, the platform the cart and checkout, the PSP the payment, the OMS the order and its separate money, goods and return states, the WMS and the shipping service the parcel, PostNL the tracking events, the ERP the invoice and the ledger), and the fifteen steps from search to payout with the promise and the failure of each.",
+        "How iDEAL shapes the order (instant charge, auto-capture only, a refund as a new transfer, the outcome learned from an id-only webhook and a fetched status, retries over hours or days); why the invoice is issued by one numbering authority at dispatch and corrected only by credit note; why revenue is recognized at delivery under IFRS 15; and how a PSP payout is matched to orders through its reconciliation report.",
+        "The handoff requirements (freshness, consistency, latency, availability, style) for each join, and five failures with their detection and recovery: the duplicate order, the paid order never confirmed, the short pick, the lost parcel and the payout that does not match."
+      ],
+      "believe": [
+        "Eight systems holding a piece of one order is normal; a fact with two writers is the problem.",
+        "Every join delivers at least once and sometimes twice, late or not at all, so exactly-once is built by the receiver with a key and a reconciliation.",
+        "Finance can be batch; availability and the fulfillment order cannot."
+      ],
+      "can_do": [
+        "Trace an order through any merchant's landscape with a step table and name the system of record of each fact on it.",
+        "Name, for each handoff, the idempotency key, the delivery style and the reconciliation that catches what the messages miss."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a duplicated order and a paid order stuck as pending, the reader locates each at its handoff and names the key and the reconciliation that handle it, rather than blaming the platform or the payment provider.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A merchant's integration sends each new web order from its shop platform to its warehouse system. After an integration outage and replay, some customers receive two identical parcels; separately, a few orders paid by iDEAL still show 'payment pending' a day later, although the shoppers' banks show the money gone. Using only this chapter: what went wrong at which handoff, and what should be in place?",
+        "expected": "The order message was delivered twice and the receiver had no idempotency key: keyed on the order number, the second copy finds the existing order and does nothing, and a count of orders received against orders created shows duplicates harmlessly. The pending orders lost the PSP's webhook: the platform learns the outcome from the webhook, not from the shopper's browser, which may never return from the bank app; the webhook is a notification whose status is fetched from the API, retried for hours or days and then abandoned. A daily sweep lists checkouts with no terminal payment state within the method's expiry window, queries the PSP and marks them paid once. Delivery between systems is at least once; webhooks are a latency optimization over a reconciliation, never a replacement."
+      },
+      {
+        "id": "AC-2",
+        "statement": "The reader can assign the facts on an order to systems of record and say which handoffs may be batch.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Using only this chapter: for one online order, which system should own the product description, the price, physical stock, what may still be sold per channel, the order and its status, the payment and the invoice; and which handoffs may run as a daily batch and which may not?",
+        "expected": "The PIM owns the product; the platform's price list the consumer price; the WMS physical stock; the availability service what may be sold per channel (on-hand minus committed minus a buffer, fed by WMS stock events); the OMS the order, with separate money, goods and return states, because fulfilled is not delivered and paid is not invoiced; the PSP the payment, its reference stored on the order; the ERP the invoice, numbered gap-free at dispatch and corrected only by credit note. Copies are allowed, a second writer is not. Stock and the fulfillment order must be events, because an hour's delay is an oversell or a missed cut-off; invoice posting and payout matching should be a daily batch, because finance tolerates a day and gains a reconciliation count."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can say why a storefront's 'in stock' and delivery promise can be wrong while every system works, and what each should be computed from.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A storefront says 'ordered before 22:00, delivered tomorrow' and shows 'in stock' from a stock number copied from the warehouse through the ERP every hour. The warehouse's last pick wave is at 21:00. Using only this chapter: what does a shopper ordering at 21:14 on a Tuesday get, and what should the page be computed from?",
+        "expected": "A promise of Wednesday for a parcel picked Wednesday morning and delivered Thursday: the sentence ignores the warehouse's real cut-off, so a delivery-promise service should compute the date from the last wave, the carrier's collection and its lane, which gives Thursday. 'In stock' is a copy up to two hours old, the delay behind the Black Friday Oversell; it should be available-to-promise from an availability service fed by the WMS's stock events, seconds old, with a buffer per channel. Both are copies; what matters is how old they may be and who computes them."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "That Eva's purchase of a jacket and socks passes records between search, checkout, payment, warehouse, carrier and finance systems, and that a wrong stock answer or a late warehouse instruction can break the delivery promise even when checkout succeeds; that at about 293,000 orders a year a one-in-a-thousand failure reaches customers almost daily; that the walkthrough follows the order from search to the books, saying what each handoff must preserve and how a failure reaches the customer, as fifteen handoffs with one owner per promise and joins that deliver at least once; and that it shows where the same order would have gone wrong a year earlier. Evidence: Kestrel & Pine's replayed order, vendor documentation (Shopify, commercetools, Stripe, Mollie, Adyen, PostNL), official invoice and consumer rules, and IFRS 15."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ],
+    "audience": {
+      "who": "Readers new to commerce architecture; most of all the engineer or product manager who has read the capability chapters and now needs to see them as one path. The chapter is also written to be readable first, as a tour of the vocabulary, by a reader who starts here.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side; roughly what an API, a database and a queue are.",
+        "Kestrel & Pine, its people, its 2026 and January 2027 incidents in outline and the names of the sixteen failure patterns.",
+        "From Part I: the thirteen steps of an order, promise and handoff, the three status lines (money, goods, returns), 'system', 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, business models and the four scale stages, the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation, the Waypoint decisions W1 to W8.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+        "From Parts II and III: product, variant, SKU and GTIN with one owning system per attribute; prices frozen at order placement; promotions as data; available-to-promise (on hand minus committed minus allocations), one writer each for on hand and committed, per-channel buffers; checkout creating the order once with payment pending until the provider's signed message; authorization, capture, settlement and payout, refunds as new payments; one order record with three status lines; tax from three facts, one invoice per shipment, credit notes as the only correction, the monthly match of invoices, payouts and bank lines.",
+        "From Parts IV to VIII: warehouse, shipping, notifications, integration styles, events and reconciliation, API contracts, and the part introduction's four journeys with their shared reading device."
+      ],
+      "does_not_know": [
+        "Entity-owner table; delivery-promise service; pick wave; manifest; tracking event; WISMO.",
+        "iDEAL's capture-less behaviour; payout reconciliation report and the three-way match; revenue at delivery under IFRS 15."
+      ]
+    }
+  },
+  "thesis": {
+    "question": "What has to go right, in which system, for one consumer order to be found, paid, picked, delivered and booked?",
+    "claim": "One consumer order crosses about fifteen handoffs among eight systems, and each step's promise (product, price, stock, delivery day, payment, parcel, invoice) is kept by a different system from the one before. It goes right when every fact has one system of record and every handoff carries the order number as an idempotency key, runs on a style matched to its clock (events for stock and orders, a daily batch for finance) and has a reconciliation behind it.",
+    "disputed_by": "The view that a capable shop platform keeps an ordinary order on its own: its order record is the order, its webhooks and integrations deliver each message once, and every system added beside it is a further place for the order to go wrong.",
+    "so_what": "A merchant that accepts the claim reads its architecture by walking one order through it, counting writers rather than boxes, and puts a key and a reconciliation on every join before buying anything. Replayed through the late-2027 design, Eva's order #1072455 (21:14 on 13 April 2027, €235 by iDEAL, picked 14 April, delivered 15 April, invoiced net €194.21 plus €40.79 VAT) is promised Thursday and arrives Thursday, and its stock figure is seconds old. On the January 2027 landscape the same order was promised Wednesday by a static sentence, read stock up to two hours old and existed as three records with three statuses, the path on which the Three-Status Order of December 2026 showed Delivered, In picking and Not invoiced for six days and drew eleven tickets.",
+    "how_why": "The storefront answers from copies (a search index, an availability figure) and checkout only orchestrates calls to systems that own the facts, freezing the amounts it promises. The PSP reports the payment by webhook, which Mollie retries ten times over 26 hours and Stripe for up to three days without guaranteed order, so the order system fetches the status and keys creation on the order number. The warehouse confirms what it picked, the ERP numbers invoices gap-free at dispatch and corrects them only by credit note, and the PSP pays out in batches days later that contain hundreds of orders. Each system is right about its own fact on its own clock, so the order holds only if each join tolerates a repeated, late or missing message.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Eight systems each hold a piece of one consumer order, and that is normal: each fact (product, price, physical stock, sellable stock, order, payment, parcel, invoice) has exactly one system of record, and copies are allowed but a second writer is not."
+      },
+      {
+        "id": "S2",
+        "claim": "The order crosses about fifteen steps from search to payout, and each step's promise is kept by a different system from the one before, so the failures that reach the customer sit at the handoffs between them."
+      },
+      {
+        "id": "S3",
+        "claim": "Every join delivers at least once and sometimes twice, late or not at all, so the receiver makes a repeat harmless with the order number as its idempotency key and catches gaps with a reconciliation, and webhooks are a latency optimization over a sweep, never a replacement."
+      },
+      {
+        "id": "S4",
+        "claim": "Each handoff's style follows its clock: stock and the fulfillment order must move by event because an hour's delay is an oversell or a missed cut-off, while invoice posting and payouts should run as a daily batch because finance tolerates a day and gains a reconciliation count."
+      },
+      {
+        "id": "S5",
+        "claim": "Run through the January 2027 landscape on the same dates, the same order read stock up to two hours old, was promised Wednesday by a static sentence and existed as three records with three statuses, while every system did what it was built to do: the failures were in the joins."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Walks the recurring consumer order through every system of the late-2027 design with an entity–owner table, a step table and the handoff requirements, and compares the January 2027 path on the same dates.",
+    "supports": [
+      "P9-1",
+      "P9-5"
+    ]
+  },
+  "flow": {
+    "pattern": "chronological",
+    "additional_patterns": [
+      {
+        "pattern": "grouping",
+        "applies_to": "handoffs, january, wrong: the walk read back as requirements, a comparison and failures"
+      }
+    ],
+    "rationale": "The order's facts and owners come first because every step refers to them; the step table then gives the whole path, and the sections walk it in the order the order lives it (search, checkout and payment, the order record and the warehouse, transit, the books). Only after the reader has seen every join do the last three sections read the walk back: what each join requires, the same joins on the January 2027 landscape, and five failures with their detection. Moving the requirements or the failures before the walk would describe joins the reader has not met; moving the January comparison earlier would contrast a design the reader has not yet seen work."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "Eva Janssen buys a jacket and socks from Kestrel & Pine, a fictional outdoor brand. To deliver that simple purchase, search, checkout, payment, warehouse, carrier and finance systems must pass records to one another; a wrong stock answer or a late warehouse instruction can break the delivery promise even when checkout succeeds."
+    },
+    "bridge": {
+      "from_reader_world": "An online purchase that looks like one action to the shopper.",
+      "to_topic": "At 293,000 orders a year, the many systems behind it and what each handoff must preserve so that a one-in-a-thousand failure does not reach customers daily."
+    },
+    "thesis_statement": {
+      "text": "One consumer order crosses about fifteen handoffs among eight systems, each step's promise kept by a different system from the one before; it goes right when every fact has one system of record and every handoff carries the order number as an idempotency key, moves by event or daily batch as its clock requires, and has a reconciliation behind it.",
+      "placement": "KEY POINTS callout (bullets 1 to 3) and paragraph p03"
+    },
+    "roadmap": {
+      "placement": "Paragraph p04",
+      "promises": [
+        {
+          "promise": "Set out the order, the replay through the late-2027 design and the owner of each fact.",
+          "kept_in": [
+            "order"
+          ]
+        },
+        {
+          "promise": "Give the fifteen steps in one table.",
+          "kept_in": [
+            "steps"
+          ]
+        },
+        {
+          "promise": "Follow the order through search, checkout and payment, the order record and the warehouse, transit, and the money and the books.",
+          "kept_in": [
+            "buy",
+            "checkout",
+            "record",
+            "transit",
+            "money"
+          ]
+        },
+        {
+          "promise": "State what each handoff requires.",
+          "kept_in": [
+            "handoffs"
+          ]
+        },
+        {
+          "promise": "Run the same order through the January 2027 landscape.",
+          "kept_in": [
+            "january"
+          ]
+        },
+        {
+          "promise": "End with five failures and how each is caught.",
+          "kept_in": [
+            "wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Eva Janssen's purchase of a jacket and socks from Kestrel & Pine depends on search, checkout, payment, warehouse, carrier and finance systems passing records to one another, so a wrong stock answer or a late warehouse instruction can break the delivery promise even when checkout succeeds; following one order makes those dependencies visible.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Eva's purchase of a jacket and socks from a fictional outdoor brand.",
+            "shows": "The ordinary case the whole chapter follows; labelled fictional.",
+            "source": "Kestrel & Pine scenario ledger"
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "At Kestrel & Pine's 293,000 online orders a year, a failure in one order per thousand reaches customers almost daily; the company, figures, dates and systems are invented for teaching.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "statistic",
+            "what": "293,000 online D2C orders a year.",
+            "shows": "Turns one order's dependencies into a daily operational risk.",
+            "source": "Kestrel & Pine scenario ledger"
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "One order's dependencies on many systems.",
+          "introduces": "Why they matter at Kestrel & Pine's volume.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter's answer in short: the order crosses about fifteen handoffs among eight systems and each step's promise is kept by a different system from the one before, so it goes right only when every fact has one system of record and every handoff carries the order number as its key, moves by event or by daily batch as its clock requires, and has a reconciliation behind it.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "A failure rate that reaches customers daily.",
+          "introduces": "What has to go right, in which system, stated as the chapter's claim.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter first sets out the order, the replay and the owner of each fact, gives the fifteen steps in one table, and follows the order through search, checkout and payment, the order record and the warehouse, transit, and the money and the books; it then states what each handoff requires, runs the same order through the January 2027 landscape and ends with five failures and how each is caught, using the replayed order, vendor documentation and official rules as evidence.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The claim.",
+          "introduces": "The order in which the chapter argues it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "In the order's journey this chapter is the full purchase from search to the books; the next chapter follows the jacket back, and the first chapter gave a shorter overview.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "place",
+          "carries_over": "The chapter's plan.",
+          "introduces": "Where it sits among the book's walks of the same order.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "order",
+      "heading": "The Order, the Setting and the Rules of This Walk",
+      "controlling_idea": "The walk replays Eva's April 2027 order, with the ledger's dates and amounts, through the late-2027 Waypoint design, in which each fact on the order has one named system of record among eight systems.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Fixes the order, the design it runs through and the owner of each fact before the walk starts."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The order's facts come first, then the design it is replayed through and why the replay keeps the real dates, then the owners in that design; the walk needs all three, and the owner table cannot be read before the reader knows which design it describes."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The roadmap's first item: the order, the replay and the owner of each fact.",
+        "introduces": "The order itself.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "Eva's order #1072455: at 21:14 on Tuesday 13 April 2027 she buys a €199 Ridgewalker jacket and two €18 pairs of socks, €235 including VAT with free shipping, paid by iDEAL; Duiven picks and packs on 14 April and PostNL delivers on 15 April.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "21:14 on 13 April 2027; €199 jacket, M, moss; two pairs of socks at €18; €235 incl. VAT; iDEAL; picked 14 April; delivered 15 April.",
+              "shows": "The exact facts every later step must preserve.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The walk replays the order through the late-2027 design, in which Waypoint makes the WMS the owner of physical stock and adds an availability service (W1), an order management system (W2) and a product information management system (W3).",
+          "function": "context",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The order's facts.",
+            "introduces": "The design the order is walked through.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "None of the three was live for the real April order, which ran on the landscape Noor Visser found in January 2027 (storefront orders reach the OMS only from 13 October 2027), so the walk keeps her dates and amounts in the later design and a later section runs the same order through the January 2027 landscape.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "D2C orders through the OMS from 13 October 2027 (consistency ruling 4).",
+              "shows": "Why the walk is a replay and the original route needs its own section.",
+              "source": "_research/consistency-issues.md, ruling 4"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The late-2027 design.",
+            "introduces": "The fact that the real order ran before it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "An entity-owner table names, for each fact on the order, the system of record whose value is trusted when copies disagree, and the systems that hold copies.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Ten facts (product, price, physical stock, sellable stock, cart and checkout, payment, order, fulfillment order and parcel, tracking events, invoice and ledger) with their system of record in late 2027 and who holds copies.",
+              "shows": "Shows one owner per fact and many copies."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The replay's design.",
+            "introduces": "The owner of each fact in it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "Eight systems holding a piece of one order is the normal condition; the problem is a fact with two writers, and the table has none.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The entity-owner table.",
+            "introduces": "What to read from it: count writers, not systems.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "steps",
+      "heading": "Fifteen Steps in One Table",
+      "controlling_idea": "The whole journey fits one table of fifteen steps, each naming the system that performs it, the data that moves, the promise made, the failure that belongs to it and the owning chapter, and each step's promise has a different owner from the step before.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Shows the fifteen steps and that their owners change at every row."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The owners of each fact.",
+        "introduces": "The steps in which those owners act.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "controlling_idea": "The step table lays out the fifteen steps from search to payout with their system, data, promise made, possible failure and owning chapter; times within a day are illustrative and the ledger fixes the dates.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fifteen steps from search to invoice, revenue and payout, with system, data, promise made, what could fail and chapter.",
+              "shows": "The journey at a glance and a checklist a reader can use on another merchant's landscape."
+            }
+          ]
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Each row's promise has a different owner from the row above, which is why the joins between rows are where most of the book's failure patterns sit.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: the order in the late-2027 architecture, every arrow a handoff with one sender and one owner.",
+              "shows": "Shows the joins as the places where ownership changes."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The step table.",
+            "introduces": "What its promise column shows about where failures sit.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "buy",
+      "heading": "Before the Buy: Search, Product Page and \"In Stock\"",
+      "controlling_idea": "Before Eva buys, the storefront answers from copies, the search index built from the PIM and 'in stock' from the availability service, and how old each copy may be is the design question.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S4"
+        ],
+        "how": "Shows the first three promises with separate owners and the stock figure as a copy whose age is set by its delivery style."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "additional_patterns": [
+          {
+            "pattern": "assertion_evidence_reasoning",
+            "applies_to": "p15-p18: what 'in stock' means, how platforms expose it, why its delay matters, and the target design"
+          }
+        ],
+        "rationale": "Follows Eva's clicks: search, then the product page, then the size she selects; the stock question gets the most room because it is the costliest promise, so it is defined before the vendor evidence and the delay argument, and the target design comes last as the answer to that delay."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "Steps 1 to 3 of the table.",
+        "introduces": "Eva's search and product page at 21:02.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p13",
+          "controlling_idea": "The storefront searches a search index, a copy of the catalog rebuilt from the PIM on publication, so the first promise ('these products exist and match') belongs to the publication schedule that W5, Waypoint's integration standards, sets for products.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "W5: products move by scheduled publication.",
+              "shows": "Places the search promise with the PIM's publication, not with the storefront.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "The product page's next promises have different owners: what the jacket is comes from the PIM and what it costs from the shop platform's NL price list, and the October 2026 Price Drift, nine days of the German storefront selling at €179, shows what a silent copy costs.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Price Drift, October 2026: €179 on the German storefront for nine days while the other channels charged €199.",
+              "shows": "A copy that disagreed silently with its owner.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The search result.",
+            "introduces": "The product page Eva opens.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "'In stock' is available-to-promise for the NL channel: the units that may still be promised, computed as on-hand minus units committed to orders minus the merchant's buffer, per location and per channel.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The product page's promises.",
+            "introduces": "The stock promise and what it is computed from.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Platforms expose the same quantities: Shopify separates on_hand, committed and available per location, and commercetools documents an availability figure that lags reservations by up to ten seconds.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify inventory documentation (on_hand, committed, available); commercetools Inventory documentation ('eventually consistent', up to 10 seconds), both n.d., accessed 2026-11.",
+              "shows": "The definition is how vendors model stock, and even a vendor's copy lags."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The definition of available-to-promise.",
+            "introduces": "How two platforms document it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Even a ten-second lag can sell the last unit of a hot SKU twice during a launch, so the buffer and the reservation path are design decisions.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The ten-second consistency window.",
+            "introduces": "Why a lag is a design decision.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "In the target design the WMS sends a stock event for every change, the availability service subtracts commitments and the one-unit buffer and publishes availability per channel, and the storefront only reads it, so the moss M's 23 available is a copy seconds old instead of the January 2027 copy up to two hours old.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "23 available for NL at 21:05 (assumption); storefront buffer one unit per SKU.",
+              "shows": "Gives the stock answer a concrete value the later steps change.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "fact",
+              "what": "January 2027 stock sync chain: up to two hours, behind the Black Friday Oversell.",
+              "shows": "The age the target design removes.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "A lag that can oversell.",
+            "introduces": "How the target design keeps the copy seconds old.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "checkout",
+      "heading": "Checkout: Six Promises Under a Clock",
+      "controlling_idea": "Checkout orchestrates calls to the systems that own each fact, computes the delivery promise from the warehouse's real cut-off and freezes the amounts it promises, and the iDEAL payment's outcome reaches the order from a webhook and a fetched status, not from Eva's browser.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Shows checkout as orchestration of other systems' promises and the payment join as one that may deliver late, twice or not at all."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Cart, then the six checkout steps in the order Eva meets them, then the payment step unpacked, then the order's creation; the payment needs the checkout's sequence before its own detour can be placed."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "The stock answer Eva sees at 21:05.",
+        "introduces": "Her cart at 21:09 and the checkout that follows.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "controlling_idea": "A cart is a draft that reserves and promises nothing; most carts are abandoned (Baymard's 70.22% average), and because the shop platform reserves stock at order creation, an abandoned cart costs only a lost sale.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Baymard Institute's average of fifty studies: 70.22% cart abandonment (updated 28 October 2026).",
+              "shows": "Most carts never become orders, so reserving at add-to-cart would lock stock for nothing."
+            }
+          ]
+        },
+        {
+          "id": "p20",
+          "form": "list",
+          "controlling_idea": "Checkout is a roughly ninety-second orchestration of six steps (identity, address, delivery option and promise, price review, payment, confirmation), each a call to a system that owns the fact; the delivery-promise service knows Duiven's last pick wave at 21:00, so the 21:14 order is promised Thursday 15 April, the day it arrives.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Duiven's last pick wave 21:00, PostNL collection 22:30 (consistency ruling 15).",
+              "shows": "Why a computed promise says Thursday where the static rule said tomorrow.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "fact",
+              "what": "€199 + 2 x €18 = €235, free shipping above €75, frozen on the order.",
+              "shows": "The price becomes a promise the invoice must match."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The cart as a draft.",
+            "introduces": "Checkout, which turns it into promises.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "None of these calls should be patched into the checkout's markup: Shopify retired checkout.liquid for the main checkout pages on 13 August 2024, and the decision to stay on the shop platform (W4) depends on keeping the checkout uncustomized.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify changelog, 13 February 2023: checkout.liquid stops working for the main checkout pages on 13 August 2024.",
+              "shows": "A dated case of checkout customizations being withdrawn by the vendor."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: checkout as six promises under a clock, each tied to an outside system.",
+              "shows": "Shows that the platform orchestrates promises it does not own, which is why the calls belong outside its markup."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Checkout as orchestration of other systems.",
+            "introduces": "Where those calls must not live.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The payment method Eva chooses matters because the money's state machine differs by method, and the order system must model the one it is given rather than a generic 'paid'.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The six checkout steps, payment among them.",
+            "introduces": "The payment step in detail.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "form": "list",
+          "controlling_idea": "iDEAL is a bank-initiated transfer with an instant charge and auto-capture only, so there is no separate capture and a refund is a new transfer, the shopper may never return from her bank app, and the PSP's webhook is only a notification whose status is fetched and which is retried for hours or days.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Dutch Payments Association: 1.47 billion iDEAL payments worth €141 billion in 2024 (18 February 2025).",
+              "shows": "iDEAL is the normal Dutch online payment, not an edge case."
+            },
+            {
+              "kind": "source",
+              "what": "Mollie iDEAL and webhook documentation (instant charge, auto-capture only, 15-minute session, id-only webhook, ten retries over 26 hours); Stripe fulfillment and webhook guides (do not rely on the landing page; retries for up to three days, no guaranteed order).",
+              "shows": "The order learns the payment from the provider, late or repeated, never from the browser."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Payment methods have different state machines.",
+            "introduces": "iDEAL's and its three consequences.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "At 21:14 the shop platform creates #1072455 with the payment pending and shows the confirmation, then marks the order paid when the webhook arrives and the fetched status confirms it, and sends the confirmation e-mail.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Order created with the payment pending, marked paid from the fetched webhook status seconds later.",
+              "shows": "Applies the three consequences to Eva's order.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "iDEAL's consequences.",
+            "introduces": "What happens to Eva's order at 21:14.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "record",
+      "heading": "The Order Becomes a Record: Platform to OMS to WMS",
+      "controlling_idea": "From 21:14 the OMS owns the order with one state model, keyed on the order number, and gives the warehouse only a fulfillment order; the WMS confirms what it picked and the shipping service turns the parcel into a manifested label.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3"
+        ],
+        "how": "Shows the order's ownership passing to the OMS, the order number making a repeated message harmless, and the warehouse owning the parcel."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Follows the order from the platform's event at 21:14 through the commitment and the fulfillment order to Wednesday's pick, label and evening collection; each step needs the previous one's record to exist."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "The order created and paid at 21:14.",
+        "introduces": "Who owns it from that moment.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p25",
+          "controlling_idea": "From 21:14 the order belongs to the OMS, the handoff that Waypoint's W2 was created to fix.",
+          "function": "claim"
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "The shop platform's 'order placed' event reaches the OMS through the iPaaS, and the OMS keeps one state model for every channel with separate money, goods and return states, because fulfilled never means delivered and paid never means invoiced.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify and commercetools order models, n.d., accessed 2026-11: separate payment and fulfillment states on one order.",
+              "shows": "The three-state record follows how vendors model orders."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The OMS owns the order.",
+            "introduces": "What the event carries and how the OMS records it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "The order number is the idempotency key: a second copy of the event finds the existing order and does nothing, which matters because webhooks arrive more than once and out of order; W5 makes this a standard.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Shopify: 'your app might receive the same webhook more than once'; Stripe's idempotent requests return the first response to a retried key.",
+              "shows": "Duplicates are documented behaviour, so the receiver must be keyed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The event that creates the order.",
+            "introduces": "What happens when it arrives twice.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Stock is committed: the availability service moves one jacket and two pairs of socks from available to committed, on-hand stays, and the moss M's availability drops from 23 to 22 within seconds.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Available 23 to 22 for the moss jacket in M.",
+              "shows": "Shows the commitment changing the copy the next shopper reads."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The order created once.",
+            "introduces": "The stock it commits.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "The fulfillment order is the contract with the warehouse: it carries only what the warehouse needs and follows a request, accept or reject, and cancellation-request handshake; the WMS accepts at 21:15.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify's fulfillment-order design (shopify.dev, n.d., accessed 2026-11).",
+              "shows": "The best-documented public model of the handshake."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The committed stock.",
+            "introduces": "The instruction the OMS sends Duiven.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "On Wednesday morning the order is picked in the 06:30 pick wave, the GTIN scans confirm the promised units exist, and the WMS sends a stock event to the availability service and a shipped event to the OMS.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "First wave of the day 06:30 (illustrative).",
+              "shows": "Why a 21:14 order is picked on Wednesday.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The accepted fulfillment order.",
+            "introduces": "Wednesday morning at Duiven.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "The shipping service gets the PostNL label and manifests the day's parcels, absorbing carrier rules such as DHL's manifest close-out and PostNL's API migration so the WMS sees one label call.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "DHL Parcel DE Shipping API (transfer only when manifested, automatic close-out at 17:45); PostNL developer portal (renewed API generation from 2025).",
+              "shows": "Manifesting is a carrier rule an integration must absorb."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The label the shipped event waits for.",
+            "introduces": "Where it comes from and what a manifest is.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "At 18:30 the shipping service closes Wednesday's PostNL manifest and at 22:30 PostNL collects the parcel.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Manifest 18:30; PostNL collection 22:30 (illustrative).",
+              "shows": "The parcel leaves the warehouse on Wednesday.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The label and manifest.",
+            "introduces": "Wednesday evening's close and collection.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "transit",
+      "heading": "In Transit: Tracking, Notifications and \"Where Is My Order\"",
+      "controlling_idea": "From collection the parcel's state is PostNL's to know and Kestrel & Pine's to relay: notifications, the status page and the service agent should read one record, and the delivered event is also the moment risk passes to Eva.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Shows the carrier's promise and how its events reach the customer through other systems."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Tracking events first, then the messages Eva receives from them, then the support cost when they fail, then delivery as the legal end of the parcel's journey; the messages cannot be explained before the events that trigger them, and the support cost reads as an architecture signal only once the reader knows where the tracking number travels."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "The parcel collected at 22:30.",
+        "introduces": "Its journey with the carrier.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p33",
+          "controlling_idea": "A tracking event is one carrier scan with a time and place; the shipping service maps carriers' codes to one small vocabulary and feeds the OMS, which updates the goods state and raises the notifications.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "EasyPost tracker documentation: ten normalized statuses.",
+              "shows": "A multi-carrier layer normalizes carriers' codes."
+            }
+          ]
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Eva receives three messages from three sources: the shipping confirmation when the WMS reports the shipment at 08:40 on Wednesday, before PostNL collects the parcel, out for delivery at 07:50 and delivered at 11:20 on Thursday, and her status page reads the same record as the service agent.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shipment confirmed 08:40 on 14 April; out for delivery 07:50 and delivered 11:20 on 15 April (illustrative).",
+              "shows": "The messages follow the canonical parcel times.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Tracking events and notifications in general.",
+            "introduces": "The three Eva receives.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "WISMO, 'where is my order', is the largest category of support contacts and an architecture signal: a tracking number that never left the WMS means the customer gets no updates.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Gorgias: WISMO 18% of incoming requests (updated 13 November 2023).",
+              "shows": "The cost of a broken tracking join shows up as tickets."
+            },
+            {
+              "kind": "quotation",
+              "what": "Shopify: 'If you fulfill an order without a tracking number, then no shipping updates are received.'",
+              "shows": "Names the failing join."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Messages relayed from the carrier.",
+            "introduces": "What happens when the relay fails.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Delivery is also a legal event: under the Consumer Rights Directive risk passes when Eva takes physical possession, so the OMS needs the delivered event and not only the shipped one.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Directive 2011/83/EU, Art. 20.",
+              "shows": "Ties the delivered event to the merchant's risk."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The delivered message.",
+            "introduces": "Why delivery matters beyond notification.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "money",
+      "heading": "The Money and the Books",
+      "controlling_idea": "After delivery three records must agree: the ERP's invoice issued at dispatch and corrected only by credit note, revenue recognized at delivery, and a PSP payout matched days later against the bank by finance, not by the order system.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "Shows the finance joins as daily batches closed by a reconciliation."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Invoice at dispatch (Wednesday), revenue at delivery (Thursday), payout days later and its match last, the order in which the records come into existence."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The parcel at Eva's door.",
+        "introduces": "The order's journey, which continues in the books.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p37",
+          "controlling_idea": "The parcel's journey ends at the door but the order's does not: the invoice, the payment and the bank still have to agree.",
+          "function": "transition"
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "The ERP issues the invoice from the shipped event because a Dutch invoice needs a unique, gap-free sequential number assigned by one system at posting.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Belastingdienst invoice requirements, n.d., accessed 2026-11.",
+              "shows": "Gap-free numbering needs one numbering authority."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Three documents that must agree.",
+            "introduces": "The first, the invoice.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "An issued invoice is immutable and corrected only by credit note, so Eva's exchange next week will produce a credit note, not an edit.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Odoo 18.0: 'Once confirmed, an invoice can no longer be updated'; a credit note 'is the only legal method' to cancel, refund or modify one.",
+              "shows": "Representative ERP behaviour."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The invoice's numbering.",
+            "introduces": "What happens once it is issued.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Eva's invoice reads net €194.21, VAT €40.79, gross €235.00, matching checkout because nothing changed; when a line is short or canceled the invoice follows what shipped.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Jacket €164.46, socks €29.75 net; total €194.21 net, €40.79 VAT, €235.00 gross.",
+              "shows": "The checkout's frozen amount and the invoice agree.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Invoice rules.",
+            "introduces": "Eva's invoice.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "Revenue is recognized at delivery under IFRS 15: Kestrel & Pine was paid on Tuesday, invoiced on Wednesday and earned the revenue on Thursday, with a refund liability beside it, three dates finance needs in three fields.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "IFRS 15 (issued 2014, effective 2018); consistency ruling 1.",
+              "shows": "Revenue follows control, which passes at delivery."
+            },
+            {
+              "kind": "statistic",
+              "what": "24% item return rate.",
+              "shows": "Why a refund liability sits beside the revenue.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The invoice issued on Wednesday.",
+            "introduces": "When the revenue counts.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "The PSP pays out in batches days later, Adyen two business days after the sales day and Stripe after three business days to seven calendar days.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Adyen sales day payout; Stripe payouts documentation, n.d., accessed 2026-11.",
+              "shows": "Payouts are batched and late by design."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Revenue on Thursday.",
+            "introduces": "When the money arrives.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "One bank deposit therefore holds hundreds of orders net of fees, refunds and chargebacks, and the join is the PSP's payout reconciliation report.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Stripe's payout reconciliation report lists 'every payment, refund, dispute, fee, and other balance transaction included in the payout' with the order id and a trace_id.",
+              "shows": "The report is the key between the bank line and the orders."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Batched payouts.",
+            "introduces": "How one deposit is traced to orders.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "The ERP matches Eva's €235 in Tuesday's batch to her invoice, posts the PSP's fee and closes the three-way match of invoices, PSP report and bank statement.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: one order, three financial records (checkout promise, ERP invoice, PSP payout against the bank).",
+              "shows": "The ledger closes only when all three agree."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The payout reconciliation report.",
+            "introduces": "Eva's €235 in it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "handoffs",
+      "heading": "What Each Handoff Requires",
+      "controlling_idea": "Each handoff's style follows from how fresh, consistent, fast and available it must be: availability and the fulfillment order must be events, while invoice posting and payouts should be a daily batch.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "States the requirements and style of each join walked so far."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The joins walked from search to payout.",
+        "introduces": "What each of them requires.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p45",
+          "controlling_idea": "A table gives each join's freshness, consistency, latency, availability and style under W5; the latency figures are illustrative targets, not ledger facts.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven handoffs (WMS to storefront availability, checkout-PSP-platform, platform to OMS, OMS to WMS, WMS to carrier, OMS to ERP, PSP to ERP) with freshness, consistency, latency, availability and style.",
+              "shows": "Each join's clock decides its style."
+            }
+          ]
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "Two rows cannot be batch, availability and the fulfillment order, because an hour's delay is an oversell or a missed cut-off, and two should be, invoice posting and payouts, because finance tolerates a day and gains a reconciliation count: finance can be batch, availability cannot.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The requirements table.",
+            "introduces": "Which rows must be events and which should be batch.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "january",
+      "heading": "The Same Order in January 2027",
+      "controlling_idea": "On the January 2027 landscape the same order kept its dates but read stock up to two hours old, was promised Wednesday by a static sentence, existed as three records and waited for an 'order complete' invoice trigger, while every system worked: the failures were in the joins.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Holds the main systems constant and changes only the joins, showing where the failures were."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The late-2027 joins and their requirements.",
+        "introduces": "The same order on the landscape Noor Visser found in January.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p47",
+          "controlling_idea": "Run through the January 2027 landscape, four things change while the dates stay the same: stock up to two hours old, a static promise of Wednesday that the parcel missed, three order records with three statuses, and an invoice sent only on the WMS's 'order complete'.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Late 2027 against January 2027 for 'in stock', the delivery promise, the order record and the invoice.",
+              "shows": "Same systems, different joins."
+            },
+            {
+              "kind": "fact",
+              "what": "WMS to ERP every 15 minutes, ERP to platform hourly; static 'ordered before 22:00, delivered tomorrow'.",
+              "shows": "The January joins.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "The parcel still arrived Thursday; the Three-Status Order of December 2026 is this January path with one split shipment, and nothing in that landscape was broken: the joins had no owner, no key and no reconciliation, which W5 changed.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "#1052877, December 2026: Delivered, In picking and Not invoiced for six days, eleven tickets; the iPaaS flow marked the order fulfilled at the first parcel and the ERP waited for 'order complete'.",
+              "shows": "A real failure on the same path, located at the joins.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The four differences.",
+            "introduces": "What they cost and where the cause lay.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong Along This Path",
+      "controlling_idea": "Five failures along the path recur at every merchant, and each is caught by a key, a sweep, a scan, a tracking rule or a three-way match rather than by the system where it shows.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Gives each failure's mechanism, detection and recovery, each at a join."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The failures follow the order's path: the order created, the payment confirmed, the pick, the parcel in transit, the payout; a reader can map each to its row of the step table."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "Joins without owner, key or reconciliation.",
+        "introduces": "Five failures on this path with their detection and recovery.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p49",
+          "controlling_idea": "Of the failures the step table names, five deserve their mechanism, detection and recovery because they recur at every merchant.",
+          "function": "transition"
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "The duplicate order: an 'order placed' event arriving twice is a no-op when the OMS keys on the order number, and a count of orders received against created shows it; without the key two parcels ship.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: two copies of #1072455's message; with the key one parcel ships, without it two.",
+              "shows": "The key turns a duplicate into a no-op."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Five failures announced.",
+            "introduces": "The first, at order creation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "The order paid and never confirmed: when the PSP's webhook fails for good, a daily sweep queries the PSP for checkouts with no terminal payment state and marks them paid once, because webhooks are a latency optimization over a reconciliation, never a replacement.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Mollie's 26 hours of retries; the sweep Stripe's and Mollie's documentation ask merchants to run.",
+              "shows": "A lost webhook is caught by a sweep, not by waiting."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The duplicate.",
+            "introduces": "The opposite failure: a message that never arrives.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "The short pick: when the shelf holds fewer units than the WMS expects, the scan detects it and the WMS, OMS and availability service correct the line, the stock and the customer's expectation before the promise date.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "DeHoratius and Raman (2008): 65% of about 370,000 inventory records inaccurate at one retailer (dated).",
+              "shows": "Record errors are common enough to plan for."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Failures of messages.",
+            "introduces": "A failure of the stock record itself.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "The lost parcel: a rule on the tracking stream flags a parcel with no scan for 48 hours, and the merchant re-ships and claims against the carrier while the invoice stays unchanged.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "PostNL delivery quality 97% (annual report, 2025); the remaining 3% is about ten thousand of Kestrel & Pine's parcels a year.",
+              "shows": "The path is needed every day at this volume."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The pick.",
+            "introduces": "The parcel in transit.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "The payout that does not match: a short batch is traced through the three-way match to a later refund, a fee, a failed refund or a double refund, and corrected with the PSP's line as evidence and one writer for refunds.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Double Refund, January 2027: €19,400 refunded twice.",
+              "shows": "The costliest cause on the list, prevented by one refund writer.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The parcel.",
+            "introduces": "The last join, the payout.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "Eva's purchase looked like one action, but it took about fifteen handoffs among eight systems, and checkout succeeding was only one of them. Replayed through the late-2027 design it is promised Thursday and arrives Thursday on a stock figure seconds old; on the January 2027 landscape the same shop platform, WMS, ERP and PSP promised Wednesday on stock up to two hours old. What differs is the joins, not the systems: one owner per fact, the order number as the key on every handoff, events where the clock is seconds and a daily batch where finance can wait, and a reconciliation behind each.",
+    "so_what": "A merchant that walks one ordinary order through its own landscape and checks those four things at each handoff finds its next incidents before its customers do, and before it buys another system.",
+    "callback": {
+      "to": "The introduction's hook: Eva's simple purchase, where a wrong stock answer or a late warehouse instruction can break the delivery promise even when checkout succeeds.",
+      "how": "Both dangers named in the opening turn out to be joins (the stock copy and the fulfillment order), which the reader can now locate and specify."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Walk one order through your landscape with the step table, and stop at every row where the promise and the system of record belong to different systems with no event, no key and no reconciliation between them; count writers, not boxes."
+    },
+    "hand_off": {
+      "to": "journey-return-and-exchange",
+      "relationship": "sequence",
+      "carries_over": "Journey 1's delivered order #1072455, with its iDEAL payment, its invoice in the ERP and its record in the OMS.",
+      "introduces": "The way back through many of the same systems in the opposite direction, with a refund and a credit note where the payment and the invoice were, and the Double Refund of €19,400."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The five failures, each caught at a join.",
+      "introduces": "What the whole walk shows, set against the opening.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p55",
+        "controlling_idea": "Eva's purchase took about fifteen handoffs among eight systems, and the two dangers the opening named, a wrong stock answer and a late warehouse instruction, are both joins: replayed through the late-2027 design the order is promised Thursday and arrives Thursday, while on the January 2027 landscape the same systems promised Wednesday, so what keeps the order is one owner per fact, the order number as key, a style matched to each clock and a reconciliation, and a merchant that checks these on one order finds its next incidents first.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The opening's purchase set against the late-2027 and January 2027 outcomes.",
+            "shows": "The reader can now say where the order goes right or wrong."
+          }
+        ]
+      },
+      {
+        "id": "p56",
+        "form": "list",
+        "controlling_idea": "Established: systems each own one fact and failures concentrate at the handoffs, as four vendors document from four sides; every delivery mechanism is at-least-once, so exactly-once is built by the receiver with a key; and the invoice comes from one numbering authority at dispatch, is corrected only by credit note, and revenue counts at delivery.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "The points it rests on, starting with what the sources establish.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p57",
+        "form": "list",
+        "controlling_idea": "Depends on context: whether an OMS is needed at all (yes at Kestrel & Pine's stage, the Giant's Boots for a one-channel merchant), whether the delivery promise must be computed (when cut-off and collection differ or there is more than one lane), and whether capture should follow shipment (for cards, not for iDEAL).",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established.",
+          "introduces": "What depends on the merchant's situation.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p58",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: read any architecture by walking one order through it with the step table and stopping at every row where promise and system of record belong to different systems with no event, key or reconciliation, and prefer eight systems with one owner per fact to three with two owners for stock.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What depends on context.",
+          "introduces": "The author's own reading.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p59",
+        "form": "list",
+        "controlling_idea": "Nine questions let a reader check their own landscape: the system of record of each fact, the idempotency keys, who notices a missing webhook, where the delivery promise comes from, how old 'in stock' can be, who handles a short pick, whether status page and agent read one record, who numbers invoices, and how payouts are matched.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The author's reading.",
+          "introduces": "The questions that apply it to the reader's own landscape.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p60",
+        "controlling_idea": "Eva's jacket arrived on Thursday and on Monday she will ask for a size L; the way back starts from the order the OMS holds and crosses many of the same systems in the opposite direction, with a refund and a credit note where the payment and the invoice were, and it is where Kestrel & Pine paid €19,400 twice.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The questions about one order.",
+          "introduces": "The same order coming back, in the next chapter.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Teaching any capability in depth: search, product data, availability, checkout, payments, the OMS, the warehouse, carriers and the promise, notifications, invoicing and the ledger, reconciliation. The chapter names each step's owner and links.",
+      "covered_in": [
+        "commerce-search-and-discovery",
+        "product-information",
+        "inventory-and-availability",
+        "cart-and-checkout",
+        "commerce-payments",
+        "order-management",
+        "warehouse-and-fulfillment",
+        "shipping-and-delivery",
+        "customer-service-and-notifications",
+        "tax-invoicing-and-ledger",
+        "events-consistency-and-reconciliation"
+      ]
+    },
+    {
+      "topic": "The return and exchange path, the wholesale path and the peak day.",
+      "covered_in": [
+        "journey-return-and-exchange",
+        "journey-wholesale-order",
+        "journey-peak-day"
+      ]
+    },
+    {
+      "topic": "An 'Across Scale Stages' section; journeys do not carry one."
+    },
+    {
+      "topic": "Justifying the Waypoint decisions; the chapter uses them as given."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Remaining after the confirming round 3 (minor, recorded for the author, not edited further): fresh readers stumble on terms the book taught earlier (W1-W8 as a list, Duiven, iPaaS, ERP, GTIN, the named incidents, Sanne de Wit, the scale stages and the Giant's Boots), which the chapter does not gloss again because its audience knows them; and the checkout.liquid paragraph (p21) still sits between the six-step list and the payment subsection by the spec's order, which the readers of all three rounds would have moved after the payment (the round-3 fix removed the forward pointer instead). check-report.json is stale after the closing fixes."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Converted spec.md to spec.json from the published chapter, one spec paragraph per unit; intent, thesis and role copied unchanged from the journal spec, with its five acceptance criteria and no added criteria. spec.md's success criteria are inventories (step-table columns, diagram counts, take-away tiers, word count) and are dropped; the outcomes they aimed at are carried by the journal spec's AC-1 to AC-4 and the length limit of 6,500 words, which stays.",
+      "rejected": [
+        "Rewriting the inventory criteria as minor custom criteria."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Added the units the contract asks for and the published chapter lacked: a short thesis paragraph (p03) and a roadmap (p04) in the introduction, the roadmap announcing every section, and a synthesis paragraph (p55) at the head of 'What to Take Away' that calls back to the opening's purchase and answers so-what. The sentence 'This walkthrough follows the ordinary path...' moves from p02 into the roadmap.",
+      "rejected": [
+        "Stating the thesis only in KEY POINTS.",
+        "A conclusion of lists only."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Under the book-wide vocabulary ruling the hosted product is called 'the shop platform' where the text means Kestrel & Pine's platform (KEY POINTS, the entity-owner table and the prose); vendor-neutral uses of 'platform' stay.",
+      "rejected": [
+        "Leaving 'the platform' throughout."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p34: the shipping confirmation's time follows chapter 16's canonical parcel times (shipment confirmed 08:40 on 14 April) instead of 'Wednesday afternoon'; the April 2027 rule that the confirmation goes out when the WMS reports the shipment is kept, and the first-scan rule is mentioned only as the later target rule.",
+      "rejected": [
+        "Moving the confirmation to the first scan at 23:40 in this chapter."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: spec.md's open questions are closed. (1) The 20:30 last collection is superseded by consistency ruling 15 (last wave 21:00, PostNL 22:30), which the page already follows (rule 1). (2) The delivery-promise service in the late-2027 design is the ledger's journey-consumer-order line (computed by the W8-prerequisite service), with Noor's first promise service from May 2027 in the shipping-and-delivery line; the page keeps it (rule 1). (3) The OMS cut-over date of 13 October 2027 is consistency ruling 4 (rule 1).",
+      "rejected": [
+        "Leaving them open for the author."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (1) p34, at fault in the spec: the shipping confirmation keeps the canonical April 2027 behaviour (sent when the WMS reports the shipment, 08:40 on 14 April, per the brief and the shipping-and-delivery ledger line) and the parenthetical naming the later first-scan target rule is removed, because two readers read it as contradicting the replay premise (rules 1 and 3); (2) p21 moved directly after the six-step list, before Figure 2, as both readers asked in rounds 1 and 2 (rule 3), and its opening states the cause; (3) the author's sentence tying the Black Friday 2026 queue to the short pick is cut, because readers found it out of place in both rounds and it supports no supporting claim the paragraph argues (rule 3); (4) 'the WMS says there are 22' becomes 'where the WMS expects one', since 22 is the availability service's figure (rule 1); (5) 'the ledger fixes the dates' glossed as the book's scenario record (rule 6). Terms the readers lacked that the audience already knows from earlier chapters (ERP, iPaaS, GTIN, W1-W8, the named incidents, Sanne de Wit, the scale stages, the Giant's Boots) are not glossed again (rule 10, current position).",
+      "rejected": [
+        "Moving the shipping confirmation to the first scan at 23:40 (the brief keeps the April rule).",
+        "Keeping the target-rule aside.",
+        "Escalating to the author."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (fresh agent, verdict: sound with notes); the author asked for the rubric notes to be taken without review. Taken: W5 glossed at its first use in the search paragraph (p13), so it no longer relies on a later explanation; the transit section's flow rationale now says what would break. Not taken, current position kept (RESOLVE rule 10, the author's text stands): moving the checkout.liquid paragraph (p21) out of the line from checkout steps to payment, because it belongs to checkout and the payment opens its own subsection right after it; trimming the foreshadow of the January two-hour stock copy in p18, which is the author's sentence and one clause; the 'Depends on context' list (p57) referring to card capture (set up in p23's list), the Giant's Boots (a failure-pattern name the reader knows) and lanes; 'four vendors from four sides' in p56 (the vendors named in the body); and the overlap of the new synthesis p55 with the author's own list p58, which is kept as the method while p55 states the answer; merging p31 and p32 (minor).",
+      "rejected": [
+        "Moving p21 after p24.",
+        "Cutting the clause in p18.",
+        "Rewriting the author's take-away lists."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Ran the April order through the late-2027 architecture rather than the January one, as the Part IX contract asks, and kept the January landscape as a short comparison table; two full walks would have doubled the length and taught the second walk twice. (from spec.md)",
+      "rejected": [
+        "Two full walks."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Made the step table the spine of the chapter and the prose a commentary on its rows, so a reader can use the table alone as a checklist against another merchant's landscape. (from spec.md)",
+      "rejected": [
+        "Prose first, table as summary."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Chose iDEAL's instant, capture-less behaviour as the payment teaching point rather than the generic card authorization-and-capture story, because the ledger's order pays by iDEAL and the difference (no capture on shipment, refund as a new transfer) is the kind of fact newcomers miss. (from spec.md)",
+      "rejected": [
+        "The generic card story."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Drew the second diagram as the three financial records of one order (checkout promise, ERP invoice, PSP payout against the bank) rather than a second structural view, because the money path after delivery is the part of the journey the operational chapters cover least. (from spec.md)",
+      "rejected": [
+        "A second structural view."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md (Eva's jacket; W1-W8; lines warehouse-and-fulfillment, shipping-and-delivery, cart-and-checkout, tax-invoicing-and-ledger, journey-consumer-order, replatforming-and-migration, and the Part III and Parts IX-XI editor-review lines) and _research/consistency-issues.md (rulings 1, 2, 4, 15, 18)",
+      "contributed": "Every figure, date and time of the order and the parcel, the systems and owners, the OMS seam date, the Duiven evening timings, revenue at delivery and invoice per shipment."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (journey-consumer-order; part-9; journey-return-and-exchange transition_in)",
+      "contributed": "Intent, thesis, role, acceptance criteria and the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "PLAN.md (Part IX contract for chapter 37); _research/style-guide.md; _research/brief-inventory-fulfillment-returns.md, brief-checkout-payments-tax.md, brief-integration-and-data.md, brief-shopify.md; meet-kestrel-and-pine",
+      "contributed": "Scope, page format and the verified vendor and regulatory facts cited (from spec.md)."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify, commercetools, Stripe, Mollie and Adyen documentation (accessed 2026-11)",
+      "contributed": "Inventory states, order and fulfillment-order models, webhooks, idempotency, iDEAL behaviour, payouts and reconciliation."
+    },
+    {
+      "kind": "external",
+      "ref": "Directive 2011/83/EU; Belastingdienst invoice requirements; IFRS 15",
+      "contributed": "Passing of risk, invoice contents and revenue at delivery."
+    },
+    {
+      "kind": "external",
+      "ref": "Baymard Institute (2026); DeHoratius and Raman (2008); Gorgias (2023); PostNL Annual Report 2024; Dutch Payments Association (2025)",
+      "contributed": "Abandonment, record accuracy, WISMO, carrier performance and iDEAL volume figures."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Confirming draft check round 3 (after the auto-resolutions): escalate on the round limit, 4 major (3 corroborated flow points, 1 corroborated term), no spec fault; all fixed cheaply without another round: the list's payment item no longer points ahead past p21 and Figure 2, the order day named as Tuesday 13 April 2027 (p06), 'Tuesday's batch' becomes 'the batch of Tuesday's sales' (p44, p54), 'pick wave' glossed at first use (p20), and p34 marks the step back in time. check-report.json is stale after these edits."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Draft check round 2: escalate (4 major: p52 two ideas, p21 transition, two corroborated flow points, one at fault in the spec at p34). Auto-resolved (see decision_log), then p21 moved before Figure 2 directly after the six-step list (Figure 2 now p21's evidence) and opens on the cause, item 5 of the list points to the payment subsection, p34 states the confirmation time without the rule aside, p52 loses the Black Friday queue sentence and no longer calls the available count the WMS's figure, p11 says 'the book's scenario record' for the dates, p15's lead sentence grammar fixed."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Draft check round 1: revise (8 major: 7 corroborated flow or terms points and 2 transitions, all draft faults). Redrafted p07 and p08 (W1 includes the WMS's stock ownership; the replay premise and the January 2027 landscape stated once, with Noor Visser named), p11 (WISMO glossed in the step table), p18 (the two-hour copy tied to the stock chain behind the November 2026 Oversell), p20 and p21 (step 5 points past the one rule that applies to all six steps), p34 (which rule the shipping confirmation follows), p35 (opens on the failed relay), p38 (the shipped event reaches the ERP in the day's batch), p47 and p49 (transitions from the requirements and from the January joins), p52 (the Black Friday queue sentence explained)."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "spec.md converted to spec.json (reconstructed from the published chapter); thesis paragraph, roadmap and conclusion synthesis added; spec.md's open questions auto-resolved; status draft."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator). (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: Duiven and PostNL times aligned with chapters 15/16 (item 15), socks net corrected, pending-then-paid order creation, Three-Status mechanism per item 2. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article. (from spec.md)"
+    }
+  ],
+  "length": {
+    "max_words": 6500
+  }
+}

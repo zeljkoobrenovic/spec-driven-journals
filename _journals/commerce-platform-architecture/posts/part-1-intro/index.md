@@ -26,7 +26,7 @@ Part I argues that a commerce platform is the whole set of systems that make and
 ![Diagram: The order's journey as a chain of promises](assets/images/part-1-intro/fig01-order-s-journey-chain-promises-storefront.jpeg)
 **Figure 2:** *The order's journey as a chain of promises: the storefront makes them early, the other systems keep them late, and every arrow is a handoff that can be late, lost, duplicated or misread.*
 
-The example is **Kestrel & Pine, a fictional outdoor brand** with €48 million in 2026 revenue, thirteen systems, 34 integrations and 41 apps. Orders and product data each live in four places; six writers change warehouse stock. Its **Waypoint** improvement program begins in March 2027 by deciding who owns what and how other systems learn of changes.
+The example is **Kestrel & Pine, a fictional outdoor brand** with €48 million in 2026 revenue, thirteen systems, 34 integrations and 41 apps. Orders and product data each live in four places; six writers, systems or people, change warehouse stock. Its **Waypoint** improvement program begins in March 2027 by deciding who owns what and how other systems learn of changes.
 
 Part I asks Kestrel & Pine five questions, each answer giving the next its vocabulary: what happens to an order, who sells what to whom, what the parts are, who owns each fact, and which platforms the market sells.
 
@@ -37,11 +37,11 @@ Part I asks Kestrel & Pine five questions, each answer giving the next its vocab
 
 [[journey-of-an-order]] follows **one purchase through thirteen steps**, through payment, delivery, return and accounting. One jacket order shows the normal path; another, which three systems show at once as delivered, in picking and not invoiced, shows why one status word cannot explain everything.
 
-[[commerce-business-models]] shows that **the shape of the business decides the systems**: selling one jacket to a consumer, a wholesaler, a marketplace shopper or a store visitor changes who prices, sells, stocks and ships. As it grows, a merchant moves through four scale stages, from Starting to Group, by adding channels, locations, countries and brands, not revenue.
+[[commerce-business-models]] keeps those steps but shows that **the shape of the business decides the systems**: selling one jacket to a consumer, a wholesaler, a marketplace shopper or a store visitor changes who prices, sells, stocks and ships. As it grows, a merchant moves through four scale stages, from Starting to Group, by adding channels, locations, countries and brands, not revenue.
 
 [[commerce-capability-map]] then maps **the jobs a merchant must perform**. Head of Engineering Noor Visser places Kestrel & Pine's systems on it and finds missing capabilities and overlapping writers.
 
-[[boundaries-and-systems-of-record]] assigns **an authoritative owner to each fact**, which the map alone cannot settle. It separates records from copies, explains why systems mean different things by "order", and resolves six answers about stock.
+[[boundaries-and-systems-of-record]] assigns **an authoritative owner to each fact**, which the map alone cannot settle. It separates records from copies, explains why systems mean different things by "order", and resolves the six answers about stock that its six writers give.
 
 [[commerce-platform-landscape]] comes last, once jobs are mapped and owners named. Its **seven platform categories** differ mainly in who hosts, upgrades and integrates, and each moves the integration work rather than removing it. Offered two rebuilds, Kestrel & Pine keeps its shop platform and adds what is missing.
 

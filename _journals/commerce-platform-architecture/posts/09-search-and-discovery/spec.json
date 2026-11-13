@@ -7,7 +7,7 @@
   "part": "part-2",
   "title": "Finding the Product: Search, Navigation and Merchandising",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed from the published chapter (posts/09-search-and-discovery/index.md) and its former spec.md on 2026-11-12, then reordered and extended from the flow rubric's notes; the chapter is revised to match.",
   "intent": {
     "outcome": {
@@ -141,14 +141,14 @@
     "additional_patterns": [
       {
         "pattern": "grouping",
-        "applies_to": "index-as-copy (five subsections), in-practice and when-it-goes-wrong: parallel topics, findings and failures"
+        "applies_to": "index-as-copy (two subsections), runs-on-index (three subsections), in-practice and when-it-goes-wrong: parallel topics, findings and failures"
       },
       {
         "pattern": "comparison",
         "applies_to": "choices and stages: the engine options side by side, then by scale stage"
       }
     ],
-    "rationale": "The Kestrel & Pine search report comes first because it gives the three faults (a missing attribute, a missing synonym, a stale stock copy) that every later section explains; told later, the mechanics would have no case to explain. The three ways of finding and the vocabulary come next because the index section uses every one of those terms; put after it, 'facet', 'relevance' and 'merchandising rule' would be used undefined. The index as a copy follows and is ordered inside: what is in the index and what is fetched fresh, then how it is fed, then relevance, rules and facets, AI retrieval and wholesale prices, all of which run on the records the first two subsections describe. Reviews come after the index because a rating is a fourth feed into it and 'best rated' is a sort the reader can only judge once ranking is explained; they come before the stages because the stage table names review tooling at every stage. The choices and the stages follow the mechanics because an engine cannot be chosen before the reader knows what it reads; put first, the comparison would be a feature list. The public record follows the choices because its limits and measures are properties of the products just compared, and it ends on the plan Kestrel & Pine made with them; put before the choices, the limits would belong to products the reader has not yet met. The failures come last in the body because each recovery uses a mechanism from an earlier section (the coarse flag, the comparison job, the rebuild beside the live index, validity windows, the order link, the filter in the search service) or is a failure at the edge of the search service (a retired query interface, an outage); told before those sections, every recovery would need its mechanism explained on the spot."
+    "rationale": "The Kestrel & Pine search report comes first because it gives the three faults (a missing attribute, a missing synonym, a stale stock copy) that every later section explains; told later, the mechanics would have no case to explain. The three ways of finding and the vocabulary come next because the index section uses every one of those terms; put after it, 'facet', 'relevance' and 'merchandising rule' would be used undefined. The index as a copy follows: what is in the index and what is fetched fresh, then how it is fed; a section on what runs on the index (relevance, rules and facets, AI retrieval and wholesale prices) comes next, because all of it works on the records the copy holds. Reviews come after the index because a rating is a fourth feed into it and 'best rated' is a sort the reader can only judge once ranking is explained; they come before the stages because the stage table names review tooling at every stage. The choices and the stages follow the mechanics because an engine cannot be chosen before the reader knows what it reads; put first, the comparison would be a feature list. The measures sit inside the choices, before the rule that rests on them; the public record follows because its limits are properties of the products just compared, and it ends on the plan Kestrel & Pine made with them; put before the choices, the limits would belong to products the reader has not yet met. The failures come last in the body because each recovery uses a mechanism from an earlier section (the coarse flag, the comparison job, the rebuild beside the live index, validity windows, the order link, the filter in the search service) or is a failure at the edge of the search service (a retired query interface, an outage); told before those sections, every recovery would need its mechanism explained on the spot."
   },
   "introduction": {
     "hook": {
@@ -179,9 +179,10 @@
           ]
         },
         {
-          "promise": "Explain the index as a copy: which facts go in it and which are fetched fresh, how it is fed, how results are ordered and filtered, what AI retrieval adds, and how wholesale accounts search.",
+          "promise": "Explain the index as a copy (which facts go in it and which are fetched fresh, how it is fed), then what runs on it: how results are ordered and filtered, what AI retrieval adds, and how wholesale accounts search.",
           "kept_in": [
-            "index-as-copy"
+            "index-as-copy",
+            "runs-on-index"
           ]
         },
         {
@@ -191,7 +192,7 @@
           ]
         },
         {
-          "promise": "Compare the search products a merchant can choose, by scale stage, and read what their vendors document about limits and measures.",
+          "promise": "Compare the search products a merchant can choose and how search is measured, fit them to the scale stages, and read what their vendors document about limits.",
           "kept_in": [
             "choices",
             "stages",
@@ -245,7 +246,7 @@
       },
       {
         "id": "p04",
-        "controlling_idea": "The chapter starts from Kestrel & Pine's search report, names the three ways of finding a product and the vocabulary, explains the index as a copy and the three things that must be true of it (the words and attributes shoppers use are loaded, each feed is as fresh as what is shown from it, the fastest-changing fact is fetched from its owner at the moment of the search), then how results are ordered and filtered, AI retrieval and wholesale, treats reviews, compares the search products by scale stage and by what their vendors document, and ends with the ways search fails.",
+        "controlling_idea": "The chapter starts from Kestrel & Pine's search report, gives the vocabulary and the three ways of finding, explains the index as a copy and the three things that must be true of it, then what runs on the index (ranking, filters, AI retrieval and wholesale search), reviews, the search products and how search is measured, the scale stages and what vendors document, and ends with the failures.",
         "function": "transition",
         "transition_in": {
           "relationship": "sequence",
@@ -441,19 +442,18 @@
     {
       "id": "index-as-copy",
       "heading": "How the Pieces Fit Together: The Index as a Copy",
-      "controlling_idea": "The search index is a copy of four kinds of data that change at different speeds, so the central decision is which facts are in it and which are fetched fresh, and everything laid on top (feeds, relevance, rules, AI retrieval, wholesale prices) works on that copy.",
+      "controlling_idea": "The search index is a copy of four kinds of data that change at different speeds, so the central decision is which facts are in it and which are fetched fresh, and each feed must be as fresh as the statement shown from it.",
       "function": "explanation",
       "advances_thesis": {
         "supports": [
           "S3",
-          "S4",
-          "S5"
+          "S4"
         ],
-        "how": "Establishes the index as a copy, the in-index or fetched-fresh decision, the feeds, and that relevance, rules and AI retrieval all run on the index's records."
+        "how": "Establishes the index as a copy, the in-index or fetched-fresh decision, and the feeds and rebuilds that keep it."
       },
       "flow": {
         "pattern": "grouping",
-        "rationale": "Five subsections: what is in the index, how it is fed, relevance with rules and facets, personalization and AI retrieval, wholesale. The first two establish the copy and the rule its feeds must meet; the last three all work on the copy's records and would have nothing to stand on before it. Wholesale comes last because it reuses the in-index or query-time decision for prices per account."
+        "rationale": "Two subsections: what is in the index (and the rule for its feeds), then how it is fed and rebuilt. What runs on the index follows in its own section, because it works on the copy's records."
       },
       "transition_in": {
         "relationship": "elaboration",
@@ -614,10 +614,40 @@
             "form": "sentence",
             "placement": "start_of_this"
           }
+        }
+      ]
+    },
+    {
+      "id": "runs-on-index",
+      "heading": "What Runs on the Index: Ranking, Recommendations and Wholesale Search",
+      "controlling_idea": "Relevance, merchandising rules, facets, recommendations, AI retrieval and wholesale search all run on the index's records, so none of them repairs what the records lack.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Shows that relevance, rules and AI retrieval all run on the index's records and that wholesale search reuses the in-index or query-time decision."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Three subsections: relevance with rules and facets, recommendations and AI retrieval, wholesale. Wholesale comes last because it reuses the in-index or query-time decision for prices per account."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The index as a copy, filled and fed.",
+        "introduces": "The three things that run on its records.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p18b",
+          "function": "transition",
+          "controlling_idea": "Three things run on the records the index holds, each only as good as those records: ranking with its rules and filters, recommendations and AI retrieval, and search for wholesale buyers."
         },
         {
           "id": "p19",
-          "controlling_idea": "A lexical engine matches words, with stemming, synonyms and typo tolerance, then ranks the matches by text match, popularity and business rules.",
+          "controlling_idea": "A lexical engine matches words with stemming, synonyms and typo tolerance and ranks the matches by text, popularity and rules, with synonyms applied at search time so they change without reindexing.",
           "function": "process",
           "evidence": [
             {
@@ -629,9 +659,9 @@
           ],
           "transition_in": {
             "relationship": "sequence",
-            "carries_over": "An index that is filled and fresh.",
-            "introduces": "How the engine matches and orders what is in it.",
-            "form": "sentence",
+            "carries_over": "The three things that run on the index.",
+            "introduces": "The first: how the engine matches and orders what is in it.",
+            "form": "phrase",
             "placement": "start_of_this"
           }
         },
@@ -702,7 +732,7 @@
         },
         {
           "id": "p23",
-          "controlling_idea": "Vector search matches the meaning of a query to product text, and hybrid search merges a lexical and a vector ranking; both are now standard in the main engines.",
+          "controlling_idea": "Vector search matches the meaning of a query to product text, and hybrid search merges a lexical and a vector ranking; both are now standard in the main engines. Elasticsearch recommends approximate nearest-neighbor retrieval for production (restored author statement).",
           "function": "definition",
           "evidence": [
             {
@@ -913,7 +943,7 @@
     {
       "id": "choices",
       "heading": "The Choices",
-      "controlling_idea": "A merchant can use the platform's built-in search, a hosted search service, a self-run engine or a search module of a larger stack, and should measure its failing queries before buying any of them.",
+      "controlling_idea": "A merchant can use the platform's built-in search, a hosted search service, a self-run engine or a search module of a larger stack; search is measured the same way whichever is chosen, and the merchant should measure its failing queries before buying any of them.",
       "function": "comparison",
       "advances_thesis": {
         "supports": [
@@ -924,7 +954,7 @@
       },
       "flow": {
         "pattern": "comparison",
-        "rationale": "The options from least to most owned by the merchant, then the rule."
+        "rationale": "The options from least to most owned by the merchant, then the measures that judge any of them, then the rule that rests on those measures (evidence before the rule)."
       },
       "transition_in": {
         "relationship": "sequence",
@@ -976,6 +1006,26 @@
           }
         },
         {
+          "id": "p41",
+          "controlling_idea": "Search is measured by whether shoppers find results, click them and buy, per language and channel, with the vendor's counting rules kept constant.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Algolia's analytics define no-results rate, click-through rate, conversion rate and average click position, and aggregate keystrokes within 30 seconds into one search; Baymard finds weaker performance on mobile and apps.",
+              "shows": "The measures have definitions and a blended figure can hide a channel.",
+              "source": "Algolia documentation, accessed November 2026; Baymard Institute"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The comparison table of search products.",
+            "introduces": "How search is measured whichever product is chosen, with the vendor's counting rules.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p36",
           "controlling_idea": "The author's rule is to measure the zero-result rate and the top failing queries before buying anything.",
           "function": "recommendation",
@@ -994,8 +1044,8 @@
           ],
           "transition_in": {
             "relationship": "conclusion_summary",
-            "carries_over": "The four options.",
-            "introduces": "The author's rule for choosing among them.",
+            "carries_over": "The four options and the measures that judge them.",
+            "introduces": "The author's rule for choosing among them: measure first.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1044,7 +1094,7 @@
     {
       "id": "in-practice",
       "heading": "In Practice",
-      "controlling_idea": "Vendor documentation adds two practical points to the comparison (limits are published, measures have counting rules), and Kestrel & Pine's 2027 plan applies both with its existing vendor.",
+      "controlling_idea": "Vendor documentation adds a practical point to the comparison (limits are published), and Kestrel & Pine's 2027 plan applies it and the measures with its existing vendor.",
       "function": "evidence",
       "advances_thesis": {
         "supports": [
@@ -1055,7 +1105,7 @@
       },
       "flow": {
         "pattern": "grouping",
-        "rationale": "A lead-in, the two findings from vendor documentation, then the plan that uses them."
+        "rationale": "A lead-in, the limits from vendor documentation, then the plan built on the measures."
       },
       "transition_in": {
         "relationship": "additional_support",
@@ -1067,7 +1117,7 @@
       "paragraphs": [
         {
           "id": "p37a",
-          "controlling_idea": "Whichever product is chosen, its vendor's documentation says two things a comparison table does not, what the limits are and how the measures are counted, and Kestrel & Pine's plan is built on the measures.",
+          "controlling_idea": "Whichever product is chosen, its vendor's documentation says one thing a comparison table does not, its limits, and Kestrel & Pine's plan at the end is built on the measures set out with the choices.",
           "function": "transition"
         },
         {
@@ -1076,8 +1126,8 @@
           "function": "evidence",
           "transition_in": {
             "relationship": "example",
-            "carries_over": "The two things vendor documentation adds.",
-            "introduces": "The first: limits, with three vendors' published ones.",
+            "carries_over": "The one thing vendor documentation adds.",
+            "introduces": "Limits, with three vendors' published ones.",
             "form": "sentence",
             "placement": "start_of_this"
           },
@@ -1089,26 +1139,6 @@
               "source": "Vendor documentation, accessed November 2026"
             }
           ]
-        },
-        {
-          "id": "p41",
-          "controlling_idea": "Search is measured by whether shoppers find results, click them and buy, per language and channel, with the vendor's counting rules kept constant.",
-          "function": "explanation",
-          "evidence": [
-            {
-              "kind": "source",
-              "what": "Algolia's analytics define no-results rate, click-through rate, conversion rate and average click position, and aggregate keystrokes within 30 seconds into one search; Baymard finds weaker performance on mobile and apps.",
-              "shows": "The measures have definitions and a blended figure can hide a channel.",
-              "source": "Algolia documentation, accessed November 2026; Baymard Institute"
-            }
-          ],
-          "transition_in": {
-            "relationship": "additional_support",
-            "carries_over": "Limits to read before choosing.",
-            "introduces": "Measures to track afterwards, with the vendor's counting rules.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
         },
         {
           "id": "p42",
@@ -1124,7 +1154,7 @@
           ],
           "transition_in": {
             "relationship": "example",
-            "carries_over": "The measures: what to count and how.",
+            "carries_over": "The limits, and the measures set out with the choices.",
             "introduces": "The plan Kestrel & Pine built on those measures, beyond the three fixes already told.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -1422,10 +1452,24 @@
   ],
   "modalities": [],
   "open_questions": [
-    "Pending the journal-spec step (rule 9 is not this post's): thesis.so_what says Kestrel & Pine's zero-result rate 'fell' to 4.1% after synonyms and 'one product attribute'; in the scene (March-April 2027) the attribute arrives in Q3 2027 and the 4.1% is the illustration's Q4 2027 figure. The page now states it as the illustration's figure.",
-    "Needs the author, or a later pass under rule 3: in round 4 both flow readers found the later subsections of 'The Index as a Copy' (relevance, recommendations and AI retrieval, wholesale) unclear under that heading, one proposing a section of their own; and both asked for 'Measuring search' (p41) to come before or inside 'The Choices', where the rule 'measure before buying' (p36) uses it (judged a spec fault). Both are moves of whole units across sections, not cheap fixes, and were not made without a further check round. Fact needed: whether the author accepts a new section heading and moving p41 out of 'In Practice'."
+    "Pending the journal-spec step (rule 9 is not this post's): thesis.so_what says Kestrel & Pine's zero-result rate 'fell' to 4.1% after synonyms and 'one product attribute'; in the scene (March-April 2027) the attribute arrives in Q3 2027 and the 4.1% is the illustration's Q4 2027 figure. The page now states it as the illustration's figure."
   ],
   "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved in the cleanup pass, 2026-11-13: (rules 2, 5, 6 and 4) Elasticsearch's recommendation of approximate nearest-neighbor retrieval for production is restored in p23 (in the author's 11 November text and cited in Sources). The LISTED [[ranking]] sentence in the facets paragraph stays cut: the author's own polishing commit of 11 November removed it, and the introduction keeps the [[ranking]] link (rule 10). Clause-length glosses added for terms round-4 readers stumbled on: morphological variants, NeuralSearch, published control, schema.org, recital, FTC, bol as a marketplace, Modular Catalog, filter URLs, shopping agents. max_words raised to 7,150 (rule 4) for the restored statement, the new section lead and the glosses.",
+      "rejected": [
+        "Restoring the LISTED [[ranking]] sentence the author cut."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved in the cleanup pass, 2026-11-13: two rule-3 moves that both round-4 flow readers asked for are made. (1) The later subsections of 'The Index as a Copy' (relevance, merchandising and facets; recommendations and AI retrieval; wholesale) become their own section, 'What Runs on the Index: Ranking, Recommendations and Wholesale Search' (runs-on-index), opened by a one-sentence lead (p18b); the index section keeps what is in the index and how it is fed, and its controlling idea and supports narrow to match (S3, S4; S5 moves with the new section). The house heading 'How the Pieces Fit Together: The Index as a Copy' stays (rule 8). (2) 'Measuring search' (p41) moves from In Practice into The Choices, after the comparison table and before the author's rule 'measure before buying' (p36), so the evidence precedes the rule; p36's opening and In Practice's lead (p37a) and plan (p42) are rewritten for the move. The roadmap paragraph (p04), its promises and the chapter flow rationale are updated. The open question asking for these moves is closed.",
+      "rejected": [
+        "Leaving the two moves for the author: rule 3 settles them.",
+        "Putting the measures at the start of The Choices, before the products they judge."
+      ]
+    },
     {
       "date": "2026-11-12",
       "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Confirming round 4 (escalate: 16 passed, 47 failed, 32 minor). The conclusion's so-what (spec fault, both flow readers) now gives the 4.1% as the illustration's Q4 2027 figure and names synonyms first, matching the scene and the ledger (rule 1). The cheap draft faults that both readers reported were fixed afterwards without another round: the roadmap no longer repeats the vocabulary's definitions, 'the illustration', Black Friday Oversell tied to the Phantom Stock, the p15a rule sentence and 'that rule', the Amazon six years, behavior signals placed in the ranking model, 'plan, last', the opening of 'When It Goes Wrong', 'So no ranking algorithm', the reviews section's opening, the wholesale subsection's link to the in-index decision, click-through rate and 'plan-gated' glossed.",
@@ -1630,6 +1674,10 @@
   ],
   "changelog": [
     {
+      "date": "2026-11-13",
+      "change": "Cleanup pass: 'What Runs on the Index' split out as its own section; 'Measuring search' moved into The Choices before the rule; Elasticsearch ANN statement restored; ten glosses; max_words 7,150."
+    },
+    {
       "date": "2026-11-12",
       "change": "Confirming round 4 (escalate: 16 passed, 47 failed, 15 major, 32 minor; blockers pass). Conclusion so-what corrected; cheap corroborated draft fixes applied afterwards; two order moves recorded in open_questions."
     },
@@ -1679,6 +1727,6 @@
     }
   ],
   "length": {
-    "max_words": 6500
+    "max_words": 7150
   }
 }

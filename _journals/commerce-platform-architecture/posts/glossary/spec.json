@@ -1,0 +1,876 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "glossary",
+  "journal": "commerce-platform-architecture",
+  "part": "reference",
+  "title": "Glossary",
+  "status": "draft",
+  "revised": "2026-11-13",
+  "basis": "Reconstructed on 2026-11-13 from the published page (posts/glossary/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the page, in its order; each section's lead paragraph and its table are one list-form unit with the table as evidence, and the callouts stand before p01 as the house format. Intent, acceptance criteria and role are copied unchanged from journal-spec.json; the journal spec gives a reference page no thesis, so the thesis here is the page's own and only orders its sections. A light pass for a lookup page: entries were checked for consistency against the ledger, the rulings and the chapters' settled definitions, not rewritten.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The book's terms in one or two plain sentences each, grouped by part, with standards and regulations and Kestrel & Pine names in their own tables, dated as of November 2026."
+      ],
+      "can_do": [
+        "Look up a term met in a chapter, read it beside the terms it is confused with, and follow the link to the chapter that owns it."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader finds the definition of a contrasted term pair used in the payment chapters and the chapter that owns it.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Using only this page: what is the difference between authorization and capture, which chapters explain them, and why is 'capture on shipment' a promise with a deadline?",
+        "expected": "Authorization is the issuer approving and reserving the money; capture is the merchant taking it, often when the parcel ships. An authorization expires, so capture on shipment has a deadline. Owning chapters: commerce-payments and journey-consumer-order."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of chapter 25 finds the meaning of a term and of a Waypoint decision it uses.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Using only this page: chapter 25 uses 'idempotency' and 'W5'. What does each mean, and which chapters explain them?",
+        "expected": "Idempotency: handling the same message twice has the same effect as handling it once (a second 'refund order #1072455' must not produce a second refund); journey-of-an-order and events-consistency-and-reconciliation. W5, integration standards: every integration has a named owner, a contract, idempotent handling of repeated messages and a reconciliation job; stock, orders and prices move by events, products by scheduled publication, finance by daily batch; integration-styles and meet-kestrel-and-pine."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reader comparing GMV figures across chapters 41 and 46 learns why they may not match.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: chapter 41 discusses GMV-based pricing and chapter 46 reports Shopify's GMV. What is GMV, and why might the two figures be defined differently?",
+        "expected": "The value of orders passing through a platform, including what the platform does not keep; several vendors price on it. Definitions differ on refunds and fees: Shopify's filing calls it gross merchandise volume and counts it net of refunds, so read each source's definition."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict what the page contains and the kind of evidence or material it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this page give you, in what order, and from what kind of material?",
+        "expected": "One definition per term with a link to the chapter that explains its use: why 'order' and 'in stock' mean different things in different systems; how to browse by part or use the alphabetical index; the opening section on evidence labels, take-away tiers, growth stages and failure patterns; separate tables for standards and regulations and for the fictional names; slash rows that define contrasted terms together. Material: the chapters' own definitions; Kestrel & Pine is fictional and legal entries defer to the cited source."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What does each commerce and architecture term used in the book mean?",
+    "claim": "Each term the book uses has one plain definition that follows its owning chapter, set beside the terms it is confused with and linked to that chapter; standards are dated and defer to their source, and Kestrel & Pine's names are labelled fictional.",
+    "disputed_by": "The view that a reader can search the chapter or the web for a term, so a separate glossary only duplicates the chapters and drifts from them.",
+    "so_what": "A reader who meets a term out of order gets the owning chapter's meaning in one place, with the neighbours it is confused with, and a writer or AI tool that finds a row and a chapter disagreeing has a defect to fix.",
+    "how_why": "The definitions were harvested from each chapter's bold first-use definitions and definition tables and checked against the scenario ledger and the consistency rulings; slash rows set contrasted terms side by side, and every row links to its chapter.",
+    "supporting_claims": [
+      {
+        "id": "G1",
+        "claim": "A reader can find any term, alias or abbreviation by part or through the alphabetical index."
+      },
+      {
+        "id": "G2",
+        "claim": "Each definition follows its owning chapter, sits beside its confusable neighbours and links to that chapter."
+      },
+      {
+        "id": "G3",
+        "claim": "Standards, protocols and regulations carry their scope and a date and defer to the official source."
+      },
+      {
+        "id": "G4",
+        "claim": "Kestrel & Pine's names are labelled fictional and agree with the scenario ledger."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Gives the book one vocabulary: each term's meaning, its confusable neighbors and the chapter that owns it, so a chapter can be read out of order.",
+    "supports": [
+      "PR-3"
+    ]
+  },
+  "flow": {
+    "pattern": "large_to_small",
+    "rationale": "How to use the page comes first; the terms follow in the book's own order, from the reading conventions of the preface through Parts I to XI, so a reader who knows the chapter finds its section; the cross-cutting standards and the fictional names come after the parts they serve, and the alphabetical index closes the lookup for a reader who knows only the word."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "A storefront's 'order' can differ from an invoice or a warehouse shipment, and 'in stock' may mean physical stock, sellable stock or a stale copy."
+    },
+    "bridge": {
+      "from_reader_world": "The reader has met a term in a chapter, often read out of order, and the toolkit's cards closed by pointing to the definitions of the terms they use.",
+      "to_topic": "Those differences in meaning change system behaviour and the conclusions drawn from reports, so each term needs one meaning and an owning chapter."
+    },
+    "thesis_statement": {
+      "text": "This page gives every term the book uses one plain definition and a link to the chapter that owns it; read the rows around a term for the terms it is confused with.",
+      "placement": "IN THIS SECTION and KEY POINTS callouts and paragraph p01"
+    },
+    "roadmap": {
+      "placement": "IN THIS SECTION callout, paragraph p01 and the How to Use section",
+      "promises": [
+        {
+          "promise": "How to find a term and read a row.",
+          "kept_in": [
+            "how-to-use"
+          ]
+        },
+        {
+          "promise": "The terms for reading the book's claims.",
+          "kept_in": [
+            "reading"
+          ]
+        },
+        {
+          "promise": "The terms of each part, beside their confusable neighbours.",
+          "kept_in": [
+            "commerce",
+            "catalog",
+            "order",
+            "fulfillment",
+            "channels",
+            "integration",
+            "platform",
+            "trust",
+            "journeys",
+            "evolution",
+            "practice"
+          ]
+        },
+        {
+          "promise": "Standards and regulations, dated.",
+          "kept_in": [
+            "standards"
+          ]
+        },
+        {
+          "promise": "The fictional company's names.",
+          "kept_in": [
+            "kestrel"
+          ]
+        },
+        {
+          "promise": "An alphabetical index of every term and alias.",
+          "kept_in": [
+            "index"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "This page gives each term one plain definition and an owning chapter, to be looked up by part or index and read beside its neighbours, because terms like 'order' and 'in stock' mean different things in different systems.",
+        "function": "context"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "how-to-use",
+      "heading": "How to Use This Glossary",
+      "controlling_idea": "The page can be browsed by part or searched through the alphabetical index, its rows are short teaching definitions with slash rows for contrasted terms, and its fictional and legal entries are labelled as such.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "G1",
+          "G2"
+        ],
+        "how": "Tells the reader how to find a term and how to read a row."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The page's purpose stated in the opening.",
+        "introduces": "How to find a term and read a row.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p02",
+          "controlling_idea": "Browse by the book's parts or jump to the alphabetical index; an opening section explains how to read the book's claims, and separate tables hold standards and the fictional names.",
+          "function": "explanation"
+        },
+        {
+          "id": "p03",
+          "controlling_idea": "The rows give short teaching definitions linked to fuller treatment, with slash rows defining contrasted terms together and acronyms expanded.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Where to look.",
+            "introduces": "What a row holds.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p04",
+          "controlling_idea": "Kestrel & Pine is fictional, and legal, standards and vendor entries are summaries that defer to the cited source.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "What a row holds.",
+            "introduces": "How far a row can be trusted.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "reading",
+      "heading": "<a id=\"g-reading\"></a>Preface — Evidence Labels, Take-Away Tiers and Failure Patterns",
+      "controlling_idea": "The terms for reading the book's claims come first: evidence labels, take-away tiers, scale stages and the sixteen failure patterns.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "G2"
+        ],
+        "how": "Defines this group's terms beside their confusable neighbours, each linked to its owning chapter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "How to use the page.",
+        "introduces": "The next group of terms, in the book's order.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "The terms for reading the book's claims come first: evidence labels, take-away tiers, scale stages and the sixteen failure patterns.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Evidence labels, take-away tiers, the four scale stages and the sixteen failure patterns, linked to the introduction and where-commerce-platforms-go-wrong.",
+              "source": "The owning chapters linked in each row",
+              "shows": "Gives each term one definition that follows its owning chapter, with the link to that chapter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "commerce",
+      "heading": "<a id=\"g-commerce\"></a>Part I — COMMERCE: What a Commerce Platform Is",
+      "controlling_idea": "Part I's terms define the order, its promises, handoffs and status lines, business models, capabilities, systems of record and platform categories.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "G1",
+          "G2"
+        ],
+        "how": "Defines this group's terms beside their confusable neighbours, each linked to its owning chapter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous group of terms.",
+        "introduces": "The next group of terms, in the book's order.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "Part I's terms define the order, its promises, handoffs and status lines, business models, capabilities, systems of record and platform categories.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Promise, handoff, order, status line, system, system of record, copy and writer, commerce platform and shop platform, GMV and the business-model terms.",
+              "source": "The owning chapters linked in each row",
+              "shows": "Gives each term one definition that follows its owning chapter, with the link to that chapter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "catalog",
+      "heading": "<a id=\"g-catalog\"></a>Part II — CATALOG: Products, Prices and Promises",
+      "controlling_idea": "Part II's terms define products and variants, prices, promotions, discovery and sellable stock.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "G1",
+          "G2"
+        ],
+        "how": "Defines this group's terms beside their confusable neighbours, each linked to its owning chapter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous group of terms.",
+        "introduces": "The next group of terms, in the book's order.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p07",
+          "controlling_idea": "Part II's terms define products and variants, prices, promotions, discovery and sellable stock.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Product / variant / SKU, price lists, promotions, search, on hand / committed / reserved and available-to-promise.",
+              "source": "The owning chapters linked in each row",
+              "shows": "Gives each term one definition that follows its owning chapter, with the link to that chapter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "order",
+      "heading": "<a id=\"g-order\"></a>Part III — ORDER: Cart, Checkout, Payment and the Order Record",
+      "controlling_idea": "Part III's terms follow the cart into checkout, payment, order coordination and the financial record.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "G1",
+          "G2"
+        ],
+        "how": "Defines this group's terms beside their confusable neighbours, each linked to its owning chapter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous group of terms.",
+        "introduces": "The next group of terms, in the book's order.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "controlling_idea": "Part III's terms follow the cart into checkout, payment, order coordination and the financial record.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Checkout, idempotency key, authorization / capture, settlement / payout, order management and invoicing terms.",
+              "source": "The owning chapters linked in each row",
+              "shows": "Gives each term one definition that follows its owning chapter, with the link to that chapter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fulfillment",
+      "heading": "<a id=\"g-fulfillment\"></a>Part IV — FULFILLMENT: From Warehouse to Doorstep and Back",
+      "controlling_idea": "Part IV's terms define warehouse work, delivery, stores, returns and the customer-facing status record.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "G1",
+          "G2"
+        ],
+        "how": "Defines this group's terms beside their confusable neighbours, each linked to its owning chapter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous group of terms.",
+        "introduces": "The next group of terms, in the book's order.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "Part IV's terms define warehouse work, delivery, stores, returns and the customer-facing status record.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Picking and waves, carriers and labels, click-and-collect, returns and dispositions, WISMO and the order status page.",
+              "source": "The owning chapters linked in each row",
+              "shows": "Gives each term one definition that follows its owning chapter, with the link to that chapter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "channels",
+      "heading": "<a id=\"g-channels\"></a>Part V — CHANNELS: Selling Everywhere",
+      "controlling_idea": "Part V's terms cover channels where an outside party sets the rules: marketplaces, business buyers, trading partners and the back office.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "G1",
+          "G2"
+        ],
+        "how": "Defines this group's terms beside their confusable neighbours, each linked to its owning chapter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous group of terms.",
+        "introduces": "The next group of terms, in the book's order.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "Part V's terms cover channels where an outside party sets the rules: marketplaces, business buyers, trading partners and the back office.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Listings and channel allocation, B2B terms, EDI messages (ORDERS, DESADV, INVOIC, SSCC), Peppol and ERP integration.",
+              "source": "The owning chapters linked in each row",
+              "shows": "Gives each term one definition that follows its owning chapter, with the link to that chapter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "integration",
+      "heading": "<a id=\"g-integration\"></a>Part VI — INTEGRATION: Making Separate Systems Behave Like One",
+      "controlling_idea": "Part VI's terms explain how systems exchange facts, survive missing or repeated messages, keep contracts, match identities and produce comparable metrics.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "G1",
+          "G2"
+        ],
+        "how": "Defines this group's terms beside their confusable neighbours, each linked to its owning chapter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous group of terms.",
+        "introduces": "The next group of terms, in the book's order.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "controlling_idea": "Part VI's terms explain how systems exchange facts, survive missing or repeated messages, keep contracts, match identities and produce comparable metrics.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Integration styles, idempotency, outbox, retries, reconciliation job, API contracts, master data and analytics terms.",
+              "source": "The owning chapters linked in each row",
+              "shows": "Gives each term one definition that follows its owning chapter, with the link to that chapter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "platform",
+      "heading": "<a id=\"g-platform\"></a>Part VII — PLATFORM: How Commerce Platforms Are Built",
+      "controlling_idea": "Part VII's terms describe how the software is structured, shared, extended, delivered to the browser and kept up on the busiest day.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "G1",
+          "G2"
+        ],
+        "how": "Defines this group's terms beside their confusable neighbours, each linked to its owning chapter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous group of terms.",
+        "introduces": "The next group of terms, in the book's order.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p12",
+          "controlling_idea": "Part VII's terms describe how the software is structured, shared, extended, delivered to the browser and kept up on the busiest day.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Monolith / modular monolith, tenants, apps and extensions, headless storefronts, caching and peak-load terms.",
+              "source": "The owning chapters linked in each row",
+              "shows": "Gives each term one definition that follows its owning chapter, with the link to that chapter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trust",
+      "heading": "<a id=\"g-trust\"></a>Part VIII — TRUST: Security, Privacy and Regulation",
+      "controlling_idea": "Part VIII's terms name what attackers try, what the law asks of customer data and how rules become requirements.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "G1",
+          "G2"
+        ],
+        "how": "Defines this group's terms beside their confusable neighbours, each linked to its owning chapter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous group of terms.",
+        "introduces": "The next group of terms, in the book's order.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p13",
+          "controlling_idea": "Part VIII's terms name what attackers try, what the law asks of customer data and how rules become requirements.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Card testing, PCI scope, skimming, controller / processor, lawful basis and the regulation-to-requirement terms.",
+              "source": "The owning chapters linked in each row",
+              "shows": "Gives each term one definition that follows its owning chapter, with the link to that chapter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "journeys",
+      "heading": "<a id=\"g-journeys\"></a>Part IX — JOURNEYS: One Order, End to End",
+      "controlling_idea": "Part IX adds only the few terms the journeys introduce, since their vocabulary is defined in earlier parts.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "G1",
+          "G2"
+        ],
+        "how": "Defines this group's terms beside their confusable neighbours, each linked to its owning chapter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous group of terms.",
+        "introduces": "The next group of terms, in the book's order.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p14",
+          "controlling_idea": "Part IX adds only the few terms the journeys introduce, since their vocabulary is defined in earlier parts.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Happy path / variant path and the journey terms.",
+              "source": "The owning chapters linked in each row",
+              "shows": "Gives each term one definition that follows its owning chapter, with the link to that chapter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evolution",
+      "heading": "<a id=\"g-evolution\"></a>Part X — EVOLUTION: Decisions That Change With Scale",
+      "controlling_idea": "Part X's terms cover choosing, changing and organizing platforms, and where AI fits.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "G1",
+          "G2"
+        ],
+        "how": "Defines this group's terms beside their confusable neighbours, each linked to its owning chapter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous group of terms.",
+        "introduces": "The next group of terms, in the book's order.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p15",
+          "controlling_idea": "Part X's terms cover choosing, changing and organizing platforms, and where AI fits.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Build, buy or assemble, total cost of ownership, shadow / parallel run, scale-stage, team and agentic-commerce terms.",
+              "source": "The owning chapters linked in each row",
+              "shows": "Gives each term one definition that follows its owning chapter, with the link to that chapter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "heading": "<a id=\"g-practice\"></a>Part XI — PRACTICE: How Others Built It",
+      "controlling_idea": "Part XI's terms are the public names and programs the four case studies rely on, described only as their dated sources describe them.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "G1",
+          "G2"
+        ],
+        "how": "Defines this group's terms beside their confusable neighbours, each linked to its owning chapter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous group of terms.",
+        "introduces": "The next group of terms, in the book's order.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p16",
+          "controlling_idea": "Part XI's terms are the public names and programs the four case studies rely on, described only as their dated sources describe them.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Shopify, Amazon, Zalando and composable-movement names and programs.",
+              "source": "The owning chapters linked in each row",
+              "shows": "Gives each term one definition that follows its owning chapter, with the link to that chapter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "standards",
+      "heading": "<a id=\"g-standards\"></a>Standards, Protocols and Regulations",
+      "controlling_idea": "The laws, standards and protocols the chapters cite are listed with their scope and a one-line meaning dated November 2026, deferring to the official source.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "G3"
+        ],
+        "how": "Defines this group's terms beside their confusable neighbours, each linked to its owning chapter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous group of terms.",
+        "introduces": "The next group of terms, in the book's order.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p17",
+          "controlling_idea": "The laws, standards and protocols the chapters cite are listed with their scope and a one-line meaning dated November 2026, deferring to the official source.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Each row gives term, scope (EU, NL, BE, DE, US or global), short name, meaning and chapter.",
+              "source": "The owning chapters linked in each row",
+              "shows": "Gives each term one definition that follows its owning chapter, with the link to that chapter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kestrel",
+      "heading": "<a id=\"g-kestrel\"></a>Kestrel & Pine Names (Fictional)",
+      "controlling_idea": "Kestrel & Pine's names, systems, people, decisions W1–W8 and incidents are labelled fictional and agree with the scenario ledger.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "G4"
+        ],
+        "how": "Defines this group's terms beside their confusable neighbours, each linked to its owning chapter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous group of terms.",
+        "introduces": "The next group of terms, in the book's order.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p18",
+          "controlling_idea": "Kestrel & Pine's names, systems, people, decisions W1–W8 and incidents are labelled fictional and agree with the scenario ledger.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The company, Waypoint and W1–W8, its systems by role, its people, its customers and orders, and its named incidents.",
+              "source": "The owning chapters linked in each row",
+              "shows": "Gives each term one definition that follows its owning chapter, with the link to that chapter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "index",
+      "heading": "<a id=\"g-index\"></a>Alphabetical Index",
+      "controlling_idea": "Every term and alias is listed alphabetically with a link to the section that defines it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "G1"
+        ],
+        "how": "Lets a reader with one term find its row without knowing which part owns it."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "Every table above.",
+        "introduces": "One alphabetical list of their terms and aliases.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "form": "list",
+          "controlling_idea": "After a one-sentence lead-in, every term and alias of the tables above is listed alphabetically with a link to the section that defines it.",
+          "function": "description"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Where to Go Next",
+    "synthesis": "The tables and the index are two ways into one vocabulary whose every row points back to the chapter that owns it.",
+    "so_what": "A reader can check a term against its chapter without rereading it, and a disagreement between the two is a defect to fix.",
+    "callback": {
+      "to": "The opening's 'order' and 'in stock' that mean different things in different systems.",
+      "how": "Each now has one row and one owning chapter."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Use the toolkit for working records, domain coverage for the chapter map, and the bibliography for the dated sources behind each definition."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The tables and the index.",
+      "introduces": "Where the reader goes next.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "hand_off": {
+      "to": "bibliography",
+      "relationship": "sequence",
+      "carries_over": "The glossary's definitions and its closing pointer to the sources behind them, with their publication dates.",
+      "introduces": "The register of every cited source by topic and by chapter."
+    },
+    "paragraphs": [
+      {
+        "id": "p20",
+        "controlling_idea": "The tables and the index are two ways into one vocabulary in which each term has one owning chapter, so a disagreement is a defect; the toolkit holds the working records, domain coverage the chapter map, and the bibliography, the book's last page, the dated sources behind every definition.",
+        "function": "transition"
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Teaching any concept in depth; the linked chapter does that, with sources and the worked example."
+    },
+    {
+      "topic": "Authoritative legal, tax or standards definitions; the official source wins."
+    },
+    {
+      "topic": "Templates, the model-to-chapter map and sources",
+      "covered_in": [
+        "toolkit",
+        "domain-coverage",
+        "bibliography"
+      ]
+    },
+    {
+      "topic": "Every term the book mentions: failure-handling table rows, one-off vendor features and narrow mechanisms stay in their chapters."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Who re-checks the page when chapters are revised? Working assumption: rerun the generator (_research/glossary-tools/assemble.py) in each review cycle; note that the 2026-11-13 consistency edits were made in index.md and must be carried into rows.py before the generator is rerun, or they will be lost (needs the author: whether to keep the generator)."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Converted spec.md to spec.json in a light pass for a lookup page: one spec paragraph per draft unit, each section's lead paragraph and table as one list-form unit with the table as evidence; the thesis is the page's own because the journal spec gives a reference page none. length.max_words is the published length plus 10%: 16,733 words as check_draft counts them (tables and Sources excluded; derived from the 16,993 after this pass less the 260 words it added), so 18,406; 19,095 by wc.",
+      "rejected": [
+        "Specifying each table row as a paragraph",
+        "Carrying the old inventory-style success criteria over"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the GMV open question is settled by consistency ruling 20 (in this book GMV is before refunds and returns; a company's reported GMV follows its own definition); the row now says so and keeps Shopify's net-of-refunds definition as the example.",
+      "rejected": [
+        "Leaving the row saying only that definitions differ"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the SKU open question is settled by consistency ruling 21 (the glossary follows chapter 06; 'a SKU' for the variant is accepted shorthand); the row already does both.",
+      "rejected": [
+        "Changing the row to the ledger's wording"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Consistency fixes to book-wide vocabulary and the ledger, entries otherwise unchanged: 'Commerce platform' row now gives chapter 1's meaning (the whole set of systems that make and keep promises) and chapter 5's market sense, named the shop platform; 'The platform' row renamed 'The shop platform' with 41 apps in January 2027 and 34 by July 2027 (ruling 10); 'System' takes chapter 1's definition; added 'Status line' (chapter 1's definition) and 'single writer' to the copy / writer row (chapter 4's ownership test); system of record and ATP aligned with chapters 4 and 10; handoff adds chapter 1's acceptance rule; stock sync chain says 'up to two hours' with no hop intervals; 'commerce platform' and 'SaaS platform' meaning the hosted product changed to 'shop platform' in two rows; a first sentence saying what the page is for and how to use it added to p01; index entries added for the new and renamed rows.",
+      "rejected": [
+        "Rewriting entries beyond the contradictions",
+        "Adding terms no chapter defines"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "After draft-check round 1 (REVISE), cheap fixes applied without a second round: the opening paragraph states its purpose once with the 'order' / 'in stock' examples as the reason and now names the preface, slash rows, standards table and fictional names (AC-4); the preface is described the same way in How to Use and its own paragraph; Part V's lead is a sentence that no longer calls the back office an outside party; Duiven and Waypoint W6 link to the Kestrel & Pine section; the Build / buy / assemble row maps the four shapes onto the three verbs (chapter 41's table); the standards column 'Short name' renamed 'Name'; the Kestrel lead says the scenario runs into 2028; a blank line and a one-sentence lead-in (part of p19's list unit) added before the index; fifteen 'X' index entries that duplicated 'The X' at the same anchor removed; the conclusion gains the synthesis, callback and so-what sentence. The page was not re-checked after these edits.",
+      "rejected": [
+        "A second draft-check round (the brief allows one)",
+        "Linking index entries to rows (needs row anchors from the generator)"
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Mirrored the sibling glossaries: grouped by part, evidence labels and failure patterns first, fictional names last, index generated from the tables by _research/glossary-tools/assemble.py from rows.py."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Replaced the sibling's market-register table with a 'Standards, Protocols and Regulations' table (term, scope, short name, meaning, chapter), because this book's external vocabulary is EU law, national e-invoicing and fiscal rules, US rules and global standards."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Definitions harvested from each chapter's bold first-use definitions and definition tables, then trimmed by dropping minor mechanisms and failure-handling cases; slash rows hold contrasted terms."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "WHY IT MATTERS callout omitted, following the author's decision to drop it from every page."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "Every chapter of the book, via the links in each row; introduction, where-commerce-platforms-go-wrong, meet-kestrel-and-pine",
+      "contributed": "The definitions and the owning chapters."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md and _research/consistency-issues.md",
+      "contributed": "Kestrel & Pine facts and the rulings the rows follow."
+    },
+    {
+      "kind": "internal",
+      "ref": "bibliography",
+      "contributed": "The external sources cited in the owning chapters."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "spec.md converted to spec.json; consistency fixes to vocabulary rows, Status line added, use-this-page first sentence added to index.md."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article."
+    }
+  ],
+  "length": {
+    "max_words": 18406
+  }
+}

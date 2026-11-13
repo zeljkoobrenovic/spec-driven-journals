@@ -7,7 +7,7 @@
   "part": "part-4",
   "title": "Getting It There: Carriers, Labels, Tracking and the Delivery Promise",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed from the published chapter (posts/16-shipping-and-delivery/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (the thesis paragraph, a roadmap, and a conclusion paragraph that answers the opening); these are listed in the decision_log.",
   "intent": {
     "outcome": {
@@ -531,7 +531,7 @@
             {
               "kind": "table",
               "what": "Normalized-event table: event, meaning, who consumes it (pre_transit to exception).",
-              "shows": "Each event has a consumer, and 'shipped' is sent on in_transit, the first carrier scan, not on the label."
+              "shows": "Each event has a consumer; in the target design 'shipped' is sent on in_transit, the first carrier scan, not on the label."
             }
           ],
           "transition_in": {
@@ -544,7 +544,7 @@
         },
         {
           "id": "p17",
-          "controlling_idea": "Two rules follow: the order's shipping status and its messages are derived from these events and never set by hand, so every view reads the same status and 'shipped' is sent on the carrier's first scan rather than at label print, and every event is stored with its lane, because the scan history is the only data on how long a lane really takes.",
+          "controlling_idea": "Two rules follow: the order's shipping status and its messages are derived from these events and never set by hand, so every view reads the same status, and the 'shipped' message belongs on the carrier's first scan rather than on the warehouse's label (the rule Kestrel & Pine adopts later, after Eva's order); and every event is stored with its lane, because the scan history is the only data on how long a lane really takes.",
           "function": "claim",
           "transition_in": {
             "relationship": "cause_effect",
@@ -951,7 +951,7 @@
       },
       "flow": {
         "pattern": "assertion_evidence_reasoning",
-        "rationale": "Public evidence first (carrier drift, then on-time data), then Kestrel & Pine's parcel in time order, then the promise that failed and the plan that answers it. The parcel's steps out of time order would hide that the shipped message waits for the scan; the plan before the failure would answer a question not yet asked."
+        "rationale": "Public evidence first (carrier drift, then on-time data), then Kestrel & Pine's parcel in time order, then the promise that failed and the plan that answers it. The parcel's steps out of time order would hide that the shipped message went out before the carrier had the parcel; the plan before the failure would answer a question not yet asked."
       },
       "transition_in": {
         "relationship": "additional_support",
@@ -1036,13 +1036,13 @@
         },
         {
           "id": "p43",
-          "controlling_idea": "PostNL's scans follow from 23:40 to delivery at 11:20 on 15 April; the first of them, not the label, sends Eva's 'shipped' e-mail, and each scan is translated into one status and stored with its route.",
+          "controlling_idea": "PostNL's scans follow from 23:40 to delivery at 11:20 on 15 April, and each is translated into one status and stored with its route; Eva's 'shipped' e-mail had already gone out at 08:40, when the WMS reported the shipment, fifteen hours before the carrier's first scan, which is the gap the first-scan rule Kestrel & Pine adopts later closes.",
           "function": "example",
           "evidence": [
             {
               "kind": "case",
-              "what": "Depot scan 23:40; out for delivery 07:50 and delivered 11:20 on 15 April (illustrative times).",
-              "shows": "The status and the shipped message come from the carrier's events, not from the label.",
+              "what": "WMS shipment report and Eva's shipping confirmation 08:40 on 14 April (ledger; journey-consumer-order); depot scan 23:40; out for delivery 07:50 and delivered 11:20 on 15 April (illustrative times).",
+              "shows": "In April 2027 the shipped message came from the warehouse's report, before the carrier had the parcel; the status comes from the carrier's events.",
               "source": "Kestrel & Pine scenario ledger, shipping-and-delivery line"
             }
           ],
@@ -1391,10 +1391,16 @@
     }
   ],
   "modalities": [],
-  "open_questions": [
-    "Needs the author (rule 12): this chapter now has Eva's 'shipped' e-mail sent by PostNL's first scan (23:40, 14 April 2027), as the orchestrating brief asked; chapter 19's Kestrel & Pine table describes the April 2027 'shipped' e-mail as sent 'when the iPaaS flow marks the order fulfilled, sometimes before the parcel leaves' (with the first-scan trigger as the target), and journey-consumer-order sends the shipping confirmation 'when the WMS reports the label (Wednesday afternoon)'. The fact needed: whether in April 2027 Kestrel & Pine already triggered 'shipped' on the carrier scan (then chapters 19 and 37 change) or only later (then this chapter should present the first-scan trigger as the rule Noor adopts, not as what happened to Eva)."
-  ],
+  "open_questions": [],
   "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved in the cleanup pass, 2026-11-13 (rule 1, canonical facts; settled book-wide in the cleanup brief): in April 2027 Eva's shipping confirmation went out at 08:40 on 14 April, when the WMS reported the shipment (as journey-consumer-order and customer-service-and-notifications have it); sending 'shipped' on the carrier's first scan is the rule Kestrel & Pine adopts later. p17 now states the first-scan rule as that later rule, not as what happened; p43 says Eva's e-mail went out at 08:40, fifteen hours before PostNL's 23:40 depot scan, and that the later rule closes this gap; the event table (target vocabulary, 'notification: shipped' on in_transit), the requirements table (no shipped trigger) and question 7 (asks which event sends it) already agree and are unchanged. The open question on this point is closed. This reverses the 2026-11-12 decision that Eva's e-mail was sent by the first scan.",
+      "rejected": [
+        "Keeping Eva's e-mail on the 23:40 scan (contradicts chapters 1, 19 and 37 and the settled ruling)",
+        "Dropping the first-scan rule (it is the chapter's target and chapter 19's target column)"
+      ]
+    },
     {
       "date": "2026-11-12",
       "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming round 3 (escalate: 15 passed, 23 failed; 8 major, all at fault in the draft; 15 single-reader minor), the cheap, plainly right fixes were made without another round: p36 says what the promise-approach table shows and glosses the Giant's Boots; p10 opens 'Both failures matter beyond the Dutch storefront'; p18 no longer says 'the inputs are the chapter's argument'; p39 says the ACM figures are the only official ones and concern letters, not parcels; p44 'could be counted but nobody has counted'; p46's opener names the grouping (carrier side, promise, parcel, others' parcels) instead of claiming parcel order; Figure 1's caption glosses the lane table; p25 names Directive 2011/83/EU instead of 'the same directive'.",
@@ -1521,7 +1527,7 @@
     {
       "kind": "internal",
       "ref": "warehouse-and-fulfillment; customer-service-and-notifications; meet-kestrel-and-pine",
-      "contributed": "The 21:00 last wave and 22:30 collection; the rule that 'shipped' is sent on the carrier's scan."
+      "contributed": "The 21:00 last wave and 22:30 collection; the 08:40 shipping confirmation; the target rule that 'shipped' is sent on the carrier's scan."
     },
     {
       "kind": "external",
@@ -1560,6 +1566,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Cleanup pass: Eva's 'shipped' e-mail at 08:40 on the WMS report (p43); first-scan sending presented as the rule Kestrel & Pine adopts later (p17); open question closed; check-report.json stale. (AI-mediated session)"
+    },
     {
       "date": "2026-11-12",
       "change": "Confirming round 3 (escalate: 15 passed, 23 failed, 8 major all draft faults, 15 minor). Post-round fixes: table explained and Giant's Boots glossed (p36); W8 transition (p10); p18, p39, p44, p46 openers and wording; lane table glossed in Figure 1; Directive named in p25. The check report is stale against these edits."

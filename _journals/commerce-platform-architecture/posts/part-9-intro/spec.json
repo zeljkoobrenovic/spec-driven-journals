@@ -1,0 +1,581 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "part-9",
+  "journal": "commerce-platform-architecture",
+  "part": "part-9",
+  "title": "Part IX — JOURNEYS: One Order, End to End",
+  "status": "draft",
+  "revised": "2026-11-13",
+  "basis": "Reconstructed on 2026-11-13 from the published page (posts/part-9-intro/index.md, 509 words, ten units) and its former spec.md, then reordered the same day from the flow rubric (see decision_log); the page was revised to match. One spec paragraph per unit of the page; the KEY POINTS callout and Figure 3 (the before-Waypoint comparison) are evidence of the claim paragraph (p04), Figure 1 (the relay) of p01 and Figure 2 (four journeys, one chain) of p02.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Part IX follows four journeys in order: a consumer purchase from search to accounting, the same jacket coming back as an exchange, a retail chain's EDI reorder through order, pallet notice, invoice and payment, and a Black Friday evening followed by the next year's plan.",
+        "The first three replay April 2027 orders through the late-2027 Waypoint design (an availability service, an OMS, a PIM, and warehouse packing records for wholesale notices), keeping their dates and amounts, and compare each with the earlier landscape; the peak chapter reconstructs the 2026 incident and then presents the 2027 plan.",
+        "An order is a chain of promises, each with one owner: many systems holding a piece of one order is normal, a fact with two writers is not, and every join needs a key and a daily reconciliation."
+      ],
+      "can_do": [
+        "Pick the Part IX journey that matches the order, return, business order or peak they need to trace."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture (engineers, product managers and leaders) who have read Parts I to VIII and are about to start the journeys, or who arrive with one order, return, wholesale order or peak to trace and want the journey that matches it.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side.",
+        "Roughly what an API, a database and a queue are.",
+        "Part I: the thirteen steps of an order, promise and handoff, the three status lines (money, goods, returns), system of record, single writer, events, idempotency and reconciliation; the glosses for PSP, WMS, ERP, iPaaS, EDI, webhook, SKU, channel, 3PL, OMS, availability service, PIM, D2C and B2B.",
+        "Parts II to VIII: each capability, join and rule taught separately (catalog, price, stock, checkout, payment, order record, invoice, warehouse, shipping, returns, B2B and EDI, integration, security, privacy, regulation).",
+        "Kestrel & Pine in outline: a fictional outdoor brand, its systems, its incidents (among them the Three-Status Order, the Double Refund, the ASN Chargeback and the Black Friday Oversell), Bergzicht Outdoor as its largest wholesale customer and the Waypoint program; Eva's jacket order of 13 April 2027 as the book's worked order."
+      ],
+      "does_not_know": [
+        "The step table, the entity–owner table and the handoff requirements as one chapter shape (introduced here, taught in journey-consumer-order).",
+        "The despatch advice's details and the four-way match (owned by journey-wholesale-order; 'pallet notice' is used here)."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader of this page alone can name the four chapters' subjects in reading order.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only this page: what will each of the next four chapters tell you, in order?",
+        "expected": "Eva's order #1072455 (a €199 jacket and two €18 pairs of socks at 21:14 on 13 April 2027, paid by iDEAL, delivered 15 April) from search to accounting, with who owns each fact and how the next system learns it; the M-to-L exchange requested on 19 April and inspected on 22 April, with a refund branch showing how one authorized request avoids January's duplicate-payment failure; Bergzicht's 240-unit, €19,860 reorder through structured order, pallet notice, invoice and payment (three pallets on 9 April, payment due 9 May), with an earlier €14,200 deduction explaining why the notice must describe the actual packing; Black Friday 2026 (a four-hour order backlog, delayed stock updates, 1,340 oversold units, about €96,000) and a 2027 plan that tests capacity, monitors queues and gives each protective action and recovery check an owner."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of this page alone can say why the journeys run the same orders through two architectures and what to look for in them.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: why does each journey compare two architectures, and what should a reader look for while following one?",
+        "expected": "The dates and amounts stay fixed, so what changes between the earlier landscape and the late-2027 design is whether the promises hold: in the earlier one, scheduled stock copies and separate order records caused failures. The reader looks at the handoffs: which system owns each fact, whether a fact has two writers, and whether each message carries an idempotency key with a daily reconciliation behind the events."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What do four complete journeys through the same systems show about where commerce promises break, and what keeps them?",
+    "claim": "An order, its return, a wholesale reorder and a peak evening cross one chain of systems, each keeping a different promise. On Kestrel & Pine's January 2027 landscape (Black Friday 2026 for the peak) every journey broke at a handoff, not inside a system; each holds when every fact has one writer and every handoff carries an idempotency key, moves by event or daily batch as its promise's clock requires, and is reconciled.",
+    "disputed_by": "The view that commerce failures are defects inside a system, so that a merchant which picks a strong product for each slot (shop platform, warehouse system, ERP, returns app) and keeps each running has a working landscape, and an order's journey is simply the sum of its steps.",
+    "so_what": "A merchant that accepts the claim reviews its landscape by walking orders through it rather than by grading products, and spends on owners, keys, gauges and reconciliations before new systems. Kestrel & Pine's four incidents sat on these four paths: the Three-Status Order (#1052877, December 2026: three statuses for six days, eleven tickets), the Double Refund (January 2027: 212 returns, €19,400 refunded twice), the ASN Chargeback (Q3 2026: €14,200 in deductions) and the Black Friday Oversell (27 November 2026: 1,340 units, 1,120 orders, about €96,000). Of Waypoint's eight decisions, three add a system (the availability service, the OMS and the PIM), while its integration standards, its EDI rules and its single definition of an order set owners, contracts, idempotency keys, reconciliations and the source of the despatch advice; the 2027 peak plan is mostly gauges and switches with owners.",
+    "how_why": "Each system keeps its own fact on its own clock (checkout in seconds, the warehouse in pick waves, the carrier overnight, the ERP in a daily batch, the bank in days) and learns the other systems' facts as copies, through messages that arrive at least once and sometimes twice, late or not at all. A step can therefore be right in its own system and wrong at the next: a stock copy two hours old, a refund written by two systems, a despatch advice written before the pallets were packed, a queue nobody measured. Running the same dates and amounts through the January 2027 landscape and the late-2027 design holds the main systems constant (the shop platform, the WMS, the ERP, the PSP and the carriers all stay) and changes only owners and joins, which shows that the failures were in the joins.",
+    "supporting_claims": [
+      {
+        "id": "P9-1",
+        "claim": "A consumer order crosses about fifteen handoffs among eight systems that each hold a piece of it; it holds when each fact (product, price, physical stock, sellable stock, order, payment, parcel, invoice) has one system of record, the order number is the idempotency key on every join, and stock and orders move by event while invoices and payouts move by daily batch under a reconciliation."
+      },
+      {
+        "id": "P9-2",
+        "claim": "A return is three flows with three owners (the goods through the warehouse's inspection, the money through the payment provider, the books through a credit note in the ERP), released by one event, the warehouse's disposition; the refund has one writer and one key, and an exchange is a return plus a new order at the original frozen price."
+      },
+      {
+        "id": "P9-3",
+        "claim": "A wholesale order is a chain of contractual documents, each written by the system that knows the fact it states: the order record by the OMS, keyed on the buyer's location number and purchase-order number; the despatch advice by the warehouse system from the pallets as packed; the invoice by the ERP from the shipped lines. E-invoicing mandates change an invoice's format and transport, not its owner."
+      },
+      {
+        "id": "P9-4",
+        "claim": "Under peak load the chain fails at the links nobody measured: a queue that hides a growing backlog and stock copied on a schedule. A peak plan sets a capacity figure per link, tests it with marked orders, gauges and alarms the queue, sends stock as events, and gives each degradation switch an owner and a trigger, while checkout, payment and the order path are never switched off."
+      },
+      {
+        "id": "P9-5",
+        "claim": "Run on the same dates through the January 2027 landscape (and Black Friday 2026 for the peak), each journey breaks at a handoff where a fact had two writers or no owner, a message had no key or a link had no gauge, while every system did what it was built to do."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Performs the part's opening: states the part thesis in its three key points, places the four journeys on one chain of systems, says that the first three replay April 2027 orders through the late-2027 design with a comparison to the earlier landscape and that the peak is told twice, and gives the reading order.",
+    "supports": []
+  },
+  "flow": {
+    "pattern": "large_to_small",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "chapters: the four chapter paragraphs, in the part's reading order"
+      }
+    ],
+    "rationale": "The page opens on one puzzle (a warehouse that reports a parcel shipped while the storefront shows it being prepared, each right about its own fact) and states at once what following orders across the handoffs shows: every journey broke at a handoff, and what makes one hold. It then narrows to the four stories that show it; to the setting they are told in and how each chapter is laid out (the late-2027 design, each chapter ending on the January 2027 landscape, the peak told as Black Friday 2026 and then the 2027 plan); to the one rule of style the comparison pictures (events for stock and orders, a daily batch for finance), beside Figure 3; then one paragraph per chapter; it ends on the opening's parcel as a question to check and where to begin. The claim follows the hook directly because both round-1 flow readers read it as the answer to the hook and the relay figure, and found it unclear after the method; the stories come before the setting because the setting is a property of the stories; the event-and-batch rule comes after the setting because it contrasts the two architectures the setting names. Put the setting first and the reader meets three time frames before knowing what they are for; put the chapter list before the setting and the January comparison each chapter ends with is unexplained."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "A warehouse can report a parcel shipped while the storefront still shows it being prepared: each system is right about its own fact, and nothing in either says whether the customer's promise is being kept."
+    },
+    "bridge": {
+      "from_reader_world": "Parts II to VIII, which taught each capability, join and rule separately; the previous page hands over 'four journeys followed through all of them at once'.",
+      "to_topic": "The same systems in motion: four walkthroughs that follow one purchase, one exchange, one wholesale shipment and one peak day across the handoffs, where information or responsibility can be lost."
+    },
+    "thesis_statement": {
+      "text": "An order is a chain of promises, each with one owner; in the January 2027 landscape every journey broke at a handoff, not inside a system, and each holds when every fact has one writer, every handoff carries an idempotency key, stock and orders move as events while invoices and payouts move in a daily batch, and a reconciliation catches what the messages miss.",
+      "placement": "KEY POINTS bullets 1 to 3, paragraph p02 (the claim) and paragraph p05 (event versus batch)"
+    },
+    "roadmap": {
+      "placement": "paragraphs p03 and p04",
+      "promises": [
+        {
+          "promise": "Four journeys in order: Eva's jacket from search to accounting, the same jacket back as an exchange, Bergzicht's EDI reorder from the same warehouse stock, and Black Friday 2026 at 2,300 orders an hour followed by the 2027 plan; the first three share one shape ending in the January 2027 comparison.",
+          "kept_in": [
+            "chapters"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A warehouse can report a parcel shipped while the storefront still shows it being prepared, each right about its own fact; knowing how each system works, as Parts II to VIII taught, does not show whether their combined answers keep the customer's promise, so four walkthroughs at fictional Kestrel & Pine follow the order across the handoffs.",
+        "function": "example",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "A parcel reported shipped by the warehouse while the storefront shows it being prepared.",
+            "shows": "Two systems each right about their own fact, with nothing saying whether the promise is kept."
+          },
+          {
+            "kind": "figure",
+            "what": "Figure 1: five relay runners (platform, OMS, WMS, carrier, ERP) passing one order parcel in marked handoff zones.",
+            "shows": "An order as a chain of promises: each system carries one leg and owns only that leg."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Run on the systems Kestrel & Pine had in January 2027, and on Black Friday 2026, each of these four walkthroughs broke at a handoff, not inside a system: each system did its job, and the journey failed where a fact had two writers or none, a message had no key or nobody watched a queue; a journey holds when every fact has one writer and every handoff has an idempotency key, a reconciliation and a speed that matches its promise.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "KEY POINTS callout: an order is a chain of promises, each with one owner; the same four stories run on two architectures; operations by event, finance by batch, and every join with a key and a net.",
+            "shows": "The part's argument in three lines for a reader who skims."
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Walkthroughs that follow the order across the handoffs, where information or responsibility can be lost.",
+          "introduces": "What following them shows: every journey broke at a handoff, and what makes a journey hold.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Four stories show it, one sentence each: Eva's jacket goes from search to accounting; it comes back as an exchange for a larger size; retail chain Bergzicht reorders from the same warehouse stock by EDI; Black Friday 2026 puts the shared order path under 2,300 orders an hour.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Eva's jacket; Bergzicht's reorder from the same Duiven stock; Black Friday 2026's peak hour of 2,300 orders (fictional).",
+            "source": "_research/scenario-ledger.md (Recurring worked examples; Peak)",
+            "shows": "One consumer, one return, one business buyer and one peak evening on the same chain."
+          },
+          {
+            "kind": "figure",
+            "what": "Figure 2: four journeys, one chain: a consumer, a return, a retail chain and a peak evening enter the same systems through different doors, and every arrow is a handoff with one sender and one owner.",
+            "shows": "The four stories share the systems; what differs is the door they enter by."
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The claim that every journey broke at a handoff.",
+          "introduces": "The four stories that show it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The first three journeys keep the dates and amounts of April 2027 orders but run them on the systems Kestrel & Pine has from late 2027 (Waypoint's availability service, OMS and PIM, and wholesale shipment notices written by the warehouse from its packing records); each chapter names the owner of each fact, traces the steps, messages and failure recovery, and ends by running the same order through the January 2027 landscape, while the fourth tells Black Friday 2026, then the 2027 plan.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Waypoint W1 (availability service), W2 (OMS), W3 (PIM) and W6 (despatch advice from the warehouse's pack confirmation); the January 2027 baseline's stock sync chain and the four places orders lived.",
+            "source": "_research/scenario-ledger.md (Systems landscape; The Waypoint program); consistency-issues item 4 (seam dates)",
+            "shows": "Which systems differ between the two architectures, so the reader knows what the comparison holds constant."
+          },
+          {
+            "kind": "reasoning",
+            "what": "The chapter shape: entity–owner table, step table, handoff requirements table, failures and their recovery, the January 2027 comparison.",
+            "source": "journey-consumer-order, journey-return-and-exchange, journey-wholesale-order, journey-peak-day",
+            "shows": "Where in each chapter the reader can see the handoffs the claim is about."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The first three stories, which are April 2027 orders.",
+          "introduces": "The design they are told in, how each chapter is laid out, the earlier landscape it ends with, and the peak journey's two settings.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "The comparison shows which handoffs must be fast (the speed p02 asks to match each promise): in January 2027 scheduled stock copies ran up to two hours late (Figure 3); stock and orders must move as events because a shopper is waiting, while invoices and payouts can wait for a daily batch.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Waypoint W5: stock, orders and prices move by events, finance by daily batch; every integration has an owner, idempotent handling and a reconciliation job.",
+            "source": "_research/scenario-ledger.md (The Waypoint program, W5)",
+            "shows": "Backs KEY POINTS bullet 3 ('operations by event, finance by batch'), which the published body did not explain."
+          },
+          {
+            "kind": "figure",
+            "what": "Figure 3: the before-Waypoint comparison: in January 2027 orders went to the warehouse one at a time and stock came back through three scheduled copies up to two hours late; in late 2027 orders move as keyed events and stock returns as events within a minute. The paragraph refers to it.",
+            "shows": "The same handoffs on the two architectures, side by side."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The comparison with the January 2027 landscape, and p02's speed that matches each promise.",
+          "introduces": "Which handoffs that comparison shows must be fast (events) and which can wait (a daily batch), with Figure 3.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "chapters",
+      "heading": "Chapters in this part",
+      "controlling_idea": "Each of the four chapters follows one Kestrel & Pine order, return, wholesale reorder or peak evening through every system, and each uses what the one before it established.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "P9-1",
+          "P9-2",
+          "P9-3",
+          "P9-4",
+          "P9-5"
+        ],
+        "how": "Each paragraph introduces the chapter that argues one supporting claim and its January 2027 comparison, so the list is the part's argument in outline."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Journey 1 sets up the reading device and leaves the payment, invoice and order record that Journey 2 reverses (its refund is a new iDEAL transfer, its credit note drawn against Journey 1's invoice). Journey 3 changes the buyer and is read against Journey 1, drawing on the same Duiven stock. Journey 4 puts Journey 1's path under forty times its load and tells the incident before the plan. Putting the return first would reverse a payment and an invoice the reader has not seen made; putting the peak first would present an incident at links the reader has not walked one order through; putting wholesale first would teach the despatch advice without the consumer order it is contrasted with."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The four stories and the chapter shape.",
+        "introduces": "One paragraph per chapter: its case in bold, its dates and amounts, and what it shows.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "The consumer-order chapter follows order #1072455 from search to accounting (Eva's €199 jacket and two €18 pairs of socks at 21:14 on 13 April 2027, paid by iDEAL, delivered 15 April) and names who owns each fact and how the next system learns it.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P9-1"
+            ],
+            "how": "Introduces the chapter on one consumer order's owners and joins, and its January comparison."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Order #1072455: €199 jacket, 2 × €18 socks, 21:14 on 13 April 2027, iDEAL, delivered 15 April (fictional).",
+              "source": "_research/scenario-ledger.md (Eva's jacket; problem 2); journey-consumer-order, 'The Same Order in January 2027'",
+              "shows": "The worked order and the incident its January comparison explains."
+            }
+          ]
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The return chapter follows the M-to-L exchange requested on 19 April, whose inspection on 22 April decides what is restocked and releases the replacement, and a refund branch shows how one authorized request avoids January's Double Refund of 212 returns.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P9-2",
+              "P9-5"
+            ],
+            "how": "Introduces the chapter on the return's three flows and the refund's one writer."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Exchange requested 19 April, inspected 22 April; January 2027's duplicate refunds (fictional).",
+              "source": "_research/scenario-ledger.md (Eva's jacket; problem 3)",
+              "shows": "One event, the inspection, releases goods and money; one writer stops the double refund."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Eva's order #1072455.",
+            "introduces": "Its jacket coming back as an exchange.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The wholesale chapter follows Bergzicht's 240-unit, €19,860 reorder through structured order, pallet notice, invoice and payment (three pallets on 9 April 2027, payment due 9 May), and the ASN Chargeback, €14,200 deducted for notices that did not match the pallets, explains why the notice must describe the actual packing.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P9-3",
+              "P9-5"
+            ],
+            "how": "Introduces the chapter on the wholesale documents and the system that writes each."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "240 units, €19,860, three pallets delivered 9 April, payment due 9 May; the ASN Chargeback's €14,200 (fictional).",
+              "source": "_research/scenario-ledger.md (Bergzicht's spring reorder; problem 5)",
+              "shows": "A notice written before packing cost deductions; the writer of each document matters."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The consumer order and its return.",
+            "introduces": "A business buyer whose order is a chain of documents.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The peak chapter reconstructs Black Friday 2026, where a four-hour order backlog and delayed stock updates produced 1,340 oversold units and about €96,000 in costs, and then the 2027 plan that tests capacity, monitors queues and gives each protective action and recovery check an owner.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P9-4",
+              "P9-5"
+            ],
+            "how": "Introduces the chapter on the chain under peak load and the plan that measures its links."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Four-hour backlog, 1,340 units oversold, about €96,000 (fictional, illustrative).",
+              "source": "_research/scenario-ledger.md (Peak; problem 1)",
+              "shows": "Links nobody measured failed under load; the plan gives each a gauge and an owner."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The consumer order's path, walked in the first chapter.",
+            "introduces": "The same path under peak load.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Where to Begin",
+    "synthesis": "Each journey turns the opening's parcel, shipped yet being prepared, into a question that can be checked: which system owns that fact, and how the other learns it. No chapter paragraph says this of the opening's parcel.",
+    "so_what": "The question can be checked in any landscape, not only Kestrel & Pine's, so the reader takes the journeys as a method for their own systems.",
+    "callback": {
+      "to": "The opening's warehouse that reports a parcel shipped while the storefront shows it being prepared (p01).",
+      "how": "The conclusion names the parcel again and states the question the journeys ask of it."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Begin with journey-consumer-order."
+    },
+    "hand_off": {
+      "to": "journey-consumer-order",
+      "relationship": "elaboration",
+      "carries_over": "The part introduction's first journey, order #1072455, and its reading device: the owner of each fact, the step table and the comparison with the January 2027 landscape.",
+      "introduces": "The fifteen steps from search to payout, the system of record of each fact on the order, the requirements of each handoff and the failures along the path."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The four chapters and what each follows.",
+      "introduces": "What they answer about the opening's parcel, and where to begin.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p10",
+        "controlling_idea": "Each journey turns the opening's parcel, shipped yet being prepared, into a question for any landscape (which system owns that fact, and how the other learns it); begin with the consumer-order chapter, which walks order #1072455 to its January 2027 comparison.",
+        "function": "synthesis"
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Teaching any journey's mechanics; the intro summarizes, it does not re-walk the steps.",
+      "covered_in": [
+        "journey-consumer-order",
+        "journey-return-and-exchange",
+        "journey-wholesale-order",
+        "journey-peak-day"
+      ]
+    },
+    {
+      "topic": "The Waypoint decisions themselves.",
+      "covered_in": [
+        "meet-kestrel-and-pine"
+      ]
+    },
+    {
+      "topic": "The failure patterns' definitions.",
+      "covered_in": [
+        "where-commerce-platforms-go-wrong"
+      ]
+    },
+    {
+      "topic": "The part's closing (the four incidents read together against the opening's parcel).",
+      "covered_in": [
+        "journey-peak-day"
+      ]
+    },
+    {
+      "topic": "The dated public sources (Shopify, Stripe, Mollie, Adyen, Jumbo, GS1, Peppol, Zalando); the chapters cite them. The page makes no external factual claim of its own."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Confirming draft-check round 3: escalate (20 passed, 12 failed; one at fault in the spec: p05's event-versus-batch rule arrived as a new topic because p02's controlling idea left the promise's clock out). Cheap, plainly right fixes applied without a further round, as the brief allows: p02 says 'these four walkthroughs' (both readers: 'these journeys' had no referent) and adds 'a speed that matches its promise' to what makes a journey hold (the spec fault; the part thesis's 'moves by event or daily batch as its promise's clock requires'), so p05 follows from it; p07 says the Double Refund was 212 returns and p08 says the ASN Chargeback was €14,200 deducted for notices that did not match the pallets (both readers: incident names without a plain description; terms reader and both flow readers: pallet notice and ASN not tied together); p08 dates the pallets 9 April 2027 (both readers). Length held at 655 of 656 by cutting the January landscape's clause in p04 (p05 and Figure 3 say it), 'that does not show' in p01, 'then' in p03, 'to check' in the closing and 'did what it was built to do' (now 'did its job') in p02.",
+      "rejected": [
+        "A fourth round (the brief allows one confirming round)",
+        "Moving the claim p02 after the setting p04 (round 3's two readers asked for it; round 1's two readers asked for the opposite; rule 10: the current position stands)",
+        "A further rewording of p04's three time frames (tried after round 2; the readers still re-read it once; no shorter wording found within the limit)",
+        "Explaining KEY POINTS' 'landscape' and the other callout terms before the body (the author's callout; rule 10)"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after draft-check round 2 (revise: 21 passed, 17 failed; 9 blocking, 8 minor; all at fault in the draft except one minor note on KEY POINTS bullet 2), the last revision round, the rules of RESOLVE.md were applied before the one confirming round. Rule 10: the claim paragraph p02 stays directly after the hook (round 1's two readers asked for it there; round 2's readers stumbled on its terms, not its place), and is reworded so its terms stand on their own ('Run on the systems Kestrel & Pine had in January 2027 … each of these journeys'). Rule 3 and cheap fixes for corroborated points: p03 gives each of the four stories its own sentence and says 'the same warehouse stock' and 'to accounting' (both readers counted three; one found 'the accounts' vague, one 'the same stock'); p04's lead says plainly that the first three keep April 2027 dates and amounts but run on the late-2027 systems, and 'The dates and amounts stay as they were' is folded into it (both readers re-read the three time frames); p05 opens on what the comparison shows, names January's scheduled stock copies and refers to Figure 3 (both readers: a standalone rule, figure misplaced; judge: transition and evidence); the closing's 'it' becomes 'order #1072455' (both readers). Rule 6 (glosses): the €14,200 deduction is named as the ASN Chargeback and the duplicate-payment failure as January's Double Refund, the names the reader knows from Part I. Evidence: Figure 3's caption drops 'in batches' after 'keyed events' (judge, terms reader and one flow reader read it as contradicting 'operations by event'; W5 says orders move by events), the only change to an author's caption. Length held at 656 by cutting the list of four walkthroughs in p01 (p03 lists them), 'also', and the closing's description of the parcel.",
+      "rejected": [
+        "Moving the claim back after the setting (rule 10: round 1's readers asked for the current place)",
+        "Moving the four stories before the claim (one round-2 reader; rule 10)",
+        "Raising the limit above 656 (rule 4)"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12 (rule 10 and the author's text): KEY POINTS stays as the author wrote it: bullet 2's 'the same four stories run on two architectures' (one reader, minor; the body says the fourth is Black Friday 2026 and then the 2027 plan, which is two architectures too), its 'January 2027 landscape' before the body names it (judge: corroborated; the body now names it in the next paragraph but one, p02), and bullet 3's 'a key and a net' (terms reader, minor). The chapter sentences' 'protective action and recovery check' (terms reader, minor) stay: the author's wording, owned by journey-peak-day. 'Scheduled stock copies' is explained in p05 with Figure 3 (terms reader, minor).",
+      "rejected": [
+        "Rewording the author's KEY POINTS"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "After draft-check round 1 (revise: 19 passed, 18 failed; 13 blocking, 5 minor; all at fault in the draft but one unclear), under the author's standing approval to change order, paragraph ideas and transitions: the claim paragraph moves from after the setting to directly after the hook (both flow readers asked for it; it read as the answer to the hook and Figure 1, and its place after the method was unclear to both); the reading guide (old p05) is merged into the setting paragraph (both readers: it repeated the setting); the event-versus-batch sentence becomes its own short paragraph p05 beside Figure 3, with KEY POINTS bullet 3's words as its lead (both readers: it was tacked onto the handoff paragraph; one asked for it beside Figure 3); 'to the books' becomes 'to the accounts' and the exchange is named (both readers); 'Warehouse packing records supply wholesale shipment notices' is folded into the Waypoint sentence as what the warehouse writes (both readers: out of place); the Three-Status Order clause in p06 is cut (both readers stumbled on it; the chapter itself names it); the closing names the opening's parcel and says the question can be checked in any landscape (judge: no callback, no so-what). Minor fixes taken: 'nobody measured a link' becomes 'nobody watched a queue' (terms reader); 'that path' becomes 'the consumer path' (one reader); 'a different document contract' becomes 'by EDI' (one reader). The OMS and PIM acronyms in parentheses are dropped for length (unused on the page; known from Part I). Ids renumbered in the new order (p02 claim, p03 stories, p04 setting and guide, p05 event and batch).",
+      "rejected": [
+        "Glossing the incidents named in the chapter paragraphs (the duplicate-payment failure, the €14,200 deduction): audience.already_knows lists them and the judge passed them",
+        "Rewording KEY POINTS bullet 2 ('four stories run on two architectures'; one reader, minor): the author's callout",
+        "Explaining 'protective action' (one reader, minor; the author's chapter sentence, owned by journey-peak-day)"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Length: max_words set to 656 = the published 509 words (check_draft.py's count) + 25% (636), plus the one sentence (20 words) that backs KEY POINTS bullet 3 ('operations by event, finance by batch'), as the brief allows a part intro; target 636. The old spec's '1,500-word intro cap' is not used. The room pays for the part's claim (p04, which the published page left to the KEY POINTS), the peak's setting in p03, the Three-Status Order clause in p06 and the one-paragraph closing; no new fact. Cut to fit, agent additions first: 'its people, amounts and events are teaching examples' (p01) and the author's 'Each chapter repeats the facts needed to follow its example' (p02; rule 5: it does not fit within the limit and says nothing about the part); the peak sentence of p05 (moved to p03).",
+      "rejected": [
+        "Keeping the old spec's 1,500-word cap (the brief sets the limit from the published length)"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Flow rubric (fresh reader, order of ideas only): sound with notes. The author asked for the rubric notes to be taken without review (2026-11-12). Taken: the peak's setting (Black Friday 2026, then the 2027 plan) moves from the reading guide (p05) into the setting paragraph (p03), so that p04's 'every journey' rests on something the reader has been told; p04 names Black Friday 2026 beside the January 2027 landscape; p04's event-versus-batch sentence gives its reason (a shopper is waiting; invoices and payouts can wait), so the split does not arrive unexplained. Order of units unchanged, so the rubric was not rerun. Changed from the published page in the same pass: the two paragraphs on the late-2027 design (published ¶4 and ¶5) are merged into p03 (same point); Figure 2 moves beside the four stories (p02), Figure 3 stays beside the claim (p04); the claim paragraph p04 is added (the published page stated the part thesis only in KEY POINTS); 'Begin with' becomes a one-paragraph headed closing (p10).",
+      "rejected": [
+        "Adding a phrase about each promise's own deadline to p01 or p02 (the reason now sits in p04's sentence, within the limit)",
+        "Merging the reading guide p05 into the chapter list (breaks guide-before-chapters)"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "The post entry in the journal spec has a question and no thesis. A part intro performs the part's opening, so this spec uses the part's thesis and its five supporting claims P9-1 to P9-5 unchanged; each chapter paragraph introduces the chapter that argues them. Intent outcome, AC-1, AC-2 and role are copied from the post entry; hook and bridge from the part's opening. No criterion is added.",
+      "rejected": [
+        "Writing a separate thesis for the page: it would restate the part's claim."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Conversion of spec.md, taken without review at the author's request (auto mode). The six success criteria were inventories and are not carried as criteria: three KEY POINTS then <br> (house format, kept); a lead of 2–4 paragraphs placing the part, naming Kestrel & Pine as fictional once, saying how to read and that the journeys are set in late 2027 (now p01 to p05; its outcome is AC-2); one or two mermaid diagrams (obsolete since they were redrawn as illustrations on 2026-11-07); the chapter-list format (kept; its outcome is AC-1); every number matching the chapters and the ledger (checked at conversion, see changelog); no Across Scale Stages and a one-line Sources and Evidence (kept).",
+      "rejected": [
+        "Carrying the checklist over as acceptance criteria: they say what the page contains, not what a reader can do."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Figure 1 draws the four journeys entering one shared chain of systems through four doors, rather than one journey's sequence, because 'same systems, different door' is what the four chapters share. (Carried from spec.md; the figure is now Figure 2, beside the four stories.)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Figure 2 draws the January 2027 chain against the late-2027 chain, because the 'before Waypoint' comparison is the reading device the lead promises. (Carried from spec.md; now Figure 3, beside the claim.)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Four failure patterns: Schrödinger's Order and The Message in a Bottle (every journey), The Phantom Stock (Journeys 1, 3 and 4) and The First Snowfall (Journey 4). (Carried from spec.md; the FAILURE PATTERNS block was dropped on 2026-11-08.)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "The lead says the first three journeys share one shape and the fourth is told twice, so a reader is not surprised when Journey 4 has no step table. (Carried from spec.md.)"
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (part-9 and its post entry part-9)",
+      "contributed": "Intent, AC-1, AC-2 and role (post entry); thesis, supporting claims, opening hook and bridge (part); journey-consumer-order's transition_in for the hand-off; commerce-regulation's hand-off for the opening."
+    },
+    {
+      "kind": "internal",
+      "ref": "journey-consumer-order, journey-return-and-exchange, journey-wholesale-order, journey-peak-day",
+      "contributed": "The chapters summarized, in their words and numbers."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine, _research/scenario-ledger.md (Recurring worked examples, Peak, Waypoint, the Part IX additions) and _research/consistency-issues.md",
+      "contributed": "The fictional facts and their rulings."
+    },
+    {
+      "kind": "internal",
+      "ref": "PLAN.md (Part IX contracts) and _research/INTRO-BRIEF.md",
+      "contributed": "Shape of a part introduction."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Confirming draft-check round 3: escalate (20 pass, 12 fail). Closing fixes in p01 to p05, p07, p08, p10 without a further round; 655 words, limit 656; check-report.json is stale. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Draft-check round 2: revise (21 pass, 17 fail: 9 blocking, 8 minor). Resolved under RESOLVE.md: p02 to p05, p07, p08, p10 reworded, Figure 3 caption 'in batches' dropped; 656 words, limit 656. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Draft-check round 1: revise (19 pass, 18 fail: 13 blocking, 5 minor). Claim moved after the hook, reading guide merged into the setting, event-and-batch paragraph beside Figure 3, closing with callback; 656 words, limit 656. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Converted spec.md to spec.json (outcome spec); flow rubric sound with notes, notes taken (peak setting moved to p03); page revised to match (claim paragraph p04, published ¶4 and ¶5 merged, Figure 2 moved beside p02, headed closing); 655 words, limit 656; status draft. Numbers checked against the ledger at conversion: #1072455, 21:14 on 13 April 2027, €199, 2 × €18, iDEAL, 15 April; 19 and 22 April; Bergzicht 240 units, €19,860, three pallets, 9 April, 9 May, €14,200; 2,300 orders in the peak hour, four hours, 1,340 units, about €96,000; #1052877 three statuses for six days. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-08",
+      "change": "Openers: dropped IN THIS PART and FAILURE PATTERNS blocks; tightened KEY POINTS (author request). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 1 conceptual figure (article-illustrator). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: trimmed toward the 1,500-word intro cap, three failure patterns, ASN summary aligned with chapter 22. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and part introduction. Status accepted. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 656,
+    "target_words": 636
+  }
+}

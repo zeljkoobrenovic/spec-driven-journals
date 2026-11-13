@@ -1,0 +1,672 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "domain-coverage",
+  "journal": "commerce-platform-architecture",
+  "part": "reference",
+  "title": "Domain Coverage: From Three Model Families to Forty-Nine Chapters",
+  "status": "draft",
+  "revised": "2026-11-13",
+  "basis": "Reconstructed on 2026-11-13 from the published page (posts/domain-coverage/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the page, in its order; tables are recorded as evidence of the paragraph they follow. Intent, acceptance criteria and role are copied unchanged from journal-spec.json; the journal spec gives a reference page no thesis, so the thesis here is the page's own and only orders its sections. A light pass for a lookup page: the entries were checked for consistency, not rewritten.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Which chapter covers each capability of the three Productscape model families (merchant platform, retail marketplace, nine specialist products), by capability and by model.",
+        "Which capabilities are covered only briefly, left out or left to the ERP or to LISTED, and why; where the book departs from the models.",
+        "That the models are architectural models inferred from public product behavior with modeled seed values: planning maps, never a source for a fact about a company."
+      ],
+      "can_do": [
+        "Find the chapter for a system they own by the job it does, and a reading route for their role."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader finds the chapter that covers a capability, or learns that it is left out and why.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Using only this page: where does the book cover reviews and ratings, where does batch and lot traceability stand, and is route planning for an own delivery fleet in the book?",
+        "expected": "Reviews, ratings and Q&A are covered in commerce-search-and-discovery as discovery and trust data, with the fake-review rule in commerce-regulation. Lot traceability is thin: product-safety information in commerce-regulation, lots and recalls not modeled in any chapter; food, cosmetics and pharma readers should treat the lot as a dimension of the stock ledger. Route planning for an own fleet is left out: a logistics subject with its own software, and Kestrel & Pine ships with carriers."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader says what the planning models are, why they are not evidence, and what the book adds that they lack.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Using only this page: what are the models behind the book's planning, may a claim about Shopify's internal systems be sourced to them, and name two things the book covers that the models do not?",
+        "expected": "Productscape domain models the author maintains, inferred from public product behavior (a hosted platform of the Shopify kind, a marketplace of the Amazon kind, nine specialist products), with a modeled seed value for every number; they are planning maps, not evidence of any company's internal systems, so no. The models have no integration layer (the book's Part VI), no scale-stage view, no failure patterns, no journey across products (Part IX) and nothing about choosing, changing or organizing (Part X)."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reader uses the persona table as a reading route.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: an IT, ERP and integration lead joins a merchant. Which Kestrel & Pine seat matches the role, and which chapters should they start with?",
+        "expected": "Noor Visser (engineering) and Ruben Alves (integration); start with integration-styles, events-consistency-and-reconciliation, api-contracts-and-versioning and erp-and-back-office-integration."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict what the page contains and the kind of evidence or material it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this page give you, in what order, and from what kind of material?",
+        "expected": "Tables showing which chapter covers each business job and which topics are outside the book's scope, and how that coverage differs from the eleven Productscape models used in planning (a merchant platform, a retail marketplace, nine specialist products); for the argument itself, commerce-capability-map and boundaries-and-systems-of-record. Material: the models and the written chapters, with the models stated not to be evidence about companies."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "Which research models stand behind the book, and which chapters cover them?",
+    "claim": "Eleven Productscape models in three families, inferred from public product behavior, stand behind the book's plan; each of their capabilities is sent to the chapter that covers it, or named as thin or left out with a reason, and the book adds the joins the models lack, so the models serve as a planning map and never as evidence about a company.",
+    "disputed_by": "The view that a coverage page only records the author's planning: a reader searches the chapters for a topic, and a model drawn from a real product's behavior is good enough evidence of how that product is built.",
+    "so_what": "A reader finds the chapter for the system they own by the job it does, checks the left-out list against their business before relying on the book as a complete map, and never cites a model for a fact about Shopify, Amazon or a specialist vendor.",
+    "how_why": "The digest lists 152 distinct capabilities across the models; the rows were placed from the chapter contracts and checked by text search against the written chapters, which moved three gaps into chapters and found six more thin spots. The models were drawn one product at a time, so they have no integration layer, scale stages, failure patterns or cross-product journeys; the book's Parts VI, IX and X and its failure patterns supply them.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "The models are capability inventories inferred from public product behavior with seed values, so they are planning maps and never a source for a fact about a company."
+      },
+      {
+        "id": "S2",
+        "claim": "Every capability of the models is sent to a primary chapter, read either by capability, grouped by the book's parts, or by model."
+      },
+      {
+        "id": "S3",
+        "claim": "The capabilities the book covers thinly or leaves out are named, each with the reason."
+      },
+      {
+        "id": "S4",
+        "claim": "The book departs from the models' product-by-product shape and adds the joins between products."
+      },
+      {
+        "id": "S5",
+        "claim": "The models' personas map to the book's reader roles, a Kestrel & Pine seat and starting chapters, so the page doubles as a reading route."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Opens the reference part and sends a reader from a capability to its chapter, saying plainly what is left out and that the planning models are not evidence.",
+    "supports": [
+      "PR-1"
+    ]
+  },
+  "flow": {
+    "pattern": "large_to_small",
+    "rationale": "What the models are comes first, because every table that follows is read under the rule that they are maps, not evidence. The full map by capability and then by model follows; the gaps, the departures and the personas each narrow it to one question a reader brings (is my job left out, why does the book not copy the models, where do I start). Putting the gaps before the map would list exceptions to a map the reader has not seen."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "Commerce spans more business jobs than one book can cover equally: these pages show where each one is covered, what is left out, and where the records, terms and sources live."
+    },
+    "bridge": {
+      "from_reader_world": "The reader has met cards, terms and sources in the chapters, each introduced where it was needed, and arrives with a business job or system to look up.",
+      "to_topic": "The reference pages gather that material for lookup, and this one sends a job to its chapter and says what the book leaves out."
+    },
+    "thesis_statement": {
+      "text": "Every capability of the eleven models has a home or a stated reason for its absence; the book adds the joins the models lack; the models are maps, not evidence.",
+      "placement": "KEY POINTS callout and paragraph p01"
+    },
+    "roadmap": {
+      "placement": "IN THIS SECTION callout and paragraph p01",
+      "promises": [
+        {
+          "promise": "What the planning models are and the rules for reading them.",
+          "kept_in": [
+            "models"
+          ]
+        },
+        {
+          "promise": "Tables tracing each capability to the chapter that covers it, by capability and by model.",
+          "kept_in": [
+            "by-capability",
+            "by-model"
+          ]
+        },
+        {
+          "promise": "Which topics are outside the book's scope, and why.",
+          "kept_in": [
+            "uncovered"
+          ]
+        },
+        {
+          "promise": "How the coverage differs from the models.",
+          "kept_in": [
+            "departures",
+            "personas"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Use this page to find the chapter that covers a business job, or to learn that the book leaves it out, by looking the job up by what it does; its tables also record how coverage differs from the eleven Productscape models used in planning.",
+        "function": "context"
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "This page opens the four reference pages, which gather for lookup what the chapters introduce: domain coverage sends a capability to its chapter, the toolkit gives sixteen cards, the glossary gives each term one meaning and an owning chapter, the bibliography lists each cited source with its date and citing pages.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "This page's purpose.",
+          "introduces": "The other three reference pages and what each is for.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "For the architectural argument behind the map, the reader goes to commerce-capability-map and boundaries-and-systems-of-record.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The four lookup pages.",
+          "introduces": "Where the argument lives instead.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "models",
+      "heading": "Where the Models Come From",
+      "controlling_idea": "The models are capability inventories inferred from public product behavior, so four rules govern how the book uses them and how the tables are read.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Fixes what the models are before any table relies on them."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The eleven models named in the opening.",
+        "introduces": "What a model is and where these came from.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "A Productscape domain model describes customers, needs, capabilities called bricks and their supporting modules and data; the digest of 7 November 2026 supplied the book's planning map.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Family, model and short code, inspiration, brick count and root groups for MCP (29), ORM (30) and the nine specialist models.",
+              "source": "Productscape digest (_research/productscape-digest.md), 7 November 2026",
+              "shows": "Names every model the later tables cite by code."
+            }
+          ]
+        },
+        {
+          "id": "p05",
+          "form": "list",
+          "controlling_idea": "Four rules follow from what the models are: nothing in a model is a fact about a company, every number is a seed value, the specialist models are used for capabilities only, and the running example is fictional.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "What the models are.",
+            "introduces": "The rules that follow for the book.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "In each row the codes name the source models, the first linked chapter gives the main treatment and chapters in parentheses a related one; placements came from the chapter contracts, checked against the written chapters.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The rules.",
+            "introduces": "How to read the tables that follow.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Three broad chapters (the capability map, boundaries, scale stages) are left out of repeated rows.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "How a row is read.",
+            "introduces": "Which chapters the rows omit.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "by-capability",
+      "heading": "Coverage by Capability",
+      "controlling_idea": "The 152 capabilities, merged into topic rows grouped by the book's parts, each name their models and their chapter.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Gives the map from capability to chapter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "How to read a row.",
+        "introduces": "The rows, grouped by part.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "controlling_idea": "The models contain 152 distinct capabilities, and a row is a topic group rather than one model entry.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Tables for Parts II (catalog) and III (order), each row a capability group, its models and its chapters.",
+              "source": "Productscape digest (_research/productscape-digest.md), 7 November 2026",
+              "shows": "Sends each catalog and order capability to its chapter."
+            }
+          ]
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The warehouse chapter also covers automation beyond the models, and the remaining parts' tables complete the map.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Tables for Parts IV, V, VI, VII, VIII and X in the same format.",
+              "source": "Productscape digest (_research/productscape-digest.md), 7 November 2026",
+              "shows": "Completes the capability-to-chapter map."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The catalog and order tables.",
+            "introduces": "Fulfillment, channels, integration, platform, trust and evolution.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "by-model",
+      "heading": "Coverage by Model",
+      "controlling_idea": "The same map read from each model, by root group, with brick ids kept for cross-checking.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Lets a reader who starts from a product's model find its chapters."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The map by capability.",
+        "introduces": "The same map read from the models' side.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "Brick ids are the models' keys, kept for cross-checking; they describe capabilities, not products.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "MCP and ORM tables: root group, bricks with ids, chapters.",
+              "source": "Productscape digest (_research/productscape-digest.md), 7 November 2026",
+              "shows": "Maps each brick of the two large models to its chapters."
+            }
+          ]
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "The nine specialist models are shown by capability only.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "One row per specialist model (B2B, RET, EDI, MKT, ERP, POS, SHP, WMS, HUB): capabilities summarized and chapters, with what is left out.",
+              "source": "Productscape digest (_research/productscape-digest.md), 7 November 2026",
+              "shows": "Covers the specialist models without naming any label or using any company fact."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The two large models.",
+            "introduces": "The nine specialist models.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "uncovered",
+      "heading": "Is Anything Uncovered?",
+      "controlling_idea": "Seventeen capabilities are covered only briefly, left out or left elsewhere, each with a reason.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Names what the map does not reach and why."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "A map in which most capabilities have a chapter.",
+        "introduces": "The ones that do not, or only thinly.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p12",
+          "controlling_idea": "The digest flagged eleven capabilities without an owning chapter; checking the written chapters moved three into one and found six more thin spots.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Capability, models, where it stands, why: reviews, membership, fiscalization (covered); retail media and CRM (mentioned); lending, emissions, own-fleet routing, repair, VMI, collaboration, dropshipping (left out); lots and KYC (thin); forecasting (ERP); brand registry (LISTED); hosting (a duty).",
+              "source": "Productscape digest (_research/productscape-digest.md), 7 November 2026",
+              "shows": "Answers whether a given job is in the book and why not."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "departures",
+      "heading": "Where the Book Departs From the Models",
+      "controlling_idea": "Drawn one product at a time, the models lack the joins between products, and the book deliberately does not copy their shape.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Says what the book adds and where it disagrees, with the chapter that argues each."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "What the book leaves out of the models.",
+        "introduces": "What the book adds that the models lack.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p13",
+          "controlling_idea": "The models were drawn product by product, which gives them a shape the book does not copy.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The models as drawn, the book's position, where argued: no integration layer, no scale stages, stressors not failure patterns, no cross-product journey, nothing on choosing or organizing; an order record in seven models, a stock ledger in five, checkout with payments, fraud with payments, pricing in five, returns as a product, regulation as stressors.",
+              "source": "Productscape digest (_research/productscape-digest.md), 7 November 2026",
+              "shows": "Each departure is a decision argued in a named chapter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "personas",
+      "heading": "The Models' Personas and the Book's Readers",
+      "controlling_idea": "The models' personas group into eleven roles, each matched to a reader, a Kestrel & Pine seat and starting chapters.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S4"
+        ],
+        "how": "Turns the models' customers into reading routes and states the question the book adds."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "How the book departs from the models' products.",
+        "introduces": "How it uses the models' customers.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p14",
+          "controlling_idea": "About sixty customer descriptions group into eleven roles, mapped to readers and Kestrel & Pine seats as archetypes.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Persona cluster, wants, reader, Kestrel & Pine seat, starting chapters (e.g. IT, ERP and integration lead: Noor Visser and Ruben Alves; integration-styles, events-consistency-and-reconciliation, api-contracts-and-versioning, erp-and-back-office-integration).",
+              "source": "Productscape digest (_research/productscape-digest.md), 7 November 2026",
+              "shows": "Gives each reader role a seat and a reading route."
+            }
+          ]
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Four needs recur, and the failure guide shows what happens when they go unmet.",
+          "function": "synthesis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The eleven roles.",
+            "introduces": "What they have in common.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "The models describe each product's customer; the book adds how the products should work together.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The products' customers' needs.",
+            "introduces": "The architect's question the book adds.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "How to Use This Map",
+    "synthesis": "The capability rows, the gaps, the departures and the personas are four ways into one map: by the job, by what is missing, by what the book changes, by the reader's seat.",
+    "so_what": "A reader who matches by meaning and checks the left-out list knows whether the book answers their question before relying on it.",
+    "callback": {
+      "to": "The opening's point that commerce spans more jobs than one book covers equally.",
+      "how": "The reader now has the left-out list to check that claim against their own business."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Match each owned system by the job it does, read the departures before copying a decomposition, check the left-out list, and start with the persona row's chapters."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The tables of the page.",
+      "introduces": "How to use them together.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "hand_off": {
+      "to": "toolkit",
+      "relationship": "sequence",
+      "carries_over": "The map from capability to chapter.",
+      "introduces": "The cards and templates those chapters introduce, with a filled example each."
+    },
+    "paragraphs": [
+      {
+        "id": "p17",
+        "form": "list",
+        "controlling_idea": "Four steps use the map: match by meaning, read the departures first, check the left-out list, and use the persona row as a reading route.",
+        "function": "recommendation"
+      },
+      {
+        "id": "p18",
+        "controlling_idea": "For practical records the reader continues to the toolkit, with the glossary for terms and the bibliography for sources.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "How to use the map.",
+          "introduces": "The next reference page.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The capability map itself and how to place a vendor on it",
+      "covered_in": [
+        "commerce-capability-map"
+      ]
+    },
+    {
+      "topic": "The entity-owner table and the rule for choosing a system of record",
+      "covered_in": [
+        "boundaries-and-systems-of-record"
+      ]
+    },
+    {
+      "topic": "The scale-stage map and the failure patterns",
+      "covered_in": [
+        "commerce-scaling-stages",
+        "where-commerce-platforms-go-wrong"
+      ]
+    },
+    {
+      "topic": "Any fact about Shopify, Amazon or a specialist vendor",
+      "covered_in": [
+        "part-11",
+        "the chapters, from dated public sources"
+      ]
+    },
+    {
+      "topic": "Templates and cards; definitions; sources",
+      "covered_in": [
+        "toolkit",
+        "glossary",
+        "bibliography"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Emissions reporting on deliveries and lot traceability are listed as left out or thin; if a later edition adds a sidebar to shipping-and-delivery or warehouse-and-fulfillment, move the row to covered.",
+    "The brick counts per model were taken from the digest on 7 November 2026; if the models change, the counts and the 152-capability total will drift.",
+    "The title says 'Forty-Nine Chapters'; the journal spec now has 42 chapters, 4 walkthroughs, 4 cases and 1 tutorial besides intros and reference pages. Needs the author: which count the title means, or a title without a count (permalink unaffected).",
+    "Needs the author (draft-check round 2, fault spec): both flow readers wanted 'How to Use This Map' before the tables it explains; the spec declares it as the conclusion. Keep it as the conclusion or move it up.",
+    "Round 2 left unfixed: the introduction's third paragraph repeats the first (both flow readers); trimming it changes spec paragraph p03."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the 'How to Read the Tables' rows that followed their contracts were re-checked against the written security, regulation, return journey, AI commerce and Shopify case chapters (rule 1, the chapters are the facts). commerce-regulation covers neither fiscal receipts nor recalls nor customs, so fiscal receipts point to stores-and-omnichannel, the shipping row drops its regulation link, and lot traceability names no chapter for recalls; commerce-security covers certifications under shared responsibility, not penetration tests or data centers; the consumer app appears only in case-shopify. The sentence now says the placements were checked against the written chapters. erp-and-back-office-integration added to the IT, ERP and integration lead row because that chapter serves that reader.",
+      "rejected": [
+        "Keeping the contract placements",
+        "Adding recall and fiscal coverage to the chapters"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Converted spec.md to spec.json in a light pass for a lookup page: one spec paragraph per draft unit, tables as evidence; the thesis is the page's own because the journal spec gives a reference page none. length.max_words is the published length plus 10% (4,456 words as check_draft counts them, tables and Sources excluded; 5,561 by wc).",
+      "rejected": [
+        "Specifying each table row as a paragraph",
+        "Carrying the old inventory-style success criteria over"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Added the Reference part's opening as one short paragraph (p02) naming the four reference pages and what each is for, and made the first sentence say what the page is for and how to use it, as the journal spec's part opening requires.",
+      "rejected": [
+        "A separate part-intro page"
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Merged the digest's 152 capabilities into topic rows per part rather than reproducing the inventory; the per-model tables keep brick ids for cross-checking."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Showed the nine specialist models by capability only, with no vendor labels, so Productscape files stay research maps and never sources about a company."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Verified gap placements against the written chapters by text search and added six thin spots the digest did not flag."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Mapped personas to reader roles and Kestrel & Pine seats with starting chapters, so the page doubles as a reading route."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_research/productscape-digest.md",
+      "contributed": "Model inventories, the cross-model capability table and GAP list, personas and residuality notes."
+    },
+    {
+      "kind": "internal",
+      "ref": "PLAN.md",
+      "contributed": "Provenance rules, chapter contracts ('Owns') and the Reference entry."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/style-guide.md",
+      "contributed": "Reference page format and the Katapull and Productscape rule."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine",
+      "contributed": "The cast used for the persona seats."
+    },
+    {
+      "kind": "external",
+      "ref": "The author's Productscape model families (merchant platform, online retail marketplace, Katapull Group), 2026, read through the digest",
+      "contributed": "The capabilities, bricks and personas mapped on the page."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "AC-1 and AC-3 copied from the journal spec after it was aligned with the page."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Draft-check round 2 (ESCALATE, 59 pass / 23 fail, 0 waived). Cheap fixes after the round, report left stale: callout order now matches the page and mentions the reading route; glosses for Productscape, chapter contracts, LISTED and RECONCILED, residue and stressors, the failure-pattern names and the scenario's agency; the 'labels not named' rule reworded to brand names; a note on why Parts I and IX have no rows; which uncovered rows are the digest's eleven and which the six found later; opening sentences linking the departures and personas sections to their predecessors."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Placements re-checked against the written chapters; persona row for the IT, ERP and integration lead extended; open question on the contract placements closed."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "spec.md converted to spec.json; Reference part opening paragraph and a use-this-page first sentence added to index.md."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: hand-off to toolkit added, timetoread."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article."
+    }
+  ],
+  "length": {
+    "max_words": 4902
+  }
+}

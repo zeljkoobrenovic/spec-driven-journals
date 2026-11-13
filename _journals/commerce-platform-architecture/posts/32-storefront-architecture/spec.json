@@ -1,0 +1,1768 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "storefront-architecture",
+  "journal": "commerce-platform-architecture",
+  "part": "part-7",
+  "title": "Delivering the Storefront: Themes, Headless, Rendering and Performance",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published chapter (posts/32-storefront-architecture/index.md) and its former spec.md, whose Non-goals, Modalities, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for that the published chapter did not have: a roadmap p05, a lead p26 for the requirements table, a lead p53 for the failure table, a synthesis p54 that answers the opening, and a hand-off p59 rewritten as the contrast the next chapter declares; see decision_log.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "What a storefront owns (templates, layout, brand, browser scripts) and what it renders from other systems; the three rendering models (a theme rendered by the platform, headless on the vendor's runtime, headless anywhere), with checkout on the platform under all three.",
+        "'Cache the shell, fetch the promise' and the requirements per page type; Core Web Vitals with their thresholds and dates, and the dated, caveated evidence that speed moves sales.",
+        "Technical SEO as part of the storefront's contract, and accessibility as a dated obligation (WCAG 2.2; the European Accessibility Act applying since 28 June 2025)."
+      ],
+      "believe": [
+        "A storefront renders facts it does not own; a new renderer moves rendering and glue, not facts.",
+        "The usual cause of a slow page is the scripts, not the rendering model.",
+        "Go headless for a need the theme cannot meet and a team that can run it, never for speed alone."
+      ],
+      "can_do": [
+        "Read field Core Web Vitals at the 75th percentile and trace a slow metric to its cause before choosing a remedy.",
+        "Set a cache and freshness rule per page type, and judge a headless proposal against the three needs and the team that would run it."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture; most of all the engineer or product manager who receives a headless proposal from an agency (Noor Visser at Kestrel & Pine) and the leader who must approve it; next, the storefront engineer who inherits an agency-customized theme.",
+      "already_knows": [
+        "Roughly what an API, a database, a browser and a script are.",
+        "Kestrel & Pine, its people, its 2026 and January 2027 incidents in outline, the sixteen failure-pattern names and the Waypoint decisions W1 to W8.",
+        "From Part I: the thirteen steps of an order, promise and handoff, the three status lines, 'system', 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, business models and the four scale stages (Starting, Growing, Omnichannel, Group), the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+        "From Parts II to V: one owner per product attribute; prices selected at order placement and frozen; one search index as a copy; available-to-promise and per-channel buffers; checkout creating the order once; payment stages; one order record with three status lines.",
+        "From Part VI: an integration style per flow with an owner, pinned API versions and sunset dates, reconciliation jobs, eventual consistency.",
+        "From Part VII so far: architecture style and deployment unit, and one deployment unit per team that must release independently (chapter 29); pooled tenancy and the API budgets a merchant shares with its apps (chapter 30); extension mechanisms, apps with scopes and an API version, app blocks, app review, one writer per fact and the app governance card, and Kestrel & Pine's 41 apps (chapter 31)."
+      ],
+      "does_not_know": [
+        "Storefront, theme, headless storefront, storefront API, edge runtime.",
+        "Server-side and client-side rendering, edge cache, incremental static regeneration and request collapsing.",
+        "Core Web Vitals (LCP, INP, CLS), the 75th percentile of field measurements, Lighthouse.",
+        "CMS, SEO, crawling, indexing, sitemap, structured data, canonical URL, hreflang, robots.txt and noindex.",
+        "WCAG, the European Accessibility Act, PWA."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a headless proposal and field measurements, the reader decides from the measurements and the three needs, not from the promise of speed.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "An agency proposes rebuilding a brand's three country storefronts as a headless application for about €240,000 and nine months, promising speed, flexible brand content and readiness for the future. Field measurements on mobile product pages at the 75th percentile show the main content in 2.1 seconds, interaction response in 310 milliseconds and layout shift of 0.08, and the slow interaction traces to scripts from eleven apps. Using only this chapter: should the brand accept, and what should it do instead?",
+        "expected": "No. Content loading and layout stability are already within Google's good thresholds (2.5 seconds, 0.1); interaction above 200 milliseconds is caused by app scripts, which a new renderer would not remove, so the remedy is a theme performance pass, an app-script audit and a performance budget. A content need is met by theme sections or a content system feeding the theme. Headless is for a shared front end across brands, a content-led site or a B2B portal the theme cannot express, with a team that can run a second production application; none applies to one brand with three storefront engineers."
+      },
+      {
+        "id": "AC-2",
+        "statement": "The reader can say which parts of a product page are cached and which are fetched live, and what breaks when the rule is broken.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Using only this chapter: which parts of a product page can be cached and which must be fetched or checked live, and what goes wrong in each direction?",
+        "expected": "Product content, images, attributes and layout per market and language, category pages and editorial pages are cached, with request collapsing on a miss at peak; account prices, stock commitments, the cart and checkout are fetched or validated live, and public price or stock snapshots carry a freshness limit; account-specific answers are never shared across customers. A cached promise shows a wrong price or sells the last unit twice (the Price Drift, the Oversell); an uncacheable page saturates the renderer and the APIs behind it at peak."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can say what the storefront owes search engines and shoppers with disabilities, and who owns it.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this chapter: besides speed, what does a storefront owe search engines and shoppers with disabilities?",
+        "expected": "Product pages that can be crawled and indexed, whose rendered content and structured product data agree, with explicit rules for variants, filters, localized pages and retired products, checked by a named owner after each release; and WCAG 2.2 conformance of the theme and every app block, required for consumer e-commerce under the European Accessibility Act since 28 June 2025."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Why a slow product page can lose a sale and why a new page that waits on the same slow price, stock or script inherits the problem; what a storefront and a headless storefront are, and what running one adds; Kestrel & Pine's three storefronts on one agency theme, its 41 apps and peak traffic 41 times an average hour, and Noor Visser's decision on the February 2027 headless proposal; Eva seeing the jacket's price, stock and delivery promise on her phone; following product pages to shoppers and search engines, comparing rendering models and judging when a separate storefront is worthwhile. Evidence: Kestrel & Pine's field measurements and dated vendor documentation and performance studies."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How does the storefront reach the shopper's browser, and when does headless make sense?",
+    "claim": "The storefront renders facts other systems own, from a platform-rendered theme or a headless front end on the vendor's runtime or elsewhere; checkout stays on the platform under every model. Content is cached per market at the edge; price, stock and cart are fetched or validated live. Headless pays only for a shared front end across brands, a content-led site or a B2B portal the theme cannot express, with a team to run it; never for speed alone.",
+    "disputed_by": "The view that headless is the modern storefront: an agency-built front end on a fast framework makes pages faster and converts better, so a merchant with a slow theme should rebuild its storefront rather than fix what runs on the theme.",
+    "so_what": "A merchant that accepts the claim reads field Core Web Vitals before any rebuild, traces a slow metric to its cause, sets a cache rule per page type, and asks a headless proposal which of the three needs it serves and who will run it in year two. In February 2027 Kestrel & Pine's agency proposed a headless rebuild on the platform vendor's edge runtime with a headless CMS (about €240,000 and nine months, plus a second runtime to operate; illustrative). Noor Visser measured the NL product pages on mobile at the 75th percentile (LCP 2.1 s, INP 310 ms, CLS 0.08), found the INP problem in eleven apps' scripts and declined. A quarter of agency time (about €38,000) went to a theme performance pass and an app-script audit, and by June 2027 INP measured 180 ms after six unused apps and four redundant scripts were removed. The decision is part of W4 and is revisited at the 2029 review.",
+    "how_why": "The storefront owns templates, layout and scripts, not the catalog, prices, stock or cart, so a new renderer moves the rendering and the glue into the merchant's hands without moving any fact, and a slow price or stock answer or a heavy app script slows a headless page as much as a themed one. Content changes when the catalog changes, so it can be computed once and served to many shoppers from the edge, collapsing requests at peak; price, stock and cart change per shopper or per sale, and a cached copy of them is how the Price Drift and the Oversell reached the page. A headless front end is a second production application with on-call, caching rules, framework upgrades and API version pins, which a team of three that also runs the apps can carry only when the theme blocks a real need.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "The storefront owns templates, layout, brand and browser scripts and renders facts other systems own (catalog, price, promotions, search, stock, delivery promise, cart, content), so a new renderer moves the rendering and the glue, not the facts."
+      },
+      {
+        "id": "S2",
+        "claim": "The three rendering models (a theme rendered by the platform, headless on the vendor's runtime, headless anywhere) differ in who runs the renderer and where the templates live; checkout stays on the platform under all three."
+      },
+      {
+        "id": "S3",
+        "claim": "Cache the shell, fetch the promise: content is cached per market and language and collapsed at peak, while account prices, stock commitments and the cart are fetched or validated live; public pages also serve search engines, so their rendered content, product data and URL rules must agree and have an owner."
+      },
+      {
+        "id": "S4",
+        "claim": "Page experience is measured in the field at the 75th percentile and owed to every shopper; the evidence that speed moves sales is directional and dated, the usual cause of a slow page is the scripts rather than the rendering model, and accessibility is a dated obligation on the theme and every app block."
+      },
+      {
+        "id": "S5",
+        "claim": "Headless pays only for a need the theme cannot meet (a shared front end across brands, a content-led site, a B2B portal) and a team that can run a second production application; never for speed alone, as Kestrel & Pine's measured decision shows."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Gives the part its surface to the shopper: the storefront as a renderer of facts it does not own, the three rendering models with checkout left on the platform, the rule 'cache the shell, fetch the promise' that the peak relies on, and the three needs that justify headless.",
+    "supports": [
+      "P7-4"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene to in-practice: the agency's proposal, then Noor's answer"
+      }
+    ],
+    "rationale": "The proposal and Noor's measurements come first so every later section answers part of them. What the storefront owns comes before the rendering models, because the models differ only in who renders facts the storefront does not own; the performance evidence follows the models directly, because it answers the agency's speed promise and the scene's measurements and shows that the rendering model is not the usual cause; accessibility sits beside it as the other requirement every page must meet; the cache rule follows, because it decides whether those requirements hold on a peak day, and technical SEO after it, because search engines read the same cached public pages; the evidence, accessibility, cache and SEO before the options, because the options are judged against them, including whether the theme and its app blocks can meet the accessibility obligation; the options before the stage table and Noor's decision, which apply them; the failures after the decision, in the book's fixed order. Putting the options before the cache rule and the evidence would ask the reader to judge headless before knowing what it would and would not change."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "A slow product page can lose a sale before checkout, but the delay may come from a price service, a stock lookup or an app script, so a new page that waits for the same answers inherits the same problem."
+    },
+    "bridge": {
+      "from_reader_world": "Anyone who has waited for a product page on a phone, or received an agency proposal promising a faster, more modern storefront, has met the pull to replace the front end.",
+      "to_topic": "The step from that pull to the chapter's question: what the storefront actually owns, where the apps of the previous chapter land on it, and when replacing its renderer pays."
+    },
+    "thesis_statement": {
+      "text": "A storefront renders facts other systems own and leaves checkout on the platform whichever model renders it; content is cached and promises are fetched or validated live; and headless pays for a need the theme cannot meet with a team to run it, never for speed alone, because a slow page is usually its scripts.",
+      "placement": "KEY POINTS callout, with paragraph p02a (where the apps' scripts land) and the roadmap p05"
+    },
+    "roadmap": {
+      "placement": "Paragraph p05, the last paragraph of the introduction (with the IN THIS CHAPTER callout)",
+      "promises": [
+        {
+          "promise": "Start from the agency's February 2027 headless proposal and Noor's measurements.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Say what a storefront owns and what it only renders.",
+          "kept_in": [
+            "own"
+          ]
+        },
+        {
+          "promise": "Compare the three rendering models.",
+          "kept_in": [
+            "models"
+          ]
+        },
+        {
+          "promise": "Read the dated performance evidence.",
+          "kept_in": [
+            "performance"
+          ]
+        },
+        {
+          "promise": "Treat accessibility as a requirement.",
+          "kept_in": [
+            "access"
+          ]
+        },
+        {
+          "promise": "Set the rule for what is cached and what is fetched live, per page type.",
+          "kept_in": [
+            "cache"
+          ]
+        },
+        {
+          "promise": "Say what public pages owe search engines.",
+          "kept_in": [
+            "seo"
+          ]
+        },
+        {
+          "promise": "Set out the four options, with mobile apps beside them, and when each fits by scale stage.",
+          "kept_in": [
+            "choices",
+            "stages"
+          ]
+        },
+        {
+          "promise": "End with Noor's decision, two public checks for a merchant that does replace its storefront, the ways storefronts go wrong and what to take away.",
+          "kept_in": [
+            "in-practice",
+            "wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A slow product page can lose a sale, but the delay may come from a price service, a stock lookup or an app script, so a replacement page that waits for the same answers inherits the problem, and the cause must be found before a replacement is chosen.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "A slow product page whose delay may come from a price service, a stock lookup or an app script.",
+            "shows": "States the chapter's question in one ordinary case: replacing the page does not remove a delay it waits for."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The storefront produces the pages shoppers use, from a platform theme or as a separate headless application calling the commerce engine through APIs, which gives more control and makes the team run the application and keep its answers fresh.",
+        "function": "definition",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The hook's slow page and its possible causes.",
+          "introduces": "The two terms the chapter needs, storefront and headless storefront.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p02a",
+        "controlling_idea": "Most of the previous chapter's apps land on the storefront as theme code, app blocks and browser scripts, and those app scripts, more often than the rendering model, are what makes a product page slow.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "place",
+          "carries_over": "The storefront and its rendering.",
+          "introduces": "Where the previous chapter's apps land on it, and the scripts as the usual cause of a slow page.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Kestrel & Pine runs three localized storefronts from one agency-maintained theme with 41 installed apps and peak traffic 41 times an average hour, and the chapter follows Noor Visser's decision to decline a February 2027 headless proposal.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "fact",
+            "what": "Three localized storefronts, one agency theme, 41 apps, peak storefront traffic about 41 times an average hour (illustrative).",
+            "shows": "Sets the running case the chapter's rule is applied to.",
+            "source": "_research/scenario-ledger.md (systems landscape; Black Friday week 2026; storefront-architecture line)"
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "Storefronts, headless storefronts and the apps on them.",
+          "introduces": "Kestrel & Pine's storefronts, apps and peak, and the decision the chapter follows.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "Eva sees the Ridgewalker jacket's price, stock and next-day delivery promise on her phone before checking out at 21:14 on 13 April 2027, and later chapters follow the obligations that page creates.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "place",
+          "carries_over": "Kestrel & Pine's storefronts.",
+          "introduces": "Eva's product page as the step of the order's journey this chapter covers.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "The chapter starts with the agency's headless proposal and Noor's measurements, then sets out what a storefront owns, the three rendering models, the dated performance evidence, accessibility, the rule for what is cached and what is fetched live, what public pages owe search engines, the four options with mobile apps beside them and by scale stage, and ends with Noor's decision, two public checks for a merchant that does replace its storefront, the ways storefronts go wrong and what to take away.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "Eva's page and the decision the chapter follows.",
+          "introduces": "The order of the chapter's sections and the kind of evidence each uses.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Kestrel & Pine: The Headless Proposal",
+      "controlling_idea": "In February 2027 the agency proposed a headless rebuild for about €240,000 and nine months plus a second runtime to operate; Noor measured the product pages first, found two of three metrics already good and the third caused by eleven apps' scripts, and declined.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S4"
+        ],
+        "how": "Sets the case the chapter's rule is tested on: a speed pitch against field measurements that point to scripts."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The proposal, its price, the measurement, what it showed and the decision, in the order they happened, so the reader sees the evidence before the verdict the rest of the chapter explains."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap's first promise: the proposal and the measurements.",
+        "introduces": "The agency's February 2027 proposal.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "The agency proposed a separate storefront application on the platform vendor's edge runtime, with a separate content system, promising better speed, more flexible brand content and future readiness.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Headless rebuild of the three storefronts on the vendor's edge runtime plus a headless CMS.",
+              "shows": "The proposal the chapter answers.",
+              "source": "_research/scenario-ledger.md (storefront-architecture line; consistency ruling 13a)"
+            }
+          ]
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The illustrative estimate was about €240,000 and nine months plus a second runtime to operate, and Noor asked which need the existing theme could not meet.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "About €240,000, nine months, plus a second runtime to operate (illustrative).",
+              "shows": "The cost the decision weighs against a need.",
+              "source": "_research/scenario-ledger.md (storefront-architecture line; consistency ruling 13a)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The proposal.",
+            "introduces": "Its cost and Noor's question.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Noor started from real-user measurements: on the NL storefront's product pages, mobile, at the 75th percentile in February 2027, the main content appeared in 2.1 seconds, response to interaction took 310 milliseconds and layout shift scored 0.08.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "LCP 2.1 s, INP 310 ms, CLS 0.08; 75th percentile, mobile, NL product pages, February 2027 (illustrative).",
+              "shows": "Field measurements, not a lab score, are what the decision rests on.",
+              "source": "_research/scenario-ledger.md (storefront-architecture line; consistency ruling 13a)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Noor's question.",
+            "introduces": "The measurements she gathered to answer it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Content loading and layout stability already met Google's good ranges (2.5 seconds, 0.1) and responsiveness did not (good is 200 milliseconds or less), and the slow responses traced to scripts from eleven apps, which pointed to specific work before any architectural replacement.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "The INP problem traced to scripts from eleven apps.",
+              "shows": "Locates the cause in the scripts, not the renderer.",
+              "source": "_research/scenario-ledger.md (storefront-architecture line; consistency ruling 13a)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The three measurements.",
+            "introduces": "What they meant and where the slow one came from.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "Noor declined the rebuild; the next sections set out what she weighed, and her four-part answer comes in In Practice.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The measurements and their cause.",
+            "introduces": "The decision, and where the chapter gives what she weighed and her answer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "own",
+      "heading": "What a Storefront Does, and What It Does Not Own",
+      "controlling_idea": "A storefront produces pages from facts almost every other system owns and owns only its templates, layout, brand and browser scripts, so a headless storefront moves the rendering and the glue, not the facts.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "States the first supporting claim and shows the owner of each fact on the page."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Noor's decision and the promise to set out what she weighed.",
+        "introduces": "The starting point of her answer: what the storefront owns and what it only shows.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "controlling_idea": "A storefront produces home, category, product, search, content, cart and account pages and hands over to checkout, using facts from almost every other part of the platform while owning only its templates, layout, brand and browser scripts.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "What the page shows against who owns the fact and which chapter covers it: catalog or PIM, pricing, promotions, search index, availability service, shipping service, checkout, CMS, identity.",
+              "shows": "Each fact on the page has an owner elsewhere; the storefront owns none of them."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: the storefront renders facts it does not own; the buy button hands the shopper to the platform's checkout.",
+              "shows": "Shows the dependencies at a glance."
+            }
+          ]
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Because the storefront owns no fact, a headless storefront moves only the rendering and the glue between the facts into the merchant's hands, which is a gain only if the merchant wanted either.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The table of facts and their owners.",
+            "introduces": "What a headless storefront does and does not move.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "models",
+      "heading": "Three Rendering Models",
+      "controlling_idea": "Today's storefronts render on the server, so the three models differ in who runs the renderer and where the templates live: a theme rendered by the platform, headless on the vendor's runtime, or headless anywhere; checkout stays on the platform under all three.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Sets out the three models with dated vendor examples and the checkout boundary."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "The rendering terms first, because the models are compared in them; then the models from the most platform-run to the most merchant-run, each with its dated examples, so each step adds one thing the merchant must run."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Headless moves the rendering and the glue.",
+        "introduces": "The ways the rendering can be organized.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p13",
+          "controlling_idea": "Server-side rendering builds the full page on a server and client-side rendering builds it in the browser; early headless storefronts were slow client-rendered applications, but today's frameworks render on the server, so the models now differ in who runs the renderer and where the templates live.",
+          "function": "definition"
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "In the first model a theme, a set of templates the platform's renderer turns into pages (Shopify's Liquid, BigCommerce's Stencil, Salesforce's SFRA), leaves rendering, caching, delivery, security and scale to the platform and the templates to the merchant.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Shopify Liquid themes; BigCommerce Stencil, 'BigCommerce's Handlebars-based theme engine'; Salesforce SFRA templates.",
+              "shows": "Dated examples of the platform-rendered model.",
+              "source": "BigCommerce documentation; Salesforce; Shopify (accessed 2026-11)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The rendering terms.",
+            "introduces": "Model 1, the theme rendered by the platform.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Shopify's 2020 account of a dedicated Liquid renderer with several cache layers, four to six times faster than its predecessor and deployed regionally by 2022, is a dated example of the delivery infrastructure a theme inherits, not a measurement of today's service.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Storefront Renderer: database replicas, query cache, in-memory cache, full-page cache; 4x-6x faster (August 2020); regional deployment without the monolith (January 2022).",
+              "shows": "What the platform runs on the merchant's behalf under model 1.",
+              "source": "Shopify Engineering, 20 August 2020 and 20 January 2022"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The platform runs rendering and caching.",
+            "introduces": "Shopify's dated account of that renderer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "The merchant inherits the delivery infrastructure but is limited by the platform's page types, which Shopify's Online Store 2.0 (29 June 2021) extended with JSON templates, sections and app blocks so templates need less direct editing.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Online Store 2.0, 29 June 2021: JSON templates, sections, app blocks.",
+              "shows": "Shows the limit of model 1 and how the vendor loosened it.",
+              "source": "Shopify Partners blog, 29 June 2021"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the merchant inherits.",
+            "introduces": "What it is limited by.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "In the second model the vendor supplies a storefront API and hosting and the merchant builds the front end, as with Shopify's Hydrogen and Oxygen, Salesforce's PWA Kit on Managed Runtime and Adobe Commerce as a Cloud Service on Edge Delivery Services.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Hydrogen with Storefront and Customer Account API clients, React Router 7 starter, Oxygen hosting (docs 2026-10); Oxygen on main plans at no extra cost (February 2023); PWA Kit on Managed Runtime; Adobe Commerce as a Cloud Service on Edge Delivery Services (20 October 2026).",
+              "shows": "Dated examples of the vendor-runtime model.",
+              "source": "shopify.dev; Shopify Partners blog 2023; Salesforce PWA Kit; Adobe Experience League"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Model 1 and its limit.",
+            "introduces": "Model 2, headless on the vendor's runtime.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Checkout stays on the commerce platform under the vendor-runtime model: Hydrogen excludes checkout UI, and the merchant's application builds the cart and hands the shopper over.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Hydrogen explicitly excludes checkout UI.",
+              "shows": "The checkout boundary holds even when the merchant owns the front end.",
+              "source": "shopify.dev Hydrogen, docs 2026-10"
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The merchant building the front end.",
+            "introduces": "The part it does not build: checkout.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "In the third model the merchant chooses framework and hosting and may call several commerce platforms, as Vercel's Next.js Commerce and Alokai's unified data layer show, so a group can share one front end across brands with different engines.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Next.js Commerce, server-rendered, Shopify as reference with forks, moved to a successor repository; Alokai's unified data layer normalizing several platforms (accessed November 2026).",
+              "shows": "Dated examples of the headless-anywhere model and its churn.",
+              "source": "Vercel GitHub; Alokai documentation"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: the three models differ in who renders, who hosts and how many engines the front end can face; checkout stays on the platform under all three.",
+              "shows": "Sets the three models side by side."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Model 2.",
+            "introduces": "Model 3, headless anywhere.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "performance",
+      "heading": "Performance: What the Evidence Says, With Dates",
+      "controlling_idea": "Core Web Vitals measure real visitors at the 75th percentile against dated thresholds; the evidence that speed moves money is consistent in direction and weak in precision, and the usual culprit is scripts, not the rendering model.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Gives the metrics, the dated evidence and its caveats, and the scripts as the usual cause."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The metrics and their dated definitions first, close to the scene's measurements, which used them in one clause; then Google's ranking wording; then the business evidence with its caveats; then the reading that follows from it, applied back to the scene. The reading needs the evidence before it."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The three rendering models.",
+        "introduces": "How a page's speed is measured whichever model renders it, answering the agency's first promise.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p36",
+          "controlling_idea": "Core Web Vitals are Google's three field metrics, assessed at the 75th percentile of page loads, mobile and desktop separately: LCP (good at 2.5 seconds or less), INP (200 milliseconds or less) and CLS (0.1 or less).",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "web.dev Web Vitals, updated 31 October 2024.",
+              "shows": "Dates the metrics and thresholds the scene's numbers are read against.",
+              "source": "web.dev"
+            }
+          ]
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "INP replaced first input delay on 12 March 2024, and Google's Search documentation 'highly recommend[s]' good Core Web Vitals and says they align with what its ranking systems reward, without stating a weight.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'highly recommend[s]' good Core Web Vitals 'for success with Search'; they 'align with what our core ranking systems seek to reward'.",
+              "shows": "Shows what Google says about ranking, and what it does not.",
+              "source": "Google Search Central, accessed November 2026; web.dev INP blog, 2024"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The three metrics.",
+            "introduces": "Their date of change and their place in search ranking.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "form": "list",
+          "controlling_idea": "The evidence that speed moves money is consistent in direction and weak in precision: a six-year-old commissioned correlation study, self-selected case studies, and a vendor's own rules limiting what apps may cost.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Deloitte Ireland for Google (24 March 2020): 0.1 s faster went with +8.4% retail conversions and +9.2% average order value; commissioned, sites undisclosed, correlation.",
+              "shows": "Direction with caveats.",
+              "source": "Deloitte 2020"
+            },
+            {
+              "kind": "case",
+              "what": "web.dev cases: Vodafone Italy LCP 31% better, sales +8%; Lazada LCP 3x, mobile conversion +16.9%; Cdiscount +6% revenue in a Black Friday sale; self-selected.",
+              "shows": "Direction without separation from redesigns.",
+              "source": "web.dev, accessed November 2026"
+            },
+            {
+              "kind": "quotation",
+              "what": "Shopify: performance 'directly influences conversion rates...'; Theme Store minimum Lighthouse 60; apps 'shouldn't reduce Lighthouse performance scores by more than 10 points'; theme code and apps 'can slow down your site'.",
+              "shows": "The vendor's own rules point at apps.",
+              "source": "shopify.dev and Shopify Help Center, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "What Google says about ranking.",
+            "introduces": "What the evidence says about sales.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "Faster is better, nobody can say by how much, and the usual culprit is the scripts rather than the rendering model: the vendor's ten-point cap on apps admits it, and Kestrel & Pine's INP of 310 milliseconds came from eleven apps' scripts.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: Kestrel & Pine's INP of 310 ms was eleven apps' scripts, not the rendering model; good is 200 ms or less.",
+              "shows": "Ties the general reading to the case."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The three kinds of evidence.",
+            "introduces": "What they add up to, applied to Kestrel & Pine.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "access",
+      "heading": "Accessibility Is a Requirement, Not a Performance Option",
+      "controlling_idea": "An accessible storefront lets every shopper complete the purchase; WCAG 2.2 states the standard, the European Accessibility Act has made it an obligation for consumer e-commerce since 28 June 2025, and it applies to the theme and every app block together.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Makes accessibility a dated obligation on the theme and every app block."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "What accessibility means, then the standard, then the law, then Kestrel & Pine's place under it, then what that requires of a theme with apps: each step narrows to the merchant's own work."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Speed as a page requirement.",
+        "introduces": "Accessibility, a requirement speed does not satisfy.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "controlling_idea": "An accessible storefront lets people find products, understand choices and pay with the ways they use a device, and a fast page still fails a customer who cannot use a form or a payment control.",
+          "function": "definition"
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "WCAG 2.2, the W3C's Web Content Accessibility Guidelines, is a Recommendation dated 12 December 2024 with three conformance levels and four principles.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "W3C WCAG 2.2, 12 December 2024.",
+              "shows": "Dates the standard a storefront is tested against.",
+              "source": "W3C"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "What accessibility asks.",
+            "introduces": "The standard that states it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "The European Accessibility Act applies to consumer e-commerce services provided after 28 June 2025, with microenterprises exempt.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Directive (EU) 2019/882: services 'provided to consumers after 28 June 2025'; 'e-commerce services' listed; microenterprises (under 10 people, up to €2 million turnover) exempt.",
+              "shows": "Makes accessibility a dated legal obligation.",
+              "source": "Directive (EU) 2019/882, 7 June 2019"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The standard.",
+            "introduces": "The law that makes it an obligation for e-commerce.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Kestrel & Pine, with 310 employees and three consumer storefronts, has been in scope since June 2025, while its B2B portal is not a consumer service, and national enforcement belongs to the regulation chapter.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "310 employees; three consumer storefronts; B2B portal.",
+              "shows": "Places the running case in and out of scope.",
+              "source": "_research/scenario-ledger.md (company)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The Act's scope.",
+            "introduces": "Kestrel & Pine inside and outside it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "An accessible theme can still contain an unusable app block, so accessibility criteria apply to the theme, the inserted components and their combined purchase flow.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Kestrel & Pine in scope.",
+            "introduces": "What being in scope requires: the whole purchase flow, theme and app blocks together.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cache",
+      "heading": "Cache the Shell, Fetch the Promise",
+      "controlling_idea": "Content that is the same for many shoppers is cached per market and language; answers that are promises to this shopper are fetched or validated live; the rule sets each page type's requirements and decides peak-day survival.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "States the cache rule, its mechanisms and its requirements per page type."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The split first (what can be computed once and what cannot), then each side, then the rule's name, then the mechanisms that implement it on the platform and the headless layer, then the peak-day feature, and last the requirements per page type that apply it."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The page requirements of speed and accessibility.",
+        "introduces": "The decision that lets a page meet them on a peak day: which answers can be reused.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p20",
+          "controlling_idea": "Some page content can be computed once and served repeatedly, while other answers depend on this shopper and this purchase.",
+          "function": "claim"
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Product content, images, attributes and layout per market and language, category pages, editorial pages and to a degree search facets are cacheable, because they change with the catalog or the campaign, not with each shopper.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Two kinds of answer.",
+            "introduces": "The first kind: what can be cached.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Account prices, stock commitments, the cart and checkout are validated live; public snapshots of price and availability need a freshness limit, account-specific answers are never shared, and stale answers are how the Price Drift and the Oversell reached the page.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The Price Drift and the Black Friday Oversell, seen from the page's side.",
+              "shows": "Shows what a cached promise costs."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: the cached shell served many times while price, stock badge and cart are fetched for this shopper.",
+              "shows": "Pictures the split."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What can be cached.",
+            "introduces": "What must be validated live.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "'Cache the shell, fetch the promise' names the rule of serving cached content, refreshing changing facts and validating purchase terms, and Shopify's full-page cache supplies it at the platform level.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The two sides of the split.",
+            "introduces": "The rule's name and its platform mechanism.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "At the headless layer the same idea appears as incremental static regeneration, which Vercel documents as serving the cached page while regenerating it, with e-commerce catalogs as the first use case, request collapsing per region and stale content served if regeneration fails.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Vercel ISR documentation (updated 28 August 2026): catalogs 'that need current pricing and availability without rebuilding the entire site'; concurrent requests collapsed 'into one function invocation per region, protecting your backend during traffic spikes'.",
+              "shows": "The headless layer implements the same rule.",
+              "source": "Vercel documentation, 28 August 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The platform's full-page cache.",
+            "introduces": "The same rule at the headless layer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Request collapsing is the peak-day feature: when 41 times the normal traffic hits one hero product, the backend sees one request instead of thousands; on the 2026 peak night Kestrel & Pine's cached pages held while the stock sync chain behind the stock badge did not.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: Eva's product page arrives from the edge cache first; the storefront then fetches availability and price.",
+              "shows": "Shows the sequence on the running case."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "Request collapsing among the documented features.",
+            "introduces": "Why it matters on the peak day.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Each page type gets its own freshness, consistency, speed and peak-day requirement under the rule, from fully cached product content to a live, platform-owned cart and checkout.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Requirements per page type: product and category content, price shown, stock badge and delivery promise, search results, logged-in B2B pages, cart and checkout, against how fresh, how consistent, how fast and on a peak day.",
+              "shows": "Turns the rule into a requirement a team can set per page."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The rule and its peak-day feature.",
+            "introduces": "The rule applied to each page type.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "seo",
+      "heading": "Technical SEO and Product Discoverability",
+      "controlling_idea": "Public product pages must also be discoverable by search engines: crawlable links and sitemaps, product content and structured data in the initial HTML that agree with the live facts, an explicit policy per kind of URL, distinct crawl and index controls, and a named owner who checks them after each release.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Extends the cache rule to search engines and gives the public pages' discoverability an owner."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Definitions first; then a path to every product, then what an engine reads on the page, then the policy for each kind of URL, then the controls that block crawling or indexing, then who owns and checks it all: each step assumes the one before."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Cached public pages and their freshness limits.",
+        "introduces": "The second reader of those public pages: search engines.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p27",
+          "controlling_idea": "A fast product page can still be hard to find: search-engine optimization rests on letting engines crawl and index pages, and the platform controls much of that foundation through links, rendered content, URLs and product data.",
+          "function": "definition"
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Every product to be found needs a path of ordinary HTML links, supported by a sitemap, because Google generally does not search a store's own search box.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Google Search Central, ecommerce navigation guidance (accessed 9 November 2026).",
+              "shows": "Supports links and sitemaps as the path to discovery.",
+              "source": "Google Search Central"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What SEO rests on.",
+            "introduces": "The first requirement: a path to every product.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Google can execute JavaScript but renders in a separate step and other crawlers may not, so useful product content and a descriptive title belong in the initial HTML; server rendering or pre-rendering supports this, and headless alone gives no SEO advantage.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Google's JavaScript SEO guidance.",
+              "shows": "Supports server rendering or pre-rendering for discoverable content.",
+              "source": "Google Search Central, accessed 9 November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "A path to each product.",
+            "introduces": "What the engine finds when it arrives: the rendered page.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Structured data names the product's facts for machines, Google recommends it in the initial HTML, and it should come from the same records as the visible page and the product feed.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Google's merchant listing guidance: product markup in the initial HTML.",
+              "shows": "Supports generating markup with the page.",
+              "source": "Google Search Central, accessed 9 November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Product content in the initial HTML.",
+            "introduces": "The product facts named for machines.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "The cache rule serves search engines too: public price and availability snapshots need a maximum age and coordinated updates in HTML, markup and feeds, so machines do not read yesterday's price, and good markup makes a page eligible for richer results without guaranteeing them.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Structured data from the same records.",
+            "introduces": "The cache rule applied to what machines read.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Variants, filters and translations multiply the URLs a platform can publish, so each kind of page needs an explicit policy for its address before crawlers see it.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Policy per case: product variants (canonical URL), filters and sorting (index chosen landing pages, limit crawling), languages and countries (hreflang), temporary stockouts (keep the page), moves and retirement (301/308, 404/410).",
+              "shows": "Gives each kind of URL a decision and its reason."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Pages that agree with the live facts.",
+            "introduces": "The addresses those pages are published under.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "These policies follow Google's guidance on ecommerce URLs, faceted navigation, localized versions and site moves, checked 9 November 2026, and the stockout row is an implementation recommendation, because a sell-out and a retirement are different events.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Google Search Central and Google Crawling Infrastructure pages on ecommerce URLs, faceted navigation, localized versions and site moves, accessed 9 November 2026.",
+              "shows": "Dates and sources the table; labels the author's own row."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The policy table.",
+            "introduces": "Its sources and the one row that is the author's recommendation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "robots.txt controls fetching and noindex controls inclusion in results; blocking crawling can hide a noindex, neither protects private data, and a release must not carry test-site exclusions onto public product pages.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Google's guidance on blocking indexing with noindex.",
+              "shows": "Supports the distinction between the two controls.",
+              "source": "Google Search Central, accessed 9 November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Policies that decide which pages should be found.",
+            "introduces": "The two controls that keep pages out, and how they differ.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "The storefront team should own these rules with catalog and marketing choosing the landing pages, check one jacket's localized pages and variants through a price change and a stockout, inspect and monitor with Search Console after template changes, and preserve the URL policy during migration.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The links, rendering, markup, URL policies and controls.",
+            "introduces": "Who owns them and how they are checked.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "choices",
+      "heading": "The Choices and Their Trade-Offs",
+      "controlling_idea": "A merchant on a hosted platform has four options (the disciplined theme, the theme plus a CMS, headless on the vendor's runtime, headless anywhere), and headless is chosen only when the theme cannot express a shared design across brands, a content-led site or a B2B portal, and a team can own on-call, caching, upgrades and API versions.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "States the decision rule against the four options."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "The four options and their trade-offs, then the rule for choosing among them, then mobile apps, the other front end proposed in speed's name, judged by the same rule."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Speed, accessibility, caching and discoverability, all of which can be met on a theme.",
+        "introduces": "The other needs a choice of rendering model rests on, and the options.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "form": "list",
+          "controlling_idea": "The realistic options for a merchant on a hosted platform are four, from the disciplined theme to headless anywhere, and they differ in who runs rendering and caching, flexibility, peak-day posture, the team needed and when each is right.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four options against who runs rendering and caching, flexibility, peak-day posture, team needed and when right.",
+              "shows": "Sets the options side by side so the team cost is visible."
+            }
+          ]
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "Headless is right only when the theme cannot express a shared design across brands, an editorially driven site or a B2B portal's account pricing and approvals, and when a team will own on-call, caching, framework upgrades and API versions after the agency leaves; speed alone establishes neither.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The four options.",
+            "introduces": "The rule for choosing between them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "A progressive web app is mostly the headless question in disguise, since a server-rendered storefront can be made installable, while a native app is a second storefront that must show the same prices, stock and promises and is justified by loyalty, push and in-store features, not speed.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "web.dev: a PWA is a website 'built and enhanced with modern APIs' that can be installed, work offline and send push notifications.",
+              "shows": "Defines the term before the comparison.",
+              "source": "web.dev, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The rule for choosing a front end.",
+            "introduces": "Mobile apps, the other front end proposed in speed's name.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Across Scale Stages: When It Fits and When It Limits",
+      "controlling_idea": "The disciplined theme fits from Starting through Omnichannel; at Group scale a shared front end becomes valuable, and Omnichannel scale alone is no reason to build one.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Applies the rule to each scale stage."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The decision rule.",
+        "introduces": "The rule applied stage by stage.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p48",
+          "controlling_idea": "The theme is kept while it meets the requirements; Group scale makes a shared front end more valuable, and Omnichannel scale alone does not justify one.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four stages with what is typical, what becomes necessary and warning signs of outgrowing the approach, Kestrel & Pine at Omnichannel.",
+              "shows": "Signs a merchant can check against its own storefront and proposals."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice",
+      "controlling_idea": "Dated public examples show what to check when replacing a storefront, and Noor's four-part answer applied the rule: measured speed, a content need met by the theme, no need for headless, and a peak problem behind the page.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S4",
+          "S3"
+        ],
+        "how": "Shows the rule, the measurements and the cache argument deciding a real-shaped case."
+      },
+      "flow": {
+        "pattern": "small_to_large",
+        "rationale": "Kestrel & Pine at the Omnichannel stage first, because the stage table's judgement leads straight into it: Noor's four-part answer, then what it cost and when it is revisited; then, for the merchant whose need does justify a new storefront, the two public checks and the boundaries every replacement must keep. Putting the checks first placed replacement advice before a decision not to replace, which both round-2 readers found unclear."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The stage table's judgement for Omnichannel.",
+        "introduces": "Kestrel & Pine at the Omnichannel stage and Noor's decision, then checks for a merchant that does replace its storefront.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p51",
+          "form": "list",
+          "controlling_idea": "Kestrel & Pine is at the Omnichannel stage, where the stage table keeps the disciplined theme unless one of the three needs applies, and Noor's late-February 2027 answer had four parts, folded into W4: the speed argument failed measurement and the retainer went to a theme performance pass; the content need was met by theme sections and a content model after the PIM; future readiness named no need; and the peak problem was the stock chain behind the badge, not the renderer.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Retainer redirected for one quarter to a theme performance pass and an app-script audit; INP 180 ms by June 2027 after six unused apps and four redundant scripts were removed (illustrative).",
+              "shows": "The speed problem fixed where it was.",
+              "source": "_research/scenario-ledger.md (storefront-architecture line)"
+            },
+            {
+              "kind": "fact",
+              "what": "Brand content to theme sections and a content model fed by the PIM after W3 (Q3 2027).",
+              "shows": "The content need met without a new renderer.",
+              "source": "_research/scenario-ledger.md (storefront-architecture line; consistency ruling 13a)"
+            },
+            {
+              "kind": "fact",
+              "what": "One brand, three countries on one design, a B2B portal serving 62% of wholesale orders on the platform's B2B features, no native app.",
+              "shows": "None of the three needs applies.",
+              "source": "_research/scenario-ledger.md (systems landscape)"
+            },
+            {
+              "kind": "fact",
+              "what": "2026 peak hour: 2,300 orders, storefront traffic about 41 times an average hour; the platform held, the stock sync chain did not; until W1 lands in Q4 2027 the 2027 peak plan hides the stock count and shows in stock / low stock from a per-channel buffer.",
+              "shows": "The peak argument points at the chain, not the page.",
+              "source": "_research/scenario-ledger.md (Black Friday week 2026; storefront-architecture line)"
+            }
+          ]
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "What Noor approved cost about €38,000 of agency time over a quarter instead of €240,000 and nine months, left the storefront on the one model her team can run, and is revisited at the 2029 review because the one need that could change it is a Group-stage question.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "About €38,000 of agency time (illustrative); revisited at the 2029 review with the POS question.",
+              "shows": "The cost and the condition for revisiting.",
+              "source": "_research/scenario-ledger.md (storefront-architecture line; consistency ruling 13a)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The four parts.",
+            "introduces": "Their cost against the proposal's, and when they are revisited.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "form": "list",
+          "controlling_idea": "For a merchant whose need does justify a new storefront, two dated public practices give concrete checks: compare old and new responses on sampled traffic before switching, and test regeneration failures before the peak.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Shopify's renderer rollout (2020-2022) compared status codes, headers and bodies with fallback; Vercel documents request collapsing and stale content after failed regeneration (28 August 2026).",
+              "shows": "Checks a merchant can copy.",
+              "source": "Shopify Engineering 2020; Vercel 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Noor's decision to keep the theme.",
+            "introduces": "Checks for a merchant whose need does justify a new storefront.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Whatever renders the pages, two things from earlier sections still need checking: checkout stays on the platform, and the whole purchase flow, theme and app blocks together, must still work for every shopper.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The two public practices.",
+            "introduces": "The boundaries established earlier in the chapter.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "Storefronts fail as cached promises, uncacheable peaks, script sprawl, forked themes, drifting headless front ends, bots at the front door and inaccessible flows, each with a sign to detect and a recovery.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Shows the chapter's rules as recoveries from named failures."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Noor's decision, which went right.",
+        "introduces": "The ways a storefront decision goes wrong, mapped to the chapter's named failure patterns.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p53",
+          "controlling_idea": "Seven storefront failures recur, from a cached promise to an inaccessible checkout, and each has a sign to detect and a recovery drawn from the chapter's rules.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven failures: a cached promise, the uncacheable peak, script sprawl, the forked theme, the headless storefront that drifted, bots at the front door, an inaccessible storefront; what each looks like, detection and recovery.",
+              "shows": "Turns each rule into a detection and a recovery."
+            },
+            {
+              "kind": "fact",
+              "what": "Commerce.com (formerly BigCommerce) Q2 2026 filing reported lower gross margin; an earnings-call summary attributed part of it to hosting costs from AI crawlers and agents (6 August 2026).",
+              "shows": "Dated evidence for the bot row, labelled as a secondary attribution.",
+              "source": "SEC 8-K exhibit 99.1; Nasdaq summary, 2026"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The slow product page at the start has one answer across the chapter: the storefront owns templates and scripts, not facts, so its speed is found by measuring the page in the field and tracing the slow metric, which at Kestrel & Pine led to eleven apps' scripts, not to the renderer. The same split governs the rest: what is the same for many shoppers is cached and shown to search engines, what is a promise is fetched or validated live, and the renderer changes only for a need the theme cannot meet with a team to run it.",
+    "so_what": "A merchant can answer a headless proposal by reading field Core Web Vitals, tracing the slow metric, setting a cache rule per page type and asking which of the three needs the proposal serves and who runs it in year two; Kestrel & Pine spent about €38,000 on a theme performance pass instead of €240,000 on a rebuild.",
+    "callback": {
+      "to": "The opening's slow product page whose delay may come from a price service, a stock lookup or an app script.",
+      "how": "p54 names where Kestrel & Pine's delay came from and why a new page would have inherited it."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Measure product and category pages in the field at the 75th percentile on mobile, trace any slow metric to its cause, budget app scripts, set what is cached and what is fetched per page type, give public-page discoverability and accessibility an owner, and consider headless only for a shared front end, a content-led site or a B2B portal the theme cannot express, with a team that can run it."
+    },
+    "hand_off": {
+      "to": "peak-load-and-reliability",
+      "relationship": "contrast",
+      "carries_over": "The storefront whose cacheable pages held on the 2026 peak night.",
+      "introduces": "The chain behind the storefront, which met the merchant's spike alone and failed, and how to size, test, protect and recover it."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The failures and how each is detected and recovered.",
+      "introduces": "The chapter's answer set against its opening, then what holds, sorted by how settled it is.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p54",
+        "controlling_idea": "The opening's slow product page gets one answer: the storefront owns templates and scripts, not facts, so the cause is found by measuring and tracing, which at Kestrel & Pine led to eleven apps' scripts rather than the renderer, and the same split decides what is cached, what is fetched and when the renderer should change.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The opening's slow page set against the scene's measurements, the cache rule and the decision rule.",
+            "shows": "Answers the chapter's opening with what the sections established together."
+          }
+        ]
+      },
+      {
+        "id": "p55",
+        "form": "list",
+        "controlling_idea": "Established: Core Web Vitals measure real users and the studies support speed without predicting a merchant's gain; the hosted models keep checkout on the platform and the caching mechanisms are documented; discovery needs crawlable pages and consistent product data; the Accessibility Act applies since 28 June 2025.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "What is established, with its sources.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p56",
+        "form": "list",
+        "controlling_idea": "Depends on context: headless needs both an unmet requirement and an operating team, editorial needs may be met by theme sections or a CMS, and cache policy follows the business model.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established.",
+          "introduces": "What depends on the merchant's situation.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p57",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: decide ownership, freshness and discoverability before the framework, and ask a headless proposal for the unmet requirement and its operating owner, as Noor's measurements did.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "What depends on context.",
+          "introduces": "The author's own judgement, labelled as such.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p58",
+        "form": "list",
+        "controlling_idea": "Ten questions turn the chapter into a review of the reader's own storefront: field vitals, who runs the renderer, cached and live facts, hand-edited templates, app scripts and budgets, the need a headless proposal serves, the API version, accessibility testing, behaviour when the availability or shipping service is down, and discoverability after a release.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions that apply them to the reader's own storefront.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p59",
+        "controlling_idea": "The storefront held on the 2026 peak night because its pages could be cached, while the chain behind it, the order export to the warehouse and the stock sync to the channels, met the merchant's spike alone and failed, which is where the next chapter goes.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "Questions about the reader's own storefront.",
+          "introduces": "The chain behind the storefront that failed while the storefront held.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "On-site search relevance, filter behavior and merchandising; this chapter covers the resulting URLs' discoverability.",
+      "covered_in": [
+        "commerce-search-and-discovery"
+      ]
+    },
+    {
+      "topic": "Pricing display rules and tax-inclusive pricing.",
+      "covered_in": [
+        "pricing-architecture"
+      ]
+    },
+    {
+      "topic": "The availability service and the stock badge's source of truth.",
+      "covered_in": [
+        "inventory-and-availability"
+      ]
+    },
+    {
+      "topic": "Cart, checkout orchestration and checkout extensibility.",
+      "covered_in": [
+        "cart-and-checkout"
+      ]
+    },
+    {
+      "topic": "Extension mechanisms, app scopes and app governance; this chapter only treats app scripts as a performance cause.",
+      "covered_in": [
+        "extensibility-and-app-ecosystems"
+      ]
+    },
+    {
+      "topic": "Load testing, degradation ladders and the peak plan; this chapter only establishes cacheability as the storefront's contribution.",
+      "covered_in": [
+        "peak-load-and-reliability"
+      ]
+    },
+    {
+      "topic": "National transposition and enforcement of the Accessibility Act.",
+      "covered_in": [
+        "commerce-regulation"
+      ]
+    },
+    {
+      "topic": "Agentic channels and catalog feeds for AI agents.",
+      "covered_in": [
+        "ai-and-agentic-commerce"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "The illustrative Core Web Vitals, the €240,000 proposal and the €38,000 performance pass are ledger facts appended by this chapter; [[build-buy-or-assemble]] records the February 2027 platform review with its own illustrative figures, and a review pass should confirm the two February decisions read as one month's work. (from spec.md)",
+    "The 2027 peak plan's 'hide the stock count, show in stock / low stock from a per-channel buffer' is stated here as the storefront's part; [[journey-peak-day]] and [[peak-load-and-reliability]] should carry the same wording. (from spec.md)",
+    "Remaining after the confirming round 3 (ESCALATE, 16 pass, 18 fail; cheap fixes applied afterwards, so the report is stale): p37 joins INP's date and Google's ranking wording in one controlling idea (spec; one reader); the bots row of the failure table breaks no rule the chapter sets and sits beside the SEO advice to let crawlers in (spec, corroborated; the row is the author's and cited, so it is kept and the table's lead now says six of seven break a rule); the public checks after Noor's decision were still found out of place by one reader; the scene's numbers precede the metric definitions and the thresholds appear twice (one reader); 'six unused apps and four redundant scripts' against 'eleven apps' (one reader; ledger figures, unchanged); the first-person voice that starts in the SEO section (both readers, judged not material).",
+    "Third flow rubric (sound with notes), not taken: the app-scripts finding appears in p02a, p09 and p39 and again in p54 (p02a performs the journal spec's transition from chapter 31 and the caller's flow note); the thresholds appear in p09 and p36; merge the one-paragraph stage section into the options; merge p50 into p49; trim the overlap between p54 and the author's synthesis p57; question 9 asks about the shipping service, which the body mentions only in the ownership table.",
+    "Round-2 minor (one reader): the Performance section restates the thresholds the scene gave in plain words.",
+    "Second flow rubric notes not taken: merge p54 with the author's synthesis list p57; cut or fold p50 into p49; call Eva back in p59. Flow rubric notes not taken: merge the one-paragraph stage section into the options section (house section format); move the 2026 peak-night fact before Noor's item 4; soften p02's early statement that scripts are the usual cause; tie Eva into the hand-off or cut p04; prepare the bot and service-outage rows of the failure table and questions earlier in the body.",
+    "Hydrogen's framework list and Oxygen's plan availability are volatile; re-verify in a 2027 revision. (from spec.md)"
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. The old success criteria were inventories and are not carried over as criteria: term definitions are covered by the standard known_before_new check; the headless decision by AC-1; the cache rule by AC-2; SEO and accessibility by AC-3; the dated vendor examples, the tables, the three take-away tiers, the questions and the ledger agreement are contents, not reader outcomes, and are dropped (the ledger agreement stays a rule of the pass). The 6,500-word limit becomes length.max_words. No criteria were added beyond the journal spec's AC-1 to AC-5.",
+      "rejected": [
+        "Keeping the success criteria as custom rubric criteria (they list contents)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Units the contract asks for and the published chapter lacked are added: a roadmap p05 announcing every section (the IN THIS CHAPTER callout names three of ten); p02 performs the journal spec's transition_in by naming where the previous chapter's apps land (theme code, app blocks, browser scripts) and naming those scripts as the usual cause of a slow page; a one-sentence lead p26 for the requirements table and p53 for the failure table, which stood with no sentence saying what they show; a synthesis p54 with the callback to the hook; the hand-off p59 rewritten as the contrast chapter 33 declares (the storefront held, the chain behind it failed) instead of 'tests this storefront'.",
+      "rejected": [
+        "Leaving the roadmap to the IN THIS CHAPTER callout alone.",
+        "Keeping 'The next chapter tests this storefront', which reads as a sequence and contradicts the next chapter's contrast."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Ledger alignment in the prose: the scene states the proposal as 'about €240,000 and nine months, plus a second runtime to operate' and the measurement as taken on the NL storefront's product pages; Noor's item 4 states the 2026 peak hour as 2,300 orders with storefront traffic about 41 times an average hour (the ledger's 41x is traffic, not orders).",
+      "rejected": [
+        "Keeping '2,300 orders, 41 times an average hour', which reads as 41 times the orders."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (fresh agent, verdict 'sound with notes'); the author asked for the rubric notes to be taken without review. Taken: the scene gives the three Google thresholds in one clause, removing its forward reference to the performance section; accessibility becomes its own section (p40-p44, heading promoted from the published subheading) because it is not part of the performance argument; the mobile-apps paragraph p45 moves to the end of the options section, as a front-end choice judged by the same rule; p31 drops the sentence that repeated the cache section (account prices stay private, checkout validates live terms); the roadmap names the two public checks of In Practice and the new section order; the post and performance flow rationales are rewritten to state dependencies.",
+      "rejected": [
+        "Merging the stage section into the options section (the book's fixed house section).",
+        "Moving the 2026 peak-night fact before Noor's item 4 (item 4 states it itself, and the stock badge is introduced in the cache section).",
+        "Softening p02's naming of app scripts as the usual cause (the caller's flow note asks for it, carrying over from chapter 31).",
+        "Cutting or reusing Eva's paragraph p04 (the book-wide 'Where we are' element)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After the confirming round 3 (ESCALATE, 16 pass, 18 fail), cheap, plainly right fixes applied without another round: the scene's eleven apps are 'eleven of its 41 apps'; p15 opens by saying what Shopify's account shows; the cache section opens on keeping pages fast and usable, carrying over both speed and accessibility; the accessibility section and the mobile-apps paragraph open with their links; the options lead says the four options are the three models with the theme split in two; the hand-off says the chain belongs to the merchant and no shared platform cache absorbs its load; the failure-table lead says six of seven failures break a rule; Shopify's CTO named. The check report is stale after these edits.",
+      "rejected": [
+        "A fourth round (the brief allows one confirming round)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 1) the €14,000 monthly retainer is dropped from Noor's first point because three months of it does not equal the ledger's 'about €38,000 of agency time' and a reader could not reconcile them; the page now says the retainer was redirected for one quarter, as the ledger does.",
+      "rejected": [
+        "Stating 'part of the retainer' (the ledger does not say so).",
+        "Changing €38,000 (ledger figure)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) In Practice is reordered: Kestrel & Pine at the Omnichannel stage and Noor's four-part answer first, then the two public checks, now introduced as checks for a merchant whose need does justify a new storefront, then the boundaries paragraph (both round-2 flow readers, and both round-1 readers, found the checks out of place before a decision not to replace); transitions p49 and p51 rewritten.",
+      "rejected": [
+        "Folding the checks into the cache and options sections (a larger move than the readers' shared request)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) p10 and the opening of the ownership section no longer frame the middle sections as Noor's reasons ('The reasons form the rest of this chapter', 'Her first reason'), which both round-2 readers found did not match her four-part answer; p10 now says the sections set out what she weighed and that her answer comes in In Practice.",
+      "rejected": [
+        "Reordering Noor's four points to follow the sections (her answer is a dated record)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 6, draft fixes) figures renumbered in reading order after the move of the performance section (Figure 3 eleven apps, 4 shell and promise, 5 Eva's page); the cache section opens on keeping pages fast on a peak day instead of the ambiguous 'those requirements'; the stock-sync gloss is its own sentence; p44 opens by tying the requirement to being in scope; the scene's two 41s are separated.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 12 not needed) round-2 minor finding (the scene's plain-word thresholds repeated in the performance section) left as is: the scene needs the thresholds to read its numbers, and the performance section needs the definitions; recorded in open_questions.",
+      "rejected": [
+        "Cutting the thresholds from the scene (round-1 and the first rubric asked for them there)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 ended ESCALATE on one spec-fault failure (both flow readers found the performance section too late, four sections after the scene's measurements) and one spec-fault two-ideas failure (p02). Taken under the pre-approved order changes: the performance and accessibility sections move to follow the rendering models, before the cache rule and technical SEO; p02 is split into p02 (the two terms) and p02a (where the previous chapter's apps land and the scripts as the usual cause); the transitions into performance, cache, SEO and choices are rewritten for the new order; the roadmap and the post rationale follow. Intent, thesis, role and criteria unchanged.",
+      "rejected": [
+        "Moving performance before the rendering models (its reading that the rendering model is not the usual cause needs the models first)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Second flow rubric (fresh agent, 'sound with notes'); the author asked for the rubric notes to be taken without review. Taken: p25 states that on the 2026 peak night the cached pages held while the stock sync chain behind the stock badge did not, so Noor's fourth reason (p51) and the hand-off (p59) rely on an earlier fact (both rubric runs raised it); section patterns relabelled (models and choices as comparison, In Practice as large_to_small); the post rationale says why accessibility precedes the options.",
+      "rejected": [
+        "Merging p54 with the author's synthesis list p57, and cutting p50: the author's sentences; recorded in open_questions.",
+        "Folding the stage section into the options section: house format.",
+        "Calling Eva back in the hand-off: not needed for the contrast the next chapter declares."
+      ]
+    },
+    {
+      "date": "2026-11-09",
+      "decision": "Add technical SEO as a storefront responsibility, with links from product information, search and migration. Distinguish a crawlable product snapshot from the live purchase validation; do not imply Google cannot execute JavaScript or that every retired URL should redirect. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Framed the chapter around 'the storefront owns no fact' and the cache/promise split rather than around framework comparison, because the newcomer's decision is organizational (who renders, who runs it, what is fetched live), not which JavaScript framework to pick. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Put the performance evidence in one section with dates and caveats, and made 'never for speed alone' the headless rule, because the agency pitch in the ledger scene leads with speed and the public evidence cannot support that lead. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Kept accessibility inside the chapter as a storefront requirement (theme and app blocks) rather than deferring it entirely to the regulation chapter, since the EAA's June 2025 date is the one storefront deadline a Dutch merchant of Kestrel & Pine's size cannot skip. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Chose three diagrams (dependencies, rendering models, the cached-page sequence) and no architecture diagram of a specific framework, keeping the chapter platform-neutral. (from spec.md)"
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (storefront-architecture; part-7; peak-load-and-reliability transition_in)",
+      "contributed": "Intent, acceptance criteria, thesis, role and the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md (company; agency retainer; Black Friday week 2026; systems landscape; storefront-architecture and extensibility-and-app-ecosystems lines) and _research/consistency-issues.md (ruling 13a)",
+      "contributed": "The three storefronts, the agency, the 41 apps, the 2026 peak hour, W1, W3, W4, the February 2027 proposal and the measured vitals."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-platform-engineering-scale.md (Part 4), _research/brief-shopify.md (Parts 2.5 and 3), _research/brief-platform-landscape.md (Parts 1.2 and 1.3)",
+      "contributed": "Themes, headless frameworks, ISR, Core Web Vitals evidence, WCAG 2.2 and the EAA, PWAs, the Storefront Renderer, Hydrogen and Oxygen, Adobe Commerce as a Cloud Service, Commerce.com's Q2 2026 results. (from spec.md)"
+    },
+    {
+      "kind": "internal",
+      "ref": "inventory-and-availability, pricing-architecture, cart-and-checkout, extensibility-and-app-ecosystems, peak-load-and-reliability",
+      "contributed": "Owning chapters for the facts the storefront renders. (from spec.md)"
+    },
+    {
+      "kind": "external",
+      "ref": "Google Search Central and Google Crawling Infrastructure, documentation accessed 2026-11-09",
+      "contributed": "Ecommerce navigation and URLs, JavaScript rendering, merchant listings, faceted navigation, noindex, localized versions and site moves. (from spec.md)"
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify Engineering (August 2020, January 2022), Shopify Partners blog (June 2021, February 2023), shopify.dev and Shopify Help Center (accessed November 2026)",
+      "contributed": "The theme and vendor-runtime models, performance guidance and app rules. (from spec.md)"
+    },
+    {
+      "kind": "external",
+      "ref": "Adobe Experience League (20 October 2026), BigCommerce Stencil, Salesforce PWA Kit, Vercel (Next.js Commerce; ISR updated 28 August 2026), Alokai (Unified Data Layer)",
+      "contributed": "The other models and the regeneration mechanism. (from spec.md)"
+    },
+    {
+      "kind": "external",
+      "ref": "web.dev (Web Vitals updated 31 October 2024; INP 2024; PWA; business-impact cases); Google Search Central (Core Web Vitals)",
+      "contributed": "Metrics, thresholds and ranking wording. (from spec.md)"
+    },
+    {
+      "kind": "external",
+      "ref": "Deloitte Ireland for Google, Milliseconds Make Millions (24 March 2020)",
+      "contributed": "The conversion study and its caveats. (from spec.md)"
+    },
+    {
+      "kind": "external",
+      "ref": "W3C WCAG 2.2 (12 December 2024); Directive (EU) 2019/882 (7 June 2019)",
+      "contributed": "Accessibility obligations. (from spec.md)"
+    },
+    {
+      "kind": "external",
+      "ref": "Commerce.com 8-K exhibit 99.1 (6 August 2026) and the Nasdaq earnings-call summary (2026)",
+      "contributed": "AI crawler hosting costs, labelled as a secondary attribution. (from spec.md)"
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Confirming round 3: ESCALATE (16 pass, 18 fail); closing fixes applied to the prose; report stale."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 2 (ESCALATE), resolved under the author's standing instruction: retainer figure dropped, In Practice reordered (decision before checks), 'reasons' framing removed, figures renumbered, cache and accessibility openings and the stock-sync sentence rewritten."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 1: performance and accessibility moved after the rendering models; p02 split (p02a); transitions and roadmap rewritten; glosses and section-opening sentences added in the prose."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Second flow rubric: peak-night fact stated in p25; section patterns relabelled."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Flow rubric notes taken: thresholds stated in the scene; accessibility split into its own section; PWA paragraph moved to the options section; p31 trimmed; roadmap updated; flow rationales rewritten."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json, reconstructed from the published chapter; added a roadmap (p05), leads for the requirements and failure tables (p26, p53), a synthesis answering the opening (p54); p02 names where the previous chapter's apps land; hand-off rewritten as a contrast."
+    },
+    {
+      "date": "2026-11-09",
+      "change": "Added technical SEO and product discoverability, linked the related chapters, clarified public snapshots versus live purchase validation, and shortened repeated rendering explanations to control length. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 3 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator). (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: corrected Hydrogen and Oxygen quotations against the docs, Noor's timing, expanded PIM, SFRA, B2B, D2C, POS, W3C, glossed edge runtime and Commerce.com, timetoread. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article. (from spec.md)"
+    }
+  ],
+  "length": {
+    "max_words": 6500
+  }
+}

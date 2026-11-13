@@ -7,7 +7,7 @@
   "part": "part-4",
   "title": "Where Is My Order? Notifications, Service and the Customer Record",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed from the published chapter (posts/19-customer-service-and-notifications/index.md) and its former spec.md, whose Non-goals, Modalities, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (a roadmap in the introduction, a conclusion paragraph that answers the opening, and Part IV's closing, which the journal spec assigns to this chapter); these are listed in decision_log.",
   "intent": {
     "outcome": {
@@ -554,7 +554,7 @@
         },
         {
           "id": "p17",
-          "controlling_idea": "With those states in one record, the target shape follows: the record emits events, a notification service turns them into messages, a status page and a service tool read the same record, and self-service writes back through the record's rules.",
+          "controlling_idea": "With those states in one record, the target shape follows: the record emits events, a notification service turns them into messages, a status page and a service tool read the same record, and self-service writes back through the record's rules; the component table gives each component's job, the one shortcut it must never take and where Kestrel & Pine stands in 2027.",
           "function": "description",
           "evidence": [
             {
@@ -566,11 +566,6 @@
               "kind": "table",
               "what": "Components: responsibility, what each must never do, and Kestrel & Pine in 2027.",
               "shows": "Each component's job and its forbidden shortcut."
-            },
-            {
-              "kind": "table",
-              "what": "Requirements for the flows: freshness, consistency, speed and availability for confirmation, shipped notification, status page, service view and self-service cancel.",
-              "shows": "Freshness may vary; consistency between views may not."
             }
           ],
           "transition_in": {
@@ -583,15 +578,22 @@
         },
         {
           "id": "p18",
-          "controlling_idea": "The consistency column is the point: freshness can be minutes, but two views of one order may never differ, because the difference is what the customer writes in about.",
+          "controlling_idea": "Each flow has its own requirements, and the consistency column is the point: freshness can be minutes, but two views of one order may never differ, because the difference is what the customer writes in about.",
           "function": "analysis",
           "transition_in": {
-            "relationship": "emphasis",
-            "carries_over": "The requirements table.",
-            "introduces": "The one column that cannot be relaxed.",
+            "relationship": "elaboration",
+            "carries_over": "The components of the target shape.",
+            "introduces": "The requirements of the flows between them, and the one column that cannot be relaxed.",
             "form": "sentence",
             "placement": "start_of_this"
-          }
+          },
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Requirements for the flows: freshness, consistency, speed and availability for confirmation, shipped notification, status page, service view and self-service cancel.",
+              "shows": "Freshness may vary; consistency between views may not."
+            }
+          ]
         },
         {
           "id": "p27",
@@ -1246,10 +1248,17 @@
   ],
   "modalities": [],
   "open_questions": [
-    "Needs the author (rule 12): the only WISMO figure with a stated basis is one vendor's 2023 number (Gorgias, 18% of tickets); no independent or European study was found. The fact needed: a newer or independent source, if the author has one.",
-    "Needs the author (rule 12): round-3 points left after the closing fixes, none corroborated by a rule that settles them: the component table has no sentence saying what its 'must never do' column shows (the page is at the 6,500-word limit); the Requirements subsection opens on its table; the WhatsApp paragraph's date detail is heavy for its point; the Part IV closing (p48, p49) is dense for a reader who does not recall the five cases; Branvas is not glossed (no source in the page says what it is); 'helpdesk' is first explained by example in The Choices. The fact needed: whether the author will trade words elsewhere for these."
+    "Needs the author (rule 12): the only WISMO figure with a stated basis is one vendor's 2023 number (Gorgias, 18% of tickets); no independent or European study was found. The fact needed: a newer or independent source, if the author has one."
   ],
   "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved in the cleanup pass, 2026-11-13, the round-3 points the page had no room for (rule 4 allows up to 7,150; the page stays under 6,500): p17 ends with a sentence saying what the component table shows (each component's job, the shortcut it must never take, Kestrel & Pine in 2027); the Requirements subsection now opens on p18, moved before its table and reworded as its lead ('Each flow between those components has its own requirements, and the consistency column is the point'), with the requirements table as p18's evidence instead of p17's; the WhatsApp paragraph (p34) drops the agent's two general sentences on per-message cost and keeps the author's published facts (categories, 1 July 2025, 1 October 2026, the 1,000-message service tier) in three plainer sentences (rule 2); p48 identifies the Double Refund (212 returns refunded twice) and the eleven tickets (this chapter's split order), and p49 states the five remedy parts as five short clauses; rule 2: the unglossed vendor name Branvas is cut from the body (the source stays listed in Sources), since no cited source says what Branvas is; rule 6: 'helpdesk' is glossed at first use in p15 ('the tool in which service agents answer tickets'). The open question listing these points is closed; the WISMO-source question stays (needs the author). The journal-spec part-4 closing so_what that mentions a 2028 till decision this page omits is left to the journal-spec cleanup step (this pass does not edit journal-spec.json).",
+      "rejected": [
+        "Adding new paragraphs for the table leads (the existing units carry them)",
+        "Dropping the author's WhatsApp facts for density"
+      ]
+    },
     {
       "date": "2026-11-07",
       "decision": "Chose the eleven tickets as the spine, told as a day-by-day table, rather than a tour of notification channels, because the tickets show the customer's and the agent's views at once and make 'two parcels' the missing message.",
@@ -1439,6 +1448,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Cleanup pass: component-table sentence, Requirements subsection opens on its lead (p18 moved before the table), WhatsApp paragraph tightened, Part IV closing clarified, Branvas name cut, 'helpdesk' glossed; 6,493 words; check-report.json stale. (AI-mediated session)"
+    },
     {
       "date": "2026-11-12",
       "change": "Confirming round 3 ESCALATE (13 pass, 29 fail). Closing fixes without another round: self-service moved into 'How the Pieces Fit Together'; In Practice rules signposted; W8 glossed; roadmap split; Detection added to the Familiar Stranger failure. The check report is stale after these fixes."

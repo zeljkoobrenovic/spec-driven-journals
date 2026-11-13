@@ -7,7 +7,7 @@
   "part": "part-7",
   "title": "Monolith, Modular Monolith, Microservices, Composable: What the Evidence Says",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed from the published chapter (posts/29-commerce-architecture-styles/index.md, including the author's polishing of 11 November 2026) and its former spec.md, whose Non-goals, Modalities, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for that the published chapter did not have: a roadmap p05, a lead sentence for the style comparison table p41, and a conclusion paragraph p65 that answers the opening; the author's two-clarification paragraph is split into p11 and p12, and p49 states the line between the vendor's inside and the merchant's own layer; see decision_log.",
   "intent": {
     "outcome": {
@@ -50,7 +50,7 @@
         "method": "cold_reader",
         "severity": "major",
         "probe": "A board member forwards an article about a fashion retailer with about three thousand technology staff that left its monolith for microservices, and asks whether a brand with nine engineers on a hosted platform is behind. Using only this chapter: what is the answer, and how is it argued?",
-        "expected": "No. The retailer split because hundreds of teams blocked each other in one codebase (as Zalando did; Amazon split at a traffic wall), and the splits took years and brought sprawl; an account is read for its date, the company's size, the trigger and what it paid. Nine engineers in three groups that write code and do not wait on each other need one storefront codebase and one integration service with a module per flow and a build check against new cross-module imports; a split needs a measured latency problem or teams blocking each other's releases. The brand's incidents were failures of ownership and of the joins, which a rebuild would recreate in new code."
+        "expected": "No. The retailer split because too many teams shared one codebase and blocked each other's releases (as Zalando did in 2015, when its shop teams all worked in one program; its count of more than 260 teams is from 2020; Amazon split at a traffic wall), and the splits took years and brought sprawl; an account is read for its date, the company's size, the trigger and what it paid. Nine engineers in three groups that write code and do not wait on each other need one storefront codebase and one integration service with a module per flow and a build check against new cross-module imports; a split needs a measured latency problem or teams blocking each other's releases. The brand's incidents were failures of ownership and of the joins, which a rebuild would recreate in new code."
       },
       {
         "id": "AC-2",
@@ -90,7 +90,7 @@
   },
   "thesis": {
     "question": "How should a commerce system be structured internally, and what do the famous examples really show?",
-    "claim": "A style is a choice of deployment units, data ownership and boundary enforcement. The famous accounts show splits made when one program could no longer carry the traffic (Amazon, 2001) or at hundreds of teams (Zalando, 2015), each taking years, and a thousand developers kept on one deployment unit (Shopify, 2019–2024). A merchant's own code gets one deployment unit per team that must release independently, with boundaries drawn around systems of record.",
+    "claim": "A style is a choice of deployment units, data ownership and boundary enforcement. The famous accounts show splits made when one program could not carry the traffic (Amazon, 2001) or when too many teams shared one program (Zalando, 2015), each taking years, and a thousand developers kept on one deployment unit (Shopify, 2019–2024). A merchant's own code gets one deployment unit per team that must release independently, with boundaries drawn around systems of record.",
     "disputed_by": "The view that microservices or composable commerce is the modern architecture every growing merchant should move to, as Amazon and Zalando did, so a merchant still on one platform with one codebase of its own is behind.",
     "so_what": "A merchant that accepts the claim answers a rebuild proposal by asking how many of its teams must release independently, which of its incidents the rebuild would have prevented and by when, and what the reference company's size, trigger and cost were. Kestrel & Pine's February 2027 review costed a consultancy's composable rebuild at about €3.2M over eighteen months: it would have rebuilt the platform that had held 2,300 orders in the peak hour and left the joins that failed to 'phase two'. Waypoint chose stay and surround (W4). Asked in April 2027 whether that left the company behind, Noor Visser's May 2027 memo counted nine engineers in three groups that write code, none waiting on another, and set the rule: one storefront codebase and one integration service with a module per flow (stock, orders, prices, products, returns), a build check that blocks new cross-module imports, and a measured latency problem as the only reason to split.",
     "how_why": "Each split turns a local call into a network call that can fail or arrive late, a transaction into eventual consistency and one pipeline into several to operate, and boundaries are hard to place before the domain is known. Systems copy the communication structure of the teams that build them, so a split pays when many teams block each other in one codebase, which nine engineers do not. On a hosted platform the vendor deploys the core, so the merchant's distribution cost lands in its own integration layer, and the boundaries that decide its promises (the WMS, the PSP, the carriers) exist whatever style it picks; what places them well is who owns each fact.",
@@ -1634,9 +1634,7 @@
     }
   ],
   "modalities": [],
-  "open_questions": [
-    "For the journal-spec step (RESOLVE rule 9, not applied here): the thesis claim says the splits were made 'at hundreds of teams (Zalando, 2015)', but the chapter's cited sources give the motive in 2015 as too many teams sharing one program and the count of more than 260 teams only for 2020; the claim may need 'when too many teams shared one program (Zalando, 2015)'. AC-1's expected answer carries the same phrase. The prose states only what the sources state."
-  ],
+  "open_questions": [],
   "decision_log": [
     {
       "date": "2026-11-12",
@@ -1712,6 +1710,13 @@
       "rejected": [
         "Leaving these points open for the author."
       ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the journal spec's thesis claim and AC-1 expected answer now say Zalando split 'when too many teams shared one program (Zalando, 2015)' (the cited 2015 motive; the more-than-260-teams count is from 2020), copied here unchanged; the open question that asked for this is closed. The page already states it this way, so index.md is unchanged.",
+      "rejected": [
+        "Keeping 'at hundreds of teams (Zalando, 2015)', which the cited sources do not support for 2015."
+      ]
     }
   ],
   "sources": [
@@ -1772,6 +1777,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Thesis claim and AC-1 expected answer copied from the journal spec (Zalando's 2015 motive, not a team count); open question on it closed."
+    },
     {
       "date": "2026-11-12",
       "change": "After the confirming round 3: closing fixes to p02, p04, p05, p08, p13, p22, p27, p43, p49, p53, p54, p55, p55b, p65; four rule-10 points left for the author."

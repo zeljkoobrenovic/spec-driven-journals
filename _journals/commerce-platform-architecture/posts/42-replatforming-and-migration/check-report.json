@@ -1,0 +1,579 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/42-replatforming-and-migration/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/42-replatforming-and-migration/index.md",
+  "spec_sha": "365280c6cd5a1db9",
+  "draft_sha": "584ef5521500e9ca",
+  "run_at": "2026-11-13T01:16:05+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "a migration shifts who may act (e.g. send orders to the warehouse) while trading continues, risking duplicates or gaps",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "a migration plan starts from the fact whose owner changes and settles population, comparison, authority and failure handling",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Kestrel & Pine keeps its platform but must introduce a PIM and an OMS while orders keep arriving",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "the chapter's answer: move one seam at a time via shadow, parallel run, per-data plans and reversible cutover",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "roadmap of the chapter and its evidence sources",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Reasons to Replatform, and Reasons That Are Not ¶1",
+      "summary": "replatforming is justified only when the core itself limits the business, not when problems sit in the joins",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Setting the Scene: Two Hubs Beside a Running Shop ¶1",
+      "summary": "first warning: a stock comparison shows existing records disagree, and a new hub would inherit those disagreements",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene: Two Hubs Beside a Running Shop ¶2",
+      "summary": "second warning: partners' migration plans name dates but not how to detect duplicate or missing orders",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene: Two Hubs Beside a Running Shop ¶3",
+      "summary": "Noor's three rules (reversible, proven side-by-side, smallest channel first) and the resulting channel sequence around a peak freeze",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Three Documented Failures, and What They Share ¶1",
+      "summary": "the danger is moving everything on one date; only three old cases are documented well enough to use",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Three Documented Failures, and What They Share ¶2",
+      "summary": "Target's 2009 decision to take its e-commerce platform in-house from Amazon",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Three Documented Failures, and What They Share ¶3",
+      "summary": "Target's new site crashed at the Missoni launch and suffered a second outage",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Three Documented Failures, and What They Share ¶4",
+      "summary": "Target's root cause was never confirmed; the shape is a new platform's first peak as its first test",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Three Documented Failures, and What They Share ¶5",
+      "summary": "Finish Line reverted after seventeen days and recovered because the old platform was kept operable",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Three Documented Failures, and What They Share ¶6",
+      "summary": "M&S's relaunch lost online sales without crashing, through broken customer habit and search re-learning",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Three Documented Failures, and What They Share ¶7",
+      "summary": "Hobbycraft avoided failure by delaying its relaunch past peak trading",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Three Documented Failures, and What They Share ¶8",
+      "summary": "the shared pattern is the Burned Bridge; keeping the old system operable is what the chapter generalizes",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "The Strangler Approach for Commerce ¶1",
+      "summary": "the strangler approach replaces a system piece by piece behind a router, per Fowler's strangler fig",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "The Strangler Approach for Commerce ¶2",
+      "summary": "Thoughtworks' named legacy-displacement moves (transitional architecture, interception, diversion, mimic, dark launch, canary)",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "The Strangler Approach for Commerce ¶3",
+      "summary": "feature parity postpones all risk to one date and produces the Burned Bridge",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "The Strangler Approach for Commerce ¶4",
+      "summary": "the three kinds of commerce seams: channel, capability, traffic slice",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "The Strangler Approach for Commerce ¶5",
+      "summary": "Zalando's router-fronted, fragment-by-fragment shop rebuild as the public commerce strangler example",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "How the Pieces Fit During a Migration ¶1",
+      "summary": "during migration two systems hold one fact and only one may be right, with requirements changing by phase",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "How the Pieces Fit During a Migration ¶2",
+      "summary": "a parallel run compares both systems' results while acting on one, and needs reconciliation that explains causes",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "How the Pieces Fit During a Migration ¶3",
+      "summary": "dual writes risk silent divergence; prefer one writer plus a copied flow, else make writes idempotent and reconciled",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Data Migration Is Seven Migrations ¶1",
+      "summary": "each kind of data needs its own migration plan; there are seven",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Data Migration Is Seven Migrations ¶2",
+      "summary": "orders must be imported as read-only history, not re-created with side effects",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Data Migration Is Seven Migrations ¶3",
+      "summary": "URL migration must also carry search signals, and removed pages should return 404/410 rather than redirect home",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Migrating the Integrations ¶1",
+      "summary": "re-pointing the surrounding integrations via an owned inventory, legacy mimics and deprecation notices",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Cutover and Rollback ¶1",
+      "summary": "the five requirements of every cutover: window and freeze, go/no-go criteria, rehearsed rollback, identifier continuity, a watch",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Cutover and Rollback ¶2",
+      "summary": "rollback gets costlier the longer the new system owns a seam, so the old system stays operable only through one peak",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "In Practice: The OMS and PIM Introductions at Kestrel & Pine ¶1",
+      "summary": "Kestrel & Pine's two hubs apply every step, on Waypoint's timeline",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "In Practice: The OMS and PIM Introductions at Kestrel & Pine ¶2",
+      "summary": "the PIM's first load exposes conflicting attributes that are resolved before publication, keeping identifiers",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "In Practice: The OMS and PIM Introductions at Kestrel & Pine ¶3",
+      "summary": "PIM publication rolls out storefront by storefront with a platform fallback and nightly comparison",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "In Practice: The OMS and PIM Introductions at Kestrel & Pine ¶4",
+      "summary": "each PIM step is recoverable by stopping publication and keeping the platform copy",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "In Practice: The OMS and PIM Introductions at Kestrel & Pine ¶5",
+      "summary": "the OMS moves through the five phases one channel seam at a time, with a way back at each step",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "In Practice: The OMS and PIM Introductions at Kestrel & Pine ¶6",
+      "summary": "the parallel run's differences had explainable causes and it exposed an existing double-fulfillment defect",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "In Practice: The OMS and PIM Introductions at Kestrel & Pine ¶7",
+      "summary": "order history was imported into the OMS as flagged history without side effects",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "the migration technique is the same at every scale stage; what is migrated and the number of seams grow",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "recurring migration failures, each with detection and recovery",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "answering the opening: one acting system per seam, with the old path kept receiving copies through the peak",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "established findings: failures were non-feature, strangler is the alternative, data rules for history, balances and identifiers",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "context-dependent choices: when a parallel run pays, how long to keep the old system, which seam first, stage differences",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "author's stance: plan backwards from the first peak / treat reconciliation as the main lasting deliverable",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "questions to ask about a migration plan",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "hand-off to the next chapter on scale stages",
+      "matched_spec_paragraph": "p48"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 46 outline summaries match the controlling ideas of their aligned spec paragraphs, in spec order (introduction p01-p06, sections reasons through wrong, conclusion p43-p48); structure.json's deterministic check also passes.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "The only unit marked two_ideas is What to Take Away ¶4 (p46). It is a two-bullet list headed 'The author's synthesis', and the spec's controlling idea for p46 itself holds both items (plan backwards from the first peak; the reconciliation job as the main deliverable) under one idea, the author's own judgement. As a list unit it has one controlling idea. No other unit was marked.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit ties to a supporting claim: reasons to S1; scene to S3/S5; failures to S2; strangler and pieces to S3; data to S4; integrations to S4/S5; cutover to S5; practice to S3-S5; stages to S6; wrong to S3-S5; the introduction and conclusion state and synthesize the thesis. No orphan paragraph.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/4",
+      "draft_locus": "In Practice: The OMS and PIM Introductions at Kestrel & Pine ¶5",
+      "quote": "the marketplace, D2C and wholesale rows are three diverted seams, the freeze holds them through Black Friday, and the last column shows that every step had a way back",
+      "finding": "The sentence that explains the OMS table says what the table shows, but both flow readers report that the table does not bear it out: it has seven rows that do not map onto the five phases ('Divert all' has no row, 'Change freeze' is not a phase), and its last column reads 'Nothing to reverse' and 'Not needed' for some rows, contradicting 'every step had a way back'. The explanation is placed before a table the reader has not seen and misdescribes it.",
+      "fault": "draft",
+      "corroborated_by": "flow-A item 19; flow-B item 3.8",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "All other evidence is explained: the reasons table is framed by the test it applies; each case quotation (Target, Finish Line, M&S, Hobbycraft) is followed by what it shows, and the case table is interpreted by the Burned Bridge paragraph; Fowler's and Thoughtworks' quotations are followed by why feature parity produces the Burned Bridge; Zalando ('the strangler in production at a large retailer'); the App That Wrote Stock ('the systems diverge and nobody is told'); the phase, data and stage tables are introduced by the claim they support; the 1,900 variants, the 1.4% differences and the history import each carry their meaning. Minor: the Figure 3 caption ('Five of the seven migrations') momentarily clashes with the seven-row table (flow-A 18).",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Every declared transition_in is expressed at the start of its unit and picks up the declared known information: e.g. 'A plan therefore starts' (problem_solution), 'Kestrel & Pine answered that question in February' (example), 'The second warning is' (additional_support), 'Noor's rules guard against a danger the public record documents' (elaboration), 'What the cases share' (conclusion_summary), 'They sound like a parallel run and are the opposite in risk' (contrast), 'With the phases set' / 'The table's last row needs a section of its own' / 'With the data loaded and the integrations listed' (elaboration, elaboration, sequence), 'The rollback has a limit' (contrast), 'Kestrel & Pine's migrations went to plan. When one does not' (contrast), 'The opening asked' (conclusion_summary). Weakest but acceptable: M&S's contrast ('The shape here is different: nothing crashed') comes after the case label and two sentences, not at the very start; the pieces section opens on 'two systems hold the same fact' without naming seams.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Hand-off to commerce-scaling-stages: 'Migrations are the moments when a merchant moves from one scale stage to the next and feels it. The next chapter steps back to the stages themselves...' carries over this chapter's migrations and introduces the stages, the decisions that change, the signals and Kestrel & Pine's path, as hand_off declares (elaboration).",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1",
+      "draft_locus": "Setting the Scene: Two Hubs Beside a Running Shop ¶3",
+      "quote": "Noor's plan, which the rest of this chapter follows, has three rules.",
+      "finding": "Both readers met Noor's three rules before the documented failures that motivate them; the rules read as assertions until the failures section's opening bridge repairs this after the fact. Both propose putting 'Three Documented Failures' before 'Setting the Scene'. The difficulty comes from the declared section order (spec flow rationale argues for scene before failures).",
+      "fault": "spec",
+      "corroborated_by": "flow-A items 9 and 21; flow-B items 3.4 and 4.1",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Setting the Scene: Two Hubs Beside a Running Shop ¶1",
+      "quote": "Kestrel & Pine answered that question in February: keep the platform.",
+      "finding": "The introduction says Kestrel & Pine 'decides in March 2027, after its February platform review', while the reasons section says it 'settled it in its February review' and the scene says it 'answered that question in February'. Both readers stopped to work out whether this was one decision or two. The order is fine; one clause distinguishing the February review from the March W4 decision would fix it (the spec's own p10/p07 wording invites the slip).",
+      "fault": "draft",
+      "corroborated_by": "flow-A item 11; flow-B item 3.2",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "quote": "A plan therefore starts from the fact whose owner changes (here, which system may send an order to the warehouse) and every integration that reads or writes it.",
+      "finding": "Both readers re-read this sentence: 'the fact whose owner changes' arrives abstractly and is only made concrete by the parenthesis (and defined later in How the Pieces Fit).",
+      "fault": "draft",
+      "corroborated_by": "flow-A item 10; flow-B item 3.1",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Data Migration Is Seven Migrations ¶1 (table, integrations row)",
+      "quote": "Each one points at the old endpoint until somebody changes it: the Deprecated Endpoint of February 2027 in reverse: then a vendor retired an endpoint an agency script still called; now the merchant moves the endpoint",
+      "finding": "Both readers re-read the integrations row of the data table: three clauses chained by colons in one cell. (Quote is from the table cell as both readers quote it; the table text is not in structure.json's draft_text.)",
+      "fault": "draft",
+      "corroborated_by": "flow-A item 15; flow-B item 3.6",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Migrating the Integrations ¶1",
+      "quote": "The merchant retires its own old endpoints with a published date, as the marketplace connector did in February 2027.",
+      "finding": "Both readers report a confused attribution: the marketplace connector is a vendor, and the data table described February 2027 as a vendor retiring an endpoint, so 'as the connector did' reads as the opposite example of the merchant retiring its own endpoints.",
+      "fault": "draft",
+      "corroborated_by": "flow-A item 16; flow-B item 3.7",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/4",
+      "draft_locus": "In Practice: The OMS and PIM Introductions at Kestrel & Pine ¶5",
+      "quote": "The OMS moves through the five phases of the table in How the Pieces Fit During a Migration, one seam at a time, smallest channel first",
+      "finding": "Both readers had to map the OMS timeline table onto the phase table by hand: the lead-in describes a table not yet seen, the table has seven rows, adds a 'Change freeze' row that is not a phase and has no 'Divert all' row.",
+      "fault": "draft",
+      "corroborated_by": "flow-A item 19; flow-B item 3.8",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "quote": "a rollback after a week is often the riskier move",
+      "finding": "Both readers stumbled on 'The rollback that cannot roll back': flow-A reads it as a restatement of the rollback-limit paragraph in Cutover and Rollback, flow-B as a brief tension with the chapter's emphasis on rollback. Same passage; both call it minor.",
+      "fault": "draft",
+      "corroborated_by": "flow-A item 20; flow-B item 3.11",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "The Strangler Approach for Commerce ¶2",
+      "quote": "names the moves",
+      "finding": "Six Thoughtworks terms are defined in one paragraph and only some return later; the reader could not tell which to hold on to.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "The Strangler Approach for Commerce ¶5 (Figure 2 caption)",
+      "quote": "Disagreement routes back instead of forward",
+      "finding": "The Figure 2 caption refers to routing back before routing back has been explained (phase table, cutover section). Quote taken from flow-A; the caption is not in structure.json's draft_text.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "**Where we are in the order's journey:** a jacket order is copied to the new OMS for comparison before that system may send work to the warehouse, and product names, sizes and colors are prepared in the PIM before publication switches to it.",
+      "finding": "The 'Where we are' sentence packs both hubs into one sentence and its label suggests an order's journey only; dense on first read.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Migrating the Integrations ¶1",
+      "quote": "Others' retirements are read the same way: Zalando announced on 23 April 2026 that its Connected Retail technology",
+      "finding": "The Zalando Connected Retail example does not say what Kestrel & Pine does with such a notice, so it reads as tangential.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "Setting the Scene: Two Hubs Beside a Running Shop ¶3",
+      "quote": "the stores wait for the 2028 evaluation of the platform's own till system (W4)",
+      "finding": "W4 was just glossed as 'stay and surround'; tying a till-system evaluation to W4 is unexplained.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "Three Documented Failures, and What They Share ¶1",
+      "quote": "Noor's rules guard against a danger the public record documents: moving everything on one date.",
+      "finding": "The failures are whole-platform replacements while the case is hub introductions beside a kept platform; the reader must supply the link that the same danger applies to introducing a hub (only a First Snowfall bullet says so). The conclusion also omits the spec's so_what clause that the plan applies to introducing a hub, not only to replatforming.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/6",
+      "draft_locus": "In Practice: The OMS and PIM Introductions at Kestrel & Pine ¶7",
+      "quote": "Support looked in one place from October.",
+      "finding": "After the narrative has reached December-January, the order-history paragraph jumps back to October; a minor time-order break.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "Cutover and Rollback ¶1",
+      "quote": "the rollback has been rehearsed.",
+      "finding": "Go/no-go item 2 includes 'the rollback has been rehearsed' and item 3 is the rehearsed rollback; the reader checked whether they were different things.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both readers find the chapter easy to follow overall and state the ordering principle the spec declares (whether to migrate, the case, the danger, the method in prerequisite order seam-phases-data-integrations-cutover, the worked example, scale, failures, synthesis); both confirm the method sections and the tail are in the right order and that the conclusion closes the loop with the opening.",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/thesis/supporting_claims/2",
+      "draft_locus": "KEY POINTS callout",
+      "quote": "The strangler approach moves one channel, one capability or one slice of traffic at a time behind a router or a copy of the flow",
+      "finding": "'Strangler approach' is on does_not_know and is used in the KEY POINTS callout, with 'router' and 'copy of the flow', before the strangler section defines it. The body defines all three later. Quote from terms.md; the callout is not in structure.json's draft_text.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "quote": "The new hub's SaaS has an incident during the window.",
+      "finding": "'SaaS' is not among the audience's known glosses and is never expanded.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "quote": "The search index, a cache or the data warehouse still reads the old owner",
+      "finding": "'Cache' and 'data warehouse' (and 'search index') are not in already_knows and are not glossed here; the cross-links point forward to later chapters.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "The other terms on does_not_know are explained at or before first use: seam, shadow ('where nobody acts on it'), change freeze, the Burned Bridge, strangler fig, the Thoughtworks moves, feature parity, parallel run, dual writes, cutover, go/no-go, rollback, 404/410 and SEO; the public cases are introduced with dates and sources. Remaining terms.md items (Fowler/Thoughtworks, Zalando's identity, 'non-compliant', 'Go-based', one-way hashes, Retail Dive/Week, Missoni, the unnamed Price Drift) are names or incidental words whose meaning the sentence carries; not genuine failures. Over-explanation of PIM/OMS, idempotent and Amazon noted as minor style points.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The introduction opens on a puzzling scenario (two systems that can both send an order to the warehouse), bridges to a transfer of responsibility, introduces the case, states the thesis and gives a roadmap with evidence; none of the weak patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion does not open with 'in conclusion', introduces no new subtopic, does not end on a restated thesis alone, and its lists (established / depends on context / author's synthesis / questions) are labelled synthesis, not a grab bag; the order sent twice is recalled from the body, not new evidence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "p43 states what no single section states (every step answers one question: which system may act on a fact now; one sender per seam), and p46 says why it matters (plan backwards from the first peak; the reconciliation stays in production and makes the next migration cheaper). Note: the spec's so_what clause that the same plan applies to introducing a hub, not only to replatforming, is not said explicitly.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "'The opening asked how to change who sends work to the warehouse without two parcels or a missed order' returns to the hook and answers it with one sender per seam and the order the old path had sent twice, as callback declares.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicts the sections in roadmap order (reasons, Noor's plan for PIM in Q3 and OMS in Q4 after the March 2027 decision to keep the platform, three failures and an avoided case, strangler-phases-seven data migrations-integrations-cutover/rollback, the 2027 timeline, scale, what goes wrong), the evidence (dated press reports, Fowler and Thoughtworks patterns, Zalando's posts, Kestrel & Pine's ~800 orders a day) and a practical, sober tone, and frames migration as a transfer of responsibility for a fact. Only nuance not reproduced: that the documented failures were not feature failures.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader names the Burned Bridge (one date, first real load at peak, no way back), re-created history firing side effects (import read-only with original numbers), dual writes diverging silently (prefer one writer and a copied flow; idempotent and reconciled if unavoidable), and replaces the plan with shadow, a parallel run reconciling by cause, smallest channel first, written go/no-go, a timed rehearsed rollback, continuous order numbers, a freeze through Black Friday and the old path kept operable through the peak. Only the App That Wrote Stock is not named; the mechanism is.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader sorts all six: stock as ownership/system of record, unfindable orders as an OMS-beside problem, slow Black Friday a maybe (usually integrations), vendor end-of-life a reason on the vendor's date (Magento 1, 30 June 2020), forked core a reason but rebuild vs leave, agency not a reason (check who is paid and who owns the joins). Matches expected.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader gives each kind of data with its identifier, owner or trap (SKU/GTIN, silent price drift, password hashes, consent with proof, orders as read-only history, gift cards to the cent, URL redirects, integrations re-pointed or mimicked) and explains the rollback limit: records accumulate in the new system, copies narrow but do not close the gap, the cheap-rollback window closes on its own. Matches expected.",
+      "severity": "major"
+    }
+  ]
+}

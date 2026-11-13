@@ -1,0 +1,1599 @@
+{
+ "spec_version": "0.1",
+ "kind": "post",
+ "id": "case-shopify",
+ "journal": "commerce-platform-architecture",
+ "part": "part-11",
+ "title": "Case: Shopify, the Modular Monolith That Serves Millions of Merchants",
+ "status": "draft",
+ "revised": "2026-11-13",
+ "basis": "Reconstructed from the published chapter (posts/46-case-shopify/index.md) and its former spec.md, whose Non-goals, Modalities, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (a thesis paragraph, a roadmap that announces every section, and a synthesis that answers the opening question); the three one-line 'Sources:' notes under the tables are folded into the paragraphs that introduce those tables, and the two opening paragraphs on dating the evidence are merged. These are recorded in decision_log.",
+ "intent": {
+  "outcome": {
+   "know": [
+    "Shopify's business with its own definitions (GMV, merchant, MRR): FY2025 revenue of $11.56 billion, about three quarters merchant solutions that the 10-K says are correlated with GMV; Shopify Payments carrying 65.6% of GMV and resold from licensed processors (Stripe, PayPal, Adyen) by Shopify entities that state they are not licensed as a payment institution; one multi-tenant, 'single branch' Rails platform.",
+    "The architecture record by date: the 2019 componentization, the 2020 state (2.8 million lines, 37 components, each depending on over half of the others), Packwerk kept as a gate on new base-layer dependencies, the February 2024 retrospective's admission that domains and boundaries 'do not reflect the way Shopify's code actually functions'; the Storefront Renderer carved out for measured latency behind a verifier; pods (2016–2018) and shop moves by shard balancing (2021), with the shop as sharding key and unit of isolation.",
+    "The landlord's cadence: checkout.liquid and Shopify Scripts withdrawn on published dates (announced February 2023; August 2024, August 2025, 30 June 2026), replaced by sandboxed extension points and Functions; webhooks at-least-once and unordered, retried 8 times over 4 hours and deleted after 8 consecutive failures, with reconciliation jobs expected of the consumer; API versions every three months, each supported for at least twelve months; rate limits per app per store; the agent interface (Storefront MCP, May 2025) replaced by UCP endpoints in 2026, with no EU buyer market on any agentic channel page read at the cut-off.",
+    "Peak figures with their definitions (BFCM 2025: $14.6 billion unaudited GMV, 489 million edge against 117 million app-server requests a minute) and where the evidence stops (today's topology, the checkout queue, merchant counts, Shop Pay claims, Sidekick's availability date)."
+   ],
+   "believe": [
+    "The useful Shopify for a merchant is the landlord's behavior, not the architecture: it changes the platform under everyone on dates it publishes.",
+    "Shopify's own record undermines the slogan made from it: it did not split its monolith into clean domains; it learned which gate was worth keeping."
+   ],
+   "can_do": [
+    "List for their own platform which extension points and API versions their apps and connectors depend on, with support ends and owners.",
+    "Explain why a webhook-fed integration needs idempotent handling, a reconciliation job and a check that its subscription still exists.",
+    "Ask any SaaS vendor for its unit of isolation and whether it can move or restore one tenant alone."
+   ]
+  },
+  "audience": {
+   "who": "Newcomers to commerce architecture; most of all the engineer or architect who hears 'Shopify kept a monolith' or 'just use Functions' in a review and needs the dated sources. Product managers and leaders whose brand rents a hosted shop platform are the second readers: for them the chapter describes the landlord's behavior (extension points withdrawn on dates, API windows, rate limits, agent channels switched on by default).",
+   "already_knows": [
+    "What buying something online is like from the shopper's side; roughly what an API, a database and a queue are.",
+    "Kestrel & Pine, its people, its ten incidents in outline (among them the Black Friday Oversell and the Deprecated Endpoint) and the names of the sixteen failure patterns (among them the Giant's Boots, the Pulled Rug, the Secret Agent and the Forked Platform).",
+    "From Part I: the thirteen steps of an order, promise and handoff, the three status lines, 'system', 'the shop platform' for the hosted product Kestrel & Pine rents and 'commerce platform' for the whole set of systems, the four scale stages (Starting, Growing, Omnichannel, Group), bounded context, system of record, single writer, events, idempotency and reconciliation, the Waypoint decisions W1 to W8.",
+    "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system (OMS), availability service, D2C, B2B, PIM, POS.",
+    "From Parts II to X: available-to-promise; checkout creating the order once; authorization, capture, settlement and payout; app scopes, the app governance rule and the ownership map; API versioning and deprecation; peak planning; agent readiness (W8).",
+    "From the Part XI introduction: the four cases are read from dated sources researched on 7 November 2026, with documented, widely reported and inferred claims kept apart, and each case ends with what the evidence could not establish."
+   ],
+   "does_not_know": [
+    "Shopify's reporting definitions: GMV (as Shopify defines it), merchant, MRR, Payments penetration, subscription and merchant solutions.",
+    "Multi-tenant, single branch, monolith, modular monolith, component, Packwerk, shard, sharding key, pod, Storefront Renderer.",
+    "Theme, Liquid, headless, Hydrogen, Oxygen, Storefront API, Lighthouse score; checkout extensibility, Shopify Functions, WebAssembly, Shop Pay, PCI DSS, payment orchestration.",
+    "Scope, OAuth, HMAC signature, rate limit, API version window; BFCM, CDN, edge and app-server requests; MCP, UCP, Catalog, agent profile, trust tier, Sidekick."
+   ]
+  },
+  "acceptance_criteria": [
+   {
+    "id": "AC-1",
+    "statement": "Given a silent integration failure after an outage, the reader explains it from the platform's documented webhook contract and names the merchant-side disciplines that prevent it.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "A merchant's stock-sync connector, fed by its hosted platform's webhooks, was down for five hours on a Friday night after its host failed. On Monday the stock on a marketplace is wrong and the connector logs no errors. Using only this chapter: what probably happened, and what should the merchant have had in place?",
+    "expected": "Shopify's documented contract: delivery is not guaranteed and not ordered; a failed delivery is retried 8 times over the next 4 hours, and after 8 consecutive failures the subscription is deleted automatically, so the connector stopped receiving events and had nothing to log. The merchant needs idempotent consumers that ignore duplicates by webhook id, a periodic reconciliation job that fetches state from the platform (Kestrel & Pine's W5), a check on the subscription itself, and every connector pinned to a dated API version with its support end and owner recorded."
+   },
+   {
+    "id": "AC-2",
+    "statement": "The reader separates the Shopify practices a renting merchant should adopt from the machinery it should not copy, with the reason.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "Using only this chapter: which Shopify practices should a merchant that rents a hosted platform adopt, which should it not, and why?",
+    "expected": "Adopt: pinned API versions with their support ends as a maintenance budget for every connector; webhooks treated as at-least-once, unordered and reconciled; no checkout customization the platform could withdraw, custom behavior in the lowest sanctioned place; a boundary check in the build for any in-house code without chasing zero violations; shadow comparison with fallback before any cutover; load tests at forecast with caches bypassed and game days on the money paths, scaled down to connectors, ERP and WMS; asking vendors for their unit of isolation. Do not copy: pods, Ghostferry shard moves, a custom observability platform, a worldwide edge renderer, a readiness program that starts in March, which answer millions of shops. Reason: the platform changes under every merchant on published dates and the merchant's own failures were in the connectors, not the storefront."
+   },
+   {
+    "id": "AC-3",
+    "statement": "The reader can correct the slogan 'Shopify modularized its monolith' from the chapter's sources.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "minor",
+    "probe": "A colleague says Shopify proves that a monolith can be split into clean domain modules without microservices. Using only this chapter: what does Shopify's record say?",
+    "expected": "Shopify kept one codebase as one deployment unit. It labeled about 6,000 classes by domain in 2019; in 2020 it had 2.8 million lines and 37 components, each depending on over half of the others. Packwerk stayed only as a gate against new base-layer dependencies, its privacy checks removed in version 3.0, and the February 2024 retrospective says domain boundaries do not reflect how the code functions, so components became organizational groupings. What paid off was ownership (a stewardship team per file, exceptions routed to owners) and one cheap gate; the one carve-out, the Storefront Renderer, was made for measured latency behind a verifier with fallback."
+   },
+   {
+    "id": "AC-4",
+    "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+    "check": "intro_predicts_content",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+    "expected": "Which work a hosted platform takes on and which the merchant's team still operates; Shopify's business figures (the FY2025 filing and the quarter to September 2026) kept apart from its architecture history (pods 2018, components 2019, shard balancing 2021, a 2024 retrospective), each account dated and not taken as today's design; the counterparts of a jacket order (product and stock, pages, checkout, payment, messages to the warehouse); revenue that follows sales with checkout as the protected path, the monolith kept and its boundary lessons, the shop as unit of isolation, and a platform that changes under everyone on published dates, including its agent interface; failure patterns The Giant's Boots, The Pulled Rug and The Secret Agent. Evidence: filings, engineering posts, developer documentation and changelogs, with inferences labeled."
+   },
+   {
+    "id": "AC-5",
+    "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+    "check": "reverse_outline_matches_spec",
+    "method": "reverse_outline",
+    "severity": "blocker"
+   }
+  ]
+ },
+ "thesis": {
+  "question": "What does Shopify's dated public record show about running millions of shops on one platform, and what should a merchant that rents a hosted platform do about it?",
+  "claim": "Shopify's dated record shows one codebase, deployed as one unit and isolated by shop into database pods, serving millions of shops for a vendor whose revenue moves with the shops' sales and which changes the platform under every merchant on published dates, agent interface included. A renting merchant should plan for those dates (pin connectors to dated API versions, reconcile webhook-fed flows, track extension-point sunsets), not copy pods, shard moves or edge rendering.",
+  "disputed_by": "The view that renting a hosted platform hands the architecture to the vendor: the platform's scale and engineering make its integrations reliable and its interfaces stable, so the merchant need only choose apps. A related reading, which the claim also rejects, takes Shopify's lesson for others to be a modular monolith with clean domain boundaries.",
+  "so_what": "A merchant on any hosted platform budgets for the vendor's change cadence. Kestrel & Pine takes four lessons: (1) a reconciliation job for every integration (W5); (2) every connector pinned to a dated API version with its support end on the ownership map, after the Deprecated Endpoint's two days of stale stock on bol (W5); (3) nothing customized in checkout that the platform could withdraw, under the app governance rule approved alongside Waypoint; (4) agent readiness through product, availability and order-status APIs and no channel-specific agent build (W8). It rents the pods, renderer and checkout, which is W4.",
+  "how_why": "Three quarters of Shopify's FY2025 revenue is merchant solutions that move with merchants' sales, so Shopify protects its own revenue by keeping checkout under its control, changing it on its own schedule while every merchant absorbs the change (the chapter's labeled inference). A single-branch, multi-tenant platform ships every change to every merchant at once, so it keeps checkout upgrade-safe by replacing free-form access with sandboxed extension points and retiring the old ones on announced dates. Its webhook contract promises at-least-once, unordered delivery and deletes a subscription after eight consecutive failures, so a consumer without idempotency and reconciliation loses facts without logging an error. Pods, shard moves and an edge renderer answer the load of millions of shops, which one merchant does not have. The same cadence reached the agent interface: the Storefront MCP tools of May 2025 were replaced by UCP endpoints within a year, so a channel-specific agent build would already have needed rebuilding.",
+  "supporting_claims": [
+   {
+    "id": "S1",
+    "claim": "Shopify's revenue moves with its merchants' sales: in FY2025 three quarters was merchant solutions that the 10-K calls correlated with GMV, two thirds of GMV ran through Shopify Payments, which Shopify resells from licensed processors, and the whole runs as one multi-tenant, single-branch platform, so checkout and payment are its protected paths and every change ships to every merchant at once."
+   },
+   {
+    "id": "S2",
+    "claim": "Shopify kept one codebase deployed as one unit; its 2019 to 2024 posts record that domain boundaries did not match how the code works, that durable value came from file ownership and one gate against new base-layer dependencies, and that the one hot path carved out, the Storefront Renderer, was split for measured latency behind a verifier."
+   },
+   {
+    "id": "S3",
+    "claim": "The shop is Shopify's sharding key and unit of isolation: shops live in pods with their own datastores and are moved whole, machinery for millions of shops that a merchant does not copy but turns into a question for every vendor: what is your unit of isolation, and can you move or restore my tenant alone?"
+   },
+   {
+    "id": "S4",
+    "claim": "The platform sets the terms every merchant and integrator works under and changes them on published dates: checkout's free-form access withdrawn from 2023 to 2026 for sandboxed extension points, webhooks that are at-least-once, unordered and deleted after eight consecutive failures, API versions supported for at least twelve months, rate limits per app per store, and an agent interface replaced within a year."
+   },
+   {
+    "id": "S5",
+    "claim": "Read with their definitions, Shopify's practices divide into disciplines that transfer to a merchant scaled down (pinning, reconciliation, boundary gates, shadow comparison, load tests on the money paths, isolation questions) and machinery only millions of shops need; Kestrel & Pine takes four lessons that each match a Waypoint decision already made and changes none of its architecture."
+   },
+   {
+    "id": "S6",
+    "claim": "The case rests on dated sources of different ages and kinds, kept apart as documented, widely reported or inferred, and the public record stops short of Shopify's current topology, checkout queue, merchant counts, Shop Pay claims and agent-channel terms."
+   }
+  ]
+ },
+ "role": {
+  "contribution": "Gives the part a hosted platform's own record, separating the landlord's change cadence and integration contract that a renting merchant must plan for from the machinery only millions of shops need.",
+  "supports": [
+   "P11-1",
+   "P11-5"
+  ]
+ },
+ "flow": {
+  "pattern": "grouping",
+  "additional_patterns": [
+   {
+    "pattern": "large_to_small",
+    "applies_to": "business to inventory: the business that pays for the platform, then the architecture inside it, then the parts of the order it runs"
+   },
+   {
+    "pattern": "chronological",
+    "applies_to": "monolith, pods, checkout and ai: each section's evidence in date order"
+   }
+  ],
+  "rationale": "Sections are grouped by subject, each with its own dated evidence, because the reader's question is what the record supports and the age of the evidence differs by subject. 'How to Read This Case' comes first because every later claim is marked by its rules. The business comes before the architecture because it explains the priorities (checkout and payment protected, every change shipped to everyone) the later sections rely on. The monolith precedes the pods because the pods split the data under the one codebase. The parts of the order follow in the order's steps (pages, checkout, payment, stock), then the contract that every app and integration works under, which needs those parts named; peak days follow the rate limits they stress, and the agent surface comes last of the evidence because its argument for adapters needs the cadence the checkout and contract sections have already shown. 'What Transfers' needs all of the evidence, and 'Where the Evidence Stops' bounds it before the take-away. Putting the transfer table first would assert lessons before their evidence; putting the contract before checkout would leave the withdrawn extension points without their timeline."
+ },
+ "introduction": {
+  "hook": {
+   "type": "intriguing_example",
+   "content": "A merchant that rents a hosted shop platform needs to know which work the platform takes on and which work its own team will still operate; Shopify is the kind of platform Kestrel & Pine rents, and the useful question is what the vendor's choices make easier or harder for the merchant's integrations and operations."
+  },
+  "bridge": {
+   "from_reader_world": "The Part XI introduction told the reader to begin with the platform for merchants, the kind Kestrel & Pine rents, read for modularity, tenant isolation, checkout extensions and integration contracts.",
+   "to_topic": "Shopify's dated record, from its 10-K to its agent surface, read for which work the landlord takes on and which practices a renting merchant adopts."
+  },
+  "thesis_statement": {
+   "text": "Shopify's dated record shows one codebase, deployed as one unit and split by shop into isolated database pods, serving millions of shops for a vendor whose revenue moves with those shops' sales and which changes the platform under every merchant on published dates, agent interface included. A renting merchant should plan for those dates (pin connectors to dated API versions, reconcile webhook-fed flows, track extension-point sunsets) and not copy pods, shard moves or edge rendering.",
+   "placement": "KEY POINTS callout and paragraph p04"
+  },
+  "roadmap": {
+   "placement": "Paragraph p05",
+   "promises": [
+    {
+     "promise": "Say how the evidence is read.",
+     "kept_in": [
+      "method"
+     ]
+    },
+    {
+     "promise": "Follow the money through the business.",
+     "kept_in": [
+      "business"
+     ]
+    },
+    {
+     "promise": "The architecture: the monolith that stayed and the shop as the unit of isolation.",
+     "kept_in": [
+      "monolith",
+      "pods"
+     ]
+    },
+    {
+     "promise": "The parts of the order the platform runs: storefront, checkout, payment, inventory states.",
+     "kept_in": [
+      "storefront",
+      "checkout",
+      "payments",
+      "inventory"
+     ]
+    },
+    {
+     "promise": "The contract apps work under.",
+     "kept_in": [
+      "ecosystem"
+     ]
+    },
+    {
+     "promise": "Peak days and the agent surface.",
+     "kept_in": [
+      "peak",
+      "ai"
+     ]
+    },
+    {
+     "promise": "What transfers, including what Kestrel & Pine takes, and where the evidence stops.",
+     "kept_in": [
+      "transfers",
+      "evidence"
+     ]
+    }
+   ]
+  },
+  "paragraphs": [
+   {
+    "id": "p01",
+    "controlling_idea": "A merchant that rents a hosted shop platform needs to know which work the platform takes on and which stays its own; Shopify is the kind of platform Kestrel & Pine rents, and for such a merchant the vendor is in effect a landlord, so the useful question is what the vendor's choices make easier or harder for the merchant.",
+    "function": "context",
+    "organization": "illustration",
+    "evidence": [
+     {
+      "kind": "example",
+      "what": "Shopify as an instance of the hosted, shared platform type the book's fictional merchant rents.",
+      "shows": "Ties the case to the reader's own position: a tenant of a platform like this, not its builder."
+     }
+    ]
+   },
+   {
+    "id": "p02",
+    "controlling_idea": "The evidence comes in two kinds and ages: business figures from the FY2025 annual filing and the quarter to September 2026, and architecture accounts from 2018 (pods), 2019 (components), 2021 (shard balancing) and a 2024 retrospective, which describe decisions made under earlier constraints, not today's design, so each is dated.",
+    "function": "context",
+    "evidence": [
+     {
+      "kind": "fact",
+      "what": "FY2025 10-K and the Q3 2026 filings; engineering posts of 2018, 2019, 2021 and February 2024.",
+      "source": "Shopify filings 2026; Shopify Engineering 2018-2024",
+      "shows": "The reader can see that the financial evidence is current and the architecture evidence is years old."
+     }
+    ],
+    "transition_in": {
+     "relationship": "elaboration",
+     "carries_over": "Shopify's published accounts and the question of what they mean for the merchant.",
+     "introduces": "What those accounts are, how old each is, and why the chapter dates them.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p03",
+    "controlling_idea": "In the order's journey a jacket purchase needs pages built from product records, checkout, payment, stock and messages to the warehouse; Shopify documents a counterpart for each, and the chapters that explain those concepts are linked rather than re-taught.",
+    "function": "context",
+    "evidence": [
+     {
+      "kind": "example",
+      "what": "The jacket order's steps and the linked chapters (inventory-and-availability, storefront-architecture, cart-and-checkout, commerce-payments, api-contracts-and-versioning, extensibility-and-app-ecosystems).",
+      "shows": "Places the case in the thirteen steps the reader already knows."
+     }
+    ],
+    "transition_in": {
+     "relationship": "place",
+     "carries_over": "The dated evidence the chapter will use.",
+     "introduces": "Where in the order's journey that evidence applies.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p04",
+    "controlling_idea": "The chapter's claim: Shopify's dated record shows one codebase, deployed as one unit and split by shop into isolated database groups called pods, serving millions of shops for a vendor whose revenue moves with those shops' sales and which changes the platform under every merchant on dates it publishes, its agent interface included; a renting merchant should plan for those dates (pin connectors to dated API versions, reconcile webhook-fed flows, track extension-point sunsets) and not copy pods, shard moves or edge rendering.",
+    "function": "claim",
+    "transition_in": {
+     "relationship": "cause_effect",
+     "carries_over": "The counterparts Shopify documents for each step of the order.",
+     "introduces": "What the record as a whole shows and what a renting merchant should do about it.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p05",
+    "controlling_idea": "The roadmap: after a note on reading the evidence, the chapter covers the business, the architecture (the monolith that stayed, the shop as the unit of isolation), the parts of the order the platform runs (storefront, checkout, payment, inventory states), the contract apps work under, peak days and the agent surface, and ends with what transfers, including what Kestrel & Pine takes, and where the evidence stops; its evidence is Shopify's filings, engineering posts, documentation and changelog.",
+    "function": "transition",
+    "transition_in": {
+     "relationship": "sequence",
+     "carries_over": "The chapter's claim.",
+     "introduces": "The order in which the chapter tests it and the kind of evidence it uses.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   }
+  ]
+ },
+ "sections": [
+  {
+   "id": "method",
+   "heading": "How to Read This Case",
+   "controlling_idea": "Company claims are marked documented, widely reported or inferred, older evidence keeps its age, and the research stops at 7 November 2026 with named gaps.",
+   "function": "context",
+   "advances_thesis": {
+    "supports": [
+     "S6"
+    ],
+    "how": "Sets the rules by which every later claim about Shopify is read and bounded."
+   },
+   "transition_in": {
+    "relationship": "sequence",
+    "carries_over": "The roadmap's first step.",
+    "introduces": "The rules for reading the evidence.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p06",
+     "controlling_idea": "Every company claim is marked as documented, widely reported through secondary sources, or an explicitly labeled inference, and older architecture evidence keeps its age because it may describe a replaced system.",
+     "function": "definition"
+    },
+    {
+     "id": "p07",
+     "controlling_idea": "The research stops at 7 November 2026, and the record has seven gaps, all listed in the last section.",
+     "function": "context",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "The research cut-off and the list of unverified areas.",
+       "shows": "Tells the reader in advance where the record will stop, which the last section lists in full."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The three kinds of claim and the age of evidence.",
+      "introduces": "The cut-off date and where the gaps are listed.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "business",
+   "heading": "The Business: Where the Money Comes From",
+   "controlling_idea": "Read with Shopify's own definitions, three quarters of its revenue moves with what merchants sell, two thirds of which is paid through Shopify Payments, and one multi-tenant, single-branch platform carries it all.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S1"
+    ],
+    "how": "Establishes the business shape that explains why checkout is protected and why every change reaches every merchant."
+   },
+   "flow": {
+    "pattern": "assertion_evidence_reasoning",
+    "rationale": "Definitions and the figures first, then what the revenue lines mean with the labeled inference, then the 10-K's technology statement, which the later sections rely on for 'multi-tenant' and 'single branch'."
+   },
+   "transition_in": {
+    "relationship": "sequence",
+    "carries_over": "How claims are read and dated.",
+    "introduces": "The first subject: where Shopify's money comes from.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p08",
+     "controlling_idea": "Shopify's financial measures must be read with its own definitions (GMV counts facilitated orders net of refunds and is not revenue; a merchant is a unique paying shop; MRR is the subscription run-rate), and on those definitions the FY2025 and Q3 2026 figures show GMV, revenue, the subscription and merchant lines, Payments penetration, MRR, merchants, apps and employees.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "FY2025, FY2024 and Q3 2026 figures: GMV $378.4 billion (+29%), revenue $11.56 billion (+30%), subscription solutions $2.8 billion (24%), merchant solutions $8.8 billion (76%), Payments penetration 65.6%, MRR $205 million, 'millions' of merchants, 'more than 21,000' apps, about 7,600 employees; Q3 2026 GMV $119.1 billion, revenue $3.74 billion, penetration 68%.",
+       "source": "Form 10-K FY2025 (filed 11 February 2026); Form 8-K and 10-Q Q3 2026 (3 November 2026)",
+       "shows": "The scale and mix of the business on Shopify's own definitions."
+      }
+     ]
+    },
+    {
+     "id": "p09",
+     "controlling_idea": "Three quarters of revenue is merchant solutions that the 10-K says are correlated with GMV, two thirds of GMV is paid through Shopify Payments, small merchants dominate the plan count while Plus generates most GMV, and Payments rests on two suppliers; read together, this makes Shopify a payments-and-platform business whose checkout and payment flow are its most protected paths.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'directionally correlated with the level of GMV'; the plan-mix sentences; 'we currently rely on two suppliers', Stripe and PayPal, on twelve-month agreements.",
+       "source": "Form 10-K FY2025",
+       "shows": "The revenue moves with sales and depends on the payment flow."
+      },
+      {
+       "kind": "reasoning",
+       "what": "> **INFERENCE, NOT DOCUMENTED:** callout (the author's labeled reasoning): a payments-and-platform business whose subscription is the entry ticket; checkout and payment protected as the revenue paths; one single-branch codebase serving small shops that need defaults and large ones that need extension points, hence Plus-only advanced checkout customization.",
+       "shows": "Turns the figures into the priority the later checkout and payment sections rely on."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The revenue lines in the table.",
+      "introduces": "What each line contains and what the mix means.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p10",
+     "controlling_idea": "The 10-K describes the technology as one multi-tenant cloud system built largely on Ruby on Rails and run as 'single branch' software on third-party cloud services, so many merchants share one running system and every change ships to all of them.",
+     "function": "definition",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'a multi-tenant cloud-based system'; Rails as 'the technology that powers much of the Shopify platform'; ''single branch' software, which means that all of our merchants use the latest version of Shopify'; Google Cloud Platform.",
+       "source": "Form 10-K FY2025",
+       "shows": "Shopify's own statement of the platform shape later sections build on."
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "The business shape.",
+      "introduces": "The 10-K's one-paragraph description of the technology that carries it.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "monolith",
+   "heading": "The Monolith That Stayed: 2019 to 2024",
+   "controlling_idea": "Shopify kept one deployment unit from 2019 to 2024; its own posts show domain boundaries that did not hold, durable value from ownership and one gate, and a single carve-out made for latency.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S2"
+    ],
+    "how": "Gives the dated record behind 'Shopify kept a monolith' and corrects the slogan 'Shopify modularized its monolith'."
+   },
+   "flow": {
+    "pattern": "chronological",
+    "rationale": "The posts in date order (2019, 2020, 2020, 2024) so the reader sees the plan, its state, the tool, and the retrospective's admissions in the order Shopify learned them; the labeled reading of the whole follows the last admission, and the Storefront Renderer, the one exception to 'one deployment unit', comes last."
+   },
+   "transition_in": {
+    "relationship": "cause_effect",
+    "carries_over": "One single-branch platform serving millions of shops.",
+    "introduces": "How Shopify organized the codebase behind it.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p11",
+     "controlling_idea": "A monolith is one deployable application holding all the shop's logic and a modular monolith keeps one deployment but divides the code into named modules with enforced boundaries; Shopify's account of choosing the second over services runs from 2019 to 2024 and is more candid than the slogan.",
+     "function": "definition"
+    },
+    {
+     "id": "p12",
+     "controlling_idea": "In February 2019 Shopify rejected microservices for their costs and instead labeled about 6,000 classes by business domain, aiming at components with clean interfaces and exclusive data ownership; the isolation let it replace a legacy tax engine (evidence age: seven years).",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'one of the largest Ruby on Rails codebases in existence'; 'the downsides of the monolith were outweighing the benefits'; the listed costs of microservices; 'a clean, dedicated interface', 'exclusive ownership of its associated data'.",
+       "source": "Shopify Engineering, Deconstructing the Monolith, 2019",
+       "shows": "The plan as Shopify stated it, and its first payoff."
+      }
+     ],
+     "transition_in": {
+      "relationship": "time",
+      "carries_over": "The two kinds of monolith.",
+      "introduces": "Shopify's 2019 choice and plan.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p13",
+     "controlling_idea": "By September 2020 the core had 2.8 million lines and 37 components, each depending on over half of the others, but ownership had paid off: every file had a stewardship team, exceptions went to the owning component and upgrades were spread across teams (evidence age: six years).",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "statistic",
+       "what": "'over 2.8 million lines of Ruby code', 37 components, a 400-member Architecture Guild; 'every component depended on over half of all the other components'; 'every file has a stewardship team assigned'.",
+       "source": "Shopify Engineering, Under Deconstruction, 2020",
+       "shows": "The boundaries had not held, while ownership had."
+      }
+     ],
+     "transition_in": {
+      "relationship": "time",
+      "carries_over": "The 2019 plan.",
+      "introduces": "Its state a year and a half later.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p14",
+     "controlling_idea": "Packwerk, open-sourced the same month, is the tool that survived: it checks references between packages and records existing violations so teams stop new ones without fixing everything at once.",
+     "function": "description",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'stop new ones without fixing everything at once'.",
+       "source": "Shopify Engineering, Packwerk, 2020",
+       "shows": "The tool's purpose is a gate on new violations, not a clean-up."
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "The 2020 state of the components.",
+      "introduces": "The tool released alongside it.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p15",
+     "controlling_idea": "The February 2024 retrospective, the latest first-party architecture account, records the tool's limits (privacy checks removed in version 3.0, common ways of loading code invisible to it, many months to isolate one base package, problems found faster than teams could fix them) and says Shopify kept it only because it holds the line against new dependencies at the base layer.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'were removed from Packwerk with the release of version 3.0'; 'untracked and invisible to the tool'; 'took many months of hard work'; 'vastly outpaced'; 'we have discussed removing Packwerk from our monolith'; 'has provided value in holding the line against new dependencies at the base layer'.",
+       "source": "Shopify Engineering, A Packwerk Retrospective, 2024",
+       "shows": "Enforced boundaries cost more than they returned; the one durable use of the tool is the gate."
+      }
+     ],
+     "transition_in": {
+      "relationship": "time",
+      "carries_over": "Packwerk as released in 2020.",
+      "introduces": "What Shopify said about it four years later, and why it stayed.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p16",
+     "controlling_idea": "The retrospective's central admission is that domains and their boundaries do not reflect how Shopify's code functions, so components were demoted to organizational groupings; the honest reading of 2019 to 2024 is that file ownership and one cheap gate paid off while enforced domain boundaries did not, inside one deployment unit throughout.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'domains and the boundaries between them do not reflect the way Shopify's code actually functions in practice'; 'top-level organizational tools for grouping one or more packages'.",
+       "source": "Shopify Engineering, A Packwerk Retrospective, 2024",
+       "shows": "The record itself refutes the slogan."
+      },
+      {
+       "kind": "reasoning",
+       "what": "> **INFERENCE, NOT DOCUMENTED:** callout (the author's labeled reasoning): not 'Shopify modularized its monolith' but seven years of learning that boundaries drawn on an organization chart do not match runtime coupling; commerce-architecture-styles draws the general lesson.",
+       "shows": "States what the case adds to the book's architecture-styles chapter."
+      }
+     ],
+     "transition_in": {
+      "relationship": "emphasis",
+      "carries_over": "The retrospective's account of the tool and why it was kept.",
+      "introduces": "Its admission about the domains themselves, and the reading of the whole period.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p17",
+     "controlling_idea": "The one documented carve-out is the Storefront Renderer, rewritten from 2019 because storefront code has stricter performance needs, reading from replicas behind three cache layers and rolled out with a verifier comparing old and new responses and circuit breakers falling back to the old path: a split made for latency, not team autonomy (evidence age: six years).",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "Rewrite begun January 2019; 'always reads from dedicated read replicas'; three cache layers; '4x to 6x faster' (August 2020); verifier on live traffic; circuit breakers.",
+       "source": "Shopify Engineering, 2020",
+       "shows": "The one split out of the monolith was made on measured latency, behind a verifier with fallback."
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "One deployment unit kept throughout.",
+      "introduces": "The one documented exception and why it was made.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "pods",
+   "heading": "The Shop as the Unit of Isolation: Pods and Moves",
+   "controlling_idea": "Shopify shards by shop and isolates shops in pods that are moved whole; for a merchant this is not machinery to copy but a question to ask every vendor.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S3"
+    ],
+    "how": "Documents the shop as the unit of isolation and turns it into the merchant's question to vendors."
+   },
+   "flow": {
+    "pattern": "chronological",
+    "rationale": "2018 pods, 2021 moves, then the later datastore claims that are often misquoted with the labeled reading, then what the merchant does with it."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "One codebase and one deployment unit.",
+    "introduces": "How the data under that codebase is split and isolated.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p18",
+     "controlling_idea": "Shopify sharded by shop in 2015 when the database could no longer grow on one server, and because one failed shard could then take down the platform it reorganized in 2016 into pods, sets of shops on fully isolated datastores, served by shared workers that talk to one pod at a time (evidence age: eight years).",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'could no longer be scaled by buying a bigger server'; 'A pod consists of a set of shops that live on a fully isolated set of datastores'; 'all shared resources can only ever communicate to a single pod at a time'; a Pod Mover 'in a minute'.",
+       "source": "Shopify Engineering, A Pods Architecture, 2018",
+       "shows": "Isolation by shop was Shopify's answer to shared failure."
+      }
+     ]
+    },
+    {
+     "id": "p19",
+     "controlling_idea": "The 2021 shard-balancing post shows the mechanism that persisted: shop_id as the sharding key, a routing table from domains to pods, a three-phase move (Ghostferry, a Shopify copying tool, copies rows while the shop stays live) with downtime only at a brief cutover, and placement by measured load and simulation that narrowed the spread between shards from almost four times to about two (evidence age: five years).",
+     "function": "process",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'we can attach a shop_id to all shop-owned tables and have it serve as a sharding key'; Ghostferry copy and replay, cutover lock, routing update; 'The only opportunity for downtime is during the cutover'; 'almost four times' to 'closer to two times'.",
+       "source": "Shopify Engineering, Shard Balancing, 2021",
+       "shows": "The shop is moved as a whole, with measured placement."
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 1: the shop as sharding key and the pod as unit of isolation (routing, containment, moves).",
+       "shows": "Shows the three ideas of the section in one picture."
+      }
+     ],
+     "transition_in": {
+      "relationship": "time",
+      "carries_over": "Pods as designed in 2016-2018.",
+      "introduces": "How a shop is moved between them, as documented in 2021.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p20",
+     "controlling_idea": "Two later datastore claims are often misread as about the core platform: the 2024 Vitess post concerns only the Shop app, and a vendor's 2026 blog about Shopify's database is unconfirmed by Shopify; read with the 2019 and 2021 posts, the pod remains the documented unit of isolation, coexisting with Google Cloud to at least 2021, ",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'Shop app has different properties than the rest of Shopify' (January 2024); a database vendor's February 2026 blog recapping a talk.",
+       "source": "Shopify Engineering 2024; vendor blog 2026",
+       "shows": "Separates what Shopify documents from what is attributed to it."
+      },
+      {
+       "kind": "reasoning",
+       "what": "> **INFERENCE, NOT DOCUMENTED:** callout (the author's labeled reasoning): the pod as unit of isolation, failure and recovery; whether the topology survived the move to Google Cloud is undocumented; a 2019 backup post and the 2021 post both describe shards on Google Cloud.",
+       "shows": "Bounds the claim to what the record supports."
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "The documented 2018 and 2021 mechanism.",
+      "introduces": "Later claims that go beyond the documents.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p21",
+     "controlling_idea": "For a merchant none of this is machinery to copy; it is a question to ask any SaaS vendor from the Growing stage: what is your unit of isolation, and can you move or restore my tenant alone?",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The shop as Shopify's unit of isolation.",
+      "introduces": "What a merchant does with that fact.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "storefront",
+   "heading": "Storefront Delivery",
+   "controlling_idea": "Shopify offers three rendering models over one shared cart, checkout and Storefront API, and it polices performance at submission, which for an app-heavy themed store makes the app gate the relevant fact.",
+   "function": "description",
+   "advances_thesis": {
+    "supports": [
+     "S4"
+    ],
+    "how": "Shows the platform setting the terms (shared checkout, performance gates on themes and apps) under which a merchant builds its pages."
+   },
+   "flow": {
+    "pattern": "large_to_small",
+    "rationale": "What a rendering model decides, the three models, then the specific performance gates and what they imply."
+   },
+   "transition_in": {
+    "relationship": "sequence",
+    "carries_over": "The architecture inside the platform.",
+    "introduces": "The first part of the order the merchant sees: the pages.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p22",
+     "controlling_idea": "A storefront's rendering model decides which software turns product and cart data into pages and who maintains that software.",
+     "function": "definition"
+    },
+    {
+     "id": "p23",
+     "controlling_idea": "Shopify offers three rendering models side by side: themes in its template language Liquid rendered by the Storefront Renderer (modular since Online Store 2.0 in 2021), Hydrogen hosted on Oxygen as its headless toolkit, and any framework against the GraphQL-only Storefront API with three access modes and limits aimed at bots, not buyers.",
+     "function": "description",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Online Store 2.0 'fully modular' (Unite, June 2021); Hydrogen 'our modern React-based framework' (2022) and 'Shopify's headless toolkit' (2026); the Storefront API 'is available only in GraphQL'; 'requests from real buyers aren't subject to a fixed request-per-minute limit'; bots limited 'most strictly when unsigned'.",
+       "source": "Shopify Unite 2021; shopify.dev, accessed 2026-11",
+       "shows": "The three models and what each supplies."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "What a rendering model decides.",
+      "introduces": "The three models Shopify offers.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p24",
+     "controlling_idea": "The performance gates are specific: a minimum Lighthouse score of 60 for Theme Store themes, at most ten points lost per public app, and an admin report that names theme code and apps as causes of slowness; under all three models the cart, checkout and Storefront API are the shared substrate, and the app gate is the fact that matters for Kestrel & Pine's themed storefront with 41 apps.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'a minimum average Lighthouse performance score of 60'; 'shouldn't reduce Lighthouse performance scores by more than 10 points'; 'some features can slow down your site'.",
+       "source": "shopify.dev and Shopify Help Center, accessed 2026-11",
+       "shows": "The platform polices performance at submission."
+      },
+      {
+       "kind": "reasoning",
+       "what": "> **INFERENCE, NOT DOCUMENTED:** callout (the author's labeled reasoning): a headless storefront still hands off to Shopify's checkout; apps are the usual cause of slow stores and are policed at submission because they cannot be policed after installation; storefront-architecture treats the headless decision.",
+       "shows": "Turns the gates into the relevant fact for an app-heavy merchant."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The three rendering models.",
+      "introduces": "The performance rules that apply across them.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "checkout",
+   "heading": "Checkout: Freedom Withdrawn on a Schedule",
+   "controlling_idea": "From 2021 to 2026 Shopify withdrew free-form checkout customization on published dates and replaced it with sandboxed extension points under hard limits, trading merchant freedom for an upgrade-safe checkout it can change under everyone at once.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S4",
+     "S1"
+    ],
+    "how": "The dated reference case for 'the platform will withdraw an extension point'; checkout is where single branch and the revenue model meet."
+   },
+   "flow": {
+    "pattern": "chronological",
+    "rationale": "The timeline first, then what replaced the freedom with the labeled reading of the arc."
+   },
+   "transition_in": {
+    "relationship": "sequence",
+    "carries_over": "The pages, which hand off to the shared checkout.",
+    "introduces": "The checkout itself and how its rules changed.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p25",
+     "controlling_idea": "Checkout is where single branch and the revenue model meet, and its history from June 2021 to August 2026 is a timeline of freedoms withdrawn on published dates, from checkout.liquid to Shopify Scripts and script tags.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Unite 29 June 2021; Winter '23 (9 February 2023); the 13 February 2023 changelog; checkout.liquid stopped 13 August 2024 and 28 August 2025; Scripts editing ends 15 April 2026 and execution 30 June 2026; non-Plus script tags 26 August 2026.",
+       "source": "Shopify changelog (2023, 2026), Liquid reference and Help Center (accessed November 2026), Editions pages (2023)",
+       "shows": "Each withdrawal was announced and dated."
+      }
+     ]
+    },
+    {
+     "id": "p26",
+     "controlling_idea": "What replaced the freedom is checkout extensibility: fixed slots for app interface extensions, a branding API, web pixels, and Shopify Functions, backend logic compiled to WebAssembly and invoked by the platform in checkout order under hard limits, with custom Functions and advanced customization only on Plus; read as a whole, the arc traded merchant freedom for an upgrade-safe, PCI-contained checkout Shopify can change under everyone at once, the reference case for planning for withdrawn extension points.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Functions 'allow developers to customize the backend logic of Shopify'; a 256 KiB module, 10 MiB of memory, about 11 million instructions for carts up to 200 lines; 'advanced checkout customization features are available only on the Shopify Plus plan'.",
+       "source": "shopify.dev Functions and Function APIs, accessed 2026-11",
+       "shows": "The replacement is bounded by design."
+      },
+      {
+       "kind": "reasoning",
+       "what": "> **INFERENCE, NOT DOCUMENTED:** callout (the author's labeled reasoning): free-form access withdrawn over three and a half years with dated deadlines, replaced by sandboxed points; the Forked Platform made impossible by design, the Pulled Rug done with notice.",
+       "shows": "Names the lesson for the merchant."
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 2: an open checkout workshop, then a sealed console with fixed plug-in slots.",
+       "shows": "Pictures the before and after of the arc."
+      }
+     ],
+     "transition_in": {
+      "relationship": "problem_solution",
+      "carries_over": "Free-form access withdrawn.",
+      "introduces": "What replaced it, and the reading of the whole arc.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "payments",
+   "heading": "Payments: Orchestration, Not a License",
+   "controlling_idea": "Shopify earns from payments without being a payment institution: it owns the checkout, the Shop Pay wallet and the merchant contract and resells licensed processing.",
+   "flow": {
+    "pattern": "large_to_small",
+    "rationale": "What orchestration is, then the terms that show who holds the license, then the wallet the buyer sees in front of it with the labeled reading; the wallet comes after the terms because it is 'included as part of Shopify Payments', and the reading needs both."
+   },
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S1"
+    ],
+    "how": "Explains how two thirds of GMV runs through Shopify Payments, with Shop Pay in front, while the 10-K names two suppliers."
+   },
+   "transition_in": {
+    "relationship": "sequence",
+    "carries_over": "The checkout and Shop Pay, included with Shopify Payments.",
+    "introduces": "The payment behind the checkout.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p27",
+     "controlling_idea": "Payment orchestration means the platform sends the checkout's payments through separate providers that move the money.",
+     "function": "definition"
+    },
+    {
+     "id": "p28",
+     "controlling_idea": "Shopify Payments is the clearest public example of a platform that earns from payments without being a payment institution: its European terms state that no Shopify entity is licensed as a bank or payment institution and name Stripe, PayPal and Adyen as processors.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'None of the Shopify entities listed above are licensed as a bank, payment institution, or money services business'; Shopify International Limited (Ireland); Stripe Payments Europe, PayPal (Europe), Adyen N.V. for the Netherlands, Belgium and Germany; 41 countries.",
+       "source": "Shopify Payments terms (Ireland), processor list, supported countries, accessed 2026-11",
+       "shows": "The license sits with the processors."
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "What payment orchestration is.",
+      "introduces": "Shopify Payments as the clearest public example.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p29",
+     "controlling_idea": "Shop Pay, the accelerated checkout included with Shopify Payments, is the wallet the buyer sees in front of that processing, with vendor conversion claims from an unpublished study and a documented 32% of orders over the 2025 Black Friday weekend; read together, Shopify owns the checkout, the wallet and the merchant contract and resells licensed processing, so whoever owns the checkout owns the payment revenue, licensed or not.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'an accelerated checkout option', 'included as part of Shopify Payments'; 'as much as 50% better conversion compared to guest checkout' (2023 study, unpublished); 32% of orders, BFCM 2025.",
+       "source": "Shopify, Shop Pay pages; BFCM 2025",
+       "shows": "Separates vendor claims from documented reach, and shows the wallet Shopify owns."
+      },
+      {
+       "kind": "reasoning",
+       "what": "> **INFERENCE, NOT DOCUMENTED:** callout (the author's labeled reasoning): orchestration over licensed processors explains the 10-K's two-supplier concentration risk; commerce-payments owns the mechanics.",
+       "shows": "States what the case adds: the business shape of payments."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The licensed processors behind Shopify Payments.",
+      "introduces": "The wallet the buyer sees in front of them, and the reading of the whole.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "inventory",
+   "heading": "Inventory States, Briefly",
+   "controlling_idea": "Shopify records stock per location in exclusive states, added in steps from 2023 to 2026, but holds no B2B allocation and computes no cross-location available-to-promise, which belongs beside the platform.",
+   "function": "description",
+   "advances_thesis": {
+    "supports": [
+     "S5"
+    ],
+    "how": "Marks where the platform's work ends and the merchant's begins, which is why W1 buys an availability service beside it."
+   },
+   "transition_in": {
+    "relationship": "sequence",
+    "carries_over": "Checkout and payment.",
+    "introduces": "The stock the order draws on.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p30",
+     "controlling_idea": "Shopify's inventory model holds stock per location in exclusive states (available, committed, reserved, damaged, safety stock, quality control, on hand as their sum, incoming apart), added in steps through 5 August 2026, but holds no per-customer B2B allocation and computes no cross-location available-to-promise, which is why Kestrel & Pine's W1 buys an availability service beside the platform.",
+     "function": "description",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "available 'the inventory that a merchant can sell'; committed 'set aside'; safety_stock 'to help guard against overselling'; on_hand 'the total number of units that are physically at a location'; states added February 2023, August 2023 and 5 August 2026.",
+       "source": "shopify.dev inventory pages and changelog, 2023-2026",
+       "shows": "The platform takes on stock states, not allocation or promise."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ecosystem",
+   "heading": "The Ecosystem: Apps, Scopes, Webhooks and Versions",
+   "controlling_idea": "Shopify's documentation states the contract every app and integration works under (scopes, webhooks that may be lost, duplicated or reordered, dated API versions and rate limits), and three merchant rules follow from it.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S4"
+    ],
+    "how": "Gives the documented contract behind pinning, idempotency, reconciliation and subscription checks."
+   },
+   "flow": {
+    "pattern": "grouping",
+    "rationale": "Why apps are part of the merchant's architecture, then the App Store's business and governance, then webhooks, then versions and rate limits with the three rules that follow; webhooks before versions because the first rule (reconcile) is the one the reader needs first."
+   },
+   "transition_in": {
+    "relationship": "sequence",
+    "carries_over": "The parts of the order the platform runs.",
+    "introduces": "The contract under which apps and integrations reach those parts.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p31",
+     "controlling_idea": "Third-party apps add behavior to the shared platform through APIs and notifications, so their permissions, delivery guarantees and upgrade obligations are part of the merchant's architecture.",
+     "function": "claim"
+    },
+    {
+     "id": "p32",
+     "controlling_idea": "The App Store is a business (over 21,000 apps, 0% revenue share on the first $1 million and 15% above) and a governance regime: OAuth before anything else, no apps on APIs deprecated within 90 days, three privacy compliance webhooks, and scopes the merchant approves at install.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'immediately authorize using OAuth before any other steps occur'; 'apps using APIs that will be deprecated within 90 days can't be submitted'; 'your app will be rejected'; 'which store data your app can read and write'; read_orders covering 'orders created within the last 60 days'.",
+       "source": "shopify.dev revenue share, app requirements, compliance and access scopes, accessed 2026-11",
+       "shows": "Access to the merchant's data is gated and scoped by the platform."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "Apps as part of the merchant's architecture.",
+      "introduces": "The App Store's business and governance.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p33",
+     "controlling_idea": "Webhooks are the integration contract, and Shopify's own words say delivery is not guaranteed or ordered, duplicates must be ignored by id, reconciliation jobs are expected, and a subscription is deleted after eight consecutive failures over four hours of retries.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'Webhook delivery isn't always guaranteed'; 'Shopify doesn't guarantee ordering within a topic...'; 'ignore duplicate deliveries using X-Shopify-Webhook-Id'; 'use reconciliation jobs...'; 'it retries 8 times over the next 4 hours'; 'after 8 consecutive failures, the subscription is automatically deleted'; HMAC signature; 13 billion webhooks in 2021.",
+       "source": "shopify.dev Webhooks and HTTPS delivery, accessed 2026-11; Shopify Engineering 2022",
+       "shows": "The baseline every integrator must assume."
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "Access to data through scopes.",
+      "introduces": "How data changes reach an app: webhooks.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p34",
+     "controlling_idea": "API versions are dated (a new one every three months, each supported at least twelve months, the REST Admin API legacy since October 2024) and rate limits are per app per store by plan; three rules follow: idempotent consumers with reconciliation (W5), a check that the subscription still exists, and rate limits treated as a tenancy budget on a peak day.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'Shopify releases a new API version every three months', 'supported for a minimum of 12 months', 'falls forward'; 'a legacy API as of October 1, 2024'; 100, 1,000 and 2,000 points a second; 'Shopify might temporarily reduce API rate limits to protect platform stability'.",
+       "source": "shopify.dev versioning and rate limits, accessed 2026-11",
+       "shows": "Change and capacity are dated and bounded."
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 3: the documented integration contract (scopes, rate limits, at-least-once unordered webhooks, reconciliation, dated versions).",
+       "shows": "Puts the whole contract in one view."
+      },
+      {
+       "kind": "reasoning",
+       "what": "> **INFERENCE, NOT DOCUMENTED:** callout (the author's labeled reasoning): idempotency and reconciliation are W5 in Shopify's own words; a connector down for five hours on a Friday night has no subscription on Saturday morning; a polling connector can starve another app.",
+       "shows": "Turns the contract into three merchant rules."
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "The webhook contract.",
+      "introduces": "Versions and rate limits, and the rules that follow from the whole contract.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "peak",
+   "heading": "Peak Days With Definitions",
+   "controlling_idea": "Shopify's Black Friday figures are useful only with their caveats, and its documented preparation, scaled down, gives a merchant a program for its own connectors, ERP and WMS.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S5"
+    ],
+    "how": "Separates the transferable peak practices from figures and machinery at Shopify's scale."
+   },
+   "transition_in": {
+    "relationship": "cause_effect",
+    "carries_over": "Rate limits as a peak-day constraint.",
+    "introduces": "Shopify's own peak days and how it prepares for them.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p35",
+     "controlling_idea": "Shopify's Black Friday-Cyber Monday figures for 2023 to 2025 are unaudited, not directly comparable across years and report no order count, and must be read with those caveats.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "BFCM 2023-2025: sales $9.3, $11.5 and $14.6 billion; peak sales per minute $4.2, $4.6 and $5.1 million; peak load; database queries and writes; Shop Pay; merchants with their best day.",
+       "source": "Shopify announcements of 28 November 2023, 2 December 2024 and 2 December 2025",
+       "shows": "The scale of the platform's peak and how the definitions change."
+      }
+     ]
+    },
+    {
+     "id": "p36",
+     "controlling_idea": "Shopify's preparation is documented for 2023 (full-scale tests with part of the traffic bypassing the CDN and an abort switch) and 2025 (capacity planning from March, game days on the money paths, five scale tests that exposed errors and rate-limit paths), with the checkout queue documented only in 2018; scaled down, the transferable practices are testing at forecast load with caches bypassed, rehearsing failure on the money paths and decoupling payment from order creation.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'full-scale approach'; 'bypass the CDN for a portion of the traffic'; 'started in March with capacity planning'; 'critical journeys'; '146 million requests per minute and 80,000+ checkouts per minute'; 'core operations threw errors and checkout queues backed up'; 2018: 'processing payments at checkout happens separately from creating orders'.",
+       "source": "Shopify Engineering 2023, 2025; Shopify Changelog 2018",
+       "shows": "The preparation program and its findings, dated."
+      },
+      {
+       "kind": "reasoning",
+       "what": "> **INFERENCE, NOT DOCUMENTED:** callout (the author's labeled reasoning): edge requests about four times app-server requests; a platform peak-to-average ratio of about two against a single merchant's 41-times spike; the practices scaled down to connectors, ERP and WMS.",
+       "shows": "Explains why the platform's peak is not the merchant's and what transfers."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The peak figures and their caveats.",
+      "introduces": "How Shopify prepares for them and what that means for a merchant.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ai",
+   "heading": "AI and the Agent Surface: Rebuilt Within a Year",
+   "controlling_idea": "Shopify's admin assistant and its agent-facing interfaces are different uses; the agent interface was replaced within a year, and no EU buyer market is in scope.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S4"
+    ],
+    "how": "The agent interface is the newest example of the platform changing under every merchant on published dates."
+   },
+   "flow": {
+    "pattern": "chronological",
+    "rationale": "Sidekick (2023-2026), then the agent interface in date order, then its geography, which is what a European merchant needs and closes the section."
+   },
+   "transition_in": {
+    "relationship": "sequence",
+    "carries_over": "The integration contract and peak days.",
+    "introduces": "The newest surface on the platform: AI.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p37",
+     "controlling_idea": "Shopify's AI for merchants and its interfaces for outside agents are different uses with different permissions; Sidekick, the admin assistant announced in 2023, runs reports and proposes changes with the merchant's approval, and its general-availability date and growth figure are unverified or vendor claims.",
+     "function": "description",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "Sidekick announced July 2023; 21 May 2025 capabilities 'with the merchant's approval'; help page (accessed November 2026); 4.2-times growth in daily sessions (Fall 2026 edition, vendor figure).",
+       "source": "Shopify Summer '25, Sidekick help, Fall '26 Edition",
+       "shows": "The assistant proposes; the merchant approves."
+      }
+     ]
+    },
+    {
+     "id": "p38",
+     "controlling_idea": "The agent-facing side is the clearest dated example of protocol churn: the Storefront MCP server of May 2025, Agentic Storefronts for every merchant in December 2025, the Universal Commerce Protocol and Agentic plan in January 2026, and by November 2026 the MCP catalog and cart tools removed in favor of UCP endpoints with agent profiles and trust tiers.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'available to every merchant' (10 December 2025); 'no monthly fee', 'from 1.9% + €0.25' (11 January 2026); 'were removed', UCP 'now provides these capabilities'; 'requires authenticated or signed requests'; 'higher trust tiers unlock broader access, including direct checkout completion'; caching at most fifteen minutes; 'endpoint URLs might change'.",
+       "source": "shopify.dev agents, Catalog, Storefront MCP; Shopify news 2025-2026",
+       "shows": "The interface changed within a year, on dates."
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "The admin assistant, which proposes.",
+      "introduces": "The interfaces for outside agents, which can buy.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p39",
+     "controlling_idea": "The geography is the fact a European merchant needs: the ChatGPT channel requires selling to US customers, Google's direct checkout serves only the US, Canada and Australia, and no EU buyer market is in scope on any page read at the cut-off, which makes a platform that replaced its agent interface within a year the strongest argument for adapters over one internal API.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'your store must sell to customers in the United States'; OpenAI's March 2026 retreat from in-chat checkout; Google channel limits.",
+       "source": "Shopify Help Center agentic storefronts, accessed 2026-11; Modern Retail 2026",
+       "shows": "The agent channels exclude the EU at the cut-off."
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The interface's churn.",
+      "introduces": "Where it is available and what that means for a European merchant.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "transfers",
+   "heading": "What Transfers to a Merchant, and What Does Not",
+   "controlling_idea": "Read with their evidence, Shopify's practices split into disciplines a merchant adopts scaled down and machinery only Shopify needs; Kestrel & Pine takes four lessons already in Waypoint and none of the architecture.",
+   "function": "synthesis",
+   "advances_thesis": {
+    "supports": [
+     "S5"
+    ],
+    "how": "Draws the case's lessons for a renting merchant and ties them to Waypoint."
+   },
+   "transition_in": {
+    "relationship": "conclusion_summary",
+    "carries_over": "The dated record across business, architecture, checkout, the contract, peak and AI.",
+    "introduces": "Which of it transfers to a merchant.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p40",
+     "controlling_idea": "The author's synthesis, row by row with its dated evidence, is that the disciplines transfer to a merchant: the shop as unit of isolation as a question to vendors, gates on new boundary violations, carving hot paths behind a verifier, dated versions, reconciled webhooks, sandboxed extension points, rate-limit budgets and scaled-down load tests.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Nine rows: Shopify practice, evidence, transfers or not, and how.",
+       "shows": "Each lesson carries its date and source."
+      }
+     ]
+    },
+    {
+     "id": "p41",
+     "controlling_idea": "Only Shopify needs the rest (pods balanced by simulation, a worldwide edge renderer, an observability platform at 100 million events a second, a readiness program from March); copying that is the Giant's Boots, while copying the disciplines and reading the vendor's changelog gives the useful part.",
+     "function": "claim",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "An observability platform ingesting 100 million events a second at peak (a vendor's account of a 2026 talk).",
+       "source": "ClickHouse vendor write-up, 2026",
+       "shows": "The machinery is sized to millions of shops."
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "The practices that transfer.",
+      "introduces": "The machinery that does not.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p42",
+     "controlling_idea": "Kestrel & Pine takes four lessons, each already in Waypoint: idempotent, reconciled integrations (W5); connectors pinned to dated API versions after the Deprecated Endpoint's two days of stale stock on bol (W5); nothing customized in checkout that the platform could withdraw (the app governance rule); agent readiness through APIs and no channel-specific build (W8); the architecture itself it rents, which is W4, stay and surround.",
+     "function": "recommendation",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "W4, W5, W8, the Deprecated Endpoint (two days of stale stock on bol), the app governance rule.",
+       "source": "Kestrel & Pine scenario ledger (Waypoint; incident 10; extensibility-and-app-ecosystems line)",
+       "shows": "The lessons are decisions already made; none changes the architecture."
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 4: a landlord with a calendar of published dates and a small shop running inventory, pin, test and reconcile.",
+       "shows": "Pictures the merchant's routine against the landlord's cadence."
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "What transfers in general.",
+      "introduces": "What the book's merchant takes.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "evidence",
+   "heading": "Where the Evidence Stops",
+   "controlling_idea": "The public record does not establish today's topology, the checkout queue, merchant and app counts beyond Shopify's words, Shop Pay's claims, Sidekick's and the agent channels' terms, the new database, or Scripts' earlier deadline.",
+   "function": "context",
+   "advances_thesis": {
+    "supports": [
+     "S6"
+    ],
+    "how": "Bounds every lesson by what the dated record cannot show."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "What the merchant takes from the record.",
+    "introduces": "What the record does not establish.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p43",
+     "form": "list",
+     "controlling_idea": "Seven areas lie beyond the public evidence: today's topology, the checkout queue, merchant and app counts, Shop Pay's figures, Sidekick's and the agent channels' terms, the new database, and the earlier Scripts deadline.",
+     "function": "context",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "The seven gaps, each with what is and is not available.",
+       "shows": "The reader knows where the chapter's claims end."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "conclusion": {
+  "heading": "What to Take Away",
+  "synthesis": "The business, the architecture, the checkout timeline, the integration contract and the agent surface give one answer to the opening question: the landlord takes on the machinery (one codebase, pods, the renderer, the checkout and its peak) and changes the platform under everyone on dates it publishes, while the merchant keeps the joins (every connector pinned, every webhook-fed flow reconciled, every extension point's sunset tracked).",
+  "so_what": "A merchant on any hosted platform budgets for the vendor's change cadence as maintenance work with owners and dates, and asks its vendors for their unit of isolation and their contract terms, instead of copying the vendor's machinery or assuming the vendor's scale makes its integrations reliable.",
+  "callback": {
+   "to": "The opening question: which work the platform takes on and which work the merchant's team still operates.",
+   "how": "p44 answers it with the record the chapter has read: the machinery is the landlord's, the joins and the calendar are the merchant's."
+  },
+  "takeaway": {
+   "type": "course_of_action",
+   "content": "Inventory every app, connector and extension point with its API version, support end and owner; reconcile every webhook-fed flow and check that its subscription still exists; keep custom behavior out of the checkout; ask each vendor for its unit of isolation."
+  },
+  "hand_off": {
+   "to": "case-amazon",
+   "relationship": "contrast",
+   "carries_over": "Shopify as the landlord: a platform company that rents shops to merchants and changes the platform under them on published dates.",
+   "introduces": "Amazon, a retailer that built its own shop, opened its operations to other sellers and now sells its machinery to other shops and admits agents on its own terms."
+  },
+  "transition_in": {
+   "relationship": "conclusion_summary",
+   "carries_over": "Where the evidence stops.",
+   "introduces": "What the chapter establishes, inside those limits.",
+   "form": "sentence",
+   "placement": "start_of_this"
+  },
+  "paragraphs": [
+   {
+    "id": "p44",
+    "controlling_idea": "The record answers the opening question: the landlord runs the machinery and changes it under every merchant on dates it publishes, so the merchant's work is at the joins, every connector pinned, every webhook-fed flow reconciled and every extension point's sunset tracked.",
+    "function": "synthesis",
+    "evidence": [
+     {
+      "kind": "reasoning",
+      "what": "The opening question, the sections' findings, the thesis.",
+      "shows": "The chapter's answer applies to the question it opened with."
+     }
+    ]
+   },
+   {
+    "id": "p45",
+    "controlling_idea": "Established: revenue three quarters merchant solutions with two thirds of GMV through orchestrated Payments; one Rails codebase, multi-tenant and single-branch, sharded by shop into pods, with Packwerk kept as a gate; an explicit integration contract; extension points withdrawn on published dates.",
+    "function": "synthesis",
+    "transition_in": {
+     "relationship": "conclusion_summary",
+     "carries_over": "The chapter's answer in one paragraph.",
+     "introduces": "The points that are established, with their sources.",
+     "form": "phrase",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p46",
+    "controlling_idea": "Depends on context: the modular-monolith lesson applies only to owned code, a readiness calendar belongs where a merchant's peak breaks (for Kestrel & Pine the integrations), Plus's extension points are worth paying for only with in-checkout logic, and agent channels are discovery only for a European merchant in 2026.",
+    "function": "analysis",
+    "transition_in": {
+     "relationship": "contrast",
+     "carries_over": "What is established.",
+     "introduces": "What depends on the merchant's situation.",
+     "form": "phrase",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p47",
+    "controlling_idea": "The author's synthesis: the useful Shopify is the landlord's behavior, not the architecture; its own record undermines the slogan made from it; and a platform that rebuilt its agent interface within a year argues for putting nothing channel-specific below an adapter.",
+    "function": "synthesis",
+    "transition_in": {
+     "relationship": "sequence",
+     "carries_over": "Established and context-dependent points.",
+     "introduces": "The author's own reading.",
+     "form": "phrase",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p48",
+    "form": "list",
+    "controlling_idea": "Eight questions turn the chapter into checks a merchant runs on its own platform: extension-point sunsets, connector API versions, webhook promises and reconciliation, the unit of isolation, rate-limit budgets and apps writing the same fact, the status of vendor figures, withdrawable checkout customizations, and default-on agent channels.",
+    "function": "recommendation",
+    "transition_in": {
+     "relationship": "cause_effect",
+     "carries_over": "What the chapter establishes and the author's reading.",
+     "introduces": "The questions a merchant asks of its own platform.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p49",
+    "controlling_idea": "Shopify is the landlord, changing the platform under its renting merchants on published dates; the next case is a different kind of company, Amazon, a retailer that built its own shop, opened its operations to other sellers and now sells its machinery to other shops and admits AI agents on its own terms.",
+    "function": "transition",
+    "transition_in": {
+     "relationship": "contrast",
+     "carries_over": "Shopify as the landlord.",
+     "introduces": "Amazon, the retailer that became a platform.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   }
+  ]
+ },
+ "non_goals": [
+  {
+   "topic": "The architecture styles as a general comparison; tenancy models and rate limits as a discipline.",
+   "covered_in": [
+    "commerce-architecture-styles",
+    "multi-tenancy-and-isolation"
+   ]
+  },
+  {
+   "topic": "Extension mechanisms and app governance as a discipline; checkout orchestration; storefront rendering choices.",
+   "covered_in": [
+    "extensibility-and-app-ecosystems",
+    "cart-and-checkout",
+    "storefront-architecture"
+   ]
+  },
+  {
+   "topic": "API governance, versioning and webhook design; peak planning.",
+   "covered_in": [
+    "api-contracts-and-versioning",
+    "peak-load-and-reliability"
+   ]
+  },
+  {
+   "topic": "Agentic commerce protocols, EU constraints and the readiness list; payments mechanics.",
+   "covered_in": [
+    "ai-and-agentic-commerce",
+    "commerce-payments",
+    "payments-fundamentals"
+   ]
+  },
+  {
+   "topic": "Any description of Shopify's current pod topology, component count, checkout queue design or Catalog API terms; the chapter says the evidence stops there."
+  },
+  {
+   "topic": "Comparisons with other platforms' internals.",
+   "covered_in": [
+    "case-composable-movement",
+    "commerce-platform-landscape"
+   ]
+  }
+ ],
+ "modalities": [],
+ "open_questions": [
+  "Needs the author: The pods inference cites a 2019 Shopify post on database backups (Petabyte-scale MySQL backup and restore, Shopify Engineering, 1 October 2019, in brief-shopify.md 2.3) that is not listed under Sources and Evidence; the author may add the link there.",
+  "Needs the author: the pod and shard topology after the Google Cloud migration, the component count after 2024 and the deploy cadence after 2023 are undocumented; if Shopify publishes a newer architecture retrospective, the evidence-age flags should be revised.",
+  "Needs the author: the Scripts earlier deadline (August 2025) and its extension were seen only in search snippets; a reviewer with the changelog archive can confirm or drop the note.",
+  "Needs the author: the Catalog API reference page returned 404 at the cut-off; its commercial terms and regional availability should be re-checked before any print edition, as should every agentic-channel geography statement.",
+  "Needs the author: whether to move the inventory-states paragraph entirely into inventory-and-availability and leave only a pointer here."
+ ],
+ "decision_log": [
+  {
+   "date": "2026-11-13",
+   "decision": "Converted spec.md to spec.json from the published chapter, one spec paragraph per unit. Intent outcome, the five acceptance criteria, thesis and role copied unchanged from journal-spec.json (the thesis was revised there and passes the rubric); audience and the six supporting claims written for this chapter. The old success criteria were inventories (company facts dated and sourced, inferences in labeled blocks, terms glossed, named tables and diagrams present, the Kestrel & Pine paragraph, the take-away tiers, 6-10 questions, 4,500-6,000 words) and are dropped as criteria: their outcomes are covered by AC-1 to AC-5, the audience's does_not_know list, the evidence items and length.max_words.",
+   "rejected": [
+    "Keeping the inventory criteria as minor criteria (rule 7 of the standing instruction drops criteria added by agents)."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Word limit: the old spec allowed 6,000 words and the published chapter already had 6,316 by the checker's count. length.max_words is 6,600 (the old limit plus 10%, as the author allows), to hold the units the contract asks for (thesis paragraph p04, roadmap p05, synthesis p44), the hand-off the next chapter's transition_in declares, and glosses; no new material of the agent's own.",
+   "rejected": [
+    "Cutting the published chapter by about 600 words to fit 6,000 (would cut the author's sourced text)."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Added the units the contract asks for and the published chapter lacked: p04 (thesis statement, worded from the journal spec's claim), p05 (a roadmap announcing every section), p44 (a synthesis that answers the opening question and calls back to the hook). p49 rewrites the one-sentence ending as the hand-off case-amazon's transition_in declares (contrast: the landlord against the retailer that opened its operations and admits agents on its own terms).",
+   "rejected": [
+    "Treating the author's synthesis bullets as the conclusion synthesis: they do not answer the opening question."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Merged units that made one point or carried no claim of their own: the two opening paragraphs on dating the evidence (p02); the three one-line 'Sources:' notes under the business table, the checkout timeline and the BFCM table folded into the paragraphs that introduce those tables (p08, p25, p35), keeping every source and caveat.",
+   "rejected": [
+    "Keeping each 'Sources:' note as its own unit (each restates provenance and carries no controlling idea)."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Vocabulary (rule 11): where the text means Kestrel & Pine's hosted product it says 'the shop platform'. The sentence 'it rents the pods, the renderer and the checkout queue' read as if Kestrel & Pine ran on Shopify; it now says the shop platform's vendor runs the equivalent machinery. The chapter does not claim Kestrel & Pine runs on Shopify.",
+   "rejected": []
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Flow rubric (fresh agent, verdict 'sound with notes'); the author asked for the rubric notes to be taken without review (instruction of 2026-11-12). Taken: Shop Pay moved from the checkout section into the payments section, between the definition and the terms, as the wallet Shopify puts in front of its orchestration, so the checkout section ends on its own reading of the arc; the two paragraphs on the 2024 Packwerk retrospective's limits and on why the tool was kept merged into one; the transfer table's paragraph states only what transfers, the next paragraph only what does not; the journey paragraph in the introduction lists the order's parts in the order the sections take them; Ghostferry named where the shop move is described; the method section's list of gaps points to the seven in the last section; the landlord image planted in the opening paragraph so the conclusion's answer reads as a callback; Plus, Vitess and the Shop app glossed at first use.",
+   "rejected": [
+    "Dropping the observability figure (100 million events a second) from the transfer section: it is a sourced vendor account introduced with its source in that paragraph, not a lesson resting on unseen evidence."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Flow rubric rerun after the moves (fresh agent, verdict 'sound with notes'). Taken: the method section's gap list says the record has seven gaps, all listed in the last section; the flow rationale now says what would break if the agent surface came earlier (its argument for adapters needs the cadence already shown); the synthesis paragraph no longer repeats the machinery list that 'Established' gives; the questions paragraph names 'apps writing the same fact' rather than 'writers'. 'Pods balanced by simulation' already matches the shard-balancing paragraph, which reports simulation.",
+   "rejected": [
+    "Mentioning the disputed earlier Scripts deadline in the checkout section (it is a gap the last section lists; adding it to the timeline would give an unconfirmed date more weight).",
+    "Defining the observability figure before the transfer section (kept with its source where it is used)."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Prose edits for the length limit, made to text that repeated other units or that earlier agents had added: the two opening paragraphs on dating were shortened, the 'How to Read This Case' gap list now points to the last section, the payment-orchestration definition and the AI section's lead-in were cut to one sentence each, the monolith gloss in the opening paragraph was dropped (the monolith section defines it). Glosses added at first use: BFCM, Lighthouse, WebAssembly, GraphQL, Ruby on Rails, Plus, Vitess, the Shop app, Ghostferry, W1 and W8 (W5 as 'the integration standards', W4 as 'stay and surround'). Final length 6,598 words against 6,600.",
+   "rejected": []
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Round 1 (REVISE): fixed the named units only. Transitions: the pods section opens with the contrast 'One codebase is not one database'; the peak section opens from the rate limits ('Rate limits bind hardest at peak'); the questions list has a lead sentence. Flow (corroborated): the failure-pattern callout's observability stack points to the closing table; the BFCM database figure removed from the pods inference (it is in the peak table) and the 2019 post described as 'a 2019 post on database backups'; the 'misquoted' paragraph reframed as claims misread as about the core platform, with the vendor's database named as YugabyteDB from the cited Yugabyte source; the 41-times spike given its source, Kestrel & Pine's Black Friday peak hour (scenario ledger, Black Friday 2026 line: storefront traffic about 41x an average hour); the Scripts August 2025 date set apart from the 28 August 2025 checkout.liquid row. Terms (corroborated): 'writer problem' glossed in the callout; Shop Pay and custom Functions glossed in the business inference. Minor findings fixed because cheap: UCP paired with its name, 'packages' glossed, 'headless' glossed at first use, 'take an action down' reworded. To stay at 6,600 words, agent-added sentences were shortened (opening paragraph, roadmap, payment-orchestration definition) and the method section's partial gap list and its 'platform-neutral case study' sentence were cut.",
+   "rejected": [
+    "Raising the word limit beyond 6,600 (the author's 10% allowance is used up)."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Round 2 ended in ESCALATE (three results at fault in the spec). Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) the paragraph on Shopify's own engineering use of AI was cut, since both round-2 flow readers and a round-1 reader found it out of place and it supports no supporting claim; its sources stay under Sources and Evidence; rejected: moving it to the transfer section. (Rule 3) the payments section now gives the licensing terms before Shop Pay, as both round-2 flow readers asked, with the labeled inference after Shop Pay; rejected: keeping the wallet first. Draft fixes for the corroborated and blocking findings: the webhook inference adds the rule that a consumer checks its subscription still exists (the spec's and intent.can_do's third rule); Packwerk's privacy checks and the base layer glossed where they first appear; 'Editions' glossed as Shopify's named product-release announcements; the observability stack in the callout glossed as in-house monitoring; the evidence-gap list says it gives the last dated figure where one exists (rule 2: the sourced figures stay).",
+   "rejected": [
+    "Dropping the 30-minute deploy figure and the 150M+ shoppers figure from the gap list (sourced statements of the author's; rule 2)."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12 (rule 12): the five open questions need facts only the author or a new research pass can supply (newer Shopify architecture posts, the changelog archive, the Catalog API page, the place of the inventory paragraph, and the missing source link for the 2019 backups post); each is kept and marked 'needs the author'. The criteria the agent added: none (rule 7).",
+   "rejected": []
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Confirming round 3 ended in ESCALATE (21 pass, 17 fail, all at fault in the draft; AC-1 to AC-4 and the reverse outline passed). Cheap closing fixes applied without another round: bridge sentences into the monolith section ('Behind that single branch sits one codebase') and the inventory section ('Checkout and payment both draw on stock'); Packwerk introduced as 'the boundary tool that lasted', with packages related to components; Storefront Delivery points back to the Storefront Renderer as the carve-out described above; the datastore paragraph says why it is there (neither claim changes what the pod record shows). Auto-resolved by the author's standing instruction of 2026-11-12: (rule 2) the observability figure, the 2023 deploy-cadence figure and the 150M+ shoppers figure stay, being sourced statements of the author's in the transfer and evidence-limit sections; rejected: adding a body paragraph on observability (new material) or dropping them. (Rule 10, current position stands) the Storefront Renderer stays in the monolith section as its one carve-out and the datastore paragraph stays in the pods section, though round-3 readers suggested moving them; the callout's 'withdrawn' for the REST Admin API, the writer problem and the other one-reader findings are left as minor. The check report is stale after these fixes.",
+   "rejected": [
+    "A fourth round."
+   ]
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Organized the case by Shopify's own documents in subject order (business, monolith, pods, storefront, checkout, payments, ecosystem, peak, AI) with the age of the evidence stated in each section, rather than as a narrative of Shopify's growth, because the reader's question is 'what does the record support' and the evidence age differs by subject."
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Made the February 2024 Packwerk retrospective the center of the monolith section and quoted its admissions, rejecting the slogan version ('Shopify modularized its monolith') that chapter 29 also declines."
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Framed the transferable content as 'the landlord's behavior' (published withdrawal dates, API windows, webhook contract, rate limits, default-on agent channels) rather than as architecture to copy, because the book's merchant rents a platform of this kind and the Giant's Boots is the risk."
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Kept the vendor-blog database claim and the observability write-up as labeled vendor accounts rather than omitting them, because readers will meet them and need to know their provenance."
+  }
+ ],
+ "sources": [
+  {
+   "kind": "internal",
+   "ref": "_research/brief-shopify.md (Parts 1-8, key numbers, open questions)",
+   "contributed": "Every Shopify fact, tag and evidence-age flag; the summary the chapter was written from."
+  },
+  {
+   "kind": "internal",
+   "ref": "_research/brief-ai-agentic-commerce.md (Parts 3.3, 6)",
+   "contributed": "The agent surface and its geography."
+  },
+  {
+   "kind": "internal",
+   "ref": "_research/scenario-ledger.md and _research/consistency-issues.md",
+   "contributed": "W1, W4, W5, W8, the Deprecated Endpoint (incident 10), the 41 apps (ruling 10), the app governance rule (extensibility-and-app-ecosystems line), GMV as the company defines it (ruling 20)."
+  },
+  {
+   "kind": "internal",
+   "ref": "journal-spec.json (case-shopify; part-11; case-amazon transition_in)",
+   "contributed": "Intent, thesis, role, acceptance criteria and the hand-off to case-amazon."
+  },
+  {
+   "kind": "internal",
+   "ref": "commerce-architecture-styles, extensibility-and-app-ecosystems, peak-load-and-reliability, organizing-commerce-engineering, ai-and-agentic-commerce, case-amazon",
+   "contributed": "Owning chapters linked rather than re-taught; the Amazon case as the format model."
+  },
+  {
+   "kind": "external",
+   "ref": "Shopify Inc., Form 10-K FY2025 (February 2026); Form 8-K and 10-Q Q3 2026 (November 2026)",
+   "contributed": "Definitions, revenue mix, Payments penetration, suppliers, technology statement."
+  },
+  {
+   "kind": "external",
+   "ref": "Shopify Engineering posts 2018-2026",
+   "contributed": "Pods, componentization, the monolith's state, Packwerk and its retrospective, shard balancing, the Storefront Renderer, Vitess for the Shop app, garbage collection, performance testing, BFCM readiness, River, back to native."
+  },
+  {
+   "kind": "external",
+   "ref": "Shopify help, developer, legal and changelog pages (accessed November 2026)",
+   "contributed": "Checkout extensibility and its sunsets, Functions, Shop Pay, Payments terms and processors, inventory states, scopes, compliance webhooks, webhook delivery, versioning, rate limits, agentic storefronts, agents, Catalog, Storefront MCP."
+  },
+  {
+   "kind": "external",
+   "ref": "Shopify news and Editions pages (2021-2026)",
+   "contributed": "Unite 2021, Winter '23, Summer '23, Winter '26, Fall '26, BFCM 2023-2025, the agentic commerce platform."
+  },
+  {
+   "kind": "external",
+   "ref": "Google (UCP, 2026); Modern Retail (2026); Digital Commerce 360 (2025); Yugabyte and ClickHouse vendor blogs (2026)",
+   "contributed": "Labeled secondary and vendor accounts."
+  }
+ ],
+ "changelog": [
+  {
+   "date": "2026-11-13",
+   "change": "Draft check rounds 1 (REVISE) and 2 (ESCALATE); auto-resolved by the standing instruction: payments order changed (licensing before Shop Pay), the paragraph on Shopify's internal AI use cut; named units revised; confirming round 3 (ESCALATE, all failures draft-side) followed by cheap closing fixes; report stale."
+  },
+  {
+   "date": "2026-11-13",
+   "change": "Converted spec.md to spec.json (outcome-spec pass): reconstructed from the published chapter; added thesis, roadmap and synthesis units and the hand-off to case-amazon; folded the table source notes into their paragraphs; length.max_words 6,600."
+  },
+  {
+   "date": "2026-11-07",
+   "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator)."
+  },
+  {
+   "date": "2026-11-07",
+   "change": "Initial spec and article."
+  }
+ ],
+ "length": {
+  "max_words": 6600
+ }
+}

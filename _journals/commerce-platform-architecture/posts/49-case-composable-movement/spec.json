@@ -1,0 +1,1473 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "case-composable-movement",
+  "journal": "commerce-platform-architecture",
+  "part": "part-11",
+  "title": "Case: commercetools, Shopware and the Composable Movement",
+  "status": "draft",
+  "revised": "2026-11-13",
+  "basis": "Reconstructed from the published chapter (posts/49-case-composable-movement/index.md) and its former spec.md, whose Non-goals, Modalities, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have: a thesis paragraph and a roadmap in the introduction, a chapter synthesis that answers the opening, Part XI's closing (synthesis across chapters 46 to 49, so-what, callback to the part opening) and the journal's closing (Eva's five promises, the toolkit, the hand-off to the appendix tutorial). These are recorded in decision_log.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The 2020 promise: the MACH Alliance founded in June 2020 by commercetools, Contentstack, EPAM and Valtech around Microservices, API-first, Cloud-native and Headless; over 100 members by December 2023; what the promise did not say (who builds and runs the storefront, who owns the joins and what they cost each year, for which size of merchant the difference pays).",
+        "commercetools' dated turn: a new CEO in July 2024; about 10% of staff cut in February 2025 after missed 'aggressive revenue growth targets'; AgenticLift (January 2026) 'on top of your existing commerce solution'; 'Autonomous Commerce' (June 2026); Core Commerce and Product Catalog sold as standalone modules 'without replacing their existing platforms' (July 2026); a Gartner Leader for the seventh year (October 2026); the April and July 2026 figures not reconciled by the vendor; the reasons for the turn only the chapter's labeled inference.",
+        "The other paths: Shopware (first among the 1,000 largest German B2C shops in EHI's 2026 study at 12.5%, GMV-based plans with a paid plan required above €1 million of GMV, Nexus and Shopware Payments on PayPal's infrastructure from June 2026, PayPal holding more than 40%); Adobe Commerce's three deployment options and Commerce Optimizer beside any backend; the Mage-OS fork; BigCommerce renamed Commerce.com in July 2025 and reporting in August 2026 that B2C replatforming 'remains softer than historically'.",
+        "The alliance's principles from four letters (2020, restated 2023) to five principles including Incremental (August 2025) to three, Open, Composable and Connected (November 2026), with microservices and headless gone; its February 2026 survey of 600 decision-makers, with 37% naming integration complexity a primary concern; the cost lines of an assembly (storefront, joins, upgrades, separate services, licenses, people, exit) and the conditions under which it fits.",
+        "Where the evidence stops: no vendor reason for the turn, no published method behind Shopware's integration-cost claims, no independent study comparing the total cost of an assembly with a hosted platform plus layers."
+      ],
+      "believe": [
+        "Composable was right about properties (open APIs, replaceable capabilities, clear ownership) and wrong about prescriptions (rebuild as services, build your own storefront).",
+        "Open source and composable are independent choices: choose on who owns upgrades and joins, not on the license."
+      ],
+      "can_do": [
+        "Cost a composable proposal including the storefront, every join, upgrades on the vendors' schedules, people and exit.",
+        "Decide whether a missing capability should be adopted as one service beside the current platform, and name its owner."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a composable replatforming proposal for a merchant with an integration-shaped team, the reader states what to ask and what to decide, grounded in the movement's own record.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A consultancy proposes that a brand with about €60 million in revenue, twelve people in technology (mostly integration engineers), a hosted platform and about 30 integrations replace the platform with a composable stack: an API-only engine, a built storefront, search, content and an integration layer. Using only this chapter: what should the brand ask, and what should it decide?",
+        "expected": "Ask what the 2020 promise did not say: who builds and runs the storefront the engine does not ship and at what yearly cost; who owns each join, its API version and its renewal date; who upgrades everything built against the vendors' services on their schedules; which reference customer is within a factor of ten of the brand's size. The assembly would have more joins than today, all of them the brand's. The movement's own record: its alliance dropped microservices and headless from its principles, its 2026 survey has 37% naming integration complexity a primary concern, and commercetools now sells modules for adoption without replacing existing platforms. A full assembly fits a Group-stage merchant with platform and product teams and a storefront that competes; with an integration-shaped team the brand should keep its platform and adopt the capability it cannot own (an OMS, a PIM, search) as one service beside it with a named owner."
+      },
+      {
+        "id": "AC-2",
+        "statement": "The reader can read a vendor alliance's adoption figures critically and name the finding that runs against its interest.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A vendor deck says: '78% of organizations with fully scaled MACH technology see clear AI ROI, and 85% of technology leaders increased their MACH share.' Using only this chapter: how should a reader treat these figures?",
+        "expected": "As the alliance's own claims: surveys commissioned by a vendor alliance and answered by a population that includes its adopters, with 'clear ROI' undefined and the 2023 release's applicant totals internally inconsistent, so they do not show that a merchant cut costs or raised sales. Keep each figure's definition, date and unit attached (commercetools' April and July 2026 figures differ and are not reconciled). The usable finding is the one against interest: 37% of respondents name integration complexity a primary concern. Vendor figures such as Shopware's 15 tools, 52% of effort and 40% savings have no published method; no independent study compares the total cost of an assembly with a hosted platform plus layers."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can tell an open-source platform from a composable assembly.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this chapter: is moving to an open-source platform such as Shopware a move to composable commerce?",
+        "expected": "No; open source and composable are different axes. Shopware's core is open, but its commercial path is to be the hub: plans priced on GMV, a paid plan required above €1 million of GMV, Nexus as an orchestration layer that replaces middleware, and Shopware Payments on PayPal's infrastructure, pulling integration and payments into the platform. commercetools is proprietary and service-shaped. Choose on who owns upgrades and joins, not on the license."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "That a merchant wanting to replace one capability without the others still depends on shared product identifiers, prices and stock updates, so the cost of changing those connections decides whether assembling services pays; MACH as founded in June 2020 (microservices, API-first, cloud-native, headless) and over 100 members by December 2023, with headless as a narrower choice; dated accounts from commercetools, Shopware, Adobe and the alliance, including later services attached to existing platforms; the flagship's turn to layers (the February 2025 cut, AgenticLift, standalone modules in July 2026), Shopware pulling integration and payments into its platform, and the alliance rewriting its principles while its survey names integration complexity; failure patterns The Giant's Boots, The Burned Bridge and The Spaghetti Junction; Eva's order as the thread. Evidence: vendor releases, pricing pages, the alliance's pages and survey, filings and trade press, with inferences labeled."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ],
+    "audience": {
+      "who": "Readers new to commerce architecture who will meet 'composable' in a replatforming pitch, an analyst chart or a conference talk: most of all engineers and product managers deciding whether to adopt a capability as a separate service; second, leaders who must judge a consultancy's composable proposal.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side; roughly what an API, a database and a queue are.",
+        "Parts I to X: the thirteen steps of an order, promise and handoff, the three status lines, 'system', 'the shop platform' for the hosted product, the four scale stages (Starting, Growing, Omnichannel, Group), system of record, single writer, events, idempotency and reconciliation; available-to-promise; the failure-pattern names (The Giant's Boots, The Burned Bridge, The Spaghetti Junction among them); agentic commerce from chapter 45.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order management system (OMS), availability service, D2C, B2B, PIM, POS.",
+        "Kestrel & Pine: a fictional outdoor brand with fourteen people in technology on a hosted shop platform, its 34 integrations, its agency, Eva's jacket order of 13 April 2027 and her five promises, the Black Friday 2026 incidents, the February 2027 pitches and the Waypoint decisions W1 to W8.",
+        "Part XI's method (dated public sources, documented versus inferred, each case ending where its evidence stops) and chapters 46 to 48: Shopify's kept monolith and its integration contract, Amazon's move to services after a 2001 wall and its cart and seller-of-record split, Zalando's 2015 split, later narrowing and 2025 read API."
+      ],
+      "does_not_know": [
+        "Composable commerce, the MACH Alliance and the four words (microservices, API-first, cloud-native, headless); headless as a narrower choice.",
+        "GMV and run-rate as vendor metrics; Gartner's Magic Quadrant and Forrester's Wave as analyst placements.",
+        "commercetools, Shopware, Adobe Commerce and Commerce Optimizer, Mage-OS, Commerce.com, Saleor as vendors and what each sells.",
+        "Fair-usage policy priced on GMV; orchestration layer; platform-as-a-service versus fully managed SaaS."
+      ]
+    }
+  },
+  "thesis": {
+    "question": "What did the composable movement promise, what does a full assembly cost a merchant, and what does the movement's own record from 2024 to 2026 show about when assembling commerce from parts is right?",
+    "claim": "The composable movement promised replaceable services in 2020 and asked the merchant to build the storefront and own every join between services, work for a product-engineering team before the first sale. By 2026 the MACH Alliance had dropped microservices and headless from its principles, 37% of its 2026 survey named integration complexity a primary concern, and commercetools sold modules for existing platforms. A full assembly fits multi-brand groups with platform teams; merchants without one add one owned service at a time.",
+    "disputed_by": "The 2020–2023 pitch that composable is where commerce is going: a merchant should replace its suite or hosted platform with best-of-breed services and a built storefront, because each capability can then be swapped and the merchant escapes a single vendor's release cycle.",
+    "so_what": "A merchant that accepts the claim answers a composable proposal by asking which of the four 2020 words (microservices, API-first, cloud-native, headless) and the three 2026 principles (open, composable, connected) the proposer means, who builds and runs the storefront, who owns each join with its API version and renewal date, and whether the missing capability can be adopted as one service beside the current platform. Kestrel & Pine declined the consultancy's February 2027 composable rebuild (a separate engine, storefront, search, content system and integration layer for fourteen technology staff, about €3.2 million over three years, illustrative) and takes the per-capability path as Waypoint: an OMS, availability and a PIM beside the hosted platform, each integration with an owner and a contract, revisited at the 2029 review.",
+    "how_why": "Every capability bought as a separate service adds a join, a contract, an API version, a renewal and an owner, and an API-only engine ships no storefront, so the running cost of an assembly falls on the merchant's own team (storefront, integration, upgrades on the vendors' schedules) before the first sale, which a team shaped for integration rather than product engineering cannot carry. The vendors' 2026 products (commercetools' AgenticLift and standalone modules, Adobe Commerce Optimizer beside any backend, Shopware pulling integration and payments into its platform) are sold to merchants who keep their core; no release explains the turn, and its link to commercetools' 2025 cuts is the chapter's labeled inference.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "The 2020 MACH promise (microservices, API-first, cloud-native, headless) described how enterprises with product-engineering teams could build; it did not say who builds and runs the storefront, who owns the joins between services and what they cost each year, or for which size of merchant the difference pays."
+      },
+      {
+        "id": "S2",
+        "claim": "commercetools, the movement's flagship, turned between 2024 and 2026 from selling replacement to selling layers and standalone modules for platforms merchants keep, after a February 2025 staff cut tied to missed growth targets; no release gives the reason, so the link is a labeled inference."
+      },
+      {
+        "id": "S3",
+        "claim": "The other vendors absorbed the word rather than decomposing: Shopware pulled integration and payments into an open-source platform priced on GMV, Adobe sells composable layers beside any backend, the Magento forks lengthen the patch chain and Commerce.com adopted the vocabulary while reporting weak replatforming, which shows that open source and composable are independent choices."
+      },
+      {
+        "id": "S4",
+        "claim": "The alliance's own record states the correction: its principles dropped microservices and headless between 2020 and 2026, and 37% of respondents to its February 2026 survey named integration complexity a primary concern, the cost line the 2020 promise left out."
+      },
+      {
+        "id": "S5",
+        "claim": "A full assembly adds the storefront, every join, upgrades on the vendors' schedules, separate contracts, people and exit to the merchant's own bill, so it fits a Group-stage merchant with platform and product teams, while an Omnichannel merchant such as Kestrel & Pine adopts one owned capability at a time beside a kept platform."
+      },
+      {
+        "id": "S6",
+        "claim": "The public record stops short of the vendors' reasons and of any independent cost comparison, so the chapter's reasons are labeled inference and its costs are labeled judgment or Kestrel & Pine illustrations."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Tests the book's stay-and-surround recommendation against the vendors that sold the opposite, setting out the assembly's cost lines and the movement's own move to layers beside a kept core, and performs the part's closing followed by the journal's closing on the same page (the published chapter does neither: it ends with one sentence listing the four cases and a hand-off to domain-coverage).",
+    "supports": [
+      "P11-4",
+      "P11-5"
+    ]
+  },
+  "flow": {
+    "pattern": "assertion_evidence_reasoning",
+    "additional_patterns": [
+      {
+        "pattern": "chronological",
+        "applies_to": "promise to commercetools: the 2020 promise before the 2024-2026 turn"
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "commercetools, shopware and adobe: the flagship's turn to layers set against vendors that absorbed the word"
+      },
+      {
+        "pattern": "problem_solution",
+        "applies_to": "costs to kp: the cost lines, then the conditions under which assembly fits, then the merchant's path"
+      }
+    ],
+    "rationale": "The 2020 promise and its unsaid column come first, because every later section tests it. The vendors' record follows as evidence: the flagship first (it carried the promise furthest), then the vendors that went the other way or absorbed the word, so the turn is seen from several sides before the alliance's own wording is read. The alliance's principles and survey come after the vendors because they state, in the movement's own words, the correction the vendors' products already show. Only then are the costs and the conditions argued, because they rest on that record; Kestrel & Pine applies them; 'Where the Evidence Stops' closes the body because it bounds every case just read. Putting the costs before the record would state the author's judgment before the evidence; putting the alliance first would read a rewrite whose reason the vendors' turn supplies; moving 'Where the Evidence Stops' up to follow the survey would split the vendors' limits from the cost limits that the cost table and the Kestrel & Pine illustration add."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "A merchant wants to replace its search service without replacing checkout and the catalog as well; buying separate services seems to offer that freedom, but each still depends on shared product identifiers, prices and stock updates, so replacement is practical only if those connections can be changed at an acceptable cost."
+    },
+    "bridge": {
+      "from_reader_world": "Chapters 47 and 48: two large retailers that built services for their own size and later corrected them; and the pitch the reader will hear that a merchant should assemble commerce from separate services.",
+      "to_topic": "The composable movement sold the services shape to every merchant from June 2020; its vendors' and its alliance's dated record from 2020 to 2026 shows what the promise left out and when assembly pays."
+    },
+    "thesis_statement": {
+      "text": "The 2020 promise of replaceable services asked the merchant to build the storefront and own every join between services, work for a product-engineering team before the first sale; by 2026 the alliance had dropped microservices and headless from its principles, 37% of respondents to its own survey named integration complexity a primary concern, and commercetools sold modules for platforms merchants keep; a full assembly fits multi-brand groups with platform teams, and a merchant without one adds one owned service at a time.",
+      "placement": "KEY POINTS callout and paragraph p05"
+    },
+    "roadmap": {
+      "placement": "Paragraph p06",
+      "promises": [
+        {
+          "promise": "Set out what the 2020 promise said and what it left unsaid.",
+          "kept_in": [
+            "promise"
+          ]
+        },
+        {
+          "promise": "Follow commercetools' dated turn from flagship to layers.",
+          "kept_in": [
+            "commercetools"
+          ]
+        },
+        {
+          "promise": "Read Shopware's opposite path of pulling integration and payments into its platform, then Adobe, the Magento forks and Commerce.com.",
+          "kept_in": [
+            "shopware",
+            "adobe"
+          ]
+        },
+        {
+          "promise": "Read the alliance's rewritten principles and its own survey.",
+          "kept_in": [
+            "alliance",
+            "data"
+          ]
+        },
+        {
+          "promise": "Cost a full assembly and set out when it fits.",
+          "kept_in": [
+            "costs",
+            "fit"
+          ]
+        },
+        {
+          "promise": "Say what Kestrel & Pine takes and where the evidence stops, then close Part XI and the book.",
+          "kept_in": [
+            "kp",
+            "evidence"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A merchant that wants to replace one service, such as search, still depends on shared product identifiers, prices and stock updates, so the cost of changing those connections decides whether composable commerce, assembling separate commerce services, pays.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "A merchant replacing its search service without replacing checkout and the catalog.",
+            "shows": "Puts the join cost at the centre before any vendor is named."
+          }
+        ]
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Composable covers separate services for catalog, cart, checkout, search or content, while headless is a narrower choice: separating the storefront from the commerce engine through an API.",
+        "function": "definition",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Composable commerce as the hook defines it.",
+          "introduces": "What the services may cover, and headless as a narrower choice.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Unlike Amazon and Zalando, which built services for their own size, the MACH Alliance (founded June 2020 around microservices, API-first, cloud-native and headless; over 100 members by December 2023) sold that shape to every merchant, and its vendors' dated accounts show when assembly solves a merchant's problem.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "fact",
+            "what": "June 2020 founding around four words; more than 100 members by December 2023; dated accounts from commercetools, Shopware, Adobe and the alliance.",
+            "source": "EPAM 2020-06-24; MACH Alliance 2023-12-13",
+            "shows": "Names the movement, its scale and the kind of evidence the case uses."
+          }
+        ],
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "Composable and headless as choices a merchant makes.",
+          "introduces": "The movement that sold assembly to every merchant, set against chapters 47 and 48.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "In Eva's jacket order, the storefront, cart, checkout and order record can come from one product or several, and the composable decision settles who must connect them and run those connections.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Eva's order at Kestrel & Pine, the fictional outdoor brand.",
+            "shows": "Ties the vendor case to the book's running order."
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The pieces an assembly may separate.",
+          "introduces": "Where they sit in Eva's order.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "The chapter's claim: the 2020 promise asked the merchant to build the storefront and own every join, work for a product-engineering team; by 2026 the alliance had dropped microservices and headless, 37% of its survey named integration complexity a primary concern and commercetools sold modules for kept platforms, so a full assembly fits groups with platform teams and others add one owned service at a time.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The thesis in the order the chapter argues it.",
+            "shows": "States the answer before the evidence."
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Who must connect and run the pieces of Eva's order.",
+          "introduces": "The chapter's answer to when assembling them pays.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p06",
+        "controlling_idea": "The chapter sets out the 2020 promise, follows commercetools, Shopware and then Adobe, the forks and Commerce.com, reads the alliance's principles and survey, costs an assembly and its fit, says what Kestrel & Pine takes and where the evidence stops, and closes Part XI and the book; the design method lives in other chapters.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The claim.",
+          "introduces": "The order in which the chapter argues it, and which chapters own the design decisions.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "promise",
+      "heading": "What Composable Promised, 2020–2023",
+      "controlling_idea": "The 2020 promise described how enterprises with product-engineering teams could build, and left unsaid who builds the storefront, who owns the joins and for which merchant it pays.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Establishes the promise the rest of the chapter tests and the cost lines it omitted."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The founding document (2020) comes before the 2023 restatement and adoption claims; the proposition and what it did not say follow once both dates are set, so the table of the unsaid closes the section and opens the rest of the chapter. Putting the four choices before the 2023 claims would leave the adoption figures after the analysis they qualify."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The roadmap's first step.",
+        "introduces": "The 2020 founding document.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p07",
+          "controlling_idea": "EPAM's 24 June 2020 announcement names the founding members (commercetools, Contentstack, EPAM, Valtech) and spells MACH out as Microservices, API-first, Cloud-Native and Headless, the historical evidence of the original proposition.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "EPAM release of 24 June 2020, more than three years old.",
+              "source": "EPAM Systems, 2020-06-24",
+              "shows": "The founding definition, dated."
+            }
+          ]
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The alliance's 13 December 2023 announcement (over 100 members; 85% of 500 surveyed technology leaders raising their MACH share; inconsistent applicant totals) is the alliance's own adoption claim and does not show that a merchant cut costs or raised sales.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Over 100 members; 85% of 500 technology leaders; two inconsistent applicant figures.",
+              "source": "MACH Alliance, 2023-12-13",
+              "shows": "Shows the adoption claim and why its definitions must stay attached."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The 2020 definition, to be read against its date.",
+            "introduces": "The 2023 restatement and its adoption claims.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The original proposition combined four choices (small independently deployed services, documented APIs, vendor-operated cloud software, a separate storefront) and promised easier replacement and less dependence on a suite's release cycle, but a table of what it says and does not say shows it left out the storefront, the joins, the merchant's own running work and the merchant size at which it pays.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "What the 2020 promise says / what it does not say, four rows.",
+              "shows": "Sets each promise beside the cost line it left unassigned."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Adoption claims that do not show merchant results.",
+            "introduces": "What the proposition actually promised a merchant and what it left out.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "The right-hand column is the subject of the rest of the chapter: the promise was true for large enterprises with product-engineering teams and said nothing about a merchant with fourteen technology staff, such as Kestrel & Pine.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: an iceberg of best-of-breed blocks above and storefront, joins, upgrades and people below.",
+              "shows": "Shows the unassigned cost lines under the visible promise."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The unsaid column of the table.",
+            "introduces": "Why it governs the rest of the chapter.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "commercetools",
+      "heading": "commercetools: From Flagship to Layers",
+      "controlling_idea": "The movement's flagship turned between 2024 and 2026 from selling replacement to selling layers and modules beside platforms merchants keep, and its releases do not say why.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Documents the flagship's own move to the shape the book recommends."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The engine's role and the company's standing come first so the reader knows why it is the flagship; the dated table is the evidence; three readings of it follow; the labeled inference and the gap in the record close the section. Putting the readings before the table would ask the reader to accept them before seeing the dates."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The promise and its unsaid column.",
+        "introduces": "The vendor that carried the promise furthest.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "controlling_idea": "In the composable model a commerce engine supplies pricing, carts and orders through APIs while the merchant chooses the storefront and other parts, which is the role commercetools plays.",
+          "function": "definition"
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "commercetools is the composable flagship: founded in 2006, funded at a $1.9 billion valuation in 2021, a founding alliance member, a Gartner Leader every year since 2020 and, by April 2026, past a $100 billion GMV run-rate.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Founding, REWE, 2019 and 2021 funding (TechCrunch, February 2025); Gartner Leader since 2020; $100B GMV run-rate, 600 million orders, 36 countries (release, 22 April 2026); GMV and run-rate glossed.",
+              "source": "TechCrunch 2025; commercetools 2026-04-22",
+              "shows": "Shows why its turn is the strongest evidence."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The engine role.",
+            "introduces": "The company that plays it and its standing.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "commercetools' releases from July 2024 to October 2026 record the turn: a new CEO, a 10% staff cut after missed growth targets, AgenticLift on top of existing commerce solutions, 'Autonomous Commerce', standalone modules 'without replacing their existing platforms' and a seventh Gartner Leader placement.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven dated rows (10 July 2024 to 22 October 2026) with source and what changed; agentic commerce glossed.",
+              "source": "commercetools releases 2024-2026; TechCrunch 2025",
+              "shows": "The turn in the vendor's own dated words."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The flagship's standing.",
+            "introduces": "Where its turn is recorded.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "First, the vendor's own products now describe the architecture the book recommends for Omnichannel-stage merchants: a kept core with layers beside it.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "AgenticLift and the July 2026 modules are built for stacks that are not composable.",
+              "shows": "Connects the table to the book's recommendation."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The dated table.",
+            "introduces": "The first of three readings.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Second, the sales vocabulary moved from 'composable' to 'Autonomous Commerce' while the product's shape, API services the merchant assembles or attaches, did not change.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'Autonomous Commerce' as 'the new category for the AI era' (June 2026 release).",
+              "shows": "Shows the category changing over an unchanged product shape."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first reading.",
+            "introduces": "The second: the vocabulary.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Third, the numbers need their units: the April and July 2026 releases give customer, GMV and order figures that differ by about 10% in three months, and the vendor does not say whether the business grew or the units differ.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "'500+ enterprises', $100B, 600 million orders (April) against 'more than 600', 'over $110 billion', 'over 700 million' (July).",
+              "shows": "Shows figures whose units differ or are unstated."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The second reading.",
+            "introduces": "The third: units.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "The public record has gaps, the CEO handover from Andrew Burton to Doug McNary and any stated reason for the turn, so the reason is only the author's labeled inference from missed targets followed by layers and modules.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "INFERENCE, NOT DOCUMENTED callout: missed targets then layers and modules, consistent with full replatforming onto an API-only core selling to fewer merchants than the 2020-2023 pitch assumed.",
+              "shows": "Keeps the reason for the turn apart from the record."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The limits of the vendor's figures.",
+            "introduces": "The gaps in its public record, and the labeled reason.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "shopware",
+      "heading": "Shopware: The Mid-Market Path",
+      "controlling_idea": "Shopware answered the movement by pulling integration and payments into an open-source platform priced on GMV, which shows that open source and composable are different axes.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Gives the opposite path from commercetools and separates the license from the architecture."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The counter-case is stated first; ownership and market position establish who Shopware is; pricing and the June 2026 launches are the two clues; the vendor's claims, a plain restatement and a labeled inference read them; the open-source-versus-composable point closes the section because it needs all of them. Moving the market position after the clues would leave the reader judging a platform whose size is unknown."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The flagship's turn to layers.",
+        "introduces": "A platform that went the other way.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p18",
+          "controlling_idea": "Shopware is the counter-case: an open-source platform that answered the movement by pulling more into the platform, not less.",
+          "function": "claim"
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Shopware's own releases document its finances and ownership: bootstrapped until a 2022 USD 100 million investment from Carlyle and PayPal, PayPal holding more than 40% since late 2025, and a CEO succession announced in August 2026 with the founders keeping a majority; PayPal's stake matters because Shopware Payments runs on PayPal's infrastructure.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "2022 investment and 2021 GMV (flagged as older than three years); PayPal's stake from about 11% to more than 40%; Joachim Weber as Co-CEO then CEO; founders' new roles.",
+              "source": "Shopware releases 2022, 2026; Ecommerce News Europe 2025",
+              "shows": "Shows who owns and runs the platform."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The counter-case.",
+            "introduces": "Who Shopware is: its ownership.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Shopware's market position depends on the population counted: first among the 1,000 largest German B2C shops in EHI's 2026 study at 12.5%, 0.2% of sites in W3Techs' worldwide count, a Gartner Visionary and a Forrester Strong Performer for B2B.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "EHI 2026: 12.5%, first for the fifth year, platform identified for 60.2%; W3Techs 0.2%; Gartner 2025 and 2026; Forrester Q3 2026.",
+              "shows": "Shows its mid-market strength and why two true figures differ."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Ownership.",
+            "introduces": "Market position.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "The first clue to Shopware's path is pricing: paid plans based on GMV and a fair-usage rule requiring a paid plan above €1 million of GMV make it a platform that wants to sit in the path of every order.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Community Edition free; Rise from €600 and Evolve from €2,400 a month, 'based on your gross merchandise value'; paid plan above €1 million GMV (pricing page, November 2026).",
+              "shows": "Shows the platform earning on orders rather than being a swappable service."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A platform's size and standing.",
+            "introduces": "The first sign of where it is heading.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The second clue came on 10 June 2026: Nexus, an event-driven orchestration layer positioned as replacing middleware, and Shopware Payments on PayPal's infrastructure.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shopware Community Day, Cologne, 10 June 2026; Nexus; Shopware Payments live in Germany and Austria.",
+              "source": "Shopware release 2026-06-10",
+              "shows": "Shows integration and payments moving into the platform."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first clue.",
+            "introduces": "The second clue.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Shopware's figures for integration effort (more than 15 tools, up to 52% of effort, 40% savings) are vendor claims without a published method, and Nexus is metered per execution.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "15 tools, 52% of implementation effort, 40% cost cut; €10 per extra 1,000 executions.",
+              "shows": "Shows the claims' status and the metering of the integration layer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Nexus.",
+            "introduces": "The claims made for it and how it is charged.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "In plain words, the iPaaS and the PSP that a composable merchant buys separately became Shopware products, which the author reads, as a labeled inference, as a platform earning on orders and payments with the integration layer inside its own metering.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "iPaaS and PSP glossed; INFERENCE, NOT DOCUMENTED callout comparing the economic shape with a hosted SaaS platform (case-shopify).",
+              "shows": "Reads the two clues together and keeps the reading labeled."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Nexus, Payments and their metering.",
+            "introduces": "What they mean for a merchant, plainly.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Shopware shows that open source and composable are different axes: its core is open, its commercial path is to be the hub, and the fair-usage line means the hub is paid for once the merchant grows.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Open core; hub-shaped commercial path; OMS or PIM can still be bought beside it.",
+              "shows": "Separates the license from the architecture."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Pricing, Nexus, Payments and the inference.",
+            "introduces": "What the case teaches a newcomer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "adobe",
+      "heading": "Adobe, the Forks and Commerce.com: Composable as a Deployment Option",
+      "controlling_idea": "Adobe, the Magento forks and Commerce.com absorbed the composable word as a deployment option, a fork or a rename rather than adopting decomposition.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Adds three more vendors whose record shows the word absorbed, not adopted."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Three vendors with the same pattern follow one claim: the suite (Adobe), the open-source side it left (the forks) and the SaaS side (Commerce.com). The forks follow Adobe because they are forks of its open-source edition; Commerce.com comes last because its August 2026 report that replatforming is weak sets up the alliance's own rewrite. Putting the forks first would describe a fork of a product not yet introduced."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "Shopware absorbing integration and payments.",
+        "introduces": "Three more vendors absorbing the word.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p26",
+          "controlling_idea": "Adobe, the community forks of its open-source edition and Commerce.com show the composable word being absorbed rather than adopted.",
+          "function": "claim"
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Adobe Commerce now lists three deployment options and sells Commerce Optimizer to work alongside any backend, so composable has become a layer a suite vendor sells beside any backend.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "On-premises, cloud infrastructure (PaaS), Cloud Service (managed SaaS); Commerce Optimizer 'alongside an existing Adobe Commerce or third-party commerce backend'; partner reports for June 2025 launches.",
+              "source": "Adobe Experience League 2026; Rightpoint 2025",
+              "shows": "Shows a suite selling a layer beside a kept backend."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The word absorbed.",
+            "introduces": "The suite vendor.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The Mage-OS fork gives a merchant the most freedom in the chapter and the longest patch chain: Adobe, then the distribution, then the agency, then the merchant.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Organized 2021, incorporated 2022; releases 3.6.0 and 4.0.0 in October 2026; no shareholders; 216-plus financial contributors.",
+              "source": "Mage-OS Association, 2022-2026",
+              "shows": "Shows the open-source side and its patch chain."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Adobe's managed options.",
+            "introduces": "The community fork of its open-source edition.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "BigCommerce renamed itself Commerce.com in July 2025 with composable vocabulary and kept its engine, and a year later reported flat revenue and B2C replatforming 'softer than historically'.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Rename 31 July 2025; Q2 2026 revenue $84.5 million, up 0.1%; 'remains softer than historically' (SEC exhibit, 6 August 2026).",
+              "source": "Digital Commerce 360 2025; SEC EDGAR 2026",
+              "shows": "Shows a vendor adopting the word while the replatforming market weakened."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The open-source side.",
+            "introduces": "The SaaS side.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "alliance",
+      "heading": "The Alliance Rewrites Its Principles",
+      "controlling_idea": "The alliance's own principles went from four words to five principles to three, dropping microservices and headless, the clearest evidence of the turn.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Records the correction in the movement's own words."
+      },
+      "transition_in": {
+        "relationship": "emphasis",
+        "carries_over": "Vendors absorbing the word.",
+        "introduces": "The alliance rewriting it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p30",
+          "controlling_idea": "The alliance's stated principles changed from 'Microservices, API-first, Cloud-Native, and Headless' (2020, restated 2023) to five guiding principles, Composable, Connected, Incremental, Open and Autonomous (August 2025), to three, Open, Composable and Connected (November 2026).",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Three dated rows quoting each formulation with its source.",
+              "source": "EPAM 2020; MACH Alliance 2023, 2025, 2026",
+              "shows": "Shows the wording change side by side."
+            }
+          ]
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "With microservices and headless gone and 'Incremental' added in 2025, the author's labeled reading is that the acronym outlived its expansion: what survives are properties a merchant can ask of any platform, and what was dropped were prescriptions about how the vendor's own software is built.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: an old signboard with two words crossed out beside a new board of three.",
+              "shows": "Shows what was dropped and what remained."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The three formulations.",
+            "introduces": "What the change means for a merchant.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "data",
+      "heading": "What the Movement's Own Data Say",
+      "controlling_idea": "The alliance's own 2026 survey, read as a commissioned survey, yields one finding against interest: 37% of respondents name integration complexity a primary concern.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Gives the cost line the promise left out from the movement's own data."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The survey's figures come first, then how to read them, then the vendor figures that point the same way with the same caveat and the absence of an independent study. Reading the survey before stating its figures would leave the caveats with nothing to qualify."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "The alliance's changed wording.",
+        "introduces": "Its own survey data.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p32",
+          "controlling_idea": "The alliance's February 2026 report on a survey of 600 enterprise technology decision-makers gives favorable AI figures and also reports that 37% cite integration complexity as a primary concern.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "78% versus 13% clear AI ROI; 98% versus 33% AI at scale; 89% missing standards; 37% integration complexity; 45% privacy and security.",
+              "source": "MACH Alliance, 2026-02-18",
+              "shows": "The survey's findings as stated."
+            }
+          ]
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Read as a survey commissioned by a vendor alliance with 'clear ROI' undefined, its usable finding is the one against interest: more than a third of respondents name integration complexity a primary concern, the cost line the 2020 promise left out.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Commissioned; population includes adopters; ROI undefined.",
+              "shows": "Explains why only the finding against interest is kept."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The survey's figures.",
+            "introduces": "How to read them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Shopware's integration figures point the same way with the same caveat, and no independent study with a stated method compares the total cost of an assembly with a hosted platform with layers, so the chapter's costs are judgment or illustration.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "More than 15 tools; up to 52% of implementation effort.",
+              "shows": "A second vendor figure pointing the same way, with a vendor's reason to count high."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The survey's finding against interest.",
+            "introduces": "A vendor figure that points the same way, and the missing independent study.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "costs",
+      "heading": "What Composable Actually Costs",
+      "controlling_idea": "A composable assembly carries the same bill as any platform plus lines the brochure assigns to nobody, all of which fall on the merchant's own team.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Turns the unsaid column into cost lines and shows who pays each."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "No independent cost study.",
+        "introduces": "The author's labeled cost table.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p35",
+          "controlling_idea": "A cost table (the author's synthesis) sets a hosted platform with layers beside a composable assembly line by line, storefront, joins, upgrades, separate services, licenses, people and exit, and names who pays each.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven cost lines in two columns with who pays; 34 integrations at Kestrel & Pine; Saleor Cloud 0.8% above $200,000 a month.",
+              "shows": "Shows each line the assembly adds to the merchant's bill."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: the merchant's own team at the centre owning the storefront and every join.",
+              "shows": "Shows who carries the added lines."
+            }
+          ]
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Kestrel & Pine received such a proposal, an outside consultancy's composable rebuild of February 2027 at an illustrative three-year cost of about €3.2 million; with three storefront and app engineers of fourteen and a €14,000-a-month agency, a built storefront would need at least those engineers full time plus the agency before any of the 34 integrations were rebuilt, and the assembly would have more joins, all its own.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Ledger: fourteen in technology, three storefront and apps engineers, agency €14,000 a month, 34 integrations; the storefront staffing labeled an illustration.",
+              "source": "scenario-ledger.md",
+              "shows": "Works the storefront line through for one merchant."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The cost lines.",
+            "introduces": "The February 2027 composable proposal to Kestrel & Pine, and its storefront line worked through.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fit",
+      "heading": "When Composable Is Right",
+      "controlling_idea": "Composable is right under specific conditions, scale stage, differentiation, team shape, vendor count and reason to move, and a full assembly is a Group-stage choice while an Omnichannel merchant takes it one capability at a time.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "States the conditions the record and the cost lines support."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The cost of a full assembly.",
+        "introduces": "The conditions under which it is still right.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p37",
+          "controlling_idea": "The record says composable was oversold to the wrong merchants, not that it is wrong, and a fit table gives the conditions under which it fits or limits.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five situations: scale stage, differentiation, team shape, vendor count, reason to move.",
+              "shows": "Gives conditions, not verdicts."
+            }
+          ]
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "The per-capability path, keeping the platform and adding a PIM, an OMS, search or an agentic layer as owned services, is what the vendors now sell and what an Omnichannel merchant can absorb; the full assembly is a Group-stage choice.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "commercetools' July 2026 modules: 'without replacing their existing platforms'.",
+              "shows": "Shows even enterprises adopting it piece by piece."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The fit table's conditions.",
+            "introduces": "The path most merchants should take.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "kp",
+      "heading": "What Kestrel & Pine Takes From It",
+      "controlling_idea": "Kestrel & Pine declined the consultancy's composable rebuild costed above and takes the per-capability path the vendors now sell, as Waypoint.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Applies the fit conditions to the book's merchant."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The per-capability path.",
+        "introduces": "The book's merchant taking it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "controlling_idea": "Kestrel & Pine declined the proposal: Waypoint keeps the hosted platform (W4) while buying an OMS, availability and a PIM beside it, with the warehouse authoritative for stock and each integration owned under a contract (W5), the selective assembly the vendors now sell, revisited at the 2029 review.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "W4 stay and surround; W1 stock ownership; W5 integration standards; 2029 review.",
+              "source": "scenario-ledger.md",
+              "shows": "Shows the per-capability path at an Omnichannel merchant."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: the 2020 promise asked the merchant to build the storefront and own every join; the 2026 products from the same vendors attach a layer to a platform the merchant keeps.",
+              "shows": "Shows Waypoint's shape as the one the vendors' 2026 products attach to."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "heading": "Where the Evidence Stops",
+      "controlling_idea": "The record stops short of commercetools' and Shopware's reasons, Adobe's dates, the alliance's reasons, an independent cost study and some analyst placements.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Marks the limits of every case just read."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "What Kestrel & Pine takes.",
+        "introduces": "What the record could not establish.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p41",
+          "form": "list",
+          "controlling_idea": "Six limits: commercetools' reasons and unreconciled figures, Shopware's strategy and claims, Adobe's launch dates, the alliance's reasons and survey method, the absence of an independent cost study, and missing analyst placements.",
+          "function": "context"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The movement's own record now answers the opening merchant: adopt search as one service beside the kept platform with a named owner for its joins; a full assembly replaces every join at once and pays only for a Group-stage merchant with platform and product teams, which is also what the movement's vendors sell by 2026.",
+    "so_what": "A composable proposal is answered with questions about the storefront, each join's owner, version and renewal, reference customers within a factor of ten and the vendor's own products for kept platforms, before any product is compared; and, as Part XI's closing shows, any large-company example is tested by the discipline it shows and the size at which it was adopted.",
+    "callback": {
+      "to": "The hook's merchant that wants to replace its search service without replacing checkout and the catalog.",
+      "how": "p42 answers it: one service beside the kept platform with an owner for its joins to product identifiers, prices and stock; the full assembly is the Group-stage case."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Ask the seven questions of any composable proposal; test any large-company example by its dated source, the discipline it shows and the machinery only that company needs; then start with the entity-owner table and the integration inventory from the toolkit for your own landscape."
+    },
+    "hand_off": {
+      "to": "ucp-beginners-tutorial",
+      "relationship": "example",
+      "carries_over": "Part X's account of agentic commerce and the cases' evidence.",
+      "introduces": "One protocol followed message by message."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The limits of the record.",
+      "introduces": "What the chapter establishes within them.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p42",
+        "controlling_idea": "The opening's merchant can now be answered from the movement's own record: adopt search as one service beside the kept platform, with an owner for its joins to product identifiers, prices and stock; a full assembly replaces every join at once and pays only for a Group-stage merchant, which is what the vendors themselves sell by 2026.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The hook; commercetools' modules; the alliance's principles and survey; the cost and fit tables.",
+            "shows": "The chapter's answer, drawn from every section and tied back to the opening."
+          }
+        ]
+      },
+      {
+        "id": "p43",
+        "form": "list",
+        "controlling_idea": "Established: the 2020 definition and the 2026 principles without microservices or headless; the flagship's layers and modules after its 2025 cut; Shopware's move of integration and payments into a GMV-priced platform; the survey's 37%.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer.",
+          "introduces": "What is documented.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p44",
+        "form": "list",
+        "controlling_idea": "Depends on context: a full assembly fits a Group-stage merchant with product and platform teams; one capability as a separate service fits the Omnichannel stage when it has an owner; open source and composable are independent choices.",
+        "function": "analysis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is documented.",
+          "introduces": "What depends on the merchant.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p45",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: the movement was right about properties and wrong about prescriptions, and the 2026 products of commercetools and Adobe, a kept core with layers beside it, are composable as it should have been sold.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "What depends on context.",
+          "introduces": "The author's view.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p46",
+        "form": "list",
+        "controlling_idea": "Seven questions apply the chapter to a composable proposal: which words the proposer means, who runs the storefront, who owns each join, which capability can be one service beside the platform, which reference customer is near the merchant's size, what the vendor sells for kept platforms, and what stands behind each figure.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "The questions to ask of a proposal.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p47",
+        "controlling_idea": "This chapter closes Part XI, which opened with the Giant's Boots: the four cases look like four architectures, but read for what each company wrote about its joins they give one answer, a contract at each join, one owner per fact and a reconciliation, with the shape around them sized to the company's own load, teams or customers.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Shopify's webhook contract and dated withdrawals; Amazon's always-writeable cart and seller-of-record split; Zalando's 2025 read API and deprecation rules; the composable vendors' modules beside a kept platform.",
+            "shows": "The part's synthesis across chapters 46 to 49, with the callback to the part opening."
+          }
+        ],
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The chapter's questions.",
+          "introduces": "What the four cases of Part XI have in common.",
+          "form": "paragraph",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p48",
+        "controlling_idea": "Any large-company example cited in a design review can therefore be tested before it is copied: find the dated source, mark what it documents and what is inferred, and ask which discipline at a join it shows and at what size the company adopted the shape around it; for Kestrel & Pine each case's answer was a Waypoint decision already made (W1, W4, W5, W8) that changed none of its architecture.",
+        "function": "recommendation",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "W1 stock ownership, W4 stay and surround, W5 integration standards, W8 agent readiness (ledger).",
+            "source": "scenario-ledger.md",
+            "shows": "Shows the test applied to the book's merchant."
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The four cases' one answer.",
+          "introduces": "The test for any example, and Kestrel & Pine's answers.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p50",
+        "controlling_idea": "The book asked one question of a jacket order, a wholesale reorder, a peak day, an AI agent and four real companies, and got the same kind of answer each time: name the system that may make the promise and the system that must keep it.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Parts IX to XI: the journeys, the decisions over time and the four cases.",
+            "shows": "The journal's synthesis."
+          }
+        ],
+        "transition_in": {
+          "relationship": "similarity",
+          "carries_over": "The four companies' answer at their joins.",
+          "introduces": "The same answer across the whole book.",
+          "form": "paragraph",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p51",
+        "controlling_idea": "Eva's five promises (this jacket, at this price, in stock, on Thursday, returnable) give the test for the reader's next decision before any product is compared: which promise is this, which system makes it and which system has to keep it; the place to start is the entity-owner table and the integration inventory in the toolkit.",
+        "function": "recommendation",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Eva's five promises from the introduction; Tools 2 and 3 of the toolkit.",
+            "shows": "The callback to the book's opening and the first course of action."
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The book's one answer.",
+          "introduces": "Eva's five promises as the test, and where to start.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p52",
+        "controlling_idea": "For readers who want one join in full detail, the appendix takes Part X's account of agentic commerce and the cases' evidence down to one protocol followed message by message, and the reference pages follow it.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The book's closing.",
+          "introduces": "The appendix and the reference pages.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The platform categories, pricing models and the 2023-2026 timeline as a market map.",
+      "covered_in": [
+        "commerce-platform-landscape"
+      ]
+    },
+    {
+      "topic": "Composable as an engineering style, and the modular monolith and microservices evidence; Shopify's monolith; Zalando's microservices.",
+      "covered_in": [
+        "commerce-architecture-styles",
+        "case-shopify",
+        "case-zalando"
+      ]
+    },
+    {
+      "topic": "The decision method and total cost of ownership; migration mechanics.",
+      "covered_in": [
+        "build-buy-or-assemble",
+        "replatforming-and-migration"
+      ]
+    },
+    {
+      "topic": "Extension mechanisms and the Forked Platform; headless storefront delivery.",
+      "covered_in": [
+        "extensibility-and-app-ecosystems",
+        "storefront-architecture"
+      ]
+    },
+    {
+      "topic": "Agentic commerce protocols and their availability; the chapter names AgenticLift and 'Autonomous Commerce' only as evidence of the vendors' vocabulary.",
+      "covered_in": [
+        "ai-and-agentic-commerce",
+        "ucp-beginners-tutorial"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Confirming round 3 ended ESCALATE (pass 20, fail 23, all remaining blocking failures draft faults). Cheap fixes applied after it without another round, so check-report.json is stale: the applicant figures tied to what they show (p08); a similarity lead-in for the Adobe section (p26); a lead-in sentence before the questions (p46); 'neither should you' replaced (p16); 'the other gap' clarified (p17); p40 points back to the costed proposal; Figure 4's caption names Waypoint. Remaining failures auto-resolved: the thesis paragraph after KEY POINTS and the 'Where we are in the order's journey' paragraph are house elements of every chapter (rule 10, the author's format stands); the Mage-OS release and membership detail stays (rule 2, cited); the split of the February 2027 proposal (p36) from its decline (p40) stays, since readers asked for opposite moves across rounds (rule 10, current position stands); Saleor keeps its in-table gloss; unglossed minor terms (best-of-breed, SaaS, executions, fork vocabulary) were single-reader findings and are left.",
+      "rejected": [
+        "A fourth round: the brief allows one confirming round.",
+        "Cutting the thesis paragraph p05: the contract requires a thesis statement in the introduction."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the four carried-over open questions (the commercetools CEO handover date, its unreconciled April and July 2026 figures, Adobe's general-availability date, an independent cost study) are settled by rule 2: the page keeps what its cited sources state and says in 'Where the Evidence Stops' what they do not; a later source would be a new edit, not an open decision. The fifth (the missing part and journal closings) is settled by p47-p52.",
+      "rejected": [
+        "Leaving them open as research tasks: no rule-12 decision is needed from the author."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12 (round 2 ended ESCALATE; RESOLVE.md rules): (rule 3) the definition paragraph p03 moved before p02, as flow readers in both rounds asked, so composable and headless are defined before the history uses them, and p02/p03 transitions rewritten; (rule 3) the Commerce.com clause cut from the commercetools inference callout, which readers in both rounds found out of place (a forward reference whether glossed or not), and the callout keeps the author's inference about commercetools; (rule 3) Figure 4 ('The 2020 promise asked the merchant to build the storefront and own every join') moved again, from the fit section to the Kestrel & Pine section after p40, since readers found it out of place after the commercetools record and after the fit table, and its caption (a layer attached to a platform the merchant keeps) describes Waypoint; (rule 2) the 2023 applicant figures given from the cited release (over 200 with about half admitted; 225 with about 45%); (rule 6) glosses for suite, ISVs, CRO, 'Who pays it' column, GMV-capped subscription; PayPal's stake tied to Shopware Payments in p19; transitions added for the data and evidence sections; p05 opener, p28 fork sentence, p31 'Incremental' sentence, p36 scenario time and p48's Waypoint matching (decisions defined before cases are matched) clarified. Rule 9 (thesis) not triggered.",
+      "rejected": [
+        "Cutting Figure 4: rule 3 cuts paragraphs that support no claim; the figure supports S5 and the Kestrel & Pine section is a position no reader has tried.",
+        "Removing the Shopware succession details (spec fault in round 2): rule 2 keeps what the page says and its cited sources support; the PayPal sentence gives the paragraph its link to what follows.",
+        "Rewording 'Amazon's delivery promise matches W8' away: W8 includes the delivery promise through APIs (ledger), now said explicitly."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Draft check round 1 ended ESCALATE on three spec faults; spec changes pre-approved by the brief: p17's inference callout keeps its Commerce.com remark but glosses Commerce.com in place (the renamed BigCommerce, discussed below) instead of referring forward unexplained; the figure 'The 2020 promise asked the merchant to build the storefront and own every join' moved from the commercetools section (p17) to the fit section (p38), where it sets the full assembly beside the per-capability path, and is renumbered Figure 4 (the alliance and cost figures become 2 and 3). Draft faults revised in p02, p03, p05, p11, p12, p13 (table glosses), p20, p22, p27, p30, p31, p35, p36, p40, p48, p50 and the callouts (glosses for orchestration layer and middleware, replatforming and cutover, analyst placements, Saleor, Magento, EHI, new logos and same-store; the €48 million brand tied to Kestrel & Pine; the Waypoint decisions matched to the cases)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric rerun (round 2, sound with notes), notes taken without review as the author asked: the consultancy's proposal and its €3.2 million now stand in one place (p36), and the Kestrel & Pine section is one paragraph (p40) that starts from the declined proposal (old p39 removed); the labeled inference about commercetools' reasons moved from p16 to p17 so p16 holds only the units point and p17 holds the gaps in the record; p10 names Kestrel & Pine as the merchant with fourteen technology staff.",
+      "rejected": [
+        "Removing the founding date and member count from the introduction (p02) because section 1 repeats them: the introduction's preview is the author's and the section adds the sources.",
+        "Dropping Adobe from the author's synthesis (p45): Commerce Optimizer, sold beside any backend, is a kept core with a layer beside it, the shape the synthesis praises; the author named Adobe and only the unsupported Salesforce is cut.",
+        "Merging p50 and p51 (again asked): two ideas.",
+        "Declaring flows for two-paragraph sections and the one-paragraph sections: optional by the schema."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (round 1, sound with notes), notes taken without review as the author asked: the February 2027 consultancy proposal is now named in p36 before its storefront line is costed, and p39 refers back to it (forward reference removed); p30 names the five 2025 principles so p31's 'Incremental' is not new; the part closing's two-question test and its procedure merged into p48 (the old p49 removed), so the conclusion closes the chapter (p42-p46), Part XI (p47-p48) and the book (p50-p52); reasons added for the order of the Adobe section and for the place of 'Where the Evidence Stops'.",
+      "rejected": [
+        "Cutting the no-independent-study clause from p34 or from the evidence list: p34 states it where the vendor figures are read, the closing list is the house apparatus of every case.",
+        "Merging p50 and p51: one is the book's synthesis, the other the callback to Eva's five promises and the course of action; merged they hold two ideas.",
+        "Adding flow declarations to two-paragraph sections (alliance, costs, fit, kp): optional by the schema, and each section's two units are claim and its reading."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Converted spec.md to spec.json from the published chapter, one spec paragraph per unit. Intent outcome, the five acceptance criteria, thesis and role copied unchanged from journal-spec.json; audience and six supporting claims written for this chapter. The old success criteria were inventories (quotations side by side, a dated table, sections present, word range) and are dropped: the journal spec's criteria AC-1 to AC-5 state the reader outcomes they served. No criteria added. Word limit: the old spec's 4,500-6,000 words, kept at max_words 6000; the two closings fit without the 10% allowance.",
+      "rejected": [
+        "Carrying the success criteria over as rubric criteria: they list contents, not outcomes.",
+        "Raising the limit to 6,600: not needed."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Added units the contract asks for and the published page lacked: p05 (thesis statement), p06 (roadmap replacing the cross-link paragraph, which it absorbs), p42 (chapter synthesis with callback to the hook), p47-p49 under a 'Closing Part XI' heading (the part closing from journal-spec part-11.closing) and p50-p52 under a 'Closing the Book' heading (the journal closing from journal-spec closing, with the hand-off to ucp-beginners-tutorial, the next page in config.yaml, replacing the published hand-off to domain-coverage). Eva's journey paragraph moved before the thesis, as in chapters 46-48; p02 opens with the contrast to chapters 47 and 48 that the chapter's transition_in declares.",
+      "rejected": [
+        "Putting the part and journal closings inside 'What to Take Away': both are longer than one paragraph and chapter 36 sets the precedent of a 'Closing Part' heading.",
+        "Keeping the hand-off to domain-coverage: the appendix tutorial comes first in config order and the validator checks the hand-off against its transition_in."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Section 'What Composable Promised': the 2023 announcement now comes before the four-choice paragraph, so the what-it-says table follows the paragraph that states the proposition rather than the adoption claims (chronological within the section).",
+      "rejected": [
+        "Leaving the table attached to the 2023 adoption paragraph."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Fact fixes required by the brief and the rulings: 'Salesforce' removed from the author's synthesis (the chapter never discusses it and none of its cited sources supports it; Adobe Commerce Optimizer, cited, stays); the cost table's 'Apps and connectors (34 at Kestrel & Pine)' says 34 integrations (consistency item 10: 34 integrations; 41 apps, 34 by July 2027); the February 2027 proposal is the outside consultancy's and was declined (ruling 13a); the Spaghetti Junction callout and the data section state the survey as its source does (37% of respondents name integration complexity a primary concern) instead of 'its members' primary concern' and 'the people most committed to composable'; 'four vendors' founding the alliance becomes 'four technology companies' (EPAM's release: 'a group of independent tech companies').",
+      "rejected": [
+        "Keeping 'Salesforce' with a citation from the research brief: the brief is a source summary and the chapter cites no Salesforce source."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (case-composable-movement; part-11 closing; the journal closing; appendix transition_in)",
+      "contributed": "Intent, thesis, role, acceptance criteria, the opening's contrast with chapters 47 and 48, Part XI's closing, the journal's closing and the hand-off to the appendix tutorial."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md and _research/consistency-issues.md (items 10, 13a)",
+      "contributed": "Fourteen in technology, three storefront and apps engineers, the €14,000 agency retainer, 34 integrations, the consultancy's €3.2M composable rebuild declined, W1, W4, W5, W8 and the 2029 review."
+    },
+    {
+      "kind": "internal",
+      "ref": "commerce-platform-landscape, meet-kestrel-and-pine, commerce-architecture-styles, build-buy-or-assemble, case-shopify, case-amazon, case-zalando, introduction, toolkit",
+      "contributed": "The categories and the February 2027 pitches; the team and integrations; the chapters that own design, decision and Shopify material; what chapters 46-48 established for the part closing; Eva's five promises; Tools 2 and 3."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-platform-landscape.md (Parts 1.3-1.5 and 3)",
+      "contributed": "The verified vendor and MACH facts; the commercetools June, July and October 2026 releases were fetched and verified in the original session."
+    },
+    {
+      "kind": "external",
+      "ref": "EPAM (2020) and MACH Alliance (2023, 2025, 2026)",
+      "contributed": "The three formulations of the principles and the 2026 survey."
+    },
+    {
+      "kind": "external",
+      "ref": "commercetools releases (2024, 2026) and TechCrunch (2025); Shopware releases and pricing (2022, 2025-2026) and Ecommerce News Europe (2025); Adobe Experience League (2026), Rightpoint (2025), Mage-OS (2022-2026); Digital Commerce 360 (2025) and the Commerce.com SEC exhibit (2026); Saleor pricing; W3Techs; Kibo (2026)",
+      "contributed": "The dated vendor record."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Confirming round 3 (ESCALATE); cheap fixes applied afterwards in p08, p16, p17, p26, p40, p46 and the Figure 4 caption; check report stale."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Round 2 draft check (ESCALATE); auto-resolved per RESOLVE.md: intro p03 before p02, Commerce.com clause cut from the commercetools callout, Figure 4 moved to the Kestrel & Pine section, applicant figures given, glosses and transitions added."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Round 1 draft check (ESCALATE on spec faults): Figure 2 moved to the fit section as Figure 4; the commercetools callout glosses Commerce.com; glosses and transitions revised in the named units."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "spec.md converted to spec.json; thesis, roadmap, chapter synthesis, Part XI closing and journal closing added; hand-off moved to ucp-beginners-tutorial; fact fixes (Salesforce, 34 integrations, ruling 13a, survey wording)."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: February 2027 pitch attribution corrected (item 13a). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 6000
+  }
+}

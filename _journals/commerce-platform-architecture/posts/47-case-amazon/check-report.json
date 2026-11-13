@@ -1,0 +1,458 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/47-case-amazon/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/47-case-amazon/index.md",
+  "spec_sha": "eecbdbea8d79aec0",
+  "draft_sha": "5481c4202eb7fab6",
+  "run_at": "2026-11-13T02:18:57+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Amazon's roles toward a merchant (marketplace, fulfiller, competitor) and why Kestrel & Pine must understand them",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "the chapter relies on dated Amazon sources, which do not reveal today's systems",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "dating of the evidence: architecture from 2006-2007, finances and AI from 2024-2026",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "the three order-journey topics this case touches and the chapters that cover them",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "thesis: each Amazon move answered a business problem, and a merchant can adopt the rules but not the scale",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Introduction ¶6",
+      "summary": "roadmap of the chapter's sections",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "How to Read a Case Study in This Book ¶1",
+      "summary": "how claims are labelled by evidence strength",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "How to Read a Case Study in This Book ¶2",
+      "summary": "research cut-off date and primary pages that could not be retrieved",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "2001: The Front End Hits a Wall ¶1",
+      "summary": "definitions of monolith and service-oriented architecture",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "2001: The Front End Hits a Wall ¶2",
+      "summary": "Vogels' account: the 2001 scaling wall and the move to hundreds of services",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "2001: The Front End Hits a Wall ¶3",
+      "summary": "the Dynamo paper confirms the service architecture and its 99.9th-percentile latency targets",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "2001: The Front End Hits a Wall ¶4",
+      "summary": "tail latency as the engineering cost of splitting into services",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "2001: The Front End Hits a Wall ¶5",
+      "summary": "the lesson is the sequence monolith, scaling wall, then services",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Teams, Ownership and the Contract as the Only Door ¶1",
+      "summary": "Amazon's three famous team rules and how well each is sourced",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Teams, Ownership and the Contract as the Only Door ¶2",
+      "summary": "two-pizza teams and 'you build it, you run it' as documented ownership rules",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Teams, Ownership and the Contract as the Only Door ¶3",
+      "summary": "the API mandate exists only in Yegge's recollection and is unconfirmed",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Teams, Ownership and the Contract as the Only Door ¶4",
+      "summary": "Amazon's own confirmation of the outcome: opening services and fulfillment to others",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Teams, Ownership and the Contract as the Only Door ¶5",
+      "summary": "the externalizable-interface test as the part of the mandate worth keeping",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "The Cart That Never Says No ¶1",
+      "summary": "the cart as an availability-versus-reconciliation tradeoff explained by Dynamo",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "The Cart That Never Says No ¶2",
+      "summary": "the business reason for an always-writeable cart: a refused add is a lost sale",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "The Cart That Never Says No ¶3",
+      "summary": "eventual consistency and how Dynamo merges divergent carts, with deleted items resurfacing",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "The Cart That Never Says No ¶4",
+      "summary": "DynamoDB: Amazon teams chose operable managed services over Dynamo, and its Prime Day scale",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "A Nuance: When One Process Beat a Distributed Design ¶1",
+      "summary": "the 2023 Prime Video post supports a narrower claim than a reversal",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "A Nuance: When One Process Beat a Distributed Design ¶2",
+      "summary": "Prime Video replaced a costly serverless pipeline with one process",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "A Nuance: When One Process Beat a Distributed Design ¶3",
+      "summary": "the lesson: size a boundary to the data that crosses it",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Fulfillment as a Platform ¶1",
+      "summary": "fulfillment as a service opened to other merchants",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Fulfillment as a Platform ¶2",
+      "summary": "definitions of 1P, 3P, seller of record and FBA",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Fulfillment as a Platform ¶3",
+      "summary": "Prime (2005) and FBA (2006) launch dates and how they combined",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Fulfillment as a Platform ¶4",
+      "summary": "third-party share of sales over time from the 2018 letter",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Fulfillment as a Platform ¶5",
+      "summary": "Amazon credits FBA and Prime, and later reports put third-party share above 60%",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Fulfillment as a Platform ¶6",
+      "summary": "the 10-K's definition of the marketplace model and Amazon's 2025 scale figures",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Fulfillment as a Platform ¶7",
+      "summary": "Kestrel & Pine as a third-party seller treating Amazon-held stock as a tracked external location",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "The Promise Is the Product ¶1",
+      "summary": "recent Amazon sources focus on delivery speed as the product, not on its software",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "The Promise Is the Product ¶2",
+      "summary": "definitions of regionalization, placement algorithm and delivery promise",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "The Promise Is the Product ¶3",
+      "summary": "2024 letter credits regionalization and placement for faster delivery",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "The Promise Is the Product ¶4",
+      "summary": "2025 letter figures on robots, same-day centers and rural delivery",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "The Promise Is the Product ¶5",
+      "summary": "2026 delivery-volume figures, quoted for shape not size",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "The Promise Is the Product ¶6",
+      "summary": "delivery-promise needs compared at Amazon's scale and Kestrel & Pine's",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Other Shops, Other Agents: 2022 to 2026 ¶1",
+      "summary": "Amazon pushes its machinery out to other shops and agents; details change fast",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Other Shops, Other Agents: 2022 to 2026 ¶2",
+      "summary": "agentic commerce defined and what this case adds",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Other Shops, Other Agents: 2022 to 2026 ¶3",
+      "summary": "Buy with Prime + Shop Direct",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Other Shops, Other Agents: 2022 to 2026 ¶4",
+      "summary": "Rufus renamed Alexa for Shopping and its new purchasing actions",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Other Shops, Other Agents: 2022 to 2026 ¶5",
+      "summary": "Buy for Me: Amazon's agent buying on brand sites",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Other Shops, Other Agents: 2022 to 2026 ¶6",
+      "summary": "Amazon's terms for outside agents, stated against Perplexity's Comet",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Other Shops, Other Agents: 2022 to 2026 ¶7",
+      "summary": "Amazon's cease-and-desist and lawsuit against Perplexity",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "What a Merchant Can Learn, and What Only Amazon Can Do ¶1",
+      "summary": "table of transferable lessons with their evidence",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "What a Merchant Can Learn, and What Only Amazon Can Do ¶2",
+      "summary": "the Amazon-only machinery a merchant should not copy",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "What a Merchant Can Learn, and What Only Amazon Can Do ¶3",
+      "summary": "what Kestrel & Pine takes from the case as Waypoint decisions, and what it does not",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Where the Evidence Stops ¶1",
+      "summary": "limits of the evidence: today's internals, the mandate, unfetched sources, changing products, costs",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "four rules that work at any size and the records a merchant must still track",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "established findings from the dated record",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "lessons whose applicability depends on the merchant's stage",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "author's view: keep the four narrow rules and own operations well",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "design-review questions applying the rules to a merchant's systems",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "where Amazon's record ends and hand-off to the Zalando case",
+      "matched_spec_paragraph": "p55"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "reverse_outline_matches_spec",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "What to Take Away ¶1",
+      "quote": "Those rules sit where a merchant meets Amazon, which answers the question the chapter opened with, which records its own systems must still track: whichever role Amazon plays,",
+      "finding": "The callback sentence that ties the four rules to the opening question chains two 'which' clauses and a colon; both flow readers had to go back to the introduction to find 'the question' (flowA: 'the hardest sentence in the chapter'; flowB: 'chains three clauses. I had to go back to the opening paragraph'). The order is fine; the prose obscures the callback.",
+      "fault": "draft",
+      "corroborated_by": "reader-flowB: same takeaway sentence, had to go back to the opening paragraph to find 'the question'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/4",
+      "draft_locus": "Introduction ¶5",
+      "quote": "managed databases (run by a provider rather than by the team using them) that its own teams could run, and Fulfillment by Amazon, its warehouse service for other sellers, letting their items carry the delivery promise of Prime, Amazon's paid membership with fast shipping",
+      "finding": "The thesis paragraph packs three inline glosses (managed databases, FBA, Prime) and four rules into two long sentences; flowA read it twice, flowB stopped at 'run by a provider' next to 'teams could run'. Split the paragraph or move the glosses out.",
+      "fault": "draft",
+      "corroborated_by": "reader-flowB: the 'managed databases (run by a provider ...) that its own teams could run' clash in the same paragraph",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "Teams, Ownership and the Contract as the Only Door ¶1-¶2",
+      "quote": "Of its three well-known team rules, one is in Amazon's own documentation, one in a digest of its CTO's interview, and the third only in a former engineer's recollection.",
+      "finding": "flowA: the next paragraph puts two rules (two-pizza, you build it you run it) in one block headed only 'Two-pizza teams', so the reader has to go back to match each rule to its source; 'its CTO' is the only hint that Vogels is the CTO.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "Teams, Ownership and the Contract as the Only Door ¶4",
+      "quote": "Ten years later, in his 2016 retrospective on AWS, he wrote that the lesson of building management APIs first was one \"we had already learned from our experiences with Amazon retail\".",
+      "finding": "flowA: a forward reference to Fulfillment by Amazon in the middle of the team-rules section, and the 2016 'management APIs first' quote does not clearly connect to the mandate it is meant to confirm.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/2",
+      "draft_locus": "Other Shops, Other Agents: 2022 to 2026 ¶3-¶5 and Figure 5",
+      "quote": "imports merchants' catalogs into its own surface (Shop Direct, Buy for Me)",
+      "finding": "flowA: the text runs Buy with Prime, Shop Direct, Rufus, Buy for Me, while Figure 5 and the inference callout group Shop Direct with Buy for Me as imports, with Rufus (Amazon's own agent) between them; the reader had to regroup the products. The declared paragraph order (also not strictly chronological: Shop Direct 2025 before Rufus 2024) is the source of the difficulty.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/5",
+      "draft_locus": "The Promise Is the Product, inference callout after ¶6",
+      "quote": "because orders placed after 21:00 are picked the next morning",
+      "finding": "flowB: the 21:00 pick cut-off right after the 'ordered before 22:00' rule reads as a possible contradiction; the box never says outright that the mismatch is the point. (flowA separately found the curated-subset sentence tacked on at the end of the same box.)",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "The Promise Is the Product ¶3",
+      "quote": "Jassy's 2024 shareholder letter (published April 2025)",
+      "finding": "Andy Jassy is never introduced as Amazon's CEO; a reader new to commerce cannot tell whose letter this is (Bezos is named elsewhere, Vogels only as 'its CTO'). All does_not_know terms are otherwise defined at or just after first use.",
+      "fault": "draft",
+      "corroborated_by": "reader-flowA: 'Jassy's 2024 shareholder letter: Jassy is never introduced.'",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "fail",
+      "spec_locus": "/intent/acceptance_criteria/0",
+      "draft_locus": "KEY POINTS bullet 1; Teams ¶3; inference callout after 2001 ¶5",
+      "quote": "The transferable rule is the one that made the split survivable: every team exposes its data only through a service interface, and nobody reads another team's database.",
+      "finding": "The reader gets the wall-first sequence, the 100-150 services at the 99.9th percentile, the scale gap, the contract rule for vendors and scripts and operability, but misses two expected points: that the 'API mandate' is only a 2011 recollection, not an Amazon document, and that a merchant whose product page is assembled from several systems meets the aggregation and tail-latency problem in miniature. The draft has both (Teams ¶3 and Where the Evidence Stops; the inference callout after the wall section), but the KEY POINTS bullet presents the no-direct-reads rule as Amazon's without the provenance caveat, and the aggregation point sits only in a callout.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "major"
+    }
+  ]
+}

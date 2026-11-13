@@ -36,13 +36,13 @@ The chapters follow Eva's parcel out and back: warehouse, carrier and delivery d
 
 First, [[warehouse-and-fulfillment]] defines **the work instruction and response between order management and the warehouse**. The Queue That Waited, a four-hour Black Friday backlog, shows why a warehouse can have spare picking capacity while customers wait for orders that never reached it.
 
-Then [[shipping-and-delivery]] explains **carrier integration and credible delivery dates**. Eva's Wednesday promise came from a fixed storefront rule that ignored that her order missed Duiven's last picking batch, at 21:00. Collection schedules, backlog, location and carrier performance must inform the promise.
+Then [[shipping-and-delivery]] explains **carrier integration and credible delivery dates**. Eva's Wednesday promise came from a fixed storefront rule ignoring that her order missed Duiven's last pick wave, the 21:00 picking batch. Collection schedules, backlog, location and carrier performance must inform the promise.
 
-Off Eva's route, [[stores-and-omnichannel]] treats **the store till as another source of orders, stock and customer records**. In the Store Stock Mirage, Utrecht's trial of collection in store promised 37 items already sold.
+Off Eva's route, [[stores-and-omnichannel]] treats **the store till as another source of orders, stock and customer records**. Store pickup and counter exchange provide alternative routes. In the Store Stock Mirage, Utrecht's trial of collection in store promised 37 items already sold. The chapter examines the data needed before offering cross-channel services or replacing the till.
 
-On the way back, [[returns-and-exchanges]] separates **the return request, inspection, stock decision and money movement**. Eva's size exchange and January 2027's 212 double refunds (the Double Refund) show why each action needs its own state and authorized owner. Refund and restock wait for inspection, and one system issues refunds.
+On the way back, [[returns-and-exchanges]] separates **the return request, inspection, stock decision and money movement**. Eva's size exchange and January 2027's 212 double refunds (the Double Refund) show why each action needs its own state and authorized owner. Refund and restock wait for inspection, the warehouse's verdict on the return, and one system issues refunds.
 
-Last, [[customer-service-and-notifications]] aligns **messages, the status page and the support view**. The Three-Status Order drew eleven tickets because no system could say that the order ships in two parcels.
+Last, [[customer-service-and-notifications]] aligns **messages, the status page and the support view**. The Three-Status Order drew eleven tickets because no system could say the order ships in two parcels.
 
 ![Diagram: The four promises of Part IV and the inputs each needs](assets/images/part-4-intro/fig02-four-promises-part-iv-inputs-each.jpeg)
 **Figure 3:** *The four promises of Part IV (“delivered tomorrow”, “ready for collection”, “your order was delivered” and “your refund is on its way”) and the inputs each needs; the Queue That Waited, the Store Stock Mirage, the Three-Status Order and the Double Refund, in the same order, are the four made without them.*

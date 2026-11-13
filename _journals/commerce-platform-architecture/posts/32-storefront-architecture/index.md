@@ -28,25 +28,29 @@ A slow product page can lose a sale before the shopper reaches checkout. Replaci
 
 The **storefront** produces the pages shoppers use to find products and buy. A platform can render them from a theme; a **headless storefront** is a separate application calling the commerce engine through APIs. The latter gives the merchant more control over how pages combine catalog, price, search and cart data. It also makes the team responsible for running that application and keeping its displayed answers fresh.
 
-Kestrel & Pine, the fictional outdoor brand, runs three localized storefronts from one agency-maintained theme. It has 41 installed apps and peak traffic 41 times an average hour. The example follows Head of Engineering Noor Visser's decision to decline a February 2027 headless proposal.
+Most of the previous chapter's apps land on the storefront: as theme code, app blocks and scripts that run in the shopper's browser. Those app scripts, more often than the rendering model, are what makes a product page slow.
+
+Kestrel & Pine, the fictional outdoor brand, runs three localized storefronts from one agency-maintained theme. It has 41 installed apps, and on its busiest hour storefront traffic reaches 41 times an average hour. The example follows Head of Engineering Noor Visser's decision to decline a February 2027 headless proposal.
 
 **Where we are in the order's journey.** Eva sees the Ridgewalker jacket on her phone before completing checkout at 21:14 on 13 April 2027. Price, stock and the next-day delivery promise shape her decision. [[cart-and-checkout]], [[commerce-payments]] and [[order-management]] follow the obligations created by that page.
+
+The chapter starts with the agency's headless proposal and Noor's measurements. It then sets out what a storefront owns and the three rendering models. It reads the dated performance evidence and treats accessibility as a requirement, then sets the rule for what is cached and what is fetched live and what public pages owe search engines. It compares the four options, with mobile apps beside them, and when each fits by scale stage. It ends with Noor's decision, two public checks for a merchant that does replace its storefront, the ways storefronts go wrong and what to take away.
 
 ## Setting the Scene at Kestrel & Pine: The Headless Proposal
 
 The agency proposes a separate storefront application on the platform vendor's **edge runtime**, servers near shoppers that execute frontend code, plus a separate content system. It promises better speed, more flexible brand content and future readiness.
 
-The fictional estimate is **€240,000 and nine months**, followed by another application to maintain. Noor asks which need the existing theme cannot meet.
+The illustrative estimate is **about €240,000 and nine months**, plus a second runtime to operate. Noor asks which need the existing theme cannot meet.
 
-She starts with real-user measurements. In the illustrative February 2027 mobile results, the main content appears in **2.1 seconds**, response to interaction takes **310 milliseconds**, and layout shift scores **0.08**. These are 75th-percentile measurements: three quarters of visits perform at least as well.
+She starts with real-user measurements. In the illustrative February 2027 results for the NL storefront's product pages on mobile, the main content appears in **2.1 seconds**, response to interaction takes **310 milliseconds**, and layout shift scores **0.08**. These are 75th-percentile measurements: three quarters of visits perform at least as well.
 
-Content loading and layout stability already meet Google's cited good ranges. Responsiveness does not. The agency traces it to scripts from eleven apps. That finding points to specific work before an architectural replacement.
+Content loading and layout stability already meet Google's good ranges (2.5 seconds or less, and 0.1 or less). Responsiveness does not: good is 200 milliseconds or less. The slow responses trace to scripts from eleven of its 41 apps. That finding points to specific work before an architectural replacement.
 
-She declined the rebuild. The reasons form the rest of this chapter.
+She declined the rebuild. The next sections set out what she weighed; her four-part answer comes in In Practice.
 
 ## What a Storefront Does, and What It Does Not Own
 
-A storefront produces pages: home, category (also called collection) pages, product pages, search results, content pages, the cart, the account pages and, at the end, the checkout. To produce them it needs facts from almost every other part of the platform. **It owns none of those facts.** It owns the templates, the layout, the brand, and the scripts that run in the browser.
+The answer starts from what a storefront is. A storefront produces pages: home, category (also called collection) pages, product pages, search results, content pages, the cart, the account pages and, at the end, the checkout. To produce them it needs facts from almost every other part of the platform. **It owns none of those facts.** It owns the templates, the layout, the brand, and the scripts that run in the browser.
 
 | What the page shows | Who owns the fact | Chapter |
 | --- | --- | --- |
@@ -73,57 +77,88 @@ Two words first. **Server-side rendering** means a server builds the complete pa
 
 A **theme** is a set of templates (and, on hosted platforms, the settings and scripts around them) that the platform's own renderer turns into pages. Shopify's Liquid themes, BigCommerce's Stencil ("BigCommerce's Handlebars-based theme engine") and the templates of Salesforce's Storefront Reference Architecture (SFRA) are the dated examples. The platform owns rendering, caching, delivery, security and scale; the merchant owns the templates.
 
-Shopify's August 2020 account describes a dedicated Liquid renderer using database replicas, a query cache, an in-memory cache and a full-page cache. It reported response times four to six times faster than its predecessor. In January 2022 the CTO described deploying that renderer regionally without the whole Rails monolith. These are dated architectural examples, not measurements of today's service.
+Shopify's account shows what that delivery infrastructure involves. Its August 2020 account describes a dedicated Liquid renderer using database replicas, a query cache, an in-memory cache and a full-page cache. It reported response times four to six times faster than its predecessor. In January 2022 Shopify's CTO described deploying that renderer regionally without the whole Rails monolith. These are dated architectural examples, not measurements of today's service.
 
 The merchant inherits delivery infrastructure but is limited by the platform's page types. Shopify's Online Store 2.0 (29 June 2021) extended those types through JSON templates, sections and app blocks, reducing the need to edit templates directly.
 
 ### Model 2: headless on the vendor's runtime
 
-The vendor supplies a storefront **API** and hosting; the merchant builds the front end. Shopify's Hydrogen toolkit adds Storefront and Customer Account API clients to a chosen framework, with React Router 7 as its starter and Oxygen as hosting (docs 2026-10). Oxygen became available on Shopify's main plans at no extra cost in February 2023. Salesforce's React-based PWA Kit uses Managed Runtime; Adobe Commerce as a Cloud Service uses a headless storefront on Edge Delivery Services (20 October 2026).
+The vendor supplies a storefront **API** and hosting; the merchant builds the front end. Shopify's Hydrogen toolkit adds Storefront and Customer Account API clients to a chosen framework, with React Router 7 as its starter and Oxygen as hosting (Shopify's documentation, version 2026-10). Oxygen became available on Shopify's main plans at no extra cost in February 2023. Salesforce's React-based PWA Kit runs on Salesforce's hosting service, Managed Runtime. Adobe Commerce as a Cloud Service, Adobe's hosted version of its platform, uses a headless storefront delivered through Adobe's Edge Delivery Services (Adobe documentation, 20 October 2026).
 
 Checkout stays on the commerce platform: Hydrogen explicitly excludes checkout UI. The merchant's application builds the cart and hands the shopper over.
 
 ### Model 3: headless anywhere
 
-The merchant chooses its framework and hosting, calling one or several commerce platforms. Vercel's server-rendered Next.js Commerce template used Shopify as reference, with forks for other platforms; its move to a successor repository illustrates this layer's churn (accessed November 2026). Alokai's **unified data layer** normalizes several platforms' product data into one interface (docs accessed November 2026). A group can then share a front end across brands while retaining different commerce engines.
+The merchant chooses its framework and hosting, calling one or several commerce platforms. Vercel's server-rendered Next.js Commerce template used Shopify as reference, with forks for other platforms; it has since moved to a successor repository, which shows how quickly the templates and tools at this layer change (accessed November 2026). Alokai's **unified data layer** normalizes several platforms' product data into one interface (docs accessed November 2026). A group can then share a front end across brands while retaining different commerce engines.
 
 ![Diagram: Three rendering models differ in who renders, who hosts and how many engines the front end can face](assets/images/32-storefront-architecture/fig02-three-rendering-models-differ-who-renders.jpeg)
 **Figure 2:** *Three rendering models differ in who renders, who hosts and how many engines the front end can face; under all three the checkout stays on the platform.*
 
+## Performance: What the Evidence Says, With Dates
+
+Whichever model renders the page, its speed is measured the same way, and the agency's first promise was speed. **Core Web Vitals** are Google's three field metrics for page experience, measured from real visitors and assessed at the 75th percentile of page loads, mobile and desktop separately (web.dev, updated 31 October 2024): **largest contentful paint** (LCP, when the main content has loaded; "good" is 2.5 seconds or less), **interaction to next paint** (INP, how quickly the page responds to a tap or click; good is 200 milliseconds or less) and **cumulative layout shift** (CLS, how much the page jumps while loading; good is 0.1 or less).
+
+INP replaced the older first-input-delay metric on 12 March 2024. Google's Search documentation says it "highly recommend[s]" good Core Web Vitals "for success with Search" and that they "align with what our core ranking systems seek to reward", without stating a weight (accessed November 2026).
+
+The evidence that speed moves money is consistent in direction and weak in precision:
+
+- **Deloitte Ireland for Google (24 March 2020; six years old):** across mobile sites in retail, travel, luxury and lead generation, a 0.1-second improvement in site speed went with +8.4% retail conversions and +9.2% retail average order value. Caveats the study carries: commissioned by Google, the number of sites not disclosed, and a correlation, not an experiment.
+- **web.dev's case collection (undated, accessed November 2026):** Vodafone Italy improved LCP 31% and saw sales up 8%; Lazada tripled LCP speed and saw mobile conversion up 16.9%; Cdiscount improved all three metrics and reported +6% revenue in a Black Friday sale. Every case is a self-selected success story, and none separates speed from the redesign that came with it.
+- **A vendor's admission (Shopify, accessed November 2026):** the theme-performance page says performance "directly influences conversion rates, repeat business, and search engine rankings" without citing a figure; the Theme Store requires a minimum average performance score of 60 in Lighthouse, Google's automated lab test of a page (unlike the field measurements above); public apps "shouldn't reduce Lighthouse performance scores by more than 10 points"; and the admin's performance report warns that theme code and apps "can slow down your site".
+
+The honest reading: **faster is better, nobody can tell you by how much, and the usual culprit is not the rendering model but the scripts.** A rule that caps each app at ten points is a vendor admitting that apps are where storefront speed goes. Kestrel & Pine's INP of 310 milliseconds was eleven apps' scripts; the rendering model was innocent.
+
+![A phone weighed down by eleven app boxes, with a stopwatch reading INP 310 ms beyond a 200 ms good mark, beside an innocent theme card.](assets/images/32-storefront-architecture/32-eleven-apps-weigh-down-the-page.jpeg)
+**Figure 3:** *Kestrel & Pine's interaction to next paint of 310 milliseconds was eleven apps' scripts, not the rendering model; good is 200 milliseconds or less.*
+
+## Accessibility Is a Requirement, Not a Performance Option
+
+Speed is not the only requirement every page must meet. An accessible storefront lets people find products, understand choices and complete payment using the ways they interact with a device, including keyboards and screen readers. A fast page still fails its customer if a form or payment control cannot be used.
+
+**WCAG 2.2**, the Web Content Accessibility Guidelines of the World Wide Web Consortium (W3C), is a Recommendation dated 12 December 2024, with three conformance levels (A, AA, AAA) and four principles (perceivable, operable, understandable, robust).
+
+The **European Accessibility Act** (Directive (EU) 2019/882) applies to services "provided to consumers after 28 June 2025" and lists "e-commerce services" explicitly, defined as a service provided at a distance "with a view to concluding a consumer contract"; microenterprises (under 10 people and up to €2 million turnover) are exempt.
+
+Kestrel & Pine, with 310 employees and three consumer storefronts, has been in scope since June 2025; its B2B portal, serving businesses, is not a consumer service. National enforcement differs; [[commerce-regulation]] owns the calendar.
+
+Being in scope covers the whole purchase flow, not only the theme. An accessible theme can still contain an app block that a shopper cannot navigate or use. Apply accessibility criteria to both the theme and the inserted components, and test their combined purchase flow. The shopper needs to complete the whole task, whichever rendering model or supplier produced each piece.
+
 ## Cache the Shell, Fetch the Promise
 
-Some page content can be computed once and served repeatedly; other answers depend on this shopper and the current purchase.
+Keeping pages fast and usable for every shopper on a peak day depends on one more decision: which answers on a page can be reused. Some page content can be computed once and served repeatedly; other answers depend on this shopper and the current purchase.
 
 **Cacheable:** the product page's content, images, attributes and layout, per market and language; category pages; editorial pages; search facets to a degree. These change when the catalog or the campaign changes, not when a shopper arrives.
 
-**Validate live:** account prices, stock commitments, cart and checkout. Public pages may carry price and availability snapshots with explicit freshness limits, but accepting an order must check current terms. Reusing stale answers caused the Price Drift and Black Friday Oversell from the page's side; never share account-specific answers across customers.
+**Validate live:** account prices, stock commitments, cart and checkout. Public pages may carry price and availability snapshots with explicit freshness limits, but accepting an order must check current terms. Showing a stale price or stock answer is how the Price Drift and the Black Friday Oversell reached shoppers' pages. Never share account-specific answers across customers.
 
 ![A cached page shell stacked many times on the left, with a live price tag, stock badge and cart flying into empty slots on the page from the right.](assets/images/32-storefront-architecture/32-shell-and-promise-split.jpeg)
-**Figure 3:** *Cache the shell, fetch the promise: the page content is computed once and served many times, while the price, the stock badge and the cart are fetched for this shopper, now.*
+**Figure 4:** *Cache the shell, fetch the promise: the page content is computed once and served many times, while the price, the stock badge and the cart are fetched for this shopper, now.*
 
 **Cache the shell, fetch the promise** means serving useful cached content, refreshing changing facts and validating purchase terms. Shopify's full-page cache supplies the platform-level mechanism.
 
 At the headless layer the same idea appears as **incremental static regeneration**: Vercel's documentation (updated 28 August 2026) describes serving the cached page while regenerating it in the background on a timer or on demand, names e-commerce catalogs "that need current pricing and availability without rebuilding the entire site" as the first use case, collapses concurrent requests for an uncached page "into one function invocation per region, protecting your backend during traffic spikes", and serves stale content with a retry if regeneration fails.
 
-Request collapsing is the peak-day feature: when 41 times the normal traffic hits one hero product at once, the backend sees one request, not thousands.
+Request collapsing is the peak-day feature: when 41 times the normal traffic hits one hero product at once, the backend sees one request, not thousands. On the 2026 peak night Kestrel & Pine's cached pages held at about 41 times the traffic of an average hour. The stock sync chain behind the stock badge did not: its scheduled copies took up to two hours to carry a sale from the warehouse system through the ERP to the shop platform and the channels.
 
 ![Diagram: Eva's product page arrives from the edge cache first](assets/images/32-storefront-architecture/fig03-eva-s-product-page-arrives-edge.jpeg)
-**Figure 4:** *Eva's product page arrives from the edge cache first; the storefront then fetches the facts that must be true now, availability and price, and fills them in.*
+**Figure 5:** *Eva's product page arrives from the edge cache first; the storefront then fetches the facts that must be true now, availability and price, and fills them in.*
 
 ### Requirements per page type
 
+Applied to each page type, the rule sets how fresh, how consistent and how fast each part of the page must be, and what it does on a peak day.
+
 | Page | How fresh | How consistent | How fast | On a peak day |
 | --- | --- | --- | --- | --- |
-| Product and category content | Minutes after a catalog publish | Same content in every channel (the PIM's job after W3) | Cached at the edge; server response in tens of milliseconds *(assumption)* | Must be fully cacheable; request collapsing on misses |
+| Product and category content | Minutes after a catalog publish | Same content in every channel (the PIM's job after W3, the decision to buy a PIM) | Cached at the edge; server response in tens of milliseconds *(assumption)* | Must be fully cacheable; request collapsing on misses |
 | Price shown | Within the price change's effective time; [[pricing-architecture]] | One price per market and channel | Fetched live or cached for seconds, by market | Cache per market, never per shopper, for anonymous visitors |
 | Stock badge and delivery promise | Seconds to a minute after a stock event *(assumption)* | Same answer the checkout will give | Fetched after the shell | Degrade to "in stock / out of stock" or hide the count ([[peak-load-and-reliability]]) |
 | Search results | Minutes after a catalog publish | Index matches the catalog | Under 300 ms *(assumption)* | Fewer facets, simpler sorts |
 | Logged-in B2B (business-to-business, wholesale) pages | Live | Contract price per account | Never cached across accounts | Rate-limited by account |
-| Cart and checkout | Live | One cart per session; the checkout's rules win | Platform-owned | Never on the switch-off list |
+| Cart and checkout | Live | One cart per session; the checkout's rules win | Platform-owned | Never switched off |
 
 ## Technical SEO and Product Discoverability
 
-A product can load quickly and still be hard to find before a shopper reaches the store. **Search-engine optimization (SEO)** helps people discover relevant pages through search engines. Its technical foundation is letting engines retrieve pages (**crawling**), understand them and include them in a searchable collection (**indexing**). The platform controls much of that foundation: links, rendered content, URLs and product data. [[commerce-search-and-discovery]] covers finding products once the shopper is inside the store.
+Cached public pages have a second reader besides the shopper: search engines. A product can load quickly and still be hard to find before a shopper reaches the store. **Search-engine optimization (SEO)** helps people discover relevant pages through search engines. Its technical foundation is letting engines retrieve pages (**crawling**), understand them and include them in a searchable collection (**indexing**). The platform controls much of that foundation: links, rendered content, URLs and product data. [[commerce-search-and-discovery]] covers finding products once the shopper is inside the store.
 
 Start with a path to every product you want found. Category pages and links between pages of results need ordinary HTML links, not only buttons that run scripts. A **sitemap** lists URLs the merchant wants search engines to discover; it complements navigation without guaranteeing indexing. Google generally does not submit searches into a store's search box, so being findable there is insufficient ([ecommerce navigation guidance](https://developers.google.com/search/docs/specialty/ecommerce/help-google-understand-your-ecommerce-site-structure), accessed 9 November 2026).
 
@@ -133,7 +168,7 @@ Google can execute JavaScript, but rendering is a separate processing step, and 
 
 **Structured data** embeds named product facts in the page for machines: `Product` describes the item; `Offer` describes its price and availability. Google recommends putting product markup in the initial HTML because JavaScript-generated markup can be less reliable for shopping crawls ([merchant listing guidance](https://developers.google.com/search/docs/appearance/structured-data/merchant-listing)). Generate it from the same records as the visible page and product feed, the channel export described in [[product-information]].
 
-The caching rule must serve search engines too. Public price and availability snapshots need a maximum age and coordinated updates in HTML, markup and feeds. A browser-only refresh can leave machines reading yesterday's price. Account-specific prices stay private, and checkout still validates the live purchase terms. Good markup makes a page eligible for richer search results; it does not guarantee them.
+The caching rule must serve search engines too. Public price and availability snapshots need a maximum age and coordinated updates in HTML, markup and feeds. A browser-only refresh can leave machines reading yesterday's price. Good markup makes a page eligible for richer search results; it does not guarantee them.
 
 ### Give each kind of page an explicit policy
 
@@ -153,42 +188,9 @@ Two controls must stay distinct. **`robots.txt`** tells cooperating crawlers whi
 
 I would make the storefront team own these rules, with catalog and marketing owners choosing the intended landing pages. For Kestrel & Pine, a useful check would follow one jacket's localized pages and variants through a price change and a stockout. Inspect what Google receives with Search Console's URL Inspection, validate markup with its Rich Results Test, and monitor indexing, crawl errors and organic visits by landing page. Repeat after template changes; preserve the URL policy during [[replatforming-and-migration]].
 
-## Performance: What the Evidence Says, With Dates
-
-**Core Web Vitals** are Google's three field metrics for page experience, measured from real visitors and assessed at the 75th percentile of page loads, mobile and desktop separately (web.dev, updated 31 October 2024): **largest contentful paint** (LCP, when the main content has loaded; "good" is 2.5 seconds or less), **interaction to next paint** (INP, how quickly the page responds to a tap or click; good is 200 milliseconds or less) and **cumulative layout shift** (CLS, how much the page jumps while loading; good is 0.1 or less).
-
-INP replaced the older first-input-delay metric on 12 March 2024. Google's Search documentation says it "highly recommend[s]" good Core Web Vitals "for success with Search" and that they "align with what our core ranking systems seek to reward", without stating a weight (accessed November 2026).
-
-The evidence that speed moves money is consistent in direction and weak in precision:
-
-- **Deloitte Ireland for Google (24 March 2020; six years old):** across mobile sites in retail, travel, luxury and lead generation, a 0.1-second improvement in site speed went with +8.4% retail conversions and +9.2% retail average order value. Caveats the study carries: commissioned by Google, the number of sites not disclosed, and a correlation, not an experiment.
-- **web.dev's case collection (undated, accessed November 2026):** Vodafone Italy improved LCP 31% and saw sales up 8%; Lazada tripled LCP speed and saw mobile conversion up 16.9%; Cdiscount improved all three metrics and reported +6% revenue in a Black Friday sale. Every case is a self-selected success story, and none separates speed from the redesign that came with it.
-- **A vendor's admission (Shopify, accessed November 2026):** the theme-performance page says performance "directly influences conversion rates, repeat business, and search engine rankings" without citing a figure; the Theme Store requires a minimum average Lighthouse performance score of 60; public apps "shouldn't reduce Lighthouse performance scores by more than 10 points"; and the admin's performance report warns that theme code and apps "can slow down your site".
-
-The honest reading: **faster is better, nobody can tell you by how much, and the usual culprit is not the rendering model but the scripts.** A rule that caps each app at ten points is a vendor admitting that apps are where storefront speed goes. Kestrel & Pine's INP of 310 milliseconds was eleven apps' scripts; the rendering model was innocent.
-
-![A phone weighed down by eleven app boxes, with a stopwatch reading INP 310 ms beyond a 200 ms good mark, beside an innocent theme card.](assets/images/32-storefront-architecture/32-eleven-apps-weigh-down-the-page.jpeg)
-**Figure 5:** *Kestrel & Pine's interaction to next paint of 310 milliseconds was eleven apps' scripts, not the rendering model; good is 200 milliseconds or less.*
-
-### Accessibility is a requirement, not a performance option
-
-An accessible storefront lets people find products, understand choices and complete payment using the ways they interact with a device, including keyboards and screen readers. A fast page still fails its customer if a form or payment control cannot be used.
-
-**WCAG 2.2**, the Web Content Accessibility Guidelines of the World Wide Web Consortium (W3C), is a Recommendation dated 12 December 2024, with three conformance levels (A, AA, AAA) and four principles (perceivable, operable, understandable, robust).
-
-The **European Accessibility Act** (Directive (EU) 2019/882) applies to services "provided to consumers after 28 June 2025" and lists "e-commerce services" explicitly, defined as a service provided at a distance "with a view to concluding a consumer contract"; microenterprises (under 10 people and up to €2 million turnover) are exempt.
-
-Kestrel & Pine, with 310 employees and three consumer storefronts, has been in scope since June 2025; its B2B portal, serving businesses, is not a consumer service. National enforcement differs; [[commerce-regulation]] owns the calendar.
-
-An accessible theme can still contain an app block that a shopper cannot navigate or use. Apply accessibility criteria to both the theme and the inserted components, and test their combined purchase flow. The shopper needs to complete the whole task, whichever rendering model or supplier produced each piece.
-
-### Mobile apps and progressive web apps
-
-A **progressive web app** (PWA) is a website "built and enhanced with modern APIs" that can be installed like an app, work offline and send push notifications (web.dev, accessed November 2026). For a merchant it is mostly the headless question in disguise: the same server-rendered storefront can be made installable. A **native app** adds a second storefront that must show the same prices, stock and promises as the first, and is justified by loyalty, push and in-store features, not by speed.
-
 ## The Choices and Their Trade-Offs
 
-The realistic options for a merchant on a hosted platform are four.
+Speed, accessibility, caching and discoverability can all be met on a theme, so the choice between rendering models rests on other needs. The realistic options for a merchant on a hosted platform are four: the three rendering models, with the theme split into two.
 
 1. **The theme, disciplined.** Keep the platform's renderer; use sections and app blocks instead of edited templates; police app scripts with a performance budget; let the platform's cache and edge do the peak-day work.
 2. **The theme plus a content system.** Keep the theme for commerce pages and feed editorial content from a CMS through the platform's content features or a small integration; the brand team gets its content model without a new renderer.
@@ -202,7 +204,11 @@ The realistic options for a merchant on a hosted platform are four.
 | Headless on the vendor runtime | The merchant renders, the vendor hosts | Full control of the front end; checkout stays the vendor's | The merchant's caching rules; request collapsing if used | Three or more front-end engineers who can own a production application | A design system shared across brands or countries; a B2B portal with account pricing that the theme cannot express |
 | Headless anywhere | The merchant | Full, including several engines behind one front end | Entirely the merchant's | A front-end platform team | Group stage: several brands or engines behind one storefront |
 
-Options 1 and 2 assume the platform's page types and checkout fit the business. I would choose headless when they cannot express a shared design across brands, an editorially driven site, or a B2B portal's account pricing and approvals ([[b2b-commerce]]). Options 3 and 4 also require a team that owns on-call, caching, framework upgrades and [[api-contracts-and-versioning]] after the agency leaves. Speed alone establishes neither the need nor that operational capacity.
+Options 1 and 2 assume the platform's page types and checkout fit the business. I would choose headless only for one of three needs they cannot express: a shared design across brands, an editorially driven site, or a B2B portal's account pricing and approvals ([[b2b-commerce]]). Options 3 and 4 also require a team that owns on-call, caching, framework upgrades and [[api-contracts-and-versioning]] after the agency leaves. Speed alone establishes neither the need nor that operational capacity.
+
+### Mobile apps and progressive web apps
+
+The same rule applies to mobile apps, the other front end often proposed in speed's name. A **progressive web app** (PWA) is a website "built and enhanced with modern APIs" that can be installed like an app, work offline and send push notifications (web.dev, accessed November 2026). For a merchant it is mostly the headless question in disguise: the same server-rendered storefront can be made installable. A **native app** adds a second storefront that must show the same prices, stock and promises as the first, and is justified by loyalty, push and in-store features, not by speed.
 
 ## Across Scale Stages: When It Fits and When It Limits
 
@@ -217,25 +223,29 @@ I would retain the theme while it meets the requirements. Group scale makes a sh
 
 ## In Practice
 
+### Kestrel & Pine: why Noor said no, and what she said yes to
+
+Kestrel & Pine is at the Omnichannel stage, where the table above keeps the disciplined theme unless one of the three needs applies. Noor's answer to the agency in late February 2027 had four parts, recorded as a short decision note that later folded into Waypoint's W4 (stay and surround; no replatforming, with the platform's own point-of-sale (POS) system evaluated in 2028 and the whole decision revisited in 2029).
+
+1. **The speed argument did not survive measurement.** LCP 2.1 seconds and CLS 0.08 were already "good"; INP of 310 milliseconds was the problem, and it was app scripts. The agency's retainer was redirected for one quarter to a theme performance pass and an app-script audit, run alongside the app governance review of April 2027 ([[extensibility-and-app-ecosystems]]). By June 2027 INP on product pages measured 180 milliseconds (illustrative), inside the threshold, after six unused apps and four redundant scripts were removed.
+2. **The content argument was real, and headless was the wrong remedy.** Teun Baas's brand team wanted seasonal guides and stories that the theme's page types handled badly. The remedy was option 2: theme sections for commerce pages, and a content model that waits for the PIM (W3, Q3 2027) so product stories draw on one product record rather than one more copy of the product text.
+3. **"Ready for the future" named no need.** None of the three needs applied. One brand and its three countries share one design; the content need was met by option 2; and the platform's B2B features already serve the portal, through which 62% of wholesale orders arrive. There was no native app either. A headless rebuild would have been the Giant's Boots: an architecture borrowed from brands with front-end teams of fifty, run by three engineers who also own the apps.
+4. **The peak-day argument pointed the other way.** The 2026 peak hour (2,300 orders, with storefront traffic about 41 times an average hour) was survived by the platform's cache; what failed was the stock sync chain behind the badge. The fix for the badge is the availability service (W1), not a new renderer. Until W1 lands in Q4 2027, the 2027 peak plan hides the stock count on product pages and shows "in stock / low stock" from a per-channel buffer ([[peak-load-and-reliability]], [[journey-peak-day]]).
+
+What she said yes to cost about €38,000 of agency time over the quarter (illustrative) instead of €240,000 and nine months, and left the storefront on the one rendering model her team can run. The decision is revisited at the 2029 review together with the POS question, because the one need that could change the answer, a second brand or an app for store staff sharing the design system, is a Group-stage question Kestrel & Pine has not yet reached.
+
 ### Dated public examples
+
+For a merchant whose need does justify a new storefront, two public examples give checks before switching.
 
 - **Compare before switching traffic.** Shopify's renderer rollout (2020–2022) compared old and new status codes, headers and bodies on sampled production traffic, with fallback to the old path. That provides a concrete check for a merchant replacing its storefront.
 - **Test regeneration failures before the peak.** Vercel documents request collapsing and serving stale content after failed regeneration (28 August 2026). A merchant choosing its own hosting should demonstrate those behaviors with its own product pages.
 
-The vendor-runtime, checkout and accessibility examples above establish the other boundaries: changing the renderer leaves commerce obligations and the whole purchase flow to verify.
-
-### Kestrel & Pine: why Noor said no, and what she said yes to
-
-Noor's answer to the agency in late February 2027 had four parts, recorded as a short decision note that later folded into Waypoint's W4 (stay and surround; no replatforming, with the platform's own point-of-sale (POS) system evaluated in 2028 and the whole decision revisited in 2029).
-
-1. **The speed argument did not survive measurement.** LCP 2.1 seconds and CLS 0.08 were already "good"; INP of 310 milliseconds was the problem, and it was app scripts. The agency's retainer (€14,000 a month) was redirected for one quarter to a theme performance pass and an app-script audit, run alongside the app governance review of April 2027 ([[extensibility-and-app-ecosystems]]). By June 2027 INP on product pages measured 180 milliseconds (illustrative), inside the threshold, after six unused apps and four redundant scripts were removed.
-2. **The content argument was real, and headless was the wrong remedy.** Teun Baas's brand team wanted seasonal guides and stories that the theme's page types handled badly. The remedy was option 2: theme sections for commerce pages, and a content model that waits for the PIM (W3, Q3 2027) so product stories draw on one product record rather than a fifth copy.
-3. **"Ready for the future" named no need.** None of the three needs applied: one brand, three countries sharing one design, a B2B portal that the platform's B2B features serve for 62% of wholesale orders, and no native app. A headless rebuild would have been the Giant's Boots: an architecture borrowed from brands with front-end teams of fifty, run by three engineers who also own the apps.
-4. **The peak-day argument pointed the other way.** The 2026 peak hour (2,300 orders, 41 times an average hour) was survived by the platform's cache; what failed was the stock sync chain behind the badge. The fix for the badge is the availability service (W1), not a new renderer. Until W1 lands in Q4 2027, the 2027 peak plan hides the stock count on product pages and shows "in stock / low stock" from a per-channel buffer ([[peak-load-and-reliability]], [[journey-peak-day]]).
-
-What she said yes to cost about €38,000 of agency time over the quarter (illustrative) instead of €240,000 and nine months, and left the storefront on the one rendering model her team can run. The decision is revisited at the 2029 review together with the POS question, because the one need that could change the answer, a second brand or a store-mode app sharing the design system, is a Group-stage question Kestrel & Pine has not yet reached.
+Whatever renders the pages, two things from earlier sections still need checking: checkout stays on the platform, and the whole purchase flow, theme and app blocks together, must still work for every shopper.
 
 ## When It Goes Wrong
+
+Not every storefront decision goes as Noor's did. Seven failures recur, each with a sign to detect it and a recovery; six break one of this chapter's rules. The Forked Platform appears here as the forked theme and The First Snowfall as the uncacheable peak; The Giant's Boots was Noor's third point. One row is new: bots, meaning crawlers and AI agents that read the catalog.
 
 | Failure | What it looks like | Detection | Recovery |
 | --- | --- | --- | --- |
@@ -248,6 +258,8 @@ What she said yes to cost about €38,000 of agency time over the quarter (illus
 | **An inaccessible storefront** | A complaint or an enforcement notice under the Accessibility Act; checkout unusable with a screen reader | Automated and manual WCAG 2.2 testing of theme and app blocks | Fix in the theme and in every app block; add accessibility to the app review on the governance card |
 
 ## What to Take Away
+
+The slow product page at the start of this chapter has one answer. The storefront owns templates and scripts, not facts, so the cause of a slow page is found by measuring it in the field and tracing the slow metric. At Kestrel & Pine that led to eleven apps' scripts, not to the renderer, and a new page would have carried the same scripts. The same split decides the rest: what is the same for many shoppers is cached and shown to search engines, what is a promise is fetched or checked live, and the renderer changes only for a need the theme cannot meet, with a team to run it.
 
 **Established.**
 
@@ -280,7 +292,7 @@ What she said yes to cost about €38,000 of agency time over the quarter (illus
 9. What does the page show for stock and delivery when the availability service or the shipping service is down?
 10. Can search engines discover the intended product pages, and who checks their rendered data, localized URLs and retirement rules after a release?
 
-The next chapter tests this storefront under forty-one times normal traffic: load testing, backpressure and which features to switch off first. Continue with [[peak-load-and-reliability]].
+On the 2026 peak night this storefront held, because its pages could be cached. The chain behind it did not: orders reached the warehouse hours late, and a sale took up to two hours to reduce the stock shown on other channels. That chain belongs to the merchant, and no shared platform cache absorbs its load. The next chapter is about it: how to size, test, protect and recover it. Continue with [[peak-load-and-reliability]].
 
 ## Sources and Evidence
 

@@ -184,7 +184,7 @@ Milan's first request was fewer abandoned carts. Checkout has one business metri
 
 An **abandoned cart** is a cart started and not converted within some window. Recovering it (the reminder e-mail an hour later) has two preconditions: the cart is persisted server-side, not only in the browser, and it is attached to an identity the merchant may contact, which under EU privacy rules means a consent question ([[privacy-and-customer-data]]).
 
-Beyond recovery, the architecture can do three things for conversion that no button color can: show the full price, including tax and shipping, before checkout begins (call tax and shipping rates on the cart page); show a delivery date the warehouse can keep (a computed promise, [[shipping-and-delivery]]); and never fail the payment step because an internal call was slow.
+Preventing abandonment needs nothing new: the early total and the credible date that the shopper's clock asks for, and a payment step no slow internal call can fail.
 
 ## The Choices: Four Ways to Run a Checkout
 

@@ -1,0 +1,595 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/33-peak-load-and-reliability/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/33-peak-load-and-reliability/index.md",
+  "spec_sha": "31d7140350591b6b",
+  "draft_sha": "1754be65b283e54e",
+  "run_at": "2026-11-13T00:03:54+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Peak volumes overwhelm the uncacheable chain behind the storefront",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Eva's order path now seen under thousands of orders an hour",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Thesis: platform holds, merchant's chain fails first; measure in orders per minute",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the chapter",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Reading the Post-Mortem ¶1",
+      "summary": "Noor reads the Black Friday 2026 post-mortem; First Snowfall pattern",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Reading the Post-Mortem ¶2",
+      "summary": "Slow stock sync caused costly overselling + throttled order export built a four-hour backlog",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Reading the Post-Mortem ¶3",
+      "summary": "Root cause: link rates never compared in orders per minute",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "What a Peak Is, and Why the Merchant's Is Worse Than the Platform's ¶1",
+      "summary": "Definition of a peak and its shapes",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "What a Peak Is, and Why the Merchant's Is Worse Than the Platform's ¶2",
+      "summary": "Big operators' peak figures each use different units",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "What a Peak Is, and Why the Merchant's Is Worse Than the Platform's ¶3",
+      "summary": "Platform's smoothed peak ratio (~2) versus merchant's (~70)",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "What a Peak Is, and Why the Merchant's Is Worse Than the Platform's ¶4",
+      "summary": "Multi-tenancy smooths the platform but not the merchant's chain",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "The Chain Under Load: Where a Peak Day Breaks ¶1",
+      "summary": "The chain as a sequence of handoffs with per-link capacity",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "The Chain Under Load: Where a Peak Day Breaks ¶2",
+      "summary": "Cached storefront usually holds + rule for not caching stock figures",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "The Chain Under Load: Where a Peak Day Breaks ¶3",
+      "summary": "Checkout and payment: take money fast, queue the record-keeping",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "The Chain Under Load: Where a Peak Day Breaks ¶4",
+      "summary": "Order export to the WMS is the first link to fail",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "The Chain Under Load: Where a Peak Day Breaks ¶5",
+      "summary": "Warehouse constraint is people and carriers, not the WMS",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "The Chain Under Load: Where a Peak Day Breaks ¶6",
+      "summary": "Stock sync loop becomes oversell at peak rates",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "The Chain Under Load: Where a Peak Day Breaks ¶7",
+      "summary": "ERP, analytics and notifications can wait",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "The Chain Under Load: Where a Peak Day Breaks ¶8",
+      "summary": "Peak requirements per flow: what never degrades",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Preparing: Capacity, Forecasts and Load Tests ¶1",
+      "summary": "Definition of capacity planning and load testing",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Preparing: Capacity, Forecasts and Load Tests ¶2",
+      "summary": "Shopify's peak readiness and load-testing program",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Preparing: Capacity, Forecasts and Load Tests ¶3",
+      "summary": "Zalando's end-to-end load tests and order-flow simulators",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Preparing: Capacity, Forecasts and Load Tests ¶4",
+      "summary": "Five-step preparation for a hosted-platform merchant",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Preparing: Capacity, Forecasts and Load Tests ¶5",
+      "summary": "A change freeze as the cheapest reliability measure",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Running the Peak: Queues, Waiting Rooms and Switches ¶1",
+      "summary": "Overview of queues, switches and waiting rooms",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Running the Peak: Queues, Waiting Rooms and Switches ¶2",
+      "summary": "Queues, backpressure and load shedding for goodput",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Running the Peak: Queues, Waiting Rooms and Switches ¶3",
+      "summary": "Accept orders fast, queue downstream work, and watch the queue",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Running the Peak: Queues, Waiting Rooms and Switches ¶4",
+      "summary": "Retries cause duplicates and losses; idempotency and dead-letter queues",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Running the Peak: Queues, Waiting Rooms and Switches ¶5",
+      "summary": "Waiting rooms protect the storefront, not the chain",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Running the Peak: Queues, Waiting Rooms and Switches ¶6",
+      "summary": "Graceful degradation via ops feature switches",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Running the Peak: Queues, Waiting Rooms and Switches ¶7",
+      "summary": "Amazon Prime Day 2018 degradation using prepared switches",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Running the Peak: Queues, Waiting Rooms and Switches ¶8",
+      "summary": "Recommended switch-off ladder for a merchant",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Running the Peak: Queues, Waiting Rooms and Switches ¶9",
+      "summary": "Three rules that make a switch ladder work",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Observing the Day: Orders per Minute as the Health Signal ¶1",
+      "summary": "Orders per minute as the health signal",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Observing the Day: Orders per Minute as the Health Signal ¶2",
+      "summary": "Peak dashboard built on the four golden signals per flow",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Observing the Day: Orders per Minute as the Health Signal ¶3",
+      "summary": "Most important alarms: queue age, spare capacity, silent flows",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Observing the Day: Orders per Minute as the Health Signal ¶4",
+      "summary": "Business-unit SLOs owned by the merchant",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Observing the Day: Orders per Minute as the Health Signal ¶5",
+      "summary": "Staffed situation room with commander and rehearsed runbook",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "When It Goes Wrong: Recovery and Reconciliation ¶1",
+      "summary": "Knowing in advance what each failure leaves behind",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "When It Goes Wrong: Recovery and Reconciliation ¶2",
+      "summary": "Recovery as morning-after reconciliation with named owners",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "When It Goes Wrong: Recovery and Reconciliation ¶3",
+      "summary": "Blameless post-mortem that leads to action",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "The Choices and Their Trade-offs ¶1",
+      "summary": "Four levels of peak preparation",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "The Choices and Their Trade-offs ¶2",
+      "summary": "Pick the level that protects the order path you operate",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "The Choices and Their Trade-offs ¶3",
+      "summary": "Recommendation: protect the chain, with a year-round owner",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "Preparation levels mapped to scale stages",
+      "matched_spec_paragraph": "p46b"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "summary": "Ownership of the peak plan changes most with scale",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "In Practice: Kestrel & Pine's 2027 Peak Plan ¶1",
+      "summary": "Kestrel & Pine's 2027 peak plan components",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "In Practice: Kestrel & Pine's 2027 Peak Plan ¶2",
+      "summary": "Plan's cost against the 2026 loss; quick approval",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "Summary answer: measure, queue, degrade and reconcile the chain",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "Established findings on peaks and preparation",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "Context-dependent findings",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "Author's synthesis: one unit and a year-round owner",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Peak-readiness questions for the reader",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Closing Part VII ¶1",
+      "summary": "Part VII's five cases share one answer: the merchant's own layer broke",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Closing Part VII ¶2",
+      "summary": "Kestrel & Pine stayed on the platform and fixed its own layer",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "Closing Part VII ¶3",
+      "summary": "How readers can audit their own layer around a platform",
+      "matched_spec_paragraph": "p59b"
+    },
+    {
+      "draft_locator": "Closing Part VII ¶4",
+      "summary": "Bridge to Part VIII on security, privacy and regulation",
+      "matched_spec_paragraph": "p60"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 57 outline summaries match the controlling idea of the aligned spec paragraph (p01-p60), in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "sections/chain/p14",
+      "draft_locus": "The Chain Under Load: Where a Peak Day Breaks ¶2",
+      "quote": "My rule for the stock badge: below a low-stock threshold it may show \"low stock\" from a copy a few minutes old, but it never shows \"in stock\" from a copy older than the sales rate allows.",
+      "finding": "The storefront paragraph carries a second idea, the stock-badge rule, marked two_ideas by the outliner; flowB also lost the thread at this sudden first-person rule. The spec's p14 asks for both in one paragraph (the same rule is already in the requirements table).",
+      "fault": "spec",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Scene ¶2 (marked two_ideas) is a list framed by one idea, 'the chain behind it accumulated these failures', as spec p07 declares; passes. All other units carry one idea.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit traces to S1-S5 (scene and peak to S1; chain and prepare to S2; queues and waiting room to S3; degradation to S4; observe, recovery, choices, stages and plan to S5/S2) or performs a declared intro, conclusion or part-closing function.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "conclusion/p54",
+      "draft_locus": "What to Take Away ¶2",
+      "quote": "because delivery between systems is at-least-once, a peak's retries produce duplicates and gaps unless receivers are idempotent and a reconciliation runs afterwards (Shopify and Stripe documentation, 2026)",
+      "finding": "Stripe is cited in the body only for its rate limits; nothing in the chapter shows Stripe documentation supporting at-least-once delivery or reconciliation, so the 'Established' attribution is not backed by evidence the chapter presents (flowB).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "The peak-profile table, Figures 1-4, the requirements, failure, levels and stages tables, the operator figures, the Shopify, Zalando, AWS, Cloudflare, Queue-it, Hodgson, CNBC, Google and Shopify-docs sources, and the scenario cases are each introduced and their point stated in prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "sections/prepare/p27",
+      "draft_locus": "Preparing: Capacity, Forecasts and Load Tests ¶5",
+      "quote": "A **freeze** (no new apps, theme edits, connector or configuration changes after a set date) is the cheapest reliability measure available",
+      "finding": "Declared additional_support ('one more measure' after the five testing steps); the paragraph opens on a new topic with no link to the steps, and flowB read it as an afterthought.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "sections/observe/p46",
+      "draft_locus": "Observing the Day: Orders per Minute as the Health Signal ¶5",
+      "quote": "Both documented programs staff a room through the peak",
+      "finding": "Declared sequence from the signals and targets to the people who act on them; the opening instead reaches back two sections to the Shopify and Zalando programs, so the boundary from SLOs to the room is not expressed (flowA stumbled on 'both').",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other transitions, including every section opening, the conclusion's opening, Closing Part VII and the hand-off to part-8 ('That same layer must also keep promises the merchant does not choose... [[part-8]]'), express their declared relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "sections/scene/p07",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Reading the Post-Mortem ¶2",
+      "quote": "with storefront traffic **41 times** an average hour (orders rose even more, as the next section shows)",
+      "finding": "Forward reference stops the reader in the middle of the failure account; the seventy-fold order ratio could be stated here. The spec's p07 prescribes the deferral.",
+      "fault": "spec",
+      "corroborated_by": "flowB: Forward reference: \"with storefront traffic 41 times an average hour (orders rose even more, as the next section shows)\"",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "sections/scene/p07",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Reading the Post-Mortem ¶2",
+      "quote": "the \"ordered before 22:00, delivered tomorrow\" promise on the Dutch storefront, a sentence on a page rather than a computed figure, was broken for roughly 8,000 orders",
+      "finding": "The aside inside an already long sentence makes the reader re-read; it is not in the spec.",
+      "fault": "draft",
+      "corroborated_by": "flowB: Aside inside the failure account: \"...a sentence on a page rather than a computed figure, was broken for roughly 8,000 orders...\" - re-read.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "sections/peak/p11",
+      "draft_locus": "What a Peak Is, and Why the Merchant's Is Worse Than the Platform's ¶3",
+      "quote": "The units differ, but each ratio compares a business's own peak with its own average.",
+      "finding": "The ratios compared have different baselines (Shopify's peak minute against its weekend average; Kestrel & Pine's peak hour against an ordinary-day hour), and the sentence names the mismatch without settling it. The spec's p11 prescribes this comparison and the hedge.",
+      "fault": "spec",
+      "corroborated_by": "flowB: Dense list of figures in four units; \"The units differ, but each ratio compares...\" - baselines differ, text does not say so.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "sections/running/p28",
+      "draft_locus": "Running the Peak: Queues, Waiting Rooms and Switches ¶1",
+      "quote": "Two mechanisms let the chain behind the storefront survive the surprises that are left: queues that let work wait, and switches that remove work. A third, the waiting room, protects only the storefront.",
+      "finding": "The lead announces queues and switches as a pair, but the waiting-room subsection sits between them and splits it. The spec orders p29-p31 (queues), p33 (waiting room), p35 (switches).",
+      "fault": "spec",
+      "corroborated_by": "flowB: Announced order not followed: Running intro names \"queues... and switches. A third, the waiting room...\", subsections queues, waiting rooms, switches.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "sections/running/p37",
+      "draft_locus": "Running the Peak: Queues, Waiting Rooms and Switches ¶8",
+      "quote": "non-essential checkout options and payment methods; then the waiting room is turned on at the CDN, and new-account sign-up and pop-ups are switched off. Checkout, payment, the order record and the order export are never switched off",
+      "finding": "The ladder switches off payment methods and turns on a waiting room that ¶5 said 'does nothing for an order export', then adds the order export to the never-list that the KEY POINTS and the requirements table give as three items. The spec's p37 prescribes these rungs and the four-item never-list.",
+      "fault": "spec",
+      "corroborated_by": "flowB: Ladder contradicts the never-list: \"non-essential checkout options and payment methods\" and turning the waiting room on vs \"Checkout, payment... are never switched off\" and waiting room \"does nothing for an order export\"; order export joins the never-list while KEY POINTS list three.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "introduction/p04",
+      "draft_locus": "Introduction ¶3",
+      "quote": "This chapter's answer, in short: the shop platform shares its capacity across many merchants, so its storefront and checkout usually hold",
+      "finding": "flowB only: KEY POINTS, the answer-in-short paragraph and the roadmap preview the same claim three times before the first heading. The spec places the thesis both in the callout and in p04. Minor, uncorroborated.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "sections/chain/p20",
+      "draft_locus": "The Chain Under Load: Where a Peak Day Breaks ¶8",
+      "quote": "The requirements table sets out what each flow needs at peak",
+      "finding": "flowB only: the requirements table closes the chain section but reads as the target for Preparing. Minor, uncorroborated; spec placement.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "sections/peak/p10",
+      "draft_locus": "What a Peak Is, and Why the Merchant's Is Worse Than the Platform's ¶2",
+      "quote": "Adobe put US Cyber Monday 2024 at **$13.3 billion**, with **$15.8 million per minute** in the peak hours",
+      "finding": "flowA only: the operator-figures paragraph is dense and the Adobe figure is never used again. Minor, uncorroborated; the spec's p10 lists all four operators.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "sections/observe/p42",
+      "draft_locus": "Observing the Day: Orders per Minute as the Health Signal ¶1",
+      "quote": "The operators of the largest peaks report their health in business units",
+      "finding": "flowA only: this framing rubs against the earlier 'each reports in its own unit', presented as the problem. Minor, uncorroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "sections/practice/p48",
+      "draft_locus": "In Practice: Kestrel & Pine's 2027 Peak Plan ¶1",
+      "quote": "the old chain runs with the interim buffer that has held back ten units of each variant from the marketplaces since December 2026",
+      "finding": "flowB only: the interim buffer is assumed known; flowA separately noted the plan 'approved in March 2027' describing September and October 2027 events in the past tense. Minor, uncorroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "sections/chain/p20",
+      "draft_locus": "The Chain Under Load: Where a Peak Day Breaks ¶8 (requirements table)",
+      "quote": "At-least-once, idempotent",
+      "finding": "'At-least-once' is not in already_knows and appears in the requirements table before its gloss in 'Queues and backpressure'. Minor; no flow reader reported it.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "sections/chain/p20",
+      "draft_locus": "The Chain Under Load: Where a Peak Day Breaks ¶8 (requirements table)",
+      "quote": "Strong (one order, one payment)",
+      "finding": "The table's 'Eventual' and 'Strong' consistency are never explained and are not in already_knows. Minor, uncorroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "conclusion/p59b",
+      "draft_locus": "Closing Part VII ¶3",
+      "quote": "your deployables and the teams that release them",
+      "finding": "'Deployables' is never explained in this chapter and is not in already_knows. Minor, uncorroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Every does_not_know term is glossed on first use (peak, peak-to-average ratio, CDN, rate limit, capacity planning, load test, Game Days in context, freeze, queue, backpressure, goodput, dead-letter queue, waiting room, graceful degradation, feature switch, ops toggles, SLO, SLA in the stages table, four signals, incident commander, runbook, post-mortem). 'Edge' and 'switch-off order' have working forward pointers.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on the puzzle (800 a day against 2,300 in one hour, a healthy store with broken promises); no weak pattern.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion answers Mara's question and sorts the takeaways by how settled they are; no weak pattern.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "What to Take Away ¶1 synthesizes the answer; the lists, questions and Closing Part VII ¶2-¶3 give the so-what and a course-of-action takeaway starting with the link that carried least.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "What to Take Away ¶1 returns to the store that looked healthy at 2,300 orders against 33 and to Mara's question; Closing Part VII ¶1 returns to the part opening's platform that kept accepting orders while the connector fell behind, naming each chapter's case.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted the claim, the section order (post-mortem; platform's peak and the chain; preparing, running, observing, recovering; choices, scale, 2027 plan) and the evidence (Kestrel & Pine's case with 800/33/2,300, Eva's order, dated operator figures), matching the roadmap and AC-4's expected.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Answer gives the smoothing (~2x, CDN), the merchant's ~seventy-fold spike, 7 against 38 orders a minute and the stock-loop oversell, and prepares the chain: forecast and tests above it, batched idempotent export with gauge, alarm and dead-letter queue, per-channel stock with buffers, rehearsed switch-off order with owners, freeze, staffed room, morning-after reconciliation; rejects a faster storefront.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Answer lists the ladder from recommendations to sign-up, queued work behind checkout, never-switched-off checkout, payment and order record, and the three usability rules (flipped in a test, one owner without a meeting, order decided in a calm month by revenue owners).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Answer gives the planned reconciliation (orders by order number across platform/OMS/WMS, stock per SKU WMS vs availability service, payments vs orders, named owners), dead-letter replay checked to arrive once, and a blameless post-mortem within two weeks with timeline in orders per minute and actions assigned.",
+      "severity": "minor"
+    }
+  ]
+}

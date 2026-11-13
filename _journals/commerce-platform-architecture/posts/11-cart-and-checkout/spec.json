@@ -6,7 +6,7 @@
   "part": "part-3",
   "title": "From Cart to Confirmation: Checkout Orchestration",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed from the published chapter (posts/11-cart-and-checkout/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter. It is a contract, not a description: where the published chapter did not do what the spec asks, the gap is listed under open_questions and the prose was revised to match.",
   "intent": {
     "outcome": {
@@ -1144,19 +1144,19 @@
         },
         {
           "id": "p29a",
-          "controlling_idea": "The architecture can lower abandonment in three ways no button colour can: show the full price before checkout, show a delivery date the warehouse can keep, and never fail payment because an internal call was slow.",
+          "controlling_idea": "Preventing abandonment needs nothing new: the early total and credible date the shopper's clock (p19) asks for, and a payment step no slow internal call can fail; one sentence, so the three fixes p19 gives are not repeated.",
           "function": "recommendation",
           "evidence": [
             {
               "kind": "reasoning",
-              "what": "Tax and shipping called on the cart page; a computed delivery promise; payment and order creation kept off the degradation ladder.",
-              "shows": "Ties each lever to a call or rule the chapter has already shown."
+              "what": "A pointer back to p19's architectural fixes and to the slow-dependency failure.",
+              "shows": "Answers Milan's request for fewer abandoned carts without repeating the evidence."
             }
           ],
           "transition_in": {
             "relationship": "contrast",
             "carries_over": "Recovering carts after they are abandoned.",
-            "introduces": "Preventing abandonment in the first place, with three levers taken from the calls, the shopper's clock and the degradation ladder.",
+            "introduces": "Preventing abandonment, by pointing back to the levers already shown.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1632,10 +1632,16 @@
     }
   ],
   "modalities": [],
-  "open_questions": [
-    "Needs the author: both round-3 flow readers asked to move the shopper's-patience evidence (p19, Baymard's abandonment reasons) out of 'The Clock and the Detour' into 'Abandoned Carts and the Business Metric', where p29a repeats its three fixes. Rule 3 calls for the move, but it leaves the clock section with one clock and its first sentence ('two clocks') false; the earlier rubric rejected it twice. The one fact needed: whether the shopper's patience stays a 'clock'."
-  ],
+  "open_questions": [],
   "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved in the cleanup pass, 2026-11-13: the shopper's-patience evidence (p19, Baymard's abandonment reasons) stays in 'The Clock and the Detour', which keeps its two clocks; its repeat in 'Abandoned Carts' (p29a, the three fixes restated) is reduced to one sentence that points back to it and to the slow-dependency failure, so Milan's first request still gets its answer (rule 3: a paragraph found out of place in every position tried is cut or reduced to one sentence where needed later; rule 10: the current position of p19 stands when the two moves conflict with the 'two clocks' opening). The open question is closed. No author sentences remain cut for length (all three were restored on 2026-11-12), so the 6,500-word limit stands.",
+      "rejected": [
+        "Moving p19 to the abandoned-carts section, which leaves the clock section with one clock and a false opening sentence.",
+        "Keeping p29a as a full repeat of p19."
+      ]
+    },
     {
       "date": "2026-11-12",
       "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) after the confirming round (round 3, escalate), the author's rule (p35) moves once more, from the end of Shopify's section to the end of the stage section after its table, because both round-3 flow readers asked for it after the stage table; it now opens from the options, the lessons and the stages, and says 'the author's rule' instead of a sudden 'my'. Round-3 cheap draft fixes applied without another round: Noor named as head of engineering; the Mollie and authorization sentences unnested; Eva's extensions no longer called the answer to Milan's requests; the stock chain stated as the ledger states it (up to two hours behind) without the hourly and 15-minute hops; Sanne's first request said to be answered differently from how she put it, and 'one of the two' named; the €96,000 tied to the Black Friday Oversell as the incident behind the Phantom Stock; the Visa sentence says what it shows; the stage paragraph split and 'stage-2 checkout' made explicit; the roadmap opens from Eva's order; the conclusion opens from the kept checkout; 'authentication detour' in the freshness table replaced by the bank detour; the first rule's label made an imperative; 'hosted checkout' glossed in Eva's section; 'plan-tier gate' glossed.",
@@ -1832,6 +1838,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Cleanup pass: p29a reduced to one sentence pointing back to the shopper's clock; open question closed."
+    },
     {
       "date": "2026-11-12",
       "change": "Escalation resolved under the author's standing instruction: Eva's checkout moved after the clocks; the author's rule moved after Shopify's three lessons; the stage paragraph placed before its table; the author's three cut sentences restored; Waypoint, W1, W2, W4 and the terms readers stumbled on glossed; AC-6 dropped; agents' additions cut to stay within 6,500 words; open questions settled. Status draft. Draft check round 3 (confirming): escalate (16 passed, 31 failed, 16 of them minor). Afterwards the author's rule moved after the stage table (both round-3 readers) and the round's cheap draft fixes applied; the check report is stale against them."

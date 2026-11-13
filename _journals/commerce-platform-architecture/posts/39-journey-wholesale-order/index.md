@@ -29,21 +29,25 @@ A retail chain orders pallets of clothing and expects its receiving system to re
 ![A supplier warehouse and a retail distribution center exchange an ORDERS message, a DESADV with a pallet, an INVOIC and euro coins, in front of a large contract scroll.](assets/images/39-journey-wholesale-order/39-conversation-of-documents.jpeg)
 **Figure 1:** *A wholesale order is a conversation of documents with a contract behind it: the order comes in, a despatch advice goes out with the pallets, an invoice follows and the money arrives weeks later.*
 
-Kestrel & Pine, the fictional outdoor brand, earns a quarter of its revenue from **1,100 wholesale accounts**. Its largest customer orders through EDI. Volumes are smaller than the web shop's, but average order values are about fourteen times larger. A mislabeled pallet or unreadable notice can therefore turn a technical error into a substantial deduction.
+Such mismatches cost real money at Kestrel & Pine, the fictional outdoor brand, which earns a quarter of its revenue from **1,100 wholesale accounts**. Its largest customer orders through EDI. Volumes are smaller than the web shop's, but average order values are about fourteen times larger. A mislabeled pallet or unreadable notice can therefore turn a technical error into a substantial deduction.
 
-The walkthrough follows one wholesale order from receipt to payment. The core jobs remain order acceptance, stock commitment, dispatch and accounting; the documents, approvals and timing differ from a consumer purchase. [[journey-consumer-order]] provides the comparison.
+Journeys 1 and 2 followed a consumer who ordered at a checkout, paid at once and received a parcel. Here the buyer is a company: its order arrives as a message nobody typed, the goods leave on pallets with a despatch advice, and the money arrives thirty days later against an invoice. The core jobs remain order acceptance, stock commitment, dispatch and accounting; the documents, approvals and timing differ from a consumer purchase. [[journey-consumer-order]] provides the comparison.
 
-**Where we are in the order's journey.** Bergzicht's order commits **240 units at Duiven on 6 April 2027**. Those units reduce what the online shop may offer other buyers, including Eva, who orders a jacket on 13 April. Wholesale and consumer channels compete for the same stock.
+**Where we are in the order's journey.** The order this chapter follows, from the retail chain Bergzicht Outdoor, commits **240 units at Duiven**, Kestrel & Pine's warehouse, **on 6 April 2027**. Those units reduce what the online shop may offer other buyers, including Eva, who orders a jacket on 13 April. Wholesale and consumer channels compete for the same stock.
+
+Both orders draw on the same shelves, but the chain's order also travels with documents the consumer's does not. Which system should write each of them? The short answer is that each document is a promise in the buyer's contract and must be written by the system that knows the fact it states. The order message becomes one order record in the order management system, keyed on the buyer's location number and purchase-order number. The warehouse system writes the despatch advice from the pallets as packed. The ERP writes the invoice from the shipped lines, and the money arrives thirty days later as a bank transfer to be matched. The order fails where a document is written by a system that did not see the fact it states.
+
+The walkthrough follows one wholesale order from receipt to payment. It first sets out the order, the setting and the documents and identifiers, then gives all fifteen steps in one table. It follows the order in, through allocation, through packing and the despatch advice, and to the invoice and the money, with a Belgian customer's e-invoice as a variant of the invoice step. It then states what each handoff requires, compares the same order on the January 2027 landscape (the systems that had already run through 2026), walks the ASN Chargeback that landscape produced, and ends with five more failures and how each is caught. The evidence is the replayed reorder, GS1 standards, retailers' published conditions and the e-invoicing rules of Belgium, Germany and the EU.
 
 ## The Order, the Setting and the Rules of This Walk
 
-**The buyer.** Bergzicht Outdoor is a fictional Dutch chain with **38 shops** and a distribution center in **Zwolle**. It buys **€2.1 million annually** from Kestrel & Pine and has used EDI since 2025. Buyer Pieter Smit works with Kestrel & Pine's Wholesale Lead Lea Moreau.
+**The buyer.** Bergzicht Outdoor is a fictional Dutch chain with **38 shops** and a distribution center in **Zwolle**. It buys **€2.1 million annually** from Kestrel & Pine and has used EDI since 2025. Buyer Pieter Smit works with Kestrel & Pine's Head of Wholesale, Lea Moreau.
 
 **The order.** On **6 April 2027**, an **ORDERS** message requests **240 units across 18 stock keeping units (SKUs)**, each identifying a sellable variant. Ridgewalker jackets and Trailhead fleeces total **€19,860 excluding value-added tax (VAT)** at contract prices.
 
-Three pallets receive **Serial Shipping Container Code (SSCC)** labels. Packing confirmation generates the **DESADV** despatch advice describing their contents. They reach Zwolle on **9 April**, the invoice (**INVOIC**) follows that day, and payment is due **9 May**. Intraday times and credit figures are illustrative.
+The goods leave on three pallets, each with a **Serial Shipping Container Code (SSCC)** label, a pallet's own identifier (explained below). Packing confirmation generates the **DESADV**, the despatch advice: the shipment notice that tells Bergzicht what is on each pallet. The pallets reach Zwolle on **9 April**, the invoice (**INVOIC**) follows that day, and payment is due **9 May**. Times within a day and the credit figures in this chapter are illustrative.
 
-**The setting.** As in [[journey-consumer-order]], the order is run through Kestrel & Pine's **target architecture of late 2027**: the availability service live (W1), the OMS as order hub (W2; EDI and manual wholesale orders route through it from 8 December 2027), the PIM live (W3) and, specific to this chapter, **W6 in force**: SSCC labels generated by the WMS at pack time, the DESADV sent from the WMS's confirmation, and one EDI partner card per trading partner. In April 2027 the order ran through the January landscape; a section near the end shows the difference. The ASN Chargeback of Q3 2026 is walked as it happened, on that older landscape.
+**The setting.** The order is the scenario's April 2027 order, but, as in [[journey-consumer-order]], this walk replays it through a design it never ran on: Kestrel & Pine's **target architecture of late 2027**. In that design the availability service is live (W1), the OMS is the order hub (W2) and the PIM is live (W3); EDI and manual wholesale orders reach the OMS only from 8 December 2027. Specific to this chapter, **W6 is in force**: SSCC labels generated by the WMS at pack time, the DESADV sent from the WMS's confirmation, and one EDI partner card per trading partner, a one-page record of that partner's identifiers, message guideline, contacts and owner. In April 2027 the order actually ran on the older systems that Kestrel & Pine had used through 2026 and still had in January 2027, which the book calls the January landscape; a section near the end shows the difference. The ASN Chargeback of Q3 2026 happened on those same older systems and is walked as it happened.
 
 ### The documents and the identifiers
 
@@ -60,9 +64,11 @@ EDI has a vocabulary of its own, and newcomers meet it as a wall of capital lett
 
 Three GS1 identifiers tie the documents together, all defined in the GS1 General Specifications (Release 26.0, January 2026): the **GTIN** (Global Trade Item Number) says *what* a unit is, the number behind the barcode on every own-brand SKU; the **GLN** (Global Location Number) says *who and where*, the key for Bergzicht's Zwolle DC and Kestrel & Pine's Duiven warehouse in every address segment; the **SSCC** (Serial Shipping Container Code) says *this pallet*, an 18-digit serial number the specification calls "the only GS1 key that SHALL be used as the identifier of a logistic unit", one that "is used with EDI communications to enable identification and traceability".
 
-A despatch advice is the document in which each SSCC lists the GTINs and quantities it carries. **A warehouse system that cannot print an SSCC per pallet and report that pallet's contents cannot produce a compliant despatch advice**, and that sentence is the whole of the ASN Chargeback.
+A despatch advice is the document in which each SSCC lists the GTINs and quantities it carries. **A warehouse system that cannot print an SSCC per pallet and report that pallet's contents cannot produce a compliant despatch advice**.
 
 ## Fifteen Steps in One Table
+
+With the documents and identifiers named, the whole reorder fits one table: fifteen steps from the ORDERS message to the matched payment, each with its system, its data, the promise it makes, what could fail and the chapter that covers it.
 
 | # | Step | System | Data | Promise made | What could fail here | Chapter |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -70,9 +76,9 @@ A despatch advice is the document in which each SSCC lists the GTINs and quantit
 | 2 | CONTRL returned | the EDI provider | syntax acknowledgement | "We received a well-formed message" | Negative acknowledgement nobody reads | [[edi-and-e-invoicing]] |
 | 3 | Mapping to the order record | the iPaaS, per the Bergzicht partner card | PO fields → order fields; GTIN → SKU; GLN → address | "The message means this order" | Guideline changed (The Pulled Rug); one person can fix it (The Lynchpin) | [[edi-and-e-invoicing]], [[api-contracts-and-versioning]] |
 | 4 | Validation: items, contract prices, credit | the OMS, reading the ERP's price list and credit limit | 18 SKUs resolved; prices equal the contract; receivables within limit | "We accept this at these prices" | Price differs from the contract; limit exceeded | [[b2b-commerce]], [[pricing-architecture]] |
-| 5 | Order created, channel EDI | the OMS | order in the shared number family, PO reference, NET 30 | "The order exists, once" | Created twice from a resent ORDERS; created in the ERP or the EDI portal instead | [[order-management]] |
-| 6 | ORDRSP sent | the OMS → the EDI provider | accepted lines, confirmed dates | "You will get this, then" | Response promises what stock cannot keep | [[b2b-commerce]] |
-| 7 | Allocation of 240 units | the availability service | committed quantities per SKU at Duiven | "These units are Bergzicht's" | Commit invisible to the storefront (The Phantom Stock) | [[inventory-and-availability]] |
+| 5 | Order created, channel EDI | the OMS | order in the shared number family, PO reference, NET 30 (payment due 30 days after the invoice) | "The order exists, once" | Created twice from a resent ORDERS; created in the ERP or the EDI portal instead | [[order-management]] |
+| 6 | Allocation of 240 units | the availability service | committed quantities per SKU at Duiven | "These units are Bergzicht's" | Commit invisible to the storefront (The Phantom Stock) | [[inventory-and-availability]] |
+| 7 | ORDRSP sent | the OMS → the EDI provider | accepted lines, confirmed dates | "You will get this, then" | Response promises what stock cannot keep | [[b2b-commerce]] |
 | 8 | Fulfillment order, pallet service level | the OMS → the WMS via the iPaaS | lines, ship-to GLN, packing rules, delivery date | "Duiven ships this by Thursday" | Request lost; parcel rules applied to a pallet order | [[warehouse-and-fulfillment]] |
 | 9 | Pick to pallet, Wednesday and Thursday | the WMS | cartons picked and built onto three pallets | "These units are on these pallets" | Short pick; mixed pallets not recorded | [[warehouse-and-fulfillment]] |
 | 10 | SSCC labels printed at pack | the WMS | one SSCC per pallet, contents recorded | "This barcode is this pallet" | Pallet numbers taken from the order system, not the pack (the ASN Chargeback) | [[edi-and-e-invoicing]] |
@@ -89,17 +95,17 @@ Rows 10 and 11 are the ones the chapter is about: the two steps where a document
 
 ## ORDERS In: From Message to Order Record
 
-At 09:12 on Tuesday an interchange lands in Kestrel & Pine's mailbox at the EDI provider. A **VAN** (value-added network) is a provider-run mailbox: each trading partner connects once and the provider relays to everyone. The alternative is a direct point-to-point link, most often **AS2**, an internet protocol for signed and encrypted business documents defined in 2005 (RFC 4130); a direct link means a certificate and an endpoint per partner, which is why mid-sized suppliers buy the network. The provider's translator checks the syntax and returns a **CONTRL** acknowledgement within minutes. It says "parsed", not "agreed"; a supplier that treats CONTRL as acceptance has made its first mistake.
+At 09:12 on Tuesday an interchange lands in Kestrel & Pine's mailbox at the EDI provider. The **VAN**, the provider-run mailbox of step 1, lets each trading partner connect once while the provider relays to everyone. The alternative is a direct point-to-point link, most often **AS2**, an internet protocol for signed and encrypted business documents defined in 2005 (RFC 4130); a direct link means a certificate and an endpoint per partner, which is why mid-sized suppliers buy the network. The provider's translator checks the syntax and returns a **CONTRL** acknowledgement within minutes. It says "parsed", not "agreed"; a supplier that treats CONTRL as acceptance has made its first mistake.
 
 **Mapping** is the translation between Bergzicht's message implementation guideline, the document that says which of EDIFACT's many segments Bergzicht uses and how, and Kestrel & Pine's order record. Every retailer has its own guideline, so the cost of EDI is per partner, not per standard, which is the business model of every EDI provider: SPS Commerce's annual report for 2025 (filed 19 February 2026) sells a network that lets suppliers "connect once and immediately transact with thousands of trading partners". In the target architecture the mapping runs in the iPaaS and is described on the **EDI partner card** that W6 requires: GLNs, guideline version, messages in each direction, test status, contacts on both sides, and the owner at Kestrel & Pine, Ruben Alves. In 2026 all of that lived in one external consultant's head.
 
 **Validation** turns a message into an acceptable order. Three checks run in the OMS against data the ERP owns:
 
 - **Items.** Each of the 18 GTINs resolves to a SKU in the item master; a retired or mistyped GTIN rejects the line in the order response rather than creating a line for nothing.
-- **Prices.** An ORDERS message carries the price the buyer expects. Bergzicht's contract prices differ from the list wholesale prices (€95 for the Ridgewalker, €57 for the Trailhead) and live in the ERP's price list for this customer, because the ERP owns B2B terms: Microsoft's documentation for its Business Central-to-Shopify connector (October 2026) states that "Most businesses manage customer records, payment terms, and credit limits in Business Central and export them" and warns that mixing directions "can lead to conflicting records". A price mismatch is answered in the ORDRSP, never silently accepted, because an unexpected invoice price is a short payment four weeks later ([[pricing-architecture]]).
+- **Prices.** An ORDERS message carries the price the buyer expects, and the OMS checks it against the contract. A price mismatch is answered in the ORDRSP, never silently accepted, because an unexpected invoice price is a short payment four weeks later ([[pricing-architecture]]). Bergzicht's contract prices are not the list wholesale prices of €95 for the Ridgewalker and €57 for the Trailhead; they live in the ERP's price list for this customer, because the ERP owns B2B terms. That split is common: Microsoft's documentation for its connector between Business Central, an ERP product, and Shopify, a commerce platform (October 2026), states that "Most businesses manage customer records, payment terms, and credit limits in Business Central and export them" and warns that mixing directions "can lead to conflicting records".
 - **Credit.** The ERP holds Bergzicht's credit limit and open receivables. Assume a limit of €450,000 and €188,000 open on 6 April *(assumption)*; the order passes. A credit hold is a visible state of the order, not a silent queue.
 
-**The order is created in the OMS**, with channel EDI, Bergzicht's PO number as a reference, NET 30 terms, and a number from the same family as every web and marketplace order (W2). It is not created in the ERP, and not in the EDI provider's web portal, where EDI orders commonly end up and "no single order record" quietly begins. The ERP receives the order for posting; the OMS owns it. Shopify's Admin API (version 2026-10) shows how a platform types such terms, defining `NET` as "due a set number of days after the invoice is issued".
+**The order is created in the OMS**, with channel EDI, Bergzicht's PO number as a reference, NET 30 terms, and a number from the same family as every web and marketplace order (W2). It is not created in the ERP, and not in the EDI provider's web portal, where EDI orders commonly end up and "no single order record" quietly begins. The ERP receives the order for posting; the OMS owns it. The order carries NET 30 as a typed term (commerce platforms model terms the same way: Shopify's Admin API, version 2026-10, defines `NET` as "due a set number of days after the invoice is issued").
 
 **Idempotency** protects this step: an idempotent operation has the same effect whether performed once or twice. The VAN may redeliver an interchange, and Bergzicht's system may resend an ORDERS after a timeout; the OMS keys creation on Bergzicht's GLN plus its PO number, so the second arrival finds the order and does nothing. Stripe's API documents the same discipline for payments (n.d., accessed 2026-11). Without the key, Kestrel & Pine ships 480 units and invoices twice: the Message in a Bottle at pallet scale.
 
@@ -107,14 +113,14 @@ The **ORDRSP** goes back on Tuesday afternoon: all 18 lines accepted, delivery 9
 
 ## Allocation: Whose Stock Is It?
 
-A wholesale order takes stock differently from a web order. Eva's jacket is one unit committed at order creation and picked the next morning. Bergzicht's 240 units are **allocated** three days before they ship, while the storefronts, the marketplaces and the B2B portal keep selling from the same Duiven shelves.
+The ORDRSP could promise 9 April honestly because the stock behind it was already held, and a wholesale order holds stock differently from a web order. Eva's jacket is one unit committed at order creation and picked the next morning. Bergzicht's 240 units are **allocated** on Tuesday, two days before they ship, while the storefronts, the marketplaces and the B2B portal keep selling from the same Duiven shelves.
 
 In the target architecture there is one answer: the **availability service** computes available-to-promise per channel (what a channel may still promise: on-hand stock, minus units committed to orders, minus a buffer) from the WMS's stock events (W1). The OMS commits Bergzicht's 240 units on Tuesday morning and every channel's "in stock" drops within seconds. Assume the order includes 12 women's moss Ridgewalkers in size M, on-hand at Duiven was 36 and the storefront buffer is one unit *(assumption)*: the NL storefront's available number for that SKU falls to 23 on 6 April, the number Eva sees on 13 April in [[journey-consumer-order]]. In January 2027 the wholesale order sat in the ERP and the platform learned of it an hour later at best; one such hour during a season launch is an oversell with a chain's pallet behind it.
 
-Two B2B rules follow. **Large accounts get allocations, not promises:** some merchants reserve a share of a season's stock for key accounts, so a web surge cannot consume a chain's reorder ([[b2b-commerce]]). And **shortfalls are negotiated, not canceled:** a missing line is answered in the ORDRSP with a changed quantity or a later date, because a chain plans its shelves on the response.
-
 ![One warehouse shelf with 36 jackets on hand: 12 go to Bergzicht's pallet, one is held as a buffer, and the Dutch storefront may promise 23.](assets/images/39-journey-wholesale-order/39-one-shelf-two-buyers.jpeg)
 **Figure 3:** *One shelf, two buyers: Bergzicht's 12 moss jackets and Eva's storefront draw on the same 36 at Duiven, so the storefront may promise 23 once the allocation and the buffer are taken.*
+
+Two B2B rules follow. **Large accounts get allocations, not promises:** before any order arrives, some merchants set aside a share of a season's stock for key accounts, so a web surge cannot consume a chain's reorder ([[b2b-commerce]]). And **shortfalls are negotiated, not canceled:** a missing line is answered in the ORDRSP with a changed quantity or a later date, because a chain plans its shelves on the response.
 
 ## Pick to Pallet, Label and Despatch Advice: The Document That Costs Money
 
@@ -122,13 +128,11 @@ On Tuesday afternoon the OMS sends the WMS a **fulfillment order**, the instruct
 
 **Packing is the moment of truth.** Over Wednesday and Thursday the pickers build three pallets. As each pallet is closed, the WMS prints its **SSCC label** and records which cartons, and therefore which GTINs in which quantities, are on it. This is W6's first rule: the SSCC is generated by the WMS at pack time, from the pallet as built, not from the order, which says only what should ship. If a carton of fleeces ended up on pallet two, the label and the record say so.
 
-**The DESADV is written from that record.** At pack confirmation on Thursday 8 April *(assumption; the ledger says "at pack confirmation")*, the WMS produces the despatch advice: the shipment, then each pallet by SSCC, then the cartons and the GTIN quantities inside, with ship-from and ship-to GLNs and Bergzicht's PO number. The iPaaS hands it to the EDI provider, which sends it to Bergzicht before the pallets leave Duiven. This is W6's second rule: the DESADV is sent from the WMS's confirmation, not from the ERP.
+**The DESADV is written from that record.** At pack confirmation on Thursday 8 April, the WMS produces the despatch advice: the shipment, then each pallet by SSCC, then the cartons and the GTIN quantities inside, with ship-from and ship-to GLNs and Bergzicht's PO number. The iPaaS hands it to the EDI provider, which sends it to Bergzicht before the pallets leave Duiven. This is W6's second rule: the DESADV is sent from the WMS's confirmation, not from the ERP.
 
-Why the buyer cares is best read in a buyer's own words. Jumbo, a Dutch supermarket chain, publishes its receiving rules: "Every delivery to our mechanized DC must be preceded by a DESADV message", "A delivery without an accompanying DESADV message cannot be processed and is therefore refused!", and "The SSCC label forms the link with the DESADV despatch message" (guidelines version October 2025, translated from Dutch).
+Why the buyer cares is best read in a buyer's own words. Jumbo, a Dutch supermarket chain, publishes its receiving rules: "Every delivery to our mechanized DC must be preceded by a DESADV message", "A delivery without an accompanying DESADV message cannot be processed and is therefore refused!", and "The SSCC label forms the link with the DESADV despatch message" (guidelines version October 2025, translated from Dutch). Its purchasing conditions of 9 April 2026 add the price: a supplier that fails to use EDI with GS1-compliant content "forfeits €70 … per message", Jumbo may refuse a delivery without DESADV and SSCC, and €250 applies per order line delivered less than 90% on time and in full.
 
-Its purchasing conditions of 9 April 2026 add the price: a supplier that fails to use EDI with GS1-compliant content "forfeits €70 … per message", Jumbo may refuse a delivery without DESADV and SSCC, and €250 applies per order line delivered less than 90% on time and in full.
-
-bol has required SSCC labels on every logistic unit since 31 December 2021 (n.d., accessed 2026-11); Walmart's on-time-in-full program carried a 3% non-compliance fee at its 2017 introduction (trade press, dated). Bergzicht's conditions are fictional; their shape is this.
+bol, the Dutch online marketplace, has required SSCC labels on every logistic unit since 31 December 2021 (n.d., accessed 2026-11); Walmart's on-time-in-full program carried a 3% non-compliance fee at its 2017 introduction (trade press, dated). Bergzicht's conditions are fictional and take the same shape: every delivery tied to a DESADV and SSCC labels, with refusal or a fee when they are missing or wrong.
 
 The pallets travel on Thursday night with a pallet carrier booked through the shipping service and reach Zwolle on **Friday 9 April**. Receiving scans each SSCC; the scan finds the pallet in the DESADV and books its contents in without counting. Bergzicht does not send a RECADV, so Kestrel & Pine's only evidence of what was received is what was not deducted a month later; the partner card records that a receiving advice has not been agreed.
 
@@ -145,48 +149,13 @@ The pallets travel on Thursday night with a pallet carrier booked through the sh
 ![Diagram: Each wholesale document has its own system of truth](assets/images/39-journey-wholesale-order/fig02-each-wholesale-document-has-own-system.jpeg)
 **Figure 4:** *Each wholesale document has its own system of truth: the order belongs to the OMS, the despatch advice to the WMS's pack confirmation, the invoice to the ERP, and the money to the bank; a document written by any other system is the one the buyer deducts for.*
 
-## What Each Handoff Requires
-
-The four questions the book asks of every join (how fresh, how consistent, how fast, how available) give wholesale a different profile from the consumer journey: slower almost everywhere, stricter on consistency, with one hard deadline, the truck. Latencies are the author's illustrative targets.
-
-| Handoff | Freshness | Consistency | Latency | Availability | Style (W5) |
-| --- | --- | --- | --- | --- | --- |
-| EDI provider → iPaaS → OMS (ORDERS) | Minutes | One order per GLN plus PO number | Under 15 min *(assumption)* | Mailbox queues; replay after an outage | Events, idempotent |
-| OMS → ERP (prices, credit) | At validation | Price list and credit limit owned by the ERP | Seconds | Hold the order on ERP outage, never guess | Synchronous call |
-| OMS → availability service (allocation) | Seconds | One writer per committed quantity | Under 10 s *(assumption)* | Storefront keeps last value, with buffer | Events |
-| OMS → WMS (fulfillment order) | Minutes | Request, accept, reject, cancel-request | Before the wholesale wave | Queue absorbs an outage; the slot is the deadline | Events with acknowledgement |
-| WMS → EDI provider → Bergzicht (DESADV) | At pack confirmation | Matches the pallets exactly; corrections reference the original | Before the truck leaves | Hold the truck rather than ship without it | Event, acknowledged by CONTRL |
-| OMS → ERP → Bergzicht (INVOIC) | Day of delivery | One invoice per shipment, from shipped lines | Daily batch | Reconciliation count per day | Daily batch |
-| Bank → ERP (payment) | Days | Matched to invoices by remittance | Days | Monthly close | File or bank feed |
-
-The DESADV row is the one with no tolerance: freshness, consistency and the deadline all bind at once, and the only safe failure mode is to hold the truck.
-
-## The Failure Path: The ASN Chargeback
-
-This is what happened in the third quarter of 2026, on the January landscape, and why it cost **€14,200**.
-
-**Why the shipment notice failed.** The old ERP flow generated DESADV as soon as it released the order to the warehouse. It assigned pallet numbers and expected contents before packing. The WMS then packed according to the actual goods and printed its own labels.
-
-Bergzicht could receive a known pallet number with different contents, an unknown number, or a notice arriving after the truck. Each required manual counting and triggered a contractual fee. Nine Q3 deliveries produced the October 2026 deduction. [[edi-and-e-invoicing]] explains the corrected flow: generate the labels and notice from the same packing confirmation.
-
-**Why nobody saw it for a quarter.** The deductions arrived as unexplained short payments on invoices that were themselves correct. Sanne de Wit's team saw receivables that did not close; Lea Moreau heard of "label problems" from Pieter Smit; Daniel Okafor's warehouse had shipped every unit. The three views were never joined, and only the consultant could read the mapping. **The Lynchpin** was the consultant who built the mappings in 2025; **The Pulled Rug** was the contract itself: supplier conditions that demand pallet-level DESADV content (the level Jumbo's public rules also demand), which nobody at Kestrel & Pine owned or checked against what the systems sent.
-
-**Detection, in the target architecture.** Three signals replace the silence: a per-partner **compliance scorecard** on the partner card (DESADVs sent before departure, CONTRL rejections, deductions per delivery), an alarm on any negative acknowledgement, and a rule in cash application that a short payment opens a case naming the invoice, the DESADV and the deduction code.
-
-**Recovery.** A deduction can be disputed only with evidence that the DESADV described the pallets as shipped, which is what W6 produces: the SSCC from the WMS at pack, the DESADV from the pack confirmation, the partner card with the guideline version. The €14,200 was not disputed because the evidence did not exist.
-
-**What can still go wrong after W6.** A DESADV sent after the truck leaves because the manifest closed first (fix: the DESADV precedes the manifest, and the truck waits). A negative CONTRL that stays in a mailbox (fix: the alarm). A quantity changed after the DESADV was sent (fix: a corrected DESADV that references the original, never a silent edit). An SSCC serial reused because two systems could print labels (fix: one serial source, the WMS). And the next guideline revision, which the partner card's change contact now receives.
-
-![Diagram: The ASN Chargeback was an architecture failure, not a warehouse one](assets/images/39-journey-wholesale-order/fig03-asn-chargeback-was-architecture-failure-not.jpeg)
-**Figure 5:** *The ASN Chargeback was an architecture failure, not a warehouse one: in January 2027 the despatch advice described the order, while the pallets described the pack; after W6 one system writes both.*
-
 ## The Variant: A Belgian Shop's Peppol Invoice
 
-Not every wholesale customer is a chain with an EDI mailbox. Two weeks later, on Wednesday 21 April, Ardennes Trail Co. (fictional), an outdoor shop in Namur, orders 40 Ridgewalker jackets at €95 through the B2B portal, €3,800 excluding VAT *(illustrative; the same order [[tax-invoicing-and-ledger]] books)*. The order enters the OMS with channel "B2B portal" and ships from Duiven by bpost on 23 April, invoiced that day and due on 23 May; up to the invoice it is Eva's journey with a company account and payment terms.
+The invoice step has a variant, because not every wholesale customer is a chain with an EDI mailbox. Two weeks later, on Wednesday 21 April, Ardennes Trail Co. (fictional), an outdoor shop in Namur, orders 40 Ridgewalker jackets at €95 through the B2B portal, €3,800 excluding VAT *(illustrative; the same order [[tax-invoicing-and-ledger]] books)*. The order enters the OMS with channel "B2B portal" and ships from Duiven by bpost on 23 April, invoiced that day and due on 23 May; up to the invoice it is Eva's journey with a company account and payment terms.
 
-**Belgium mandates structured e-invoices.** From **1 January 2026**, Belgian businesses liable to VAT must issue invoices to each other as structured electronic invoices over the **Peppol** network; "Sending a PDF invoice by e-mail or via a platform will no longer be enough" (einvoice.belgium.be, 18 September 2024). A business that lacks the technical means to issue or receive them faces fines of €1,500, €3,000 and €5,000 for successive offenses; the tax administration announced tolerance for the first three months of 2026 but "under no circumstances" a general postponement (einvoice.belgium.be, December 2025). Whether the obligation reaches a Dutch supplier without a Belgian establishment is not settled by the sources this book has read. Kestrel & Pine sends Peppol e-invoices to all its Belgian business customers since January 2026 either way, because their bookkeeping now expects invoices in their accounts-payable system, not in an inbox.
+**Belgium mandates structured e-invoices.** From **1 January 2026**, Belgian businesses liable to VAT must issue invoices to each other as structured electronic invoices over the **Peppol** network; "Sending a PDF invoice by e-mail or via a platform will no longer be enough" (einvoice.belgium.be, 18 September 2024). A business that lacks the technical means to issue or receive them faces fines of €1,500, €3,000 and €5,000 for successive offenses; the tax administration announced tolerance for the first three months of 2026 but "under no circumstances" a general postponement (einvoice.belgium.be, December 2025). The cited sources do not settle whether the obligation also reaches a Dutch supplier with no establishment in Belgium. Kestrel & Pine sends Peppol e-invoices to all its Belgian business customers since January 2026 either way, because their bookkeeping now expects invoices in their accounts-payable system, not in an inbox.
 
-**Peppol in plain words.** Peppol is an open network and a document standard. Each company connects through an **access point**, a service provider, and reaches any other participant through theirs: the four-corner model (supplier, supplier's access point, customer's access point, customer), as OpenPeppol describes it (n.d., accessed 2026-11). The document is a **Peppol BIS Billing 3.0** invoice: XML in the UBL syntax implementing the European semantic standard **EN 16931**, which lists what any invoice must contain. Release 3.0.21 was published on 20 May 2026 and became mandatory on 17 August 2026; it uses type code 380 for an invoice and 381 for a credit note and requires a VAT category code on every line.
+**Peppol in plain words.** Peppol is an open network and a document standard. Each company connects through an **access point**, a service provider, and reaches any other participant through theirs: the four-corner model (supplier, supplier's access point, customer's access point, customer), as OpenPeppol describes it (n.d., accessed 2026-11). The document is a **Peppol BIS Billing 3.0** invoice: XML in the UBL syntax implementing the European semantic standard **EN 16931**, which lists what any invoice must contain. Its current release, 3.0.21, has been mandatory since 17 August 2026.
 
 **What the ERP produces** for Ardennes Trail is the same invoice as Bergzicht's in substance and different in two ways. First, the VAT: the goods leave the Netherlands for a business customer in Belgium, an intra-EU supply at 0% with the reverse-charge mention, valid only if the customer's VAT number was validated in VIES, the EU's registry; the buyer accounts for Belgian VAT itself (europa.eu, n.d., accessed 2026-11). Second, the transport: the ERP hands the document to Kestrel & Pine's access point, which delivers it to the customer's access point and so to the customer's software. **Transmission becomes a state of the invoice:** sent, delivered, or rejected by the network's validation rules. A rejected e-invoice is not an invoice; the ERP must hold that state and retry or correct, a new failure mode for a finance system that used to attach a PDF.
 
@@ -201,7 +170,25 @@ Not every wholesale customer is a chain with an EDI mailbox. Two weeks later, on
 
 Germany, Kestrel & Pine's third market, sits between the two: every German business must be able to receive e-invoices since 1 January 2025, and the Finance Ministry's FAQ tolerates existing EDI procedures through 2027 (accessed 2026-11). EU-wide, the ViDA package adopted on 11 March 2025 brings digital reporting for cross-border B2B from 1 July 2030. [[edi-and-e-invoicing]] and [[commerce-regulation]] keep the calendar; the point here is that the invoice's owner did not change, only its format and its delivery receipt.
 
+## What Each Handoff Requires
+
+Back to Bergzicht's order: the four questions the book asks of every join (how fresh, how consistent, how fast, how available) give wholesale a different profile from the consumer journey: slower almost everywhere, stricter on consistency, with one hard deadline, the truck. Latencies are the author's illustrative targets.
+
+| Handoff | Freshness | Consistency | Latency | Availability | Style (W5) |
+| --- | --- | --- | --- | --- | --- |
+| EDI provider → iPaaS → OMS (ORDERS) | Minutes | One order per GLN plus PO number | Under 15 min *(assumption)* | Mailbox queues; replay after an outage | Events, idempotent |
+| ERP → OMS (contract prices); OMS → ERP (credit check) | Prices on change; credit at validation | Price list and credit limit owned by the ERP | Seconds | Hold the order on ERP outage, never guess | Prices by event; credit by synchronous call |
+| OMS → availability service (allocation) | Seconds | One writer per committed quantity | Under 10 s *(assumption)* | Storefront keeps last value, with buffer | Events |
+| OMS → WMS (fulfillment order) | Minutes | Request, accept, reject, cancel-request | Before the wholesale wave | Queue absorbs an outage; the slot is the deadline | Events with acknowledgement |
+| WMS → EDI provider → Bergzicht (DESADV) | At pack confirmation | Matches the pallets exactly; corrections reference the original | Before the truck leaves | Hold the truck rather than ship without it | Event, acknowledged by CONTRL |
+| OMS → ERP → Bergzicht (INVOIC) | Day of delivery | One invoice per shipment, from shipped lines | Daily batch | Reconciliation count per day | Daily batch |
+| Bank → ERP (payment) | Days | Matched to invoices by remittance | Days | Monthly close | File or bank feed |
+
+The DESADV row is the one with no tolerance: freshness, consistency and the deadline all bind at once, and the only safe failure mode is to hold the truck.
+
 ## The Same Order in January 2027
+
+In April 2027 the reorder actually ran on the January landscape, with the same ERP, the same WMS at Duiven and the same EDI provider. Side by side, the two paths differ in where the order lives, who can read the mapping, how fast the stock is committed, which system writes the despatch advice, and from what the invoice is written.
 
 | Step | Late 2027 | January 2027 |
 | --- | --- | --- |
@@ -212,15 +199,40 @@ Germany, Kestrel & Pine's third market, sits between the two: every German busin
 | Invoice | From the ERP, from shipped lines | From the ERP, from order lines |
 | Deductions | A case per short payment, with DESADV evidence | Unexplained short payments; €14,200 in Q3 2026 |
 
+## The Failure Path: The ASN Chargeback
+
+That January path was already in place through 2026, and in the third quarter of 2026 it produced the ASN Chargeback, which cost **€14,200**.
+
+**Why the shipment notice failed.** The old ERP flow generated DESADV as soon as it released the order to the warehouse. It assigned pallet numbers and expected contents before packing. The WMS then packed according to the actual goods and printed its own labels.
+
+Bergzicht could receive a known pallet number with different contents, an unknown number, or a notice arriving after the truck. Each required manual counting and triggered a contractual fee. Nine Q3 deliveries produced the October 2026 deduction. The correction is W6's two rules described above: the labels and the notice come from the same pack confirmation. [[edi-and-e-invoicing]] covers the mechanism in depth.
+
+**Why nobody saw it for a quarter.** The deductions arrived as unexplained short payments on invoices that were themselves correct. Finance Director Sanne de Wit's team saw receivables that did not close; Lea Moreau heard of "label problems" from Pieter Smit; Head of Operations Daniel Okafor's warehouse had shipped every unit. The three views were never joined, and only the consultant could read the mapping. **The Lynchpin** was the dependence on the one consultant who built the mappings in 2025; **The Pulled Rug** was the risk of a contract nobody tracked: Bergzicht's supplier conditions demand pallet-level DESADV content (the level Jumbo's public rules also demand), nobody at Kestrel & Pine owned them or checked what the systems sent against them, and so the first sign of the rule was a deduction.
+
+**Detection, in the target architecture.** Three signals replace the silence: a per-partner **compliance scorecard** on the partner card (DESADVs sent before departure, CONTRL rejections, deductions per delivery), an alarm on any negative acknowledgement, and a rule in cash application that a short payment opens a case naming the invoice, the DESADV and the deduction code.
+
+**Recovery.** A deduction can be disputed only with evidence that the DESADV described the pallets as shipped, which is what W6 produces: the SSCC from the WMS at pack, the DESADV from the pack confirmation, the partner card with the guideline version. The €14,200 was not disputed because the evidence did not exist.
+
+**What can still go wrong after W6.** A DESADV sent after the truck leaves because the manifest closed first (fix: the DESADV precedes the manifest, and the truck waits). A negative CONTRL that stays in a mailbox (fix: the alarm). A quantity changed after the DESADV was sent (fix: a corrected DESADV that references the original, never a silent edit). An SSCC serial reused because two systems could print labels (fix: one serial source, the WMS).
+
+![Diagram: The ASN Chargeback was an architecture failure, not a warehouse one](assets/images/39-journey-wholesale-order/fig03-asn-chargeback-was-architecture-failure-not.jpeg)
+**Figure 5:** *The ASN Chargeback was an architecture failure, not a warehouse one: in January 2027 the despatch advice described the order, while the pallets described the pack; after W6 one system writes both.*
+
 ## When It Goes Wrong Along This Path
 
-Beyond the ASN path, five failures recur in wholesale, each with a detection and a recovery.
+Beyond the ASN path and the risks W6 leaves, five failures recur in wholesale, each with a detection and a recovery:
 
-**The duplicate ORDERS.** Detected by the GLN plus PO key; recovered by doing nothing. **The order change after allocation.** Bergzicht sends a change (an ORDCHG message, or a phone call to Lea); the OMS re-validates and re-allocates, and the ORDRSP restates the whole order, not only the changed line. **The short pick.** A carton missing at pack; the DESADV and the invoice show the shipped quantity, and Lea tells Pieter before the truck arrives. **The remittance that names nothing.** A transfer for €23,214.80 against three invoices and two deductions; recovered by a cash-application rule that matches on amount patterns and opens a case rather than parking the money. **The guideline revision.** Detected by the partner card's change contact and a test cycle with the EDI provider before the effective date; the alternative is the Pulled Rug, discovered by deduction.
+- **The duplicate ORDERS.** Detected by the GLN plus PO key; recovered by doing nothing.
+- **The order change after allocation.** Bergzicht sends a change (an ORDCHG message, or a phone call to Lea); the OMS re-validates and re-allocates, and the ORDRSP restates the whole order, not only the changed line.
+- **The short pick.** A carton missing at pack; the DESADV and the invoice show the shipped quantity, and Lea tells Pieter before the truck arrives.
+- **The remittance that names nothing.** One transfer of €23,214.80 *(illustrative)* that settles three invoices less two deductions, with no invoice numbers; recovered by a cash-application rule that matches on amount patterns and opens a case rather than parking the money.
+- **The guideline revision.** Detected by the partner card's change contact and a test cycle with the EDI provider before the effective date; the alternative is the Pulled Rug, discovered by deduction.
 
 Gregor Hohpe's 2004 Starbucks essay names the three recoveries all of these reduce to: write-off, retry, or compensating action. In wholesale the compensating action is a credit note, and the write-off is a deduction nobody disputed.
 
 ## What to Take Away
+
+The chapter opened with a correct delivery that can still be held up or penalized. Bergzicht's reorder shows why: the penalty follows a document written by a system that did not see the fact it states. Replayed through the late-2027 design, the three pallets arrive with labels and a despatch advice from one pack confirmation, are booked in without counting, and are invoiced from what shipped. In Q3 2026 the same warehouse shipped every unit and Kestrel & Pine still lost €14,200, because the ERP had described the order instead of the pallets. The Peppol invoice changes the format and the transport, not the writer. A supplier that asks of each document which system writes it, and whether that system saw the fact, finds its deductions before the buyer's receiving does.
 
 **Established.**
 
@@ -250,7 +262,7 @@ Gregor Hohpe's 2004 Starbucks essay names the three recoveries all of these redu
 7. Does the invoice come from the shipped lines or from the order lines, and who owns the contract price it uses?
 8. Which countries' e-invoicing obligations apply to the company's customers today and in 2027 and 2030, and does the ERP hold the transmission status of each e-invoice?
 
-Bergzicht's pallets and Eva's parcel left the same warehouse in the same April week, on a landscape built for an ordinary day. The next journey is the day that is not ordinary: Friday 27 November 2026, when the Ridgewalker sold out at 19:40 and the storefronts kept selling it for two hours. [[journey-peak-day]] walks it hour by hour.
+Bergzicht's pallets and Eva's parcel left the same warehouse in the same April week, through systems built for an ordinary day. The next journey goes back four and a half months to a day that was not ordinary: Friday 27 November 2026, when the Ridgewalker sold out at 19:40 and the storefronts kept selling it for two hours. [[journey-peak-day]] walks it hour by hour.
 
 ## Sources and Evidence
 

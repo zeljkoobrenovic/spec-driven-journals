@@ -13,36 +13,40 @@ logo: "assets/images/48-case-zalando/logo.jpeg"
 
 > **KEY POINTS:**
 >
-> * **Zalando split its shop for team autonomy, not for load, and said so.** In 2015 a shared codebase and slow deployments blocked 85-plus teams; the fix was organizational first (small teams, an AWS account each, a paved road called STUPS) and architectural second. The service count followed the team count.
-> * **The durable export is a written API standard, not the service count.** Zalando's guidelines, open since 2016 and still maintained in 2026, say what a merchant should demand of every vendor: extend compatibly instead of versioning, never break consumers, and sunset an API only with client consent, a date, headers and usage monitoring.
-> * **Autonomy was followed by a decade of discipline.** Alignment over raw autonomy (2018), fewer languages (2020), one developer portal (2023) and, in 2025, a synchronous read API replacing a price-and-stock event stream that fell 30 minutes behind at Cyber Week and bred divergent copies of product data. Events propagate change; they are not the system of record.
+> * **Zalando split its shop for team autonomy, not for load, and said so.** In 2015 all the shop teams shared one codebase, and slow startup and complicated deployments kept them from moving quickly; the fix was organizational first (small teams, an AWS account each, a **paved road**, meaning one supported way to deploy, called STUPS) and architectural second. The service count followed the team count.
+> * **The durable export is a written API standard, not the service count.** Zalando's guidelines, open since 2016 and still maintained in 2026, say what a merchant should demand of every vendor: extend compatibly (add to an API without breaking its users) instead of publishing new versions, never break consumers, and sunset an API only with client consent, a date, headers and usage monitoring.
+> * **Autonomy was followed by a decade of discipline.** Alignment over raw autonomy (2018), fewer languages (2020), one developer portal (2023) and, in 2025, a synchronous read API (one that answers "what is it now" when asked) replacing a price-and-stock event stream that lagged up to 30 minutes at Cyber Week and bred divergent copies of product data. Events propagate change; they are not the system of record.
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-commerce-platforms-go-wrong.html):**
 >
-> * **The Giant's Boots** — Zalando's microservices move is copied for its shape; the record shows it was made for 85-plus teams and corrected for a decade afterward.
+> * **The Giant's Boots** — Zalando's microservices move is copied for its shape; the record shows it was made because the shop teams shared one codebase, and was corrected for a decade afterward.
 > * **The Pulled Rug** — Zalando's deprecation rules (consent, a sunset date, headers, usage monitoring) are the written cure for the vendor API change that breaks an integration before anyone is told.
 > * **The Message in a Bottle** — Zalando's 2025 post documents what happens when consumers rebuild their own copy of price and stock from a stream they cannot keep up with: delays and divergent copies.
 
 <br>
-A merchant listing products on Zalando depends on a platform that serves shoppers, connects sellers and offers fulfillment services. Those jobs create coordination problems within Zalando as well as across the merchant's integrations. The Berlin fashion platform reported **€17.6 billion in gross merchandise volume**, **62 million active customers** and **278.6 million orders** for 2025 (March 2026 fact sheet). Its engineering choices address that scale; merchants such as Kestrel & Pine, the fictional brand used here, need to understand which lessons apply to their smaller operation.
-
-From 2015, Zalando described a move to independently deployed services and autonomous teams. Later posts addressed shared standards, fewer technologies and common developer tools. A 2025 account even replaced one event-based integration with direct API calls. The case is useful because it exposes the costs of earlier decisions as well as their rationale.
-
-Read the **2015–2017 accounts as history**, alongside newer business filings and 2023–2026 AI material. Each claim is dated; inferred internals remain labeled. "Return to discipline" is this chapter's interpretation of successive posts, not a program Zalando announced. [[case-amazon]] applies the same evidence discipline to another company.
+A merchant listing products on Zalando depends on a platform that serves shoppers, connects sellers and offers fulfillment services. The Berlin fashion platform reported **€17.6 billion in gross merchandise volume** (GMV, the value of the goods sold through the platform), **62 million active customers** and **278.6 million orders** for 2025 (March 2026 fact sheet). Its engineering choices address that scale; merchants such as Kestrel & Pine, the fictional brand used here, need to understand which lessons apply to their smaller operation.
 
 **Where we are in the order's journey.** A merchant listing a jacket on Zalando needs correct price and stock, an imported order and a maintained API contract. [[marketplaces-and-channel-integration]], [[inventory-and-availability]] and [[api-contracts-and-versioning]] explain those responsibilities from the merchant's side.
 
+Like Amazon in the previous case, Zalando moved from one application to services and from retailer to platform. Unlike Amazon, whose internals are documented only up to 2007, Zalando has published ten years of its decisions, including the ones it later reversed. From 2015 it described a move to independently deployed services and autonomous teams. Later posts addressed shared standards, fewer technologies and common developer tools. A 2025 account even replaced one event-based integration with direct API calls. The case is useful because it exposes the costs of earlier decisions as well as their rationale.
+
+Read the **2015–2017 accounts as history**, alongside newer business filings and 2023–2026 AI material. Each claim is dated; inferred internals remain labeled. "Return to discipline" is this chapter's interpretation of successive posts, not a program Zalando announced.
+
+Read that way, the record gives this chapter's answer. Zalando split its shop in 2015 for team autonomy, not for load, and then spent a decade narrowing choices: alignment over raw autonomy, fewer languages, one developer portal and, in 2025, a read API in place of a price-and-stock event stream that lagged up to 30 minutes at Cyber Week. A merchant should take Zalando's written rules for API compatibility and deprecation, and should get each price and stock figure from the system that owns it. It should not copy Zalando's thousands of applications.
+
+The chapter follows the record in order. It starts with the 2015 split and the cost of spreading data across services, which Zalando stated the same year. Then come the API standard that grew out of that work and a check of which of the 2015 open-source pieces survived. Next come the decade of narrowing choices and, in detail, the 2025 event stream that fell behind. After that the chapter follows the retailer becoming a platform through logistics, and looks at its AI work. It ends with what transfers to a merchant, including what Kestrel & Pine takes, and where the evidence stops. The evidence is Zalando's own dated posts, filings and code repositories, with trade press where the primary page was not available.
+
 ## 2015: Jimmy, Radical Agility and the Split
 
-A **monolith** is one deployed application with a shared codebase. **Microservices** split work into separately deployed programs that communicate over a network. An **autonomous team** owns its services in production and has freedom over tools and process. The practical question is how much independence helps teams deliver without making coordination harder.
+The record starts with the 2015 split, which needs three terms. A **monolith** is one deployed application with a shared codebase. **Microservices** split work into separately deployed programs that communicate over a network. An **autonomous team** owns its services in production and has freedom over tools and process. The practical question is how much independence helps teams deliver without making coordination harder.
 
-Zalando's monolith, **Jimmy**, blocked teams through slow startup and complicated deployments, according to its October 2015 post. The stated problem was release speed and shared code, rather than traffic alone.
+Zalando's monolith, **Jimmy**, was shared by all the shop teams and blocked them through slow startup and complicated deployments, according to its October 2015 post. The stated problem was release speed and shared code, rather than traffic alone.
 
-In May 2015, seven engineers and a designer began rebuilding the Fashion Store, then fifteen country sites serving over sixteen million active customers. Teams would own programming, testing, deployment and operations. A router called **Skipper**, later open-sourced, directed requests between the old and new parts.
+To get out of Jimmy, in May 2015 seven engineers and a designer began rebuilding the Fashion Store, then fifteen country sites serving over sixteen million active customers. Teams would own programming, testing, deployment and operations. The team chose a **router**, Skipper, which sends each incoming web request to the part of the shop that should answer it, and open-sourced it.
 
 The organizational side was called **Radical Agility**, introduced in March 2015 and built, by trade accounts of 2016, on autonomy, mastery and purpose, with teams of three to seven people owning a topic end to end. Zalando's own July 2015 post has Eric Bowman, then VP Engineering, at the AWS Summit in Berlin: "We think of teams as a unit of trust"; "we've tried to create the context where people can make mistakes and it's not fatal". By February 2016 a Zalando talk at the MicroXchange conference covered microservices across "our 85+ engineering teams"; by December 2016 InfoQ reported "about 110 teams", more than 1,400 people in Tech across six hubs, and "each team has its own AWS account".
 
-That last fact needed a platform. **STUPS** was Zalando's answer: an **internal platform-as-a-service**, meaning one supported way for every team to deploy to the cloud. Development began in late 2014 and it was available for production to every team in May 2015. InfoQ's April 2016 account describes it as "a convenient and audit-compliant Platform-as-a-Service" on AWS: "Our employees get nearly administrative access to their AWS accounts with almost no restrictions", with near-real-time audit reporting because "Auditors need to know that we're complying with the regulations" (card-industry, financial-reporting and German rules). In plain words: Zalando gave every team its own cloud account and built the tooling that made that auditable.
+An AWS account for every team needed a platform. **STUPS** was Zalando's answer: an **internal platform-as-a-service**, meaning one supported way for every team to deploy to the cloud. Development began in late 2014 and it was available for production to every team in May 2015. InfoQ's April 2016 account describes it as "a convenient and audit-compliant Platform-as-a-Service" on AWS: "Our employees get nearly administrative access to their AWS accounts with almost no restrictions", with near-real-time audit reporting because "Auditors need to know that we're complying with the regulations" (card-industry, financial-reporting and German rules). In plain words: Zalando gave every team its own cloud account and built the tooling that made that auditable.
 
 The shop itself was rebuilt as **fragments**, pieces of a page owned by different teams and deployed separately, assembled behind the router. One year in, in October 2016, the effort was renamed Project Mosaic: header and footer fragments were live, product-page and wish-list fragments were going live, and the author described a shift "from prototyping to performance optimization" and toward "stable components that other teams can depend on".
 
@@ -51,11 +55,11 @@ The shop itself was rebuilt as **fragments**, pieces of a page owned by differen
 
 A smaller post from April 2016 is the most honest about the first months: a team in Dortmund cut its domain into two services, then into eight after modeling the boundaries properly ("Define your Microservices properly and know your boundaries"), and replaced a failed upfront plan with weekly goals.
 
-> **INFERENCE, NOT DOCUMENTED:** Zalando's documented sequence mirrors Amazon's with a thirteen-year lag and a different stated motive. Amazon's 2006 account names a scaling wall; Zalando's 2015 posts name team autonomy. The fix was organizational first (teams, accounts, a paved road) and architectural second, which is why the service count tracked the team count: 85-plus teams in early 2016, about 110 by December, and by 2020 "4,000+ applications" for "1,200+ developers". A merchant with fourteen people in technology, like Kestrel & Pine, is below the team count at which any of this applies. What transfers is the *order of operations*: decide who owns what before deciding how to split what, which is the argument of [[boundaries-and-systems-of-record]] and [[organizing-commerce-engineering]].
+> **INFERENCE, NOT DOCUMENTED:** Zalando's documented sequence mirrors Amazon's, more than a decade later and with a different stated motive. Amazon's 2006 account names a scaling wall it dated to 2001; Zalando's 2015 posts name team autonomy. The fix was organizational first (teams, accounts, a paved road) and architectural second, which is why the service count tracked the team count: 85-plus teams in early 2016, about 110 by December, and by 2020 "4,000+ applications" for "1,200+ developers". A merchant with fourteen people in technology, like Kestrel & Pine, is below the team count at which any of this applies. What transfers is the *order of operations*: decide who owns what before deciding how to split what, which is the argument of [[boundaries-and-systems-of-record]] and [[organizing-commerce-engineering]].
 
 ## The Cost of Distributed Data, Stated Early
 
-When services own separate databases, a business report must bring their facts back together. An order total and a product category no longer necessarily live in the same place, so analytics needs an explicit collection and matching process. In September 2015 a Zalando post observed that the monolith's "consolidation of data in a single place makes business intelligence fairly simple", whereas "with each service owning its data, data is spread over a significantly larger number of cloud-based microservices"; article and order data alone were spread across eight PostgreSQL databases. Zalando's response was to deploy Kafka, a message log, on AWS "to make our event data available for downstream systems", and to plan a data lake.
+When services own separate databases, a business report must bring their facts back together. An order total and a product category no longer necessarily live in the same place, so analytics needs an explicit collection and matching process. In September 2015 a Zalando post observed that the monolith's "consolidation of data in a single place makes business intelligence fairly simple", whereas "with each service owning its data, data is spread over a significantly larger number of cloud-based microservices"; article and order data alone were spread across eight PostgreSQL databases. Zalando's response was to deploy Kafka, a message log, on AWS "to make our event data available for downstream systems", and to plan a data lake, one store for raw data from all sources.
 
 Two terms. An **event** is a message sent the moment something happens (an order placed, a price changed) so other systems can react. An **event bus** is the shared channel on which services publish events and others subscribe.
 
@@ -67,7 +71,7 @@ By May 2017 a Zalando post on "third-generation microservices" described the int
 
 ## The API Guild and the Guidelines
 
-Shared API rules let teams and external partners integrate without relearning every interface. Agreeing on names, message shapes and change policies also makes incompatibilities easier to catch before release.
+Events moved data between the services; shared rules were needed for the interfaces themselves. Shared API rules let teams and external partners integrate without relearning every interface. Agreeing on names, message shapes and change policies also makes incompatibilities easier to catch before release.
 
 The piece of Zalando's 2015 work that is still alive, still public and still maintained in 2026 is its API standard. It began as the **API Guild** in March 2015: an informal group of about 20 people who set standards and review APIs as "a sounding board and review resource, not an approval board, to avoid bottlenecks", spending about 10% of their week on it. The September 2015 post explains why it mattered to the business: Zalando's "open platform strategy relies on public APIs used by external partners", so "We cannot afford to break our APIs", and "Ideally, all Zalando APIs should look like the same author created them".
 
@@ -80,55 +84,16 @@ The rules that matter most to a merchant are the ones about change. In plain wor
 | #106 MUST not break backward compatibility | "Change APIs, but keep all consumers running" | Additive changes only inside a version |
 | #107 SHOULD prefer compatible extensions; #113 SHOULD avoid versioning | Add fields rather than publishing a new version | A changelog of additions, not surprise versions |
 | #108 MUST prepare clients to accept compatible extensions | Clients ignore fields they do not know (the **tolerant reader**) | Its own integrations must not fail on a new field |
-| #114 MUST use media type versioning; #115 MUST not use URL versioning | When a version is unavoidable, put it in the content type, not the address | A stated versioning scheme, whichever it is |
+| #114 MUST use media type versioning; #115 MUST not use URL versioning | When a version is unavoidable, put it in the content type (the format label each message carries), not the address | A stated versioning scheme, whichever it is |
 | #185 MUST obtain approval of clients before API shut down; #186 MUST collect external partner consent on deprecation time span | No sunset until "all clients have given their consent on a sunset date" | A deprecation notice with a date agreed in advance |
-| #187 MUST reflect deprecation in API specifications; #189 SHOULD add Deprecation and Sunset headers | `deprecated: true`, the sunset date and migration guidance in the spec; headers on every response | Machine-readable deprecation, so a script can warn before it breaks |
+| #187 MUST reflect deprecation in API specifications; #189 SHOULD add Deprecation and Sunset headers | `deprecated: true`, the sunset date and migration guidance in the spec; Deprecation and Sunset headers (labels the API attaches to every response) | Machine-readable deprecation, so a script can warn before it breaks |
 | #188 MUST monitor usage of deprecated API scheduled for sunset | The provider watches who is still calling | A warning to the merchant while it is still calling |
 | #191 MUST not start using deprecated APIs | A client never builds on something already marked for removal | The agency checks before building |
-
-The companion to the guidelines is the **Tech Radar**, created in 2016 "to inspire and support teams to pick the best technologies for new projects". A Technologist Guild of about 25 senior people assigns technologies to rings by vote: ADOPT ("high confidence in to serve our purpose, also in large scale"), TRIAL, ASSESS and HOLD ("not recommended to be used for new projects"). In 2016 "Teams must use the Tech Radar as one input source for their technology decisions"; that wording changes in 2020.
 
 ![Diagram: Deprecation as Zalando's guidelines prescribe it](assets/images/48-case-zalando/fig02-deprecation-zalando-s-guidelines-prescribe-it.jpeg)
 **Figure 2:** *Deprecation as Zalando's guidelines prescribe it: announce in the specification, obtain consent on a date, signal in headers, monitor who still calls, and only then sunset; every step is a chance to avoid the Pulled Rug.*
 
-Kestrel & Pine learned the value of these rules the expensive way. In February 2027 its marketplace connector retired an API version on a published date; the agency script that read it had not been updated, and stock to bol was stale for two days (the ledger's Deprecated Endpoint). Every row in the table above describes a step that would have caught it: a machine-readable deprecation, a header the script could have logged, usage monitoring that would have shown the script still calling. [[api-contracts-and-versioning]] turns the guidelines into the book's contract rules.
-
-## The Return to Discipline, 2018 to 2026
-
-No single Zalando post declares that the autonomy era ended. The posts that follow narrow a choice each time, and read in order they tell one story.
-
-| Year | What Zalando published | What narrowed |
-| --- | --- | --- |
-| 2018 | Bowman, by then leading a 500-person group, told InfoQ in September: "Our biggest challenge was that we treated autonomy like an input to teams"; unaligned teams were like "air molecules in a balloon: moving fast but not running together as a group"; autonomy became "an aspiration and a reward, not a gift"; "a set of principles and systems scales better than a set of prescriptions". Teams were embedded across the company with shared objectives and company-wide "Global Projects". | Autonomy without alignment |
-| 2018 | The agile coaches: "we value principles more than frameworks"; six principles replace a single prescribed method (August). | One mandated process, replaced by principles |
-| 2020 | With "1,200+ developers" and "4,000+ applications", Zalando "redefined the ring semantics" of the radar, wrote Technology Selection Principles, gave a Principal Engineering community the decision, required a sponsoring Engineering Head for TRIAL technologies, and stopped new applications in Clojure, Haskell and Rust in favor of Kotlin and TypeScript, because "A broad freedom of choice leads to increased difficulties in supporting software long-term" (July). | Free choice of language |
-| 2023 | **Sunrise**, an internal developer portal built on Backstage since 2021, replaced "more than 100 disconnected interfaces" with one portal holding "over 40k registered entities (applications, teams, and users)" and 27 integrated tools; old tools were shut down (August). | Many tools, replaced by one paved road |
-| 2023 | On 21 February the co-CEOs announced the removal of "several hundred overhead roles", about 5% of roughly 17,000 employees, sparing logistics, customer care and outlets (Retail Gazette). | Overhead |
-| 2025 | The event-driven price and stock pipeline "became a bottleneck, introducing delays and scaling challenges"; it was replaced by a synchronous Product Read API (March). | A stream as the only source of current state |
-| 2026 | Connected Retail, the ship-from-store program launched in 2018, is folded into the standard partner program; its technology "will be discontinued by June 30, 2027" (FashionUnited, April). | A separate channel technology |
-
-Three terms. A **paved road**, or internal developer platform, is one supported way to build, deploy and find services so teams do not each solve the same problem. A **technology radar with teeth** is a list of allowed technologies teams must follow rather than consult. A **synchronous read API** is one that answers "what is the price now" when asked, instead of making the caller rebuild its own copy from a stream of changes.
-
-The evidence does not support "microservices failed at Zalando". It supports something more specific: **autonomy produced too many technologies, too many tools and, on one critical path, an integration that could not keep up**, and each was fixed by narrowing a choice. Zalando today reports more than 17,000 employees, around 3,000 in technology and more than 7,000 in fulfillment centers (annual report 2025, March 2026).
-
-![Many scattered paths leaving a balloon of arrows labeled Autonomy and merging past signposts 2018, 2020, 2023 and 2025 into one paved road.](assets/images/48-case-zalando/48-autonomy-narrowed-to-a-paved-road.jpeg)
-**Figure 3:** *Zalando's return to discipline narrowed one choice at a time: alignment in 2018, fewer languages in 2020, one developer portal in 2023 and a read API in 2025.*
-
-## 2025: When the Event Stream Fell Behind
-
-Publishing every change as an event gives each receiving system work to process and a copy to maintain. If receivers fall behind, a price or stock answer can be stale even though the source is correct. Zalando's 2025 account shows this failure in a commerce pipeline.
-
-Zalando's price and stock updates were published as events. Consumers, the systems that needed current prices and stock, subscribed to the stream and maintained their own copies. The March 2025 post "From Event-Driven to API" reports what happened at scale: "over 90% of each payload unchanged" was being reprocessed, because an event carried the whole record even when one field had changed; during Cyber Week events "could be delayed by up to 30 minutes"; and teams that could not consume the streams fast enough used other sources, producing "divergent versions of product data". The pipeline was replaced by a synchronous, low-latency **Product Read API** (PRAPI): callers ask for the current price and stock and get an answer now.
-
-![Diagram: Before 2025, every consumer rebuilt its own copy of price and stock from a stream of full records and the copies diverged under load](assets/images/48-case-zalando/fig03-before-2025-every-consumer-rebuilt-own.jpeg)
-**Figure 4:** *Before 2025, every consumer rebuilt its own copy of price and stock from a stream of full records and the copies diverged under load; after, consumers ask the owner for the current value, and the stream is no longer the only way to know the truth.*
-
-In plain words: an event is the right way to tell everyone that something changed. It is the wrong way to be the only place the current value can be learned, because then every consumer is a copy, every copy can lag, and on the busiest day the lag is largest. Kestrel & Pine's stock sync chain, WMS to ERP every 15 minutes, ERP to platform hourly, platform to marketplace connector hourly, is a slower version of the same design: a chain of copies, each one stale by the time it is read, which is how the Ridgewalker kept selling for two hours after it sold out at 19:40 on 27 November 2026.
-
-![Stock notes passed from WMS to ERP to Platform to Connector, with clocks reading 15 min and hourly, while the empty shelf at the start contrasts with a jacket still for sale at the end.](assets/images/48-case-zalando/48-kestrel-pine-chain-of-copies.jpeg)
-**Figure 5:** *Kestrel & Pine's stock sync is a chain of copies, WMS to ERP every 15 minutes, then hourly to the platform and hourly to the connector, which is how the Ridgewalker kept selling for two hours after it sold out.*
-
-> **INFERENCE, NOT DOCUMENTED:** Zalando does not describe PRAPI's internals, its caching or how events and the API now coexist, so the diagram shows the documented before and after, not the implementation. The rule I draw is the one Waypoint decision W1 encodes: keep a **system of record** for stock and price, an **availability service** that answers "can I promise this unit on this channel now" through an API, and use events to propagate change and to feed reconciliation, not as the only source of truth. Events for "what happened"; a read API for "what is it now"; a reconciliation job for "do the copies still agree" ([[events-consistency-and-reconciliation]]). The 30-minute figure is Zalando's; the two-hour figure is Kestrel & Pine's; the shape of the failure is the same.
+Kestrel & Pine learned the value of these rules the expensive way. In February 2027 its marketplace connector retired an API version on a published date. The script that read it, written by Kestrel & Pine's outside agency, had not been updated, and stock sent to bol, the Dutch and Belgian marketplace, was stale for two days (the Deprecated Endpoint incident). Every row in the table above describes a step that would have caught it: a machine-readable deprecation, a header the script could have logged, usage monitoring that would have shown the script still calling. [[api-contracts-and-versioning]] turns the guidelines into the book's contract rules.
 
 ## The Platform Pieces: What Survived
 
@@ -141,10 +106,49 @@ Zalando open-sourced much of what it built in 2015, and the status of those proj
 | Patroni | "a Python template for building PostgreSQL high availability (HA) clusters", introduced on Zalando's blog in February 2016, now under its own organization | Active |
 | Nakadi | the event bus described above | Archived June 2024: "no longer developed in the open as we've not seen usage outside of Zalando for many years" |
 | RESTful API and Event Guidelines | "A model set of guidelines for RESTful APIs and Events, created by Zalando" | Active; changed September 2026 |
-| Tech Radar | the radar page and its generator | Active; changed October 2026 |
+| Tech Radar | the technology ratings page (described in the next section) and its generator | Active; changed October 2026 |
 | Zalenium | container-based test grid | Archived September 2021: "no new maintainers were found" |
 
 > **INFERENCE, NOT DOCUMENTED:** The pieces that survived are the ones with a life outside Zalando: a router, a database failover template and a written standard. The pieces tied to the 2015 account-per-team model (STUPS) or used only internally (Nakadi) were archived. Read the table as a warning against building platform tooling only one company needs. Archiving Nakadi says nothing about whether Zalando still uses an event bus internally; the README says only that nobody outside did.
+
+## The Return to Discipline, 2018 to 2026
+
+From 2018, Zalando's posts narrow what 2015 left open. The starting point for technology choices was the **Tech Radar**, created in 2016, beside the API guidelines, "to inspire and support teams to pick the best technologies for new projects". A Technologist Guild of about 25 senior people assigns technologies to rings by vote: ADOPT ("high confidence in to serve our purpose, also in large scale"), TRIAL, ASSESS and HOLD ("not recommended to be used for new projects"). In 2016 "Teams must use the Tech Radar as one input source for their technology decisions"; the 2020 row of the timeline below shows what replaced that wording.
+
+Three terms help read the timeline. A **paved road**, or internal developer platform, is one supported way to build, deploy and find services so teams do not each solve the same problem. A **technology radar with teeth** is a list of allowed technologies teams must follow rather than consult, which is what Zalando's radar became in 2020. A **synchronous read API** is one that answers "what is the price now" when asked, instead of making the caller rebuild its own copy from a stream of changes.
+
+No single Zalando post declares that the autonomy era ended. The posts that follow narrow a choice each time, and read in order they tell one story.
+
+| Year | What Zalando published | What narrowed |
+| --- | --- | --- |
+| 2018 | Bowman, by then leading a 500-person group, told InfoQ in September: "Our biggest challenge was that we treated autonomy like an input to teams"; unaligned teams were like "air molecules in a balloon: moving fast but not running together as a group"; autonomy became "an aspiration and a reward, not a gift"; "a set of principles and systems scales better than a set of prescriptions". Teams were embedded across the company with shared objectives and company-wide "Global Projects". | Autonomy without alignment |
+| 2018 | The agile coaches: "we value principles more than frameworks"; six principles replace a single prescribed method (August). | One mandated process, replaced by principles |
+| 2020 | With "1,200+ developers" and "4,000+ applications", Zalando "redefined the ring semantics" of the radar, wrote Technology Selection Principles, gave a Principal Engineering community the decision, required a sponsoring Engineering Head for TRIAL technologies, and stopped new applications in Clojure, Haskell and Rust in favor of Kotlin and TypeScript, because "A broad freedom of choice leads to increased difficulties in supporting software long-term" (July). | Free choice of language (the radar gets teeth) |
+| 2023 | **Sunrise**, an internal developer portal built on Backstage since 2021, replaced "more than 100 disconnected interfaces" with one portal holding "over 40k registered entities (applications, teams, and users)" and 27 integrated tools; old tools were shut down (August). | Many tools, replaced by one paved road |
+| 2023 | On 21 February the co-CEOs announced the removal of "several hundred overhead roles", about 5% of roughly 17,000 employees, sparing logistics, customer care and outlets (Retail Gazette). | Overhead roles (the one row about people, not technology) |
+| 2025 | The event-driven price and stock pipeline "became a bottleneck, introducing delays and scaling challenges"; it was replaced by a synchronous Product Read API (March). | A stream as the only source of current state |
+| 2026 | Connected Retail, the 2018 program that sells physical stores' shelf stock on Zalando, is folded into the standard partner program; its technology "will be discontinued by June 30, 2027" (FashionUnited, April). | A separate channel technology |
+
+The evidence does not support "microservices failed at Zalando". It supports something more specific: **autonomy produced too many technologies, too many tools and, on one critical path, an integration that could not keep up**, and each was fixed by narrowing a choice. The narrowing happened at a company that is still large: Zalando today reports more than 17,000 employees, around 3,000 in technology and more than 7,000 in fulfillment centers (annual report 2025, March 2026).
+
+![Many scattered paths leaving a balloon of arrows labeled Autonomy and merging past signposts 2018, 2020, 2023 and 2025 into one paved road.](assets/images/48-case-zalando/48-autonomy-narrowed-to-a-paved-road.jpeg)
+**Figure 3:** *Zalando's return to discipline narrowed one choice at a time: alignment in 2018, fewer languages in 2020, one developer portal in 2023 and a read API in 2025.*
+
+## 2025: When the Event Stream Fell Behind
+
+The timeline's 2025 row is the one a merchant should study in detail. Publishing every change as an event gives each receiving system work to process and a copy to maintain. If receivers fall behind, a price or stock answer can be stale even though the source is correct. Zalando's 2025 account shows this failure in a commerce pipeline.
+
+Zalando's price and stock updates were published as events. Consumers, the systems that needed current prices and stock, subscribed to the stream and maintained their own copies. The March 2025 post "From Event-Driven to API" reports what happened at scale: "over 90% of each payload unchanged" was being reprocessed, because an event carried the whole record even when one field had changed; during Cyber Week events "could be delayed by up to 30 minutes"; and teams that could not consume the streams fast enough used other sources, producing "divergent versions of product data". The pipeline was replaced by a synchronous, low-latency **Product Read API** (PRAPI): callers ask for the current price and stock and get an answer now.
+
+![Diagram: Before 2025, every consumer rebuilt its own copy of price and stock from a stream of full records and the copies diverged under load](assets/images/48-case-zalando/fig03-before-2025-every-consumer-rebuilt-own.jpeg)
+**Figure 4:** *Before 2025, every consumer rebuilt its own copy of price and stock from a stream of full records and the copies diverged under load; after, consumers ask the owner for the current value, and the stream is no longer the only way to know the truth.*
+
+In plain words: an event is the right way to tell everyone that something changed. It is the wrong way to be the only place the current value can be learned, because then every consumer is a copy, every copy can lag, and on the busiest day the lag is largest. Kestrel & Pine's stock sync chain, WMS to ERP every 15 minutes, ERP to the shop platform hourly, the shop platform to the marketplace connector hourly, is a slower version of the same design: a chain of copies, each one stale by the time it is read, which is how the Ridgewalker kept selling for up to two hours after it sold out at 19:40 on 27 November 2026.
+
+![Stock notes passed from WMS to ERP to Platform to Connector, with clocks reading 15 min and hourly, while the empty shelf at the start contrasts with a jacket still for sale at the end.](assets/images/48-case-zalando/48-kestrel-pine-chain-of-copies.jpeg)
+**Figure 5:** *Kestrel & Pine's stock sync is a chain of copies, WMS to ERP every 15 minutes, then hourly to the shop platform and hourly to the connector, which is how the Ridgewalker kept selling for up to two hours after it sold out.*
+
+> **INFERENCE, NOT DOCUMENTED:** Zalando does not describe PRAPI's internals, its caching or how events and the API now coexist, so Figure 4 shows the documented before and after, not the implementation. The rule I draw is the one Waypoint decision W1 encodes for stock, and it applies to price as well: keep a **system of record**, an **availability service** that answers "can I promise this unit on this channel now" through an API, and use events to propagate change and to feed reconciliation, not as the only source of truth. Events for "what happened"; a read API for "what is it now"; a reconciliation job for "do the copies still agree" ([[events-consistency-and-reconciliation]]). The 30-minute figure is Zalando's; the two-hour figure is Kestrel & Pine's; the shape of the failure is the same.
 
 ## A Retailer Becoming a Platform
 
@@ -156,19 +160,19 @@ Three terms. In the **partner program**, a brand sells on Zalando as the seller 
 | --- | --- | --- |
 | 2011 | **Partner Program** launches: brands sell as seller of record through the zDirect portal | June 2021: "more than 600 partners, representing over 2,000 brands"; about a quarter of GMV; a target of 40% by 2023 and half in the long term (targets now dated) |
 | 2018 | **Connected Retail** launches: stores' stock sold on Zalando, collected by carriers (DHL in Germany, PostNL in the Netherlands), returns back to the store | March 2020: "more than 1,500" stores in Germany and the Netherlands, commissions waived for April–May 2020; January 2021: "more than 2,600"; February 2021: "over 3,000 active stores" in nine markets |
-| 2010s–2021 | **Zalando Fulfillment Solutions** (ZFS) and Shipping Solutions: Zalando's warehouses and carriers for partners | June 2021: access to 16 European markets, "more than 2,300 market expansions" in 18 months |
+| By 2021 | **Zalando Fulfillment Solutions** (ZFS) and Shipping Solutions: Zalando's warehouses and carriers for partners | June 2021: access to 16 European markets, "more than 2,300 market expansions" in 18 months |
 | 2022–2023 | Multi-channel fulfillment pilot (2022), rebranded **ZEOS** Fulfillment in October 2023: one stock pool for Zalando, own-shop and other-platform orders, open to sellers "whether or not they sell through Zalando" | End of 2025: 25 markets, "over 600 partners selling across 18 sales channels (including Zalando), covering around 85% of the European marketplace volume" (annual report) |
-| 2025 | **ABOUT YOU** acquired: intention announced 11 December 2024, completed 11 July 2025 at 91.45%, squeeze-out registered 6 November 2025 at €6.50 a share; B2C runs two brands on shared logistics and payment infrastructure | Targeted group synergies "around €100 million per year" |
+| 2025 | **ABOUT YOU** acquired: intention announced 11 December 2024, completed 11 July 2025 at 91.45%, squeeze-out registered 6 November 2025 at €6.50 a share; B2C (selling to consumers) runs two brands on shared logistics and payment infrastructure | Targeted group synergies "around €100 million per year" |
 | 2025 | B2B segment defined as ZEOS Fulfillment (including ZFS and multi-channel fulfillment), the commerce platform **SCAYLE** and the integration product **Tradebyte** | FY2025 B2B revenue €1,091.3 million (+14.6%), adjusted EBIT €53.9 million; 330 online shops on SCAYLE; a ZEOS app for Shopify's European merchants |
 | 2026 | Connected Retail folded into the partner program; same standard fees for all partners from September 2026; technology discontinued by 30 June 2027 | "We are not saying goodbye to brick and mortar stores; we are simply updating the technology they use to connect with us" |
 
-The FY2025 fact sheet (12 March 2026) gives the scale around this: GMV €17,560.2 million (+14.7%), revenue €12,346.1 million (+16.8%), adjusted EBIT €590.7 million, 278.6 million orders at 4.8 orders per customer and an average basket of €62.8. Reported growth includes ABOUT YOU; Zalando's guidance for 2026 is pro-forma growth of 5 to 10%, the honest measure of the core business. The partner share of group GMV fell to 32.1% from 34.2% because ABOUT YOU "currently operates with a lower partner business share". Zalando's December 2025 strategy note counts "over 60" live merchants on its fulfillment service; the annual report's 600 partners span all B2B services.
+The FY2025 fact sheet (12 March 2026) gives the scale around this: GMV €17,560.2 million (+14.7%), revenue €12,346.1 million (+16.8%), adjusted EBIT €590.7 million, 278.6 million orders at 4.8 orders per customer and an average basket of €62.8. Reported growth includes ABOUT YOU; Zalando's guidance for 2026 is pro-forma growth of 5 to 10%, the honest measure of the core business. The partner share of group GMV fell to 32.1% from 34.2% because ABOUT YOU "currently operates with a lower partner business share". Zalando's December 2025 strategy note counts "over 60" live merchants on its fulfillment service, against the annual report's "over 600 partners"; Zalando has not said how the two counts differ.
 
 > **INFERENCE, NOT DOCUMENTED:** Zalando's platform story is Amazon's in European form and on a European timetable: marketplace (2011), then ship-from-store (2018), then fulfillment for partners, then fulfillment for anyone on any channel (2023), then the shop software itself (SCAYLE, in the group from 2025). The architectural consequence is the one [[case-amazon]] drew: **one stock pool serving several seller-of-record models and several demand channels**, which is the Omnichannel-stage problem (own site, stores, wholesale, marketplaces) at a much larger scale. Two cautions are in the record. Connected Retail shows that a channel built on its own technology gets consolidated once the general program can do the job. And the partner share falling after the ABOUT YOU merger shows that an acquisition imports the acquired company's model mix, not only its revenue ([[commerce-scaling-stages]]).
 
 ## AI at Zalando: Discovery First, Then Identity
 
-A conversational shopping assistant helps a customer describe and refine a search. Giving software authority to act on that customer's behalf adds a different requirement: the system must carry the customer's permissions without exposing their credentials.
+Beside the business, Zalando's newest thread is AI. A conversational shopping assistant helps a customer describe and refine a search. Giving software authority to act on that customer's behalf adds a different requirement: the system must carry the customer's permissions without exposing their credentials.
 
 On 19 April 2023 Zalando announced a beta "fashion assistant powered by ChatGPT" for selected customers in four countries, letting them describe what they want in their own words and refine the results in conversation. The annual report for 2025 says the Zalando Assistant "was used by over 6 million customers" that year, and that Zalando sees "the emerging channel of agentic commerce as a great opportunity" while noting "the rise of AI agents as digital gatekeepers".
 
@@ -182,7 +186,7 @@ The post adds that consent "should name a business capability ... instead of pre
 
 ## What Zalando Teaches
 
-The table is the author's synthesis; each row names its evidence.
+Read together, the sections above give eight lessons. The table is the author's synthesis; each row names its evidence.
 
 | Lesson | Evidence | Transfers to a merchant? |
 | --- | --- | --- |
@@ -201,17 +205,21 @@ Under **W1**, stock events feed an availability service that answers current ava
 
 ## Where the Evidence Stops
 
+The lessons above rest on public sources, and those sources stop short in five places.
+
 - **The current architecture.** Zalando has not published its service inventory, its order or pricing architecture, the internals of ZEOS or how PRAPI and its event streams coexist today. The 2015–2017 posts describe systems that have been replaced.
-- **"Radical Agility" ended** nowhere in the public record. No post announces it, and no source describes a 2019 reorganization under that name; the return to discipline is this chapter's reading of a sequence of posts and one leadership change (Bowman left in 2019, by professional-profile sources). The widely reported "expanded too much" wording from the February 2023 announcement was not in the page fetched. The 2016 trade accounts of team size (three to seven) are secondary; Zalando's own posts give "85+" teams.
+- **No end of "Radical Agility" is on record.** No post announces one, and no source describes a reorganization under that name. The return to discipline is this chapter's reading of a sequence of posts and of one leadership change: Bowman, quoted in the 2018 row above, left in 2019, according to professional-profile sources. The 2023 overhead cut is cited from one trade report; the reason widely reported for it, that parts of the company had "expanded too much", was not in the page fetched, so the chapter does not use it. The 2016 trade accounts of team size (three to seven people) are secondary; Zalando's own posts give only the number of teams ("85+").
 - **Open-source status** is as of 7 November 2026 and will change; the Tech Radar page shows no last-updated date.
-- **Business figures** for 2025 include ABOUT YOU for part of the year; the 2026 guidance of 5–10% pro-forma growth is the comparable number. The "over 60" fulfillment merchants and the "over 600" B2B partners are read here as different scopes; Zalando has not reconciled them in public.
+- **Business figures** for 2025 include ABOUT YOU for part of the year; the 2026 guidance of 5–10% pro-forma growth is the comparable number. The "over 60" fulfillment merchants (December 2025) and the "over 600" ZEOS Fulfilment partners (annual report) cannot both describe the same service on the same date; Zalando has not reconciled them in public.
 - **The Connected Retail wind-down** and the September 2026 fee change are reported by trade press from Zalando's partner communication; the primary page was not fetched.
 
 ## What to Take Away
 
+So which of Zalando's lessons apply to a much smaller merchant? The split, the guidelines, the decade of narrowing and the 2025 read API give one answer. Zalando's lasting results are written rules for the joins between systems: how an API may change, and which system answers for the current price and stock. The shape around them (the teams, the services, the account-per-team tooling) was sized to Zalando and corrected as it grew. A merchant takes the rules and leaves the shape.
+
 **Established.**
 
-- Zalando rebuilt its shop as microservices owned by autonomous teams from 2015 because a shared codebase and slow deployments blocked its 85-plus teams, and it built an audited platform (STUPS) so each team could have its own cloud account (Zalando posts, 2015–2016; InfoQ, 2016).
+- Zalando rebuilt its shop as microservices owned by autonomous teams from 2015 because all the shop teams shared one codebase with slow startup and complicated deployments (85-plus teams by February 2016), and it built an audited platform (STUPS) so each team could have its own cloud account (Zalando posts, 2015–2016; InfoQ, 2016).
 - Its API guidelines, open since 2016 and maintained in 2026, require API-first design in OpenAPI, forbid breaking consumers, prefer compatible extension to versioning, and require client consent, a sunset date, headers and usage monitoring before shutdown.
 - Zalando narrowed its choices over the following decade, each in its own posts: alignment over raw autonomy (2018), a bounded language set (2020), one developer portal (2023) and a read API replacing a price-and-stock event stream that lagged up to 30 minutes at Cyber Week (2025).
 - Zalando became a platform through logistics: partner program (2011), ship-from-store (2018), fulfillment for partners and then for any channel (ZEOS, 2023), commerce software (SCAYLE, 2025); 32.1% of its 2025 GMV came from partners (annual report, 2026).
@@ -230,6 +238,8 @@ Under **W1**, stock events feed an availability service that answers current ava
 
 ## Questions to Ask
 
+Eight questions turn the chapter into checks on a merchant's own systems and vendors.
+
 1. Which of our vendors publish a deprecation policy with a sunset date, consent and headers, and which retire versions on a date they choose alone?
 2. Do our own scripts and connectors log Deprecation and Sunset headers, and would anyone see the warning?
 3. For price and stock, which system can be asked "what is it now", and which systems only hold a copy rebuilt from events?
@@ -239,7 +249,7 @@ Under **W1**, stock events feed an availability service that answers current ava
 7. Which channel runs on technology built only for that channel, and what is the exit if the general program can serve it later?
 8. Before an agent may act on an order, can we name the agent, the person it acts for and the capability it was granted, in words a human can read?
 
-The two cases so far are large companies that wrote their own commerce software. The next asks what happened when vendors tried to sell that shape to everyone else: the composable movement, its promise, its costs and its 2025–2026 turn toward working beside the systems merchants already have. Continue with [[case-composable-movement]].
+The three cases so far are a hosted platform, Shopify, and two large companies, Amazon and Zalando, that built services for their own size and then corrected them over a decade. The next case is different: vendors that sold that services shape to every merchant as composable commerce. It asks what the shape costs a merchant, and follows the vendors' 2025–2026 turn toward working beside the systems merchants already have. Continue with [[case-composable-movement]].
 
 ## Sources and Evidence
 

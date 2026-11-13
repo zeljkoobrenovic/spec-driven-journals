@@ -34,7 +34,7 @@ This chapter's answer is to separate the books from the selling. The ERP should 
 
 **Where we are in the order's journey.** Eva buys a jacket and socks for €235 from Kestrel & Pine, the fictional outdoor brand. Her iDEAL bank-transfer payment, provider fee, shipment and any later refund become ERP postings. Finance Director Sanne de Wit needs those records to agree when she closes April 2027.
 
-The chapter starts from the connector between Kestrel & Pine's ERP and its shop platform that nobody inside the company could read. It names the ERP's four jobs and the flows between the ERP and the commerce systems, explains why finance can work in batches while availability cannot, compares three answers and one accident to the question of which system is the hub, and weighs them by cost and scale stage. It then reads vendor connectors as tables of who owns what, settles master data, states what never belongs in the ERP and why the ERP partner is a dependency, follows Eva's order, a wholesale order and the connector's retirement, and ends with what goes wrong. The evidence is Kestrel & Pine's connector and incidents and the documentation of ERP and connector vendors.
+The chapter starts from the connector between Kestrel & Pine's ERP and its shop platform that nobody inside the company could read. It names the ERP's four jobs and the flows between the ERP and the commerce systems, explains why finance can work in batches while availability cannot, compares three answers and one accident to the question of which system is the hub, and weighs them by cost and scale stage. It then reads vendor connectors as tables of who owns what, shows why the ERP partner's connector is a dependency, settles master data, states what never belongs in the ERP, follows Eva's order, a wholesale order and the connector's retirement, and ends with what goes wrong. The evidence is Kestrel & Pine's connector and incidents and the documentation of ERP and connector vendors.
 
 ## Setting the Scene at Kestrel & Pine: The Connector Nobody Could Read
 
@@ -178,9 +178,11 @@ SAP's learning material for integrating S/4HANA Cloud with SAP Commerce Cloud co
 
 > **INFERENCE, NOT DOCUMENTED:** The Business Central inventory rule ("Business Central acts as the system of record for inventory") is the ERP-as-hub position for stock, and it is correct for the merchant the connector is built for: one warehouse, one storefront, no WMS. The same rule applied at Kestrel & Pine's size, with a WMS, six stores and three marketplaces, is the stock chain that oversold. Which rule is right is a property of the merchant, not of the connector.
 
+Kestrel & Pine's connector is neither vendor's product. It was built by the **ERP implementation partner**, the firm that set up the ERP, an architectural dependency most merchants do not list. Such a connector is usually the partner's, undocumented, and priced into the ERP relationship. That is the Lynchpin: a capability customers depend on, running through one firm, with no exit plan. The remedy is not to fire the partner but to treat the connector as a contract the merchant owns: a field-level specification, a named internal owner, idempotent handling, a reconciliation job and a monitored failure alert, which is Waypoint's W5 applied to one integration. [[organizing-commerce-engineering]] covers the partner relationship as a management question.
+
 ## Master Data: Who May Create and Change What
 
-The connectors force a choice of owner entity by entity, and Shopify asks for one per field; this section makes that choice for every kind of record. **Master data** is the slow-changing reference data (items, customers, prices, locations) that many systems copy; **master data ownership** says which system may create and change each record. The table below is my recommendation for a merchant at the Omnichannel stage; at the Starting and Growing stages, the platform takes the PIM's and OMS's rows.
+Whoever builds them, the connectors force a choice of owner entity by entity, and Shopify asks for one per field; this section makes that choice for every kind of record. **Master data** is the slow-changing reference data (items, customers, prices, locations) that many systems copy; **master data ownership** says which system may create and change each record. The table below is my recommendation for a merchant at the Omnichannel stage; at the Starting and Growing stages, the platform takes the PIM's and OMS's rows.
 
 | Data | Owner | Readers | Note |
 | --- | --- | --- | --- |
@@ -197,11 +199,9 @@ The connectors force a choice of owner entity by entity, and Shopify asks for on
 
 The PIM vendor Akeneo describes a PIM as "a central source of truth" for product content that "collects data from your ERP, MDM, PLM, and other systems" (MDM and PLM are master data management and product lifecycle management systems); OneStock's post says "ERP is the master for product data (if no dedicated PIM system exists)". Both are vendor sources, and both say the same thing from different sides: the ERP owns the item's identity and cost; something else owns what the shopper reads.
 
-## What Never Belongs in the ERP, and the Partner as a Dependency
+## What Never Belongs in the ERP
 
 With the ownership table in place, the rest of the boundary is plain. Some things should never run in the ERP, because they are in the path of a sale and change at the storefront's pace: carts, search, promotion logic, real-time availability for checkout, marketplace listings, customer-facing order status. Some things always belong there: the posting of every order, payment, fee, refund and VAT amount; the cost of stock; the legal invoice and credit note; receivables and dunning (payment reminders); supplier orders and landed cost. The grey area is master data, and the ownership table above settles it.
-
-Behind the line between the ERP and the commerce systems sits the firm that built the link: the **ERP implementation partner**, an architectural dependency most merchants do not list. The connector is usually theirs, undocumented, and priced into the ERP relationship. That is the Lynchpin: a capability customers depend on, running through one firm, with no exit plan. The remedy is not to fire the partner but to treat the connector as a contract the merchant owns: a field-level specification, a named internal owner, idempotent handling, a reconciliation job and a monitored failure alert, which is Waypoint's W5 applied to one integration. [[organizing-commerce-engineering]] covers the partner relationship as a management question.
 
 ## In Practice
 

@@ -1,0 +1,1773 @@
+{
+ "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+ "spec_version": "0.1",
+ "kind": "post",
+ "id": "privacy-and-customer-data",
+ "journal": "commerce-platform-architecture",
+ "part": "part-8",
+ "title": "Whose Data Is It? Privacy, Consent and Retention",
+ "status": "draft",
+ "revised": "2026-11-13",
+ "basis": "Reconstructed from the published chapter (posts/35-privacy-and-customer-data/index.md) and its former spec.md, whose Non-goals, Modalities, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (the opening pick-up of the previous chapter in p01, a thesis paragraph p05, a roadmap p06 and a conclusion paragraph that answers the opening, p59); see decision_log.",
+ "intent": {
+  "outcome": {
+   "know": [
+    "The GDPR vocabulary the design rests on: personal data, controller and processor (the EDPB's purposes and essential means), the data processing agreement, the four lawful bases that matter in commerce (contract, legal obligation, legitimate interests, consent, with the ePrivacy soft opt-in), data subject requests and the one-month deadline extendable by two.",
+    "Which systems hold a person in a commerce estate and in which role, as the chapter reads it: the platform, WMS, OMS, integration platform, returns portal, data warehouse and most apps as processors; the PSP for the payment, carriers and marketplaces as independent controllers; and what Shopify's compliance webhooks and protected-customer-data rules do on the merchant's behalf.",
+    "The consent rules for devices and profiles (GDPR Articles 4(11) and 7(1), ePrivacy Article 5(3), the EDPB and the Dutch and Belgian regulators), the retention periods the chapter cites (at least seven years in the Netherlands; ten, eight or six in Germany; ten in Belgium pending confirmation), transfers under the Data Privacy Framework and standard contractual clauses, and the pending Digital Omnibus proposal and DPF appeal."
+   ],
+   "believe": [
+    "The order and the marketing profile describe one person but are two things in law: the order is kept for years under contract and tax law; the profile goes when the person asks.",
+    "Every integration is also a data flow with a legal role, and the integration inventory is the data-flow inventory.",
+    "A deletion request is a fan-out with a deadline; without an identity index and an orchestrator it is a hunt."
+   ],
+   "can_do": [
+    "Write a privacy map for their own landscape: per system, its legal role, the data it holds, the action a request requires (erase, pseudonymize, retain, refer) and its retention clock.",
+    "Design the data model so that an order can outlive its customer, and say how consent reaches every tag, tool, till and app."
+   ]
+  },
+  "acceptance_criteria": [
+   {
+    "id": "AC-1",
+    "statement": "Given a deletion request from a customer who appears in several channels, the reader plans a fan-out with a decided action per system, rather than deleting the storefront account.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "A customer who bought on a brand's web shop and on a marketplace, returned an item, subscribes to its newsletter and joined a store loyalty program asks the brand to delete her data and stop e-mailing her. The team plans to delete her web shop account. Using only this chapter: is that enough, and what should happen?",
+    "expected": "No: she is in many systems (Kestrel & Pine found such a customer in nine of thirteen), each with its own right answer. Verify the requester; find every record through an identity index; apply a per-system action decided in advance: erase the account, the loyalty entry, the newsletter subscription, the returns contact and old shipment addresses; pseudonymize orders and warehouse and data-warehouse rows; retain invoices and credit notes under the legal obligation and recent shipments while a claim is possible; refer the carrier, the marketplace and the PSP, which are controllers in their own right; keep backups under a bounded exception and replay the deletion log after a restore. Reply within one month, extendable by two, saying what was erased, what was kept and why, and whom else to ask, and keep the record of what each system did."
+   },
+   {
+    "id": "AC-2",
+    "statement": "The reader can explain why storing the person on the order blocks deletion and what design fixes it.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "A merchant's ERP and platform store the customer's name, address and e-mail on every order, and its customer list is simply the people who have ordered. Using only this chapter: why does this stop the merchant deleting anyone, and what design fixes it?",
+    "expected": "Tax law requires invoices and accounting records to be kept (at least seven years in the Netherlands, ten, eight or six in Germany depending on the record, ten in Belgium pending confirmation), and keeping them is itself a lawful basis; when the invoice is the customer record, deleting the person means deleting the invoice, which is forbidden, so nothing is deleted. Split the person from the transaction: the order and invoice carry a customer reference and the delivery address and are kept for the fiscal period; the profile (e-mail, phone, preferences, consent, browsing, loyalty) is a separate, erasable record; analytics carry a hash of the reference. Retention becomes a property of each record type, purged by a scheduled job."
+   },
+   {
+    "id": "AC-3",
+    "statement": "The reader can say what consent requires and how it must travel.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "A merchant's analytics and advertising tags fire as soon as a page loads, its newsletter list is built from everyone who ever ordered, and store staff sign up loyalty members on a tablet. Using only this chapter: what is wrong, and what should be in place?",
+    "expected": "Storing or reading information on the device needs consent before it happens, except what is strictly necessary (the cart, the language choice), so analytics and advertising tags wait for the banner, and cookie walls, scrolling and pre-ticked boxes do not count. The newsletter needs consent, or for existing customers the soft opt-in for the merchant's own similar products with a free objection at collection and in every message, subject to national transposition. Consent must be demonstrable, so it is recorded per person and per purpose with its time, place, wording and source on the customer master and reaches the tag layer, the newsletter tool, the POS and every app; a withdrawal reaches all of them the same day, and when the consent platform is down the default is no consent. The store sign-up shows the web's wording and records the time and store. Server-side tagging changes who receives the data first, not whether consent is needed."
+   },
+   {
+    "id": "AC-4",
+    "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+    "check": "intro_predicts_content",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+    "expected": "That a customer asking for removal has an account in the platform but copies of her addresses, purchases and contacts in warehouse, carrier, payment, marketing and support systems; that the merchant must know where the data went, why it is held and which records can go or must stay, and that a forgotten export or an integration can keep or recreate a record; that the architecture needs a map of copies, purposes, access and retention and requests that reach every system with a verifiable result; that the chapter explains controller and processor, consent recording, retention and request handling; Eva's order spreading her details to fulfillment, payment and invoicing, the newsletter needing its own basis and her exchange adding the returns portal. Evidence: Kestrel & Pine's Request From Ghent and its autumn 2027 deletion design, the GDPR and ePrivacy texts, the EDPB's guidelines, the Dutch and Belgian regulators, national retention rules and Shopify's compliance webhooks."
+   },
+   {
+    "id": "AC-5",
+    "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+    "check": "reverse_outline_matches_spec",
+    "method": "reverse_outline",
+    "severity": "blocker"
+   }
+  ],
+  "audience": {
+   "who": "Readers new to commerce architecture; most of all the engineer or integration lead who inherits the first deletion request and the product manager asked whether a tracking tag or a customer data platform is allowed; next the operations or finance lead who must reconcile 'delete my data' with 'keep the invoice for seven years'.",
+   "already_knows": [
+    "What buying something online is like from the shopper's side; roughly what an API, a database and a queue are.",
+    "Kestrel & Pine, its people, its thirteen systems, its incidents in outline and the names of the sixteen failure patterns, including the Familiar Stranger, the Secret Agent and the Long Fuse.",
+    "From Part I: the thirteen steps of an order, promise and handoff, the three status lines, 'system', 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, the four scale stages, the capability map, system of record, single writer, events, idempotency and reconciliation, the Waypoint decisions W1 to W8.",
+    "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+    "From Parts II to VI: one invoice per shipment and credit notes as the only correction; the integration inventory with an owner per flow (13 of 34 integrations had no named owner in January 2027); chapter 27's customer master, owned cross-reference and the June 2027 identity rule (the shop platform as master for consumers, the ERP for business customers), with consent read from the master.",
+    "From chapter 34: attackers act through the payment form, the login and the admin; one identity and scoped key with an owner per person, app and integration; a skimmer found on the checkout starts a legal clock because card numbers are personal data."
+   ],
+   "does_not_know": [
+    "Personal data, GDPR, controller, processor, data processing agreement (DPA), lawful basis, data subject request (DSR), retention.",
+    "Consent as the GDPR defines it, the ePrivacy device rule, the soft opt-in, cookie walls, consent management platform (CMP), server-side tagging, customer data platform (CDP).",
+    "Erasure, pseudonymization, identity index, request orchestrator, per-system action table, backup exception.",
+    "Adequacy decision, standard contractual clauses (SCCs), the EU-US Data Privacy Framework (DPF), transfer inventory, the breach-notification clock."
+   ]
+  }
+ },
+ "thesis": {
+  "question": "What personal data does a commerce platform hold, what may it do with it, and how do you build consent and retention in?",
+  "claim": "A shop holds one person in many systems for different purposes: the order and invoice rest on the contract and tax law and are kept for years; the marketing profile rests on consent and goes when the person asks. Build consent and retention in by mapping each system's legal role, request action and retention clock, keeping consent with its evidence on the customer master, splitting the person from the transaction, and answering requests through an identity index and an orchestrator.",
+  "disputed_by": "The view that privacy compliance is a cookie banner, a privacy notice and the platform's delete button: the hosted platform handles the personal data, so deleting the customer's account answers a deletion request.",
+  "so_what": "A merchant that accepts the claim keeps a privacy map beside its integration inventory, records consent where every outbound tool can read it, models orders so that they outlive the customer, and answers requests with a flow and a record rather than a search. On 10 May 2027 Lotte Claes, a fictional customer in Ghent, asked Kestrel & Pine to delete her data: she was in nine of the thirteen systems, and three people with a shared spreadsheet took seventeen working days to answer, on 4 June 2027, six days inside the one-month limit. Thirteen of its 34 integrations had no named owner in January 2027, thirteen data flows nobody was accountable for (5 were still unowned in April 2027). In October 2027 a request orchestrator, an integration-platform flow with a human verification step and a per-system action table, went live on the identity index of June and July 2027; the second request, in November 2027, took two working days, and the privacy map became a column of Noor Visser's ownership map, reviewed quarterly.",
+  "how_why": "The GDPR makes the merchant the controller, because it decides why and how the data is used, and the systems it chose (platform, WMS, OMS, integration platform, most apps) its processors under contracts, while carriers, marketplaces and the PSP for the payment decide for themselves; so every integration copies a person into a system with its own role. Each use needs its own lawful basis and runs on its own clock, and tax law keeps invoices for years, so where the invoice is the customer record a deletion either breaks the tax rule or does not happen. A request must be answered within one month, extendable by two, and consent must be demonstrable and withdrawable everywhere, so without an index of where each person is held and a decided action per system every request starts with a search of every system, and every withdrawal misses a tool.",
+  "supporting_claims": [
+   {
+    "id": "S1",
+    "claim": "Every integration copies a person into another system with its own legal role: the merchant decides why and how the data is used and is the controller; the shop platform, the WMS, the OMS, the iPaaS, the returns portal, the data warehouse and most apps are processors under a contract; carriers, marketplaces and the PSP for the payment decide for themselves. So the system-of-record map needs a legal-role column and the integration inventory is also the inventory of data flows, with transfers and partners on it."
+   },
+   {
+    "id": "S2",
+    "claim": "Each use of the data needs its own lawful basis and runs on its own clock: the order rests on the contract and on legal obligations, marketing on consent or the soft opt-in; consent must be given before tags read the device, be demonstrable per person and purpose, and travel from the customer master to every tag, tool, till and app, with a withdrawal reaching all of them."
+   },
+   {
+    "id": "S3",
+    "claim": "Tax law keeps invoices and accounting records for years (at least seven in the Netherlands; ten, eight or six in Germany; ten in Belgium pending confirmation), so where the invoice is the customer record a deletion either breaks the tax rule or does not happen; splitting the person from the transaction (order and invoice carry a reference, the profile is a separate erasable record, analytics carry a hash) makes retention a property of each record type, with backups under a bounded exception."
+   },
+   {
+    "id": "S4",
+    "claim": "A data subject request must be answered within one month, extendable by two, by every system that holds the person; that takes an identity index of where each person is held, a request orchestrator that verifies the requester and records each answer, and a per-system action table decided in advance (erase, pseudonymize, retain, with refer and except outside the merchant's reach)."
+   },
+   {
+    "id": "S5",
+    "claim": "The duties do not change with scale; where the data lives does: below the Omnichannel stage the platform's DPA, banner, consent box and app rules do most of the work, and from the Omnichannel stage the merchant must own the privacy map, the identity index, the orchestrator and a transfer inventory, as Kestrel & Pine did after the request from Ghent."
+   }
+  ]
+ },
+ "role": {
+  "contribution": "Reads the integration inventory as a map of data flows with legal roles, separates the order from the person in law and in the data model, and turns consent, retention and deletion requests into state and a flow the merchant owns.",
+  "supports": [
+   "P8-2"
+  ]
+ },
+ "flow": {
+  "pattern": "problem_solution",
+  "additional_patterns": [
+   {
+    "pattern": "prerequisite_order",
+    "applies_to": "data, roles, sharing, bases, consent, retention and dsr: the vocabulary, then who decides and who receives, then on what basis, then consent, then how long records are kept and how the person is split from the transaction, then the request that uses all of them"
+   },
+   {
+    "pattern": "comparison",
+    "applies_to": "choices and stages: the options compared on the same criteria, then by scale stage"
+   }
+  ],
+  "rationale": "The request from Ghent comes first so that every term arrives as part of the answer to why one customer took seventeen working days. The vocabulary and the data inventory follow, because every later section uses them; then the roles, because the action a request takes in a system depends on whether the merchant controls it, and at once the recipients beyond the merchant's systems (partners, other countries, software vendors), because they are the same roles applied to data that leaves. The lawful bases and consent follow, because they decide which records may go and which must stay; consent precedes retention because the profile that consent governs is the record the retention split makes erasable. Retention and the split come before the request flow, because the request's action table (erase, pseudonymize, retain) applies that split; the requirements of the four privacy flows follow the request, the last of them, so all four can be set side by side. Only then are the ways to run requests compared, by option and by stage; Kestrel & Pine's design applies the chosen option, and the failures come last because each is read against the rules that detect and recover from it. Putting the request flow before retention would ask the reader to pseudonymize and retain before knowing why; putting the options before the parts would compare designs on properties not yet explained."
+ },
+ "introduction": {
+  "hook": {
+   "type": "puzzling_scenario",
+   "content": "A customer asks a merchant to remove her data; her account is in the shop platform, but her addresses, purchases and contacts have reached warehouse, carrier, payment, marketing and support systems, and removing the storefront profile does not settle those copies."
+  },
+  "bridge": {
+   "from_reader_world": "The previous chapter's question of who may act on the shop, answered by a list of identities and keys with owners; anyone who has handled a 'delete my account' e-mail knows the account is not the only copy.",
+   "to_topic": "The mirror question about the data the shop holds on people: who may use it, for what and for how long, answered by a map of systems with legal roles, actions and retention clocks."
+  },
+  "thesis_statement": {
+   "text": "A shop holds one person in many systems for different purposes: the order and invoice rest on the contract and tax law and are kept for years, the marketing profile rests on consent and goes when the person asks; consent and retention are built in by mapping each system's legal role, request action and retention clock, keeping consent with its evidence on the customer master, splitting the person from the transaction and answering requests through an identity index and an orchestrator.",
+   "placement": "KEY POINTS callout and paragraph p05"
+  },
+  "roadmap": {
+   "placement": "Paragraph p06",
+   "promises": [
+    {
+     "promise": "Start from a deletion request that found one customer in nine of Kestrel & Pine's thirteen systems.",
+     "kept_in": [
+      "scene"
+     ]
+    },
+    {
+     "promise": "Give the vocabulary and what personal data a merchant holds.",
+     "kept_in": [
+      "data"
+     ]
+    },
+    {
+     "promise": "Say who is controller and who is processor, and follow the data to partners, other countries and software vendors, with the breach clock.",
+     "kept_in": [
+      "roles",
+      "sharing"
+     ]
+    },
+    {
+     "promise": "Separate the lawful bases of the order and of marketing, and set out consent for cookies, tracking and the store's till.",
+     "kept_in": [
+      "bases",
+      "consent"
+     ]
+    },
+    {
+     "promise": "Show retention and the split of person from transaction, then a request across many systems.",
+     "kept_in": [
+      "retention",
+      "dsr"
+     ]
+    },
+    {
+     "promise": "Set the requirements of the four privacy flows side by side.",
+     "kept_in": [
+      "requirements"
+     ]
+    },
+    {
+     "promise": "Compare the ways to run requests, and the stage at which each fits.",
+     "kept_in": [
+      "choices",
+      "stages"
+     ]
+    },
+    {
+     "promise": "Follow Kestrel & Pine's autumn 2027 design and end with what goes wrong.",
+     "kept_in": [
+      "practice",
+      "wrong"
+     ]
+    }
+   ]
+  },
+  "paragraphs": [
+   {
+    "id": "p01",
+    "controlling_idea": "The previous chapter asked who may act on the shop; the mirror question is who may use the data the shop holds on people, and it becomes concrete when a customer asks a merchant to remove her data: her account is in the shop platform but copies have reached warehouse, carrier, payment, marketing and support systems, so the merchant needs a map of the copies, their purposes and retention, and a request that reaches every copy with a result it can verify; the chapter is an architect's reading of the rules, not legal advice.",
+    "function": "context",
+    "evidence": [
+     {
+      "kind": "scenario",
+      "what": "A customer asking for removal whose account is in the shop platform and whose details have reached warehouse, carrier, payment, marketing and support systems.",
+      "shows": "Plants the problem in a situation the reader recognizes before any term is introduced."
+     }
+    ]
+   },
+   {
+    "id": "p05",
+    "controlling_idea": "The chapter's answer: a shop holds one person in many systems for different purposes; the order and the invoice rest on the contract and tax law and are kept for years, the marketing profile rests on consent and goes when the person asks, and consent and retention are built in by mapping each system's legal role, request action and retention clock, keeping consent with its evidence on the customer master, splitting the person from the transaction and answering requests through an identity index and an orchestrator.",
+    "function": "claim",
+    "transition_in": {
+     "relationship": "problem_solution",
+     "carries_over": "Copies of one person in many systems and the map they need.",
+     "introduces": "The chapter's answer, stated before the evidence for it.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p06",
+    "controlling_idea": "The roadmap: the chapter explains who decides the use of data (the controller) and who processes it (the processor), how consent is recorded, how long records are kept and how requests are handled; it starts from a deletion request that found one customer in nine of Kestrel & Pine's thirteen systems, then gives the vocabulary and the data a merchant holds and the two roles, follows the data to partners, other countries and software vendors with the breach clock, then the lawful bases and consent (including at a store's till), retention and the split of person from transaction, the request across many systems and the requirements of the four privacy flows; it compares the ways to run requests and the stage at which each fits, follows Kestrel & Pine's autumn 2027 design and ends with what goes wrong, using the scenario and dated primary sources.",
+    "function": "transition",
+    "transition_in": {
+     "relationship": "sequence",
+     "carries_over": "The chapter's answer.",
+     "introduces": "The order in which the chapter argues it, and its evidence.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p04",
+    "controlling_idea": "In the order's journey, Eva's jacket order of 13 April 2027 spreads her details through fulfillment, payment and invoicing; order messages need her e-mail, the newsletter needs its own basis, and her 19 April exchange adds the returns portal, so every copy needs a purpose and a retention rule; the chapter's case is a different customer with a longer history.",
+    "function": "context",
+    "evidence": [
+     {
+      "kind": "scenario",
+      "what": "Eva's order #1072455 of 13 April 2027, her newsletter enrollment and her 19 April exchange.",
+      "shows": "Ties the chapter's question to the book's running order.",
+      "source": "Kestrel & Pine scenario ledger (privacy-and-customer-data line)"
+     }
+    ],
+    "transition_in": {
+     "relationship": "example",
+     "carries_over": "The roadmap's opening case and the parts of the answer.",
+     "introduces": "The book's running order, Eva's, as the everyday version of the same spread, before the chapter turns to a different customer, Lotte.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   }
+  ]
+ },
+ "sections": [
+  {
+   "id": "scene",
+   "heading": "Setting the Scene at Kestrel & Pine: The Request From Ghent",
+   "controlling_idea": "On 10 May 2027 a Belgian customer asked Kestrel & Pine to delete her data; she was in nine of its thirteen systems, each needing a different action, and three people with a shared spreadsheet took seventeen working days to answer, on 4 June 2027, with nothing written down for the next request.",
+   "function": "context",
+   "advances_thesis": {
+    "supports": [
+     "S4",
+     "S1"
+    ],
+    "how": "Shows one request fanned out by hand across nine systems, each with a different right answer, before any term is introduced."
+   },
+   "flow": {
+    "pattern": "chronological",
+    "rationale": "The request, then her relationships, then the hunt through the nine systems in the table, then what lay outside the table and the reply: the reader sees the hunt in the order it happened, and the section ends on what it left behind, nothing written down for the next request."
+   },
+   "transition_in": {
+    "relationship": "example",
+    "carries_over": "Eva's details spread across systems, and the roadmap's opening case.",
+    "introduces": "The request from Ghent of 10 May 2027, a customer with a longer history.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p07",
+     "controlling_idea": "On 10 May 2027 Lotte Claes, a Belgian customer in this fictional example, asks Kestrel & Pine to delete her data and stop e-mailing her.",
+     "function": "context",
+     "organization": "narration",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "The request of Monday 10 May 2027 from Lotte Claes in Ghent.",
+       "shows": "Opens the chapter's case with a dated, named request.",
+       "source": "Kestrel & Pine scenario ledger (privacy-and-customer-data line)"
+      }
+     ]
+    },
+    {
+     "id": "p08",
+     "controlling_idea": "Lotte's relationships (two storefront orders, a marketplace order, a return, a newsletter subscription and an Antwerp store loyalty entry) mean Noor Visser must find the records behind each and decide the action for each system, so deleting the storefront account alone will not complete the request.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "Two BE storefront orders, one bol order, one return, a newsletter subscription and an Antwerp loyalty sign-up.",
+       "shows": "Shows that one customer has relationships in several systems.",
+       "source": "Kestrel & Pine scenario ledger (privacy-and-customer-data line)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The request.",
+      "introduces": "What Lotte's relationships with the company are and why one deletion is not enough.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p09",
+     "controlling_idea": "Ruben Alves and application support took seventeen working days to find her in nine of the thirteen systems, and in each the right action, and what could not be done, differed.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Nine systems (the shop platform, the marketplace connector, the ERP, the WMS, the shipping service, the PSP, the POS, the returns portal, the data warehouse), with what each held, what was done and what could not be done.",
+       "shows": "Each system needed a different action, and several actions were out of the merchant's reach (bol, bpost, the PSP's own records, a 2026 spreadsheet export).",
+       "source": "Kestrel & Pine scenario ledger (privacy-and-customer-data line)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The need to find every record.",
+      "introduces": "How long it took and what was found in each system.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p10",
+     "controlling_idea": "The newsletter tool, the iPaaS logs and unchecked backups complete the picture, and the reply went out on 4 June 2027, six days inside the one-month limit, after three people and a shared spreadsheet; the request was answered, but nobody had written down how to answer the next.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "Reply on 4 June 2027, inside the one-month limit with six days to spare; three people and a shared spreadsheet.",
+       "shows": "Shows the cost of the hunt and that nothing repeatable was left behind.",
+       "source": "Kestrel & Pine scenario ledger (privacy-and-customer-data line)"
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 1: thirteen filing drawers, nine open with the same person's card, three workers and a calendar marked 17 working days.",
+       "shows": "Makes the nine-of-thirteen fan-out visible at a glance."
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "The nine systems in the table.",
+      "introduces": "The copies outside the table, the reply date and what the hunt left behind.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "data",
+   "heading": "What Personal Data a Commerce Platform Holds, and Under Which Rules",
+   "controlling_idea": "Personal data is any information relating to an identifiable person; the GDPR gives the person rights and the merchant duties, and a merchant holds the same person in several rows, each with its own purpose, lawful basis and retention clock.",
+   "function": "definition",
+   "advances_thesis": {
+    "supports": [
+     "S1",
+     "S2"
+    ],
+    "how": "Supplies the vocabulary the rest of the chapter uses and shows that one person's data has several bases and clocks."
+   },
+   "flow": {
+    "pattern": "prerequisite_order",
+    "rationale": "The terms first (personal data and the GDPR, then the roles and bases), then the inventory that uses the terms, then what the inventory shows, then the stakes. The inventory's columns cannot be read before lawful basis and retention are defined, and the fines mean more once the reader has seen what the duties cover."
+   },
+   "transition_in": {
+    "relationship": "elaboration",
+    "carries_over": "The words used in Lotte's request (controller, the one-month limit, what could be kept).",
+    "introduces": "The vocabulary that names them.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p11",
+     "controlling_idea": "Personal data is any information relating to an identified or identifiable person, and the GDPR, applying across the EU since 25 May 2018, gives the person rights (access, rectification, erasure, objection, portability) and the organizations that handle the data duties.",
+     "function": "definition",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Regulation (EU) 2016/679, applying from 25 May 2018.",
+       "shows": "Grounds the definitions in the regulation's text.",
+       "source": "GDPR, Official Journal text, 2016"
+      }
+     ]
+    },
+    {
+     "id": "p12",
+     "controlling_idea": "The controller decides why and how personal data is used, the processor acts only on its instructions under a data processing agreement, a lawful basis is the legal reason for a use (four of Article 6's six matter here), a data subject request is a person exercising a right, and retention is pulled two ways: no longer than the purpose needs and at least as long as tax law demands.",
+     "function": "definition",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "GDPR Articles 4(7), 4(8), 6 and 28.",
+       "shows": "Defines the roles, the contract and the bases from the text."
+      }
+     ],
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Personal data and the GDPR.",
+      "introduces": "The roles, bases, requests and retention the design rests on.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p14",
+     "controlling_idea": "A merchant like Kestrel & Pine holds four kinds of personal data by purpose, each in several systems, with its own usual lawful basis and its own retention need.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Name and addresses; e-mail and phone; order history, returns and refunds; browsing and behavior, each with where it lives, purpose, usual basis and how long it is needed.",
+       "shows": "Shows one person's data spread across systems with different bases and clocks."
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "The vocabulary.",
+      "introduces": "What a merchant actually holds, described in it.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p15",
+     "controlling_idea": "The table's right-hand columns are the design: the same person appears in every row, but the order record and the marketing profile need separate lawful bases, separate retention clocks and separate deletion behavior.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The inventory table.",
+      "introduces": "What its columns mean for the design.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p13",
+     "controlling_idea": "Getting the separation wrong has a price: the fine ceiling for core infringements is €20 million or 4% of worldwide annual turnover, whichever is higher, so for Kestrel & Pine (4% of €48.0 million is about €1.9 million) the ceiling is €20 million, though commoner sanctions are orders to stop processing and the public finding.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "statistic",
+       "what": "Article 83(5): €20 million or 4% of worldwide annual turnover, whichever is higher; 4% of €48.0 million is about €1.9 million, so the €20 million figure applies.",
+       "shows": "Puts a size on the stakes for a merchant of Kestrel & Pine's scale.",
+       "source": "GDPR Article 83(5); ledger: 2026 revenue €48.0 million"
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The order and the profile as separate duties.",
+      "introduces": "What getting them wrong can cost.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "roles",
+   "heading": "Controller, Processor and the Commerce Supply Chain",
+   "controlling_idea": "The merchant is the controller because it decides why and how the data is used; most of the systems it chose are processors under contract, while carriers, marketplaces and the PSP for the payment decide for themselves, so the system-of-record map needs a legal-role column.",
+   "function": "analysis",
+   "advances_thesis": {
+    "supports": [
+     "S1"
+    ],
+    "how": "Assigns a legal role to each system of the estate and turns the integration inventory into a data-flow inventory."
+   },
+   "flow": {
+    "pattern": "assertion_evidence_reasoning",
+    "rationale": "The test (who decides purposes and essential means), then its application to each system, then a platform that encodes it, then the consequence for the map. The consequence cannot be drawn before the roles are assigned."
+   },
+   "transition_in": {
+    "relationship": "elaboration",
+    "carries_over": "The controller and processor named in the vocabulary.",
+    "introduces": "The test that tells them apart and who is which.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p16",
+     "controlling_idea": "The merchant is the controller for Lotte's data, and the EDPB's guidelines draw the line: purposes and the essential means (which data, how long, who receives it) are the controller's, while non-essential means such as the software and detailed security measures may be left to the processor.",
+     "function": "explanation",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "EDPB Guidelines 07/2020 (version 2.0, July 2021): purposes 'are clearly always for the controller to make'; essential and non-essential means.",
+       "shows": "Gives the test from the authority that interprets the GDPR.",
+       "source": "EDPB, 2021-07-07"
+      }
+     ]
+    },
+    {
+     "id": "p17",
+     "controlling_idea": "Applied to the commerce supply chain, as the author reads it, the platform, WMS, OMS, iPaaS, returns portal, data warehouse and most apps are processors, the PSP is a processor for the order data but usually an independent controller for the payment, carriers and marketplaces are independent controllers, and advertising platforms are often joint or independent controllers.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Role per system with the reason.",
+       "shows": "Shows the test applied row by row to the estate."
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "The test.",
+      "introduces": "Its usual outcome system by system.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p18",
+     "controlling_idea": "Platforms encode this in their app rules: Shopify requires every App Store app to handle three compliance webhooks within 30 days and gates name, address, phone and e-mail behind its protected-customer-data program, which is a platform acting as the merchant's processor and policing sub-processors.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Shopify's compliance webhooks (customers/data_request, customers/redact sent 10 days after the request, shop/redact 48 hours after uninstall; 30 days to act) and protected customer data.",
+       "shows": "Shows a processor operationalizing the controller's duties for its apps.",
+       "source": "Shopify developer documentation, accessed November 2026"
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 2: the merchant as controller, most systems as processors, carriers, payment providers and marketplaces deciding for themselves.",
+       "shows": "Summarizes the role assignment in one picture."
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "The role table.",
+      "introduces": "A platform that builds the processor role into its app rules.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p19",
+     "controlling_idea": "The consequence: the system-of-record map needs a column for each system's legal role and the integration inventory is also the inventory of data flows, so the thirteen integrations with no named owner in January 2027 were thirteen data flows nobody was accountable for, five of them still unowned in April 2027.",
+     "function": "cause_effect",
+     "evidence": [
+      {
+       "kind": "statistic",
+       "what": "13 of 34 integrations with no named owner in January 2027; 5 still unowned in April 2027.",
+       "shows": "Shows unowned integrations as unowned data flows.",
+       "source": "consistency-issues.md item 16"
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "Roles assigned per system.",
+      "introduces": "What that means for the map and the inventory.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "sharing",
+   "heading": "Sharing and Transfers",
+   "controlling_idea": "Data that leaves the merchant's own systems, to partners, to other countries and through vendors, needs minimization, a recorded role and mechanism per recipient, and processor duties including breach notification, which runs on a clock of hours, not the request's month.",
+   "function": "explanation",
+   "advances_thesis": {
+    "supports": [
+     "S1"
+    ],
+    "how": "Extends the data-flow inventory to partners, transfers, the store and the vendor's side."
+   },
+   "flow": {
+    "pattern": "grouping",
+    "rationale": "Three kinds of recipient beyond the core systems, each with its own rule: partners, other countries, the software vendor. Transfers come right after partners because both are rows of the same inventory; the vendor comes last because it is a processor of the kind the roles section just named, and its breach duty sets the first legal clock of the chapter."
+   },
+   "transition_in": {
+    "relationship": "elaboration",
+    "carries_over": "The roles assigned to the merchant's own systems.",
+    "introduces": "The same roles applied to the data that leaves them: partners, other countries and software vendors.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p39",
+     "controlling_idea": "The roles reach beyond the merchant's own systems because much of the data leaves them: sharing with partners follows minimization, a recorded role per recipient and a contract that covers the transfer, and Kestrel & Pine's marketplace connector, which copied everything the marketplace sent, now copies only what the warehouse needs.",
+     "function": "recommendation",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "The marketplace connector's copy before and after Lotte's request.",
+       "shows": "Shows minimization applied to one flow.",
+       "source": "Kestrel & Pine scenario ledger (privacy-and-customer-data line)"
+      }
+     ]
+    },
+    {
+     "id": "p40",
+     "controlling_idea": "International transfers, which most commerce stacks make to the United States, need an adequacy decision, standard contractual clauses or binding corporate rules; the EU-US Data Privacy Framework is the adequacy decision for certified US companies and Decision (EU) 2021/914 sets the modern clauses.",
+     "function": "explanation",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Commission Implementing Decision (EU) 2023/1795 of 10 July 2023; Decision (EU) 2021/914.",
+       "shows": "Names the lawful routes with their legal texts."
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "Data shared with partners.",
+      "introduces": "Data sent to other countries.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p41",
+     "controlling_idea": "The DPF survived Philippe Latombe's challenge before the General Court on 3 September 2025, an appeal is pending as of November 2026, and law firms advise keeping SCCs as a fallback.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Lewis Silkin, 2025-09-03; Case C-703/25 P.",
+       "shows": "Dates the risk to the main transfer route."
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "The DPF as the lawful route.",
+      "introduces": "The challenge that could remove it.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p42",
+     "controlling_idea": "The architectural asset is a transfer inventory keyed to the integration map, per vendor where the data goes and under which mechanism, so that a court decision on the DPF becomes a filter on a list, answered in an afternoon, rather than a discovery project.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "A route that a court could remove.",
+      "introduces": "The list that makes the response quick.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p44",
+     "controlling_idea": "The vendors on the map are recipients too: a commerce software vendor has a processor's obligations (a DPA, listed sub-processors, data in the promised regions, per-customer export and erasure, evidenced security) and must notify the merchant of a breach without undue delay, because the merchant as controller must notify its supervisory authority without undue delay and, where feasible, within 72 hours of becoming aware of it unless the breach is unlikely to put people at risk: a clock of hours from the breach, separate from the one-month clock for a person's request, which the chapter reaches later.",
+     "function": "explanation",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "GDPR Article 33(1) and 33(2).",
+       "shows": "States the breach-notification duty and its 72-hour deadline as the regulation does, distinct from Article 12(3)'s month.",
+       "source": "GDPR, Official Journal text"
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "Partners and other countries as recipients.",
+      "introduces": "The software vendors themselves as recipients, with their duties and the breach clock.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "bases",
+   "heading": "Lawful Bases: The Order Versus the Marketing",
+   "controlling_idea": "The order rests on the contract and on legal obligations, fraud screening on legitimate interests and marketing on consent or the soft opt-in, so the order's e-mail address and the marketing permission are two facts and the second must be recorded with its basis.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "S2"
+    ],
+    "how": "Separates the order from marketing in law, which is what lets the profile go while the order stays."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "Who holds and receives the data.",
+    "introduces": "Why each use is allowed at all: the lawful bases.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p20",
+     "controlling_idea": "In commerce terms the four bases divide the work: the contract covers taking, delivering and supporting the order, legal obligation covers invoices and accounting records, legitimate interests cover fraud screening and security, and consent or the soft opt-in covers newsletters, profiling and tracking.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Use, basis and what it means in practice, for four groups of uses.",
+       "shows": "Shows each use mapped to one basis with its practical consequence (needs consent or not, can be withdrawn or not)."
+      }
+     ]
+    },
+    {
+     "id": "p21",
+     "controlling_idea": "The ePrivacy soft opt-in lets a business market its own similar products to an existing customer's e-mail provided the customer can object free of charge at collection and in every message; national transpositions differ, but the order's e-mail and the marketing permission are two facts either way.",
+     "function": "explanation",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "ePrivacy Directive Article 13(2): 'in the context of the sale of a product or a service' ... 'for direct marketing of its own similar products or services'.",
+       "shows": "Gives the exact condition merchants ask about.",
+       "source": "Directive 2002/58/EC, consolidated 2009"
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The consent row of the table.",
+      "introduces": "The soft opt-in every merchant asks about.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "consent",
+   "heading": "Consent, Cookies and Tracking",
+   "controlling_idea": "Consent must be given before tags read the device, be demonstrable per person and purpose, and travel from the customer master to every tag, tool, till and app, so it is state the merchant must move, not a banner.",
+   "function": "explanation",
+   "advances_thesis": {
+    "supports": [
+     "S2"
+    ],
+    "how": "Turns the consent basis into requirements on the tag layer, the master and every outbound tool."
+   },
+   "flow": {
+    "pattern": "large_to_small",
+    "rationale": "The problem, then the two laws, then what they mean for cookies and what the regulators say, then the tool that enforces the choice, then how the rules may change in the EU and how the US differs, then the till as the hardest place to ask, and last the design consequence that all of them lead to: consent kept on the customer master and sent everywhere. The consequence needs every rule before it."
+   },
+   "transition_in": {
+    "relationship": "elaboration",
+    "carries_over": "Consent as the basis for marketing.",
+    "introduces": "What consent requires for cookies and tracking.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p22",
+     "controlling_idea": "A consent choice must control what the shop and its connected tools actually do; a preference recorded in a banner is not enough if tracking scripts ignore it or another system keeps marketing to someone who declined.",
+     "function": "claim"
+    },
+    {
+     "id": "p23",
+     "controlling_idea": "Consent lives in two laws: the GDPR defines it as a freely given, specific, informed and unambiguous indication that the controller must be able to demonstrate, and the ePrivacy Directive allows storing or reading information on a device only with consent, except what is strictly necessary.",
+     "function": "definition",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "GDPR Articles 4(11) and 7(1); ePrivacy Article 5(3) as amended in 2009.",
+       "shows": "Gives the two legal sources of the consent requirement."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "Consent that must control what tools do.",
+      "introduces": "The two laws that define it.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p24",
+     "form": "list",
+     "controlling_idea": "In plain words the cart cookie and the language choice need no consent while analytics, advertising and personalization tags do before they fire, and the EDPB, the Dutch regulator and the Belgian regulator agree on the substance (no cookie walls, no scrolling or pre-ticked boxes as consent, purposes grouped).",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "EDPB Guidelines 05/2020 (May 2020) and 2/2023 (version 2.0, October 2024); Autoriteit Persoonsgegevens (n.d.); Gegevensbeschermingsautoriteit (November 2023).",
+       "shows": "Shows the regulators Kestrel & Pine answers to reading the device rule the same way."
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "The device rule.",
+      "introduces": "What it means for the cart, the tags and the regulators' readings.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p25",
+     "controlling_idea": "A consent management platform stores each visitor's choices per purpose and tells each tag whether it may run, and server-side tagging changes who receives the data first, not whether consent is needed, so it is a governance improvement, never a consent bypass (the author's reading of the EDPB's technical-scope guidelines).",
+     "function": "explanation",
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "Tags that may fire only after consent.",
+      "introduces": "The tool that records and enforces the choice, and what server-side tagging does not change.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p26",
+     "controlling_idea": "The EU consent rules are still moving: the Digital Omnibus proposal of November 2025 would move the device rule into the GDPR with four no-consent purposes, a one-click refusal and machine-readable browser signals, but is a proposal, not law, as of November 2026.",
+     "function": "context",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Osborne Clarke (December 2025) on the Omnibus; California's CCPA page; the IAPP's 2025 chart.",
+       "shows": "Dates the moving parts so the reader knows what is proposal and what is law."
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "The rules as they stand and the tool that enforces them.",
+      "introduces": "The EU proposal that would change them.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p51",
+     "controlling_idea": "The United States uses an opt-out model in which consumers can refuse the sale or sharing of their data, including through the Global Privacy Control browser signal, and Sephora's 2022 settlement with California's Attorney General (US$1.2 million) shows that model enforced on the tag layer: trackers counted as a sale and the signal had to be honored.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "California's CCPA page and the IAPP's 2025 chart (nineteen state laws).",
+       "shows": "Describes the US model."
+      },
+      {
+       "kind": "case",
+       "what": "California Attorney General, Sephora settlement, 24 August 2022.",
+       "shows": "Shows the tag layer and browser signals enforced.",
+       "source": "California Department of Justice, 2022-08-24"
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "The EU model, consent before tracking, and how it may change.",
+      "introduces": "The US opt-out model and the case that enforced it.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p43",
+     "controlling_idea": "The store is where consent is easiest to ask badly: a sign-up at the till leaves no evidence, so from mid-2027 Kestrel & Pine's POS loyalty sign-up shows the web's purposes and wording, records the time and store, and carries the master's consent once matched.",
+     "function": "recommendation",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "Kestrel & Pine's mid-2027 POS loyalty sign-up rule.",
+       "shows": "Shows consent at the till made demonstrable.",
+       "source": "Kestrel & Pine scenario ledger (privacy-and-customer-data line)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "Rules for consent online, here and in the US.",
+      "introduces": "Consent asked at the store's till, where it is easiest to ask badly.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p27",
+     "controlling_idea": "Consent is state that must travel from the CMP to the tag layer, the newsletter tool, the CDP, the POS and every app, recorded on the customer master with its time, place, wording and source so the merchant can demonstrate it per person and purpose and withdraw it everywhere at once.",
+     "function": "recommendation",
+     "evidence": [
+      {
+       "kind": "figure",
+       "what": "Figure 3: a consent record on the customer master fanning out to the banner, tags, newsletter tool, till and apps.",
+       "shows": "Shows consent as one record copied to every place that acts on it."
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The rules, their readings and the till.",
+      "introduces": "The design consequence that ties consent to the customer master of the identity chapter.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "retention",
+   "heading": "Retention: The Person Versus the Transaction",
+   "controlling_idea": "Tax law makes the merchant keep what privacy law makes it release, and splitting the person from the transaction reconciles them: the order and invoice keep a reference, the profile is an erasable record, and retention becomes a property of each record type.",
+   "function": "analysis",
+   "advances_thesis": {
+    "supports": [
+     "S3"
+    ],
+    "how": "Shows why an order that carries the person blocks deletion and gives the data-model change that fixes it."
+   },
+   "flow": {
+    "pattern": "problem_solution",
+    "rationale": "The retention rules first, then the conflict they create when the invoice is the customer record, then the split that resolves it, then backups as the one bounded exception. The fix cannot be read before the conflict is clear."
+   },
+   "transition_in": {
+    "relationship": "cause_effect",
+    "carries_over": "Consent that decides which marketing may run and must travel.",
+    "introduces": "How long the records of a sale must be kept, and what that means for deleting a person.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p35",
+     "form": "list",
+     "controlling_idea": "Tax law makes the merchant keep what privacy law makes it release; the retention rules the chapter relies on are at least seven years in the Netherlands, ten, eight or six years in Germany by record type, and ten years in Belgium, which is widely cited but not verified here and treated by Sanne de Wit, the Finance Director, as the rule pending confirmation.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "business.gov.nl ('must keep your business records for at least 7 years'); §147 Abgabenordnung (ten, eight, six years); the Belgian ten years, unverified.",
+       "shows": "States each retention period with its verification status."
+      }
+     ]
+    },
+    {
+     "id": "p36",
+     "controlling_idea": "Lotte's November 2026 invoice therefore stays until at least the end of 2036 under the Belgian reading, and the conflict arises only where the invoice is the customer record, as in many ERPs and platforms: deleting the person then means deleting the order, which tax law forbids, so nothing is deleted.",
+     "function": "cause_effect",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "Lotte's invoice of November 2026, kept to the end of 2036.",
+       "shows": "Applies the rule to the chapter's case.",
+       "source": "Kestrel & Pine scenario ledger (privacy-and-customer-data line)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "Records kept for years.",
+      "introduces": "The conflict with a deletion request when the invoice is the customer record.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p37",
+     "controlling_idea": "One design move reconciles the two laws, splitting the person from the transaction: the order and invoice carry a customer reference and the delivery address for the fiscal period, the profile (e-mail, phone, preferences, consent, browsing, loyalty) is a separate erasable record, analytics carry a hash, and a nightly job purges what has expired, so retention is a property of each record type, not of the person.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "problem_solution",
+      "carries_over": "Nothing can be deleted while the invoice is the customer record.",
+      "introduces": "The data-model split that resolves it.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     },
+     "evidence": [
+      {
+       "kind": "figure",
+       "what": "Figure 4: profiles erasable, transactions kept with a reference that no longer points to a person.",
+       "shows": "Shows the split the next paragraph describes."
+      }
+     ]
+    },
+    {
+     "id": "p38",
+     "controlling_idea": "Backups are the one place a deletion cannot reach, so the accepted practice is a bounded, documented exception: kept for a stated period, never used to resurrect erased data, and the deletion log replayed after any restore.",
+     "function": "explanation",
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "Records the split can erase or keep.",
+      "introduces": "Backups, which it cannot reach.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "dsr",
+   "heading": "Data Subject Requests Across Many Systems",
+   "controlling_idea": "A request must be answered within one month across every system that holds the person, and three parts make that a job rather than a hunt: an identity index, a request orchestrator and a per-system action table decided in advance.",
+   "function": "process",
+   "advances_thesis": {
+    "supports": [
+     "S4"
+    ],
+    "how": "Specifies the three parts that turn the request from Ghent from a seventeen-day hunt into a repeatable flow."
+   },
+   "flow": {
+    "pattern": "problem_solution",
+    "rationale": "The problem and the deadline first, then the three parts in the order a request uses them (find the person, run the request, apply the actions), then the actions outside erase, pseudonymize and retain, then the reply. The action table cannot come before the index has found the systems."
+   },
+   "transition_in": {
+    "relationship": "cause_effect",
+    "carries_over": "Records kept, pseudonymized or erased by record type.",
+    "introduces": "How a request reaches every system that holds the person.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p29",
+     "controlling_idea": "When a customer asks to see, correct or delete personal data, the GDPR gives the merchant one month, extendable by two, and what makes it hard is the fan-out (one person, many systems and vendors, a different right answer in each), which three parts turn into a job.",
+     "function": "claim",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Article 12(3): 'without undue delay and in any event within one month', extendable by two months.",
+       "shows": "Gives the clock the design must meet.",
+       "source": "GDPR"
+      }
+     ]
+    },
+    {
+     "id": "p30",
+     "controlling_idea": "An identity index records which systems hold the person under which identifiers; it is the cross-reference the identity chapter built, and without it every request starts with a search of every system, which is where Lotte's seventeen days went.",
+     "function": "explanation",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Three parts announced.",
+      "introduces": "The first: the identity index.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p31",
+     "controlling_idea": "A request orchestrator is a small workflow that verifies the requester, fans the request out, records each answer and produces the reply; Shopify's compliance webhooks are the platform-side half, and the merchant builds or buys the other half for systems outside the platform.",
+     "function": "explanation",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Where the person is held.",
+      "introduces": "The second part: the workflow that runs the request.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p32",
+     "controlling_idea": "A per-system action table, decided in advance, applies the retention split: erase where the purpose has ended, pseudonymize where the record must stay but need not identify the person, retain where a legal obligation applies or a claim is possible.",
+     "function": "explanation",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Erase, pseudonymize and retain, each with when it applies and Kestrel & Pine examples.",
+       "shows": "Shows the three answers applied to Kestrel & Pine's systems."
+      }
+     ],
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "The workflow that fans out.",
+      "introduces": "The third part: what each system does.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p33",
+     "controlling_idea": "Two answers fall outside erase, pseudonymize and retain: refer, because the carrier, the marketplace and the PSP are controllers the person must ask too, and except, for backups under the bounded exception the retention section described.",
+     "function": "explanation",
+     "evidence": [
+      {
+       "kind": "figure",
+       "what": "Figure 5: a request verified once, resolved against the identity index, fanned out with a predetermined action per system and answered with a record.",
+       "shows": "Shows the whole flow, including refer and except."
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "The three answers the merchant applies.",
+      "introduces": "The two it cannot apply itself.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p34",
+     "controlling_idea": "The reply says in plain words what was erased, what was kept and why, and whom else to ask, and the record behind it is what a regulator asks for.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "All five answers.",
+      "introduces": "What the reply and the record must say.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "requirements",
+   "heading": "Requirements per Flow",
+   "controlling_idea": "The four privacy flows (consent capture, consent withdrawal, the request and the retention purge) differ in how fresh, consistent, fast and available each must be, and the consent flows must fail toward no consent.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "S2",
+     "S3",
+     "S4"
+    ],
+    "how": "Turns consent, retention and requests into requirements an integration can be built to."
+   },
+   "transition_in": {
+    "relationship": "conclusion_summary",
+    "carries_over": "The request flow, the last of the four privacy flows the chapter describes.",
+    "introduces": "The requirements of all four side by side.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p34b",
+     "controlling_idea": "With the request described, the chapter has covered four privacy flows (consent capture and withdrawal, the retention purge and the request), which differ in how fresh, consistent, fast and available each must be, with the consent flows failing toward no consent.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Requirements per flow: consent capture, consent withdrawal, data subject request and retention purge, each by freshness, consistency, speed and availability.",
+       "shows": "Turns the chapter's flows into requirements, including 'degrade to no consent' when the CMP is down."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "choices",
+   "heading": "The Choices",
+   "controlling_idea": "A merchant can run requests by a runbook, through the platform, through an orchestrator on an identity index or with a privacy management product, and should map the data before choosing any product.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "S4",
+     "S5"
+    ],
+    "how": "Sets the ways to run requests side by side on fit, strengths, limits and warning signs."
+   },
+   "flow": {
+    "pattern": "comparison",
+    "rationale": "The four options named first, then compared on the same criteria with the author's rule. The comparison needs the options named."
+   },
+   "transition_in": {
+    "relationship": "sequence",
+    "carries_over": "The parts of a privacy design and their requirements.",
+    "introduces": "The ways to put them together.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p45",
+     "form": "list",
+     "controlling_idea": "For the data subject request there are four realistic designs, chosen by the number of systems and requests: a runbook, platform-led handling with a runbook for outside systems, an integration flow (Kestrel & Pine's choice in autumn 2027) and a privacy management product.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "example",
+       "what": "The four designs with when each suits.",
+       "shows": "Names the options before they are compared."
+      }
+     ]
+    },
+    {
+     "id": "p46",
+     "controlling_idea": "Map the data before choosing a product, because automation still needs to know which systems and records it must reach; the table compares the four options on fit, strengths, costs and limits, and the warning sign of each.",
+     "function": "recommendation",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Runbook, platform-centered, orchestrator plus identity index and privacy management product by fit, strengths, costs and limits, and warning sign.",
+       "shows": "Compares the options on the same criteria; 'bought before the map exists' is the product's warning sign."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The four options.",
+      "introduces": "The author's rule and the comparison table.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "stages",
+   "heading": "Across Scale Stages: When It Fits and When It Limits",
+   "controlling_idea": "The duties do not change with scale; where the data is does: below the Omnichannel stage the platform does most of the work, and from it the merchant must own the map, the index and the orchestrator.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "S5"
+    ],
+    "how": "Says from which stage the merchant must own each part of the design."
+   },
+   "transition_in": {
+    "relationship": "elaboration",
+    "carries_over": "The four options for running requests.",
+    "introduces": "Which fits at which scale stage.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p48",
+     "controlling_idea": "Across the book's four scale stages, the practices a merchant needs grow with the number of systems that hold a person; the table shows what is typical, what becomes necessary and the warning signs of outgrowing each stage.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Four stages by what is typical, what becomes necessary and warning signs.",
+       "shows": "Shows the practices needed growing with the number of systems."
+      }
+     ]
+    },
+    {
+     "id": "p49",
+     "controlling_idea": "The judgement: a Starting-stage merchant is as much a controller as a Group, but below the Omnichannel stage the platform's DPA, banner and app rules do most of the work, and from it the person is in a dozen systems and the merchant must own the map, the index and the orchestrator; Kestrel & Pine learned this from one request.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The stage table.",
+      "introduces": "The judgement it supports.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "practice",
+   "heading": "In Practice",
+   "controlling_idea": "Kestrel & Pine's autumn 2027 design applies the chapter's parts: the identity index of June and July 2027, the October orchestrator with a per-system action table, referrals and a backup exception, and a second request answered in two working days.",
+   "function": "example",
+   "advances_thesis": {
+    "supports": [
+     "S4",
+     "S5"
+    ],
+    "how": "Shows the design at work in Kestrel & Pine's estate and what it changed."
+   },
+   "flow": {
+    "pattern": "chronological",
+    "rationale": "Kestrel & Pine's design in the order it was built (index, orchestrator, per-system actions, referrals and backups, the second request); each step uses the previous one."
+   },
+   "transition_in": {
+    "relationship": "example",
+    "carries_over": "The stage judgement: from Omnichannel the merchant owns the map, the index and the orchestrator.",
+    "introduces": "How Kestrel & Pine did so after the request from Ghent.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p53",
+     "controlling_idea": "Kestrel & Pine built the parts after Lotte's request in two steps, first the index: the June 2027 identity rule linked every system's record to the customer master and the July matching run produced the identity index.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "The June 2027 identity rule and the July 2027 matching run.",
+       "shows": "Supplies the index the orchestrator needs.",
+       "source": "Kestrel & Pine scenario ledger (identity-and-master-data line)"
+      }
+     ]
+    },
+    {
+     "id": "p54",
+     "controlling_idea": "In October 2027 Ruben Alves built the request orchestrator as an iPaaS flow with a human verification step: the request is logged, the requester verified, the index queried and the action table applied.",
+     "function": "process",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "The October 2027 orchestrator.",
+       "shows": "Shows the orchestrator built on the index.",
+       "source": "Kestrel & Pine scenario ledger (privacy-and-customer-data line)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "time",
+      "carries_over": "The index of June and July.",
+      "introduces": "The orchestrator of October.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p55",
+     "controlling_idea": "Each system has its action: the shop platform deletes the account and anonymizes the orders, the OMS pseudonymizes its order copies, the WMS and shipping service purge addresses after a twelve-month claims window (an assumption), the ERP keeps invoices and marks the reference erased, the POS deletes the loyalty entry, the returns portal the contact, and the data warehouse hashes the identifiers.",
+     "function": "process",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "The per-system actions, with the twelve-month claims window labeled an assumption.",
+       "shows": "Shows the action table applied to the nine systems of the scene.",
+       "source": "Kestrel & Pine scenario ledger (privacy-and-customer-data line)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The orchestrator applies the action table.",
+      "introduces": "What the table says for each system.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p56",
+     "controlling_idea": "The carrier, the marketplace and the PSP are notified and the customer told to ask them directly, and backups are kept for 35 days (an assumption) with the deletion log replayed after any restore.",
+     "function": "process",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "Referrals and the 35-day backup assumption.",
+       "shows": "Shows refer and except in practice.",
+       "source": "Kestrel & Pine scenario ledger (privacy-and-customer-data line)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "Actions inside the merchant's systems.",
+      "introduces": "Referrals and backups outside them.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p57",
+     "controlling_idea": "The second request through the flow, in November 2027, took two working days, and the privacy map (one row per system with its legal role, data, action and retention clock) is now the legal-role column on Noor's ownership map, reviewed quarterly.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "statistic",
+       "what": "Two working days for the second request, November 2027 (illustrative), against seventeen for the first.",
+       "shows": "Measures what the design changed.",
+       "source": "Kestrel & Pine scenario ledger (privacy-and-customer-data line)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The finished design.",
+      "introduces": "What it changed and where the map now lives.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "wrong",
+   "heading": "When It Goes Wrong",
+   "controlling_idea": "Privacy designs fail through a missed copy, a resurrected customer, an impostor, an over-deletion, consent without evidence and an invalidated transfer; the missed copy recurs because systems are added after the map was made, so the map lives with the integration inventory.",
+   "function": "analysis",
+   "advances_thesis": {
+    "supports": [
+     "S3",
+     "S4"
+    ],
+    "how": "Shows each failure with detection and recovery read against the chapter's rules."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "What the design achieved.",
+    "introduces": "How it fails when one of its rules is skipped.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p58",
+     "controlling_idea": "Six failures recur, each with a detection and a recovery the chapter's rules supply, and the missed copy recurs most because its cause is a system added after the map was made, which is why the privacy map lives with the integration inventory and is reviewed when a row is added.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Six failures with how each shows, detection and recovery.",
+       "shows": "Each failure has a detection and a recovery from the chapter's design."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "conclusion": {
+  "heading": "What to Take Away",
+  "synthesis": "The request from Ghent took seventeen working days for three reasons the sections give separately: every integration had copied Lotte into a system with its own role, her orders carried her as the person so they could not simply go, and nothing listed where she was or what each system should do. One map answers all three: a legal role, a request action and a retention clock per system, kept beside the integration inventory.",
+  "so_what": "A merchant that keeps that map, records consent on the master and splits the person from the transaction answers a request in days with a record, instead of a hunt that only just meets the month; Kestrel & Pine's second request took two working days.",
+  "callback": {
+   "to": "The introduction's customer whose account is in the shop platform while copies of her data sit in other systems, and the request from Ghent (p01, p07 to p10).",
+   "how": "p59 says why the request took seventeen days and what made the second take two."
+  },
+  "takeaway": {
+   "type": "course_of_action",
+   "content": "Write a privacy map: per system, its legal role, the data it holds, the action a request requires there and its retention clock; keep it with the integration inventory and review it when a row is added."
+  },
+  "hand_off": {
+   "to": "commerce-regulation",
+   "relationship": "additional_support",
+   "carries_over": "The one-month deletion clock: one legal duty with a date that a merchant discovers late without a map.",
+   "introduces": "The other rules with dates, how to read each as a requirement, and Kestrel & Pine's 2027 regulatory calendar."
+  },
+  "transition_in": {
+   "relationship": "conclusion_summary",
+   "carries_over": "The failures and their recoveries.",
+   "introduces": "The chapter's answer set against the request from Ghent, then what holds, sorted by how settled it is.",
+   "form": "sentence",
+   "placement": "start_of_this"
+  },
+  "paragraphs": [
+   {
+    "id": "p59",
+    "controlling_idea": "The request from Ghent took seventeen working days because every integration had copied Lotte into a system with its own role, her orders carried her as the person, and nothing listed where she was or what each system should do; one map with a legal role, request action and retention clock per system answers all three, and with consent on the master, the split and an orchestrator on the identity index the second request took two working days, as a request about Eva's jacket order would.",
+    "function": "synthesis",
+    "evidence": [
+     {
+      "kind": "reasoning",
+      "what": "The scene's nine systems and seventeen days set against the design.",
+      "shows": "Answers the opening with what the sections established together."
+     }
+    ]
+   },
+   {
+    "id": "p60",
+    "form": "list",
+    "controlling_idea": "Established: the merchant is the controller and most of its systems are processors; orders rest on the contract and tax law and marketing on consent or the soft opt-in; requests have one month, extendable by two, and business records must be kept for years; platforms have operationalized the fan-out.",
+    "function": "synthesis",
+    "transition_in": {
+     "relationship": "elaboration",
+     "carries_over": "The answer in one paragraph.",
+     "introduces": "What it rests on, starting with what is established.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p61",
+    "form": "list",
+    "controlling_idea": "Depends on context: from which stage the merchant must own the map, the index and the orchestrator; the soft opt-in by country; the retention period per record type as a legal and finance decision.",
+    "function": "synthesis",
+    "transition_in": {
+     "relationship": "contrast",
+     "carries_over": "What is established.",
+     "introduces": "What depends on the merchant's situation.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p62",
+    "form": "list",
+    "controlling_idea": "The author's synthesis: privacy in a commerce estate is an integration problem, and the person should be split from the transaction before the first request.",
+    "function": "recommendation",
+    "transition_in": {
+     "relationship": "contrast",
+     "carries_over": "Established and context-dependent points.",
+     "introduces": "The author's own judgement, labeled as such.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p63",
+    "form": "list",
+    "controlling_idea": "Eight questions let the reader check, at their own company, roles and contracts, consent and its reach, tags and the CMP, finding a person, the data model, transfers and backups.",
+    "function": "recommendation",
+    "transition_in": {
+     "relationship": "cause_effect",
+     "carries_over": "The take-aways.",
+     "introduces": "Questions that apply them to the reader's own company.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p64",
+    "controlling_idea": "A deletion request is one legal clock among many, and the next chapter lays out the others and how Kestrel & Pine turned them into a regulatory calendar for 2027 so that no deadline is discovered only months before it applies.",
+    "function": "transition",
+    "transition_in": {
+     "relationship": "additional_support",
+     "carries_over": "The last question, on backups, and the one-month clock behind the chapter.",
+     "introduces": "The other rules with dates, handed to the next chapter.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   }
+  ]
+ },
+ "non_goals": [
+  {
+   "topic": "Customer identity, matching, survivorship and the cross-reference itself (this chapter only reuses the index).",
+   "covered_in": [
+    "identity-and-master-data"
+   ]
+  },
+  {
+   "topic": "Security controls: card data, PCI DSS, account takeover, bots, skimming, admin MFA.",
+   "covered_in": [
+    "commerce-security"
+   ]
+  },
+  {
+   "topic": "The regulatory calendar beyond privacy: consumer law, e-invoicing, accessibility, DSA, product safety, AI Act.",
+   "covered_in": [
+    "commerce-regulation"
+   ]
+  },
+  {
+   "topic": "App governance and the app inventory; the integration inventory itself.",
+   "covered_in": [
+    "extensibility-and-app-ecosystems",
+    "integration-styles"
+   ]
+  },
+  {
+   "topic": "Analytics design and metric definitions on pseudonymized data.",
+   "covered_in": [
+    "commerce-data-and-analytics"
+   ]
+  },
+  {
+   "topic": "A country-by-country legal treatment; the chapter says that it is not legal advice."
+  }
+ ],
+ "modalities": [],
+ "open_questions": [],
+ "decision_log": [
+  {
+   "date": "2026-11-13",
+   "decision": "Round 3 (confirming, ESCALATE: 22 major failures, 15 of them corroborated flow points). Closing fixes without another round, as the brief allows: Eva's paragraph opens with a link ('The same spread happens on every ordinary order') and names Lotte as the case; 'legal basis' in that paragraph; the scene says two more copies sat outside the nine and moves the no-OMS note after them with its September 2027 date; 'The scene used words' replaces 'Lotte's request used words'; the breach paragraph points forward to the regulators in the consent section instead of 'above'; the garbled 'put it ... here is why' sentence rewritten; the requirements section says the chapter 'met' the four flows and the roadmap names them; anonymizing distinguished from pseudonymizing in the action-table lead; 'Omnichannel-stage merchant' replaces 'stage-3 lesson'; the Long Fuse named at the one-month clock (p29); Figure 4 moved after the paragraph that introduces the split (p37). The check report is stale after these fixes.",
+   "rejected": [
+    "A fourth round (the brief allows one confirming round)."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the remaining spec-fault flow findings of round 3 keep the current position. The consent section's order (rule 10: round 2's readers asked it to end on the design consequence, round 3's to put the consequence before the Omnibus and US paragraphs); the place of Requirements per Flow (rule 10: round 1's readers asked for its own section after the request, round 3's for The Choices or In Practice); Eva's paragraph after the roadmap (rule 10: round 1 moved it out of the problem-to-thesis run, round 3 asked for it before the roadmap); the breach clock in the vendor paragraph of Sharing and Transfers (rule 10, after round 2's move; the brief requires the breach clock in this chapter and distinct from the request's month); the thesis stated in KEY POINTS, the thesis paragraph and the roadmap (the contract requires all three). Single-reader minor points (the Choices bullets and table, the fines arithmetic, the ownership map at first use, the requirements table's column names, the one-month clock repeated, terms such as claims window, joint controllers, redaction, tracking pixels, DPO) are recorded in the report and left as they are.",
+   "rejected": [
+    "Leaving them open for the author."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the fine figure follows its cited source (rule 2): Article 83(5) sets €20 million or 4% of worldwide turnover, whichever is higher, so p13 now says Kestrel & Pine's ceiling is the €20 million figure, with 4% of €48.0 million (about €1.9 million) shown as the lower amount; the arithmetic is the ledger's revenue and is correct.",
+   "rejected": [
+    "Keeping '4% would be €1.9 million' as Kestrel & Pine's ceiling, which misreads the article."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Sharing and Transfers moved to follow Controller, Processor and the Commerce Supply Chain, because both round-2 flow readers asked for that move and the vendor's duties are processor duties (rule 3); its breach-clock sentence now says the request's one-month clock comes later. The consent section reordered so it ends on the design consequence (both readers): the Digital Omnibus paragraph (p26) now holds only the EU proposal and the US opt-out model joined the Sephora paragraph (p51), resolving the two-ideas fault; the store paragraph follows them and the consequence with Figure 3 closes the section. Roles p16 now asks about Lotte's data, not Eva's (both readers). Transitions rewritten for sharing, bases, consent p26/p51/p43/p27, retention, choices and stages.",
+   "rejected": [
+    "Moving the fine-ceiling paragraph again (round 1 asked for it out of the vocabulary run; round 2 readers asked for two different places): the current position stands (rule 10).",
+    "Shortening the roadmap to fewer promises: it must announce every section (contract); its wording was tightened instead."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: draft fixes from round 2: the requirements section now says which sections described each of the four flows; the scene says Kestrel & Pine had no OMS yet and the shipping row's deletion is scheduled; the 13 unowned integrations are stated as 13 of the 34 in the integration inventory; 'Map the data before choosing the product' replaces the first person, which two readers found abrupt; the privacy map is named as the legal-role column on Noor's ownership map; the Phantom Stock is dropped from the author's synthesis (it is not this chapter's pattern); pseudonymize, identity index and orchestrator are glossed in KEY POINTS (rule 6).",
+   "rejected": [
+    "Merging the Choices bullets and table (one reader only; both are the author's)."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Round 1 (ESCALATE on four corroborated flow failures at fault in the spec; changes pre-approved by the brief). Spec: the introduction's p02 merged into p01 and the order changed to p01, thesis p05, roadmap p06, then Eva's paragraph p04, because both flow readers found the opening told the case twice and Eva interrupted the move from problem to answer; the fine-ceiling paragraph p13 moved to the end of its section, after the data table; the requirements table (p34b) given its own section, 'Requirements per Flow', after Data Subject Requests, because both readers found it misfiled under requests (rule 3); the stage lead p48 no longer restates the table. The roadmap announces the new section and the vendor's breach clock. Draft fixes for the other failures: the garbled opening sentence; the 'four moves' label; Noor hands the search to Ruben and 'Lotte' replaces 'She'; the table's point stated; the copies outside the nine signalled; bol, bpost, hash, tags, tag layer, cookie walls, adequacy decision, SCCs, binding corporate rules, the General Court, supervisory authority, Abgabenordnung and Sanne de Wit glossed; 'thirteen integrations' as '13 of 34' and named the Secret Agent; the identity chapter named where 'the previous one' was ambiguous; the store paragraph's repeated point cut; 'Two moving parts' and the US contrast given links; the vendor paragraph in third person with a bridge; the four options named the same in list and table and the table's point stated; the OMS glossed with its date; Phantom Stock glossed; the retention split named only once (p37) so p35 holds one idea; Eva's thread closed in p59; 'Omnibus price rules' replaced by the 30-day prior-price rule to avoid confusion with the Digital Omnibus; GDPR expanded once.",
+   "rejected": [
+    "Moving the Digital Omnibus and US paragraphs out of the consent section (one reader only; they qualify the consent rules).",
+    "Defining controller before the scene table (one reader only; the roadmap names the controller just before the scene)."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "length.max_words raised from 6,500 to 6,700 (within the author's allowance of 10%, instruction of 2026-11-12), because the glosses the round-1 readers asked for (rule 6) and the new section's lead took the chapter just over 6,500; no new material was added.",
+   "rejected": [
+    "Cutting author sentences to stay under 6,500."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Converted spec.md to spec.json from the published chapter. Intent, thesis (question, claim, disputed_by, so_what, how_why), role and AC-1 to AC-5 copied unchanged from the journal spec; audience added for this chapter. Old success criteria: the term-definition and acronym criterion is covered by the standard known_before_new check; 'business problem before any component' is kept as the declared flow; the inventory criteria (the data, role, lawful-basis, requirements, action and trade-off tables, the stage section, the worked example, three diagrams, the failure table, three take-away tiers, 6-10 questions, the hand-off, grouped Sources, the retention verification labels, 'states once that it is not legal advice') are dropped as inventories, since the reader outcomes they served are AC-1 to AC-3; the word limit (6,500 including tables) is carried over as length.max_words. No criteria were added.",
+   "rejected": [
+    "Carrying the inventory criteria over as minor acceptance criteria."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Added the units the contract asks for and the published chapter lacked: p01 now opens with the previous chapter's question of who may act on the shop and asks the mirror question about data, as this chapter's transition_in asks; a thesis paragraph (p05) and a roadmap that announces every section (p06, which absorbs the published p03's definitions of controller and processor and its pointers to the neighbouring chapters); a conclusion paragraph (p59) that answers the request from Ghent and closes Eva's thread. The breach-notification clock in p44 is now stated as GDPR Article 33(1) states it (the controller notifies the supervisory authority without undue delay and, where feasible, not later than 72 hours after becoming aware, unless the breach is unlikely to result in a risk), distinct from Article 12(3)'s one-month clock for requests, because chapter 34 points here for the legal clock after a breach.",
+   "rejected": [
+    "Leaving the KEY POINTS callout as the only statement of the thesis.",
+    "Adding GDPR Article 34 (notifying the people affected), which the chapter's Sources do not cite."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Flow rubric run 1 (sound with notes); the author asked for the rubric notes to be taken without review. Taken: Retention moved before Data Subject Requests, so the action table applies a split the reader already has; the requests section's backup 'except' now points back to the retention section instead of restating it; the published p03 merged into the roadmap p06; the consent ladder moved from The Choices to the stages section; the Sephora case moved from In Practice into the consent section after the US opt-out model; the In Practice Shopify paragraph cut (it repeated p18); the DPF 'afternoon' paragraph merged into the transfer-inventory paragraph p42; in the consent section the design consequence (p27) now follows the CMP paragraph and the moving parts come last; the requirements-per-flow table moved from the consent section to the end of the requests section (p34b), where all four flows it rows have been described; the When It Goes Wrong table now has a lead paragraph before it; the conclusion's p59 closes Eva's thread; the post flow rationale says what would break.",
+   "rejected": [
+    "Shortening p16's restatement of 'controller' (the EDPB test needs the term in the sentence).",
+    "Moving p43 into In Practice (taken differently in run 2)."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Flow rubric run 2 (sound with notes), notes taken without review: the store paragraph (p43) moved into the consent section after the consent consequence, and the sharing section renamed 'Sharing and Transfers' because it no longer covers the store; p28 merged into p29 (one problem statement for requests); the consent ladder cut from the stages section and its content folded into the stage lead p48, which now states each stage's practices; the third request option named 'an orchestrator on an identity index' as in the table; a one-clause gloss of the ePrivacy Directive at its first use in p21; the scene's flow reason and the post flow reason (consent before retention; sharing after the request) rewritten.",
+   "rejected": [
+    "Moving the requirements table (p34b) to the end of Sharing or the start of The Choices: the rubric called its current place defensible.",
+    "Rewriting scene paragraphs p09 and p10 to move the seventeen days; the flow reason was corrected instead, keeping the author's text."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Flow rubric run 3 (sound with notes), notes taken without review: the roadmap now places consent at the store's till with consent and names 'sharing and transfers beyond the core systems'; 'the one-month limit' in the scene glossed with the GDPR at first use; 'sub-processors' glossed in p18; the conclusion's p59 names the record as what a regulator asks for. Order unchanged, so the rubric was not rerun.",
+   "rejected": [
+    "Moving the requirements table (p34b) to open The Choices: tried positions already changed twice; the current position stands (rule 10).",
+    "Cutting the vocabulary paragraph p12 to pointers or folding p02 into p01: they are the author's glossary and framing.",
+    "Putting the author's rule after the comparison table in The Choices (p46): the author's sentence leads the table as published."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Figures renumbered in reading order after Retention moved before Data Subject Requests: the person-versus-transaction figure is now Figure 4 and the deletion fan-out Figure 5; files and captions unchanged.",
+   "rejected": []
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Merged the two lead-ins of The Choices ('For the data subject request, four realistic designs:' and 'Choose the coordination method ...:'), which an earlier pass had left one after the other, into one sentence (p45).",
+   "rejected": [
+    "Keeping two lead-in units for one list."
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "'The shop platform' used where the text means Kestrel & Pine's hosted product (the introduction's p01, the scene table and p10, In Practice p55); generic statements about platforms keep 'the platform'.",
+   "rejected": []
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the open questions carried from spec.md are closed. The Belgian ten-year period stays as published, labeled unverified and 'treated as the rule pending confirmation', which is what the journal spec and the ledger say (rules 1 and 2); the German voucher period's start date is not relied on. Lotte Claes, the twelve-month claims window and the 35-day backups are recorded in the ledger's privacy-and-customer-data line, the last two as assumptions (rule 1). The Digital Omnibus proposal and the DPF appeal stay dated 'as of November 2026' as their cited sources support (rule 2).",
+   "rejected": [
+    "Leaving them open for the author."
+   ]
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Made the deletion request the spine (scene, the deletion figure, action table, worked example) rather than cookies, because the contract names it and because it is the privacy problem that exposes the integration map most directly; cookies and tracking are taught as the consent half. (from spec.md)"
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Chose a new minor character in Ghent for the request instead of Eva Janssen, so that the recurring order stays intact for the Journeys chapters and so that a Belgian customer brings the Belgian regulator, bpost and a bol order into one example. (from spec.md)"
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Took the explicit position that server-side tagging is governance, not a consent bypass, following the EDPB technical-scope guidelines and labeled as the author's reading. (from spec.md)"
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Kept the vendor's processor obligations to one paragraph and the US contrast (CCPA, GPC, state laws) to one paragraph, because the book is Europe-first and the US detail belongs to commerce-regulation. (from spec.md)"
+  }
+ ],
+ "sources": [
+  {
+   "kind": "internal",
+   "ref": "meet-kestrel-and-pine; identity-and-master-data",
+   "contributed": "The systems table, the cast, the Familiar Stranger; the identity index and consent on the master. (from spec.md)"
+  },
+  {
+   "kind": "internal",
+   "ref": "boundaries-and-systems-of-record, integration-styles, organizing-commerce-engineering",
+   "contributed": "The maps and inventories this chapter adds a legal-role column to. (from spec.md)"
+  },
+  {
+   "kind": "internal",
+   "ref": "extensibility-and-app-ecosystems, replatforming-and-migration, stores-and-omnichannel",
+   "contributed": "Neighbouring chapters that reference the nine-system deletion. (from spec.md)"
+  },
+  {
+   "kind": "internal",
+   "ref": "_research/brief-security-privacy-regulation.md Part 2 and _research/brief-integration-and-data.md Section 4.6",
+   "contributed": "The evidence base. (from spec.md)"
+  },
+  {
+   "kind": "internal",
+   "ref": "_research/scenario-ledger.md (lines privacy-and-customer-data, identity-and-master-data, replatforming-and-migration) and _research/consistency-issues.md (item 16)",
+   "contributed": "All Kestrel & Pine figures: the request from Ghent, the orchestrator, the identity rule, the OMS seam dates, the unowned-integration counts."
+  },
+  {
+   "kind": "internal",
+   "ref": "journal-spec.json (privacy-and-customer-data; part-8; commerce-regulation transition_in)",
+   "contributed": "Intent, thesis, role, acceptance criteria and the hand-off to the next chapter."
+  },
+  {
+   "kind": "external",
+   "ref": "GDPR (Regulation (EU) 2016/679), Articles 4, 6, 7, 12, 28, 33, 83; Directive 2009/136/EC (ePrivacy Article 5(3)); Directive 2002/58/EC Article 13(2).",
+   "contributed": "Definitions, bases, consent, the one-month request clock, the breach-notification clock, fines, the device rule and the soft opt-in. (from spec.md)"
+  },
+  {
+   "kind": "external",
+   "ref": "EDPB Guidelines 07/2020 (controller and processor, 2021), 05/2020 (consent, 2020), 2/2023 (technical scope, 2024).",
+   "contributed": "The controller test, cookie walls and scrolling, pixels and URL tracking. (from spec.md)"
+  },
+  {
+   "kind": "external",
+   "ref": "Autoriteit Persoonsgegevens, 'Cookies' (n.d.); Gegevensbeschermingsautoriteit, 'Cookies en andere traceringsmiddelen' (2023).",
+   "contributed": "The Dutch and Belgian regulators' readings. (from spec.md)"
+  },
+  {
+   "kind": "external",
+   "ref": "business.gov.nl, 'Keeping business records' (verified 2026-11); §147 Abgabenordnung.",
+   "contributed": "Dutch and German retention periods. (from spec.md)"
+  },
+  {
+   "kind": "external",
+   "ref": "Shopify developer documentation: privacy law compliance webhooks; protected customer data (accessed 2026-11).",
+   "contributed": "The platform-side fan-out. (from spec.md)"
+  },
+  {
+   "kind": "external",
+   "ref": "California Attorney General, Sephora settlement (2022) and CCPA page; IAPP state tracker (2025–2026).",
+   "contributed": "The US contrast. (from spec.md)"
+  },
+  {
+   "kind": "external",
+   "ref": "Decision (EU) 2023/1795 (DPF); Decision (EU) 2021/914 (SCCs); Case C-703/25 P; Lewis Silkin (2025); Osborne Clarke (2025).",
+   "contributed": "Transfers, the pending appeal and the Omnibus reading. (from spec.md)"
+  }
+ ],
+ "changelog": [
+  {
+   "date": "2026-11-13",
+   "change": "Converted spec.md to spec.json (reconstructed from the published chapter); added the previous-chapter pick-up in p01, the thesis paragraph p05, the roadmap p06 (absorbing p03) and the conclusion answer p59; breach clock stated as Article 33(1) states it. Flow rubric run 1 (sound with notes): Retention before Data Subject Requests; requirements table moved to the end of the requests section; consent section reordered with Sephora moved in; In Practice reduced to Kestrel & Pine's design; consent ladder moved to the stages; Choices lead-ins merged; When It Goes Wrong lead paragraph. Run 2 (sound with notes): store paragraph into the consent section, section renamed 'Sharing and Transfers'; p28 merged into p29; consent ladder folded into the stage lead; ePrivacy glossed; flow reasons rewritten. Run 3 (sound with notes): roadmap wording, glosses for the one-month limit and sub-processors, the regulator's record in p59. Round 1 (ESCALATE, spec faults fixed under the brief): introduction reordered and p02 merged into p01; fine ceiling after the data table; new section 'Requirements per Flow'; stage lead shortened; glosses, transitions and wording fixed in the draft. Round 2 (ESCALATE): resolved by the standing instruction: Sharing and Transfers moved after the roles section; consent section reordered to end on the design consequence, Omnibus and US split; fine ceiling stated as Article 83(5) states it; Lotte in p16; glosses and wording fixed. Round 3 (confirming, ESCALATE): closing fixes (Eva link, nine-system count and OMS note, forward pointer to the regulators, consent sentence, anonymize versus pseudonymize, Long Fuse, Figure 4 after p37); report stale."
+  },
+  {
+   "date": "2026-11-07",
+   "change": "Visual layer: redrew 3 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator)."
+  },
+  {
+   "date": "2026-11-07",
+   "change": "Final consistency pass: dated the unowned-integration count (13 of 34 as of January 2027; 5 still unowned in April 2027, item 16); scale-stage reference no longer points to the ledger."
+  },
+  {
+   "date": "2026-11-07",
+   "change": "Editorial review pass: acronyms expanded (PSP, WMS, ERP, POS, iPaaS, OMS, CDP, EDPB, IAPP), app count and deadline arithmetic corrected, PIM removed from processor row, Sephora flagged as older evidence."
+  },
+  {
+   "date": "2026-11-07",
+   "change": "Initial spec and article."
+  }
+ ],
+ "length": {
+  "max_words": 6700
+ }
+}

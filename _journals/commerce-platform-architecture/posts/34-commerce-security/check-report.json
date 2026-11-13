@@ -1,0 +1,779 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/34-commerce-security/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/34-commerce-security/index.md",
+  "spec_sha": "0ef5806c272acf74",
+  "draft_sha": "c5c6c1b56452eb18",
+  "run_at": "2026-11-13T00:30:48+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Security must tell legitimate purchases from misuse of the same shop functions",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Forms the damage takes, including browser skimming as in British Airways",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Merchant keeps security duties on a rented platform; chapter scope versus neighbor chapters",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Eva's purchase and the 48,000-attempt night place the chapter in the order journey",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "Roadmap of the chapter's sections",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Card-Testing Night ¶1",
+      "summary": "Dates and fictional status of the Card-Testing Night",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Card-Testing Night ¶2",
+      "summary": "A script made 48,000 checkout attempts to test stolen cards",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Card-Testing Night ¶3",
+      "summary": "OWASP classifies card testing as automated abuse of a working form",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Card-Testing Night ¶4",
+      "summary": "Three consequences: fees, a paused PSP account, and live-card orders with lasting declines",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Card-Testing Night ¶5",
+      "summary": "Why SCA did not fire and the ad hoc fix / Noor reframes the question to doors and keys",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "What Attackers Want From a Shop ¶1",
+      "summary": "Much shop traffic is automated; table ranks attacker goals",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "What Attackers Want From a Shop ¶2",
+      "summary": "Threats differ by where their control lives; skimming and admin theft bypass everything, policy abuse escapes edge controls",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "What Attackers Want From a Shop ¶3",
+      "summary": "Policy abuse needs controls inside the money flows",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Shared Responsibility: What the Platform Does and What You Must Do ¶1",
+      "summary": "A hosted platform splits security work between vendor and merchant",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Shared Responsibility: What the Platform Does and What You Must Do ¶2",
+      "summary": "Adobe's published shared-responsibility split",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Shared Responsibility: What the Platform Does and What You Must Do ¶3",
+      "summary": "Shopify's PCI certification extends to stores but leaves merchant steps",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Shared Responsibility: What the Platform Does and What You Must Do ¶4",
+      "summary": "Stripe calls PCI compliance shared",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Shared Responsibility: What the Platform Does and What You Must Do ¶5",
+      "summary": "Synthesis: vendor removes patching, merchant keeps identities, scripts and endpoints",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Card Data: Where PCI DSS Draws Its Line ¶1",
+      "summary": "What PCI DSS is and the goal of minimizing its scope",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Card Data: Where PCI DSS Draws Its Line ¶2",
+      "summary": "Timeline of PCI DSS versions and the March 2025 deadline",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Card Data: Where PCI DSS Draws Its Line ¶3",
+      "summary": "The SAQ that applies follows how the card number reaches the PSP",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Card Data: Where PCI DSS Draws Its Line ¶4",
+      "summary": "Choosing hosted checkout is the biggest security decision; custom checkout expands scope",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Card Data: Where PCI DSS Draws Its Line ¶5",
+      "summary": "Which card data may be stored and the role of the PSP token",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Card Data: Where PCI DSS Draws Its Line ¶6",
+      "summary": "Requirements 12.8 (service providers) and 8.4.2 (MFA) apply to every hosted merchant",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Skimmers: The Attack in the Shopper's Browser ¶1",
+      "summary": "Web skimmers steal data from the page around hosted fields",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Skimmers: The Attack in the Shopper's Browser ¶2",
+      "summary": "The British Airways 2018 skimming breach and penalty",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Skimmers: The Attack in the Shopper's Browser ¶3",
+      "summary": "BA lessons: skimmer runs in the browser, entry was an identity without MFA",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Skimmers: The Attack in the Shopper's Browser ¶4",
+      "summary": "Supply-chain script compromise (polyfill.io) and unpatched-platform breaches (CosmicSting)",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Skimmers: The Attack in the Shopper's Browser ¶5",
+      "summary": "PCI requirements 6.4.3 and 11.6.1 on payment-page scripts",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Skimmers: The Attack in the Shopper's Browser ¶6",
+      "summary": "SAQ A replaces the two requirements with a not-susceptible eligibility statement",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Skimmers: The Attack in the Shopper's Browser ¶7",
+      "summary": "Hosted merchants must still know why their page cannot be skimmed",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Skimmers: The Attack in the Shopper's Browser ¶8",
+      "summary": "Practical script controls: CSP, inventory, SRI, tamper detection",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Card Testing: The Attack and the Controls ¶1",
+      "summary": "Card testing uses the merchant's payment interface to validate stolen cards",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Card Testing: The Attack and the Controls ¶2",
+      "summary": "Stripe's description of card-testing tactics, symptoms and reputational cost",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Card Testing: The Attack and the Controls ¶3",
+      "summary": "IP filters fail and a leaked secret key is the worst case",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Card Testing: The Attack and the Controls ¶4",
+      "summary": "Six-rung ladder of card-testing controls",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Card Testing: The Attack and the Controls ¶5",
+      "summary": "Challenges should be risk-triggered because false positives are costly",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Account Takeover, Bots and Scraping ¶1",
+      "summary": "Credential stuffing and how account takeover plays out in commerce",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Account Takeover, Bots and Scraping ¶2",
+      "summary": "Controls for customer login when MFA is not enforced",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Account Takeover, Bots and Scraping ¶3",
+      "summary": "Inventory hoarding controlled by reservation rules / selective tolerance of scraping",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Admin Accounts, Keys and the Apps ¶1",
+      "summary": "The admin login is the most valuable target, so identity is central",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Admin Accounts, Keys and the Apps ¶2",
+      "summary": "Platforms offer staff MFA but enforcing it is the merchant's job",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Admin Accounts, Keys and the Apps ¶3",
+      "summary": "API key hygiene and webhook signature verification",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Admin Accounts, Keys and the Apps ¶4",
+      "summary": "Kestrel & Pine's integration and app inventory with unowned credentials",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Admin Accounts, Keys and the Apps ¶5",
+      "summary": "Rule: one identity, narrow permissions and a named owner per integration",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Requirements per Control Point ¶1",
+      "summary": "Latency, false-positive, consistency and failure-mode budgets for each request-path control",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "The Choices: Four Security Postures ¶1",
+      "summary": "Four security postures, with the top one oversized for a small merchant",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "The Choices: Four Security Postures ¶2",
+      "summary": "Move up a posture when the landscape gains what it protects",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "Table of typical posture per scale stage",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "summary": "Scale changes the count of identities and keys, not the kind of control",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "In Practice: Kestrel & Pine's 2027 Security Baseline ¶1",
+      "summary": "Kestrel & Pine's one-page 2027 security baseline",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "In Practice: Kestrel & Pine's 2027 Security Baseline ¶2",
+      "summary": "How the baseline would have stopped the Card-Testing Night",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "Detecting and responding to a card-testing wave",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶2",
+      "summary": "Detecting and responding to a checkout skimmer",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶3",
+      "summary": "Responding to a compromised admin account or key",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "Callback: doors are open by design; the decline rate and inventories let a merchant act",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "Established conclusions on card data, scripts, layered controls and shared responsibility",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "Context-dependent choices: posture level, guest challenges, patch cadence",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "Author's synthesis: security as an inventory problem, decline rate on the dashboard",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Eight review questions for a merchant's security posture",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Hand-off to the privacy and customer data chapter",
+      "matched_spec_paragraph": "p61"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "reverse_outline_matches_spec",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 61 outline summaries match the controlling idea of the aligned spec paragraph, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The Card-Testing Night ¶5",
+      "quote": "In March 2027 Noor Visser, Head of Engineering since January, reads the incident report for the Waypoint program and asks a different question",
+      "finding": "The outliner needed two phrases (why SCA did not fire and the ad hoc fix / Noor's reframing). Unlike the other two-part unit (Account Takeover ¶3, which opens with an umbrella sentence), this paragraph has no sentence tying the failed defence to the question it left, so it reads as two ideas.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Account Takeover, Bots and Scraping ¶3 was marked, but its opening sentence ('The cart and the catalog are the other doors bots use') unifies hoarding and scraping as the spec declares.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit supports one of S1-S5 or the introduction/conclusion functions.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "Card Data: Where PCI DSS Draws Its Line ¶6",
+      "quote": "(\"Adyen is solely responsible for the security of cardholder data only as soon as Adyen receives the data\", Adyen docs, n.d.)",
+      "finding": "The Adyen quotation sits in parentheses after the attestation clause with no sentence saying what it shows (that the merchant stays responsible until the PSP receives the data); flow reader A re-read to see what it supported.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Other evidence items (Imperva statistic, vendor quotations, BA, Polyfill, CosmicSting, PCI dates, tables and figures) are introduced and their point stated.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Card Data: Where PCI DSS Draws Its Line ¶5",
+      "quote": "The card brand, last four digits and expiry returned by the PSP are out of scope and may be stored",
+      "finding": "Declared elaboration carrying over 'the card number going straight to the PSP'. The paragraph follows one that ends on custom checkouts moving down the table, and nothing in its opening picks up the hosted-fields path or the token flow; flow reader A found it out of place.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other transition_in boundaries express the declared relationship and pick up the carried-over information.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "What Attackers Want From a Shop ¶3",
+      "quote": "The Double Refund of January 2027 ([[returns-and-exchanges]]) is the same lesson from the inside: one writer per money movement.",
+      "finding": "Both readers could not connect 'the same lesson' and 'one writer per money movement' to the preceding controls (refund to original method, codes bound to a customer).",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 3 item 'one short phrase is hard to unpack' (A: section 3, Double Refund item)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "What Attackers Want From a Shop ¶2",
+      "quote": "Whatever the true share of automated traffic, **on most shops a large part of the requests are not people**, and a control at the edge cannot tell which requests break a business rule.",
+      "finding": "Both readers re-read this sentence: it jumps back to the Imperva share in the middle of the policy-abuse argument and joins two ideas.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 3 item 'one sentence after the table is out of place'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "What Attackers Want From a Shop ¶1",
+      "quote": "The table lists the threats in roughly the attacker's order of preference",
+      "finding": "Both readers were unsure what the ranking means: admin compromise sits near the bottom yet the next paragraph and the Admin section call it the threat that bypasses every other control and 'the bigger one'.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 3 item 'the table's order conflicts with a later claim'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "Skimmers: The Attack in the Shopper's Browser ¶4",
+      "quote": "For self-hosted platforms the equivalent is the patch: Adobe fixed CosmicSting (CVE-2024-34102) on 11 June 2024",
+      "finding": "Both readers could not tell what 'the equivalent' refers to, and noted that the Polyfill example (redirects to a betting site) is not skimming, which loosens the paragraph's link to the section.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 6 item 'the self-hosted examples break from the hosted focus'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "Eva buys a jacket at Kestrel & Pine, the fictional outdoor brand, in April 2027 using iDEAL, a Dutch bank-transfer method. The same checkout received 48,000 abusive attempts one night in August 2026.",
+      "finding": "Both readers stopped at the dates running backwards (April 2027 then August 2026) without a signal of the time jump.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 3 item 'The intro states the same point three times' (time-jump part); A rated it minor",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Requirements per Control Point ¶1",
+      "quote": "Each row says how fast the control must answer, how many genuine users it may wrongly stop, how it stays consistent between requests (the consistency column: no state, counters, or the event ids it has already handled) and what happens when the control itself is down",
+      "finding": "Both readers had to re-read the section's opening: one long sentence explains all four columns and fail-open/fail-closed.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 3 item 'The Requirements per Control Point section is hard to read'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The Card-Testing Night ¶5",
+      "quote": "does not bind the issuer, so the usual challenge never fired",
+      "finding": "Both readers noted that 3-D Secure, the challenge meant here, is first explained only inside a cell of the Requirements per Control Point table, long after the scene where it would have helped.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 3 item on Requirements per Control Point (3-D Secure defined inside a cell)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/11/paragraphs/0",
+      "draft_locus": "In Practice: Kestrel & Pine's 2027 Security Baseline ¶1",
+      "quote": "41, of which 6 unused",
+      "finding": "Both readers stopped at the Apps row: 41 minus the 6 uninstalled is 35, not the 34 apps given for July 2027, and 34 is also the integration count, so they suspected a mix-up.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 3 item 'One baseline number does not add up'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "Card Data: Where PCI DSS Draws Its Line ¶6",
+      "quote": "Two requirements apply to every hosted merchant, whatever its checkout.",
+      "finding": "Flow reader A: two different pairs of 'two requirements' (12.8/8.4.2 here, 6.4.3/11.6.1 in the next section) close together made it check which was which.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "Card Data: Where PCI DSS Draws Its Line ¶6",
+      "quote": "for a hosted merchant, the PSP console and the platform admin.",
+      "finding": "Flow reader B: after being told the card number never touches a hosted merchant's systems, counting the platform admin as part of the cardholder-data environment confused it.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "Account Takeover, Bots and Scraping ¶3",
+      "quote": "**Scraping** is tolerated selectively",
+      "finding": "Flow reader A: scraping is not in the threat table, so it felt added on.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/12/paragraphs/1",
+      "draft_locus": "When It Goes Wrong ¶2",
+      "quote": "[[privacy-and-customer-data]] names that deadline, 72 hours, where it sets out what a vendor owes the merchant.",
+      "finding": "Flow reader A re-read the sentence to separate the deadline from the pointer.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "This chapter covers payment-page exposure, card testing and account takeover.",
+      "finding": "Flow reader A: the scope statement undersells the admin/keys, posture and baseline material that is half the chapter.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/4",
+      "draft_locus": "Introduction ¶5",
+      "quote": "places the checkout on the card-data standard's table",
+      "finding": "Flow reader B: the phrase means nothing until the SAQ table appears.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/4",
+      "draft_locus": "Shared Responsibility: What the Platform Does and What You Must Do ¶5",
+      "quote": "It never removes the identity, script and endpoint burden**, which is the rest of this chapter.",
+      "finding": "Flow reader B: the next section is card-data scope, none of the three burdens named.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Card Data: Where PCI DSS Draws Its Line ¶2",
+      "quote": "PCI DSS v4.0 was published in March 2022; v3.2.1 was retired on 31 March 2024",
+      "finding": "Flow reader B: the date list is heavy; only 31 March 2025 matters later, but it read every date expecting it to matter.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/5",
+      "draft_locus": "Skimmers: The Attack in the Shopper's Browser ¶6",
+      "quote": "The Council then **removed 6.4.3 and 11.6.1 from SAQ A**",
+      "finding": "Flow reader B: 'then' gives no time relative to the 31 March 2025 deadline, and 'the Council' has not been introduced in the prose.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/7",
+      "draft_locus": "Skimmers: The Attack in the Shopper's Browser ¶8",
+      "quote": "On a hosted platform the checkout page is the vendor's",
+      "finding": "Flow reader B: unclear whether the shop-platform vendor or the PSP is meant.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/4",
+      "draft_locus": "Card Testing: The Attack and the Controls ¶5",
+      "quote": "**A challenge that fires on 2% of genuine shoppers costs more than most card-testing nights**",
+      "finding": "Flow reader B: the cost claim has no figures behind it and it had to stop to check it against the EUR 2,900.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "quote": "Which posture fits depends mostly on the scale stage",
+      "finding": "Flow reader B could not tell which stage Kestrel & Pine is in: its warning signs appear under stages 2 and 3, and its baseline (second posture plus parts of the third) does not match the stage table's pairing.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/1",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "quote": "that is the moment the Lynchpin applies.",
+      "finding": "Flow reader B: the named pattern did not match its understanding of the Lynchpin (one shared password, one person who knows the keys).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "This chapter examines how to distinguish legitimate purchases from automated misuse.",
+      "finding": "Flow reader B: the introduction states the same point three times (¶1, ¶3, ¶4).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience/does_not_know/1",
+      "draft_locus": "Introduction (KEY POINTS callout)",
+      "quote": "the lightest PCI DSS self-assessment applies. Since 31 March 2025 the standard's script requirements (6.4.3 and 11.6.1) make the scripts on the payment page yours to know",
+      "finding": "PCI DSS, the SAQ ('lightest questionnaire') and requirements 6.4.3/11.6.1 are on does_not_know but are used in the KEY POINTS callout (and PCI certification in the Adobe paragraph) before the Card Data section explains them.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, section 3 item 1 (PCI DSS used before it is explained); flow reader B, section 3 item 1",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience/does_not_know/1",
+      "draft_locus": "Card Data: Where PCI DSS Draws Its Line ¶6",
+      "quote": "holding each one's attestation of compliance",
+      "finding": "'Attestation of compliance' is on does_not_know and is never explained, though it returns in the baseline and Question 1.",
+      "fault": "draft",
+      "corroborated_by": "on does_not_know and never explained; also flow reader A (12.8 item) and flow reader B (section 5 item)",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/3",
+      "draft_locus": "Card Testing: The Attack and the Controls ¶4",
+      "quote": "disables guest card payments while iDEAL, Bancontact and PayPal keep running",
+      "finding": "Bancontact is not in already_knows and is not glossed, while iDEAL is glossed in the introduction.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, section 3 item 'Bancontact ... is not explained'; flow reader B, section 7 item",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "What Attackers Want From a Shop ¶2",
+      "quote": "a control at the edge cannot tell which requests break a business rule",
+      "finding": "Flow reader B: 'edge' is used from the threat section on but is given concrete meaning (a CDN in front of the storefront) only in the Postures section.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "What Attackers Want From a Shop ¶1",
+      "quote": "Magecart",
+      "finding": "Flow reader A: 'Magecart' appears in the threat table without explanation.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/1",
+      "draft_locus": "Admin Accounts, Keys and the Apps ¶2",
+      "quote": "Plus organizations can require it for all users",
+      "finding": "Flow reader A: assumes the reader knows Shopify Plus is a plan tier.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/2",
+      "draft_locus": "Card Testing: The Attack and the Controls ¶3",
+      "quote": "The **leaked secret key** is the worst version",
+      "finding": "Flow reader B: 'secret key' is used before the chapter says it is the merchant's PSP API key; keys are explained only in the Admin section.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on a puzzling scenario (the checkout accepting strangers), states the stakes with BA, the merchant's share, Eva's order and a roadmap.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "Opens by answering Noor's question, sorts what is established, contextual and the author's judgement, ends with questions and a hand-off.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "¶1 joins the doors into one gap (open by design, told apart only by the decline rate and owned inventories) and states what a merchant can then do.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "Returns to Noor's question and to Eva's iDEAL payment beside one of the 48,000 attempts.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader names card testing (OAT-001), explains why the certification and an IP block do not help, and gives the control ladder, decline-rate alert, kill switch, no retries, runbook and the response steps (cancel orders, rotate keys).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader places hosted fields in SAQ A subject to eligibility and the acquirer, explains 6.4.3/11.6.1 and the SAQ A statement, lists inventory, CSP, SRI and tamper detection, 12.8 and 8.4.2. It omits that a custom form moves the merchant to SAQ A-EP or D, which the chapter contains (minor).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader gives enforced MFA, no shared accounts, named agency accounts, leavers removed, one identity and restricted key per integration with an owner in a vault, rotation, app scope review, and why (admin bypasses everything, ownerless keys force rotating everything). Webhook signatures are not mentioned (minor).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicts the sections in order, the no-break-in framing, the merchant's share and scope exclusions, Eva and the 48,000 attempts, and evidence from the Kestrel & Pine case, BA, PCI requirement numbers and vendor statements. It places 6.4.3/11.6.1 in the PCI section rather than the skimmer section (minor).",
+      "severity": "major"
+    }
+  ]
+}

@@ -1,0 +1,577 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "part-10",
+  "journal": "commerce-platform-architecture",
+  "part": "part-10",
+  "title": "Part X — EVOLUTION: Decisions That Change With Scale",
+  "status": "draft",
+  "revised": "2026-11-13",
+  "basis": "Reconstructed on 2026-11-13 from the published page (posts/part-10-intro/index.md, 462 words, ten units) and its former spec.md; the page was revised to match the same day (see decision_log). One spec paragraph per unit of the page; the KEY POINTS callout and Figure 3 (Kestrel & Pine's 2027 timeline) are evidence of the claim paragraph (p04), Figure 1 (growth in jumps) of p01 and Figure 2 (the five decisions as one loop) of p03.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Part X takes five decisions in order: build, buy or assemble, with a full three-year cost; migration in limited, reversible steps; the scale stages and what invalidates an earlier design; ownership of systems, integrations and apps; and AI that recommends against AI authorized to act.",
+        "Each chapter uses Kestrel & Pine's 2027 program, Waypoint, as its case: the platform review ending in stay and surround with a 2029 review; product publication moved gradually and order channels on separate dates with a freeze around Black Friday; the stage map; the January inventory with 13 of 34 integrations unowned; and better data and interfaces before any shopping agent.",
+        "The five are decisions about ownership and timing rather than tools: build what customers choose you for, buy what every merchant needs and own the joins; cross a stage one seam at a time with the old owner kept through one peak; and give every system, integration, app and agent a named owner and every fact one writer."
+      ],
+      "can_do": [
+        "Pick the Part X chapter that matches the decision in front of them: a replatforming pitch, a migration plan, a board question about scale, an ownership gap or an AI proposal."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture (engineers, product managers and leaders) who have read Parts I to IX and are about to start the decisions, or who arrive with a replatforming pitch, a migration plan, a board question about scale, an ownership gap or an AI proposal and want the chapter that answers it.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side.",
+        "Roughly what an API, a database and a queue are.",
+        "Part I: the thirteen steps of an order, promise and handoff, system of record, single writer, events, idempotency and reconciliation; the four scale stages (Starting, Growing, Omnichannel, Group); the capability map; the glosses for PSP, WMS, ERP, iPaaS, EDI, SKU, channel, marketplace connector, 3PL, OMS, availability service, PIM, D2C and B2B.",
+        "Parts II to IX: each capability, join and rule taught separately, and four journeys (a consumer order, its exchange, a wholesale reorder and Black Friday 2026) walked through Kestrel & Pine's systems.",
+        "Kestrel & Pine in outline: a fictional outdoor brand, its systems and incidents, and the Waypoint program with its decisions W1 to W8."
+      ],
+      "does_not_know": [
+        "What a seam is in a migration (a channel or a capability moved on its own date; glossed in p04, taught in replatforming-and-migration).",
+        "The ownership map as a table with one row per system, integration and app (glossed in p08, taught in organizing-commerce-engineering)."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader of this page alone can name the five chapters' decisions in reading order.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only this page: what will each of the next five chapters decide, in order, and with which Kestrel & Pine case?",
+        "expected": "Build, buy or assemble: bundled products, separate services and custom software compared by full cost over three years (people, integration, migration and exit), ending in keeping the platform and adding missing capabilities with a 2029 review. Replatforming and migration: limited transitions with comparison and recovery at every step; product publication moves gradually in 2027 and order channels move on separate dates with a freeze around Black Friday. Scale stages: the business changes (channels, stock locations, brands as well as revenue) that invalidate an earlier design; the stage map separates current coordination problems from possible group-wide needs. Organizing commerce engineering: business and technical responsibility for systems, integrations and apps, from a January inventory with 13 of 34 integrations unowned, with supplier contracts and practices a small team can keep. AI and agentic commerce: AI that recommends against AI authorized to act, both needing reliable product and stock answers and actions needing permissions and accountability; a dated review of protocols ends in improving data and interfaces before building a shopping agent."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of this page alone can say why the part treats these as decisions about ownership and timing rather than about tools.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: why does a merchant have to take these decisions again as it grows, and why are they about ownership and timing rather than about choosing tools?",
+        "expected": "A merchant grows in jumps (a store, wholesale, a marketplace, a warehouse, a brand); its systems still run but must now share stock and coordinate orders they were not designed for, so leaving them unchanged oversells and replacing everything exceeds the team. Each system was introduced at a different time, which explains today's responsibilities and gaps. The problems live in the joins, so the answers are who owns what (build the differentiating, buy the common, own the joins, one writer per fact, a named owner for every system, integration, app and agent) and when to change it (one seam at a time, at the change of shape, with the old owner kept through one peak), not a new tool."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "When a growing merchant's business changes shape, which architecture decisions must it take again, and on what basis should it take them?",
+    "claim": "When a merchant adds a channel, a stock location or a brand, five decisions fall due again: what to build, buy or assemble; how to move a fact to a new owner; which systems from earlier stages to retire; who owns each system, integration and app; and what AI agents may do. Each is settled by naming who owns each shared fact (stock, order, product) and each join between systems, when the shape changes rather than after an incident.",
+    "disputed_by": "The view that growth is a tool problem: a merchant outgrows its platform, and the remedy is a larger or more modern stack (a composable assembly, a suite, an AI agent) chosen on features and subscription price, with team structure and ownership following from the tool chosen.",
+    "so_what": "A merchant that accepts the claim answers a replatforming pitch, a board question about scale or an AI proposal by asking which owner it changes and whether the shape has changed, and spends on owners and joins before new systems. Kestrel & Pine declined a consultancy's composable rebuild (about €3.2M, about 18 months) and the agency's headless storefront rebuild (about €240,000, nine months), and chose stay and surround (about €1.33M over 2027–2029, reviewed in 2029); moved product data and orders to new hubs seam by seam around a Black Friday freeze; attributed eight of its ten incidents to Growing-stage designs; reduced its unowned integrations from 13 of 34 in January 2027 to 5 in April; and wrote W8 as agent readiness, not agents.",
+    "how_why": "A new channel or stock location multiplies the systems that must agree about the same stock, order and product facts. The systems bought for the earlier stage keep running with that stage's assumptions (an hourly sync, a one-channel agency script, the ERP as the stock hub), so the failures appear in the joins, not in the core, and replacing the core leaves them in place. Moving a fact's owner creates a period in which two systems hold it, which only a seam-by-seam move with a reconciliation keeps safe. A join is kept only if someone inside the merchant owns it, because agencies and vendors are paid to build and to keep the subscription. An agent that can order, refund or change stock is one more writer of the same facts.",
+    "supporting_claims": [
+      {
+        "id": "P10-1",
+        "claim": "A merchant should build only what customers choose it for and nobody sells, buy what every merchant needs and own the joins, and compare options over three years on people, agency, migration, revenue at risk and exit, against which the subscription is usually the smallest line; when the failures live in the joins, keeping a hosted platform and buying hubs beside it is a deliberate architecture."
+      },
+      {
+        "id": "P10-2",
+        "claim": "A platform or a fact's owner is moved safely one seam (a channel, a capability or a slice of traffic) at a time, with a parallel run reconciled by cause, each kind of data migrated on its own plan, written go/no-go criteria, a rehearsed rollback and the old owner kept operable through one peak; one cutover date with no way back is the documented failure."
+      },
+      {
+        "id": "P10-3",
+        "claim": "A scale stage is a shape (how many channels sell, how many locations hold stock and, at the Group stage, how many brands or business units share them), not a revenue band; each stage leaves systems built for the one before, and those leftovers cause most of the next stage's incidents, so the decision at a transition is which leftovers to retire, and the signals of a transition arrive before the incidents."
+      },
+      {
+        "id": "P10-4",
+        "claim": "Ownership follows money unless it is designed: every system, integration and app needs a technical owner inside the merchant on one ownership map with one writer per fact; at ten to twenty people journey teams and an integration pair own the joins, agencies and vendors work under contracts that leave the repository, credentials and map with the merchant, and the team shape changes one stage before the systems do."
+      },
+      {
+        "id": "P10-5",
+        "claim": "An AI agent is a new writer and is admitted like an integration: assistants read and propose, agents act; agent readiness is correct product, availability, delivery-promise and order-status answers from one owner by API plus an identity and policy for each agent, which a European merchant should have in 2027 before any shopper-facing agent."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Performs the part's opening: states the part thesis in its three key points, sets the merchant's change of shape as the problem, ties each system's purchase date to its gaps, names the five 2027 decisions with their Kestrel & Pine cases, and gives the reading order.",
+    "supports": []
+  },
+  "flow": {
+    "pattern": "large_to_small",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "chapters: the five chapter paragraphs, in the part's reading order"
+      }
+    ],
+    "rationale": "The page opens on the general problem (a merchant changes shape and its running systems must now share stock and orders), narrows to one merchant whose systems each date from an earlier shape, then to the five questions that merchant faces in 2027, then states what the five have in common (they are settled by owners and timing, not tools), and only then gives one paragraph per chapter and where to begin. The claim follows the five questions because it is a statement about them; put it before them and 'none of the five' has no referent. The history paragraph comes before the questions because it is why the questions arise; put the questions first and they read as a list without a cause. The chapter list comes after the claim so that each chapter is read as one application of it. The chapter list opens on why it starts with whether to rebuild (two pitches put that decision first in February 2027), because Figure 2 draws the five as a loop that starts at the stage and two readers in two rounds otherwise held two orders at once."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "A merchant adds a store, a wholesale channel, a marketplace, a warehouse or a second brand. Its systems still run, but now they must share stock and coordinate orders in ways they were never designed for: leaving them unchanged oversells, and replacing everything exceeds the team."
+    },
+    "bridge": {
+      "from_reader_world": "Part IX, which walked four journeys through Kestrel & Pine's systems at one moment; the previous page hands over the questions Kestrel & Pine's 2027 answered in one way, as questions every merchant faces, and when each answer changes.",
+      "to_topic": "The same systems over time: each was introduced between 2016 and 2025 for the business of its year, which explains its jobs and gaps, and that history raises the five questions."
+    },
+    "thesis_statement": {
+      "text": "The five decisions a merchant takes again when its business changes shape are about ownership and timing, not tools: who owns each shared fact (stock, an order, a product) and each join between systems, and when that owner changes, which is at the change of shape rather than after the incident that exposes the old design.",
+      "placement": "KEY POINTS bullets 1 to 3 and paragraph p04 (the claim)"
+    },
+    "roadmap": {
+      "placement": "paragraph p03 and the chapters section",
+      "promises": [
+        {
+          "promise": "Five decisions Kestrel & Pine takes in 2027, in reading order: the platform review by full three-year cost, ending in keeping the shop platform with a 2029 review; product and order systems introduced one seam at a time with a freeze around Black Friday; the stage map; the ownership map from 13 of 34 integrations unowned; and AI that recommends against AI that acts, ending in data and interfaces before any shopping agent.",
+          "kept_in": [
+            "chapters"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "When a merchant adds a store, wholesale channel, marketplace, warehouse or second brand, its running systems must share stock and coordinate orders they were not designed to; leaving them unchanged oversells and replacing everything exceeds the team, and since each addition changes the shape of the business, this part is about choosing and sequencing what follows.",
+        "function": "example",
+        "organization": "description",
+        "evidence": [
+          {
+            "kind": "figure",
+            "what": "Figure 1: a four-step staircase of business growth with euro coins falling at each step edge; the caption says a merchant grows in jumps and the money is lost at the jumps.",
+            "shows": "Growth arrives as changes of shape, and the cost appears at each change."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Part IX followed orders through Kestrel & Pine's systems at one moment; those systems arrived between 2016 and 2025, each bought for the business of its year, so each covers some jobs and leaves gaps.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Kestrel & Pine's systems introduced between 2016 (the shop platform, the PSP) and 2025 (the returns portal, the EDI provider) (fictional).",
+            "source": "_research/scenario-ledger.md (Systems landscape)",
+            "shows": "One merchant's systems each date from an earlier shape of the business."
+          }
+        ],
+        "transition_in": {
+          "relationship": "time",
+          "carries_over": "The merchant whose running systems must now share stock and orders; Part IX's journeys through Kestrel & Pine's systems at one moment.",
+          "introduces": "The same systems over time: each bought at a different date for an earlier shape of the business.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "That history raises five questions for Kestrel & Pine in 2027 (whether to rebuild, how to introduce new order and product systems, which growth stage to design for, who owns the integrations, and whether to add shopping agents), and each chapter's case is its improvement program, Waypoint.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "figure",
+            "what": "Figure 2: the five decisions of Part X as one loop: a change of shape is read as a stage, answered by a platform review, carried out as a migration, held in place by an ownership map and extended to the newest writer, until the shape changes again.",
+            "shows": "The five decisions recur with each change of shape."
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Systems bought for the business of each year, with the jobs and gaps that explains.",
+          "introduces": "The five questions that history raises for Kestrel & Pine in 2027, and Waypoint as the chapters' case.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "None of the five is chiefly about tools: each is settled by deciding who owns each shared fact (stock, an order, a product) and each join between systems, and when that owner changes, which is at the change of shape rather than after an incident, moving one seam (such as a channel) at a time.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "KEY POINTS callout: the problems live in the joins (build what customers choose you for, buy what every merchant needs, own the joins, price over three years); a stage is a shape crossed one seam at a time with the old owner kept through one peak; a named owner for every system, integration and app, one writer per fact, and AI agents as integrations with no write scope on stock, prices or orders.",
+            "shows": "The part's argument in three lines for a reader who skims."
+          },
+          {
+            "kind": "figure",
+            "what": "Figure 3: Kestrel & Pine's 2027 as this part sees it: the decisions made in the first quarter, carried out seam by seam from July, frozen around the peak, and dated for review rather than treated as final.",
+            "shows": "Timing is part of each decision: when it is made, carried out, paused and reviewed."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The five questions.",
+          "introduces": "What the five have in common: they are settled by owners and timing, not by tools.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "chapters",
+      "heading": "Chapters in this part",
+      "controlling_idea": "Each of the five chapters takes one of the five decisions on Kestrel & Pine's 2027 case, and each needs what the one before it settled.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "P10-1",
+          "P10-2",
+          "P10-3",
+          "P10-4",
+          "P10-5"
+        ],
+        "how": "Each paragraph introduces the chapter that argues one supporting claim and names its Kestrel & Pine case, so the list is the part's argument in outline."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Chapter 41 settles what the merchant owns (keep the shop platform, buy the hubs, own the joins), which leaves chapter 42 its problem: moving product data and orders to new hubs beside a running shop. Chapter 43 turns both into a rule about timing (the stages that make such decisions due). Chapter 44 asks who takes and keeps the decisions; its team shape changes by stage and its ownership map needs the hubs of 41 and 42. Chapter 45 admits the newest writer, an AI agent, by giving it a row on chapter 44's map. Put 42 first and the reader learns how to move a system before knowing why a merchant that stays migrates; put 45 before 44 and 'an agent is an integration' has no map to land on."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The five questions, the first of which is whether to rebuild.",
+        "introduces": "Why the list starts with rebuilding rather than with Figure 2's stage (each chapter needs the one before), then one paragraph per chapter: its decision in bold and its Kestrel & Pine case.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Each chapter needs the one before, so the list starts with rebuilding, not with Figure 2's stage: the build-buy-or-assemble chapter compares bundled products, separate services and custom software by their full cost over three years (people, integration, migration and exit), and Kestrel & Pine's review ends in keeping the shop platform, adding missing capabilities and a 2029 review.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P10-1"
+            ],
+            "how": "Introduces the chapter on what to own and what to rent, priced over three years."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The two replatforming pitches of February 2027 (a consultancy's composable rebuild and the agency's headless storefront rebuild); the February 2027 platform review; W4 stay and surround, revisited at a 2029 review (fictional).",
+              "source": "_research/scenario-ledger.md (W4; build-buy-or-assemble line); consistency-issues item 13a",
+              "shows": "A merchant whose failures lay in the joins kept its core and bought beside it."
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Added capabilities need data and orders moved in, so the migration chapter plans limited transitions with comparison and recovery at every step, each seam moving while old and new run side by side and the old owner kept operable through one peak (backing KEY POINTS bullet 2), with order channels on separate dates and a freeze around Black Friday.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P10-2"
+            ],
+            "how": "Introduces the chapter on moving a fact's owner one seam at a time."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "PIM consumers from August and September 2027; marketplace orders through the OMS from 15 September, D2C from 13 October, wholesale from 8 December, freeze 15 November to 5 December, old order paths retired January 2028 (fictional).",
+              "source": "_research/scenario-ledger.md (replatforming-and-migration line); consistency-issues item 4",
+              "shows": "Each seam on its own date and the peak protected; backs KEY POINTS bullet 2 (old and new side by side)."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Keeping the shop platform and adding capabilities beside it.",
+            "introduces": "How data and orders are moved into the added capabilities beside a running shop.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The scale-stages chapter turns to the stage that made both decisions due and identifies the business changes (channels, stock locations and brands, not only revenue) that invalidate an earlier design; Kestrel & Pine's stage map marks the systems left from earlier stages and separates today's problems from later group-wide ones.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P10-3"
+            ],
+            "how": "Introduces the chapter on stages as shapes and the decisions due at a transition."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The April 2027 stage map: stage 3 (Omnichannel) since 2023, Group-stage questions deferred to the 2029 review (fictional).",
+              "source": "_research/scenario-ledger.md (commerce-scaling-stages line)",
+              "shows": "A stage is read from the business's shape, and today's problems are kept apart from later ones."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Kestrel & Pine's 2027 platform and migration decisions.",
+            "introduces": "The stage that made both decisions due: what makes such decisions due for any merchant.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Next, who keeps these decisions: the organizing chapter assigns business and technical responsibility for systems, integrations and apps on an ownership map, one row each; the January 2027 inventory found thirteen of 34 integrations, the joins themselves, with no owner, and supplier contracts and small-team practices keep each row owned.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P10-4"
+            ],
+            "how": "Introduces the chapter on who owns each system, integration and app."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "13 of 34 integrations unowned in January 2027 (fictional).",
+              "source": "_research/scenario-ledger.md ([editor] unowned integrations; consistency item 16)",
+              "shows": "Ownership not designed goes missing in the joins themselves."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The decisions and the stages that make them due.",
+            "introduces": "Who takes and keeps them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The newest writer is AI: the AI chapter compares AI that recommends an action with AI authorized to perform it; both need reliable product and stock answers, actions also need permissions, the chapter ends in better data and interfaces before any shopping agent, and any agent gets a row on the ownership map, like an integration, and no write scope on stock, prices or orders.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P10-5"
+            ],
+            "how": "Introduces the chapter on admitting the newest writer like an integration."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "W8 agent readiness, not agents; the April 2027 agent policy: no agent or assistant holds a write scope on stock, prices or orders, and every agent credential is an integration row on the ownership map (fictional).",
+              "source": "_research/scenario-ledger.md (W8; ai-and-agentic-commerce line)",
+              "shows": "An agent is admitted by the same ownership rules as an integration; backs KEY POINTS bullet 3."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The ownership of systems, integrations and apps.",
+            "introduces": "The newest writer of the same facts: AI (which glosses Figure 2's 'newest writer').",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Where to Begin",
+    "synthesis": "The five chapters ask one question for the opening's merchant that has just added a store or a channel: after this change, who owns each shared fact and join? Each chapter asks it of one decision.",
+    "so_what": "The reader can put that question to any proposal at their own merchant.",
+    "callback": {
+      "to": "The opening's merchant whose systems still run but must now share stock and coordinate orders (p01).",
+      "how": "The conclusion names a merchant that has just added a store or a channel, as the opening did, and states the question the five chapters answer for it."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Begin with build-buy-or-assemble."
+    },
+    "hand_off": {
+      "to": "build-buy-or-assemble",
+      "relationship": "elaboration",
+      "carries_over": "The part introduction's first decision, the 2027 platform review compared by full cost over three years, and the instruction to begin with it.",
+      "introduces": "The four shapes for covering the capability map, the rule for what to build, the total-cost lines vendors leave out, lock-in and exit, and Kestrel & Pine's three costed options ending in W4."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The five chapters and their decisions.",
+      "introduces": "What they answer for the opening's merchant, and where to begin.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p10",
+        "controlling_idea": "A merchant that has just added a store or a channel can ask of any proposal (after this change, who owns each shared fact and join?), each chapter asks it of one decision, and the reader begins with the build-buy-or-assemble chapter.",
+        "function": "synthesis"
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Teaching any decision's mechanics; the chapters own them.",
+      "covered_in": [
+        "build-buy-or-assemble",
+        "replatforming-and-migration",
+        "commerce-scaling-stages",
+        "organizing-commerce-engineering",
+        "ai-and-agentic-commerce"
+      ]
+    },
+    {
+      "topic": "The Waypoint decisions themselves.",
+      "covered_in": [
+        "meet-kestrel-and-pine"
+      ]
+    },
+    {
+      "topic": "The failure patterns' definitions.",
+      "covered_in": [
+        "where-commerce-platforms-go-wrong"
+      ]
+    },
+    {
+      "topic": "The part's closing (the five decisions set against the opening's merchant, with what they have in common).",
+      "covered_in": [
+        "ai-and-agentic-commerce"
+      ]
+    },
+    {
+      "topic": "The dated public sources (platforms, protocols, AI products); the chapters cite them. The page makes no external factual claim of its own."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Needs the author (journal spec or figure): readers in all three rounds found the scale-stages chapter's third place unclear because Figure 2 draws the five decisions as a loop that starts at the stage, while the journal spec's chapter order (41 to 45) starts with build, buy or assemble. The page now says why the list starts with rebuilding; the round-3 readers had not seen that sentence. Settling it needs one fact: whether to redraw Figure 2 to start at the platform review, or to keep both as they are."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Confirming draft-check round 3: escalate (12 passed, 10 failed; 3 corroborated, one at fault in the spec: the chapter order against Figure 2's loop). Cheap, plainly right fixes applied without a further round, as the brief allows: p02's 'Over time ... which explains its jobs and gaps' becomes 'Those systems arrived between 2016 and 2025, each bought for the business of its year; so each covers some jobs and leaves gaps' (both readers); p03's third question drops 'and which older systems to retire' (both readers counted six questions; the stages paragraph p07 still says the stage map marks the systems left from earlier stages, so the claim's retirement decision keeps a home; this reverses the flow rubric's note, by rule 3); p05 opens on the order itself ('Each chapter needs the one before, so the list starts with rebuilding, not with Figure 2's stage'), which also removes the cold 'two pitches' (one reader); p07 says 'turns to' for 'steps back to' (both readers read 'steps back' as out of order); p08 says 'Supplier contracts' (terms reader). The spec-fault point and the KEY POINTS backing go to open_questions as needs-the-author (rule 12). 597 words, limit 598.",
+      "rejected": [
+        "A fourth round (the brief allows one confirming round)",
+        "Reordering the chapters (the journal spec's order)",
+        "Explaining 'write scope' or reusing Waypoint later (one reader each, minor; no room)"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12, after draft-check round 2 (revise: 13 passed, 17 failed; 11 blocking, 6 minor; all at fault in the draft), before the one confirming round. Rule 3: both readers in rounds 1 and 2 asked to put the stages chapter first, to match Figure 2's loop, or else to say in one sentence why the chapters start with rebuilding; the chapter order belongs to the journal spec and config.yaml, so the page now opens the chapter list with that sentence ('First comes whether to rebuild, which two pitches raised in February 2027'; ruling 13a: two pitches, second week of February 2027), and the stages paragraph's 'where Figure 2's loop begins' is dropped. Rule 3 and judge: p02 states the turn to time ('Over time, those systems arrived between 2016 and 2025'; both readers found the jacket sentence abrupt; the author's 'a jacket order crosses' is cut for this); p06 says 'Added capabilities' for 'New hubs' (both readers, terms reader); p08 and p09 get their sequence openers ('Next, who keeps these decisions'; 'The newest writer is AI', which also glosses Figure 2's 'newest writer', rule 6); p08 says what the thirteen of 34 shows ('the joins themselves'), dates the inventory January 2027 (ledger: consistency item 16) and ties contracts to keeping each row owned (outliner and both readers: tacked on). Length held at 598 by cutting the author's 'Product publication moves gradually in 2027' (rule 5: no room; the migration chapter tells it), 'and accountability', 'existing', 'original', and shortening my own additions.",
+      "rejected": [
+        "Reordering the chapters to start with commerce-scaling-stages (journal spec order; not this pass's to change)",
+        "Moving Figure 3 after the chapter list (one reader, minor; the author's figure placement beside the claim)",
+        "Glossing 'seam', 'old owner' and 'write scope' inside KEY POINTS (rule 10: the author's callout; 'seam' is glossed in p04, the first body use)",
+        "Restoring 'old paths retire after the peak' to back KEY POINTS bullet 2 (one reader, minor; no room within 598)"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "After draft-check round 1 (revise: 17 passed, 14 failed, 13 blocking, all at fault in the draft), under the author's standing approval to change paragraph ideas and transitions: p01 names the change of shape (terms reader and both flow readers); p02's 'which explains' sentence split and simplified (both flow readers); p03 opens 'That history raises five questions' (judge: cause_effect not expressed); p04 names 'the five questions' (both readers: 'None' across Figure 2) and glosses a seam before Figure 3 uses it (terms reader, flow reader A); the chapter paragraphs p06 and p07 get their transitions ('New hubs need data and orders moved to them'; the stages chapter 'steps back to the stage, where Figure 2's loop begins', which answers both readers' figure-versus-chapter-order snag without reordering the journal spec's chapters); p07 says the stage map marks the systems left from earlier stages (both readers: retirement had no home); p08 glosses the ownership map (does_not_know); p10 gives the so-what and a callback in the opening's own terms (judge; both readers found 'the opening's merchant' awkward). Length held at 598 by cutting the author's sentence 'A new decision must account for that history, the team available to operate it and the customers who still need orders fulfilled during change' (rule 5: it does not fit; p01 already says replacing everything exceeds the team), 'old paths retire after the peak' (my addition), 'A dated review of emerging protocols', 'The platform review includes' (folded into the bold clause) and the closing's 'three-year comparison of three options'.",
+      "rejected": [
+        "Reordering the chapters to start with commerce-scaling-stages (both readers suggested it; the journal spec owns the chapter order and its rationale)",
+        "Moving Figure 2 after p04 (naming 'the five questions' fixes the referent with less change)",
+        "Reusing Waypoint later on the page (one reader, minor; no room)"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Flow rubric (fresh reader, order of ideas only): sound with notes. The author asked for the rubric notes to be taken without review (2026-11-12). Taken: the five questions in p03 now include 'which older systems to retire', so the questions match the part claim's third decision and the scale-stages chapter that argues it (P10-3). Not taken: moving the scale-stages chapter first (the reader called it optional; the part's declared order puts 41 first, and the journal spec owns that order).",
+      "rejected": [
+        "Moving commerce-scaling-stages before build-buy-or-assemble (the journal spec's chapter order)"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Length: max_words set to 598 = the published 462 words (check_draft.py's count) + 25% (578), plus the one sentence (20 words) in p09 that backs KEY POINTS bullet 3 (agents as integrations with no write scope on stock, prices or orders), as the brief allows a part intro; target 578. The old spec's 500–900-word brief is not used. The room pays for the claim paragraph p04 (the published page stated the part thesis only in KEY POINTS), the Part IX bridge in p02, the seam gloss (now in p04) that backs KEY POINTS bullet 2, and the one-paragraph headed closing; no new fact.",
+      "rejected": [
+        "Keeping the old spec's 500–900-word range (the brief sets the limit from the published length)"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Changed from the published page in the same pass: 'Each requires an explicit choice about ownership, timing and capacity' becomes its own claim paragraph p04 (the part thesis in plain words), beside Figure 3 (the 2027 timeline, which is about timing); p02 opens on Part IX at one moment and says each system was bought for the business as it then was (the part opening's bridge and transition_in, 'time'); p05 says 'the shop platform' (book-wide vocabulary); p06 glosses a seam and says the old order paths were retired only after the peak (backs KEY POINTS bullet 2; ledger: retired January 2028); p09 adds the agent policy's row on the map and no write scope (backs bullet 3; ledger W8 agent policy); 'Begin with' becomes a one-paragraph headed closing (p10) with a callback to the opening's merchant.",
+      "rejected": [
+        "Naming the two February 2027 pitches on this page (ruling 13a; the chapter tells them, and the page did not)"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "The post entry in the journal spec has a question and no thesis. A part intro performs the part's opening, so this spec uses the part's thesis and its five supporting claims P10-1 to P10-5 unchanged; each chapter paragraph introduces the chapter that argues one. Intent outcome, AC-1, AC-2 and role are copied from the post entry; hook and bridge from the part's opening; the hand-off from build-buy-or-assemble's transition_in. No criterion is added.",
+      "rejected": [
+        "Writing a separate thesis for the page: it would restate the part's claim."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Conversion of spec.md, taken without review at the author's request (auto mode). The seven success criteria were inventories and are not carried as criteria: three KEY POINTS then <br> (house format, kept); a lead of three paragraphs naming Kestrel & Pine as fictional once (kept, now p01 to p04; its outcome is AC-2); two mermaid diagrams (obsolete since they were redrawn as illustrations on 2026-11-07); the chapter-list format (kept; its outcome is AC-1); figures matching the chapters and the ledger (checked at conversion; the old criterion's '5 unowned' is the April figure, the page gives January's 13 of 34 per consistency item 16); no Across Scale Stages and a one-line Sources and Evidence (kept); length 500–900 (replaced, see the length entry).",
+      "rejected": [
+        "Carrying the checklist over as acceptance criteria: they say what the page contains, not what a reader can do."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Figure 1 draws the five decisions as one loop (shape change → stage → platform review → migration → ownership → agents → next shape change), because the part's claim is that these decisions recur. (Carried from spec.md; the figure is now Figure 2, beside the five questions.)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Figure 2 draws Kestrel & Pine's 2027 as a timeline from the February review to the 2029 review, because the decisions are dated and reviewable rather than final. (Carried from spec.md; now Figure 3, beside the claim.)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Four failure patterns: The Giant's Boots and The Burned Bridge (platform and migration), The Lynchpin (ownership), The Secret Agent (apps and AI agents). (Carried from spec.md; the FAILURE PATTERNS block was dropped on 2026-11-08.)"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved in the cleanup pass, 2026-11-13: the author's clause 'the old owner kept operable through one peak', cut for length by an earlier pass, restored word for word in p06 (the migration chapter's paragraph), where it backs KEY POINTS bullet 2 (rules 5 and 4: restored author text backing an author's KEY POINT); length.max_words raised from 598 to 606 by that clause's 8 words. The Figure 2 order question stays with the author (a figure redraw; the journal spec's chapter order is kept). Check report is stale and no new round was run.",
+      "rejected": [
+        "Rewording the author's KEY POINTS bullet 2.",
+        "Glossing 'old owner' (no room beyond the restored clause)."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (part-10 and its post entry part-10)",
+      "contributed": "Intent, AC-1, AC-2 and role (post entry); thesis, supporting claims, opening hook and bridge (part); build-buy-or-assemble's transition_in for the hand-off; journey-peak-day's closing line for the opening."
+    },
+    {
+      "kind": "internal",
+      "ref": "build-buy-or-assemble, replatforming-and-migration, commerce-scaling-stages, organizing-commerce-engineering, ai-and-agentic-commerce",
+      "contributed": "The chapters summarized, in their words and numbers."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md (Waypoint W1–W8, the Part X additions) and _research/consistency-issues.md (items 4, 13a, 16)",
+      "contributed": "The fictional facts and their rulings."
+    },
+    {
+      "kind": "internal",
+      "ref": "PLAN.md and _research/INTRO-BRIEF.md",
+      "contributed": "Shape of a part introduction."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Cleanup pass: restored the author's clause 'the old owner kept operable through one peak' in p06 to back KEY POINTS bullet 2; max_words 598 to 606."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Confirming draft-check round 3: escalate (12 pass, 10 fail). Closing fixes in p02, p03, p05, p07, p08 without a further round; two needs-the-author open questions; 597 words, limit 598; check-report.json is stale. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Draft-check round 2: revise (13 pass, 17 fail: 11 blocking, 6 minor). Resolved under RESOLVE.md: p01, p02, p04, p05 to p10 reworded (order sentence for the chapter list, time turn, chapter openers, ownership-map evidence); 598 words, limit 598. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Draft-check round 1: revise (17 pass, 14 fail). p01–p04, p06–p10 revised (shape, seam and ownership-map glosses, chapter transitions, so-what); 598 words, limit 598. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Converted spec.md to spec.json (outcome spec); page revised to match (claim paragraph p04, Part IX bridge in p02, seam gloss and old order paths in p06, agent policy sentence in p09, headed closing p10); status draft. Numbers checked against the ledger at conversion: systems 2016–2025; 2029 review (W4); freeze around Black Friday, old order paths retired January 2028; 13 of 34 integrations unowned in January 2027 (item 16); W8 agent policy. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-08",
+      "change": "Openers: dropped IN THIS PART and FAILURE PATTERNS blocks; tightened KEY POINTS (author request). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 1 conceptual figure (article-illustrator). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: trimmed toward 1,500 words, item 13 and item 16 aligned, three failure patterns. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Spec written after the part introduction; openers checked against the intro brief. Status accepted. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 606,
+    "target_words": 586
+  }
+}

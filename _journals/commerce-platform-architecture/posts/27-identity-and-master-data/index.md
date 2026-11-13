@@ -2,7 +2,7 @@
 title: "One Customer, One Product: Identity and Master Data Across Systems"
 date: 2026-11-07
 author: Željko Obrenović
-excerpt: "How do you know that two records in two systems are the same customer, product or order? Give every master entity one named owner and one stable identifier, keep a cross-reference of every other system's key for it, match the rest with explicit rules and a reversible merge, and let consent travel with the record, because a merchant that cannot say who its customers are cannot serve them, market to them or delete them."
+excerpt: "How do you know that two records in two systems are the same customer or product? Give every master entity one named owner and one stable identifier, keep a cross-reference of every other system's key for it, match the rest with explicit rules and a reversible merge, and let consent travel with the record, because a merchant that cannot say who its customers are cannot serve them, market to them or delete them."
 permalink: identity-and-master-data
 timetoread: 26 min read
 icon: "assets/icons/27-identity-and-master-data.png"

@@ -15,18 +15,18 @@ logo: "assets/images/toolkit/logo.jpeg"
 >
 > * **Every card names an owner, a system of record and a date.** Those three fields are what turn a diagram into a decision: who is called when it breaks, which system wins when two disagree, and when the card must be looked at again.
 > * **The cards point at each other.** The capability map says which boxes exist, the entity–owner table says who owns each fact, the integration inventory lists every flow that moves a fact, and each flow has a contract card and a reconciliation card. A decision record changes a row in one of them; nothing else should.
-> * **Most fields were paid for by an incident.** The writer column came from the App That Wrote Stock, the sunset date from the Deprecated Endpoint, the pallet-label source from a shipment-notice mismatch, the summary rule from the Three-Status Order. Write "unknown" rather than guess.
+> * **Most fields were paid for by an incident.** The "who may write" column came from the App That Wrote Stock (a pre-order app writing stock beside the WMS feed), the sunset date from the Deprecated Endpoint, the pallet-label source from a despatch-advice mismatch, the summary rule from the Three-Status Order; each card's example tells its incident.
 
 <br>
-A design discussion can end with agreement about a new system while leaving its data owner or recovery process undecided. These sixteen cards make those gaps visible by recording the business fact, responsible owner, systems involved and expected result. They range from a capability map to a migration plan and decision record. Each includes instructions to start; its linked chapter supplies the reasoning and sources.
+A design discussion can end with agreement about a new system while leaving its data owner or recovery process undecided. This page gathers the sixteen cards the chapters introduce to close those gaps: find the one for your question in the table below, copy its fields and fill them with your own facts. The cards run from a capability map to a migration plan and decision record, in the order the chapters teach them. Each records the business fact, responsible owner, systems involved and expected result; each says how to use it, and its linked chapter supplies the reasoning and sources.
 
-Worked examples use **Kestrel & Pine, a fictional outdoor brand** ([[meet-kestrel-and-pine]]). Replace its names, dates and figures with your own. Keep the fields that expose a decision or responsibility; adapt the rest to your setting.
+Worked examples use **Kestrel & Pine, a fictional outdoor brand** ([[meet-kestrel-and-pine]]). Its Head of Engineering, Noor Visser, runs **Waypoint**, the 2027 program of eight architecture decisions, W1 to W8 (recorded as KP-001 to KP-008): W1 stock ownership, W2 one order record, W3 product information, W4 stay on the platform and surround it, W5 integration standards, W6 EDI compliance, W7 one definition of an order, W8 agent readiness. Duiven is its warehouse, Eva Janssen a customer, Bergzicht Outdoor a wholesale customer ordering by EDI, and bol, Amazon.de and Zalando its marketplaces; Mara Lindqvist is the CEO and Hanna Berg the Data Lead. Abbreviations such as WMS (warehouse management system), OMS (order management system), PIM (product information management), PSP (payment service provider), EDI and SKU (one sellable variant) are defined in [[glossary]]. Replace the names, dates and figures with your own. Keep the fields that expose a decision or responsibility; adapt the rest to your setting.
 
 Three conventions run through all sixteen cards.
 
 - **Keep cards with the work they describe.** Store them in a shared repository where the people changing the systems can find and update them; a detached slide deck is easy to leave behind.
 - **Link related cards by identifier.** A decision record names the ownership rows it changes, and a contract card names its integration inventory row, so a reviewer can trace the effects of a change.
-- **Investigate consequential blanks.** A missing owner leaves nobody responsible for recovery; a missing retirement date can leave an obsolete integration running. Use the gap to assign the next piece of work.
+- **Investigate consequential blanks.** A missing owner leaves nobody responsible for recovery; a missing retirement date can leave an obsolete integration running. Use the gap to assign the next piece of work, and write "unknown" rather than guess.
 
 ## Find the Template for the Question on Your Desk
 
@@ -82,7 +82,7 @@ In plain words: start at the entity–owner table. A fact with no row, or a row 
 | Field | Inventory and availability |
 | --- | --- |
 | Fact it is the home for | Available-to-promise per channel, derived from physical stock |
-| Systems today | Stock on hand in the WMS, the ERP, the platform and the POS; **nobody computes availability** |
+| Systems today | Stock on hand in the WMS, the ERP, the shop platform and the POS; **nobody computes availability** |
 | Writers | Six writers of Duiven stock: the WMS feed, manual ERP entry, manual platform entry and three apps; the POS writes store stock separately |
 | Status and evidence | **Empty box** for availability, overlap for stock; the Black Friday Oversell, 1,340 units oversold on 27 November 2026 |
 | Owner | Daniel Okafor for stock; Ruben Alves for the availability service once W1 delivers it |
@@ -114,7 +114,9 @@ The whole map had about two dozen capabilities with thirteen systems placed on t
 | --- | --- | --- | --- | --- |
 | Physical stock, Duiven | The WMS | Scans, counts and receipts in the WMS only | Stock events (from Q4 2027) | WMS-to-platform reconciliation, weekly; daily in November |
 | Consumer price | The platform's market price lists (NL, BE, DE) | Pricing owner, with effective dates | Price events | Daily price reconciliation across all copies, from May 2027 |
-| Order | The OMS (W2, Q4 2027) | Order creation from channels; state changes from events | Order events | Nightly order reconciliation | Store stock has its own row with the POS as record, and the marketplace program's stock is a tracked external location; the review behind the table had found six systems each holding a stock number for the Ridgewalker jacket.
+| Order | The OMS (W2, Q4 2027) | Order creation from channels; state changes from events | Order events | Nightly order reconciliation |
+
+Store stock has its own row with the POS as record, and the marketplace program's stock is a tracked external location; the review behind the table had found six systems each holding a stock number for the Ridgewalker jacket.
 
 **Used in:** [[boundaries-and-systems-of-record]], [[inventory-and-availability]], [[pricing-architecture]], [[product-information]], [[identity-and-master-data]], [[erp-and-back-office-integration]].
 
@@ -135,14 +137,14 @@ The whole map had about two dozen capabilities with thirteen systems placed on t
 | **Failure handling** | Retries, dead-letter queue (a holding queue for messages that failed every retry), alert |
 | **Reconciliation** | Card reference (Tool 5), or "none" |
 
-**How to use it.** The rule I would adopt anywhere: **no flow goes live without a row, and no row without an owner.** Review it quarterly; a flow whose owner has left is an incident, not a note.
+**How to use it.** The rule worth adopting anywhere: **no flow goes live without a row, and no row without an owner.** Review it quarterly; a flow whose owner has left is an incident, not a note.
 
 **Kestrel & Pine example** (fictional; Noor's inventory of February 2027): 34 integrations, only 3 with a reconciliation job. One row:
 
 | Column | Value |
 | --- | --- |
 | Source → target | WMS → ERP: stock on hand per SKU |
-| Style and trigger | Scheduled, every 15 minutes, through the iPaaS |
+| Style and trigger | Scheduled, every 15 minutes, through the iPaaS (the integration platform) |
 | System of record | The WMS (W1) |
 | Owner | Ruben Alves |
 | Failure handling | No dead-letter queue |
@@ -170,7 +172,7 @@ The whole map had about two dozen capabilities with thirteen systems placed on t
 
 **How to use it.** Write the card before the flow goes live. **Idempotent** handling means a message received twice has the same effect as once; if the card cannot name the key, the first retry will create a duplicate.
 
-**Kestrel & Pine example** (fictional; the stock push to bol, rewritten by Ruben Alves after the Deprecated Endpoint, in use from March 2027):
+**Kestrel & Pine example** (fictional; the stock push to bol, the Dutch and Belgian marketplace, rewritten by Ruben Alves after the Deprecated Endpoint, in use from March 2027):
 
 | Field | Value |
 | --- | --- |
@@ -245,12 +247,12 @@ It replaced a 2021 agency script whose API version was retired on 8 February 202
 | --- | --- |
 | Location | Duiven |
 | On hand | 36, from the WMS |
-| Committed | 12 to Bergzicht Outdoor's EDI reorder |
+| Committed | 12 to the wholesale reorder Bergzicht Outdoor sent by EDI |
 | Buffer | 1 unit for the storefronts (3 for marketplaces) |
 | Available for NL | **23** |
-| Publication today | The hourly chain (WMS → ERP every 15 minutes → platform hourly → connector hourly); events to the availability service from Q4 2027 |
+| Publication today | The stock sync chain (WMS → ERP → platform → connector), up to two hours end to end; events to the availability service from Q4 2027 |
 
-The same 23 is what Eva Janssen's storefront showed on 13 April 2027.
+The same 23 is what the storefront showed the customer Eva Janssen on 13 April 2027.
 
 **Used in:** [[inventory-and-availability]], [[cart-and-checkout]], [[stores-and-omnichannel]], [[journey-consumer-order]], [[journey-wholesale-order]].
 
@@ -271,7 +273,7 @@ The same 23 is what Eva Janssen's storefront showed on 13 April 2027.
 
 **How to use it.** "Fulfilled" is not "delivered" unless the carrier's events are fed back, and a two-parcel order is delivered only when both parcels are.
 
-**Kestrel & Pine example** (fictional; order #1052877, December 2026, as the OMS handles it under W2):
+**Kestrel & Pine example** (fictional; order #1052877, the Three-Status Order of December 2026, as the OMS handles it under W2):
 
 | Field | Value |
 | --- | --- |
@@ -280,7 +282,7 @@ The same 23 is what Eva Janssen's storefront showed on 13 April 2027.
 | Machines under W2 | Separate money, goods (per fulfillment order) and return machines in the OMS |
 | Summary rule | Least-advanced shipment: "Partially delivered: 1 of 2 parcels" |
 | Split rule | Two-line D2C order under €150: wait up to one working day for replenishment, then split and emit "ships in two parcels" |
-| Invoice trigger | A "shipment to invoice" event per shipment, idempotent on the shipment id, or one invoice at completion if Finance prefers |
+| Invoice trigger | One invoice per shipment at dispatch, from a "shipment to invoice" event idempotent on the shipment id; a split order has two invoices and stays one order |
 
 **Used in:** [[order-management]], [[customer-service-and-notifications]], [[tax-invoicing-and-ledger]], [[returns-and-exchanges]], [[journey-return-and-exchange]].
 
@@ -307,7 +309,7 @@ The same 23 is what Eva Janssen's storefront showed on 13 April 2027.
 | Field | Value |
 | --- | --- |
 | Lane | Duiven → Nijmegen, PostNL standard home delivery |
-| Cut-off | Last pick wave 21:00; the theme's "before 22:00" dated from the Tiel 3PL era |
+| Cut-off | Last pick wave 21:00; the storefront theme's "before 22:00" dated from before 2023, when a third-party warehouse in Tiel shipped online orders |
 | Backlog | None that evening |
 | Transit | One working day; reliable lane, small margin |
 | Static promise | Wednesday 14 April, a day early |
@@ -343,7 +345,7 @@ The same 23 is what Eva Janssen's storefront showed on 13 April 2027.
 | External location | About 40% of marketplace units for Germany ship from the marketplace's fulfillment program |
 | Policy from December 2026 | The platform's figure minus a **ten-unit buffer** per variant; zero below ten |
 | Policy from Q4 2027 (W1) | Computed ATP per channel from the availability service, buffer 3 units per SKU |
-| Peak rule 2027 | Buffer raised to 25 units for hero SKUs when stock events lag (Tool 12, rung 4) |
+| Peak rule 2027 | Buffer raised to 25 units for hero SKUs (the best sellers) when stock events lag (Tool 12, rung 4) |
 | Order path | Every marketplace order created in the OMS from 15 September 2027 |
 
 **Used in:** [[marketplaces-and-channel-integration]], [[inventory-and-availability]], [[journey-peak-day]], [[pricing-architecture]].
@@ -446,11 +448,12 @@ The ladder is a table with one row per rung: the switch, its one owner (who may 
 | Situation room | Friday 16:00–24:00 |
 | Reconciliation | 08:00 Saturday 27 November, by Hanna Berg's team |
 
-Three of the eight rungs:
+Four of the eight rungs:
 
 | # | Switch | Owner | Trigger |
 | --- | --- | --- | --- |
 | 3 | Stock badges from the buffered copy | Ruben Alves | Availability event lag over 2 minutes |
+| 4 | Marketplace buffer raised to 25 units for hero SKUs; listings paused below it | Milan Petrov | Lag over 2 minutes, or orders for a SKU exceeding its available-to-promise |
 | 5 | Delivery promise widened to "within three working days" | Daniel Okafor | Oldest unsent order over 10 minutes, or the Friday pick plan over 80% consumed |
 | 8 | New-account creation and the newsletter pop-up off | Milan Petrov | Only on Noor's call |
 | — | **Never**: checkout, payment authorization, order creation in the OMS, the order path to the WMS | — | — |
@@ -481,7 +484,7 @@ Three of the eight rungs:
 | Date | Rule | What it requires | Owner | 2027 status |
 | --- | --- | --- | --- | --- |
 | 13 Dec 2024 | GPSR, Regulation (EU) 2023/988, Art. 19 | Manufacturer, responsible person, identification and warnings on every offer | Teun Baas | *Maintain*: the PIM blocks publication without the fields from Q3 2027; about 850 third-party variants to clean up |
-| 1 Jan 2026 | Belgian e-invoicing | Structured invoices over Peppol to Belgian business customers | Sanne de Wit | *Maintain*: delivered-status report; 210 accounts |
+| 1 Jan 2026 | Belgian e-invoicing | Structured invoices over Peppol to Belgian business customers, as they expect (whether the mandate binds a Dutch supplier is unsettled) | Sanne de Wit | *Maintain*: delivered-status report; 210 accounts |
 
 **Used in:** [[commerce-regulation]], [[edi-and-e-invoicing]], [[privacy-and-customer-data]], [[product-information]].
 
@@ -552,7 +555,7 @@ About 14 of the 34 integrations were re-pointed.
 
 ## <a id="tool-16"></a>Tool 16: Architecture Decision Record
 
-**Purpose.** An architecture decision record (ADR) is a one-page note of a decision, the facts that forced it, the options considered and what it changes, kept in the repository so a newcomer can understand a decision instead of blindly accepting or reversing it. Michael Nygard defined the form in 2011; this version adds ownership, vendors and a review date.
+**Purpose.** An architecture decision record (ADR) is a one-page note of a decision, the facts that forced it, the options considered and what it changes, kept in the repository so a newcomer can understand a decision instead of blindly accepting or reversing it. Michael Nygard defined the form in 2011; this version adds ownership, vendors, confirmation and a review date.
 
 **The template.**
 
@@ -579,7 +582,7 @@ Deciders:     <names>; business owner: <name>
 **Kestrel & Pine example** (fictional; Waypoint decision W4, numbered KP-004):
 
 ```
-# KP-004: Stay on the SaaS platform and surround it
+# KP-004: Stay on the shop platform and surround it
 
 Status:       accepted
 Date:         March 2027
@@ -590,7 +593,7 @@ Deciders:     Mara Lindqvist, Noor Visser; business owner: Mara Lindqvist
                  failed. Four empty boxes on the capability map.
 ## Options       Composable rebuild (about €3.2M); enterprise suite (about €3.19M);
                  stay and surround (about €1.33M); do nothing.
-## Decision      We will stay on the SaaS platform. OMS, PIM and availability are added
+## Decision      We will stay on the shop platform. OMS, PIM and availability are added
                  beside it (W1-W3); the platform's own POS is evaluated in 2028.
 ## Ownership     Order -> OMS (Q4 2027); product content -> PIM (Q3 2027);
                  availability per channel -> availability service (Q4 2027).
@@ -606,7 +609,7 @@ KP-001 to KP-008 are Waypoint decisions W1 to W8.
 
 ## Keeping the Cards True
 
-Cards decay unless three habits keep them current.
+Cards decay, and a stale card is worse than none, because people trust its owner, system of record and date. Three habits keep them current.
 
 - **Review on a calendar.** The capability map yearly; the entity–owner table with every decision record; the integration inventory and app cards quarterly; contract cards at every vendor version; partner cards at every guideline change; the peak plan from March; the regulatory calendar's *watch* rows each quarter.
 - **Let incidents add fields.** When a review asks a question no card answers, add a field.

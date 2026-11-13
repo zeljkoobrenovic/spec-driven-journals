@@ -7,7 +7,7 @@
   "part": "part-2",
   "title": "What Are We Selling? Products, Variants and the Catalog",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed from the published chapter (posts/06-product-information/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter. It is a contract, not a description: the places where the chapter does not yet do what the spec asks are listed under open_questions.",
   "intent": {
     "outcome": {
@@ -1201,7 +1201,7 @@
         },
         {
           "id": "p48",
-          "controlling_idea": "Migration consumer by consumer: the PIM is loaded in July 2027 from the four copies, about 1,900 variants with conflicting attributes are resolved before anything is published, the consumers move one at a time, and the PIM is the first prerequisite of W8.",
+          "controlling_idea": "Migration consumer by consumer: the PIM is loaded in July 2027 from the four copies, about 1,900 variants with conflicting attributes are resolved before anything is published, and the consumers move one at a time.",
           "function": "example",
           "evidence": [
             {
@@ -1220,6 +1220,26 @@
           }
         },
         {
+          "id": "p48a",
+          "controlling_idea": "The finished PIM is the first prerequisite of W8, readiness for AI agents: an AI shopping agent needs product data that is accurate, complete and the same in every channel, and the PIM is where that becomes checkable.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "W8 lists AI agents among the product record's consumers; the PIM is its first prerequisite.",
+              "shows": "The same ownership that fixes the season launch is what an AI channel requires.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The PIM, loaded and consumed channel by channel.",
+            "introduces": "What the finished PIM enables next: W8.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p49",
           "controlling_idea": "The results that matter are small: the season import becomes a scheduled publication, the German storefront launches with no untranslated variants, and one spelling of moss reaches four channels.",
           "function": "analysis",
@@ -1233,7 +1253,7 @@
           ],
           "transition_in": {
             "relationship": "cause_effect",
-            "carries_over": "The four steps.",
+            "carries_over": "The four steps and the PIM they produce.",
             "introduces": "What they change, measured against the scene.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -1349,14 +1369,14 @@
         },
         {
           "id": "p55",
-          "controlling_idea": "The pulled rug: a marketplace changes its data model or retires an API version on a published date; it is detected by a named owner who reads the channel's notices and by a weekly listing status check, and recovered through the mapping, which is data.",
-          "function": "example",
+          "controlling_idea": "The pulled rug: a marketplace changes its data model, adds a mandatory attribute or retires an API version on a published date, and listings go offline or keep stale content unannounced; it is detected by a named owner who reads the channel's notices and by a weekly listing status check, and recovered through the mapping, which is data.",
+          "function": "analysis",
           "evidence": [
             {
-              "kind": "case",
-              "what": "Kestrel & Pine's Deprecated Endpoint of February 2027, in one sentence: an agency script called a retired API version and bol's figures were stale for two days.",
-              "shows": "The running example has already been caught by a channel changing on its own schedule.",
-              "source": "Kestrel & Pine scenario ledger"
+              "kind": "fact",
+              "what": "bol updates its data model daily; channels publish deprecation dates for API versions.",
+              "shows": "Channels change on their own schedule, so the content mapping must be data a named owner can update.",
+              "source": "bol developer documentation (cited in the chapter's Sources)"
             }
           ],
           "transition_in": {
@@ -1538,11 +1558,16 @@
     }
   ],
   "modalities": [],
-  "open_questions": [
-    "Needs the author: the Deprecated Endpoint (p55) is the ledger's only marketplace-API incident, but it is a stock incident used as the example of a content failure; both round-4 flow readers found it off-topic. Keep it, or replace it with an illustrative content case the ledger does not record?",
-    "Needs the author: p48 bundles the consumer-by-consumer migration and the PIM as W8's prerequisite; the round-4 outliner read two ideas. Split into two paragraphs (one more unit), or keep W8 as one closing clause?"
-  ],
+  "open_questions": [],
   "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved in the cleanup pass, 2026-11-13: the Deprecated Endpoint is cut from 'The pulled rug' (p55) (rule 3: both round-4 flow readers found it off-topic, a stock incident used as the example of a content failure, and it supports no supporting claim the paragraph needs; rule 1 forbids replacing it with a content incident the ledger does not record). The paragraph keeps the failure, its detection and recovery, and says what the reader sees (listings offline or stale content, unannounced). p48 is split: the consumer-by-consumer migration stays in p48 and the PIM as W8's first prerequisite becomes p48a (rule 3, the round-4 outliner read two ideas; the open question is settled by splitting). The 6,500-word limit stands (the page is under it). No author sentences cut for length are recorded for this page, so none are restored.",
+      "rejected": [
+        "Replacing the Deprecated Endpoint with an illustrative content incident the ledger does not record (rule 1).",
+        "Keeping W8 as a closing clause of the migration paragraph."
+      ]
+    },
     {
       "date": "2026-11-12",
       "decision": "Converted spec.md to spec.json from the published chapter, one paragraph per unit. The author asked for the flow rubric's notes to be taken without review; the changes of order made for that reason are the entries of this date.",
@@ -1701,7 +1726,7 @@
     {
       "kind": "internal",
       "ref": "meet-kestrel-and-pine and _research/scenario-ledger.md",
-      "contributed": "The three copies, the catalog figures, W3, the season-launch scene and the Deprecated Endpoint."
+      "contributed": "The three copies, the catalog figures, W3, the season-launch scene."
     },
     {
       "kind": "internal",
@@ -1755,6 +1780,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Cleanup pass: Deprecated Endpoint example cut from the pulled-rug failure; W8 paragraph split from the migration (p48a); open_questions emptied."
+    },
     {
       "date": "2026-11-12",
       "change": "Escalation resolved under the author's standing instruction: choices, trade-offs and stages moved before the PIM section; the channels' documentation moved beside the three rules; three cited vendor statements restored; AC-6 dropped; open questions settled. (AI-mediated session) Confirming round (round 4) readers ran: reverse outline, intro reader, three probe readers, two flow readers; the judge could not be started (concurrent-agent limit), so the round was not finalized and check-report.json stays stale. Cheap fixes applied from points both flow readers raised: the codes-first sentence in p03, EDI expanded at first use, the Black Friday Oversell glossed, the forward reference to the stage table cut from the recommendation, the PIM tied to the scene's definition, the Deprecated Endpoint framed as stale data, March's ownership table named, and the conclusion's callback worded as the hook's case."

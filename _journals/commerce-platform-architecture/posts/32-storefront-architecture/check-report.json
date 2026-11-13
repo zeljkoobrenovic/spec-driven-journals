@@ -1,0 +1,614 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/32-storefront-architecture/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/32-storefront-architecture/index.md",
+  "spec_sha": "eb10453550f2db42",
+  "draft_sha": "5e32b3897747b587",
+  "run_at": "2026-11-12T23:56:57+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Diagnose why a product page is slow before replacing its renderer",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Defines storefront and headless storefront, with the control-versus-operation trade",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "App scripts, not the rendering model, usually slow product pages",
+      "matched_spec_paragraph": "p02a"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Introduces Kestrel & Pine's storefront setup and Noor's declined headless proposal",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "Places the chapter in Eva's order journey at the product page",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶6",
+      "summary": "Roadmap of the chapter's sections",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Headless Proposal ¶1",
+      "summary": "Agency proposes an edge-hosted headless storefront plus content system",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Headless Proposal ¶2",
+      "summary": "Proposal cost and Noor's question about the unmet need",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Headless Proposal ¶3",
+      "summary": "Noor's real-user performance measurements for NL product pages",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Headless Proposal ¶4",
+      "summary": "Only responsiveness misses Google's threshold, traced to eleven apps' scripts",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Headless Proposal ¶5",
+      "summary": "She declined; reasoning follows later",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "What a Storefront Does, and What It Does Not Own ¶1",
+      "summary": "Storefront produces pages from facts it does not own; owns templates and scripts",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "What a Storefront Does, and What It Does Not Own ¶2",
+      "summary": "Headless moves rendering and glue, not facts, to the merchant",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Three Rendering Models ¶1",
+      "summary": "Server- vs client-side rendering; models now differ by who runs the renderer",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Three Rendering Models ¶2",
+      "summary": "Theme model: platform renders merchant's templates, with examples",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Three Rendering Models ¶3",
+      "summary": "Shopify's dated account of its Liquid renderer architecture and speedup",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Three Rendering Models ¶4",
+      "summary": "Theme limits to page types, eased by Online Store 2.0",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Three Rendering Models ¶5",
+      "summary": "Headless on vendor runtime: vendor API and hosting, with vendor examples",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Three Rendering Models ¶6",
+      "summary": "Checkout remains on the platform in vendor-hosted headless",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Three Rendering Models ¶7",
+      "summary": "Headless anywhere: own framework and hosting, unified data layer across engines",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Performance: What the Evidence Says, With Dates ¶1",
+      "summary": "Defines Core Web Vitals metrics and their good thresholds",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Performance: What the Evidence Says, With Dates ¶2",
+      "summary": "INP replaced FID; Google's unweighted ranking statement on vitals",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Performance: What the Evidence Says, With Dates ¶3",
+      "summary": "Dated studies show speed helps revenue, directionally but imprecisely",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Performance: What the Evidence Says, With Dates ¶4",
+      "summary": "Faster is better by unknown amount; scripts are the usual culprit",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Accessibility Is a Requirement, Not a Performance Option ¶1",
+      "summary": "Accessible storefront means all shoppers can complete purchase",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Accessibility Is a Requirement, Not a Performance Option ¶2",
+      "summary": "WCAG 2.2 standard, levels and principles",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Accessibility Is a Requirement, Not a Performance Option ¶3",
+      "summary": "European Accessibility Act scope over consumer e-commerce",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Accessibility Is a Requirement, Not a Performance Option ¶4",
+      "summary": "Kestrel & Pine's consumer storefronts in scope, B2B portal not",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Accessibility Is a Requirement, Not a Performance Option ¶5",
+      "summary": "Test whole purchase flow including app blocks, not just theme",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Cache the Shell, Fetch the Promise ¶1",
+      "summary": "Peak speed depends on deciding which page answers can be reused",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Cache the Shell, Fetch the Promise ¶2",
+      "summary": "What content is cacheable and why",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Cache the Shell, Fetch the Promise ¶3",
+      "summary": "Prices, stock, cart must be validated live; never share account answers",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Cache the Shell, Fetch the Promise ¶4",
+      "summary": "Names the cache-shell/fetch-promise rule; Shopify full-page cache implements it",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Cache the Shell, Fetch the Promise ¶5",
+      "summary": "Incremental static regeneration as the headless equivalent",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Cache the Shell, Fetch the Promise ¶6",
+      "summary": "Request collapsing protects peaks; Kestrel's cache held but stock sync lagged",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Cache the Shell, Fetch the Promise ¶7",
+      "summary": "Applies the caching rule per page type in a table",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Technical SEO and Product Discoverability ¶1",
+      "summary": "Search engines as second reader; defines SEO, crawling and indexing",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Technical SEO and Product Discoverability ¶2",
+      "summary": "Provide crawlable HTML links and sitemaps to every product",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Technical SEO and Product Discoverability ¶3",
+      "summary": "Put product content in initial HTML; headless gives no SEO edge",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Technical SEO and Product Discoverability ¶4",
+      "summary": "Product structured data in initial HTML, generated from same records",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Technical SEO and Product Discoverability ¶5",
+      "summary": "Price/stock snapshots must stay fresh across HTML, markup and feeds",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Technical SEO and Product Discoverability ¶6",
+      "summary": "Set an explicit URL policy for variants, filters and translations",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Technical SEO and Product Discoverability ¶7",
+      "summary": "Sources for the URL policies; stockout vs retirement differ",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Technical SEO and Product Discoverability ¶8",
+      "summary": "Distinguish robots.txt from noindex; avoid leaking test exclusions",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Technical SEO and Product Discoverability ¶9",
+      "summary": "Storefront team owns SEO rules and checks them with Google tools",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "The Choices and Their Trade-Offs ¶1",
+      "summary": "Four storefront options for a hosted-platform merchant",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "The Choices and Their Trade-Offs ¶2",
+      "summary": "Headless only for three unmet needs plus a team to run it",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "The Choices and Their Trade-Offs ¶3",
+      "summary": "PWAs are the headless question; native apps justified by loyalty features",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "Keep the theme; only Group scale strengthens a shared front end",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "In Practice ¶1",
+      "summary": "Noor's four-part rebuttal of the headless proposal",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "In Practice ¶2",
+      "summary": "Cheaper chosen path and when the decision is revisited",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "In Practice ¶3",
+      "summary": "Two public checks before switching to a new storefront",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "In Practice ¶4",
+      "summary": "Checkout and accessible purchase flow still need checking regardless",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "Introduces seven recurring storefront failures and their recoveries",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "Synthesis: measure the cause, cache shared content, change renderer only for need",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "Established findings on vitals, checkout, caching, SEO, accessibility",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "Context-dependent points on headless, content and cache policy",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "Author's view: decide ownership and freshness before framework",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten diagnostic questions about a storefront",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Peak-night stock chain failure hands off to peak-load chapter",
+      "matched_spec_paragraph": "p59"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "reverse_outline_matches_spec",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "p37 (/sections/performance/paragraphs/1)",
+      "draft_locus": "Performance: What the Evidence Says, With Dates ¶2",
+      "quote": "INP replaced the older first-input-delay metric on 12 March 2024. Google's Search documentation says it",
+      "finding": "The outliner marked two ideas: the dated metric change (INP replacing FID) and Google's unweighted ranking statement. The two sentences share no controlling sentence; the INP date belongs with the definitions in p36. The spec's p37 controlling idea itself joins both ('their date of change and their place in search ranking').",
+      "fault": "spec",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "p15 evidence (Storefront Renderer case)",
+      "draft_locus": "Three Rendering Models ¶3",
+      "quote": "These are dated architectural examples, not measurements of today's service.",
+      "finding": "The paragraph dates and caveats the Shopify renderer case but never says what it shows: the delivery infrastructure (replicas, caches, regional deployment) a theme inherits under model 1. flowB: 'I could not tell why this history sits in Model 1.'",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "p48 evidence (stage table: four stages, what is typical, what becomes necessary, warning signs)",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "quote": "I would retain the theme while it meets the requirements. Group scale makes a shared front end more valuable; Omnichannel scale alone does not establish a reason to build one.",
+      "finding": "units.json records no table attached to this unit, so the claims about Group and Omnichannel stand without the declared stage table, though In Practice ¶1 refers to 'the table above'. If the table exists but was not extracted, this is a pass; otherwise the stage evidence is missing.",
+      "fault": "unclear",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "p15 transition_in (example; carries 'The platform runs rendering and caching')",
+      "draft_locus": "Three Rendering Models ¶3",
+      "quote": "Shopify's August 2020 account describes a dedicated Liquid renderer",
+      "finding": "Declared 'example' of the platform running rendering and caching; the paragraph opens straight into the history with no signal that it illustrates what model 1's platform runs for the merchant.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "section access transition_in (contrast; carries 'Speed as a page requirement')",
+      "draft_locus": "Accessibility Is a Requirement, Not a Performance Option ¶1",
+      "quote": "An accessible storefront lets people find products, understand choices and complete payment",
+      "finding": "Declared contrast at the start of the section; the first sentence is a bare definition, and the contrast with speed only arrives in the second sentence ('A fast page still fails its customer...'). Both flow readers found the entry thin.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "section cache transition_in (sequence; carries 'The page requirements of speed and accessibility')",
+      "draft_locus": "Cache the Shell, Fetch the Promise ¶1",
+      "quote": "Keeping pages fast for every shopper on a peak day depends on one more decision",
+      "finding": "Carries over speed only; 'one more decision' links back to performance and skips the accessibility section just read. flowB: 'links back to performance and skips the accessibility section in between.'",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "p45 transition_in (additional_support; introduces 'Mobile apps, the other front end proposed in speed's name')",
+      "draft_locus": "The Choices and Their Trade-Offs ¶3",
+      "quote": "A **progressive web app** (PWA) is a website",
+      "finding": "Opens with a definition; nothing ties mobile apps to the decision rule just stated or names them as the other front end proposed for speed. Both flow readers read the subsection as an appendix or afterthought.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p03",
+      "draft_locus": "Introduction ¶4",
+      "quote": "It has 41 installed apps, and on its busiest hour storefront traffic reaches 41 times an average hour.",
+      "finding": "The same number for two quantities made both readers re-read. flowA: 'The same number used for two different things made me re-read the sentence.'",
+      "fault": "draft",
+      "corroborated_by": "flowB: 'The same number for two different quantities.'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p09",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The Headless Proposal ¶4",
+      "quote": "The slow responses trace to scripts from eleven apps.",
+      "finding": "Readers could not relate eleven apps to the 41 installed apps. flowA: 'I had to work out that 11 is a subset of 41.'",
+      "fault": "draft",
+      "corroborated_by": "flowB: 'made me check whether 41 or 11 was meant'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "section access (position after performance)",
+      "draft_locus": "Accessibility Is a Requirement, Not a Performance Option ¶1",
+      "quote": "A fast page still fails its customer if a form or payment control cannot be used.",
+      "finding": "Both readers found the step into accessibility thin and the step out of it skipped. flowA: 'It works, but the transition is thinner than the others.' The order is sound per the spec rationale; a bridge sentence fixes it.",
+      "fault": "draft",
+      "corroborated_by": "flowB: 'There is no transition into it, so why it comes before caching is only partly clear.'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p45 (Mobile apps subsection)",
+      "draft_locus": "The Choices and Their Trade-Offs ¶3",
+      "quote": "For a merchant it is mostly the headless question in disguise",
+      "finding": "Both readers read the mobile-apps subsection as detached from the comparison. flowA: 'It reads as an appendix.'",
+      "fault": "draft",
+      "corroborated_by": "flowB: 'It reads as an afterthought, not as part of the comparison.'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p53 evidence (failure table row 'bots at the front door')",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "quote": "One row is new: bots, meaning crawlers and AI agents that read the catalog.",
+      "finding": "The paragraph says each failure breaks one of this chapter's rules, then adds a row no section prepared; it also sits against the SEO section's advice to let crawlers in. flowA: 'it still feels out of place in a table of broken rules.' The row is declared in the spec's p53 evidence without a rule earlier in the chapter.",
+      "fault": "spec",
+      "corroborated_by": "flowB: 'The SEO section asked for crawlers to be let in, and this row limits them. The chapter never reconciles the two.'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p59",
+      "draft_locus": "Questions to Ask ¶2",
+      "quote": "orders reached the warehouse hours late, and a sale took up to two hours to reduce the stock shown on other channels. That chain meets the merchant's spike alone.",
+      "finding": "The hand-off introduces a fact the chapter never stated (late order export; only the stock sync appeared in p25), and 'alone' is ambiguous. flowA: 'This is a new fact. Earlier text mentions only the stock sync delay.'",
+      "fault": "draft",
+      "corroborated_by": "flowB: 'I had to re-read this. \"Alone\" is ambiguous'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p49 (position in In Practice)",
+      "draft_locus": "In Practice ¶3",
+      "quote": "For a merchant whose need does justify a new storefront, two public examples give checks before switching.",
+      "finding": "flowB: advice for merchants who switch 'feels out of place in the In Practice section', right after Noor declines, and the following 'two things' blurs with these two checks. Only one reader; the placement is the spec's.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p15",
+      "draft_locus": "Three Rendering Models ¶3",
+      "quote": "In January 2022 the CTO described deploying that renderer regionally without the whole Rails monolith.",
+      "finding": "flowB: 'I could not tell why this history sits in Model 1. Its point only arrives much later, in \"Dated public examples\".' Only one reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p08/p36 (metrics used in the scene before Core Web Vitals are defined)",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The Headless Proposal ¶3",
+      "quote": "the main content appears in **2.1 seconds**, response to interaction takes **310 milliseconds**, and layout shift scores **0.08**",
+      "finding": "flowA: the metric names and 'Core Web Vitals' are defined only in Performance, which then restates the thresholds, 'so I read them twice'. The order (scene first, definitions later, thresholds in both) is the spec's. Only one reader.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p46",
+      "draft_locus": "The Choices and Their Trade-Offs ¶1",
+      "quote": "The realistic options for a merchant on a hosted platform are four.",
+      "finding": "flowA: 'It took a moment to see that the four options are not the three models.' Nothing relates the four options to the three rendering models. Only one reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "p51",
+      "draft_locus": "In Practice ¶1",
+      "quote": "after six unused apps and four redundant scripts were removed",
+      "finding": "flowB: 'The earlier culprit was \"eleven apps\", and I could not square the two counts.' Only one reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "minor"
+    }
+  ]
+}

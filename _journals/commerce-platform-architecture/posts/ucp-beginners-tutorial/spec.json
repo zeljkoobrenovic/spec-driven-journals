@@ -1,0 +1,1939 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "ucp-beginners-tutorial",
+  "journal": "commerce-platform-architecture",
+  "part": "appendix",
+  "title": "Universal Commerce Protocol: A Beginner's Tutorial",
+  "status": "draft",
+  "revised": "2026-11-13",
+  "basis": "Reconstructed on 2026-11-13 from the published page (posts/ucp-beginners-tutorial/index.md, 4,770 words, 81 prose and list units after the three opening callouts) and its former spec.md; one spec paragraph per unit. The opening callouts (IN THIS CHAPTER, KEY POINTS, failure patterns) are evidence of the introduction; code blocks belong to the paragraph that introduces them; tables and figures are evidence of the paragraph they follow. Three units were added for the part closing and the hand-off (p78, p83's take-away, p84), see decision_log.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "UCP's participants and vocabulary: Platform (the application consuming commerce capabilities) and Business (the merchant exposing them), the credential provider and the payment service provider; profiles, capabilities, extensions, payment handlers and transports, agreed by version before a purchase.",
+        "One illustrative lab purchase of a €199 Ridgewalker jacket followed through discovery, item choice, checkout session, address and delivery, payment, completion and the first order update, against UCP's published 2026-08-25 documentation checked on 9 November 2026; separate from Eva's €235 order and from Kestrel & Pine's decision not to launch a shopper-facing agent in 2027.",
+        "The six checkout states and that only `completed` with an order reference confirms an order; what to do when a completion response is lost."
+      ],
+      "believe": [
+        "A shopping protocol carries the merchant's promises; it does not make them, so the merchant's existing price, stock and order rules stay authoritative.",
+        "A first integration is proven by recovering one uncertain purchase, not by a successful demonstration."
+      ],
+      "can_do": [
+        "Read a UCP message exchange and say at each step what the application knows and what it may tell the shopper.",
+        "Scope a first integration and the proofs it needs before review."
+      ]
+    },
+    "audience": {
+      "who": "Engineers, product managers and architects who understand an API but have not implemented agentic commerce; no earlier chapter is required, though readers of the book arrive from chapter 45 and Part XI.",
+      "already_knows": [
+        "What an API is, roughly what HTTP, JSON and a request header are.",
+        "What buying something online is like from the shopper's side.",
+        "If they have read the book: Kestrel & Pine, Eva's €235 order, the failure-pattern names, idempotency and reconciliation, the PSP and webhook glosses, authorization and capture, and chapter 45's assistants and agents and W8 (agent readiness, not agents)."
+      ],
+      "does_not_know": [
+        "UCP and its roles (Platform, Business), profile, service, capability, extension, transport, schema, REST, namespace names.",
+        "ACP, MCP, AP2 and mandates; credential, credential provider, payment instrument, payment handler, token, identity linking, OAuth 2.0, scopes.",
+        "Checkout session versus cart, variant, minor units, the six checkout states, continue_url, correlation record."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a lost completion response, the reader says how the application recovers the outcome without a second order or payment.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "An assistant sent the completion request and the connection dropped before the merchant's answer arrived. Using only this tutorial: what does the application know, what does it do next, and when may it retry?",
+        "expected": "It knows only that the outcome is uncertain. It reads the existing checkout: if completed, it recovers the order reference; if complete_in_progress, it waits and checks again with a bounded delay; when the checkout expires it stops automatic attempts and the case is investigated. Only if reading state does not establish the outcome may it retry the identical original completion with the same idempotency key (a genuinely new completion uses a new key); it never creates a fresh checkout to escape uncertainty, and it persists the operation key and its result. The shopper is told the application is checking whether the order was placed."
+      },
+      {
+        "id": "AC-2",
+        "statement": "The reader tells which checkout states permit which message to the shopper.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Using only this tutorial: the merchant returns `ready_for_complete`. May the application tell the shopper 'Purchased'? Which status allows that, and what does `requires_escalation` ask of the application?",
+        "expected": "No: `ready_for_complete` means the checkout has the information needed to attempt order placement, like a form ready for its final button; the shopper must still authorize the attempt and the merchant accept it. Only `completed` confirms the order, with its reference present; `complete_in_progress` means wait. `requires_escalation` means the buyer must continue through the provided handoff (a `continue_url`) after recoverable issues are addressed; `incomplete` needs more information and `canceled` must not be retried."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader scopes a first UCP integration and says what stays with the merchant.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this tutorial: a merchant wants to accept purchases from shopping assistants through UCP. What should its first integration include, what should wait, and which rules must remain the merchant's?",
+        "expected": "One product type, one market, one supported payment route and explicit shopper approval, with the recovery path established before loyalty, split shipments or unattended purchases. Proofs: the partner negotiates the expected versions and features; a selected variant resolves to current merchant data; the final price and delivery terms come from the merchant's operations; payment success, decline and required buyer interaction stay distinguishable; an uncertain completion is resolved without another purchase; support can connect a shopper's report to checkout, order and payment. The merchant's existing price, stock and order rules stay authoritative: the UCP interface sits in front of them, and a stale stock answer in UCP format is still stale."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict what the page contains and the kind of evidence or material it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this page give you, in what order, and from what kind of material?",
+        "expected": "One purchase traced through UCP, including a lost response: how the protocol lets a shopping application learn what a merchant supports and use it through common messages, while the merchant keeps its products, prices and orders; the steps from discovery through checkout to the first order update; the difference between a successful demonstration and an uncertain outcome. Material: the UCP documentation and illustrative message excerpts, for a reader who knows what an API is, with the broader business choice left to [[ai-and-agentic-commerce]]."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How does one purchase run through the Universal Commerce Protocol, step by step?",
+    "claim": "One purchase runs through UCP in seven steps (discover the merchant's profile, choose an exact item, create a checkout session, supply address and delivery, arrange payment, complete, follow the order), and at each step the application may report only the state the merchant returned: a ready checkout is not an order and a lost completion response is resolved by reading the existing checkout, not by buying again.",
+    "disputed_by": "The view that an agent purchase is one API call after a conversation: once the assistant has found the item, completing it is a single request whose success or failure the assistant can report at once, and a retry after a timeout is harmless.",
+    "so_what": "A team learning UCP traces requests, responses, customer messages and identifiers on a local sample before it adds a conversational layer, and makes the lost-response recovery its first failure exercise; a merchant scopes its first integration to one product type, one market, one payment route and explicit approval.",
+    "how_why": "Each step returns identifiers and a status that the next step needs: the profile fixes the agreed version and capabilities, the session id carries the checkout through updates, and the status tells the application what work remains. Payment credentials, application authentication and buyer authorization are separate, so approval of the terms cannot be inferred from a payment token. Completion may succeed at the merchant while its response is lost; only a read of the same checkout, and a retry under the same idempotency key, avoids a second order or charge.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "UCP separates the roles in a purchase (Platform, Business, credential provider, payment service provider), and each participant's profile declares the capabilities and versions it supports, so a purchase uses only what both sides declared, with matching versions and dependencies."
+      },
+      {
+        "id": "S2",
+        "claim": "Each step returns an identifier or a term the next step needs: the agreed profile, the exact variant identifier, the checkout session identifier, and the delivery options and total the merchant calculates and the application only selects from."
+      },
+      {
+        "id": "S3",
+        "claim": "The checkout status tells the application what work remains: a ready checkout is not an order, only `completed` with an order reference lets it tell the shopper the order is placed, and afterwards the order record, not the conversation, answers the shopper's questions."
+      },
+      {
+        "id": "S4",
+        "claim": "Payment credentials, application authentication and buyer authorization are separate: a payment token is not a receipt, and approval of the terms cannot be inferred from it."
+      },
+      {
+        "id": "S5",
+        "claim": "A lost completion response leaves the outcome uncertain; the application reads the existing checkout and retries only the identical completion under the same idempotency key, never with a fresh checkout, and a team practises this first."
+      },
+      {
+        "id": "S6",
+        "claim": "A first integration puts UCP in front of the merchant's existing price, stock and order rules, starts with one product type, one market, one payment route and explicit approval, and is proven by recovering one uncertain purchase."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Carries the whole appendix: works one protocol message by message so the part's claims about agreed capabilities, separate states and recovery rest on a traced purchase.",
+    "supports": [
+      "PA-1",
+      "PA-2",
+      "PA-3"
+    ]
+  },
+  "flow": {
+    "pattern": "chronological",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "purchase to vocabulary: the purchase, its participants and the vocabulary come before the first message that uses them"
+      },
+      {
+        "pattern": "problem_solution",
+        "applies_to": "lost-response to comparison: the failure, the other failures, the exercise that practises the recovery, the scope it proves, then the protocols beside UCP"
+      }
+    ],
+    "rationale": "The part has one page, which follows one purchase in the order a shopping application meets it: participants and vocabulary, then discovery, item choice, checkout session, address and delivery, the checkout states, payment, completion and the order update, then the lost response, an exercise and what to implement first. Each step uses an identifier or a state the previous step returned, so a step read early would refer to a session, a status or a key the reader has not seen; the recovery section comes after completion because it re-reads the checkout that completion created. Inside the walkthrough, 'Read the Checkout State' stands between Step 4 and Step 5 because Step 4 returns the first ready_for_complete and Step 5 must not treat it as a purchase; 'Three Permissions' follows payment and precedes completion, because the token answers who pays and completion needs the shopper's approval. The comparison with ACP, MCP and AP2 comes after What a Merchant Should Implement First as its own section, because no step needs it, Step 5 explains AP2 mandates where it uses them, and its advice on supporting two protocols assumes the first integration. The technical reference opens Step 1, where the first message is read, and the handoff is explained before the table of states that names it. The conclusion returns to the opening shopper, then gives the take-aways, the review questions and the hand-off to the Reference part. 'Other Things That Go Wrong' follows the lost response as the same rule applied to other outcomes. The exercise follows because it practises that recovery, and what to implement first comes last because its proofs are the exercise's results;"
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "A shopper asks an assistant to find a waterproof jacket for less than €200 and to ask before buying; finding it is only the beginning, because the assistant must still pick the size, get a delivered price, present the terms, arrange payment and learn whether an order exists."
+    },
+    "bridge": {
+      "from_reader_world": "Chapter 45's account of agentic commerce, where Kestrel & Pine prepares its data and order APIs rather than launching a shopping agent, and the cases of Part XI; the reader needs only a basic understanding of an API.",
+      "to_topic": "The messages one protocol, UCP, exchanges for a single purchase, and what the application may tell the shopper after each of them."
+    },
+    "thesis_statement": {
+      "text": "Trace one purchase through UCP's seven steps, including a lost response: at each step the application may tell the shopper only what the merchant returned, so a ready checkout is not an order, and a lost completion response is resolved by reading the existing checkout, not by buying again; the merchant keeps its products, prices and orders.",
+      "placement": "KEY POINTS bullets 1 to 3 and paragraph p03"
+    },
+    "roadmap": {
+      "placement": "paragraph p04",
+      "promises": [
+        {
+          "promise": "The purchase we will follow, and who takes part in it.",
+          "kept_in": [
+            "purchase",
+            "participants"
+          ]
+        },
+        {
+          "promise": "The vocabulary before the messages.",
+          "kept_in": [
+            "vocabulary"
+          ]
+        },
+        {
+          "promise": "Seven steps from discovering the merchant's profile to the first order update, with the checkout states between address and payment and the three permissions between payment and completion.",
+          "kept_in": [
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4",
+            "states",
+            "step-5",
+            "permissions",
+            "step-6",
+            "step-7"
+          ]
+        },
+        {
+          "promise": "A completion response lost and recovered, and the other things that go wrong.",
+          "kept_in": [
+            "lost-response",
+            "other-failures"
+          ]
+        },
+        {
+          "promise": "A learning exercise on the official samples.",
+          "kept_in": [
+            "try-it"
+          ]
+        },
+        {
+          "promise": "What a merchant should implement first, and how UCP compares with other protocols.",
+          "kept_in": [
+            "implement-first",
+            "comparison"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A shopper asks an assistant to find a waterproof jacket for less than €200; finding one is only the beginning, because to buy it the assistant must identify the size, obtain a current delivered price, present the terms, arrange payment and learn whether an order exists, and each merchant may expose these steps differently.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "The waterproof jacket under €200 and the five things the assistant must still do.",
+            "shows": "Shows that a purchase is several steps, each owned by the merchant."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Universal Commerce Protocol (UCP) defines shared messages and rules for these exchanges: a shopping application learns what a merchant supports and uses it through a common interface, while the merchant keeps responsibility for its products, prices and orders.",
+        "function": "definition",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The steps a purchase needs and that merchants expose them differently.",
+          "introduces": "UCP as the shared messages for those steps, with the merchant still in charge.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The way to learn UCP is to trace one purchase through its seven steps and then lose its completion response: at each step the application may tell the shopper only what the merchant returned, so a ready checkout is not an order and a lost completion response is resolved by reading the existing checkout, not by buying again; a successful demonstration shows only that two systems can exchange messages.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "What UCP is and that the merchant keeps its records.",
+          "introduces": "How to learn it: one purchase traced, including the uncertain outcome.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "This appendix follows one illustrative purchase from discovery to the first order update for a reader who knows what an API is: the purchase, its participants and the vocabulary, seven steps with stops for the checkout states and three permissions, a lost completion response and other failures, an exercise, what a merchant should implement first and how UCP compares with other protocols; the business decision stays with chapter 45.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The method: one purchase traced.",
+          "introduces": "The route the page takes and where the broader business choice is made.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "purchase",
+      "heading": "The Purchase We Will Follow",
+      "controlling_idea": "The tutorial follows one hypothetical lab purchase of a €199 Ridgewalker jacket, separate, for readers of the book, from Eva's €235 order and from Kestrel & Pine's 2027 decision, and the shopper asks to approve before buying.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Fixes the purchase, the shopper's instruction and the dated reference every later step uses."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap's one purchase.",
+        "introduces": "The purchase itself: the jacket, the lab conditions and the shopper's instruction.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "In a separate learning environment Kestrel & Pine, the book's fictional outdoor brand, offers its Ridgewalker shell jacket, women's M in moss, at €199 including tax, which qualifies for the brand's €75 free-shipping threshold.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Ridgewalker shell jacket, women's M, moss, €199 including tax; €75 free-shipping threshold.",
+              "shows": "Gives the purchase concrete, ledger-consistent terms.",
+              "source": "Scenario ledger (Ridgewalker €199; free shipping from €75)"
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Availability, a supported delivery address and Thursday delivery are illustrative lab conditions, not evidence that a real service supports the purchase; for readers of the book, the lab purchase is separate from Eva's €235 order, the book's running example, and from Kestrel & Pine's decision not to launch a shopper-facing agent in 2027.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The jacket and its price.",
+            "introduces": "The assumptions of the lab and what the lab purchase is not.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The test shopper says 'Find this jacket, show me the delivered total, and ask before buying', and that last instruction means permission to search has not authorized an order.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The shopper's instruction: find, show the delivered total, ask before buying.",
+              "shows": "Separates permission to search from authority to buy; the conclusion returns to it.",
+              "source": "Illustrative lab scenario, labelled as such in the page"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The lab conditions.",
+            "introduces": "The shopper's own instruction.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "participants",
+      "heading": "Who Talks to Whom?",
+      "controlling_idea": "Several participants perform the purchase, UCP calls the consuming application the Platform and the merchant the Business, and the UCP interface belongs in front of the merchant's existing commerce operations.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S6"
+        ],
+        "how": "Names the roles whose agreement and whose separate responsibilities the steps depend on."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The purchase and the shopper.",
+        "introduces": "The participants who carry it out.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "In UCP the Platform is the application consuming commerce capabilities and the Business is the participant exposing them, roles that do not depend on whether either runs an AI model; with the shopper, a credential provider and a payment service provider they perform the purchase.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five participants (shopper, Platform, Business, credential provider, payment service provider), each with its job and the question to ask about it.",
+              "shows": "Gives each role one job and one question a reviewer can check.",
+              "source": "UCP core concepts"
+            }
+          ]
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "A credential lets a system prove identity or exercise an authority and a payment service provider processes the payment attempt; one company can fill several roles, but each role must be explainable separately.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: the application exchanges UCP requests and status with the merchant, receives a payment token from a wallet, and the merchant calls its commerce systems and payment provider.",
+              "shows": "Shows that UCP connects application and merchant while the merchant still checks its records and processes the purchase."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The five participants.",
+            "introduces": "Glosses for credential and PSP, and the rule that roles stay distinct.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "For Kestrel & Pine the UCP interface belongs in front of existing commerce operations, asking the same price service and availability rules as the website, because an interface that calculates its own discount or invents a delivery date creates another source of contradictory promises.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The merchant's role as the Business.",
+            "introduces": "Where the interface sits in the merchant's systems, and why.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vocabulary",
+      "heading": "The Vocabulary, Before the Messages",
+      "controlling_idea": "Profiles, services, capabilities, extensions, transports and schemas describe what each participant supports before a purchase is attempted, under precise names, carried in this tutorial over REST.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Gives the terms with which participants declare and agree what a purchase may use."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The participants.",
+        "introduces": "The words they use to describe what they support.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p12",
+          "controlling_idea": "Because merchants differ in what they support, UCP describes those differences before a purchase with six terms: profile, service, capability, extension, transport and schema.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six terms with a plain meaning and an example in the jacket purchase (profile at /.well-known/ucp, shopping service, checkout capability, shipping extension, REST over HTTP, checkout schema).",
+              "shows": "Ties each abstract term to the purchase before the messages use it.",
+              "source": "UCP 2026-08-25 documentation (cited in the page's Sources)"
+            }
+          ]
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Profiles declare services, capabilities and extensions under precise reversed-domain names such as dev.ucp.shopping.checkout, which identify a namespace and are not URLs to call.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The six terms.",
+            "introduces": "How profiles write the names of services and capabilities.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "REST, the API style using HTTP methods such as GET and POST, carries the tutorial's examples so the reader can follow the exchange without learning an agent framework.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Transport in the table and the names a profile declares.",
+            "introduces": "The transport the tutorial uses: REST.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "step-1",
+      "heading": "Step 1: Discover What the Merchant Supports",
+      "controlling_idea": "Against UCP's dated 2026-08-25 documentation and with illustrative excerpts, the application first reads the merchant's profile, and a feature is usable only when both profiles support a compatible version and its parent capability.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Shows capability agreement as the first message of the purchase."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The vocabulary of profiles and capabilities.",
+        "introduces": "First the source behind the messages, then the first message: reading the merchant's profile.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "controlling_idea": "The walkthrough uses UCP's published 2026-08-25 documentation, checked on 9 November 2026 against an inspected source revision, and its message fragments are illustrative: invented identifiers, reserved .example addresses, omitted fields and authentication, not requests for a live payment service.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "UCP 2026-08-25 documentation checked 9 November 2026; inspected source revision 7dd79ea.",
+              "shows": "Dates the technical reference the steps rely on.",
+              "source": "UCP 2026-08-25 documentation (cited in the page's Sources)"
+            }
+          ]
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Before creating anything the application reads the merchant's profile with GET /.well-known/ucp, the API's entrance sign.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "GET /.well-known/ucp on kestrel-pine.example.",
+              "shows": "Shows the discovery request.",
+              "source": "UCP 2026-08-25 documentation (cited in the page's Sources)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The dated reference and the caveat on excerpts.",
+            "introduces": "The first message: reading the merchant's profile.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The profile excerpt shows only the REST service and the checkout capability; the physical-goods flow also needs fulfillment support, and payment configuration and keys are omitted.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Profile excerpt: version 2026-08-25, the dev.ucp.shopping REST service and the dev.ucp.shopping.checkout capability.",
+              "shows": "Shows what a profile declares.",
+              "source": "UCP 2026-08-25 documentation (cited in the page's Sources)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The discovery request.",
+            "introduces": "The response, labelled as an excerpt.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "The profile reads from the outside in: the version identifies the contract, the service entry says how to reach the API, and the capability entry names the behavior and its message definition; the checkout path is appended to the service endpoint.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The profile excerpt.",
+            "introduces": "How to read it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The application identifies its own profile with each request so the merchant can determine the shared capabilities, and under UCP's negotiation rules names alone are insufficient: versions and extension dependencies must match, and a profile grants no permission to purchase.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: merchant and application capabilities; their agreement includes checkout and shipping when versions match, with shipping depending on checkout.",
+              "shows": "Shows agreement as the intersection by version and dependency."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The merchant's profile.",
+            "introduces": "The application's profile and the negotiation between them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "In the lab both profiles support checkout and its fulfillment extension; an application without shipping support must not invent a shipping field but use a supported alternative such as the merchant's own checkout.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Both lab profiles support checkout and fulfillment.",
+              "shows": "Shows the agreement for this purchase and the fallback when it is missing.",
+              "source": "Illustrative lab scenario, labelled as such in the page"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The negotiation rules.",
+            "introduces": "The lab's agreement and what to do without it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "step-2",
+      "heading": "Step 2: Choose an Exact Item",
+      "controlling_idea": "Checkout needs the merchant's identifier for the exact variant, recorded as returned, not the parent product.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Supplies the first identifier the next step needs."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The agreed capabilities.",
+        "introduces": "Choosing the exact item to buy.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p24",
+          "controlling_idea": "A purchase needs the merchant's identifier for the exact variant, the product with a particular combination of options, because a parent product identifier does not say which jacket to ship.",
+          "function": "definition"
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "UCP's catalog capabilities separate searching for candidates from looking up identified products, and a platform may arrive with an item from another agreed discovery channel; checkout does not require every catalog capability.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The need for an exact variant.",
+            "introduces": "How UCP's catalog helps find it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "In the lab lookup returns ridgewalker-w-m-moss, which the application records exactly rather than constructing from a title, and the checkout response, not the listing price, sets the terms.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Variant identifier ridgewalker-w-m-moss.",
+              "shows": "Shows the identifier the checkout request will carry.",
+              "source": "Illustrative lab scenario, labelled as such in the page"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Catalog lookup.",
+            "introduces": "The lab's returned identifier.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "A cart collects intended items while the shopper decides and a checkout session gathers what is needed to place an order; the tutorial creates checkout directly with one item.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: sizes S, M and L; the medium leads to ridgewalker-w-m-moss, which goes into checkout; the parent product is crossed out.",
+              "shows": "Shows the variant, not the product, entering checkout."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The chosen identifier.",
+            "introduces": "Cart versus checkout session, and why the tutorial skips the cart.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "step-3",
+      "heading": "Step 3: Create a Checkout Session",
+      "controlling_idea": "Creating a checkout session asks the merchant to work out a purchase without placing it, and the response's status and messages, not the HTTP code, tell the application what remains.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Introduces the session identifier and the business status every later step reads."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The exact variant.",
+        "introduces": "The request that starts the checkout.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p28",
+          "controlling_idea": "Creating a session has not placed the order, which gives the merchant somewhere to collect the address, calculate delivery and report missing information before money is committed.",
+          "function": "explanation"
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "The checkout REST binding defines the endpoint, and the illustrative POST /ucp/checkout-sessions request carries the variant and omits authentication headers.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "POST /ucp/checkout-sessions with UCP-Agent, Idempotency-Key and Request-Id headers and one line item.",
+              "shows": "Shows the create request.",
+              "source": "UCP 2026-08-25 documentation (cited in the page's Sources)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "What a session is for.",
+            "introduces": "The request that creates it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "UCP-Agent points to the application's profile and is not a password, Request-Id traces the attempt, and Idempotency-Key identifies the logical operation so a retry is recognised; idempotency means repeating the operation creates no second purchase or session.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The request.",
+            "introduces": "Its three headers and the term idempotency.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "The merchant could return a response excerpt with the checkout id chk_lab_001, status incomplete and a recoverable message that the email is missing.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Response excerpt: chk_lab_001, incomplete, EUR, a missing $.buyer.email message.",
+              "shows": "Shows a business status inside a successful HTTP response.",
+              "source": "UCP 2026-08-25 documentation (cited in the page's Sources)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The request.",
+            "introduces": "The merchant's response.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Full responses also carry the ucp metadata, items, totals and other required fields, and the checkout schema, not the excerpt, is the implementation contract.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The fields the response excerpt shows.",
+            "introduces": "The full response and the schema the excerpt leaves out.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The application now has a checkout identifier and a task, because status incomplete means the merchant needs more information: the merchant has communicated a business state, and an API request can succeed while the purchase stays incomplete.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: the app asks for a checkout; the merchant returns chk_lab_001, incomplete, email missing; no order exists yet.",
+              "shows": "Shows a session that is not an order."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The response and its full contract.",
+            "introduces": "What the application now knows: a business status, not just HTTP success.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "step-4",
+      "heading": "Step 4: Supply the Address and Choose Delivery",
+      "controlling_idea": "The application supplies the address and selects from the delivery options the merchant creates, sends the whole writable state on update, and presents the merchant's recalculated total for approval.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Shows the merchant, not the application, setting delivery terms and the total."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "An incomplete checkout.",
+        "introduces": "Supplying what it lacks: the address and the delivery choice.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p34",
+          "controlling_idea": "A jacket cannot be quoted for delivery without an address, so the application collects the details, submits them and lets the merchant return the choices, never inferring Thursday delivery from a product page.",
+          "function": "process"
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "The fulfillment extension describes methods, destinations, groups and options; the merchant creates the groups and options and the application selects from the returned identifiers.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Method, destination, group, option and selection, each with its meaning in the jacket example.",
+              "shows": "Maps the extension's vocabulary to the purchase.",
+              "source": "UCP Fulfillment"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: the app sends an address, the merchant returns options, the app selects standard free Thursday delivery, the merchant recalculates to €199.",
+              "shows": "Shows who creates and who selects."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Supplying the address.",
+            "introduces": "The vocabulary of the returned delivery choices.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Update Checkout, PUT /checkout-sessions/{id}, is a replacement operation in this release, so the request is built from the latest state and keeps previously supplied writable information.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The delivery choices.",
+            "introduces": "How the application sends its choice back.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "In the lab the application submits the buyer details, keeps the jacket line and selects the returned destination and option, and the merchant returns an assumed €199 total with free shipping and Thursday delivery and nothing preventing completion.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "€199 total, free shipping, Thursday delivery.",
+              "shows": "Gives the terms the shopper will approve.",
+              "source": "Illustrative lab scenario, labelled as such in the page"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The replacement update.",
+            "introduces": "The lab's update and result.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "UCP expresses money in minor units, so 19900 means €199.00, as a quote fragment with status ready_for_complete shows.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Quote fragment: chk_lab_001, ready_for_complete, EUR, total 19900.",
+              "shows": "Shows the amount format and the new status.",
+              "source": "UCP 2026-08-25 documentation (cited in the page's Sources)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The €199 total.",
+            "introduces": "How the total is written.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The fragment omits tax and fulfillment fields, a tax-inclusive price must not have its tax added again, and the app presents the merchant's total and delivery terms and asks the shopper to approve them.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The quote fragment.",
+            "introduces": "What it omits and what the app does with it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "states",
+      "heading": "Read the Checkout State Before Taking the Next Step",
+      "controlling_idea": "The checkout status tells the application what work remains: of six states only completed with an order reference confirms an order, and a handoff to the merchant is a normal outcome.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "States the rule the remaining steps apply: report only the state the merchant returned."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The status ready_for_complete just returned.",
+        "introduces": "What each checkout status means before the next step acts on one.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "controlling_idea": "The checkout status tells the application what kind of work remains, not whether the shopper is happy, a parcel has shipped or money has settled.",
+          "function": "claim"
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "A handoff is a normal outcome: the merchant can supply a continue_url for the buyer to finish required work, and a first integration should keep that route rather than force every exception through chat.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Work that remains.",
+            "introduces": "Work that belongs to the buyer: the handoff and its continue_url.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "UCP's checkout lifecycle defines six states, from incomplete through requires_escalation, ready_for_complete and complete_in_progress to completed and canceled.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The six statuses and what the application should understand from each.",
+              "shows": "Gives the reader the full set of states to act on.",
+              "source": "UCP Checkout lifecycle"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 6: missing details, ready, processing, order placed; a buyer handoff; canceled or expired sessions stop.",
+              "shows": "Shows the simplified lifecycle."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "What a status says, including a handoff.",
+            "introduces": "The six statuses.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Displaying 'Purchased' after ready_for_complete is the mistake to avoid, because that state is a form ready for its final button: the shopper must still authorize and the merchant still accept.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The six states.",
+            "introduces": "The most common misreading of one of them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "step-5",
+      "heading": "Step 5: Arrange Payment Without Giving the Model Card Details",
+      "controlling_idea": "Payment uses a handler agreed by the participants, and the application carries a credential it cannot treat as a receipt, keeping card details out of the model and handling any extra buyer interaction.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Separates the payment credential from approval and from the order."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Terms ready for approval and the rule that only the merchant's states count.",
+        "introduces": "Arranging payment for those terms.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p44",
+          "controlling_idea": "Before a payment is attempted the participants agree how credentials are obtained and passed: a payment instrument describes what pays and a payment handler defines the procedure for working with it.",
+          "function": "definition"
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "In the lab a supported wallet returns a token after the shopper confirms, a protected reference whose restrictions and lifetime come from the handler and provider, not from the word 'token'.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "A supported wallet returning a token.",
+              "shows": "Shows where the credential comes from.",
+              "source": "Illustrative lab scenario, labelled as such in the page"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Instrument and handler.",
+            "introduces": "The lab's wallet and its token.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "The application passes the credential as the handler specifies and the merchant processes it, so the token is not a receipt: it proves neither an accepted order nor a successful payment.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 7: the wallet supplies a token to the app, which sends it to the merchant; the merchant processes payment with its provider.",
+              "shows": "Shows that the merchant's payment integration determines the result."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The token.",
+            "introduces": "What happens to it and what it does not prove.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "Raw card details stay out of prompts, model context and ordinary logs, and a payment form or wallet component handles the sensitive interaction through the provider's integration.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The token, not the card, travels between the systems.",
+            "introduces": "So raw card details can stay out of prompts, model context and logs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "Payment can require additional buyer interaction such as a cardholder challenge, which the application handles or hands off; an earlier chat message does not prove every payment requirement is met.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Keeping card details out.",
+            "introduces": "Extra buyer interaction during payment.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "permissions",
+      "heading": "Three Permissions That Are Easy to Confuse",
+      "controlling_idea": "A payment token answers who pays, but authenticating the application, accessing the buyer's account and authorizing the purchase are three further, separate permissions, and the first exercise uses a person approving the final purchase.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Separates application authentication, account access and purchase authorization from the payment credential."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The payment credential, which proves neither an order nor approval.",
+        "introduces": "The three other permissions a purchase involves, before the shopper approves and completes.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p49",
+          "controlling_idea": "Trusting the application, accessing the buyer's account and authorizing a purchase are different decisions, and conflating them gives an assistant more authority than the customer intended.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Three questions (who is calling, may this app use my account, may this purchase proceed), what answers each and what it does not establish.",
+              "shows": "Separates authentication, account access and purchase authorization.",
+              "source": "UCP signatures; identity linking"
+            }
+          ]
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Identity linking lets a shopper authorize account access through OAuth 2.0 with limited scopes, and a guest checkout need not link an account.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Account access in the table.",
+            "introduces": "How UCP grants it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "An AP2 mandate can provide a signed record of authority for a more autonomous flow, but the first exercise uses a person reviewing the final purchase.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Account authorization.",
+            "introduces": "Signed purchase authority, and why the lab does without it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "step-6",
+      "heading": "Step 6: Complete the Checkout and Keep the Order Reference",
+      "controlling_idea": "Completion places the agreed purchase under a new idempotency key, and only a completed response with an order reference lets the application tell the shopper the order is placed.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Shows the one state that confirms an order."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The shopper's approval as a separate permission and the payment credential.",
+        "introduces": "The completion request.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p52",
+          "controlling_idea": "With the shopper's approval of one moss jacket in M for €199 and the credential, the application requests completion with POST /checkout-sessions/chk_lab_001/complete and a new idempotency key for this operation.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "POST /checkout-sessions/chk_lab_001/complete with idempotency key d717c14e-….",
+              "shows": "Shows the completion request and its own key.",
+              "source": "UCP 2026-08-25 documentation (cited in the page's Sources)"
+            }
+          ]
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "The completion body carries the payment data the selected handler requires, so the application invents no generic token format.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The completion request.",
+            "introduces": "Its body.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Completion places the agreed purchase and is not the place to change price, address or quantity; a change of size means updating and rechecking the checkout first.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What completion carries.",
+            "introduces": "What it must not change.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "After successful synchronous completion the response excerpt shows status completed and an order with id ord_lab_001 and a permalink.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Response excerpt: chk_lab_001, completed, order ord_lab_001 with permalink_url.",
+              "shows": "Shows the state that confirms an order.",
+              "source": "UCP 2026-08-25 documentation (cited in the page's Sources)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The completion request.",
+            "introduces": "The merchant's completed response.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Only now is 'Your order has been placed' supported, and the application keeps both identifiers: the checkout for the negotiation, the order for the accepted purchase.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 8: the app sends complete with a key; the merchant returns completed with chk_lab_001 and ord_lab_001, both kept.",
+              "shows": "Shows the confirmation and the two identifiers."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The completed response.",
+            "introduces": "What the application may now say and keep.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "A complete_in_progress response means the purchase is still processing and must not be hurried by repeated completion, and authorization, capture and fulfillment are later activities an order confirmation does not collapse.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The completed response.",
+            "introduces": "The in-progress response and the activities still to come.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "step-7",
+      "heading": "Step 7: Follow the Order After Checkout",
+      "controlling_idea": "After checkout the answers come from the merchant's order records, by webhook or authorized retrieval, linked through a small correlation record and protected by access checks.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Shows the order, not the conversation, as the source of later answers."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "A confirmed order and its reference.",
+        "introduces": "Following that order after checkout.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p58",
+          "controlling_idea": "'When will it arrive?' is answered by the order and its fulfillment records, not by the assistant's last sentence.",
+          "function": "claim"
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "UCP's order capability represents purchased lines, fulfillment expectations, actual fulfillment events and adjustments, so a Thursday promise and a 'delivered' event are different kinds of information.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The order as the source of answers.",
+            "introduces": "What the order capability holds.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "Order updates arrive by webhook, an HTTP notification from merchant to platform, or by authorized retrieval with GET /orders/{id}.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What the order holds.",
+            "introduces": "How updates reach the platform.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p61",
+          "controlling_idea": "The lab keeps a small correlation record of the checkout, the completion key, the order and the provider's payment reference, an implementation recommendation rather than a UCP message format, so support can connect 'the assistant says I bought it' to a concrete order and payment.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Checkout chk_lab_001, completion key d717c14e-…, order ord_lab_001, provider payment reference, each with why it is kept.",
+              "shows": "Lists the identifiers that link a conversation to an order and a payment.",
+              "source": "Illustrative lab scenario, labelled as such in the page"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 9: webhook and retrieval; a correlation record links checkout, completion key, order and payment reference.",
+              "shows": "Shows the record joining the identifiers."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Updates by webhook or retrieval.",
+            "introduces": "The record that ties them to the lab purchase.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p63",
+          "controlling_idea": "An order API needs access checks: knowing ord_lab_001 must not reveal the address, and a refund adjustment grants no permission to initiate refunds.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The correlation record and retrieval of the order.",
+            "introduces": "The access checks retrieval needs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "lost-response",
+      "heading": "When the Completion Response Disappears",
+      "controlling_idea": "When the completion response is lost the outcome is uncertain, so the application reads the existing checkout and retries only the identical completion with the same idempotency key, never with a fresh checkout.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Shows the recovery that proves a first integration."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The successful completion and the correlation record.",
+        "introduces": "The completion whose response never arrives.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p64",
+          "controlling_idea": "If the merchant creates the order but the connection drops before the response arrives, the application can conclude neither 'failed' nor 'purchased': the outcome is uncertain.",
+          "function": "context"
+        },
+        {
+          "id": "p65",
+          "controlling_idea": "Reconciliation, comparing records to establish what happened, starts by reading the existing checkout: completed means recover the order reference, in progress means wait and check with a bounded delay, expiry stops automatic attempts for investigation, and a fresh checkout is never created to escape uncertainty.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 10: the merchant creates one order, the response is lost, the app retrieves the checkout and receives the same order.",
+              "shows": "Shows that losing the response does not undo the purchase."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "An uncertain outcome.",
+            "introduces": "Reconciliation by reading the checkout.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p66",
+          "controlling_idea": "UCP's completion contract directs the caller to retrieve state first and only then retry the identical completion with the same idempotency key; a genuinely new completion uses a new key.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "UCP completion contract.",
+              "shows": "Grounds the read-first rule in the specification.",
+              "source": "UCP 2026-08-25 documentation (cited in the page's Sources)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The reconciliation steps.",
+            "introduces": "The specification's own rule.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p67",
+          "controlling_idea": "UCP's signature and replay rules separate the logical operation's identity from each attempt's authentication material, so the implementation generates a random, unique operation key and persists its result.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The same-key retry.",
+            "introduces": "The operation key versus per-attempt authentication.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p68",
+          "controlling_idea": "Disconnecting after the merchant accepts completion and then recovering the order should be a team's first failure exercise, because it forces the interface, storage, payment integration and customer message to agree about the same event.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The recovery rules.",
+            "introduces": "Making recovery the first exercise, with the other failure situations.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "other-failures",
+      "heading": "Other Things That Go Wrong",
+      "controlling_idea": "Besides a lost response, a vanished item, a changed total, a required buyer step and a missed update each need a merchant-backed action and an honest customer message, which depend on the negotiated capabilities.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S5"
+        ],
+        "how": "Extends 'report only what the merchant returned' to the other uncertain or changed outcomes."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "Recovery from a lost completion response.",
+        "introduces": "The other situations in which the application must not invent an outcome.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p68a",
+          "controlling_idea": "A lost response is one of five situations in which the application must not invent an outcome, each with what to do and what the customer needs to hear.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five situations (stock disappears, total changes, buyer interaction, unknown outcome, missed update), what to do and what the customer hears.",
+              "shows": "Gives the customer message for each uncertain or changed outcome."
+            }
+          ]
+        },
+        {
+          "id": "p69",
+          "controlling_idea": "These responses are design recommendations for the application; the exact errors and recovery actions depend on the negotiated capabilities, merchant and payment handler.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The table of situations.",
+            "introduces": "What kind of advice it is.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "try-it",
+      "heading": "Try It: A Small Learning Exercise",
+      "controlling_idea": "A reader learns the message flow on the official samples with an ordinary API client and test credentials, through six exercises that end in a deliberately lost response and a trace for review.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Lets the reader perform the purchase and the recovery."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The recovery and the other failure situations.",
+        "introduces": "A hands-on exercise that practises them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p70",
+          "controlling_idea": "The recovery and the other situations are learnt best on a test system without a language model, with an ordinary API client that shows which state changed after each request.",
+          "function": "recommendation"
+        },
+        {
+          "id": "p71",
+          "controlling_idea": "The official UCP samples repository provides REST server and client examples, whose pinned dependencies and advertised version should be checked before comparison with this appendix.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "UCP samples repository and its Python server instructions.",
+              "shows": "Gives the reader a local environment.",
+              "source": "UCP samples, accessed 2026-11-09"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Learning with an API client.",
+            "introduces": "Where to get a server and client.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p72",
+          "form": "list",
+          "controlling_idea": "Six exercises in order: read both profiles, create a session with missing information, supply the fields and choose delivery, approve and complete, lose the response deliberately, and exercise a boundary.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The samples.",
+            "introduces": "The exercises to run on them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p73",
+          "controlling_idea": "The output is a short trace of request, response, customer message and recorded identifiers, more useful in a first design review than a polished chat demo.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The six exercises.",
+            "introduces": "What they produce.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "implement-first",
+      "heading": "What a Merchant Should Implement First",
+      "controlling_idea": "A first integration adapts dependable merchant APIs, starts narrow with explicit approval and the recovery path, and proves six responsibilities while the merchant's own rules stay authoritative.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Turns the traced purchase into a scope and its proofs."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The trace from the exercise.",
+        "introduces": "What a merchant builds first.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p74",
+          "controlling_idea": "The trace shows what a first integration must prove; a merchant with dependable checkout and order APIs can begin by adapting them, but stale stock given in UCP format is still stale.",
+          "function": "claim"
+        },
+        {
+          "id": "p75",
+          "controlling_idea": "A first integration takes one product type, one market, one payment route and explicit shopper approval, establishes the recovery path before loyalty, split shipments or unattended purchases, and proves six responsibilities, each with a first proof.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Profile and contract, product and availability, checkout, payment, recovery, operations, each with a first proof.",
+              "shows": "Gives the proofs a review can check."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Starting from existing APIs.",
+            "introduces": "The narrow first scope and its proofs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p76",
+          "controlling_idea": "A hosted commerce vendor may provide much of this, but the merchant still verifies its behavior, while a custom implementation gives control and takes on version changes, credential handling and recovery.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What to build.",
+            "introduces": "Whether to build it or rely on a vendor.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p77",
+          "controlling_idea": "Learning UCP does not require adopting every capability, but a purchase must be honest about the capabilities it depends on, as a download and a jacket differ in fulfillment.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Relying on a vendor or building the interface.",
+            "introduces": "Which capabilities a given purchase actually needs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "comparison",
+      "heading": "How UCP Differs from ACP, MCP and AP2",
+      "controlling_idea": "UCP overlaps with ACP, can be carried over MCP and may use AP2 mandates as an option, so a merchant that supports more than one protocol maps them onto one checkout and order logic.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S6"
+        ],
+        "how": "Places capability agreement among the neighbouring protocols and keeps one business truth when there are two."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "A first integration of UCP.",
+        "introduces": "The other protocols a merchant may be asked to support.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p15",
+          "controlling_idea": "A merchant may be asked to support more than one protocol, so it needs to know how UCP differs from ACP, MCP and AP2, which appear together because a purchase needs both commerce rules and a way to carry out authorized actions.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "ACP (commerce interface by OpenAI and Stripe, overlaps with UCP), MCP (tools for AI applications; UCP can be exposed through it), AP2 (signed mandates; UCP can use its extension).",
+              "shows": "Places UCP among the protocols a reader will meet beside it.",
+              "source": "ACP repository; UCP MCP binding; UCP and AP2"
+            }
+          ]
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "ACP's April 2026 specification covers cart, order and product-feed work as well as checkout and payment, so teaching ACP as 'payments' and UCP as 'everything else' would mislead.",
+          "function": "refutation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "ACP's April 2026 specification.",
+              "shows": "Shows ACP's scope overlaps UCP's.",
+              "source": "ACP repository, accessed 2026-11-09"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The comparison table.",
+            "introduces": "ACP's actual scope.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "UCP makes discoverable capabilities and agreement central, carries its operations as MCP tools through its MCP binding, and treats AP2 as an optional authorization mechanism that is neither the payment processor nor required for every flow.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "ACP's scope.",
+            "introduces": "What is distinctive to UCP and how it uses MCP and AP2.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "A merchant that needs both ACP and UCP should map both interfaces onto shared checkout and order logic, because two adapters are manageable and two competing definitions of what a customer owes are not.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The overlap between ACP and UCP.",
+            "introduces": "What a merchant supporting both should do.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The profiles, the checkout states and the recovery path answer one question together: what does the application actually know at each step? Capabilities agreed in advance say what may be asked, the checkout status says what work remains, and reading the existing checkout after a lost response says whether the order exists.",
+    "so_what": "A first integration is judged by whether it can explain and recover one uncertain purchase while the merchant's existing price, stock and order rules stay authoritative; a polished demonstration that hides the trace proves less.",
+    "callback": {
+      "to": "The opening's shopper who asked the assistant to find the jacket, show the delivered total and ask before buying.",
+      "how": "p78 returns to that instruction: the reader can now say which message carried each part of it, that permission to search was not authority to place an order, and that a request was not a confirmed purchase."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Run the six-exercise trace on a local sample with test credentials, including a deliberately lost completion response, and bring the trace and the first-review questions to the design review."
+    },
+    "hand_off": {
+      "to": "domain-coverage",
+      "relationship": "conclusion_summary",
+      "carries_over": "The cards, terms and sources introduced chapter by chapter.",
+      "introduces": "The same material gathered for lookup."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The first integration and the protocols beside UCP.",
+      "introduces": "What the traced purchase establishes, returned to the opening shopper.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p78",
+        "controlling_idea": "The opening shopper's 'ask before buying' is now readable message by message: capabilities agreed in advance say what may be asked, the checkout status says what work remains, and reading the existing checkout after a lost response says whether the order exists, so permission to search was never authority to buy and a request was never a confirmed purchase.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The shopper's instruction from p07; profiles (step 1), states (p40-p43), completion (step 6), recovery (p64-p66).",
+            "shows": "Ties the steps into one answer: what the application actually knows at each step."
+          }
+        ]
+      },
+      {
+        "id": "p79",
+        "form": "list",
+        "controlling_idea": "Established: UCP defines profiles, capabilities and message contracts agreed by version; checkout state and order state differ; payment credentials, application authentication and buyer authorization serve different purposes.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The synthesis.",
+          "introduces": "The points that are established.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p80",
+        "form": "list",
+        "controlling_idea": "Depends on context: REST as the first learning path, adapting existing APIs or relying on the platform vendor, and account linking, AP2 mandates and further extensions where the flow needs them.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established.",
+          "introduces": "What depends on the merchant's situation.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p81",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: judge the first integration by whether it can explain and recover one uncertain purchase, and keep the merchant's existing price, stock and order rules authoritative.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "Established and context-dependent points.",
+          "introduces": "The author's own judgement, labelled as such.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p82",
+        "form": "list",
+        "controlling_idea": "Eight questions for a first review test the roles, the agreed version and capabilities, the source of the price, the approval, the payment handler, the visible states, the lost response and support's access to the order.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions that apply them, under the heading Questions for Your First Review.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p83",
+        "controlling_idea": "Before the design review, run the six exercises on a local sample with test credentials, including a deliberately lost completion response, and bring the trace and these questions; the wider decision about shopping agents stays with chapter 45, and the mechanics that make any integration dependable with chapters 25 and 26.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The review questions.",
+          "introduces": "What to do before the review, and where the related chapters are.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p84",
+        "controlling_idea": "This appendix ends the book's chapters; the cards, terms and sources they introduced one at a time are gathered for lookup in the Reference part, starting with the coverage map that sends a capability to the chapter that covers it.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The cards, terms and sources introduced chapter by chapter.",
+          "introduces": "The same material gathered for lookup.",
+          "form": "paragraph",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "A production-ready payment server, a live purchase, or a claim that an example merchant or consumer program supports UCP."
+    },
+    {
+      "topic": "A forecast of protocol adoption or a survey of vendor marketing.",
+      "covered_in": [
+        "ai-and-agentic-commerce"
+      ]
+    },
+    {
+      "topic": "Changing Kestrel & Pine's established 2027 decision to prepare its data and APIs without launching a shopping agent.",
+      "covered_in": [
+        "ai-and-agentic-commerce"
+      ]
+    },
+    {
+      "topic": "Idempotency, events and reconciliation in general; API contracts and versioning in general.",
+      "covered_in": [
+        "events-consistency-and-reconciliation",
+        "api-contracts-and-versioning"
+      ]
+    },
+    {
+      "topic": "Authorization, capture and settlement as payment stages.",
+      "covered_in": [
+        "commerce-payments"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Carried from spec.md (maintenance note, needs the author at the next edition): protocol and sample revisions must be checked again before a later edition; the one fact needed is the UCP release current at that edition.",
+    "Minor round-3 findings not acted on (one reader each, non-blocking): the intro's thesis sentence uses 'ready checkout' before Step 3; 'payment authorization' in p57 sits close to the shopper's approval; Figure 5 shows Thursday and €199 before p37 states them; p22 does not say how the application identifies its profile (the UCP-Agent header appears in Step 3); the tax sentence in p39 needed a re-read; the ACP/MCP/AP2 section's placement was called workable but weak. Settled by rule 10 (current position stands) unless the author wants changes."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-09",
+      "decision": "Use the published 2026-08-25 UCP documentation and record the inspected source revision. Keep excerpts small and explicitly incomplete; a runnable production-looking mock would hide the authentication and payment integration work."
+    },
+    {
+      "date": "2026-11-09",
+      "decision": "Use a hypothetical lab purchase of one €199 jacket, separate from Eva's canonical €235 storefront order. This teaches the protocol without changing the scenario ledger."
+    },
+    {
+      "date": "2026-11-09",
+      "decision": "Place the tutorial in a new Appendix section before Reference, preserving the numbered chapter sequence and existing permalinks."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Converted spec.md to spec.json from the published page, one spec paragraph per unit. Intent outcome, the five acceptance criteria, thesis and role copied unchanged from journal-spec.json (appendix part); audience and the six supporting claims written for this page. The old success criteria were inventories (terms explained, protocols distinguished, figures present, sources dated, navigation wired) and are dropped as criteria: their outcomes are covered by AC-1 to AC-5, the audience's does_not_know list and the evidence items. No criterion was added.",
+      "rejected": [
+        "Keeping the inventory criteria as minor criteria (rule 7 of the author's standing instruction would drop them)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "The page carries the appendix's opening and closing (journal spec). Added what the published page lacked: the thesis sentence in p03 (each step reports only the state the merchant returned), a roadmap in p04 announcing every section, a bridge from chapter 45, p78 returning to the opening shopper as the part closing's synthesis and callback, the closing take-away in p83, and p84, a hand-off to domain-coverage (relationship conclusion_summary, as the Reference part declares). The pointers to chapters 45, 25 and 26 stay in p83 because they help; the hand-off now leads into the reference pages.",
+      "rejected": [
+        "Ending on chapters 25 and 26 (the journal spec's order puts domain-coverage next)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Word limit: the old spec set none, so the published length (4,770 words) is the basis and max_words is 5,250 (+10%, the author's allowance of 2026-11-12) to hold the added thesis sentence, roadmap, callback, take-away and hand-off; no new material beyond these."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Flow rubric (fresh agent, --flow output only): sound with notes. Taken, as the author asked on 2026-11-12 for the rubric notes to be taken without review: REST (p13) moved after the namespace paragraph (p14) so the six terms and the profile names read together; the ACP-and-UCP mapping advice (p18) moved from the vocabulary to What a Merchant Should Implement First; in Step 3 the full-contract note (p33) moved before the analysis (p32) so the section ends on its lesson; p61 and p62 merged (the correlation record and why it exists); glosses where a status, expiry, the update path or per-attempt signatures first appear; the table of other failure situations named in p68; the declared reason now justifies the tail order.",
+      "rejected": [
+        "Merging p16 (ACP's actual scope) into p15: p16 refutes a specific misreading and is a different point.",
+        "Listing the six responsibilities and the 'boundary' exercise earlier: both are spelled out in the table and the list where they are used.",
+        "Changing paths in the code examples: the brief keeps examples exactly; a gloss in Step 4 says paths are relative to the service endpoint."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round 1 (ESCALATE: two corroborated flow failures at fault in the spec) fixed under the pre-approved rule for spec-fault failures: both flow readers found the ACP/MCP/AP2 comparison out of place in the vocabulary, so it moved (p15-p17) into What a Merchant Should Implement First, before the ACP-and-UCP advice (p18); both found the table of other failures out of place under the lost-response heading, so it became its own section 'Other Things That Go Wrong' (new unit p68a with the table, and p69); both found Three Permissions unclear inside the payment step, so it became its own section between Step 5 and Step 6 (p49-p51). Roadmap, flow rationale and the invalidated transitions rewritten. Intent, thesis, role and criteria unchanged.",
+      "rejected": [
+        "Keeping the comparison in the vocabulary (two readers and the flow rubric found it a detour).",
+        "A new heading for the lost-response section to cover the table (a separate section keeps the heading true)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12 (rule 3, a move asked for by readers in two rounds): the ACP/MCP/AP2 comparison, with the advice on supporting both (p15-p18), became its own section after What a Merchant Should Implement First (both round-2 flow readers; a round-1 reader also asked for it there); the Technical reference paragraph (p08) moved to the start of Step 1 (flow reader B in rounds 1 and 2); the handoff paragraph (p43) moved before the table of states (flow reader B in rounds 1 and 2). Round 2 (REVISE) glosses applied under rule 6: recoverable, handoff, fulfillment extension in the vocabulary table, request signature, payment authorization versus approval, the two identities of a retry, payment handlers in the full profiles, the €235 aside framed for readers of the book; the bridge into the comparison now says why a merchant needs it. Word limit held at 5,250 by cutting agents' own additions and one figurative sentence ('the entrance sign for the API').",
+      "rejected": [
+        "Moving the lost-response section directly after Step 6 (one reader in one round; rule 10: the current position stands).",
+        "Raising max_words above 5,250 (the 10% allowance is used)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Confirming round 3 (ESCALATE, 16 pass / 13 fail, 7 blocking). Cheap, plainly right fixes applied without another round: a lead-in on the Technical reference so Step 1 opens on its source and then the first message (p08); Step 4 opens on the still-incomplete checkout (p34); Eva glossed as the book's running example (p06); 'request signature' glossed (p49); the retry-identity sentences of p67 simplified; 'these' in p70 made explicit. Auto-resolved by the author's standing instruction of 2026-11-12, rule 10: round 3's single flow reader found p08 at the start of Step 1 and the handoff (p43) before the states table awkward, the opposite of what readers of rounds 1 and 2 asked for; the current position stands.",
+      "rejected": [
+        "Moving p08 back into The Purchase We Will Follow and p43 back after the states table (rule 10).",
+        "A fourth round (the brief allows one confirming round)."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "external",
+      "ref": "UCP specification, release 2026-08-25 (https://ucp.dev/2026-08-25/specification/overview/) and its checkout, catalog, cart, fulfillment, payment, identity-linking, signatures and order specifications",
+      "contributed": "Protocol behaviour and message formats, checked 2026-11-09."
+    },
+    {
+      "kind": "external",
+      "ref": "UCP source revision 7dd79ea2ff0bc8bc394ac5b17ababa91284fa581",
+      "contributed": "Inspected schemas and documentation snapshot."
+    },
+    {
+      "kind": "external",
+      "ref": "UCP samples (https://github.com/Universal-Commerce-Protocol/samples)",
+      "contributed": "The optional local learning exercise."
+    },
+    {
+      "kind": "external",
+      "ref": "ACP specification (https://github.com/agentic-commerce-protocol/agentic-commerce-protocol)",
+      "contributed": "Comparison and overlapping scope."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[ai-and-agentic-commerce]] and _research/scenario-ledger.md",
+      "contributed": "Conceptual context, W8, and the fictional merchant facts (Ridgewalker €199, €75 free-shipping threshold, Eva's €235 order)."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (appendix part; reference part transition_in)",
+      "contributed": "Intent, thesis, role, acceptance criteria, the appendix opening and closing, and the hand-off to the Reference part."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Round 3 (ESCALATE) closing fixes: glosses and transitions in p06, p08, p34, p49, p67, p70; check-report.json is stale after these edits."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Round 2 REVISE fixed and resolved by the standing rules: comparison as its own section, technical reference to Step 1, handoff before the states table, glosses; confirming round 3 follows."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Round 1 ESCALATE: comparison moved to implement-first, Three Permissions and Other Things That Go Wrong made sections, transitions and glosses fixed; round 2 follows."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Flow rubric notes taken: two moves in the vocabulary, p18 to implement-first, p33 before p32, p61+p62 merged, glosses; transitions rewritten."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Converted spec.md to spec.json (reconstructed from the published page); added the thesis sentence, roadmap, callback, take-away and hand-off to domain-coverage; status draft."
+    },
+    {
+      "date": "2026-11-09",
+      "change": "Added an opening hero illustration of shopper approval, the UCP connection and the merchant's order, matching the journal's visual style."
+    },
+    {
+      "date": "2026-11-09",
+      "change": "Illustrated every step: added Figures 3, 4, 5, 8 and 9 for Steps 2, 3, 4, 6 and 7; Steps 1 and 5 already had Figures 2 and 7. Figures renumbered 1–10."
+    },
+    {
+      "date": "2026-11-09",
+      "change": "Status accepted; completed the illustrated tutorial, checked message excerpts against the dated specification, and verified the built appendix and entry links."
+    },
+    {
+      "date": "2026-11-09",
+      "change": "Initial spec, status draft; requested illustrated beginner's appendix tutorial."
+    }
+  ],
+  "length": {
+    "max_words": 5250
+  }
+}

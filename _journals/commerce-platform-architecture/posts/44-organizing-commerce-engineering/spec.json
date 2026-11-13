@@ -1,0 +1,1669 @@
+{
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "organizing-commerce-engineering",
+  "journal": "commerce-platform-architecture",
+  "part": "part-10",
+  "title": "Who Builds and Who Owns: Teams, Vendors, Agencies and Governance",
+  "status": "draft",
+  "revised": "2026-11-13",
+  "basis": "Reconstructed from the published chapter (posts/44-organizing-commerce-engineering/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (a thesis paragraph, a roadmap, a conclusion paragraph that answers the opening); these are recorded in decision_log.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The five duties of an owner (decide the contract, change, watch, fix, retire), why ownership follows money (an agency is paid to build and, on a platform's partner program, for keeping the merchant on the platform; a vendor to keep the subscription), and the ownership map's columns and its two rules (every row has a technical owner inside the company; no fact has two writers).",
+        "Four team shapes (by system, by journey, by layer, agency-led) in Team Topologies' terms and the recommendation for ten to twenty people; the rules for agencies and partners; the vendor card; light governance (decision records, standing rules checkable from the map, a weekly architecture hour); the merchant's product manager; environments, release management, feature flags and AI coding tools; and team shape by scale stage.",
+        "Kestrel & Pine before and after: in January 2027 thirteen systems, 34 integrations of which 13 had no named owner and 41 apps of which three wrote inventory; the Deprecated Endpoint of 8 February 2027; five integrations still unowned in April 2027, among them the scripts behind the Deprecated Endpoint, the Price Drift and the App That Wrote Stock; and from April 2027 two journey teams, an integration pair, a data pair, decision records KP-001 to KP-008 for W1–W8 and a weekly architecture hour."
+      ],
+      "believe": [
+        "Most incidents at a merchant on rented software trace to code with no owner rather than to bad code.",
+        "A team per vendor reproduces the integration problem in the organization chart.",
+        "The team shape should change one stage before the system landscape does, because the owner must exist before the connector is built."
+      ],
+      "can_do": [
+        "Draw an ownership map with one row per system, integration and app and check it for blank owners and duplicate writers.",
+        "Choose a team shape for their size and write the agency and vendor clauses that keep the repository, credentials, map and decision records with the merchant."
+      ]
+    },
+    "audience": {
+      "who": "Newcomers to commerce architecture; most of all the new engineering lead or head of digital who inherits an agency, a partner-built connector and a dozen vendor contracts (Noor Visser at Kestrel & Pine). Product managers and operations leads who must decide who to call when a flow fails are the second readers.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side; roughly what an API, a database and a queue are.",
+        "Kestrel & Pine, its people, its 2026 and early 2027 incidents in outline (among them the App That Wrote Stock, the Price Drift and the Deprecated Endpoint) and the names of the sixteen failure patterns (among them the Lynchpin, the Secret Agent, the Spaghetti Junction, the Pulled Rug).",
+        "From Part I: the thirteen steps of an order, promise and handoff, the three status lines, 'system', 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, the four scale stages (Starting, Growing, Omnichannel, Group), the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation, the Waypoint decisions W1 to W8.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system (OMS), availability service, D2C, B2B, PIM, POS.",
+        "From chapters 41 to 43: W4 (stay and surround), migration one seam at a time, and the stage map of April 2027 that sorts decisions by stage, including who builds and runs at each stage."
+      ],
+      "does_not_know": [
+        "Owning as five duties; the ownership map; the vendor card; integration contract; ADR (architecture decision record); statement of work.",
+        "Sandbox; API version and deprecation; rate limit; scope; SLO and SLA; feature toggle.",
+        "Conway's observation; Team Topologies' team types (stream-aligned, platform, enabling, complicated-subsystem) and interaction modes; GMV as used in partner programs.",
+        "The public evidence on agencies, Zalando's and Uber's autonomy lessons, and the DORA and METR findings on AI coding tools."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given an incident in which a published vendor change broke an unowned script, the reader names the missing owner and the map row that prevents it, rather than blaming the vendor or the agency.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A marketplace connector retires an API version on its published date; an agency script written years earlier stops sending stock to the marketplace, and nobody notices for two days. The agency says the script is outside its retainer; the e-commerce manager did not know it existed. Using only this chapter: what was missing, and what would have prevented it?",
+        "expected": "An owner: the script had no row and no technical owner inside the company, because ownership follows money and the agency was paid to build, not to own. A row on the ownership map with a technical owner (the integration pair), the pinned API version, the vendor's retirement date on the vendor card ninety days ahead and a monitor on stock-sync lag would have had the script updated or retired the week the retirement was announced. The agency's statement of work should name API versions and a deprecation clause, and the weekly architecture hour reviews deprecation dates due in the next ninety days."
+      },
+      {
+        "id": "AC-2",
+        "statement": "The reader can say why a team organized by vendor fails at a merchant and what shape replaces it at their size.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A merchant with twelve engineers has one person or small team per vendor system: the platform, the ERP, the WMS, the marketplace connector. Using only this chapter: what is wrong with that shape, and what should replace it?",
+        "expected": "Organizations produce designs that copy their communication structures (Conway), so a team per system reproduces the integration problem: each owns its box and nobody owns the flow between them. At ten to twenty people: one or two stream-aligned journey teams (buy: storefront, catalog publication, checkout, marketplace listings, promotions; fulfill and return: order hub, warehouse integration, shipping, returns, EDI), one integration pair owning the integration layer, the ownership map and the reconciliation jobs as an internal product (a pair, because a full integration team becomes the bottleneck), a small data function, and vendors and the agency as services under written contracts. Below eight engineers, one journey team and one integration engineer. Journey teams need a shared integration standard, or each builds its own connector to the same ERP."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can list the contract terms that keep an agency or partner from becoming a Lynchpin.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A merchant is about to renew its agency's statement of work. Using only this chapter: which terms keep the agency from becoming a single point of failure?",
+        "expected": "The merchant owns the repository, vendor accounts, API credentials, ownership map and decision records; the agency commits to the merchant's repository. Every module, app or script the agency builds is a row with its scopes, its pinned API version, the platform release it was tested against and an exit plan. The statement of work names the versions tested against and a deprecation clause saying who updates what by when. Ownership after launch is written down before launch, either the agency under a support contract with a named engineer or the merchant's team. Building is paid separately from keeping. At Kestrel & Pine the 2027 statement of work lists each of the agency's nine scripts with an owner and pinned version, and three that write stock or prices moved in-house."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "That an order can reach checkout and never reach the warehouse while the platform vendor, connector partner and agency each confirm their part works, so someone with authority and information must own the whole flow because supplier contracts do not; that the chapter covers who defines, watches, changes and recovers a flow, through team structure, agencies, contracts and engineering practices a small team can keep on rented software; that the setting is a merchant with about a dozen engineers, an agency and several vendors, not a platform vendor; that ownership follows money unless designed, teams are shaped around journeys and governance is light but governs the facts. Evidence: Kestrel & Pine's ownership map and incidents, a platform's published partner economics, Conway and Team Topologies, public accounts from Zalando and Uber, decision records and dated studies of AI coding tools."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "Who should own each part of a commerce platform, and how do small teams work with vendors and agencies?",
+    "claim": "Every system, integration and app needs a technical owner inside the merchant who decides, changes, watches, fixes and retires it, recorded on one ownership map with exactly one system writing each fact, because agencies and vendors are paid to build and to keep the subscription, not to own a connector after launch. At the Omnichannel stage, with ten to twenty people, the rule is met by journey teams, an integration pair, and agency and vendor contracts that leave the repository, credentials and map with the merchant.",
+    "disputed_by": "The view that a merchant on rented software can leave ownership with its suppliers: the vendor runs the platform, the agency owns the theme and scripts on retainer, partners own their connectors, and the merchant's own team is organized one person per vendor to manage them.",
+    "so_what": "A merchant that accepts the claim makes the ownership map its first governance artifact and fills its blank cells before adding systems. In January 2027 Kestrel & Pine had 34 integrations, 13 with no named owner; on 8 February a 2021 agency script stopped sending stock to bol for two days after the connector retired an API version. By April five were still unowned, among them that script, the German price-list export behind the Price Drift (€179 instead of €199 for nine days, about €8,200 of margin) and the pre-order app's inventory write: three of the ten incidents of 2026 and early 2027 sat in blank cells of one spreadsheet. From April 2027 two journey teams, an integration pair and a data pair own the rows, and the agency's statement of work lists each of its nine scripts with an owner and a pinned version.",
+    "how_why": "An agency is paid by the merchant to build, and by the platform's partner program to keep the merchant on the platform; a vendor is paid to keep the subscription. Neither is paid to decide, watch or retire a connector after launch, so those duties fall to nobody unless assigned. Because organizations produce designs that copy their communication structures, a team per vendor leaves the flows between vendors without an owner, while journey teams own the flows end to end and an integration pair owns the shared layer. The map turns the rules into checks that need no meeting: no blank owner, no fact with two writers, every API version pinned with its retirement date.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Most incidents at a merchant on rented software trace to code with no owner rather than to bad code; owning means five duties (decide the contract, change, watch, fix, retire), and because agencies are paid to build and vendors to keep the subscription, ownership must be designed by the merchant."
+      },
+      {
+        "id": "S2",
+        "claim": "The ownership map, one row per system, integration and app with business owner, technical owner, builder and vendor, what it may write, contract, dependencies and monitoring, is the merchant's first governance artifact; its two rules are that every row has a technical owner inside the company and that no fact has two writers."
+      },
+      {
+        "id": "S3",
+        "claim": "A team per vendor reproduces the integration gaps in the organization chart; at ten to twenty people one or two journey teams, an integration pair that owns the integration layer as an internal product, a small data function and vendors and agencies as services under contract fit, with a shared integration standard; below eight engineers, one journey team and one integration engineer."
+      },
+      {
+        "id": "S4",
+        "claim": "Agency and vendor contracts must keep the repository, accounts, credentials, map and decision records with the merchant, name the API versions and a deprecation clause, write down ownership after launch before launch, and record each vendor's versioning, limits, exit terms and service levels on a vendor card."
+      },
+      {
+        "id": "S5",
+        "claim": "Governance light enough for fourteen people to follow keeps the ownership decisions true: decision records, standing rules checkable from the map and a weekly architecture hour, product managers who own the order's journey, and engineering practices (sandboxes, pinned versions, feature flags, AI tools under tests and review) that suit rented software."
+      },
+      {
+        "id": "S6",
+        "claim": "The team shape should change one stage before the system landscape does, because the owner must exist before the connector is built."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Answers who takes and keeps the part's decisions: the ownership map, team shapes for a small merchant, agency and vendor terms and light governance, with Kestrel & Pine's January and April 2027 maps.",
+    "supports": [
+      "P10-4"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "owning to map to teams: the definition of owning before the map that records owners, and the map before the teams that fill its rows"
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "team shapes: four options compared, then a recommendation"
+      }
+    ],
+    "rationale": "The scene states the problem as Kestrel & Pine meets it (an incident in an unowned script, a map with blank cells). 'What Owning Means' defines the term the map records and explains why suppliers will not carry it; 'The Ownership Map' then specifies the artifact. Team shapes (with the product manager each journey team needs), agency rules and the vendor card are the ways the rows get filled, from inside to outside the company; governance and engineering practices keep them filled over time. The merchant's product manager is a paragraph of 'Team Shapes', right after the recommendation, because it staffs the journey teams that recommendation names; as a separate section (the earlier order) it split the recommendation from the stage table that extends it, as both round-2 readers reported. 'Across Scale Stages' follows at once because its table extends the team-shape comparison across the four stages; placed later (the earlier order) it split the Kestrel & Pine story just before the case resolves and left the reader asking why a team-shape table came after the practices, as both round-1 readers reported. 'In Practice' then follows the practices directly, so the case runs without a detour; 'In Practice' then shows the case before and after and replays the opening incident; 'When It Goes Wrong' comes last because each failure is read against the artifacts already defined. Putting team shapes before the map would leave the teams without the rows they are meant to own; putting the incident replay before the map and the vendor card would replay it with tools the reader has not met."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "An order appears in checkout but never reaches the warehouse, while the platform vendor, the connector partner and the agency each confirm that their own component is working."
+    },
+    "bridge": {
+      "from_reader_world": "Anyone who has reported a problem to several suppliers and been referred from one to the next.",
+      "to_topic": "In commerce, the flows between suppliers belong to nobody unless the merchant assigns them, so ownership is designed, not inherited."
+    },
+    "thesis_statement": {
+      "text": "Every system, integration and app needs a technical owner inside the merchant, recorded on one ownership map with one writer per fact, because agencies and vendors are paid to build and to keep the subscription; at ten to twenty people the rule is met by journey teams, an integration pair, and contracts that leave the repository, credentials and map with the merchant.",
+      "placement": "KEY POINTS callout and paragraph p05"
+    },
+    "roadmap": {
+      "placement": "Paragraph p06",
+      "promises": [
+        {
+          "promise": "Start from Kestrel & Pine's ownership map and the incident behind it.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Define owning and set out the map.",
+          "kept_in": [
+            "owning",
+            "map"
+          ]
+        },
+        {
+          "promise": "Compare team shapes, place the merchant's product manager in them, and show how the shape changes by scale stage.",
+          "kept_in": [
+            "teams",
+            "stages"
+          ]
+        },
+        {
+          "promise": "State the agency rules and the vendor card.",
+          "kept_in": [
+            "agencies",
+            "vendors"
+          ]
+        },
+        {
+          "promise": "Describe light governance and engineering practices on rented software.",
+          "kept_in": [
+            "governance",
+            "practices"
+          ]
+        },
+        {
+          "promise": "End with Kestrel & Pine before and after, and what goes wrong.",
+          "kept_in": [
+            "practice",
+            "wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "An order can appear in checkout and never reach the warehouse while the platform vendor, the connector partner and the agency each confirm that their own part works; supplier contracts do not necessarily assign the whole path, so the merchant must own it explicitly.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "An order in checkout that never reaches the warehouse; three suppliers each reporting their component working.",
+            "shows": "Shows the gap between suppliers that nobody is paid to own."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The owner needs authority and information to follow a flow across supplier boundaries, so the chapter asks who defines, watches, changes and recovers a flow, so that an incident does not become referrals between vendors.",
+        "function": "explanation",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The order lost between suppliers.",
+          "introduces": "The owner who can follow the flow, and what the chapter covers to create one.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "After the previous chapter's stage map recorded who builds and runs at each stage, this chapter takes the people at one stage: a merchant with about a dozen engineers, an agency and several vendors, whose job is to coordinate suppliers and integrations, unlike the platform vendors whose much larger teams build the products (Part XI).",
+        "function": "context",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The previous chapter's stage map and its row on who builds and runs at each stage.",
+          "introduces": "The setting: a small merchant team coordinating suppliers, not a vendor building a product.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "Eva's jacket purchase and exchange at Kestrel & Pine are an example of such a flow: they cross several systems between 13 and 22 April 2027, each handoff is a row on the ownership map, and at each someone must own the contract, monitoring, changes and recovery; 'probably the agency' is an unresolved responsibility.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The small merchant setting.",
+          "introduces": "Eva's order as the flow whose handoffs need owners.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "The chapter's answer: every system, integration and app needs a technical owner inside the merchant, recorded on one ownership map with one writer per fact, because agencies and vendors are paid to build and to keep the subscription, not to own a connector; at ten to twenty people this is met by journey teams, an integration pair, and contracts that leave the repository, credentials and map with the merchant.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "Handoffs that need an owner.",
+          "introduces": "The chapter's thesis.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p06",
+        "controlling_idea": "The chapter starts from Kestrel & Pine's ownership map and the incident behind it, defines owning, sets out the map, compares team shapes, places the product manager in them and shows team shape by scale stage, states the agency rules and the vendor card, describes light governance and engineering practices on rented software, and ends with Kestrel & Pine before and after and what goes wrong; it names its evidence: the case, a platform's partner payments, Conway and Team Topologies, Zalando and Uber, decision records and dated AI studies.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The thesis.",
+          "introduces": "The order in which the chapter argues it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Kestrel & Pine: The Ownership Map",
+      "controlling_idea": "At Kestrel & Pine in early 2027 a published vendor change broke an agency script nobody owned, and Noor Visser's ownership map found 13 of 34 integrations unowned in January and 5 still unowned in April, three of them behind three of the ten incidents.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "Gives the case the chapter answers: incidents caused by code with no owner, and the map that finds them."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The incident first, then the map it prompted, then the tallies and what the blank cells held; the conclusion that incidents come from unowned code needs the tallies before it."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap's first promise: Kestrel & Pine's ownership map and the incident behind it.",
+        "introduces": "Noor Visser's first weeks in 2027.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p07",
+          "controlling_idea": "When Noor Visser becomes Head of Engineering in January 2027, her first inventory counts thirteen systems, 34 integrations and 41 apps; on 8 February a marketplace connector retires an API version, a 2021 agency script stops sending stock to bol, and nobody acts for two days.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "8 February 2027: the connector retires an API version; the 2021 agency script stops sending stock to bol; seller support escalates canceled orders two days later.",
+              "shows": "A published change met a dependency nobody watched.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The agency says the script is outside its retainer and the ecommerce manager did not know it existed: the Deprecated Endpoint is a published change meeting an unowned dependency.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The two stale days.",
+            "introduces": "Why nobody acted: no one owned the script.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "To find every such dependency Noor turns that January inventory into an ownership map with a business owner and a technical owner for every system, integration and app (the full columns follow in the map section); the iPaaS belongs to the integration team under Ruben Alves, and the planned OMS and PIM need owners too.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "An unowned dependency.",
+            "introduces": "The map that names an owner for every item.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "The January inventory had found 13 of 34 integrations unowned; the map gave eight of them owners and five were still unowned in April 2027, the date of the table; of the 41 apps, counted separately, the agency installed 22, six were unused and three could write inventory, and five of the 13 systems had no internal technical owner.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "April 2027 tallies: integrations 14 integration team, 9 agency, 6 vendor or partner, 5 no named owner; 41 apps, 22 installed by the agency, 6 unused, 3 writing inventory; 13 systems, technical owner known for 8.",
+              "shows": "Measures how much of the landscape had no owner.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The map's columns.",
+            "introduces": "What the map found, dated January and April.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "The five still unowned in April included the bol stock script, the German price-list export behind the Price Drift and the pre-order app's inventory write, so three of the ten incidents sat in blank cells of one spreadsheet: the incidents were caused by code with no owner, not by bad code.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Deprecated Endpoint (February 2027), the Price Drift (October 2026: €179 instead of €199 for nine days, about €8,200 of margin), the App That Wrote Stock (March 2026).",
+              "shows": "Three incidents trace to three blank cells.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The five unowned integrations.",
+            "introduces": "The incidents they caused and the conclusion drawn.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "owning",
+      "heading": "What Owning Means",
+      "controlling_idea": "Owning is five duties (decide, change, watch, fix, retire) that agencies and vendors are not paid to carry, so the merchant must design ownership rather than inherit it.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Defines owner and explains why ownership falls to nobody unless assigned."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The two terms come first because the definition of owning uses them (both round-2 readers asked for them before the duties); the definition comes before the money argument because that argument says which of the five duties suppliers do not carry."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Code with no owner.",
+        "introduces": "What 'owner' means, starting from the terms the definition needs.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p14",
+          "controlling_idea": "Before owning is defined, two terms it relies on: a system of record and an integration contract.",
+          "function": "definition"
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "To own a system, integration or app is to carry five duties (decide its contract, change it, watch it, fix it, retire it); an agency can change and, under contract, fix, but rarely decides, watches or retires.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: the five duties in a loop around one integration.",
+              "shows": "Makes the five duties memorable as one cycle."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The two terms.",
+            "introduces": "The definition of owning that uses them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Suppliers rarely carry the deciding, watching and retiring duties because ownership follows money unless it is designed: Shopify's partner program pays a partner a share of the platform fee and of GMV for keeping the merchant on the platform, the merchant pays for building, and nothing pays for owning a connector after launch.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shopify partner page (accessed November 2026): 20% of the monthly platform fee plus 0.1% of eligible GMV for four years; $2,500 per Plus or enterprise referral; tiers Silver to Diamond, older tiers retire 1 January 2027.",
+              "shows": "The incentives are public and reward building and retention, not ownership.",
+              "source": "Shopify Help Center"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The duties an agency rarely carries.",
+            "introduces": "Why: what agencies and vendors are paid for.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "map",
+      "heading": "The Ownership Map",
+      "controlling_idea": "The ownership map is a table with one row per system, integration and app and columns for owners, builder, writes, contract, dependencies and monitoring, made more than documentation by two rules: every row has an internal technical owner, and no fact has two writers.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Specifies the map and its two rules."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Ownership that must be designed, and its five duties.",
+        "introduces": "The artifact that records it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p15",
+          "controlling_idea": "The map is a table kept beside the integration inventory and reviewed quarterly, with columns for item, business owner, technical owner, builder and vendor, what it may write, contract, dependencies and monitoring, each with its reason.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eight columns, what goes in each and why (for example 'what it may write' is the Secret Agent check; 'depends on' is the Pulled Rug check).",
+              "shows": "Each column answers a question an incident would ask."
+            }
+          ]
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Two rules make the map more than documentation: every row has a technical owner inside the company, and no fact has two writers; at Kestrel & Pine the second rule removed the pre-order app's inventory permission and became the organizational half of W1, the decision that the WMS owns stock.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: Kestrel & Pine's ownership map in outline.",
+              "shows": "Shows owners per system, the agency as contributor, and the cells still to fill."
+            },
+            {
+              "kind": "example",
+              "what": "The pre-order app loses its inventory write; W1.",
+              "shows": "The one-writer rule applied.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The map's columns.",
+            "introduces": "The two rules that make it enforceable.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "teams",
+      "heading": "Team Shapes for a Commerce Merchant",
+      "controlling_idea": "A team per vendor copies the vendor landscape's gaps into the organization; for ten to twenty people, journey teams with their own product managers plus an integration pair, with a shared integration standard, fit best.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S5"
+        ],
+        "how": "Compares four team shapes, recommends one by size and places the merchant's product manager in it."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "additional_patterns": [
+          {
+            "pattern": "assertion_evidence_reasoning",
+            "applies_to": "Zalando and Uber as cautions, then the lesson drawn from them"
+          }
+        ],
+        "rationale": "Why team boundaries matter (Conway) and the vocabulary (Team Topologies) come before the options, which are described one by one, compared in a table, and then a recommendation is made; the public cautions bound the recommendation and so follow it."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The map that names an owner per row.",
+        "introduces": "The teams those owners belong to.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p17",
+          "controlling_idea": "Team boundaries decide where changes can be made independently and where people must coordinate; with one team per vendor system, a customer-facing change needs a handoff at every integration.",
+          "function": "claim"
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Conway observed that organizations copy their communication structures into their designs; in a merchant the vendor landscape is copied into the organization, so its gaps become the organization's.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Conway (1968): organizations 'are constrained to produce designs which are copies of the communication structures of these organizations.'",
+              "shows": "Grounds the claim that structure and design mirror each other.",
+              "source": "Conway 1968"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Handoffs at every integration.",
+            "introduces": "Conway's observation, applied in reverse to a merchant.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Team Topologies gives the vocabulary for a small team: four team types, three interaction modes and the premise that a team can handle only so much complexity; the mapping to a merchant is the author's.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Skelton and Pais, Team Topologies (2019): stream-aligned, platform, enabling and complicated-subsystem teams; collaboration, X-as-a-service, facilitation.",
+              "shows": "Gives named shapes to compare.",
+              "source": "Team Topologies"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The problem of copying the vendor landscape.",
+            "introduces": "A vocabulary for a better shape.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "By system: the default a vendor landscape produces, cheap and matching support contracts, but every integration gap becomes an organizational gap and nobody owns the order's journey.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The vocabulary.",
+            "introduces": "The first of four options.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "By journey: one team owns 'buy' and one 'fulfill and return', each touching several vendors with one owner per handoff inside a journey, and a contract between the teams for the joins between journeys.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Nobody owning the journey.",
+            "introduces": "Teams that each own one journey.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "By layer: storefront, integration and data teams fit common hiring and make the integration layer a product, but the integration team risks becoming the bottleneck and nobody owns a journey.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Journey teams.",
+            "introduces": "Teams by technical layer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Agency-led: the agency owns the storefront and apps, the merchant the accounts and a backlog; right at Starting, workable at Growing, and the origin of most Omnichannel-stage incidents when the joins stay with the agency.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The four shapes compared on who owns the journey and the integration layer, team size, how handoffs happen, main risk and when each fits.",
+              "shows": "Lets the reader choose by size and stage."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Three in-house shapes.",
+            "introduces": "The fourth, agency-led.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The author's recommendation for ten to twenty people: one or two journey teams, an integration pair (not a team, to avoid the bottleneck) that owns the integration layer, the map and the reconciliation jobs as an internal product, a small data function (the by-layer option's data team, kept small), two application support specialists shared by both journeys, and vendors and the agency as services under written contracts; below eight engineers, one journey team and one integration engineer.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The four options and their table.",
+            "introduces": "The recommended combination and its size conditions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The vendor's product manager optimizes the platform's GMV, tenancy and app ecosystem; the merchant's product manager owns the order's journey and its metrics (conversion, order value, on-time delivery, returns, time to answer 'where is my order?'), so Kestrel & Pine places one product manager per journey team and treats vendor roadmaps as input.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Kestrel & Pine's two product managers, one per journey team.",
+              "shows": "The asymmetry resolved in the team shape.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The recommended journey teams.",
+            "introduces": "Each journey team's product manager, who owns the journey as a product.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "The first public caution: Zalando's team autonomy over technology produced similar services in six languages, which hurt productivity at scale.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Henning Jacobs (March 2020): services 'written in six languages', which 'hurts productivity at scale'; a standard stack would have been 'a major win'.",
+              "shows": "Autonomy without a standard costs at scale.",
+              "source": "Jacobs 2020"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Autonomous journey teams with their own product managers.",
+            "introduces": "A caution on how much autonomy to give them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "The second caution: Uber's 2020 account describes about 2,200 microservices where a root-cause investigation could cross fifty services owned by twelve teams.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Uber Engineering (July 2020): about 2,200 microservices; investigations across fifty services and twelve teams.",
+              "shows": "Unclear ownership across many teams slows recovery.",
+              "source": "Uber Engineering 2020"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Zalando's caution.",
+            "introduces": "Uber's.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Both cases are old and far larger, but the lesson scales down: journey teams need a shared integration standard or each builds its own connector to the same ERP, and the team that changes a flow is paged when it fails ('you build it, you run it').",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Werner Vogels (2006): 'you build it, you run it'.",
+              "shows": "Ties change and on-call to the same team.",
+              "source": "AWS blog 2006"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: Kestrel & Pine's 2027 team shape.",
+              "shows": "Shows the recommended shape applied."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The two cautions.",
+            "introduces": "What they mean for a merchant.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Across Scale Stages: When It Fits and When It Limits",
+      "controlling_idea": "Team shape and integration ownership change by stage, and the team shape should change one stage before the system landscape does, because the owner must exist before the connector is built.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S6",
+          "S3"
+        ],
+        "how": "Generalizes the recommendation across the four stages and states the timing judgement."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The recommended shape, its product managers and the cautions, which fit the Omnichannel stage.",
+        "introduces": "How the team shape and the ownership of integrations differ at each stage.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p49",
+          "controlling_idea": "The recommended shape fits the Omnichannel stage, and the table shows how shape and integration ownership change by stage; the team shape should change one stage before the system landscape does, and Kestrel & Pine hired its lead integration engineer in 2022, a year after the marketplace connector and the iPaaS arrived in 2021, so the thirteen unowned integrations of January 2027 are the cost of that year.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Per stage: typical shape, who owns integrations, what becomes necessary, warning signs, and Kestrel & Pine's row.",
+              "shows": "Shows how ownership needs grow with the stage.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "agencies",
+      "heading": "Working With Agencies and Implementation Partners",
+      "controlling_idea": "Agencies build what the merchant cannot staff, so the merchant keeps the repository, accounts, credentials, map and decision records, puts every agency deliverable on the map, and separates paying for building from staffing the keeping.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "States the agency rules and applies them at Kestrel & Pine."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "What agencies do and what the evidence shows comes first, then the rules, then Kestrel & Pine's statement of work as the rules applied."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The teams inside the company at each stage, with vendors and the agency as services under written contracts.",
+        "introduces": "The outside parties who do some of the building at every stage, and what the agency contracts must say.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p28",
+          "controlling_idea": "An agency or implementation partner builds what the merchant cannot staff; the public evidence reports builds rather than outcomes, and vendors' mechanisms (Shopify development stores, Salesforce cartridges) are built for agency work.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Hobbycraft's 2022 move to Salesforce Commerce Cloud, built by an agency, reported by a trade site without an outcome.",
+              "shows": "Agency-sourced evidence describes the build, not the result.",
+              "source": "Retail Technology Innovation Hub 2022"
+            },
+            {
+              "kind": "fact",
+              "what": "Shopify development stores let a partner build a store and transfer it, with real transactions disabled until transfer.",
+              "shows": "Vendors design for agencies to build and hand over.",
+              "source": "Shopify developer documentation"
+            }
+          ]
+        },
+        {
+          "id": "p29",
+          "form": "list",
+          "controlling_idea": "The author's rules, stated as judgement: the merchant owns repository, accounts, credentials, map and decision records; every agency deliverable is a row with scopes, pinned version, tested release and exit plan; the statement of work names versions and a deprecation clause; ownership after launch is written before launch; building is separated from keeping.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Agencies paid to build.",
+            "introduces": "Rules that keep ownership with the merchant.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "At Kestrel & Pine the agency (since 2017, €14,000 a month) gets a 2027 statement of work listing each of its nine scripts with an owner and pinned version, three stock- or price-writing scripts move in-house to the integration pair, and the ERP partner keeps maintaining its connector while the pair owns its contract, monitor and reconciliation.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Agency retained since 2017 at €14,000 a month; nine scripts; three moved in-house; the ERP partner's 2023 platform-to-ERP connector.",
+              "shows": "The rules applied to one agency and one partner.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The rules.",
+            "introduces": "Kestrel & Pine's agency and ERP partner under them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vendors",
+      "heading": "Vendor Management: What the Contract Must Say",
+      "controlling_idea": "A merchant cannot govern its vendors' terms but can govern its dependence on them, by recording each vendor's term, versioning and deprecation, limits, exit, service levels and residency on a vendor card whose deprecation dates go on a calendar.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Specifies the vendor card and ties its versioning row to the Deprecated Endpoint."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "Contracts with the agency, whose terms the merchant writes.",
+        "introduces": "Contracts with vendors, whose terms the merchant cannot write.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p31",
+          "controlling_idea": "A merchant on rented software is governed by its vendors' terms, which promise little: Shopify's terms provide the services 'as is' and allow changes without notice, so ask for the actual service agreement rather than a marketing uptime figure.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Shopify Terms of Service (20 October 2026): 'as is', 'as available', no warranty that services 'will be uninterrupted, timely, secure, or error-free', modifiable 'for any reason, without notice and at any time'.",
+              "shows": "The vendor's terms leave the risk with the merchant.",
+              "source": "Shopify Terms of Service"
+            }
+          ]
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "What the merchant can govern is its dependence, recorded on a vendor card per vendor: term and notice, versioning and deprecation, rate limits, export and exit, extension retirement, service levels in the merchant's units, residency.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Vendor card fields with dated examples: Shopify quarterly API versions with twelve-month support; Adobe three-year support and enforcement from 1 June 2027; WooCommerce compatibility 'not guaranteed'; rate limits 100 to 2,000 points a second; Data Act switching from 12 January 2027 (applicability open); Scripts retired 30 June 2026; SLO and SLA (Google SRE, 2017); commercetools regions.",
+              "shows": "Shows what to record and that each fact has a date.",
+              "source": "Vendor documentation, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Terms the merchant cannot change.",
+            "introduces": "The dependence it can record.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "The versioning row is the Pulled Rug's calendar: the Deprecated Endpoint was a published date nobody had put on a calendar, and the card plus the map say who updates which row by when.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The vendor card's rows.",
+            "introduces": "The one row that would have prevented the Deprecated Endpoint.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "governance",
+      "heading": "Governance That Fourteen People Will Follow",
+      "controlling_idea": "Governance keeps ownership decisions true after the meeting, and for fourteen people that means decision records, standing rules checkable from the map, and one weekly architecture hour.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Describes the three governance mechanisms sized for a small team."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The purpose first, then the three mechanisms from the most durable (records) to the most frequent (the weekly hour)."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The map, the agency rules and the vendor card.",
+        "introduces": "How they are kept true over time.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p34",
+          "controlling_idea": "Governance has one purpose, keeping the ownership decisions true after the meeting ends; heavy process will not survive fourteen people and a peak season, light specific process can.",
+          "function": "claim"
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "A decision record preserves a choice, its reasons and its consequences so someone joining later can judge whether it still holds.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Light, specific process.",
+            "introduces": "Its first mechanism, the decision record.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Nygard's ADR (context, decision, status, consequences) prevents blind acceptance or blind change; in a merchant the records worth writing are ownership, vendor and app decisions, and Kestrel & Pine's W1–W8 became its first eight records.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Nygard (November 2011): context 'described as neutral facts, often in tension'; without a record a newcomer can only 'blindly accept the decision' or 'blindly change it'.",
+              "shows": "Defines the form and why it matters.",
+              "source": "Nygard 2011"
+            },
+            {
+              "kind": "example",
+              "what": "Waypoint W1–W8 numbered as the first eight records; the 2029 review re-opens W4.",
+              "shows": "The form applied.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "What a decision record does.",
+            "introduces": "Its standard form and which decisions deserve one.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Standing rules need no meeting because they can be checked from the map, each mapped to the failure pattern it prevents.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five rules (one writer per fact; owner, contract card, idempotent handling and reconciliation per integration (W5); app scopes reviewed quarterly, 41 apps becoming 34 by July 2027; pinned API versions with retirement dates; a four-week pre-peak freeze), with their checks and the patterns they prevent.",
+              "shows": "Each rule is checkable and tied to a named failure.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Decision records.",
+            "introduces": "The second mechanism, standing rules.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "A weekly 45-minute architecture hour with a standing agenda (new rows, proposed ADRs, deprecations in the next ninety days, one incident replayed) produces edits to the map and the records; at Kestrel & Pine it replaced three vendor status meetings, and the practices of the next section keep day-to-day changes within these rules.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Standing rules.",
+            "introduces": "The third mechanism, the weekly review.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "practices",
+      "heading": "Engineering Practices on Rented Software",
+      "controlling_idea": "On rented software the engineering practices that matter are sandboxes and a test chain across vendors, pinned versions, feature flags, and AI coding tools used under the tests and rules that protect stability.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Shows the daily practices that keep the ownership rules true."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Environments, release management, feature flags and AI tools, each a group; the AI evidence is ordered from adoption figures to the trial to the conclusion for commerce."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Governance that keeps ownership decisions true.",
+        "introduces": "How the teams make changes safely on rented software.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "controlling_idea": "Test environments let a team try changes without moving real money, but what each vendor's sandbox reproduces differs.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shopify development stores (no real transactions, cap of 250); Stripe sandboxes; Adobe Commerce Cloud Pro integration, staging and production (accessed November 2026).",
+              "shows": "Each vendor offers its own sandbox.",
+              "source": "Vendor documentation"
+            }
+          ]
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "No vendor offers a sandbox of the whole chain (platform, PSP, ERP, WMS), and Zalando's 2020 answer was marked test orders that fulfillment skips, run in production.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Zalando Engineering (2020): order-flow simulators placing marked test orders that fulfillment skips.",
+              "shows": "The chain can be tested in production with marked orders.",
+              "source": "Zalando Engineering 2020"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Sandboxes per vendor.",
+            "introduces": "The gap: no sandbox of the whole chain.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "A small team can copy the pattern with a test customer, a test SKU, an order flag the WMS and ERP recognize, and a weekly run through the chain.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Zalando's marked test orders.",
+            "introduces": "The small-merchant version.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Vendors set the release calendar, so the cheapest control is to pin the API version in every connector and record it in the map.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Environments.",
+            "introduces": "Release management.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Hodgson's toggle types give the team a vocabulary: release toggles for unfinished checkout changes, ops toggles for the peak switch-off list, permissioning toggles for staff-only or B2B-only features.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Pete Hodgson, Feature Toggles (October 2017).",
+              "shows": "Names the toggle types.",
+              "source": "Hodgson 2017"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Release management.",
+            "introduces": "Feature flags.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "AI coding tools help developers write and revise code; for an integration team the question is whether that help produces dependable changes faster, including review and recovery.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Feature flags.",
+            "introduces": "AI coding tools and the question to ask of them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "DORA's 2024 report associates wider AI adoption with small quality gains but lower delivery throughput and stability, and its 2025 report calls AI an amplifier of existing strengths and weaknesses.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "DORA 2024: over 75% rely on AI daily; a 25% increase in adoption associated with 1.5% lower throughput and 7.2% lower stability. DORA 2025: AI 'an amplifier'.",
+              "shows": "The evidence is mixed and stability falls.",
+              "source": "DORA 2024, 2025"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The question to ask.",
+            "introduces": "The dated evidence.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "METR's 2025 randomized trial found experienced developers 19% slower with early-2025 tools while believing they were faster, and Shopify's CEO made AI use a baseline expectation in April 2025.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "METR (July 2025): 16 developers, 246 tasks, 19% longer completion time, perceived 20% faster.",
+              "shows": "Perceived and measured speed differ.",
+              "source": "METR 2025"
+            },
+            {
+              "kind": "quotation",
+              "what": "Shopify CEO memo (April 2025): 'reflexive AI usage' as a baseline expectation.",
+              "shows": "Adoption is being pushed regardless.",
+              "source": "CNBC 2025"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "DORA's findings.",
+            "introduces": "A trial and an employer's expectation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "For commerce the stability finding matters most: AI raises output on the code that touches stock and prices, so sandbox tests, small batches, review and the one-writer rule are preconditions, and AI moves the bottleneck from writing a connector to owning it.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The mixed evidence.",
+            "introduces": "What it means for a commerce team.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "heading": "In Practice: Kestrel & Pine, Before and After",
+      "controlling_idea": "Kestrel & Pine went from an agency, a partner and one lead integration engineer holding whatever nobody owned to journey teams, an integration pair, records, vendor cards and a weekly hour, and with the map the Deprecated Endpoint would not have happened.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Applies the map, team shape and contracts to the case and replays the incident."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Before, after, then the incident replayed under the after state."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The chapter's recommendations on teams, contracts, governance and practices.",
+        "introduces": "Kestrel & Pine before and after applying them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p50",
+          "controlling_idea": "Before (January 2027): thirteen of 34 integrations unowned, three apps writing inventory, the agency holding theme, apps and scripts, the ERP partner holding its connector, the integration team under Ruben Alves owning the iPaaS flows and Ruben informally holding everything else, and no calendar of deprecation dates.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "€14,000 retainer; technology spend about €2.6 million a year; support answering from five tabs.",
+              "shows": "The starting point in figures.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "After (from April 2027): the map in use with five integrations still to be owned, two journey teams, the integration pair, the data pair and application support, ADRs KP-001 to KP-008 for W1–W8, vendor cards, the agency's statement of work and the Tuesday architecture hour.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Buy (three engineers and a PM, Milan); Fulfil and Return (two engineers and a PM, Daniel and Lea); integration pair (Ruben and one back-end engineer); data pair under Hanna Berg; two application support specialists.",
+              "shows": "The fourteen-person team in the recommended shape.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: before and after.",
+              "shows": "Contrasts the tangle with the owned landscape."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Before.",
+            "introduces": "After.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Replayed with the map, the bol script has an owner, a pinned version, a retirement date ninety days ahead and a monitor, so it is updated or retired the week the retirement is announced and the two stale days do not happen.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The after state.",
+            "introduces": "The opening incident replayed under it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "Ownership fails in five recognizable ways (a Lynchpin leaves, the agency contract ends, a vendor retires a mechanism, the Secret Agent returns, two teams build two connectors), each detected and recovered through the map.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S4"
+        ],
+        "how": "Shows detection and recovery for each failure through the chapter's artifacts."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "One failure per paragraph, people first, then contracts, vendors, apps and teams."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The map working.",
+        "introduces": "Ways ownership still fails.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p53",
+          "controlling_idea": "The Lynchpin leaves: one name on many rows is the signal, and the recovery is a second name and a documented integration contract for every critical row.",
+          "function": "process"
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "The agency contract ends: if the merchant cannot deploy without the agency, the recovery is transfer of repository and credentials written into every statement of work and a row-by-row handover.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "A person leaving.",
+            "introduces": "A contract ending.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "The vendor retires the mechanism an extension depends on, as Shopify did with Scripts on 30 June 2026 and Adobe will with unsupported cloud versions in June 2027; the vendor card's calendar detects it and the row's owner plans the migration a year ahead.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shopify Scripts retired 30 June 2026 (replaced by Functions); Adobe enforcement from June 2027.",
+              "shows": "Vendors end mechanisms on published dates.",
+              "source": "Shopify Help Center; Adobe Experience League"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The agency leaving.",
+            "introduces": "The vendor withdrawing an interface.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "The Secret Agent returns when a new app gets an inventory-write scope; the quarterly review or an install rule detects it, and the scope is revoked and the touched stock reconciled.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "The May 2027 reconciliation found 2.3% of active variants different, most from such apps.",
+              "shows": "The cost of unowned writers.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Vendor retirement.",
+            "introduces": "An app gaining a write scope.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "Two journey teams build two connectors to the ERP; two rows with the same target reveal it, and the integration pair owns one flow the other team consumes.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "An unowned writer.",
+            "introduces": "Duplicate connectors.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The team shape, the agency rules, the vendor card and the governance are all ways of keeping the map's rows filled: an order lost between suppliers is found by an owner inside the company who has a row, a monitor and a calendar, and Kestrel & Pine's incidents in blank cells were failures of ownership, not of any one supplier's code.",
+    "so_what": "A merchant that writes the map first knows who follows a broken flow across suppliers before it breaks, and can then choose its team shape and contract terms to keep every row owned.",
+    "callback": {
+      "to": "The opening's order that reaches checkout but never the warehouse while each supplier reports its own part working.",
+      "how": "Paragraph p58 says who would trace that order with the map in place."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Draw the map, check it for blank owners and duplicate writers, and ask the nine questions about owners, writers, logins, deprecation dates, the statement of work, journey ownership, decision records, change paths and single-name rows."
+    },
+    "hand_off": {
+      "to": "ai-and-agentic-commerce",
+      "relationship": "example",
+      "carries_over": "The ownership map's rule that every writer of a fact, whether a system, an integration or an app, has a row and a named owner.",
+      "introduces": "AI assistants and agents as the newest actors that read and write the merchant's facts, and what the systems and owners must provide before an agent can buy."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The failures and their recoveries.",
+      "introduces": "What the chapter establishes.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p58",
+        "controlling_idea": "The opening's order lost between suppliers is the case the map is built for: with a row per system, integration and app, the flow has an owner inside the company who can trace it, and the team shape, contracts and governance exist to keep those rows filled; Kestrel & Pine's three incidents in blank cells were failures of ownership, not of a supplier's code.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The hook's lost order; the five duties; the three incidents in blank cells.",
+            "shows": "The chapter's parts serve one rule: every row owned."
+          }
+        ]
+      },
+      {
+        "id": "p59",
+        "form": "list",
+        "controlling_idea": "Established: Conway's mirroring, partner programs paying for building and retention, Nygard's decision records, and the cost of autonomy without standards.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "The points that are established.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p60",
+        "form": "list",
+        "controlling_idea": "Depends on context: the team shape by size and stage, agency-led work by stage, vendor management by the vendors' versioning policies, and the value of AI tools by the tests and governance in place.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established.",
+          "introduces": "What depends on context.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p61",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: the ownership map is the first architecture artifact and the only one that prevents incidents on its own, and the team shape changes one stage before the landscape.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "What depends on context.",
+          "introduces": "The author's judgement.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p62",
+        "form": "list",
+        "controlling_idea": "Nine questions let the reader test their own organization: map and owners, duplicate writers, who holds logins, deprecation dates, the statement of work, journey ownership, system-of-record decisions, the change path, single-name rows.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The author's judgement.",
+          "introduces": "Questions to apply it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p63",
+        "controlling_idea": "The map's rule that every writer of a fact has a row and a named owner applies to the newest writers too: the last chapter of the part asks what AI assistants and agents need from these systems and owners before an agent can buy.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The map's one-writer, one-owner rule.",
+          "introduces": "AI agents as the next writers.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The integration inventory and integration styles; contracts, idempotency and reconciliation mechanics; API versioning and webhooks in depth.",
+      "covered_in": [
+        "integration-styles",
+        "events-consistency-and-reconciliation",
+        "api-contracts-and-versioning"
+      ]
+    },
+    {
+      "topic": "App scopes, app review and the Forked Platform; rate limits and tenancy.",
+      "covered_in": [
+        "extensibility-and-app-ecosystems",
+        "multi-tenancy-and-isolation"
+      ]
+    },
+    {
+      "topic": "Build, buy or assemble, total cost of ownership and exit cost; the peak plan and switch-off list.",
+      "covered_in": [
+        "build-buy-or-assemble",
+        "peak-load-and-reliability"
+      ]
+    },
+    {
+      "topic": "The scale stages as a model; the vendor-side organization of Shopify, Amazon and Zalando.",
+      "covered_in": [
+        "commerce-scaling-stages",
+        "part-11"
+      ]
+    },
+    {
+      "topic": "Agentic AI and what agents need from owners.",
+      "covered_in": [
+        "ai-and-agentic-commerce"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Needs the author (rule 12): Figures 2 and 4 are drawn images whose text contradicts ruling 16 (Figure 2 draws the five unowned integrations as 'assigned by the map' to the iPaaS owner; Figure 4 is labelled 'No blank cells'). The captions now state the April 2027 state of five unowned integrations, but the images need redrawing with the article-illustrator; the fact needed is the author's approval to regenerate both images.",
+    "Needs the author (rule 12): the April 2027 table counts 9 integrations as 'owned by the agency' and 5 with no named owner, summing to 34 as the ledger's organizing-commerce-engineering line does; the same line names the bol stock script, an agency script, among the five unowned. A round-3 judge read this as a double count. The fact needed: whether the nine agency scripts include the bol script (then the column should read 'built by the agency') or not.",
+    "Remaining round-3 findings not fixed (draft faults, would need another round): p28 joins the Hobbycraft evidence and the vendors' agency mechanisms (one reader saw two ideas); p49's 'the thirteen integrations ... are the cost of that year' was read by both flow readers as an asserted link; p50's technology spend is not used later; '*(illustrative)*' is not explained in the chapter (a book-wide convention)."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "After the confirming round 3 (escalate: budget spent; 15 passed, 23 failed, 15 major, no spec fault), cheap and plainly right fixes applied without another round: the stage table's later terms replaced by plain words ('a test store and marked test orders that fulfillment skips', 'a weekly review of the map', 'a named owner for the peak season'); the scene says once that the integration team is reshaped as a pair from April 2027, and the After paragraph says the two Waypoint engineers join the journey teams 'rather than the integration pair, which stays at two people'; p25 opens from the journey teams' autonomy; p27 ties Uber's slow investigations to Vogels' line; 'marketplaces listings' corrected. The check report is stale after these edits.",
+      "rejected": [
+        "Cutting the Hobbycraft example or the technology-spend figure (author's text with cited source / ledger fact; rule 5).",
+        "Splitting p27 or p28 into two units (the spec's units stay; their controlling ideas join both points)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) both round-2 flow readers asked for the two terms (system of record, integration contract) before the definition of owning, which uses 'contract': p14 now opens 'What Owning Means' and the API version gloss stays at its first use in the scene only.",
+      "rejected": [
+        "Moving the terms ahead of the scene (one reader's alternative)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) both round-2 flow readers found 'The Product Manager in a Merchant' splitting the team recommendation from the stage table and both offered folding it into 'Team Shapes': p39 is now a paragraph of 'Team Shapes' right after the recommendation p24, and the section heading is dropped (it was this chapter's own heading, not a house heading). Transitions into p39, p25 and stages, the roadmap promise and the flow rationale rewritten.",
+      "rejected": [
+        "Moving the product manager after 'Across Scale Stages' (one reader's alternative; the fold was the move both named)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: round-2 corroborated draft faults fixed without changing the spec's order: the inventory is named before the incident (p07) and the map's columns listed once (p09 points to the map section); the apps row is explained and its counts placed against all 41; the pre-order app's write is said to be counted as an integration (ledger organizing-commerce-engineering line); the money paragraph opens from the duties suppliers do not carry; 'The reason is money' becomes 'Owners must sit inside the merchant because of money'; the Hobbycraft sentence split; the bridge into practices moved to the end of governance (p38); 'contract card' becomes 'written (integration) contract' (rule 6); the peak owner glossed; the vendor section opens from the agency contract. Cheap single-reader fixes: Figure 2 caption reworded; the stage table points to Figure 3; the connector/script dependency stated; the data lead named (Hanna Berg, ledger cast).",
+      "rejected": [
+        "Cutting the partner-tier detail (an author sentence with a cited source; rule 5)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 2) the agency rules stay labelled as the author's judgement because no dated study of merchant-agency practice in the Netherlands, Belgium or Germany was found; the vendor-card advice to ask for the actual agreement stays because no vendor SLA document could be fetched; the Data Act row keeps 'an open legal question as of November 2026', as its cited source supports.",
+      "rejected": [
+        "Quoting uptime figures or a study the page does not cite."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 10) flow-rubric and reader notes that asked for different or optional moves keep the current position: Eva's paragraph stays in the introduction, now tied to the map's rows; the 'Before' paragraph keeps the January state for the before/after contrast; 'Across Scale Stages' stays one paragraph with its table (no new material); p24 does not repeat the shared standard that p27 states; W1-W8 and the failure-pattern names are relied on from earlier chapters (audience.already_knows), W1 glossed at first use (rule 6).",
+      "rejected": [
+        "Expanding 'Across Scale Stages' with new material (rule 4)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round 1 escalated on three corroborated flow failures at fault in the spec (Eva's paragraph a detour; the introduction stating the answer three times; 'a year after the connector' read against the ERP connector of 2023) plus corroborated draft faults. Changed under the brief's pre-approval to change order, paragraph ideas and transitions: 'Across Scale Stages' moves to right after 'The Product Manager in a Merchant' (both flow readers marked its old position unclear and both offered this move, rule 3), with its lead sentence and judgement before the table; p02 trimmed to the question (the roadmap now carries the coverage); p04 ties Eva's order to the map's rows; p06 names the evidence the chapter uses (AC-4); p09 says the map was built from the January inventory after the incident; p14 drops the API version gloss to the scene's first use; p24 names the data function's origin and the two application support specialists; p49 names the marketplace connector of 2021. Transitions into stages, agencies and practice rewritten. Draft fixes: the one-writer rule split from the owner sentence in p05; 'technology team of fourteen' (ledger), bol, technical owner, statement of work, feature flag and ADR glossed; the by-journey risk cell restated as the shared-standard risk the cautions give; the app rule's check cell states a check; the stage table's Kestrel & Pine row covers 2023 onward; the integration team's back-end engineers placed in Fulfil and Return (ledger team counts: 4 integration and back-end engineers = 2 in Fulfil and Return + the pair); Lea Moreau, the technology spend, Waypoint and Bergzicht Outdoor glossed; Uber's figure, Hobbycraft, the Shopify memo and Vogels' 'other half' explained; section openings for the map, team shapes, agencies and practices name what they carry over.",
+      "rejected": [
+        "Cutting Eva's paragraph (a house element of every chapter; tying it to the map answers both readers).",
+        "Moving the partner-economics paragraph into the agency section (one reader only)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Flow rubric rerun (fresh agent): sound with notes. Taken: p24 names application support shared by both journeys (both rubric readers found the 'after' state's application support and data pair unannounced; the ledger's team includes two application support specialists); the flow rationale now says why 'Across Scale Stages' sits after the practices and before the case.",
+      "rejected": [
+        "Folding 'The Product Manager in a Merchant' into 'Team Shapes' (house heading kept, rule 8).",
+        "Putting Eva's journey paragraph p04 directly after the hook, or trimming p02 (the intro's order is the author's; see open_questions)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Flow rubric (fresh agent, outline only): sound with notes. Taken without review, as the author asked on 2026-11-12: 'The Product Manager in a Merchant' moves to right after 'Team Shapes' (it staffs the journey teams), with the roadmap, p06 and the transitions into pm, agencies and practices rewritten; the term list p14 keeps only system of record, integration contract and API version (stream-aligned and platform team are defined with Team Topologies in p19, the decision record in p35, test environments in p40), removing a forward reference and a duplicate definition; p53's undefined 'contract card' becomes 'integration contract'; the flow rationale now says why pm and stages sit where they do. Rubric rerun after the move.",
+      "rejected": [
+        "Expanding 'Across Scale Stages' beyond its one paragraph and table (new material; see open_questions).",
+        "Shortening the 'Before' paragraph p50 or moving the April tallies out of the scene (the scene's tallies are the ruling-16 dates the brief asks to keep; see open_questions)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Converted spec.md to spec.json from the published chapter, one spec paragraph per unit. Intent, the five acceptance criteria, thesis and role copied unchanged from journal-spec.json; supporting claims S1-S6 written here from the thesis's how_why and the journal entry's believe list. The old success criteria were inventories (columns, tallies, dated facts, diagrams, word count) and are dropped as criteria: their outcomes are covered by AC-1 to AC-5, the dated facts by evidence items, and the word limit by length.max_words (6,500, the old limit).",
+      "rejected": [
+        "Keeping the inventory criteria as minor criteria (they list contents, not reader outcomes)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Added the units the contract asks for and the published chapter lacked: p05 (thesis statement), p06 (roadmap announcing every section), p58 (a conclusion paragraph with synthesis and a callback to the opening's lost order). p03 now opens from the previous chapter's stage map, as this chapter's transition_in says. p63 (hand-off) restated to carry the ownership map's one-writer, one-owner rule to AI agents, as ai-and-agentic-commerce's transition_in declares. The one-sentence lead-in 'The vendor retires the mechanism' and the Shopify Scripts paragraph were one failure split in two; merged into p55, as every other failure is one paragraph.",
+      "rejected": [
+        "Leaving the thesis only in the KEY POINTS callout (the schema wants it stated in the body)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Ledger alignment (rule 1; consistency ruling 16 and the organizing-commerce-engineering and cast lines): 'After (from April 2027). The ownership map with no blank cells' contradicted the April table's five unowned integrations; now 'the map in use, with five integrations still without a named owner'. Figure 2's and Figure 4's captions corrected the same way (Figure 2's caption also claimed a technical owner inside the company for every system, against the table's 8 of 13). January's 'one engineer (Ruben) owning the iPaaS' contradicted the table's 'integration team'; now 'the integration team under Ruben Alves, the lead integration engineer, owning the iPaaS flows, and Ruben informally holding everything nobody else owned'. KEY POINTS' 'most incidents at Kestrel & Pine trace to a blank cell' contradicted the scene's three of ten; now 'three of Kestrel & Pine's ten incidents sat in blank cells in it'. 'Three of the ten incidents in the ledger' becomes 'three of Kestrel & Pine's ten incidents' (the reader has no ledger).",
+      "rejected": [
+        "Keeping 'no blank cells' as the goal state (ruling 16 dates five unowned in April 2027 and the ledger records no later date when they were assigned)."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md and _research/consistency-issues.md (rulings 10, 16, 22)",
+      "contributed": "Team of 14, cast and owners, systems, 34 integrations, 41 apps, the Deprecated Endpoint, the Price Drift, the App That Wrote Stock, Waypoint W1-W8, the organizing-commerce-engineering line's ownership map and 2027 team shape."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (organizing-commerce-engineering; ai-and-agentic-commerce transition_in; part-10)",
+      "contributed": "Intent, thesis, role, acceptance criteria and the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "PLAN.md contract 44; _research/brief-commerce-business-models.md; _research/brief-platform-engineering-scale.md; commerce-scaling-stages",
+      "contributed": "Team Topologies, Nygard, partner economics, vendor management, product management, AI tools, Conway, Vogels, Zalando, Uber, environments, versioning, feature flags; the stage definitions."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify Help Center and developer documentation, Shopify Terms of Service (2026); Adobe Experience League; WooCommerce, Stripe and commercetools documentation",
+      "contributed": "Partner economics, development stores, API versioning, rate limits, Scripts retirement, terms, lifecycle policy, sandboxes, regions."
+    },
+    {
+      "kind": "external",
+      "ref": "Conway (1968); Skelton and Pais (2019); Nygard (2011); Hodgson (2017); Google SRE book (2017)",
+      "contributed": "Mirroring, team types, decision records, toggles, SLO and SLA."
+    },
+    {
+      "kind": "external",
+      "ref": "AWS blog on Vogels (2006); Jacobs (2020); Uber Engineering (2020); Zalando Engineering (2020); Retail Technology Innovation Hub (2022)",
+      "contributed": "Ownership and autonomy lessons; marked test orders; agency-sourced evidence."
+    },
+    {
+      "kind": "external",
+      "ref": "DORA 2024 and 2025; METR (2025); CNBC on the Shopify memo (2025); Regulation (EU) 2023/2854",
+      "contributed": "AI coding tool evidence; the Data Act."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Round 3 confirming check (escalate: 15 passed, 23 failed). Closing fixes to the stage table's terms, the integration team-to-pair wording, the cautions' and Vogels' openings, one typo. Report stale."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Round 2 (escalate: 17 passed, 25 failed, 14 major). Resolved under the author's instruction of 2026-11-12: the product manager folded into 'Team Shapes'; the two terms open 'What Owning Means'; scene, money, vendor and practices openings and the glosses fixed. Round 3 confirms."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Round 1 (escalate: 15 passed, 45 failed, 33 major). 'Across Scale Stages' moved after the product manager; introduction trimmed and its roadmap names the evidence; glosses, section openings and the connector date fixed. Round 2 follows."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Converted spec.md to spec.json (outcome-spec pass): thesis paragraph, roadmap and synthesis paragraph added; the opening picks up the stage map; the hand-off carries the one-writer, one-owner rule; ownership-map and team statements aligned with ruling 16 and the ledger's cast. spec.md removed."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator)."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: unowned-integration counts dated per item 16, Deprecated Endpoint date and discovery aligned, app count per item 10."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article."
+    }
+  ],
+  "length": {
+    "max_words": 6500
+  }
+}

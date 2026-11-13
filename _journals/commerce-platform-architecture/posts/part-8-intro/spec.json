@@ -1,0 +1,607 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "part-8",
+  "journal": "commerce-platform-architecture",
+  "part": "part-8",
+  "title": "Part VIII — TRUST: Security, Privacy and Regulation",
+  "status": "draft",
+  "revised": "2026-11-13",
+  "basis": "Reconstructed on 2026-11-12 from the published page (posts/part-8-intro/index.md, 386 words, eight units: the KEY POINTS callout, three lead paragraphs, three chapter paragraphs and 'Begin with') and its former spec.md, then reordered the same day (see decision_log); the page was revised to match. One spec paragraph per unit of the revised page; the KEY POINTS callout and Figure 3 (three things reach a shop from outside) are evidence of the claim paragraph (p05), Figure 1 of the hook (p01) and Figure 2 of Eva's order (p03).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Part VIII answers three questions in order: which doors are open to a script and who holds the key to each (card testing, account takeover, checkout scripts and integration credentials); which systems hold a person's data, for what purpose and for how long, and what a request requires of each; and how an applicable rule becomes owned work with a scope, a required behavior, an authoritative system, a test and a deadline.",
+        "Kestrel & Pine's three examples: 48,000 abusive checkout attempts in August 2026; a customer's May 2027 deletion request that found her in nine systems; and regulatory changes that reached engineering through unrelated channels.",
+        "That the response to all three begins with one map of systems, integrations and owners, extended with credentials, data purposes and retention, and applicable requirements and deadlines."
+      ],
+      "can_do": [
+        "Pick the Part VIII chapter that answers the trust question in front of them."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader of this page alone can name the three chapters' subjects in reading order.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only this page: what will each of the next three chapters tell you, in order?",
+        "expected": "Card testing, account takeover, checkout scripts and integration credentials, with an attack that cost €2,900 in declined-payment fees and interrupted sales, controls divided between the merchant and its providers, and incident recovery; customer records, their purposes and the actions a request requires, with a customer in Ghent found in nine systems and identity links and a coordinated workflow that make later requests easier; turning an applicable rule into owned work (scope, required data or behavior, authoritative system, verification, deadline), with a calendar covering product information, accessibility, electronic invoicing and unsold goods."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of this page alone can say why the part treats security, privacy and regulation as lists with owners on one map rather than as three separate disciplines.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: what do the part's three subjects have in common, and where does the response to each begin?",
+        "expected": "Each arrives from outside (a script, a person with rights, a rule with a date) and uses or demands something the shop already has: the checkout, the login and the admin, the copies of a customer's data, the price and product data. Each is answered by a list with owners (credentials, data purposes and retention, requirements and deadlines), and the three lists are columns of the same map of systems, integrations and owners; the map makes responsibilities actionable, though each topic still needs its own controls."
+      },
+      {
+        "id": "AC-3",
+        "statement": "Given three trust demands, the reader names the Part VIII chapter that answers each.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Three things happen to an online shop in one month: (a) its payment provider charges fees for thousands of declined card payments made overnight; (b) a customer asks for all her data to be deleted; (c) a marketplace starts rejecting product listings that lack data a new rule requires. Using only this page: which chapter of this part do you open for each, and why?",
+        "expected": "(a) commerce-security, which covers card testing, the checkout used with stolen cards, and the controls and incident recovery (the €2,900 attack); (b) privacy-and-customer-data, which maps customer records, their purposes and what a request requires of each system (the Ghent customer in nine systems); (c) commerce-regulation, which turns an applicable rule into owned work with scope, data, system, verification and deadline (the calendar covering product information)."
+      }
+    ],
+    "audience": {
+      "who": "Readers new to commerce architecture (engineers, product managers and leaders) who have read Parts I to VII and are about to start the trust chapters, especially those who assume the hosted platform 'handles security and GDPR', or who arrive with one security, privacy or regulatory demand in hand and want the chapter that answers it.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side.",
+        "Roughly what an API, a database and a queue are.",
+        "Part I: the thirteen steps of an order, promise and handoff, the three status lines, the capability map, system of record, single writer, events, idempotency and reconciliation; the glosses for PSP, WMS, ERP, iPaaS, webhook, SKU, channel, marketplace connector and 3PL.",
+        "Parts II to VI: one owning system per fact (product, price, stock), the order record, invoices and the monthly match, and the inventory of integrations between the merchant's systems.",
+        "Part VII: the vendor's inside reaches the merchant as limits (API budgets, extension points with retirement dates, a checkout it cannot replace), and the merchant's promises are kept or broken in what it owns around the platform.",
+        "Kestrel & Pine in outline: a fictional outdoor brand, its systems, its incidents and the Waypoint program; Eva's jacket order as the book's worked order."
+      ],
+      "does_not_know": [
+        "Card testing, credential stuffing, account takeover and skimming as attacks (owned by commerce-security; card testing is glossed here as attempts with stolen cards, the others only named).",
+        "Legal role (controller and processor), retention clocks and data-subject requests (owned by privacy-and-customer-data; legal role is given here in plain words as who decides a system's use of the data).",
+        "The regulatory calendar and the specific rules it holds (owned by commerce-regulation; only named here)."
+      ]
+    }
+  },
+  "thesis": {
+    "question": "What must a merchant that rents its platform do about attackers, privacy law and commerce regulation, and where does that work land?",
+    "claim": "Attackers, privacy law and commerce regulation act on the systems the merchant already runs and the integrations between them, while the hosted platform covers only its own service, checkout and defaults. So the merchant's work lands in lists on its map of systems, integrations and owners: every identity and key with an owner; every system holding personal data with its legal role, what a deletion request does there and how long it keeps records; every applicable rule with its data, system of record, test, date and owner.",
+    "disputed_by": "The view that security, privacy and compliance are specialist disciplines apart from the commerce architecture: covered by the platform's certifications and privacy tools, by buying a bot-management, consent or compliance product, or by the legal department when a rule comes up.",
+    "so_what": "A merchant that accepts the claim answers 'are we secure?', 'are we GDPR compliant?' and 'are we ready for this rule?' by extending the system-of-record map of Part I and the integration inventory of Part VI with three columns, and buys a product only for a list it already keeps. Kestrel & Pine met each demand without a list in 2026 and 2027: 48,000 card-testing attempts on 18 to 19 August 2026 cost €2,900 in fees and a 40-minute pause of the PSP account; a deletion request of 10 May 2027 found the customer in nine of thirteen systems and took seventeen working days; four rules reached engineering through a marketplace's error log, an agency audit, a Belgian customer and an auditor's newsletter. Its answers were lists with owners: the April 2027 security baseline (MFA enforced, one identity and restricted key per integration, a decline-rate alert and a tested kill switch), the October 2027 request orchestrator (the second request took two working days) and the March 2027 regulatory calendar with an owner per row.",
+    "how_why": "Card testing and credential stuffing send normal requests to the checkout and the login, and an admin login or a leaked key bypasses every other control, so the controls sit on endpoints and identities, and a key without an owner cannot be rotated, scoped or traced. Every integration copies personal data into another system with its own legal role, and the law gives a request one month and keeps invoices for years, so a request must reach every copy with a decided action. Rules ask for fields, histories, dated events and records that only a system of record can hold, are published years before they apply and are often enforced first by partners. Vendors' shared-responsibility statements and processor roles end at their service, so whatever the merchant added is outside them, and each Kestrel & Pine incident in this part began with something nobody had on a list.",
+    "supporting_claims": [
+      {
+        "id": "P8-1",
+        "claim": "Card testing, credential stuffing, policy abuse and skimming need no break-in: they send ordinary requests through the payment form, the login and the admin as designed. A hosted checkout or hosted fields keeps card numbers out of the merchant's systems, and the vendor secures its service, while the merchant secures every identity, key, app, script and endpoint it adds, each with an owner, least privilege, an alert and a rehearsed response."
+      },
+      {
+        "id": "P8-2",
+        "claim": "Every integration is also a data flow with a legal role: the merchant, as controller, knows for each system that holds a person its role, the action a request requires and its retention clock, keeps consent with its evidence on the customer master, splits the person from the transaction, and answers requests through an identity index and an orchestrator."
+      },
+      {
+        "id": "P8-3",
+        "claim": "The consumer, product-safety, invoicing and sustainability rules this part examines are data requirements with a date (a price history, dated refund events, product-safety fields, a structured invoice, a disposition record) that belong in a system of record; they are public years before they apply and are often enforced first by partners, so each needs a calendar row with scope, system, test, date and an owner who owns the fact."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Performs the part's opening: states the part thesis in its three key points, places the part on Eva's order (checkout and payment, price and product page, every system her name reaches), recalls Kestrel & Pine's three trust examples, and gives the reading order.",
+    "supports": []
+  },
+  "flow": {
+    "pattern": "small_to_large",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "chapters: the three chapter paragraphs, in the part's reading order"
+      }
+    ],
+    "rationale": "The lead moves from the concrete to the general and then to the route: the three demands as everyday cases, the book's company meeting all three, Eva's order meeting the same three, why they land on the merchant (Part VII's layer around the rented platform, which the vendor's coverage does not reach), and the general response (one map with three added columns, one per chapter, which is also the roadmap) directly before the chapter list; the closing returns to the opening checkout and says where to begin. The cases and Eva's order follow the hook because they are its instances, so the concrete material sits together; the bridge then explains why all three land on the merchant, and the claim follows it directly because it answers that problem and announces the chapters it stands before. Put the claim first and the three columns answer demands the reader has not met; put Eva's order between the bridge and the claim and it interrupts the problem and its answer (both round 1 flow readers); put it after the claim and it reads as a third listing of the three, out of place (both round 3 readers); put the chapters before the claim and they read as three separate disciplines."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "The checkout that accepts a real purchase can also receive automated payment attacks; the address used for delivery can remain in a forgotten export; a pricing rule can require data the shop has never collected."
+    },
+    "bridge": {
+      "from_reader_world": "Part VII's finding that a merchant renting its platform keeps or breaks its promises in what it owns around the platform (the previous page's hand-off: the platform's structure and limits).",
+      "to_topic": "Promises the merchant does not choose, imposed on that same layer from outside by attackers, by people with rights over their data and by rules with a date, while the vendor covers only its own service, checkout and defaults; and Eva's jacket order, whose systems, data and transaction they all reach."
+    },
+    "thesis_statement": {
+      "text": "Attackers, people with rights over their data and rules with a date reach the layer the merchant owns around its rented platform, while the vendor covers only its own service, checkout and defaults; so the response to all three begins with the map of systems, integrations and owners, to which each chapter adds a column: credentials with their owners; personal data with its legal role, purpose and retention; requirements with their system, deadline and owner.",
+      "placement": "KEY POINTS bullets 1 to 3, paragraph p04 (the bridge) and paragraph p05 (the map and its three columns)"
+    },
+    "roadmap": {
+      "placement": "paragraph p05",
+      "promises": [
+        {
+          "promise": "Three chapters, each adding one column to the map, in order: credentials with their owners (security); personal data with its legal role, purpose and retention (privacy); requirements with their system, deadline and owner (regulation).",
+          "kept_in": [
+            "chapters"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A shop's own functions bring demands from outside: the checkout that accepts a real purchase also receives automated payment attacks, a delivery address can remain in a forgotten export, and a pricing rule can require data the shop never collected.",
+        "function": "example",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "The checkout, the delivery address in an export, the pricing rule that needs uncollected data.",
+            "shows": "Three demands from outside (a script, a person's data, a rule) that use or ask for what the shop already has."
+          },
+          {
+            "kind": "figure",
+            "what": "Figure 1: the attacker's way in: a shop front with three intact doors (payment form, login, admin) and a robot walking in through them as built; none has to be broken to be abused.",
+            "shows": "None of the doors has to be broken to be abused."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Kestrel & Pine, the fictional outdoor brand, met all three: 48,000 abusive checkout attempts with stolen cards one August 2026 night, a customer's May 2027 request to delete her data, and four rules that reached engineering through unrelated channels, such as listings a marketplace rejected.",
+        "function": "example",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "48,000 checkout attempts with stolen cards on the night of 18 to 19 August 2026; the deletion request of 10 May 2027; four rules through four doors (fictional company, real rules).",
+            "source": "_research/scenario-ledger.md (incident 8, the Card-Testing Night; privacy-and-customer-data and commerce-regulation lines)",
+            "shows": "The three demands of the hook happened to the book's company, one per chapter."
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The three demands of the hook, none needing a break-in.",
+          "introduces": "Kestrel & Pine's real cases of each, labelled fictional.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Eva's jacket, the order the book follows, meets all three demands: security at its checkout and payment, privacy in every system her name reaches, and regulation at its price, product page, invoice and return.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "figure",
+            "what": "Figure 2: where Part VIII meets Eva's jacket: security at the checkout and the payment, privacy in every system her name reaches and in the request that one day asks for it back, regulation at the price, the order button, the product page and the refund clocks.",
+            "shows": "Trust sits on the order's path, not beside it."
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The three demands Kestrel & Pine met.",
+          "introduces": "Where the same three meet Eva's order, in the order security, privacy, regulation.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "Part VII found that a merchant renting its platform keeps or breaks its promises in the layer it owns around the platform; Part VIII adds demands made on that layer by attackers, people with rights over their data and rules with a date, which the vendor's coverage of its own service, checkout and defaults does not reach: the accounts, keys and scripts the merchant adds.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Part VII's finding (the previous page's hand-off); the vendor's coverage ending at its own service, checkout and defaults.",
+            "source": "peak-load-and-reliability (Part VII closing); journal-spec part-8 thesis",
+            "shows": "Why the three cases land on the merchant and not on the vendor."
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The three demands, met by the company and reaching Eva's order, and Part VII's finding about the layer the merchant owns around the platform.",
+          "introduces": "Why they land on the merchant: demands made on that layer, which the vendor's coverage does not reach.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "The response to these demands begins with the earlier parts' map of systems, integrations and owners, to which each chapter adds a column (credentials with their owners; personal data with who decides its use, its purpose and retention; requirements with their system, deadline and owner); the map makes responsibilities actionable, though each topic still needs its own controls.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "KEY POINTS callout: attackers use the shop as built and the merchant secures every identity, key, app and script it adds; the order and the person are different things in law; most rules are data requirements with a date, each in a system of record with a test and an owner.",
+            "shows": "The part's argument in three lines for a reader who skims."
+          },
+          {
+            "kind": "figure",
+            "what": "Figure 3: three things reach a shop from outside (an attacker's script, a person with rights, a rule with a date), each answered by a list with owners; the three lists are columns of the same ownership map.",
+            "shows": "The three columns as one picture, not three disciplines."
+          }
+        ],
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The demands made on the merchant's own layer, which the vendor does not cover, named again as 'these demands'.",
+          "introduces": "Where the response begins: one map with three added columns, one per chapter.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "chapters",
+      "heading": "Chapters in this part",
+      "controlling_idea": "Each of the three chapters adds one column to the map, names the subject it decides and opens on one Kestrel & Pine case, in the order the columns were announced.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "P8-1",
+          "P8-2",
+          "P8-3"
+        ],
+        "how": "Each paragraph introduces the chapter that argues one of the part's supporting claims, so the list is the part's argument in outline."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Security comes first because it turns each integration into an identity with a key and an owner; privacy follows because it reads the same integrations as data flows with a legal role and needs the owners security has named; regulation comes last because each of its rules needs data in a system of record and an owner, which the first two columns have already named for credentials and personal data. Putting regulation first would present a calendar before the reader has seen one rule turned into a field, a clock and an owner; putting privacy before security would treat integrations as data flows before anyone owns their credentials."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The three columns announced in order (security, privacy, regulation) and Figure 3.",
+        "introduces": "One paragraph per chapter: its subject in bold, its Kestrel & Pine case and what it establishes.",
+        "form": "sentence",
+        "placement": "end_of_previous"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "The security chapter examines card testing, account takeover, checkout scripts and integration credentials; the August attack cost €2,900 in declined-payment fees and interrupted sales, and the chapter assigns controls to the merchant and its providers and sets out incident recovery.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P8-1"
+            ],
+            "how": "Introduces the chapter on identities, keys, scripts and endpoints with owners."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The Card-Testing Night: €2,900 in PSP fees for declined authorizations; the PSP paused the account (fictional).",
+              "source": "_research/scenario-ledger.md, incident 8",
+              "shows": "The checkout used as built costs money and sales."
+            }
+          ]
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The privacy chapter then maps customer records, their purposes and what a request requires: the May requester, in Ghent, appears in nine systems; her orders stay for years under tax law but her profile goes on request, so the chapter separates the person from the transaction; linked records and a coordinated workflow make later requests easier to complete and verify.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P8-2"
+            ],
+            "how": "Introduces the chapter on legal role, retention and request handling per system."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The Request From Ghent: nine systems (fictional).",
+              "source": "_research/scenario-ledger.md, privacy-and-customer-data line",
+              "shows": "A person's data is copied into many systems, each needing a decided action."
+            },
+            {
+              "kind": "reasoning",
+              "what": "Orders kept for years under tax law, the profile erased on request; the person separated from the transaction.",
+              "source": "privacy-and-customer-data (KEY POINTS 2)",
+              "shows": "Backs KEY POINTS bullet 2, which the body otherwise leaves unexplained."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The security chapter's owners of identities and keys.",
+            "introduces": "The second column: the systems that hold a person and what a request requires of each.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Last, the regulation chapter turns an applicable rule into owned implementation work, naming its scope, required data or behavior, authoritative system, verification and deadline, with a worked calendar covering product information, accessibility, electronic invoicing and unsold goods.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P8-3"
+            ],
+            "how": "Introduces the chapter on rules as data requirements with a date and an owner."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Kestrel & Pine's March 2027 regulatory calendar covering product information, accessibility, e-invoicing and unsold goods (fictional; rules and dates in the chapter).",
+              "source": "_research/scenario-ledger.md, commerce-regulation line",
+              "shows": "Each rule becomes a calendar row with data, system, test, date and owner."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The chapters before it, in the columns' order.",
+            "introduces": "The last column: rules with their data, system, deadline and owner.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Where to Begin",
+    "synthesis": "The opening's checkout, which takes a stolen card as it takes a real purchase, shows the pattern of all three demands: each is answered by a list the merchant keeps, not by the vendor. No chapter paragraph says this of the three together.",
+    "so_what": "The reader knows that none of the three demands is settled by the platform or a product, and starts with the list on which the other two rely: the owners of identities and keys.",
+    "callback": {
+      "to": "The opening's checkout that accepts a real purchase and automated payment attacks by the same behavior (p01).",
+      "how": "The reader can now say who answers for it: the merchant, with a list it keeps."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Begin with commerce-security."
+    },
+    "hand_off": {
+      "to": "commerce-security",
+      "relationship": "elaboration",
+      "carries_over": "The part introduction's first question, which doors are open to a script and who holds the key to each, and the Card-Testing Night of August 2026.",
+      "introduces": "The threats ranked by what attackers want, the PCI DSS line drawn by the integration pattern, the controls for card testing, takeover and skimmers, and the inventory of identities and keys."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The three chapters and the column each adds.",
+      "introduces": "What they share, read back on the opening's checkout, and where to begin.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p09",
+        "controlling_idea": "The opening's checkout takes a stolen card as it takes a real purchase; each demand is answered by a list the merchant keeps, not by the vendor; the other lists rely on the first, the owners of identities and keys; begin with the security chapter.",
+        "function": "synthesis"
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Teaching any chapter's content (attacks and controls, legal roles and requests, the rules and their dates); the page summarizes and does not re-argue.",
+      "covered_in": [
+        "commerce-security",
+        "privacy-and-customer-data",
+        "commerce-regulation"
+      ]
+    },
+    {
+      "topic": "The dated standards and regulations (PCI DSS, GDPR, the Omnibus, GPSR, EAA, ESPR, e-invoicing mandates); the chapters cite them.",
+      "covered_in": [
+        "commerce-security",
+        "privacy-and-customer-data",
+        "commerce-regulation"
+      ]
+    },
+    {
+      "topic": "The identity index and customer master.",
+      "covered_in": [
+        "identity-and-master-data"
+      ]
+    },
+    {
+      "topic": "The e-invoicing calendar.",
+      "covered_in": [
+        "edi-and-e-invoicing"
+      ]
+    },
+    {
+      "topic": "The failure patterns' definitions.",
+      "covered_in": [
+        "where-commerce-platforms-go-wrong"
+      ]
+    },
+    {
+      "topic": "The part's closing (the three incidents read together as one finding, set against the opening checkout).",
+      "covered_in": [
+        "commerce-regulation"
+      ]
+    },
+    {
+      "topic": "Scale-stage comparisons and take-away tiers (each chapter has its own)."
+    },
+    {
+      "topic": "External factual claims; the page makes none of its own."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming draft-check round 3 (escalate: 47 passed, 16 failed; no further round is run), the cheap and plainly right fixes are applied, so check-report.json is stale. (1) Eva's paragraph moves to directly after the Kestrel & Pine cases (rule 3: both round 3 flow readers asked for this move, and flowB in rounds 1 and 2 had proposed it; round 1's objection was to its place between the bridge and the claim, which this move also avoids); ids renumbered (Eva p03, bridge p04, claim p05), the transitions it invalidates rewritten (p03 example, p04 cause_effect, the chapter section from the claim's columns), figures renumbered to follow the text, and the flow rationale updated. (2) Figure 1's caption no longer counts 'three' or uses 'demand' before the page introduces it: 'The attacker's way in: a payment form, a login and an admin…' (both readers: two sets of three; the p02 boundary). (3) Figure 2 (Eva) lists security, privacy, regulation in the chapters' order, and Eva's paragraph says 'regulation' (the section boundary; one reader on the alternating words). (4) Figure 3 says 'an attacker's script' (both readers: 'a script' clashed with 'checkout scripts'). (5) p02 says 'such as listings a marketplace rejected' (both readers could not parse 'one as a marketplace rejecting listings'). (6) The closing is split into three short sentences (both readers re-read it). Word count unchanged at 504 (limit 505).",
+      "rejected": [
+        "A fourth round (the brief allows one confirming round)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: not acted on after round 3: KEY POINTS bullet 3's 'a calendar row' before the calendar is named (both readers, corroborated; the author's callout, rule 10, and a gloss would take the page over the limit); 'The vendor covers its own service, checkout…' (one reader; the sentence now names what the vendor does not cover); 'merchant and provider' in p06 beside 'vendor' (one reader; the author's sentence, and the provider there is the payment provider); 'who decides its use' (one reader; the plain form of 'legal role' chosen in round 2); 'each topic still needs its own controls' (one reader; AC-2's expected answer); the declared pattern (one reader called it general to specific, the other agreed with small_to_large). No further round was run, so these and the fixes above are unchecked.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after draft-check round 2 (escalate: 48 passed, 15 failed; blocking: the p03-p04 transition, the declared pattern, Figure 1's two 'threes', 'promises imposed … by attackers', the closing's comparison and callback, 'legal role'), the cheap and plainly right fixes are applied without another revision round, then one confirming round is run. (1) Declared pattern changed from large_to_small to small_to_large: both readers described the page as concrete to general, then the route (rule 3; the order itself is unchanged). (2) p04 opens 'The response to these demands' (the referent). (3) Figure 1's caption opens 'The first demand' (one 'three' only). (4) p03 says 'demands made on that layer' (attackers impose no promises) and 'the layer it owns around the platform' (one 'it'), and 'not the accounts, keys and scripts the merchant adds'. (5) The closing restores 'takes a stolen card as it takes a real purchase' before the comparison, so the callback lands, and says 'the other lists'. (6) 'Legal role' is replaced in p04 by its plain meaning, 'who decides its use' (rule 6; does_not_know updated), because a gloss beside the term did not fit the limit. (7) The hook's 'None of the three needs a break-in' is cut: one reader in each of rounds 1 and 2 found it does not fit the export and the rule; Figure 1's caption keeps the point for the attacker. Words paid for by shortening p02, p03, p06 and p08 (no number, case or figure of the author's cut).",
+      "rejected": [
+        "Keeping 'None of the three needs a break-in' as the journal spec's hook wording (readers in two rounds stumbled on it).",
+        "Glossing 'legal role' beside the term (four words over the limit)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Eva's paragraph stays after the claim (rule 10): in round 2 both readers found it the loosest fit, but flowA asked for no move and flowB asked to put it after the Kestrel & Pine cases, the position round 1's readers objected to; the current position stands.",
+      "rejected": [
+        "Moving it after the cases (round 1 readers objected to its place before the claim)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: minor findings of round 2 not acted on: 'a pricing rule can require data the shop has never collected' (author's hook wording, one reader); 'one as a marketplace rejecting listings' (one reader; added in round 1 for a corroborated finding, and the regulation chapter explains it); 'The map makes responsibilities actionable; each topic still needs its own controls' (author's sentence and AC-2's expected answer); KEY POINTS bullet 3's calendar row before the calendar is introduced (author's callout); 'the order button' and 'the refund clocks' in Figure 3's caption (glossed in round 1; one reader); the dependency between the lists arriving only in the closing (one reader; four words over the limit to repeat it in p04).",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: criteria (rule 7): AC-1 (intro_predicts_content) and reverse_outline_matches_spec kept; AC-2 is the journal spec's; AC-3, added by this pass, passed in rounds 1 and 2 and is kept.",
+      "rejected": [
+        "Dropping AC-3."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft-check round 1 (escalate: 14 passed, 17 failed; one blocking failure at fault in the spec, the rest in the draft), under the author's pre-approval to change the order, paragraph ideas and transitions when a blocking failure is at fault in the spec. Order: Eva's paragraph moves from between the bridge and the claim to after the claim (both flow readers: it broke the line from the bridge to the map; flowA proposed before the chapter list, flowB after the map), and now names the three demands on her order in the chapters' order, so it leads into the chapter list; the claim becomes p04 and Eva's paragraph p05; figures renumbered to follow the text (the three-lists figure is Figure 2, Eva's Figure 3). Prose, same units: Figure 1's caption says it shows the first of the three; p02 names one of the four rules' channels (a marketplace rejecting listings; ledger, commerce-regulation line: GPSR fields via marketplace listing rejections); p03 says 'the layer it owns around it' so 'that layer' has a referent, and that the accounts, keys and scripts the merchant adds are the merchant's (who owns checkout security); p07 says 'The May requester' instead of 'That customer' and 'Linked records' instead of 'Identity links' (undefined); p08 'It names scope…' instead of the imperative fragment, and drops 'with dates and evidence in the chapter' for length; Figure 3's caption says 'the order button' and 'the refund clocks'; the closing says 'not by the vendor' and why security comes first. Cut for length: 'the merchant does not choose' (p03), 'all three' and 'in order' (p04).",
+      "rejected": [
+        "Moving Eva's paragraph next to the Kestrel & Pine cases (flowB's first suggestion; flowA asked for it before the chapter list).",
+        "Merging Figure 1 and Figure 3 (flowA): both are the author's illustrations; the caption now ties Figure 1 to the first demand.",
+        "Rewording 'None of the three needs a break-in' (flowB, minor): the part opening's hook in the journal spec."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (fresh reader, order of ideas only): sound with notes. The author asked for the rubric notes to be taken without review. Taken: the page-level rationale now says the lead narrows in four steps rather than at every unit (the reader found the bridge p03 no narrower than the cases p02); the section rationale no longer rests on privacy's one-month request clock, which no unit states, but on the owners the first two columns name. No unit moved, so the rubric was not rerun.",
+      "rejected": [
+        "Merging Eva's paragraph (p04) into the bridge (p03): it is the house's 'Where we are in the order's journey' element with its own figure, and the post's role in the journal spec places the part on Eva's order.",
+        "Adding the one-month request clock to p07: about six words over the 505-word limit, and the reason for the order no longer depends on it.",
+        "Dropping 'each topic still needs its own controls' from p05: AC-2's expected answer, copied from the journal spec, includes it.",
+        "Rewording p05's privacy column to name what a deletion request does: three words over the limit; the thesis statement may be plainer than the claim."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Order of ideas changed from the published page, without the author's review (the author asked for this pass to run unattended). (1) The published third lead paragraph is split: its three Kestrel & Pine cases move directly after the hook as p02 (their real instances), and its map-and-columns sentences become the claim and roadmap p05, placed last in the lead so that the roadmap stands directly before the chapter list. (2) A bridge paragraph p03 is added because the page lacked the part opening's bridge from Part VII (the merchant's layer around the rented platform) and the thesis's line between the vendor's coverage and the merchant's; it is the part thesis in plain words, not new material. (3) Eva's paragraph moves after the bridge; Figure 2 (Eva) and Figure 3 (the three lists) are renumbered to follow the text. (4) The published scope sentences of the first paragraph ('Security, privacy and regulatory work each follow information across several systems. This part explains how to identify the responsible owners and controls…') are replaced by 'None of the three needs a break-in' (the part opening's hook) and by p05, which says the same with the columns named. (5) 'Begin with [[commerce-security]]' moves into a headed one-paragraph closing, 'Where to Begin' (RESOLVE rule 4; the same heading as parts III and VII).",
+      "rejected": [
+        "Keeping the cases after Eva's paragraph: they would follow the order's journey instead of the hook they instantiate.",
+        "Placing the claim before Eva's order: the roadmap would then be separated from the chapter list by Eva's paragraph.",
+        "Performing the part's closing here: the journal spec assigns it to commerce-regulation."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Length: max_words set to 505 = the published 386 words + 25% (482) plus the 23-word sentence in p07 that backs KEY POINTS bullet 2 ('Her orders stay for years under tax law but her profile goes on request, so the chapter separates the person from the transaction'; source: privacy-and-customer-data's KEY POINTS). The old spec's cap ('under about 1,500 words') is not used, as the brief requires. Words for the bridge p03 were paid for by cutting the author's two scope sentences of the first paragraph and by shortening the column list in p05.",
+      "rejected": [
+        "Setting the limit from the old spec's 1,500-word cap."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The post entry in the journal spec has a question and no thesis. A part intro performs the part's opening, so this spec uses the part's thesis and its supporting claims P8-1 to P8-3 unchanged; each chapter paragraph introduces the chapter that argues one of them (role.supports in the journal spec). Intent outcome, AC-1, AC-2 and role are copied from the post entry; the hook and bridge from the part's opening. AC-3 (pick the chapter for a demand) is added for the intent's can_do and is minor: for the author to keep or drop.",
+      "rejected": [
+        "Writing a separate thesis for the page: it would restate the part's claim."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Conversion of spec.md, taken without review at the author's request (auto mode). Its six success criteria were inventories and are not carried as criteria: three tight KEY POINTS then <br> with no IN THIS PART or FAILURE PATTERNS block (house format, kept); a two-to-four-paragraph lead, business first, placing the part on the order's journey and naming Kestrel & Pine as fictional once (now p01 to p05); one or two mermaid diagrams (obsolete: redrawn as illustrations on 2026-11-07); the chapter-list format (kept; its outcome is AC-1); figures matching the chapters and the ledger (checked at conversion; the spec.md line listed many figures the published page never carried, such as 23:40 to 04:10, about 260 cards and seventeen working days, and they are not added); no Across Scale Stages section and a one-line Sources and Evidence (kept, see non_goals).",
+      "rejected": [
+        "Carrying the checklist over as acceptance criteria: they say what the page contains, not what a reader can do."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Figures checked against the ledger: 48,000 attempts on one night in August 2026 and €2,900 in fees for declined authorizations (incident 8 and the commerce-security line; 'declined-payment fees' is the author's wording); the deletion request of May 2027 from a customer in Ghent, found in nine systems (privacy-and-customer-data line); four rules through four doors (commerce-regulation line). 'Four' is added in p02 from that line, replacing 'regulatory changes'.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The open question carried from spec.md (whether part intros get generated illustrations replacing the mermaid figures) is settled: the figures were redrawn as illustrations on 2026-11-07 (changelog).",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Figure 1 draws the three outside arrivals (a script, a person with rights, a rule with a date) against the three lists they are answered by, rather than one chapter's mechanism, because 'three more columns of the ownership map' is the thread the three chapters share. (Carried from spec.md; this diagram is now Figure 3.)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Figure 2 walks Eva's jacket through the part so the newcomer sees that trust sits on the order's path, not beside it; the chapters' own figures cover their mechanisms. (Carried from spec.md.)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Four failure patterns: the Secret Agent and the Lynchpin (security), the Familiar Stranger (privacy) and the Long Fuse (privacy and regulation); the Pulled Rug and the Price Nobody Can Explain are left to the regulation chapter. (Carried from spec.md; the FAILURE PATTERNS block was dropped on 2026-11-08.)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "The ESPR arrival is dated by the ban's application (19 July 2026) rather than by the month of the auditor's newsletter, because the chapter and the ledger give that month differently. (Carried from spec.md; the page no longer dates it.)"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the journal spec's part-8 opening hook now has this page's wording ('None of the three needs a break-in' removed), so this spec's hook and the journal spec agree; nothing here changed.",
+      "rejected": [
+        "Restoring the cut sentence on the page."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (part-8 and its post entry part-8)",
+      "contributed": "Intent, AC-1, AC-2 and role (post entry); thesis, supporting claims, opening hook, bridge and roadmap (part); commerce-security's transition_in for the hand-off; peak-load-and-reliability's hand-off for the opening."
+    },
+    {
+      "kind": "internal",
+      "ref": "commerce-security, privacy-and-customer-data, commerce-regulation",
+      "contributed": "The chapters summarized, in their words and numbers."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine, config.yaml, _research/scenario-ledger.md, _research/consistency-issues.md, PLAN.md and _research/INTRO-BRIEF.md",
+      "contributed": "Reading order, the fictional facts and their rulings, and the shape of a part introduction."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Journal spec's part-8 hook aligned with this page's hook; no field here changed."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Confirming draft-check round 3: escalate (47 pass, 16 fail). Closing fixes: Eva's paragraph moved after the cases, three captions and p02, p03, p09 revised; 504 words (limit 505); check-report.json is stale. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft-check round 2: escalate (48 pass, 15 fail). Resolved under the author's standing instruction: declared pattern small_to_large; fixes in p01 (hook sentence cut), p02, p03, p04, p06, p08, p09 and Figure 1's caption; 504 words (limit 505). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft-check round 1: escalate (14 pass, 17 fail; one spec fault: the place of Eva's paragraph). Eva's paragraph moved after the claim; p02, p03, p05, p07, p08, p09 and two captions revised; 503 words. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec), reordered the page and took the flow rubric's notes in the declared reasons; status draft. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-08",
+      "change": "Openers: dropped IN THIS PART and FAILURE PATTERNS blocks; tightened KEY POINTS (author request). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 1 conceptual figure (article-illustrator). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Final consistency pass: trimmed the chapter list's case details to bring the intro under about 1,500 words. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: WHY IT MATTERS cut to two sentences and corrected (fees were for declined authorizations), Eva's price claim corrected, terms defined, ownership-map attribution fixed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and part introduction. Status accepted. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 505,
+    "target_words": 482
+  }
+}

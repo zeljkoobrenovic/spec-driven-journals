@@ -1,0 +1,1541 @@
+{
+ "spec_version": "0.1",
+ "kind": "post",
+ "id": "multi-tenancy-and-isolation",
+ "journal": "commerce-platform-architecture",
+ "part": "part-7",
+ "title": "Many Merchants, One Platform: Multi-Tenancy, Pods and Isolation",
+ "status": "draft",
+ "revised": "2026-11-12",
+ "basis": "Reconstructed from the published chapter (posts/30-multi-tenancy-and-isolation/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (a roadmap announcing every section and a conclusion paragraph that answers the opening); these are listed in the decision log.",
+ "intent": {
+  "outcome": {
+   "know": [
+    "Multi-tenancy, isolation and the pool, silo and bridge models; the mechanisms vendors document (a tenant identifier on every row, routing, shards, pods, governor limits, regions), with dates and where the public record stops.",
+    "Four published rate-limit models (Shopify, Amazon SP-API, BigCommerce, commercetools; November 2026, volatile) and the rules that follow: budgets per app and store, tiered by plan, which the vendor may lower; buyers and checkout protected before integrations; webhook subscriptions that can be deleted after repeated failures.",
+    "The options for one tenant or several per market or brand, and the four questions to ask every SaaS vendor (unit of isolation, limits and their changes, region, busiest day)."
+   ],
+   "believe": [
+    "Tenancy is the vendor's design; its consequences are the merchant's.",
+    "The rate limit is the tenancy mechanism a merchant meets, and its own apps are often its noisiest neighbors.",
+    "Every SaaS a merchant rents is a tenancy arrangement whose busiest day is shared with its other customers."
+   ],
+   "can_do": [
+    "List the spenders of each API budget and set an order of priority for a peak, with the order flow first.",
+    "Decide whether several markets or brands belong in one tenant, and question each vendor about its isolation, limits, region and busiest day."
+   ]
+  },
+  "audience": {
+   "who": "Readers new to commerce architecture; most of all the integration engineer or engineering lead preparing a peak plan on a hosted platform (Ruben Alves at Kestrel & Pine); next, the product manager or executive deciding between one tenant and several for new countries or brands.",
+   "already_knows": [
+    "Roughly what an API, a database and a queue are.",
+    "Kestrel & Pine, its people, its 2026 and January 2027 incidents in outline, the sixteen failure-pattern names and the Waypoint decisions W1 to W8.",
+    "From Part I: the thirteen steps of an order, promise and handoff, the three status lines, 'system', 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, business models and the four scale stages (Starting, Growing, Omnichannel, Group), the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation.",
+    "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+    "From Parts II to V: one owner per product attribute; prices frozen at order placement; available-to-promise; checkout creating the order once; payment stages; one order record with three status lines; invoices, payouts and the monthly match.",
+    "From Part VI: an integration style per flow with an owner, a reconciliation job, pinned API versions and sunset dates.",
+    "From chapter 29: one deployment unit per team that must release independently, boundaries around systems of record, and the line between the vendor's inside and the merchant's own layer."
+   ],
+   "does_not_know": [
+    "Tenant, multi-tenancy, isolation, SaaS as a tenancy arrangement.",
+    "Pool, silo and bridge; noisy neighbor.",
+    "Shard, pod, router, shop move; governor limit; region and data residency.",
+    "Rate limit, query cost, leaky bucket and token bucket, HTTP 429 and throttled responses, bulk operations.",
+    "App (any program that talks to the store through its API), merchant of record, platform-as-a-service."
+   ]
+  },
+  "acceptance_criteria": [
+   {
+    "id": "AC-1",
+    "statement": "Given an order flow throttled at both ends on a peak evening, the reader explains why the storefront held while the flow did not and plans the budget, rather than buying a higher tier.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "On a brand's busiest evening its storefront works, but orders reach the warehouse hours late. Its order flow creates warehouse orders one at a time with four API calls each; the warehouse vendor allows about 30 calls a minute per customer; on the platform, three stock-writing apps and a marketplace connector's hourly full-catalog sync account for most of the recorded API calls. Using only this chapter: why did the storefront hold while the order flow did not, and what should the brand plan for next year?",
+    "expected": "The platform's shared capacity smooths its own peak across tenants and protects buyers and checkout first; the integrations draw on fixed budgets per app, store or customer at both ends, so the flow could carry about seven orders a minute whatever arrived. Plan: list every spender of each budget with an owner and an order of priority, the order flow first; send orders to the warehouse in batches within its limit; replace polling and full-catalog writes with events for changed items; move finance to a daily batch; check every vendor's limits before the peak. A higher plan tier alone does not change the warehouse vendor's limit."
+   },
+   {
+    "id": "AC-2",
+    "statement": "The reader can say what decides one tenant or several for several countries.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "A merchant runs three country storefronts in one tenant and asks whether to split into one tenant per country. Using only this chapter: what decides it, and what does each answer cost?",
+    "expected": "Stay in one tenant while the platform can vary what differs per market (price, language, tax, availability) and the shared budget can carry every market's peak with the integrations the merchant has; split when a legal entity, a separate assortment or a separate operations team makes the sharing a fiction. Splitting multiplies catalogs, apps, integrations and reconciliation, so the PIM and the OMS go beneath all tenants; staying shares the budget and the blast radius."
+   },
+   {
+    "id": "AC-3",
+    "statement": "The reader can state the questions to ask every SaaS vendor and why.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "minor",
+    "probe": "Using only this chapter: what should a merchant ask the vendor of its warehouse system, returns portal or marketplace connector about tenancy, and why?",
+    "expected": "What its unit of isolation is and whether it can move or restore this tenant alone; what the limits are, per what, and whether they change under load; which region holds the data; what happened on its busiest day last year. Each of these vendors pools the merchant with other customers whose peak falls on the same Friday."
+   },
+   {
+    "id": "AC-4",
+    "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+    "check": "intro_predicts_content",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+    "expected": "Why a merchant's order export can wait for a usage allowance to reset while the shop still takes orders; what multi-tenancy, isolation, shards, pods and rate limits are; dated vendor accounts of the mechanisms, then the merchant's decisions (call budgets, priorities at peak, whether several countries share one tenant) and the same questions for warehouse and returns vendors; Eva's order fetched and sent within the platform's and the warehouse's API limits. Evidence: vendor documentation and annual reports, and Kestrel & Pine's Black Friday logs."
+   },
+   {
+    "id": "AC-5",
+    "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+    "check": "reverse_outline_matches_spec",
+    "method": "reverse_outline",
+    "severity": "blocker"
+   }
+  ]
+ },
+ "thesis": {
+  "question": "How do SaaS commerce platforms serve many merchants on shared systems, and why should a merchant care?",
+  "claim": "Vendors pool merchants on shared servers and databases, kept apart by a tenant identifier on every row, routing, isolated database groups and regions. The merchant meets the rate limits: budgets per app, store or customer, fixed by plan and lowerable under load, at the platform and every SaaS it rents. So it plans its share: who spends each budget, in what order at peak, and whether its country or brand storefronts share a tenant.",
+  "disputed_by": "The view that tenancy is the vendor's concern: a hosted platform scales on demand, so a merchant need not count API calls, rank its apps and connectors or ask its warehouse and returns vendors about their limits, and a throttled flow is fixed by a higher plan tier.",
+  "so_what": "A merchant that accepts the claim lists the spenders of every budget with an owner, puts the order flow first, replaces polling with events and batches within each limit, asks every vendor about its isolation, limits, region and busiest day, and stays in one tenant while the platform can vary its markets. Ruben Alves's June 2027 analysis of Black Friday 2026 (illustrative) found that the WMS vendor allowed about 30 calls a minute per customer and the order flow made four calls per order, one order at a time, so it carried about seven orders a minute against 38 arriving; on the platform, nine consumers drew on the API, the stock-writing apps and the connector's full-catalog sync took about 55% of the recorded usage between 20:00 and 22:00 and the order flow about 20%, and the order flow was throttled about 1,900 times. The 2027 plan puts the order flow first (orders through the OMS, sent to the WMS in batches within its limit), moves stock to events and the ERP to a daily batch, keeps the three storefronts in one tenant and records the region of every SaaS component.",
+  "how_why": "Pooling spreads infrastructure cost across tenants, so one tenant's load, data or failure can reach the others; the vendor isolates them with identifiers, routing and pods the merchant cannot see, and caps each caller with a budget it can shrink to protect the pool, serving buyers and checkout before integrations. The shared pool smooths the platform's own peak across tenants, but a budget per app, store or customer is fixed and meets the merchant's spike in full, and a warehouse or returns vendor's other customers peak on the same Friday. A larger plan raises one bucket but not the warehouse vendor's or the marketplace's, so the order flow keeps moving only when the merchant knows who spends each budget, ranks the spenders and fits its flows (events, batches) inside each limit.",
+  "supporting_claims": [
+   {
+    "id": "S1",
+    "claim": "Vendors pool merchants because one fleet and one version serve everyone cheaply, which lets one tenant's load, data or failure reach the others; they arrange tenants as pool, silo or bridge."
+   },
+   {
+    "id": "S2",
+    "claim": "Vendors keep tenants apart with a tenant identifier on every row, routing, isolated groups of databases (shards and pods), governor limits and regions; the merchant cannot see or change these, and the largest vendor's public record of them stops in 2021."
+   },
+   {
+    "id": "S3",
+    "claim": "The mechanism the merchant meets is the rate limit: budgets per app, store or customer, tiered by plan and lowerable under load, with buyers and checkout served first, so the platform's own peak is smoothed while the merchant's integrations meet fixed limits at its own spike."
+   },
+   {
+    "id": "S4",
+    "claim": "Every specialist SaaS the merchant rents is a tenancy arrangement with its own limits, metering and region and a busiest day shared with its other customers, so each vendor is asked about its isolation, limits, region and busiest day."
+   },
+   {
+    "id": "S5",
+    "claim": "The merchant plans its share before buying more: it lists who calls each API with an owner, puts the order flow first, replaces polling with events and fits its flows in batches within each limit; a higher tier raises one limit and none of the others."
+   },
+   {
+    "id": "S6",
+    "claim": "Several countries or brands stay in one tenant while the platform can vary what differs by market and the shared limits carry every market's peak, and split only when a legal entity, assortment or operations team differs, with the PIM and OMS beneath all tenants."
+   }
+  ]
+ },
+ "role": {
+  "contribution": "Names what the merchant shares with its vendors: capacity metered by rate limits at the platform and at every SaaS it rents, planned as a budget with the order flow first, plus the decision on one tenant or several and the four questions to put to every vendor.",
+  "supports": [
+   "P7-2"
+  ]
+ },
+ "flow": {
+  "pattern": "problem_solution",
+  "additional_patterns": [
+   {
+    "pattern": "prerequisite_order",
+    "applies_to": "why-share to saas: tenancy, then the vendor's isolation mechanisms, then the one the merchant meets, at the platform and at every vendor"
+   },
+   {
+    "pattern": "order_of_importance",
+    "applies_to": "choices to stages: the merchant's responses ranked, then the one it decides itself, then by size"
+   }
+  ],
+  "rationale": "The Friday evening comes first so that every later section explains part of it: two rate limits met with nobody having decided how the calls were spent. Tenancy and its models come next because the isolation mechanisms are described in their terms; the vendor's mechanisms before the rate limit because the rate limit is the one mechanism the merchant meets, and its rules explain why the storefront held and the order flow did not. The other SaaS the merchant rents follow the rate limit directly because they meter the same way and close the loop on the WMS limit of the opening evening. The merchant's responses come next, ranked; splitting tenants, the response the merchant decides alone, is weighed after them; the stage table sizes all of it, and Kestrel & Pine's 2027 plan applies it to the opening evening. The failures come last because each is read against a mechanism already explained. Putting the rate limit before tenancy would present a vendor rule without the reason for it; putting the one-tenant decision before the ranked responses would weigh a split before the reader knows it ranks last; putting the plan before the choices would give decisions without the options they were chosen from."
+ },
+ "introduction": {
+  "hook": {
+   "type": "puzzling_scenario",
+   "content": "During a sale, a merchant's order export may be delayed because the platform refuses further requests until its usage allowance resets, while the shop keeps accepting purchases."
+  },
+  "bridge": {
+   "from_reader_world": "Anyone who has rented a hosted shop assumes the vendor handles capacity.",
+   "to_topic": "The vendor does handle its own capacity, by sharing it among merchants and limiting each one, so the question becomes what the sharing is and what the merchant must plan."
+  },
+  "thesis_statement": {
+   "text": "Vendors pool merchants on shared servers and databases, kept apart by a tenant identifier on every row, routing, isolated database groups and regions. The merchant meets the rate limits: budgets per app, store or customer, fixed by plan and lowerable under load, at the platform and every SaaS it rents. So it plans its share: who spends each budget, in what order at peak, and whether its country or brand storefronts share a tenant.",
+   "placement": "KEY POINTS callout and paragraph p02"
+  },
+  "roadmap": {
+   "placement": "Paragraph p03",
+   "promises": [
+    {
+     "promise": "Start from Kestrel & Pine's Black Friday evening, when its order flow met two rate limits.",
+     "kept_in": [
+      "friday"
+     ]
+    },
+    {
+     "promise": "Explain why platforms share and how vendors keep tenants apart, from dated vendor accounts.",
+     "kept_in": [
+      "why-share",
+      "keep-apart"
+     ]
+    },
+    {
+     "promise": "Treat the rate limit as the mechanism a merchant meets, at the platform and at warehouse and returns vendors.",
+     "kept_in": [
+      "rate-limits",
+      "saas"
+     ]
+    },
+    {
+     "promise": "Turn to the merchant's decisions: its choices, one tenant or several, and how they change with scale.",
+     "kept_in": [
+      "choices",
+      "one-tenant",
+      "stages"
+     ]
+    },
+    {
+     "promise": "Apply them in Kestrel & Pine's 2027 plan and say what goes wrong.",
+     "kept_in": [
+      "in-practice",
+      "wrong"
+     ]
+    }
+   ]
+  },
+  "paragraphs": [
+   {
+    "id": "p01",
+    "controlling_idea": "During a sale a merchant's order export can wait because the platform refuses further requests until a usage allowance resets, while the shop keeps accepting purchases; hosted platforms limit use to protect shared capacity, so renting one does not remove the merchant's need to plan how its integrations use that capacity.",
+    "function": "context",
+    "evidence": [
+     {
+      "kind": "scenario",
+      "what": "An order export delayed by the platform's allowance while purchases continue.",
+      "shows": "The chapter's problem in one case: the shop works and the work behind it waits."
+     }
+    ]
+   },
+   {
+    "id": "p02",
+    "controlling_idea": "Sharing one running system among several customers is multi-tenancy; it spreads cost but needs isolation, which vendors build with shards, pods and rate limits, and the rate limits are what a merchant meets, at the platform and at every SaaS it rents, so the merchant must plan who spends each budget and in what order.",
+    "function": "claim",
+    "evidence": [
+     {
+      "kind": "source",
+      "what": "Shopify's FY2025 annual report (February 2026): millions of merchants on one codebase.",
+      "shows": "Multi-tenancy at commerce scale is documented, not hypothetical."
+     }
+    ],
+    "transition_in": {
+     "relationship": "cause_effect",
+     "carries_over": "The limit that holds the order export back.",
+     "introduces": "The design that makes the limit necessary, and the chapter's claim about what the merchant must do.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p03",
+    "controlling_idea": "The chapter starts from Kestrel & Pine's Black Friday evening, explains why platforms share and how vendors keep tenants apart from dated vendor accounts, treats the rate limit as the mechanism a merchant meets at the platform and at its warehouse and returns vendors, then turns to the merchant's decisions (its choices, one tenant or several, how they change with scale), Kestrel & Pine's 2027 plan and what goes wrong.",
+    "function": "transition",
+    "transition_in": {
+     "relationship": "sequence",
+     "carries_over": "The chapter's claim.",
+     "introduces": "The order in which the chapter argues it and the kind of evidence it uses.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p04",
+    "controlling_idea": "Eva's jacket order, once the platform records it, has to be fetched and sent to the warehouse within both the platform's and the warehouse system's API limits; an ordinary evening leaves spare capacity, Black Friday can exhaust it.",
+    "function": "context",
+    "transition_in": {
+     "relationship": "place",
+     "carries_over": "The chapter's plan.",
+     "introduces": "Where Eva's order stands in its journey: after the platform records it, on its way to the warehouse.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   }
+  ]
+ },
+ "sections": [
+  {
+   "id": "friday",
+   "heading": "Two Rate Limits on One Friday Evening",
+   "controlling_idea": "On Black Friday 2026 Kestrel & Pine's order flow met two rate limits, the WMS vendor's per customer and the platform's, and neither was a fault: both vendors did what their documentation said, and the merchant had not decided how its own calls were spent.",
+   "function": "example",
+   "advances_thesis": {
+    "supports": [
+     "S3"
+    ],
+    "how": "Gives the case the chapter explains: an order flow throttled at both ends while the storefront held."
+   },
+   "flow": {
+    "pattern": "problem_solution",
+    "rationale": "The symptom (the backlog) first, then who analysed it, then the two ends in the order the orders travel back from (the warehouse limit that capped the flow, then the platform's calls), then the reading that turns both into the chapter's question."
+   },
+   "transition_in": {
+    "relationship": "example",
+    "carries_over": "The chapter's plan, which starts from Kestrel & Pine's Black Friday evening.",
+    "introduces": "The evening itself.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p05",
+     "controlling_idea": "At the 2026 peak Kestrel & Pine's shop platform took 38 orders a minute and the storefront kept taking orders, while its export flow created warehouse orders one at a time with several calls each; the WMS vendor throttled those calls and the backlog reached four hours by 21:00.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "statistic",
+       "what": "38 orders a minute; a four-hour backlog by 21:00.",
+       "shows": "The size of the failure the chapter explains.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      }
+     ]
+    },
+    {
+     "id": "p06",
+     "controlling_idea": "In June 2027 Ruben Alves, the lead integration engineer, examined the logs of both ends before planning the next peak; the quantities that follow are illustrative.",
+     "function": "context",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "The backlog.",
+      "introduces": "Who analysed it, when, and the status of the figures.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p07",
+     "controlling_idea": "On the WMS side the vendor allows each customer about 30 calls a minute and the order flow made four calls per order one at a time, so it could carry about seven orders a minute on any day against 38 arriving; the limit is how that multi-tenant vendor keeps one customer's peak from slowing its other customers.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "statistic",
+       "what": "About 30 calls a minute per customer; four calls per order; about seven orders a minute against 38.",
+       "shows": "The flow's capacity was fixed by the limit and its own design, whatever the demand.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "Ruben's analysis.",
+      "introduces": "Its first finding, at the warehouse end.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p08",
+     "controlling_idea": "On the platform side the store had 41 installed apps, and Ruben's analysis names the nine integration consumers that drew on its API that evening: order export, finance, marketplaces, returns, three stock-writing apps, reviews and e-mail.",
+     "function": "description",
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "The warehouse end, where one limit per customer applied.",
+      "introduces": "The platform end, with nine consumers and limits whose scope differs.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p09",
+     "controlling_idea": "The stock apps and the marketplace connector's full-catalog sync made about 55% of the recorded API calls between 20:00 and 22:00 and the order flow about 20%, and the order flow was throttled at the platform about 1,900 times: most of the evening's API use went on stock no customer was waiting for, the one flow with customers waiting made a fifth of the calls and was still throttled, and nobody had set priorities or checked the limits.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "statistic",
+       "what": "About 55% stock apps and catalog sync, about 20% order flow; about 1,900 throttles with one-second waits.",
+       "shows": "The order flow, the only consumer with a customer waiting, made a small share of the calls and was throttled.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 1: nine consumers' shares of the recorded API calls on Black Friday 2026, and the WMS limit at the other end.",
+       "shows": "Shows the order flow made a fifth of the calls and met a second limit."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The nine consumers.",
+      "introduces": "How the recorded calls were shared among them, and what that did to the order flow.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p10",
+     "controlling_idea": "Neither finding was a bug: the rate limit is how a shared platform stays fair, and the merchant's job is to decide how its own share is spent; the rest of the chapter explains the machinery behind the error code.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The two findings.",
+      "introduces": "What they mean, and the question the rest of the chapter answers.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "why-share",
+   "heading": "Why Platforms Share: Tenancy in Plain Words",
+   "controlling_idea": "Vendors pool tenants because one fleet and one version serve everyone cheaply, and they arrange tenants as pool, silo or bridge, trading cost against the noisy-neighbor risk that pooling creates.",
+   "function": "definition",
+   "advances_thesis": {
+    "supports": [
+     "S1"
+    ],
+    "how": "Defines tenancy and the three models the rest of the chapter uses, and ties the noisy-neighbor problem to pooling."
+   },
+   "flow": {
+    "pattern": "large_to_small",
+    "rationale": "The term and the reason for it first, then the three arrangements, then the risk the cheapest arrangement carries, then how a merchant can see the arrangements in what vendors sell."
+   },
+   "transition_in": {
+    "relationship": "cause_effect",
+    "carries_over": "The rate limit as the machinery behind the error code.",
+    "introduces": "Why the machinery exists: what tenancy is and why vendors choose it.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p11",
+     "controlling_idea": "Rate limits exist because the platform is shared: at a commerce platform the tenant is one shop, and vendors choose multi-tenancy for cost and for a single version that every merchant runs.",
+     "function": "definition",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Shopify FY2025 annual report: 'single branch' software, 'all of our merchants use the latest version'.",
+       "shows": "A single version is a documented benefit of pooling."
+      }
+     ]
+    },
+    {
+     "id": "p12",
+     "controlling_idea": "The AWS SaaS Lens names three arrangements: silo (dedicated resources per tenant), pool (shared resources with a tenant identifier on each row) and bridge (some parts siloed, some pooled).",
+     "function": "definition",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "SaaS Lens definitions of silo, pool and bridge.",
+       "shows": "Gives the vocabulary from a published reference, not from a vendor."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "Multi-tenancy as a design.",
+      "introduces": "The three ways it can be arranged.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p13",
+     "controlling_idea": "The pool creates the noisy-neighbor risk, a tenant whose load harms others: in a pool one tenant's flash sale is everyone's load unless the vendor meters it, while a silo confines the harm at a cost per tenant few commerce subscriptions can carry.",
+     "function": "cause_effect",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "SaaS Lens definition of noisy neighbor.",
+       "shows": "Ties the risk to pooling."
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 2: pool, silo and bridge.",
+       "shows": "Shows the three arrangements side by side, with what each shares and isolates."
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The pool, the cheapest arrangement.",
+      "introduces": "The risk it creates.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p14",
+     "controlling_idea": "Merchants can see the spectrum in what vendors sell: Adobe Commerce's three deployment options run from a silo the merchant operates to a pool, and Shopware's cloud refuses plugins that touch the database, which is why pooled platforms extend by API.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Adobe Experience League (October 2026): on-premises, on cloud infrastructure, Cloud Service.",
+       "shows": "One vendor sells all three arrangements."
+      },
+      {
+       "kind": "quotation",
+       "what": "Shopware: plugins 'have direct access to the database' and 'are not supported by Shopware cloud'.",
+       "shows": "In a pool nobody's code may touch the shared database."
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "The three arrangements.",
+      "introduces": "Products a merchant can buy that sit at each point.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "keep-apart",
+   "heading": "How a Shared Platform Keeps Tenants Apart",
+   "controlling_idea": "Vendors keep tenants apart with a tenant identifier on every row, a router, isolated groups of databases, governor limits and regions, which the merchant cannot see or change and whose public record for the largest vendor stops in 2021.",
+   "function": "explanation",
+   "advances_thesis": {
+    "supports": [
+     "S2"
+    ],
+    "how": "Shows the vendor-side mechanisms from dated accounts, and that they are invisible to the merchant except at a few points."
+   },
+   "flow": {
+    "pattern": "chronological",
+    "additional_patterns": [
+     {
+      "pattern": "comparison",
+      "applies_to": "p22 to p23: Salesforce and commercetools as contrasting vendors after Shopify"
+     }
+    ],
+    "rationale": "Shopify's account is told in the order it happened (sharding, pods, the 2021 balancing and moves), because each step answers a problem the previous one left; Salesforce and commercetools follow as contrasts, and the mechanism table, attached to the commercetools paragraph, closes the section by naming what the merchant sees of each mechanism."
+   },
+   "transition_in": {
+    "relationship": "sequence",
+    "carries_over": "Why vendors pool and the risk that creates.",
+    "introduces": "How they keep tenants apart in practice.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p15",
+     "controlling_idea": "A shared platform must route each request to the right tenant's data and stop one tenant's workload exhausting shared capacity; the vendor accounts that follow show identifiers, placement and resource limits working together.",
+     "function": "transition"
+    },
+    {
+     "id": "p16",
+     "controlling_idea": "By 2015 Shopify's database could no longer be scaled on one server, so it sharded (split one database into many, each holding a set of shops), which on its own reduced resilience.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Shopify Engineering 2018: 'could no longer be scaled by buying a bigger server'.",
+       "shows": "The trigger was documented load, not fashion."
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "The two jobs of isolation.",
+      "introduces": "Shopify's first step, sharding.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p17",
+     "controlling_idea": "In 2016 Shopify reorganized into pods, sets of shops on fully isolated datastores under shared application servers, with a router (Sorting Hat) sending each request to its pod; each pod had an active and a recovery data center and could be moved between them in about a minute, in an account now eight years old that describes a pre-cloud topology.",
+     "function": "explanation",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'A pod consists of a set of shops that live on a fully isolated set of datastores'; 'all shared resources can only ever communicate to a single pod at a time'.",
+       "shows": "Defines the pod in the vendor's words."
+      }
+     ],
+     "transition_in": {
+      "relationship": "problem_solution",
+      "carries_over": "Sharding's loss of resilience.",
+      "introduces": "Pods as the answer.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p18",
+     "controlling_idea": "The 2021 shard-balancing post shows the tenant mechanics: one shard per pod, the shop as the sharding unit with a shop_id on every table, and an unsharded routing table.",
+     "function": "explanation",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Shopify Engineering 2021, MySQL shard balancing.",
+       "shows": "Documents the tenant identifier on every row and the routing table."
+      }
+     ],
+     "transition_in": {
+      "relationship": "time",
+      "carries_over": "The 2018 account of pods and their moves.",
+      "introduces": "The later, 2021 account.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p19",
+     "controlling_idea": "Shops land on shards arbitrarily and grow unevenly, so before rebalancing the least- and most-loaded shards differed by almost four times.",
+     "function": "cause_effect",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'almost four times'.",
+       "shows": "The imbalance that makes moves necessary."
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "Shops as the unit placed on shards.",
+      "introduces": "Why placement drifts out of balance.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p20",
+     "controlling_idea": "Shops are moved live with Ghostferry and a short write lock at cutover, the documented case being two flash-sale merchants on one pod, one of which was moved; whether pods survived the move to Google Cloud after 2021 is undocumented.",
+     "function": "process",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'the only opportunity for downtime is during the cutover'.",
+       "shows": "A move is nearly invisible but not entirely."
+      },
+      {
+       "kind": "case",
+       "what": "Two flash-sale merchants on one pod with coinciding bursts; one moved.",
+       "shows": "A noisy neighbor documented at commerce scale."
+      },
+      {
+       "kind": "fact",
+       "what": "INFERENCE, NOT DOCUMENTED callout: a pod is a bridge; nothing public after 2021 gives pod or shard counts.",
+       "shows": "Marks where the public record stops."
+      }
+     ],
+     "transition_in": {
+      "relationship": "problem_solution",
+      "carries_over": "The imbalance.",
+      "introduces": "How shops are moved to correct it.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p21",
+     "controlling_idea": "Salesforce runs the purest pool, every tenant's data in shared tables keyed by an OrgID, and protects it with governor limits, published caps on one tenant's code: in a pool, limits are the isolation.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Salesforce Architects: the kernel 'uses this unique identifier to ensure that each org's activities are private'.",
+       "shows": "Isolation by identifier in the vendor's words."
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "Shopify's isolated groups of databases.",
+      "introduces": "A vendor that isolates by identifier and limits alone.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p22",
+     "controlling_idea": "commercetools isolates each merchant in a Project with published limits and hosts in five Regions that share no data, so data residency is chosen at sign-up and changed only by migration.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "commercetools General Concepts and API Limits: Projects, 25 API Extensions, 50 Subscriptions, five Regions.",
+       "shows": "Region is a tenancy boundary the merchant chooses."
+      },
+      {
+       "kind": "table",
+       "what": "Mechanism table: identifier, router, pod or shard, governor limits, region, rate limit, with what each keeps apart and what the merchant sees.",
+       "shows": "Shows the merchant sees almost none of the mechanisms, and always sees the rate limit."
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 3: a request routed to its pod and checked against the app's budget for the shop.",
+       "shows": "The merchant never sees the pod and always sees the budget."
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "Isolation by identifier and limits.",
+      "introduces": "Isolation by project and by region.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "rate-limits",
+   "heading": "Rate Limits: The Tenancy Tool You Meet",
+   "controlling_idea": "The rate limit is the tenancy mechanism a merchant meets: vendors meter callers per app, store, project or seller, tier the limits by plan, may lower them under load and serve buyers and checkout before integrations, so the platform's own peak is smoothed while the merchant's integrations meet fixed limits.",
+   "function": "explanation",
+   "advances_thesis": {
+    "supports": [
+     "S3"
+    ],
+    "how": "States the vendors' published models and the rules a merchant lives by, and explains why the storefront held and the order flow did not."
+   },
+   "flow": {
+    "pattern": "large_to_small",
+    "rationale": "Definition and the four models first, then the rules that follow for a merchant, then the four flows of Eva's order, which apply the rules to the Friday evening, then webhooks as the way to spend less, which ends the section on the platform's own limit on calling the merchant."
+   },
+   "transition_in": {
+    "relationship": "emphasis",
+    "carries_over": "The mechanism table, whose last row is the rate limit.",
+    "introduces": "The one mechanism the merchant meets, in detail.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p23",
+     "controlling_idea": "A rate limit caps the API calls or query cost one caller may spend in a window, the caller usually an app, and four vendors publish four different models (November 2026, volatile); the bucket, points, burst and bulk operations they share are explained before the table.",
+     "function": "definition",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Shopify, Amazon SP-API, BigCommerce and commercetools: model and published figures, November 2026.",
+       "shows": "Four philosophies of metering, each dated and flagged volatile."
+      }
+     ]
+    },
+    {
+     "id": "p24",
+     "form": "list",
+     "controlling_idea": "Whatever the model, the limits belong to the merchant's store or account (on Shopify divided further per app), so every app and connector adds calls against them; Shopify's documentation gives three rules (limits per app per store tiered by plan, under which one app cannot use up another's, so Kestrel & Pine's shares show where the calls went and not that the stock apps took the order flow's quota; limits the vendor may lower; buyers and checkout protected before integrations).",
+     "function": "explanation",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'Shopify may temporarily reduce API rate limits to protect platform stability'; 'requests from real buyers aren't subject to a fixed request-per-minute limit'.",
+       "shows": "The budget is not a contract, and the shopper comes first."
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The four models.",
+      "introduces": "What they mean for a merchant, in three rules.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p26",
+     "controlling_idea": "Four flows make up Eva's order and its stock (browsing, checkout, the order to the warehouse, stock sync); the platform's own peak (browsing, checkout) is shared across every tenant and smoothed, which is why the storefront held, while the integrations draw on limits per app, store or customer that are fixed, which is why the order flow did not.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Four flows of Eva's order: who owns the capacity, what is metered, what the merchant controls, peak behaviour.",
+       "shows": "Locates the merchant's exposure in the order and stock flows."
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 4: a shared water main and one apartment's narrow tap.",
+       "shows": "Pictures smoothed shared capacity against a fixed per-tenant limit."
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The limits and the three rules.",
+      "introduces": "Where they bite in the four flows of Eva's order and on the Friday evening.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p25",
+     "controlling_idea": "Webhooks let a merchant avoid spending calls on polling, and they work in the other direction: the platform spends its capacity calling the merchant, does not guarantee delivery or order, retries a failed endpoint eight times over four hours and can then delete the subscription.",
+     "function": "explanation",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "Eight retries over four hours; deletion after eight consecutive failures.",
+       "shows": "An integration down for an evening can wake up unsubscribed."
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "The flows that draw on fixed limits, including polling for stock and orders.",
+      "introduces": "Webhooks, the way to spend less of the budget, and the platform's own limit on calling the merchant.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "saas",
+   "heading": "Tenancy in the SaaS You Also Rent",
+   "controlling_idea": "Every specialist SaaS a merchant rents is a tenancy arrangement whose busiest day is shared, whose price says what it meters and whose region was set at sign-up, so the merchant asks every vendor the same four questions.",
+   "function": "explanation",
+   "advances_thesis": {
+    "supports": [
+     "S4"
+    ],
+    "how": "Extends the rate-limit lesson from the platform to the WMS, returns portal, PIM and connector, and gives the four questions."
+   },
+   "flow": {
+    "pattern": "grouping",
+    "rationale": "The claim that the platform is not the only tenancy arrangement first, then its three consequences, then the questions that follow from them."
+   },
+   "transition_in": {
+    "relationship": "similarity",
+    "carries_over": "The platform's rate limits and where they bite in Eva's order.",
+    "introduces": "The same limits at every other SaaS the merchant rents, and the questions to ask each vendor.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p27",
+     "controlling_idea": "Kestrel & Pine's WMS, returns portal, marketplace connector, iPaaS, shipping service and, from 2027, OMS and PIM are each multi-tenant SaaS in which it is one tenant among others, with three consequences.",
+     "function": "claim"
+    },
+    {
+     "id": "p28",
+     "controlling_idea": "The peak day is shared: a WMS vendor's other customers peak on the same Friday, and its per-customer limit, the one Kestrel & Pine met, is its tool for fairness.",
+     "function": "cause_effect",
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "Three consequences.",
+      "introduces": "The first: the shared peak.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p29",
+     "controlling_idea": "The pricing unit shows what the vendor meters: a per-order price, such as Picqer's, means a peak day costs money as well as calls.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "Picqer: from EUR 379 a month including 3,000 orders, EUR 0.28 per extra order (accessed November 2026).",
+       "shows": "A public example of volume metering."
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "The shared peak.",
+      "introduces": "The second consequence: what the price meters.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p30",
+     "controlling_idea": "Residency is per component: each SaaS was provisioned in a region at sign-up, so a European merchant records which region holds its data at each vendor.",
+     "function": "explanation",
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "What the price meters.",
+      "introduces": "The third consequence: where the data is.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p31",
+     "controlling_idea": "The questions for every vendor are four: the unit of isolation and whether the tenant can be moved or restored alone; the limits, per what, and whether they change under load; the region; and what happened on the busiest day last year.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The three consequences.",
+      "introduces": "The questions they lead to.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "choices",
+   "heading": "The Merchant's Choices and Their Trade-Offs",
+   "controlling_idea": "A merchant has four responses to sharing (govern the budget, buy a larger share, rent or run a silo, split tenants), and should govern first and buy second.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "S5",
+     "S6"
+    ],
+    "how": "Compares the responses and ranks them, against the view that a higher tier fixes a throttled flow."
+   },
+   "flow": {
+    "pattern": "order_of_importance",
+    "rationale": "The responses in the order the author recommends them, then the table that compares them, then the recommendation that the order encodes."
+   },
+   "transition_in": {
+    "relationship": "conclusion_summary",
+    "carries_over": "The limits the merchant meets at the platform and at every vendor.",
+    "introduces": "What a merchant can do about sharing.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p32",
+     "controlling_idea": "A merchant cannot change how its vendor pools tenants but has four realistic responses.",
+     "function": "transition"
+    },
+    {
+     "id": "p33",
+     "controlling_idea": "Accept the pool and govern the budget: inventory the callers, set an order of priority, replace polling with webhooks and events, use bulk operations (background jobs for large reads and writes) and remove unused apps; it is cheap and where Kestrel & Pine starts.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Four responses.",
+      "introduces": "The first and cheapest.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p34",
+     "controlling_idea": "Buy a larger share through a higher plan or an enterprise agreement, a subscription line that does nothing for the WMS vendor's or the marketplace's limit.",
+     "function": "comparison",
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "Governing what the merchant already has.",
+      "introduces": "Paying for more.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p35",
+     "controlling_idea": "Rent or run a silo (a platform-as-a-service or on-premises edition) for dedicated capacity, at the cost of running upgrades, capacity and security yourself.",
+     "function": "comparison",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Paying for a larger share of the pool.",
+      "introduces": "Leaving the pool.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p36",
+     "controlling_idea": "Split tenants, one per country or brand, weighed in the next section.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "The four responses by cost, what each protects against, what it does not, and when it is right.",
+       "shows": "Shows no response covers everything and governing is right at every stage."
+      }
+     ],
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Leaving the pool.",
+      "introduces": "Splitting one's own tenant.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p37",
+     "controlling_idea": "The recommendation is the table's order, govern first and buy second, with silos and splits as decisions with their own costs, assuming the merchant can measure its own consumption.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The four responses compared.",
+      "introduces": "The order in which to use them.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "one-tenant",
+   "heading": "One Tenant or Many",
+   "controlling_idea": "A merchant with several countries or brands chooses one tenant or several, and should stay in one while the platform can vary what differs by market and the shared limits carry every market's peak.",
+   "function": "recommendation",
+   "advances_thesis": {
+    "supports": [
+     "S6"
+    ],
+    "how": "Turns tenancy into a decision the merchant itself takes, with a stated rule."
+   },
+   "flow": {
+    "pattern": "problem_solution",
+    "rationale": "The decision and Kestrel & Pine's position first, then what platforms offer to keep one tenant, then the rule that weighs the options."
+   },
+   "transition_in": {
+    "relationship": "elaboration",
+    "carries_over": "The fourth response, splitting tenants.",
+    "introduces": "The tenancy decision of the merchant's own, weighed in full.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p38",
+     "controlling_idea": "Splitting tenants is a decision the merchant takes alone: with several countries or brands it chooses between one tenant and several; Kestrel & Pine runs three storefronts in one tenant, and the choice has costs both ways.",
+     "function": "context",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "Three storefronts (NL, BE in Dutch and French, DE) in one tenant.",
+       "shows": "The case the rule is applied to.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      }
+     ]
+    },
+    {
+     "id": "p39",
+     "controlling_idea": "Platforms have built features to keep multi-country merchants in one tenant, such as Shopify Markets, though its merchant-of-record variant is not offered in the EU, and each option shares and multiplies different things.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Shopify Markets and Managed Markets (accessed November 2026).",
+       "shows": "One shop can vary currency, language, pricing and theme per market; the merchant-of-record variant is US, Canada and UK only."
+      },
+      {
+       "kind": "table",
+       "what": "One tenant with markets, one per country, one per brand: what is shared, what multiplies, fits when, breaks when.",
+       "shows": "Shows the costs of each option."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The choice.",
+      "introduces": "What platforms offer to support one tenant, and the options compared.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p40",
+     "controlling_idea": "The author's rule: stay in one tenant while the platform can vary what differs by market and the shared limits carry every market's peak; split when a legal entity, assortment or operations team makes sharing a fiction, with the PIM and OMS beneath all tenants.",
+     "function": "recommendation",
+     "evidence": [
+      {
+       "kind": "figure",
+       "what": "Figure 5: one house with three storefronts beside three houses with tripled cabling.",
+       "shows": "Pictures what splitting multiplies."
+      }
+     ],
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The options and their costs.",
+      "introduces": "The rule that chooses among them.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "stages",
+   "heading": "Across Scale Stages: When It Fits and When It Limits",
+   "controlling_idea": "Tenancy changes how much a merchant must do, not what: at every stage the first move is to know who spends each budget and put the order flow first, and what grows is the number of budgets, markets and, at Group stage, the merchant's own duty to isolate its brands.",
+   "function": "analysis",
+   "advances_thesis": {
+    "supports": [
+     "S5",
+     "S6"
+    ],
+    "how": "Shows the same rule applying from a starting merchant to a group."
+   },
+   "transition_in": {
+    "relationship": "elaboration",
+    "carries_over": "The ranked responses and the one-tenant rule.",
+    "introduces": "How they apply by scale stage.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p41",
+     "controlling_idea": "The ranked responses and the one-tenant rule apply at every size: tenancy changes how much a merchant must do rather than what, the first move is always to know who spends each budget and put the order flow first, and what grows is the number of budgets, markets and, at Group stage, the duty to isolate its own brands.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Four scale stages: what is typical, what becomes necessary, warning signs.",
+       "shows": "The same rule at four sizes."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "in-practice",
+   "heading": "In Practice: Kestrel & Pine's API Budget for 2027",
+   "controlling_idea": "Kestrel & Pine's 2027 plan puts the order flow first, moves stock to events and finance to a daily batch, keeps one tenant and records the region of every SaaS component.",
+   "function": "example",
+   "advances_thesis": {
+    "supports": [
+     "S5",
+     "S6"
+    ],
+    "how": "Applies the chapter's rules to the Friday evening it started from."
+   },
+   "transition_in": {
+    "relationship": "example",
+    "carries_over": "The rules by stage.",
+    "introduces": "Kestrel & Pine at stage 3 applying them.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p42",
+     "controlling_idea": "Kestrel & Pine is at stage 3 and its 2027 plan follows that row: the plan forecasts 60 orders a minute and tests every link at 80 and the OMS-to-WMS link at 120, with test orders the WMS ships nothing for, and Ruben's analysis turns each 2026 consumer of the platform's API into a 2027 rule, with the order flow first and orders sent to the WMS in batches within its limit.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Each consumer of the platform's API (and the WMS limit): Black Friday 2026 and the 2027 plan.",
+       "shows": "Each rule answers one row of the 2026 evening.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      }
+     ]
+    },
+    {
+     "id": "p43",
+     "controlling_idea": "Two decisions carry over: the three storefronts stay in one tenant because governing the callers, not splitting markets, was what the order flow needed, and the plan records the region of every SaaS component.",
+     "function": "recommendation",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "One tenant confirmed in 2027; the platform in an EU region.",
+       "shows": "Applies the one-tenant rule and the residency question.",
+       "source": "Kestrel & Pine scenario ledger (illustrative)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The rules per consumer.",
+      "introduces": "The two decisions that outlast the peak plan.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "wrong",
+   "heading": "When It Goes Wrong",
+   "controlling_idea": "Tenancy fails in six recognizable ways, from a neighbor on your pod to the shared peak at a specialist vendor, each with a detection and a recovery.",
+   "function": "description",
+   "advances_thesis": {
+    "supports": [
+     "S2",
+     "S3",
+     "S4"
+    ],
+    "how": "Shows each mechanism of the chapter as a failure the merchant can detect and recover from."
+   },
+   "flow": {
+    "pattern": "grouping",
+    "rationale": "In the order the chapter introduced the mechanisms: the vendor's placement of tenants (a neighbor on the pod, a shop move), then the rate limit (one's own callers, a lowered limit), then webhooks, then the specialist vendors."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "Kestrel & Pine's plan working.",
+    "introduces": "What goes wrong when the mechanisms meet a peak.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p44",
+     "controlling_idea": "Even with a plan, tenancy fails in six ways, listed in the order the chapter introduced the mechanisms; the first, a neighbor's flash sale on your pod, can slow your shop when your own demand is normal, the documented case is Shopify's 2021 pair of merchants, and the merchant can only detect it, report it and ask about the isolation unit.",
+     "function": "description",
+     "evidence": [
+      {
+       "kind": "case",
+       "what": "Shopify 2021: two flash-sale merchants on one pod; one moved.",
+       "shows": "The only documented commerce case."
+      }
+     ]
+    },
+    {
+     "id": "p45",
+     "controlling_idea": "The shop move takes a short write lock at cutover, seen as a brief burst of write failures and recovered by idempotent retries.",
+     "function": "description",
+     "transition_in": {
+      "relationship": "similarity",
+      "carries_over": "A neighbor on the merchant's pod.",
+      "introduces": "The vendor moving the merchant's shop between shards, the other pod-level event.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p46",
+     "controlling_idea": "A noisy neighbor inside your tenant: your own stock app makes most of your store's calls while the order flow is throttled; where apps share a quota it takes the order flow's capacity, where each has its own it is still the largest load and the first place to look; detect it from throttles in the order flow's logs and recover by pausing it (a switch in chapter 33's degradation ladder) and redesigning it to events and bulk operations.",
+     "function": "description",
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "Failures from the vendor's placement of tenants.",
+      "introduces": "A noisy neighbor inside the merchant's own tenant.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p47",
+     "controlling_idea": "The vendor lowers the limit, as Shopify's documentation allows; detect it as throttles at call rates that worked yesterday and recover with flows that read the budget headers and slow themselves.",
+     "function": "description",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "The merchant's own callers using up the limit.",
+      "introduces": "The vendor changing the limit.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p48",
+     "controlling_idea": "The webhook that unsubscribed itself after eight failures is detected only by a reconciliation job and recovered by re-subscribing and replaying from the API.",
+     "function": "description",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Limits on calls the merchant makes.",
+      "introduces": "Calls the platform makes to the merchant.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p49",
+     "controlling_idea": "The shared peak at a specialist vendor shows as throttles and latency that follow the calendar rather than your load, and is met by batching within the limit, queuing behind the order and taking the vendor's busiest-day record into the next contract.",
+     "function": "description",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Failures at the platform.",
+      "introduces": "The same failure at the SaaS the merchant also rents.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  }
+ ],
+ "conclusion": {
+  "heading": "What to Take Away",
+  "synthesis": "The order export that waited while the shop kept selling is the whole chapter in one case: the platform's own capacity is pooled and smoothed, so the storefront and checkout held, while the integrations met limits per app, store and customer that are fixed and met the merchant's spike in full. The vendors' designs worked and could not be changed by the merchant; what it could change was its own side, which flows call each API, how often and in what order.",
+  "so_what": "A merchant that accepts this lists the callers of every API with an owner, puts the order flow first, replaces polling with events and batches within each limit, asks every vendor four questions, and stays in one tenant while the platform can vary its markets, before it buys a higher tier.",
+  "callback": {
+   "to": "The introduction's order export that waits for an allowance to reset while the shop keeps accepting purchases.",
+   "how": "Paragraph p50 explains that case from the chapter: why the shop held and the export did not, and what the merchant controls."
+  },
+  "takeaway": {
+   "type": "course_of_action",
+   "content": "List every app and connector that calls your platform's API and every vendor limit your order flow crosses, with an owner and an order of priority for the peak, the order flow first; then ask each vendor the four questions."
+  },
+  "hand_off": {
+   "to": "extensibility-and-app-ecosystems",
+   "relationship": "elaboration",
+   "carries_over": "The previous chapter's finding that the API budget a merchant spends on a shared platform is spent mostly by apps and connectors, with nobody ranking them.",
+   "introduces": "The apps themselves: how platforms let other people's code in, what each mechanism may touch, and how a merchant with 41 apps, 6 unused and 3 writing stock should govern them."
+  },
+  "transition_in": {
+   "relationship": "conclusion_summary",
+   "carries_over": "The failures and how each is detected and recovered.",
+   "introduces": "The chapter's answer set against its opening, then what holds, sorted by how settled it is.",
+   "form": "sentence",
+   "placement": "start_of_this"
+  },
+  "paragraphs": [
+   {
+    "id": "p50",
+    "controlling_idea": "The order export that waited while the shop kept selling is explained: the platform's pooled capacity smoothed its own peak, so storefront and checkout held, while the integrations met fixed limits per app, store and customer; the vendors' designs worked, and what the merchant could change was its own side.",
+    "function": "synthesis",
+    "evidence": [
+     {
+      "kind": "reasoning",
+      "what": "The opening's delayed export set against the chapter's answer.",
+      "shows": "Performs the callback and the synthesis."
+     }
+    ]
+   },
+   {
+    "id": "p51",
+    "form": "list",
+    "controlling_idea": "Established: the pool, silo and bridge models and the noisy-neighbor problem; the documented isolation mechanisms; rate limits granted per caller and tenant, tiered by plan and lowerable, with buyers and checkout first; webhooks without a delivery guarantee.",
+    "function": "synthesis",
+    "transition_in": {
+     "relationship": "elaboration",
+     "carries_over": "The chapter's answer in one paragraph.",
+     "introduces": "The points it rests on, starting with what the sources establish.",
+     "form": "phrase",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p52",
+    "form": "list",
+    "controlling_idea": "Depends on context: one tenant for several countries, buying a larger budget, and a silo are each right only under stated conditions.",
+    "function": "synthesis",
+    "transition_in": {
+     "relationship": "contrast",
+     "carries_over": "What is established.",
+     "introduces": "What depends on the merchant's situation.",
+     "form": "phrase",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p53",
+    "form": "list",
+    "controlling_idea": "The author's synthesis: the API limits on the merchant's store are capacity the merchant plans, with the order flow first and an owner for every caller, and every SaaS should be asked the four questions because a vendor's tenancy is a promise about the merchant's peak day.",
+    "function": "recommendation",
+    "transition_in": {
+     "relationship": "contrast",
+     "carries_over": "What is established and what depends on context.",
+     "introduces": "The author's own judgement, labelled as such.",
+     "form": "phrase",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p54",
+    "form": "list",
+    "controlling_idea": "Eight questions let the reader find, in their own company, the callers of each API and their priority, the limits and whether they read the headers, each vendor's limits, isolation unit and region, the tenant decision, polling flows, and the reconciliation that catches a deleted webhook.",
+    "function": "recommendation",
+    "transition_in": {
+     "relationship": "cause_effect",
+     "carries_over": "The take-aways.",
+     "introduces": "Questions that apply them to the reader's own company.",
+     "form": "phrase",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p55",
+    "controlling_idea": "Most of the API calls a merchant's store receives come from apps and connectors that nobody has ranked, and apps are the next chapter's subject: how platforms let others extend them, what an app may touch, and how a merchant with 41 apps, 6 unused and 3 writing stock should govern them.",
+    "function": "transition",
+    "transition_in": {
+     "relationship": "elaboration",
+     "carries_over": "The questions, the first of which is who calls the store's API.",
+     "introduces": "The apps that make most of those calls.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   }
+  ]
+ },
+ "non_goals": [
+  {
+   "topic": "Peak planning, load testing, queues, backpressure and the degradation ladder.",
+   "covered_in": [
+    "peak-load-and-reliability",
+    "journey-peak-day"
+   ]
+  },
+  {
+   "topic": "Apps, scopes, app review and app governance.",
+   "covered_in": [
+    "extensibility-and-app-ecosystems"
+   ]
+  },
+  {
+   "topic": "API versioning and webhook contracts in depth.",
+   "covered_in": [
+    "api-contracts-and-versioning"
+   ]
+  },
+  {
+   "topic": "Theme performance and how the storefront is delivered.",
+   "covered_in": [
+    "storefront-architecture"
+   ]
+  },
+  {
+   "topic": "Internal architecture styles (monolith, microservices, composable).",
+   "covered_in": [
+    "commerce-architecture-styles"
+   ]
+  },
+  {
+   "topic": "GDPR, controller and processor roles, cross-border transfers.",
+   "covered_in": [
+    "privacy-and-customer-data"
+   ]
+  },
+  {
+   "topic": "The multi-brand platform decision as a strategy question.",
+   "covered_in": [
+    "commerce-scaling-stages"
+   ]
+  },
+  {
+   "topic": "Shopify as a full case.",
+   "covered_in": [
+    "case-shopify"
+   ]
+  }
+ ],
+ "modalities": [],
+ "open_questions": [
+  "Needs the author: the ledger's multi-tenancy line says the platform's API budget is granted 'per app per store' and also that 'nine consumers shared it' and that the stock apps and the connector's sync took 'about 55% of the budget'. Under the cited Shopify documentation each app has its own bucket per store, so nine apps do not share one budget. The chapter now states the vendor's limits only as the sources do and describes the evening as shares of recorded API usage (about 55% and 20%), which is what the journal-spec thesis says. The fact needed: whether the ledger line should read 'shares of recorded API usage' (or name a shared credential, for example several flows running under one iPaaS app, if that was the scenario).",
+  "Needs the author: Figure 1 (formerly Figure 4) still labels its source box 'Kestrel and Pine API budget on the platform, per app per store' and the order-flow edge '20 percent of the budget'; the caption and alt text now speak of shares of recorded calls. The artwork should be redrawn once the ledger wording is settled (the fact needed: whether the ledger keeps 'budget' or 'recorded usage').",
+  "Needs the author (carried from spec.md): Shopify's pod topology after the Google Cloud migration and current pod or shard counts are undocumented (last first-party description 2021); the chapter labels this as an inference. The fact needed: a first-party Shopify post after 2021 on pods or shards, if one exists.",
+  "Needs the author (carried from spec.md): all rate-limit figures are volatile and dated to November 2026. The fact needed: a re-check of the Shopify, Amazon SP-API, BigCommerce and commercetools pages at the next revision.",
+  "Needs the author: round-3 points no rule settles: why sharding alone reduced resilience (the fact needed: the reason given in Shopify's 2018 pods post, to state it in one clause); where the webhook paragraph belongs (both round-3 readers found it an add-on at the end of the rate-limit section; round-2 readers found it a detour before the four flows; When It Goes Wrong already has its failure); and minor single-reader points: 'smoothed' unexplained, the batch size behind the 120-orders-a-minute test, the relevance of Managed Markets being unavailable in the EU, and the June 2027 time frame of Ruben's analysis."
+ ],
+ "decision_log": [
+  {
+   "date": "2026-11-07",
+   "decision": "Opened with the merchant's side (two rate limits on one evening) rather than with the vendor's mechanisms, because the contract asks the chapter to explain why a merchant should care; vendor mechanisms follow as the machinery behind the error code. (from spec.md)"
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Treated the rate limit as the central tenancy concept for merchants and gave it a four-vendor table, rather than organizing the chapter around pods, which merchants cannot see or influence. (from spec.md)"
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Aligned the Kestrel & Pine thread with chapter 33's canonical account and added only illustrative shares and the per-component region list, rather than inventing a separate incident. (from spec.md)"
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Included specialist SaaS tenancy (WMS, returns portal, PIM) as a section of its own, with Picqer's public per-order pricing as the example of volume metering. (from spec.md)"
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Converted spec.md to spec.json, reconstructed unit by unit from the published chapter. Intent outcome, acceptance criteria AC-1 to AC-5, thesis and role copied unchanged from the journal spec. The old success criteria were inventories (term list, table and diagram counts, section names, word limit) and were dropped; the outcomes they pointed at are carried by AC-1 to AC-4 and the audience's does_not_know list. No criteria added. Word limit kept at 6,500.",
+   "rejected": [
+    "Rewriting the inventory criteria as minor criteria of this post: AC-1 to AC-4 already cover the outcomes."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Fixed the known inconsistency between 'budgets per app per store' and 'everything you install spends from it' / 'nine consumers spent one store's budget': the vendor's limits are now stated only as the cited sources state them (per tenant; on Shopify per app on each store), and Kestrel & Pine's evening is described as shares of recorded API usage between 20:00 and 22:00, as the journal-spec thesis does. Changed for this: the front-matter excerpt, KEY POINT 2, the Spaghetti Junction line, the rate-limit consequence sentence and first rule, the flow table's last two cells, Figure 4's caption and alt text, the 2027 table's header and two cells, the noisy-neighbor failure, the Established and synthesis take-aways, question 1 and the hand-off. The excerpt is front matter, edited only because it carried the inconsistency.",
+   "rejected": [
+    "Keeping 'one budget' language to match the ledger wording: it contradicts the cited Shopify documentation (rule 2)."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Flow rubric (sound with notes) taken without review, as the author asked for this pass: 'Tenancy in the SaaS You Also Rent' moved directly after the rate-limit section (it applies the same limits to the WMS of the opening evening); 'The Merchant's Choices' moved before 'One Tenant or Many', which now weighs the fourth, lowest-ranked response on its own; 'When It Goes Wrong' reordered to the order the mechanisms were introduced (pod, shop move, own callers, lowered limit, webhook, specialist vendor); the pod-mover paragraph merged into the pods paragraph; the two-unit 'neighbor's flash sale' failure merged into one; the roadmap rewritten to announce every section; transitions rewritten for every moved unit; 'bulk operations' glossed at first use in prose.",
+   "rejected": [
+    "Merging 'Where we are in the order's journey' into the hook: it is the book's fixed signpost paragraph.",
+    "Making the mechanism, responses and stage tables separate items: they are evidence of their paragraphs, as the house format has them.",
+    "Merging the one-paragraph stage section into the choices: it is the book's fixed house section."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Added units the contract asks for and the published chapter lacked: a thesis sentence at the end of p02, a roadmap (p03) announcing every section, and a conclusion paragraph that calls back to the opening's delayed export and synthesizes the chapter. Forward references made explicit pointers: apps (chapter 31, glossed at first use in the Friday section and in the Shopware paragraph), the storefront (chapter 32) and the peak plan and incident (chapter 33). 'Kestrel & Pine's platform' in the opening scene now reads 'shop platform'. W1, W2 and W5 glossed at first use. 'Three vendors' ... three philosophies' corrected to four, matching the four-row table."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Second flow rubric (sound with notes) taken without review where cheap: 'When It Goes Wrong' relabelled grouping; the keep-apart rationale now says the mechanism table is attached to the commercetools paragraph; the duplicate pointer to the one-tenant section removed from the opener of 'One Tenant or Many'; a cue added in the Friday section that the rate-limit section explains the scopes.",
+   "rejected": [
+    "Merging or expanding the one-paragraph 'Across Scale Stages' section (house section; its table is the paragraph's evidence).",
+    "Cutting the hook (p01) down because the Friday section retells the scene, and moving the author's synthesis straight after the callback: the hook and the take-away order are the book's fixed format."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Round 1 escalated on one corroborated failure at fault in the spec (pre-approved change of paragraph ideas, not of thesis or criteria): p08, p09 and p46 said budgets are per app yet implied the stock apps starved the order flow. The spec now says what the record supports: the analysis records shares of calls, not which quota each counted against; under per-app buckets the stock apps did not use up the order flow's quota, and the order flow's throttles (at the platform) came from its own one-order-at-a-time calls; the noisy-neighbor failure distinguishes a shared quota from per-app buckets. The thesis belief that a merchant's own apps are often its noisiest neighbors is kept unchanged (journal spec). Draft fixes for round 1's other failures: glosses for points, query cost, leaky bucket, bulk operations, the Ghostferry move, write lock, platform-as-a-service, degradation ladder, the 2026 gauge, marked test orders, the go/no-go, the marketplace buffer and The Price Nobody Can Explain; the four flows named before the table; webhooks' lack of a delivery or order guarantee stated in the body (the published take-away already cites Shopify for it); 41 installed apps set against the nine consumers; the April 2027 app audit dated (ledger); openers for Why Platforms Share, Across Scale Stages (the stage table now follows its paragraph), In Practice (stage 3, 80 and 120) and When It Goes Wrong.",
+   "rejected": [
+    "Inventing a shared credential or a store-level quota to make the stock apps starve the order flow: no ledger line or cited source supports it (needs the author; see open_questions)."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after round 2 (escalate: 16 passed, 47 failed, 19 of them major; two corroborated failures at fault in the spec), (rule 3) Figure 4 moves into the Friday section beside the incident it shows (renumbered Figure 1, the others shift by one), and the webhook paragraph moves to the end of the rate-limit section after the four flows, both moves asked by both round-2 flow readers; transitions and the section's flow rewritten. Draft fixes for the corroborated draft faults: the storefront's holding stated in the Friday section; tenant and multi-tenancy no longer redefined in Why Platforms Share; the quota hedge rewritten plainly with the Shopify scope stated in the Friday section; 'per tenant (on Shopify, per app)' replaced by 'belong to your store or account, on Shopify divided further per app'; bucket, points, burst and bulk operations explained generically before the table instead of previewing Shopify's row; 'an action' replaced; Shopify's 2019 post on database backups introduced; the WMS shared-peak point points back instead of repeating; the repeated stage sentence and the repeated 'tests every link at 80' removed; the test orders explained; the double colon removed; (rule 6) glosses for degradation ladder, throttled, polling, blast radius and the implementation agency; Picqer marked as an example; 'app' not defined twice. Word count 6,257 within 6,500.",
+   "rejected": [
+    "(rule 10) Dropping the author's 'My rule:' first-person voice, which both round-2 readers noticed: it is the author's labelled recommendation, used across the book.",
+    "Moving the webhook paragraph to When It Goes Wrong (reader A): reader B's alternative (after the four flows) keeps it with the budget it saves; the move both readers share is out of its position between the rules and the flows.",
+    "Cutting the INFERENCE callout (reader A, single reader): the old spec required the labelled inference."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming round 3 (escalate: 16 passed, 28 failed, 13 major, of which two at fault in the spec), the cheap, plainly right fixes were made without another round: (rule 3, both round-3 flow readers) the quota-scope caveat moved out of the Friday section into the first rate-limit rule, where per-app buckets are explained, which also resolves the one-idea failure of p08 (spec ideas p08, p09, p24 changed to match); the Figure 2 caption now defines the bridge as the SaaS Lens does; the pods paragraph opens as the answer to sharding; 'Two decisions carry over' reads 'outlast the peak plan'; (rule 6) shards and pods glossed in the introduction, 'vendor card' replaced by the merchant's record of each vendor, and the 2026 gauge introduced as one Kestrel & Pine did not have. Word count after the fixes is within 6,500.",
+   "rejected": [
+    "Starting a fourth round.",
+    "(rule 10) Removing the author's 'My rule:' voice, reported by both round-3 readers as in round 2.",
+    "Explaining why sharding alone reduced resilience (both round-3 readers): the published sentence follows Shopify's 2018 post and the reason is not in the cited text the chapter quotes; left for the author.",
+    "Moving the webhook paragraph again (both readers found it tacked on at the end of the rate-limit section): round 2's readers asked for it to leave its former place; its current place follows reader B of round 2 (rule 10, current position stands)."
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "kind": "internal",
+   "ref": "_research/scenario-ledger.md (multi-tenancy-and-isolation, peak-load-and-reliability, journey-peak-day, extensibility-and-app-ecosystems lines; the Waypoint decisions) and _research/consistency-issues.md",
+   "contributed": "The Black Friday figures, Ruben Alves's June 2027 analysis, the apps, W1, W2, W5, one tenant and the EU region."
+  },
+  {
+   "kind": "internal",
+   "ref": "journal-spec.json (multi-tenancy-and-isolation; part-7; extensibility-and-app-ecosystems transition_in)",
+   "contributed": "Intent, thesis, role, acceptance criteria and the hand-off."
+  },
+  {
+   "kind": "internal",
+   "ref": "meet-kestrel-and-pine and peak-load-and-reliability",
+   "contributed": "The systems landscape and the canonical account of the order flow and the 2027 peak plan this chapter must agree with."
+  },
+  {
+   "kind": "internal",
+   "ref": "_research/brief-platform-engineering-scale.md (Part 2 and 5.1), _research/brief-shopify.md (Parts 1, 2.3, 4.6, 5.4, 5.6), _research/brief-platform-landscape.md (1.2, 1.6, Part 2)",
+   "contributed": "The dated vendor evidence; Adobe's deployment options, Shopware's plugin rule and Picqer's pricing."
+  },
+  {
+   "kind": "external",
+   "ref": "AWS Well-Architected SaaS Lens, Silo, pool, and bridge models and Noisy neighbor (accessed 2026-11)",
+   "contributed": "The tenancy vocabulary."
+  },
+  {
+   "kind": "external",
+   "ref": "Shopify Engineering, A Pods Architecture to Allow Shopify to Scale (2018) and MySQL Database Shard Balancing at Terabyte Scale (2021); Shopify 10-K FY2025 (2026)",
+   "contributed": "Pods, shards, shop moves, 'single branch', the merchant definition."
+  },
+  {
+   "kind": "external",
+   "ref": "Shopify developer documentation on rate limits, the Storefront API, webhooks and Markets (accessed 2026-11); the 2018 flash-sale changelog",
+   "contributed": "The merchant-facing mechanisms."
+  },
+  {
+   "kind": "external",
+   "ref": "Salesforce Architects, Platform Multitenant Architecture; commercetools General Concepts and API Limits; Amazon SP-API Usage Plans and Rate Limits; BigCommerce API rate limits (all accessed 2026-11)",
+   "contributed": "The other vendors' models."
+  },
+  {
+   "kind": "external",
+   "ref": "Adobe Experience League (2026), Shopware developer documentation, Picqer pricing (accessed 2026-11)",
+   "contributed": "The silo-to-pool spectrum and volume metering."
+  }
+ ],
+ "changelog": [
+  {
+   "date": "2026-11-07",
+   "change": "Initial spec and article. (from spec.md)"
+  },
+  {
+   "date": "2026-11-07",
+   "change": "Editorial review pass: expanded SaaS, AWS, ERP, OMS, PIM, 3PL and HTTP 429, corrected the Shopify stability quote ('may'), aligned the 2027 fallback with the ten-unit marketplace buffer, FY2025 report naming, American spelling, timetoread. (from spec.md)"
+  },
+  {
+   "date": "2026-11-07",
+   "change": "Visual layer: redrew 3 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator). (from spec.md)"
+  },
+  {
+   "date": "2026-11-12",
+   "change": "Converted spec.md to spec.json; flow rubric notes taken (sections reordered: SaaS after rate limits, choices before one tenant; failures reordered; two merges); budget wording aligned with the cited sources; roadmap, thesis sentence and synthesis paragraph added; index.md revised to match. Status draft."
+  },
+  {
+   "date": "2026-11-12",
+   "change": "Draft check rounds 1 (escalate, spec fault: per-app buckets against the noisy-neighbor story; spec paragraph ideas p08, p09, p46 changed) and 2 (escalate: two placements at fault in the spec); auto-resolved by the author's standing instruction (Figure 4 into the Friday section, webhooks after the four flows) and draft fixes; confirming round 3 follows."
+  },
+  {
+   "date": "2026-11-12",
+   "change": "Confirming round 3 (escalate, 16 passed, 28 failed); closing fixes applied without another round (quota caveat moved into the rate-limit rules, Figure 2 caption, four glosses, two openers); check-report.json is stale after these fixes."
+  }
+ ],
+ "length": {
+  "max_words": 6500
+ }
+}

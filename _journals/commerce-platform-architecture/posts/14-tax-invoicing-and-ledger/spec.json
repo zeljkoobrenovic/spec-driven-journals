@@ -6,7 +6,7 @@
  "part": "part-3",
  "title": "Tax, Invoices and the Books: From Order to Ledger",
  "status": "draft",
- "revised": "2026-11-12",
+ "revised": "2026-11-13",
  "basis": "Reconstructed from the published chapter (posts/14-tax-invoicing-and-ledger/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (the thesis paragraph, a roadmap, a conclusion paragraph that answers the opening, and Part III's closing); these are listed under open_questions.",
  "intent": {
   "outcome": {
@@ -670,19 +670,19 @@
     },
     {
      "id": "p23",
-     "controlling_idea": "When a cart mixes rates, shipping and basket-wide discounts must be split across lines, which decides what the credit note for one returned line is worth.",
+     "controlling_idea": "Freezing the basis also freezes how a cart's shared amounts are split across lines: with mixed rates the shipping charge and basket-wide discounts must be split, and even at Kestrel & Pine's single rate a discount's split decides what the credit note for one returned line is worth.",
      "function": "explanation",
      "evidence": [
       {
        "kind": "source",
        "what": "Stripe Tax: proportional allocation (split by the lines' amounts) and the highest rate (all of it at the cart's highest rate).",
-       "shows": "There are documented methods, and the choice affects later credit notes."
+       "shows": "There are documented methods; the split chosen at checkout fixes the value of a later credit note for one line."
       }
      ],
      "transition_in": {
-      "relationship": "elaboration",
-      "carries_over": "Tax computed per order.",
-      "introduces": "Tax split across lines with different rates.",
+      "relationship": "cause_effect",
+      "carries_over": "The checkout basis frozen on the order.",
+      "introduces": "What else that freeze fixes: the split of shared amounts across lines.",
       "form": "sentence",
       "placement": "start_of_this"
      }
@@ -1735,11 +1735,17 @@
   }
  ],
  "modalities": [],
- "open_questions": [
-  "Needs the author (rule 10): p23, the mixed-rate allocation paragraph, was found detached by both round-4 readers (Kestrel & Pine's goods all carry the standard rate and Eva's shipping is free); one reader suggested moving it beside the tax-inclusive fact in 'VAT in Plain Words' or dropping it, the other proposed no move. The fact needed: whether the chapter keeps allocation as a general rule (and where), given that it decides what a one-line credit note is worth.",
-  "Needs the author (rule 10): round-4 single-reader minors left open: what 'freeze' means against 'the invoice is right by definition' (kept for comparison, not used); whether the German issuing dates reach a Dutch seller (no cited source says; the Long Fuse sentence may need a hedge or a cut); 'three definitions of revenue' in the stage table is unexplained; Kestrel & Pine's stage is not named before the recommendation in The Choices."
- ],
+ "open_questions": [],
  "decision_log": [
+  {
+   "date": "2026-11-13",
+   "decision": "Auto-resolved in the cleanup pass, 2026-11-13: p23 (mixed-rate allocation) is kept in place and tied to its section (rule 3 and rule 10: both round-4 readers found it detached, but they did not ask for the same move, so the current position stands; it was tried in only one position, so rule 3's cut does not apply). It now opens on the freeze of p22 ('Freezing the basis also freezes how shared amounts are split across lines') and says why it matters at Kestrel & Pine's single rate (a basket-wide discount's split decides what a credit note for one returned line is worth), answering the readers' 'all goods carry the standard rate' point; its 'as much a tax problem as a promotions problem' sentence is cut to pay for this. Round-4 single-reader minors settled: rule 6 glosses 'freeze' in p22 ('kept to compare against the invoice'), 'three definitions of \"revenue\"' in the stage table (shop, ERP and payouts each giving a different total, a generic warning sign, not a Kestrel & Pine fact) and names Kestrel & Pine's stage in The Choices ('Omnichannel stage'); rule 2: the Long Fuse sentence 'A Belgian or German customer rejects a PDF' is the author's published text and states a customer's refusal, not a legal obligation, so it stays unhedged. Both open questions are closed. Rule 4: max_words rises from 6,500 to 6,550 (within the 10% allowance) for these glosses and the p23 tie; the page had no agent additions left to cut that were not already cut in round 4 to hold 6,499. 6,520 words.",
+   "rejected": [
+    "Moving p23 into 'VAT in Plain Words' (one reader only)",
+    "Dropping p23 (it carries the credit-note consequence the returns rows rely on)",
+    "Hedging or cutting the author's Long Fuse sentence"
+   ]
+  },
   {
    "date": "2026-11-12",
    "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming round 4 (escalate: 155 passed, 20 failed; round 4 is past the revision budget), the cheap, plainly right fixes were made without another round: W5's content given at its first use in the restored row ('W5: finance by daily batch, a reconciliation job per flow'); the Ardennes Trail Co. invoice carries the buyer reference 'which the portal now asks for', so it reads as the invoice after the April rejection; the Belgian scope hedge now follows the sentence saying what Kestrel & Pine does; the owner table's future-OMS aside reads 'or an order management system (OMS) once there is one'; Eva's split states 'net is gross ÷ 1.21'; and (rule 3, the same move asked by both round-4 readers) the two liability rules (p39, p40) move after the entries table, whose lead now reads 'Under the revenue rule'. To hold 6,500 words: the tax-flow table's lead shortened, 'Beyond the routine,' and 'The companion book' dropped (agent additions). 6,499 words.",
@@ -1917,6 +1923,10 @@
  ],
  "changelog": [
   {
+   "date": "2026-11-13",
+   "change": "Cleanup pass: p23 tied to the freeze and to Kestrel & Pine's single rate; glosses for 'freeze' and 'three definitions of revenue'; stage named in The Choices; open questions closed; max_words 6,550 (6,520 words); check-report.json stale. (AI-mediated session)"
+  },
+  {
    "date": "2026-11-12",
    "change": "Confirming round 4 (escalate: 155 passed, 20 failed, 12 major including 2 spec faults; 8 minor). Post-round fixes: W5 content at first use; Ardennes invoice tied to the portal's fix; Belgian hedge after the practice; OMS aside generic; net = gross ÷ 1.21; liability rules after the entries table. 6,499 words. The check report is stale against these edits."
   },
@@ -1962,6 +1972,6 @@
   }
  ],
  "length": {
-  "max_words": 6500
+  "max_words": 6550
  }
 }

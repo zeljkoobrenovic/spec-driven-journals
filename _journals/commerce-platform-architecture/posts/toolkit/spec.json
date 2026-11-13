@@ -1,0 +1,1986 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "toolkit",
+  "journal": "commerce-platform-architecture",
+  "part": "reference",
+  "title": "Toolkit: Cards and Templates for Commerce Architecture Decisions",
+  "status": "draft",
+  "revised": "2026-11-13",
+  "basis": "Reconstructed on 2026-11-13 from the published page (posts/toolkit/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the page, in its order; tables are recorded as evidence of the paragraph they follow. Intent, acceptance criteria and role are copied unchanged from journal-spec.json; the journal spec gives a reference page no thesis, so the thesis here is the page's own and only orders its sections. A light pass for a lookup page: entries were checked for consistency with the ledger and rulings, not rewritten.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The sixteen cards and templates, the question each answers and the chapter that teaches it.",
+        "That every card names an owner, a system of record and a date, and that the cards meet at the entity–owner table."
+      ],
+      "can_do": [
+        "Pick the card for the question on their desk, copy its fields and fill it with their own facts.",
+        "Keep the cards current: review on a calendar, let incidents add fields, drop fields nobody reads."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a question from their own work, the reader picks the card that answers it and the chapter that teaches it.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Using only this page: a vendor has announced a new API version for the flow that sends stock to a marketplace, and support sees three different statuses for one order. Which cards do you fill in, which chapters teach them, and which three fields does every card carry?",
+        "expected": "Tool 4, the integration contract card (api-contracts-and-versioning), for the new version; Tool 7, the order state card (order-management), for the statuses. Every card names an owner, a system of record and a date."
+      },
+      {
+        "id": "AC-2",
+        "statement": "The reader explains how the cards connect and what a decision record must name.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Using only this page: which record do the other cards meet at, and what must an architecture decision record state beyond Nygard's original fields?",
+        "expected": "The entity–owner table: a decision record names the ownership rows it changes, and a contract card names its integration inventory row; a fact with no row or a row with no owner is the problem. The decision record adds Ownership (the entity–owner rows whose owner or writer changes), Vendors (contracts, API versions and exit terms it depends on), Confirmation (how conformance is checked) and Review (a date or trigger)."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict what the page contains and the kind of evidence or material it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this page give you, in what order, and from what kind of material?",
+        "expected": "Sixteen cards that make undecided owners and recovery visible by recording the business fact, the owner, the systems involved and the expected result, from a capability map to a migration plan and a decision record, each with instructions and a linked chapter; examples filled with fictional Kestrel & Pine facts to be replaced; three conventions: keep cards with the work, link them by identifier, investigate consequential blanks."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "Which cards and templates do the chapters introduce, and where is each one used?",
+    "claim": "Sixteen cards, one per recurring question, each taken from the chapter that teaches it and naming an owner, a system of record and a date, let a reader record a decision without rereading the chapter; they meet at the entity–owner table, so a change to one row says which other cards to update.",
+    "disputed_by": "The view that templates belong in a team's own tools and a book needs only the reasoning, so a gathered set of cards duplicates the chapters.",
+    "so_what": "A reader with a question from their own work picks one card, copies its fields and fills it with their facts, and knows which other cards a change touches.",
+    "how_why": "Each card's fields come from the chapter that teaches it, are filled once with ledger facts, and cite each other by identifier through the entity–owner table.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "A question from the reader's work leads through one table to the card that answers it and the chapter that teaches it."
+      },
+      {
+        "id": "S2",
+        "claim": "Each card states its purpose, its fields, how to use it and one filled Kestrel & Pine example, and names an owner, a system of record and a date."
+      },
+      {
+        "id": "S3",
+        "claim": "The cards meet at the entity–owner table, so a change to one row tells the reader which other cards to update."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Gives the part the working records: one card per recurring question, so a decision taught in a chapter can be recorded without rereading it.",
+    "supports": [
+      "PR-2"
+    ]
+  },
+  "flow": {
+    "pattern": "large_to_small",
+    "rationale": "The lookup table and the map of connections come first, so a reader arriving with a question finds the card and sees where it sits before reading any card. The sixteen cards follow in the order of the chapters that teach them, from the capability map to the decision record, which changes rows in all the others; the closing says how to keep them current."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "A design discussion can end with agreement about a new system while leaving its data owner or recovery process undecided."
+    },
+    "bridge": {
+      "from_reader_world": "The reader has met cards in the chapters, each introduced where it was needed, and now has a question from their own work.",
+      "to_topic": "This page gathers the sixteen cards for lookup, each with a filled example and its chapter."
+    },
+    "thesis_statement": {
+      "text": "Every card names an owner, a system of record and a date; the cards point at each other; most fields were paid for by an incident.",
+      "placement": "KEY POINTS callout and paragraph p01"
+    },
+    "roadmap": {
+      "placement": "IN THIS SECTION callout and paragraph p01",
+      "promises": [
+        {
+          "promise": "Find the card for the question on your desk.",
+          "kept_in": [
+            "find"
+          ]
+        },
+        {
+          "promise": "How the cards point at each other through the entity–owner table.",
+          "kept_in": [
+            "connect"
+          ]
+        },
+        {
+          "promise": "Sixteen cards from a capability map to a migration plan and decision record, each with instructions, a filled Kestrel & Pine example and its chapter.",
+          "kept_in": [
+            "tool-1",
+            "tool-2",
+            "tool-3",
+            "tool-4",
+            "tool-5",
+            "tool-6",
+            "tool-7",
+            "tool-8",
+            "tool-9",
+            "tool-10",
+            "tool-11",
+            "tool-12",
+            "tool-13",
+            "tool-14",
+            "tool-15",
+            "tool-16"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Use this page to find the card for the question on your desk, copy its fields and fill them; the sixteen cards make an undecided owner or recovery process visible by recording the business fact, owner, systems and expected result, and each links to the chapter that supplies the reasoning.",
+        "function": "context"
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The worked examples use the fictional Kestrel & Pine, whose names and figures the reader replaces with their own.",
+        "function": "explanation",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The cards and their chapters.",
+          "introduces": "How to read the filled examples.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "form": "list",
+        "controlling_idea": "Three conventions run through all sixteen cards: keep them with the work, link them by identifier, investigate consequential blanks.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "How to adapt the examples.",
+          "introduces": "The conventions every card follows.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "find",
+      "heading": "Find the Template for the Question on Your Desk",
+      "controlling_idea": "A question from the reader's work leads through one table to the card that answers it and the chapter that teaches it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Gives the lookup from question to card and chapter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The conventions.",
+        "introduces": "The lookup table from question to card.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "Sixteen recurring questions map to sixteen cards and their teaching chapters; two fuller records stay in their own chapters.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Question, tool anchor and teaching chapter for Tools 1-16.",
+              "shows": "Lets a reader go from the question on their desk to the card and its chapter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "connect",
+      "heading": "How the Records Connect",
+      "controlling_idea": "The cards meet at the entity–owner table, so a change to one row says which other cards to update.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Shows how the cards cite each other."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The sixteen cards found by question.",
+        "introduces": "How they connect.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Most changes touch several cards, and the cards meet at the entity–owner table.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: capability map, decision records and every flow, partner, app, peak plan and migration written against the entity–owner table.",
+              "shows": "Puts the entity–owner table at the center of the records."
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Start at the entity–owner table: a fact with no row, or a row with no owner, is the problem.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The figure.",
+            "introduces": "The rule it implies in plain words.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-1",
+      "heading": "<a id=\"tool-1\"></a>Tool 1: Capability Map",
+      "controlling_idea": "The Capability Map card: purpose, template, use, a filled example and the chapters that use it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "One card with its owner, system of record and date, filled once."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "How the records connect.",
+        "introduces": "Tool 1.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p07",
+          "controlling_idea": "A capability map lists the business's jobs independently of today's systems, so empty and overlapping boxes show missing capability and undecided responsibility.",
+          "function": "definition"
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The template records per capability its layer, natural fact, systems today, writers, status with evidence and an owner.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fields of the capability map.",
+              "shows": "Gives the card's fields or a filled instance of them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The card's purpose.",
+            "introduces": "Its fields.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Draw the map before any vendor's diagram and review it yearly and after a new channel or country.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The fields.",
+            "introduces": "How to use them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "Kestrel & Pine's inventory-and-availability row shows an empty box for availability and six writers of Duiven stock, with the Black Friday Oversell as evidence.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Noor Visser's February 2027 row for inventory and availability.",
+              "source": "_research/scenario-ledger.md (fictional; values the chapters mark as illustrative)",
+              "shows": "Shows the card filled once with ledger facts, labeled fictional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The card and its use.",
+            "introduces": "A filled Kestrel & Pine example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "The whole map had about two dozen capabilities, thirteen systems and four empty boxes.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The preceding unit.",
+            "introduces": "A detail that completes it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The 'Used in' line links the chapters that use the capability map.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The card.",
+            "introduces": "The chapters that use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-2",
+      "heading": "<a id=\"tool-2\"></a>Tool 2: Entity–Owner Table",
+      "controlling_idea": "The Entity–Owner Table card: purpose, template, use, a filled example and the chapters that use it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "One card with its owner, system of record and date, filled once."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous card.",
+        "introduces": "Tool 2.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p13",
+          "controlling_idea": "The entity–owner table names the system of record for each business fact, who may write it and how disagreements are found.",
+          "function": "definition"
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "The template has one row per fact with system of record, writers, copies, how copies learn and how disagreement is found.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fields of the entity–owner table.",
+              "shows": "Gives the card's fields or a filled instance of them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The card's purpose.",
+            "introduces": "Its fields.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Write the table before buying any hub and check it with a quarterly write audit.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The fields.",
+            "introduces": "How to use them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Kestrel & Pine's rows for Duiven stock, consumer price and order name the WMS, the platform's market price lists and the OMS as systems of record.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Three rows from the March 2027 review.",
+              "source": "_research/scenario-ledger.md (fictional; values the chapters mark as illustrative)",
+              "shows": "Shows the card filled once with ledger facts, labeled fictional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The card and its use.",
+            "introduces": "A filled Kestrel & Pine example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Store stock and marketplace stock have rows of their own, and the review behind the table found six systems holding a stock number for one jacket.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The preceding unit.",
+            "introduces": "A detail that completes it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "The 'Used in' line links the chapters that use the entity–owner table.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The card.",
+            "introduces": "The chapters that use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-3",
+      "heading": "<a id=\"tool-3\"></a>Tool 3: Integration Inventory",
+      "controlling_idea": "The Integration Inventory card: purpose, template, use, a filled example and the chapters that use it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "One card with its owner, system of record and date, filled once."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous card.",
+        "introduces": "Tool 3.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "controlling_idea": "The integration inventory lists every flow between two systems with owner, style and failure handling, turning integration debt into rows.",
+          "function": "definition"
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The template has one row per flow with source and target, style, system of record, owner, contract version, volume, failure handling and reconciliation.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Columns of the integration inventory.",
+              "shows": "Gives the card's fields or a filled instance of them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The card's purpose.",
+            "introduces": "Its fields.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "No flow goes live without a row and no row without an owner; review quarterly.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The fields.",
+            "introduces": "How to use them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Kestrel & Pine's February 2027 inventory had 34 integrations, 3 with reconciliation; one row shows the WMS-to-ERP stock flow with no dead-letter queue.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "One row of Noor's inventory.",
+              "source": "_research/scenario-ledger.md (fictional; values the chapters mark as illustrative)",
+              "shows": "Shows the card filled once with ledger facts, labeled fictional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The card and its use.",
+            "introduces": "A filled Kestrel & Pine example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "The 'Used in' line links the chapters that use the integration inventory.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The card.",
+            "introduces": "The chapters that use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-4",
+      "heading": "<a id=\"tool-4\"></a>Tool 4: Integration Contract Card",
+      "controlling_idea": "The Integration Contract Card card: purpose, template, use, a filled example and the chapters that use it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "One card with its owner, system of record and date, filled once."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous card.",
+        "introduces": "Tool 4.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p24",
+          "controlling_idea": "A contract card is the written agreement for one flow, giving each inventory row a person, a version, a date, an alarm and a check.",
+          "function": "definition"
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "The template records flow and owners, style, pinned contract and sunset, system of record, idempotency key, failure handling, reconciliation and rate.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fields of the contract card.",
+              "shows": "Gives the card's fields or a filled instance of them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The card's purpose.",
+            "introduces": "Its fields.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Write the card before go-live; a card that cannot name its idempotency key will duplicate on the first retry.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The fields.",
+            "introduces": "How to use them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Kestrel & Pine's bol stock push card names owners, the pinned connector API, the snapshot-time rule and a daily reconciliation.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The bol stock push card from March 2027.",
+              "source": "_research/scenario-ledger.md (fictional; values the chapters mark as illustrative)",
+              "shows": "Shows the card filled once with ledger facts, labeled fictional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The card and its use.",
+            "introduces": "A filled Kestrel & Pine example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The card replaced an agency script whose retired API version left bol with stale stock for two days.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The preceding unit.",
+            "introduces": "A detail that completes it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "The 'Used in' line links the chapters that use the integration contract card.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The card.",
+            "introduces": "The chapters that use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-5",
+      "heading": "<a id=\"tool-5\"></a>Tool 5: Reconciliation Card",
+      "controlling_idea": "The Reconciliation Card card: purpose, template, use, a filled example and the chapters that use it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "One card with its owner, system of record and date, filled once."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous card.",
+        "introduces": "Tool 5.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p30",
+          "controlling_idea": "A reconciliation job compares two systems' records on a schedule, and only it proves that a flow worked.",
+          "function": "definition"
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "The template records the two sets, matching key, tolerance, cadence, exception owner and the fix.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fields of the reconciliation card.",
+              "shows": "Gives the card's fields or a filled instance of them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The card's purpose.",
+            "introduces": "Its fields.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The system of record sets the direction of the fix, and the writer that caused the difference is removed.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The fields.",
+            "introduces": "How to use them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Kestrel & Pine's May 2027 stock reconciliation found 2.3% of active variants different, mostly from the three apps that wrote stock.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The May 2027 stock reconciliation card.",
+              "source": "_research/scenario-ledger.md (fictional; values the chapters mark as illustrative)",
+              "shows": "Shows the card filled once with ledger facts, labeled fictional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The card and its use.",
+            "introduces": "A filled Kestrel & Pine example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "The 'Used in' line links the chapters that use the reconciliation card.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The card.",
+            "introduces": "The chapters that use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-6",
+      "heading": "<a id=\"tool-6\"></a>Tool 6: Availability (ATP) Card",
+      "controlling_idea": "The Availability (ATP) Card card: purpose, template, use, a filled example and the chapters that use it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "One card with its owner, system of record and date, filled once."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous card.",
+        "introduces": "Tool 6.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p35",
+          "controlling_idea": "Available-to-promise is on hand minus committed, reservations and buffer, and the card records per channel who supplies each term.",
+          "function": "definition"
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "The template records per channel the locations, the source of on hand and committed, buffer, publication, checkout rule, fallback and reconciliation.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fields of the ATP card.",
+              "shows": "Gives the card's fields or a filled instance of them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The card's purpose.",
+            "introduces": "Its fields.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Nobody owns 'available' by hand because it is a computation; a typed-in value is a second writer.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The fields.",
+            "introduces": "How to use them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "For the Ridgewalker women's M moss on 6 April 2027, 36 on hand minus 12 committed minus a buffer of 1 gives 23 available for NL.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The ATP card for one variant.",
+              "source": "_research/scenario-ledger.md (fictional; values the chapters mark as illustrative)",
+              "shows": "Shows the card filled once with ledger facts, labeled fictional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The card and its use.",
+            "introduces": "A filled Kestrel & Pine example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The same 23 is what Eva Janssen's storefront showed on 13 April 2027.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The preceding unit.",
+            "introduces": "A detail that completes it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "The 'Used in' line links the chapters that use the availability card.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The card.",
+            "introduces": "The chapters that use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-7",
+      "heading": "<a id=\"tool-7\"></a>Tool 7: Order State Card",
+      "controlling_idea": "The Order State Card card: purpose, template, use, a filled example and the chapters that use it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "One card with its owner, system of record and date, filled once."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous card.",
+        "introduces": "Tool 7.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p41",
+          "controlling_idea": "An order is several state machines, and the card records each machine, who moves it and how the one customer-facing status is computed.",
+          "function": "definition"
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "The template records the order number family, machines, movers, summary rule, split rule and invoice trigger.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fields of the order state card.",
+              "shows": "Gives the card's fields or a filled instance of them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The card's purpose.",
+            "introduces": "Its fields.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "'Fulfilled' is not 'delivered' without carrier events, and a two-parcel order is delivered only when both are.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The fields.",
+            "introduces": "How to use them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Order #1052877 showed three statuses in three systems; under W2 the OMS keeps separate machines, the least-advanced-shipment rule and one invoice per shipment.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Order #1052877 as the OMS handles it.",
+              "source": "_research/scenario-ledger.md (fictional; values the chapters mark as illustrative)",
+              "shows": "Shows the card filled once with ledger facts, labeled fictional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The card and its use.",
+            "introduces": "A filled Kestrel & Pine example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "The 'Used in' line links the chapters that use the order state card.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The card.",
+            "introduces": "The chapters that use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-8",
+      "heading": "<a id=\"tool-8\"></a>Tool 8: Delivery Promise Card",
+      "controlling_idea": "The Delivery Promise Card card: purpose, template, use, a filled example and the chapters that use it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "One card with its owner, system of record and date, filled once."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous card.",
+        "introduces": "Tool 8.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "controlling_idea": "The delivery promise is the date the checkout shows, and the card records the inputs of a computed promise and how it is checked against delivery.",
+          "function": "definition"
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "The template has one row per lane with cut-off, backlog input, transit, margin, measurement and owner.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fields of the delivery promise card.",
+              "shows": "Gives the card's fields or a filled instance of them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The card's purpose.",
+            "introduces": "Its fields.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "Start with a transit table and the real cut-off, and measure promised against delivered weekly before adding a model.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The fields.",
+            "introduces": "How to use them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "For Eva's order the static promise said Wednesday while the computed promise said Thursday, the day the parcel arrived.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Eva's order #1072455, 13 April 2027.",
+              "source": "_research/scenario-ledger.md (fictional; values the chapters mark as illustrative)",
+              "shows": "Shows the card filled once with ledger facts, labeled fictional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The card and its use.",
+            "introduces": "A filled Kestrel & Pine example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "The 'Used in' line links the chapters that use the delivery promise card.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The card.",
+            "introduces": "The chapters that use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-9",
+      "heading": "<a id=\"tool-9\"></a>Tool 9: Channel Allocation Card",
+      "controlling_idea": "The Channel Allocation Card card: purpose, template, use, a filled example and the chapters that use it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "One card with its owner, system of record and date, filled once."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous card.",
+        "introduces": "Tool 9.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p51",
+          "controlling_idea": "Channel allocation decides how much available stock each channel may promise, and the card records that policy per channel.",
+          "function": "definition"
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "The template records per channel the account, fulfillment model, external locations, allocation policy, buffer, scorecard thresholds and interface sunset.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fields of the channel allocation card.",
+              "shows": "Gives the card's fields or a filled instance of them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The card's purpose.",
+            "introduces": "Its fields.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "A buffer is an honest interim while stock moves on a schedule; computed ATP per channel is the target.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The fields.",
+            "introduces": "How to use them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Kestrel & Pine's marketplaces moved from a ten-unit buffer in December 2026 to computed ATP per channel under W1.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The 2027 marketplace allocation card.",
+              "source": "_research/scenario-ledger.md (fictional; values the chapters mark as illustrative)",
+              "shows": "Shows the card filled once with ledger facts, labeled fictional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The card and its use.",
+            "introduces": "A filled Kestrel & Pine example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "The 'Used in' line links the chapters that use the channel allocation card.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The card.",
+            "introduces": "The chapters that use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-10",
+      "heading": "<a id=\"tool-10\"></a>Tool 10: EDI Partner Card",
+      "controlling_idea": "The EDI Partner Card card: purpose, template, use, a filled example and the chapters that use it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "One card with its owner, system of record and date, filled once."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous card.",
+        "introduces": "Tool 10.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p56",
+          "controlling_idea": "The EDI partner card holds per trading partner everything needed to keep structured business documents right, in the merchant's own repository.",
+          "function": "definition"
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "The template records partner and owners, GLNs, transport, messages, guideline and mapping versions, source of each document, compliance rules and disputes.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fields of the EDI partner card.",
+              "shows": "Gives the card's fields or a filled instance of them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The card's purpose.",
+            "introduces": "Its fields.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "Each document comes from the system that knows its truth, so the DESADV comes from the pack confirmation.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The fields.",
+            "introduces": "How to use them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "Bergzicht Outdoor's card shows the DESADV moved to the WMS pack confirmation after a €14,200 deduction for mismatched labels.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Bergzicht Outdoor's card under W6.",
+              "source": "_research/scenario-ledger.md (fictional; values the chapters mark as illustrative)",
+              "shows": "Shows the card filled once with ledger facts, labeled fictional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The card and its use.",
+            "introduces": "A filled Kestrel & Pine example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "The 'Used in' line links the chapters that use the edi partner card.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The card.",
+            "introduces": "The chapters that use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-11",
+      "heading": "<a id=\"tool-11\"></a>Tool 11: App Governance Card",
+      "controlling_idea": "The App Governance Card card: purpose, template, use, a filled example and the chapters that use it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "One card with its owner, system of record and date, filled once."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous card.",
+        "introduces": "Tool 11.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p61",
+          "controlling_idea": "The app governance card names an owner per installed app, records what it may touch and enforces one writer per fact.",
+          "function": "definition"
+        },
+        {
+          "id": "p62",
+          "controlling_idea": "The template records per app its vendor and owner, purpose, scopes granted and revoked, facts written, API version, review date and exit plan.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fields of the app governance card.",
+              "shows": "Gives the card's fields or a filled instance of them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The card's purpose.",
+            "introduces": "Its fields.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p63",
+          "controlling_idea": "Put custom behavior on the lowest rung that works and remove unowned, unused or duplicate apps quarterly.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The fields.",
+            "introduces": "How to use them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p64",
+          "controlling_idea": "The pre-order app lost its write_inventory scope in June 2027 because the WMS feed is the only writer of stock.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The pre-order app's card.",
+              "source": "_research/scenario-ledger.md (fictional; values the chapters mark as illustrative)",
+              "shows": "Shows the card filled once with ledger facts, labeled fictional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The card and its use.",
+            "introduces": "A filled Kestrel & Pine example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p65",
+          "controlling_idea": "The 'Used in' line links the chapters that use the app governance card.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The card.",
+            "introduces": "The chapters that use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-12",
+      "heading": "<a id=\"tool-12\"></a>Tool 12: Peak Plan and Degradation Ladder",
+      "controlling_idea": "The Peak Plan and Degradation Ladder card: purpose, template, use, a filled example and the chapters that use it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "One card with its owner, system of record and date, filled once."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous card.",
+        "introduces": "Tool 12.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p66",
+          "controlling_idea": "A peak plan measures the order path in orders per minute, and a degradation ladder names the optional work paused under pressure.",
+          "function": "definition"
+        },
+        {
+          "id": "p67",
+          "controlling_idea": "The plan template records peak dates, forecast, tested capacity per link, tests, freeze, gauges and the morning-after reconciliation.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fields of the peak plan.",
+              "shows": "Gives the card's fields or a filled instance of them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The card's purpose.",
+            "introduces": "Its fields.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p68",
+          "controlling_idea": "The ladder has one row per rung with switch, owner, trigger and last test, and a line for what is never switched off.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The preceding unit.",
+            "introduces": "A detail that completes it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p69",
+          "controlling_idea": "A switch never flipped in a test is a hope, and the order is set in a calm month.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The fields.",
+            "introduces": "How to use them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p70",
+          "controlling_idea": "Kestrel & Pine's 2027 plan forecasts 60 orders a minute, tests every link at 80 and freezes changes from 15 November.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The 2027 peak plan.",
+              "source": "_research/scenario-ledger.md (fictional; values the chapters mark as illustrative)",
+              "shows": "Shows the card filled once with ledger facts, labeled fictional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The card and its use.",
+            "introduces": "A filled Kestrel & Pine example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p71",
+          "controlling_idea": "Three of the eight rungs show the owner and trigger, and checkout, payment and order creation are never switched off.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Rungs 3, 5 and 8 and the never line.",
+              "shows": "Gives the card's fields or a filled instance of them.",
+              "source": "_research/scenario-ledger.md (fictional; values the chapters mark as illustrative)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The preceding unit.",
+            "introduces": "A detail that completes it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p72",
+          "controlling_idea": "The 'Used in' line links the chapters that use the peak plan and degradation ladder.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The card.",
+            "introduces": "The chapters that use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-13",
+      "heading": "<a id=\"tool-13\"></a>Tool 13: Regulatory Calendar",
+      "controlling_idea": "The Regulatory Calendar card: purpose, template, use, a filled example and the chapters that use it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "One card with its owner, system of record and date, filled once."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous card.",
+        "introduces": "Tool 13.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p73",
+          "controlling_idea": "The regulatory calendar turns an applicable rule into required data, a system, a test, an owner and a deadline, with its scope.",
+          "function": "definition"
+        },
+        {
+          "id": "p74",
+          "controlling_idea": "The template has one row per rule with date, rule, scope check, requirement, system of record, test, owner and status.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Columns of the regulatory calendar.",
+              "shows": "Gives the card's fields or a filled instance of them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The card's purpose.",
+            "introduces": "Its fields.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p75",
+          "controlling_idea": "Plan to the scope, schedule to the date and review the watch rows quarterly.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The fields.",
+            "introduces": "How to use them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p76",
+          "controlling_idea": "Kestrel & Pine's rows show GPSR maintained through a PIM rule and Belgian e-invoicing maintained through a delivered-status report.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Two rows of the 2027 calendar.",
+              "source": "_research/scenario-ledger.md (fictional; values the chapters mark as illustrative)",
+              "shows": "Shows the card filled once with ledger facts, labeled fictional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The card and its use.",
+            "introduces": "A filled Kestrel & Pine example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p77",
+          "controlling_idea": "The 'Used in' line links the chapters that use the regulatory calendar.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The card.",
+            "introduces": "The chapters that use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-14",
+      "heading": "<a id=\"tool-14\"></a>Tool 14: Build, Buy or Assemble Decision Card",
+      "controlling_idea": "The Build, Buy or Assemble Decision Card card: purpose, template, use, a filled example and the chapters that use it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "One card with its owner, system of record and date, filled once."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous card.",
+        "introduces": "Tool 14.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p78",
+          "controlling_idea": "The decision card compares realistic options for one capability on five criteria and on three-year total cost.",
+          "function": "definition"
+        },
+        {
+          "id": "p79",
+          "controlling_idea": "Page one records per option the business model, scale stage, team, differentiation, and time and risk.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The five criteria.",
+              "shows": "Gives the card's fields or a filled instance of them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The card's purpose.",
+            "introduces": "Its fields.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p80",
+          "controlling_idea": "Page two prices each option over three years, including the lines a vendor's quote leaves out.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The preceding unit.",
+            "introduces": "A detail that completes it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p81",
+          "controlling_idea": "Price each option as incremental cost over today's run rate and label every non-quote as an assumption.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The fields.",
+            "introduces": "How to use them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p82",
+          "controlling_idea": "Kestrel & Pine's February 2027 review chose stay and surround at about €1.33M over two options above €3M, recorded as KP-004.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The February 2027 platform review.",
+              "source": "_research/scenario-ledger.md (fictional; values the chapters mark as illustrative)",
+              "shows": "Shows the card filled once with ledger facts, labeled fictional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The card and its use.",
+            "introduces": "A filled Kestrel & Pine example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p83",
+          "controlling_idea": "The 'Used in' line links the chapters that use the build, buy or assemble decision card.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The card.",
+            "introduces": "The chapters that use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-15",
+      "heading": "<a id=\"tool-15\"></a>Tool 15: Migration Plan Card",
+      "controlling_idea": "The Migration Plan Card card: purpose, template, use, a filled example and the chapters that use it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "One card with its owner, system of record and date, filled once."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous card.",
+        "introduces": "Tool 15.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p84",
+          "controlling_idea": "A migration plan card plans each change of system of record as a limited, reversible step with comparison and recovery.",
+          "function": "definition"
+        },
+        {
+          "id": "p85",
+          "controlling_idea": "The template has one card per seam with phases, owner per phase, reconciliation, go/no-go, rollback, identifier continuity, freeze and data migrations.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fields of the migration plan card.",
+              "shows": "Gives the card's fields or a filled instance of them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The card's purpose.",
+            "introduces": "Its fields.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p86",
+          "controlling_idea": "Prefer one writer and a copied flow over dual writes.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The fields.",
+            "introduces": "How to use them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p87",
+          "controlling_idea": "The OMS introduction under W2 ran shadow, parallel run and three seams with a freeze around Black Friday, each reversible.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The 2027 OMS migration phases.",
+              "source": "_research/scenario-ledger.md (fictional; values the chapters mark as illustrative)",
+              "shows": "Shows the card filled once with ledger facts, labeled fictional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The card and its use.",
+            "introduces": "A filled Kestrel & Pine example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p88",
+          "controlling_idea": "About 14 of the 34 integrations were re-pointed.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The preceding unit.",
+            "introduces": "A detail that completes it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p89",
+          "controlling_idea": "The 'Used in' line links the chapters that use the migration plan card.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The card.",
+            "introduces": "The chapters that use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-16",
+      "heading": "<a id=\"tool-16\"></a>Tool 16: Architecture Decision Record",
+      "controlling_idea": "The Architecture Decision Record card: purpose, template, use, a filled example and the chapters that use it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "One card with its owner, system of record and date, filled once."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous card.",
+        "introduces": "Tool 16.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p90",
+          "controlling_idea": "An ADR is a one-page record of a decision, its facts, options and changes, extended here with ownership, vendors and a review date.",
+          "function": "definition"
+        },
+        {
+          "id": "p91",
+          "controlling_idea": "The template adds Ownership, Vendors, Confirmation and Review to Nygard's fields.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Nygard's record anatomy",
+              "source": "Michael Nygard, Documenting Architecture Decisions, 2011",
+              "shows": "The base form the template extends."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The card's purpose.",
+            "introduces": "Its fields.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p92",
+          "controlling_idea": "Write one for every change of fact owner, vendor dependency or app writer, and supersede rather than edit.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The fields.",
+            "introduces": "How to use them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p93",
+          "controlling_idea": "KP-004 records W4: stay on the shop platform and add OMS, PIM and availability beside it.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "KP-004.",
+              "source": "_research/scenario-ledger.md (fictional; values the chapters mark as illustrative)",
+              "shows": "Shows the card filled once with ledger facts, labeled fictional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The card and its use.",
+            "introduces": "A filled Kestrel & Pine example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p94",
+          "controlling_idea": "KP-001 to KP-008 are Waypoint decisions W1 to W8.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The preceding unit.",
+            "introduces": "A detail that completes it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p95",
+          "controlling_idea": "The 'Used in' line links the chapters that use the architecture decision record.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The card.",
+            "introduces": "The chapters that use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Keeping the Cards True",
+    "synthesis": "The cards stay useful only while they match the systems, so the same owner-and-date discipline that fills them also keeps them current.",
+    "so_what": "A stale card is worse than none because readers trust it; three habits keep the set current and small.",
+    "callback": {
+      "to": "The KEY POINT that most fields were paid for by an incident.",
+      "how": "Incidents keep adding fields, and fields nobody reads are removed."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Review each card on its calendar, add a field when an incident asks a question no card answers, and drop fields nobody reads."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The sixteen cards.",
+      "introduces": "How to keep them current.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "hand_off": {
+      "to": "glossary",
+      "relationship": "sequence",
+      "carries_over": "The toolkit's cards and its closing pointer to the plain-language definitions of the terms they use (ATP, SSCC, idempotency, system of record).",
+      "introduces": "Every term the book uses, defined and linked to its owning chapter."
+    },
+    "paragraphs": [
+      {
+        "id": "p96",
+        "form": "list",
+        "controlling_idea": "Three habits keep the cards current: review on a calendar, let incidents add fields, keep the set small.",
+        "function": "recommendation"
+      },
+      {
+        "id": "p97",
+        "controlling_idea": "The terms the cards use are defined in the glossary, and the bibliography lists the sources behind them.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "Keeping the cards current.",
+          "introduces": "The next reference pages.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Re-teaching why each field exists",
+      "covered_in": [
+        "the owning chapters linked in each tool"
+      ]
+    },
+    {
+      "topic": "The system and vendor ownership map and vendor card",
+      "covered_in": [
+        "organizing-commerce-engineering"
+      ]
+    },
+    {
+      "topic": "The W7 metric definitions",
+      "covered_in": [
+        "commerce-data-and-analytics"
+      ]
+    },
+    {
+      "topic": "Definitions of terms",
+      "covered_in": [
+        "glossary"
+      ]
+    },
+    {
+      "topic": "The full source list",
+      "covered_in": [
+        "bibliography"
+      ]
+    },
+    {
+      "topic": "New Kestrel & Pine facts: every example uses ledger facts or values the chapters mark as illustrative"
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Chapters 10, 13, 16 and 20 teach their content without a named card; the ATP, order state, delivery promise and channel allocation cards are this page's distillation and should be cross-checked if those chapters add a card later.",
+    "Needs the author: chapters' open questions name further possible toolkit items, the contract card of api-contracts-and-versioning (chapter 26) in its fuller form and the W7 metric-definition table of commerce-data-and-analytics (chapter 28). They were not added in this pass; the author decides whether the page should hold them.",
+    "Round 1 left unfixed: Tool 5's how-to paragraph holds two ideas (fix direction; zero tolerance as a choice) — splitting it means a spec change, needs the author.",
+    "Needs the author: the Tool 1 and Tool 7 templates have no named owner or system-of-record row, and the KP-004 example omits its template's Drivers and Vendors sections, which weakens 'every card names an owner, a system of record and a date'.",
+    "Draft-check round 2 (ESCALATE, 18 pass / 22 fail, 0 waived): the three spec faults are the open question on owner / system-of-record / date fields (Tools 1, 7 and 14 templates); needs the author."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Converted spec.md to spec.json in a light pass for a lookup page: one spec paragraph per draft unit, tables as evidence; the old inventory-style success criteria were not carried over (the journal spec's acceptance criteria replace them). length.max_words is the published length plus 10%.",
+      "rejected": [
+        "Specifying each table row as a paragraph",
+        "Carrying the old success criteria over"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "After draft-check round 1 (REVISE), applied the cheap fixes only, with no second round: the introduction puts the motivation before the instruction and glosses Waypoint, W1-W8 = KP-001-KP-008, Duiven, Eva, the marketplaces and the newcomer abbreviations (WMS, OMS, PIM, PSP, EDI, SKU) with a glossary pointer; 'write unknown' moved to the conventions; KEY POINTS field names match the templates; Tool 3's first-person 'I would adopt' made impersonal; bol, Eva, the Tiel 3PL and hero SKUs glossed in place; Tool 12 shows rung 4, which Tool 9 cites (chapter journey-peak-day's ladder); Tool 16 names confirmation among the ADR's additions (AC-2); the closing says why a stale card matters.",
+      "rejected": [
+        "A second check round (the brief allows one)",
+        "Splitting Tool 5's how-to paragraph, which would change the unit count and the spec"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Consistency fixes only: the stock sync chain in Tool 6 is 'up to two hours end to end' with no hop intervals (scenario-ledger line 71; RESOLVE rule 1); Tool 7's invoice trigger is one invoice per shipment with no per-order alternative (consistency ruling 18); Tool 13's Belgian e-invoicing row hedges whether the mandate binds a Dutch supplier (rulings 5 and 17, chapter 36's row); KP-004 and Tool 1 say 'the shop platform' (RESOLVE rule 11); the first sentence of the introduction now says what the page is for and how to use it; the Tool 2 example table, whose last row had a sentence fused into it, was split into the table and a following sentence.",
+      "rejected": [
+        "Rewriting entries beyond the contradictions"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "The former open question on unowned integrations is settled by consistency ruling 16 (13 of 34 in January 2027, 5 in April 2027); the page states neither count, so nothing changes. The glossary hand-off resolves now that the glossary exists."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Put the entity–owner table at the center of the 'How the Records Connect' diagram, because every other card fills, changes or reads one of its rows."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Filled each example with one row or one object rather than whole tables, to keep the page within length and every figure traceable to the ledger."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Took the contract card from the bol stock flow of api-contracts-and-versioning, because chapter 26 writes the card out in full."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Extended Nygard's ADR with ownership, vendor, confirmation and review fields, matching how organizing-commerce-engineering uses decision records."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "PLAN.md",
+      "contributed": "The Reference entry listing the sixteen cards."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Every Kestrel & Pine figure and date."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/consistency-issues.md",
+      "contributed": "Rulings applied in the 2026-11-13 consistency pass."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/style-guide.md",
+      "contributed": "Reference-page format and valid permalinks."
+    },
+    {
+      "kind": "internal",
+      "ref": "the seventeen chapters linked in the Find table and Used in lines",
+      "contributed": "The fields of each card."
+    },
+    {
+      "kind": "external",
+      "ref": "Michael Nygard, Documenting Architecture Decisions, 2011",
+      "contributed": "The ADR anatomy Tool 16 extends."
+    },
+    {
+      "kind": "external",
+      "ref": "Martin Fowler, Strangler Fig Application, 2024",
+      "contributed": "Seams in Tool 15."
+    },
+    {
+      "kind": "external",
+      "ref": "Pete Hodgson, Feature Toggles, 2017",
+      "contributed": "Kill switches in Tool 12."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Draft-check round 2 (ESCALATE, 18 pass / 22 fail, 0 waived). Cheap fixes after the round, report left stale: W1-W8 key, Bergzicht Outdoor, Mara Lindqvist and Hanna Berg introduced in the cast paragraph; the intro sentence that fused two lists split and the chapter order of the cards stated; gloss for the App That Wrote Stock in KEY POINTS and for the iPaaS in Tool 3."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "spec.md converted to spec.json; consistency fixes in Tools 1, 2, 6, 7, 13 and 16. Cheap fixes from draft-check round 1 (glosses, rung 4, ADR confirmation, closing so-what)."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: one mermaid diagram redrawn as an illustration (article-illustrator)."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article."
+    }
+  ],
+  "length": {
+    "max_words": 6347
+  }
+}

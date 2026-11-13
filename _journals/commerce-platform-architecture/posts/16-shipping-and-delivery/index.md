@@ -111,7 +111,7 @@ EasyPost's tracker object (n.d., accessed November 2026) is a reasonable public 
 | `return_to_sender` | Coming back without a return request | Warehouse receiving; refund or re-ship decision |
 | `exception` | Lost, damaged, customs hold | Service and claims |
 
-Two rules follow. **The order's shipping status is derived from these events**, never set by hand, and the status page, the notifications and the service agent read the same derived status ([[customer-service-and-notifications]]). The "shipped" message is therefore sent on `in_transit`, the carrier's first scan, not when the label prints: a label is not a booking until the parcel is manifested, and only the scan shows that the carrier has it. And **every event is stored with its lane**, because the scan history is the only data that will ever tell you how long PostNL really takes from Duiven to Nijmegen on a Wednesday in April.
+Two rules follow. **The order's shipping status is derived from these events**, never set by hand, and the status page, the notifications and the service agent read the same derived status ([[customer-service-and-notifications]]). The "shipped" message therefore belongs on `in_transit`, the carrier's first scan, not on the label the warehouse reports: a label is not a booking until the parcel is manifested, and only the scan shows that the carrier has it. Kestrel & Pine adopts this rule after Eva's order. And **every event is stored with its lane**, because the scan history is the only data that will ever tell you how long PostNL really takes from Duiven to Nijmegen on a Wednesday in April.
 
 ### The delivery promise: from sentence to computation
 
@@ -201,7 +201,7 @@ The shipping service handles Kestrel & Pine's parcels (336,000 in 2026); Eva's i
 
 The label prints and the tracking number returns through the integration platform (the iPaaS) to the order within a minute, so the order record holds it from then on. At 18:30, the shipping service includes her parcel in the day's manifest of 1,100 PostNL parcels; collection is at 22:30.
 
-Tracking scans follow: depot acceptance at 23:40, out for delivery at 07:50 Thursday and delivered at 11:20. These timings and batch size are illustrative. The first scan, at 23:40, sends Eva's "shipped" e-mail, not the label at 08:40: had the parcel been left off the manifest or kept waiting at the dock, an e-mail sent at label print would have been untrue. The service translates each scan into a common status, records the route and forwards it to the shop platform for customer updates.
+Tracking scans follow: depot acceptance at 23:40, out for delivery at 07:50 Thursday and delivered at 11:20. These timings and batch size are illustrative. Eva's "shipped" e-mail had gone out at 08:40, when the WMS reported the shipment, fifteen hours before PostNL's first scan. Had the parcel been left off the manifest or kept waiting at the dock, that e-mail would have been untrue; under the first-scan rule Kestrel & Pine adopts later, it waits for the 23:40 scan. The service translates each scan into a common status, records the route and forwards it to the shop platform for customer updates.
 
 What did not work was the promise on Tuesday evening (Wednesday shown, Thursday delivered), and its cost is not the parcel; it is one "where is my order" (WISMO) ticket, one disappointed customer and, multiplied by every weekday order between 21:00 and 22:00, a share of the year's complaints that could be counted but that nobody has counted.
 

@@ -6,7 +6,7 @@
   "part": "part-2",
   "title": "Is It in Stock? Inventory, Availability and the Promise You Can Keep",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed from the published chapter (posts/10-inventory-and-availability/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter. It is a contract, not a description: the places where the chapter did not yet do what the spec asks are listed under open_questions.",
   "intent": {
     "outcome": {
@@ -904,34 +904,34 @@
     {
       "id": "choices",
       "heading": "The Choices",
-      "controlling_idea": "A growing merchant has four ways to compute availability (the platform's own stock, a stock master with periodic sync, an event-driven availability service, a fulfillment provider's shared pool), and each is right for a stage and a limit at the next.",
+      "controlling_idea": "W1 chose the availability service, and the choice is checked against the alternatives: a growing merchant has four ways to compute availability (the platform's own stock, a stock master with periodic sync, an event-driven availability service, a fulfillment provider's shared pool), each right for a stage and a limit at the next.",
       "function": "comparison",
       "advances_thesis": {
         "supports": [
           "S3"
         ],
-        "how": "Places 'computed by the shop platform' and 'computed by one service' among the realistic options and says when each holds."
+        "how": "Checks W1 against the realistic options and says when each holds."
       },
       "flow": {
         "pattern": "chronological",
-        "rationale": "The four options in the order a growing merchant meets them, which is also Kestrel & Pine's own history; the provider's pool comes last because it hands the problem to someone else."
+        "rationale": "The section is a check on W1, which the previous section already named: the four options in the order a growing merchant meets them, which is also Kestrel & Pine's own history, each placed against W1; the provider's pool comes last because it hands the problem to someone else."
       },
       "transition_in": {
         "relationship": "contrast",
-        "carries_over": "The availability service as the clean arrangement.",
-        "introduces": "That it is one of four options, and not the right one for every merchant.",
+        "carries_over": "W1's availability service, already chosen and drawn.",
+        "introduces": "The check on that choice: the four options it was chosen from.",
         "form": "sentence",
         "placement": "start_of_this"
       },
       "paragraphs": [
         {
           "id": "p33",
-          "controlling_idea": "There are four realistic ways to compute availability, each right for a stage and a limit at the next.",
+          "controlling_idea": "W1 chose the availability service; to check the choice, set it beside the four realistic ways to compute availability, each right for a stage and a limit at the next.",
           "function": "claim"
         },
         {
           "id": "p34",
-          "controlling_idea": "The platform's own stock fields work while there is one location and the platform is the only system that takes orders.",
+          "controlling_idea": "The platform's own stock fields work while there is one location and the platform is the only system that takes orders, a stage Kestrel & Pine left long before W1.",
           "function": "description",
           "evidence": [
             {
@@ -951,7 +951,7 @@
         },
         {
           "id": "p35",
-          "controlling_idea": "An ERP or WMS as stock master with periodic sync is the common arrangement at the Growing stage, and its limit is structural: the copy is a snapshot, the schedule is a lag, and each hop adds its own clock.",
+          "controlling_idea": "An ERP or WMS as stock master with periodic sync is the common arrangement at the Growing stage, and its limit is structural: the copy is a snapshot, the schedule is a lag, and each hop adds its own clock. It is the landscape W1 replaces.",
           "function": "description",
           "evidence": [
             {
@@ -971,7 +971,7 @@
         },
         {
           "id": "p36",
-          "controlling_idea": "An event-driven availability service, bought or built, costs integration work on every counting and ordering system and the discipline of one writer per state.",
+          "controlling_idea": "An event-driven availability service, bought or built, is W1's choice and costs integration work on every counting and ordering system and the discipline of one writer per state.",
           "function": "description",
           "transition_in": {
             "relationship": "sequence",
@@ -983,7 +983,7 @@
         },
         {
           "id": "p37",
-          "controlling_idea": "A fulfillment provider's shared pool moves the availability problem to the provider, at the price of the merchant's control over the count and the buffer.",
+          "controlling_idea": "A fulfillment provider's shared pool moves the availability problem to the provider, at the price of the merchant's control over the count and the buffer; for a merchant whose own channels carry most sales, such as Kestrel & Pine, it is no alternative to W1.",
           "function": "description",
           "evidence": [
             {
@@ -1049,7 +1049,7 @@
         },
         {
           "id": "p39",
-          "controlling_idea": "A separate availability service is worth considering when any two of four conditions apply (multiple locations, multiple order channels, location-specific promises, wholesale allocations); Kestrel & Pine met that test in 2023 and built the copying chain instead.",
+          "controlling_idea": "A separate availability service is worth considering when any two of four conditions apply (multiple locations, multiple order channels, location-specific promises, wholesale allocations); Kestrel & Pine met that test in 2023 and built the copying chain instead, so W1 passes the check: the first two options were outgrown and the fourth does not fit its channels.",
           "function": "recommendation",
           "evidence": [
             {
@@ -1489,6 +1489,14 @@
   "open_questions": [],
   "decision_log": [
     {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved in the cleanup pass, 2026-11-13: 'The Choices' is reframed as a check on W1 (rule 3: both round-4 flow readers found the verdict came before the comparison, so the choices read as after-the-fact justification). The section now opens by saying W1 chose the availability service and the four options are the check; each option is placed against W1 (the platform's stock, outgrown long before W1; the stock master with sync, the landscape W1 replaces; the service, W1's choice; the provider pool, no alternative for a merchant whose own channels carry most sales, €45.0M of €48.0M in the ledger), and Trade-offs' last paragraph (p39) gives the verdict: W1 passes the check. The author's sentence 'That is not zero.' is restored in the replay (rule 5, room under the raised limit). max_words raised to 7,150 (rule 4).",
+      "rejected": [
+        "Moving The Choices and Trade-offs before the availability-service section, a move of whole sections no reader asked for.",
+        "Keeping the neutral framing readers read as justification."
+      ]
+    },
+    {
       "date": "2026-11-12",
       "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 7) AC-6 (known_before_new), added by the conversion from the old spec.md and not in the journal spec, is dropped; AC-1 to AC-5 come from the journal spec and stay. The terms it raised were glossed where they fit (rule 6).",
       "rejected": [
@@ -1718,6 +1726,10 @@
   ],
   "changelog": [
     {
+      "date": "2026-11-13",
+      "change": "Cleanup pass: The Choices reframed as a check on W1, with the verdict in Trade-offs; 'That is not zero.' restored; max_words 7,150."
+    },
+    {
       "date": "2026-11-12",
       "change": "Confirming round 4 (escalate: 16 passed, 19 failed; 10 major draft faults, 9 minor single-reader findings). Cheap fixes applied afterwards; the stages transition placement changed to end_of_previous. The check report is stale against these edits."
     },
@@ -1767,6 +1779,6 @@
     }
   ],
   "length": {
-    "max_words": 6500
+    "max_words": 7150
   }
 }

@@ -30,7 +30,7 @@ The merchant needs one record that brings those facts together: what was bought,
 
 **Where we are in the order's journey.** Eva buys a jacket and socks from Kestrel & Pine. Order #1072455 is created at 21:14 on 13 April 2027, and Eva pays through iDEAL, the Dutch bank-transfer method; seconds later the payment provider's webhook marks it paid ([[commerce-payments]]). In April 2027 the shop platform is still her order's home: the OMS takes storefront orders only from 13 October 2027. [[cart-and-checkout]], [[warehouse-and-fulfillment]] and [[returns-and-exchanges]] cover those operations.
 
-This chapter follows the order from "paid" onward, but through an older case, the opening's order #1052877, which the company calls the Three-Status Order because different systems gave different answers about it. From that case the chapter describes what an order record holds and why its number matters, the separate states it moves through and how the customer's status is computed from them, how edits, holds and cancellations change those states, and how routing decides which location ships which line. It then describes the OMS, asks when every channel's orders need one home and which system it should be, and compares four homes for the order by trade-off and scale stage. It ends with Kestrel & Pine's chosen design at work, its requirements and the Three-Status Order replayed through it, and with the ways order integrations fail. The evidence is the Kestrel & Pine case and the documentation of the platform and OMS vendors.
+This chapter follows the order from "paid" onward, but through an older case, the opening's order #1052877, which the company calls the Three-Status Order because different systems gave different answers about it. From that case the chapter describes what an order record holds and why its number matters, the separate states it moves through and how the customer's status is computed from them, how edits, holds and cancellations change those states, and how routing decides which location ships which line. It then asks when every channel's orders need one home, describes the OMS, asks which system that home should be and compares four homes for the order by trade-off and scale stage. It ends with Kestrel & Pine's chosen design at work, the Three-Status Order replayed through it and its requirements, and with the ways order integrations fail. The evidence is the Kestrel & Pine case and the documentation of the platform and OMS vendors.
 
 ## Setting the Scene at Kestrel & Pine: Order #1052877
 
@@ -126,9 +126,18 @@ The business trade-off inside a split is concrete. Shipping the fleece now and t
 
 A **backorder**, a line accepted for a unit that is out of stock but expected, is a split in time rather than space, and needs the same honesty: a date from [[inventory-and-availability]]'s incoming quantities, and a message.
 
+## Many Channels, One Record
+
+Routing assumed one record to route from, and most merchants of Kestrel & Pine's size have several. Several fulfillment locations multiply the connections between systems, which this chapter calls the joins; several channels creating orders multiply them again. Kestrel & Pine's orders begin in four systems. Storefront and B2B (business-to-business) portal orders are created by the shop platform. Marketplace orders are pulled by the marketplace connector. EDI orders from Bergzicht Outdoor, the wholesale customer that orders over EDI, land in the ERP, and 38% of wholesale orders are keyed into the ERP by hand. Store sales are POS receipts. Each source has its own connector to the warehouse, its own path to the books and its own status vocabulary. That is the Spaghetti Junction, the normal result of adding one channel at a time.
+
+When does that junction need one record of its own? The rule I use: **at least two of these four**. Several fulfillment locations. Several channels creating orders. Promises that depend on location (click-and-collect, where the customer picks up in a store; ship-from-store, where a store sends the parcel). Service agents who cannot see one order across systems. One of them can be handled by the platform plus a connector; two make the joins between systems the problem. Kestrel & Pine has had all four since 2023.
+
+![A four-card checklist with two cards ticked leading to a hub-and-spoke order management system.](assets/images/13-order-management/13-two-of-four-oms-rule.jpeg)
+**Figure 4:** *An OMS becomes the order hub once two of four conditions hold: several locations, several channels, location-based promises, or service that cannot see one order.*
+
 ## The OMS as a Product
 
-The order management vendors quoted on routing sell a product of their own. An **order management system** takes orders from every channel, decides which location fulfills each line, tracks each order through fulfillment, delivery and returns, and gives service agents one view. **Orchestration** is its job of sequencing those steps across systems. The vendors describe the same shape: Manhattan lists inventory visibility across sources, promise dates at checkout, sourcing, "end-to-end fulfillment execution and tracking" and post-purchase changes (n.d., accessed November 2026); Kibo lists "distributed order orchestration across every store, warehouse, and vendor" with rules such as fewest shipments, lowest cost or closest distance (n.d.); IBM Sterling lists ship from store, in-store pickup and a call-center add-on "for complex order modifications" (n.d.).
+The order management vendors quoted on routing sell that one record as a product. An **order management system** takes orders from every channel, decides which location fulfills each line, tracks each order through fulfillment, delivery and returns, and gives service agents one view. **Orchestration** is its job of sequencing those steps across systems. The vendors describe the same shape: Manhattan lists inventory visibility across sources, promise dates at checkout, sourcing, "end-to-end fulfillment execution and tracking" and post-purchase changes (n.d., accessed November 2026); Kibo lists "distributed order orchestration across every store, warehouse, and vendor" with rules such as fewest shipments, lowest cost or closest distance (n.d.); IBM Sterling lists ship from store, in-store pickup and a call-center add-on "for complex order modifications" (n.d.).
 
 What the OMS owns, and what it leaves alone, is the point.
 
@@ -141,16 +150,9 @@ What the OMS owns, and what it leaves alone, is the point.
 | **Service view and edits** | One screen per order across channels; edits validated against state | Edits and holds | Refund execution (the PSP), invoice (the ERP) |
 | **Events out** | Status events to the platform (customer history), the ERP (invoice triggers), notifications, the data warehouse (the analytics database) | Nothing; it publishes | Anything it did not change |
 
-## Many Channels, One Record
+## The Choices
 
-An OMS earns its place where systems must be joined. Several fulfillment locations multiply the connections between systems, which this chapter calls the joins; several channels creating orders multiply them again. Kestrel & Pine's orders begin in four systems. Storefront and B2B (business-to-business) portal orders are created by the shop platform. Marketplace orders are pulled by the marketplace connector. EDI orders from Bergzicht Outdoor, the wholesale customer that orders over EDI, land in the ERP, and 38% of wholesale orders are keyed into the ERP by hand. Store sales are POS receipts. Each source has its own connector to the warehouse, its own path to the books and its own status vocabulary. That is the Spaghetti Junction, the normal result of adding one channel at a time.
-
-When does that junction need one record of its own? The rule I use: **at least two of these four**. Several fulfillment locations. Several channels creating orders. Promises that depend on location (click-and-collect, where the customer picks up in a store; ship-from-store, where a store sends the parcel). Service agents who cannot see one order across systems. One of them can be handled by the platform plus a connector; two make the joins between systems the problem. Kestrel & Pine has had all four since 2023.
-
-![A four-card checklist with two cards ticked leading to a hub-and-spoke order management system.](assets/images/13-order-management/13-two-of-four-oms-rule.jpeg)
-**Figure 4:** *An OMS becomes the order hub once two of four conditions hold: several locations, several channels, location-based promises, or service that cannot see one order.*
-
-The alternative to the junction is one order hub: every channel's order is created in one system, with one state model and one number family, and that system drives the warehouse and informs the books. Which system that should be is the real question, with three honest candidates among the systems a merchant already runs or can buy: the platform, the ERP and the OMS just described; a fourth, building one's own, is weighed with the choices below.
+The alternative to the Spaghetti Junction is one order hub: every channel's order is created in one system, with one state model and one number family, and that system drives the warehouse and informs the books. Which system that should be is the real question, with three honest candidates among the systems a merchant already runs or can buy: the platform, the ERP and the OMS just described; a fourth, building one's own, is weighed with them below.
 
 | The order lives in | What it is good at | What it lacks | Common at |
 | --- | --- | --- | --- |
@@ -160,13 +162,11 @@ The alternative to the junction is one order hub: every channel's order is creat
 
 The three records are not rivals; they are three truths about the same order, and the design decision is which system owns which truth and how the others are told ([[boundaries-and-systems-of-record]] owns the general idea). Fluent Commerce states that boundary plainly on its own site: "your ERP stays the system of record" for finance, while the OMS decides where orders go and writes back (n.d., accessed November 2026).
 
-## The Choices
-
-**1. The platform's order is the record.** The first of four homes, the three candidates above and a service the merchant builds itself, needs no new system: the platform creates and holds every order; marketplace apps and a POS from the same vendor create orders in it; a 3PL (a third-party logistics provider, a warehouse that ships for the merchant) or WMS connector reads them and writes fulfillments back. Shopify's own features, fulfillment orders with a request-and-accept handshake, holds, edits, returns and multi-location assignment, cover this well; what its documentation does not describe is rule-based sourcing on cost, capacity or cut-off, and that absence is the limit (an inference from the documentation, not a vendor statement).
+**1. The platform's order is the record.** The first of four homes, the three candidates and a service the merchant builds itself, needs no new system: the platform creates and holds every order; marketplace apps and a POS from the same vendor create orders in it; a 3PL (a third-party logistics provider, a warehouse that ships for the merchant) or WMS connector reads them and writes fulfillments back. Shopify's own features, fulfillment orders with a request-and-accept handshake, holds, edits, returns and multi-location assignment, cover this well; what its documentation does not describe is rule-based sourcing on cost, capacity or cut-off, and that absence is the limit (an inference from the documentation, not a vendor statement).
 
 **2. The ERP as the order hub.** Every channel's order is created in the ERP, which drives the warehouse and the books. Attractive where wholesale dominates and the ERP already holds most orders, and where the ERP partner is strong. The costs are speed (ERPs run in batches), a customer-facing state the ERP cannot show, and a hub owned by the finance system's vendor. [[erp-and-back-office-integration]] works through the hub debate.
 
-**3. A bought OMS as the hub.** The platform keeps checkout; an OMS holds every order, routes, orchestrates and serves; the ERP keeps finance. This is Kestrel & Pine's choice, Waypoint W2: the OMS becomes the order hub, every channel's order is created there, the shop platform keeps the checkout and the storefront order history, and the ERP keeps the financial record. The price is a third core system, its subscription (illustratively €4,500 a month for Kestrel & Pine's OMS including its availability module, with a one-time implementation of about €320,000; see [[build-buy-or-assemble]]), and the integration work to re-point every order source and the warehouse.
+**3. A bought OMS as the hub.** The platform keeps checkout; an OMS holds every order, routes, orchestrates and serves; the ERP keeps finance. The price is a third core system, its subscription (illustratively €4,500 a month for an OMS at Kestrel & Pine's size, including its availability module, with a one-time implementation of about €320,000; see [[build-buy-or-assemble]]), and the integration work to re-point every order source and the warehouse.
 
 **4. A built order service.** The fourth option: a small team writes its own order record, state machines and routing over a queue. Right for a vendor whose product is commerce, or a group with unusual rules and a platform team; wrong for a 14-person technology team with a warehouse to run. The order record is where custom code is most expensive to get wrong, because every other system depends on it.
 
@@ -185,7 +185,7 @@ Set side by side on the criteria of the earlier sections, plus time, cost and ho
 | Exit cost | Low | High, entangled with finance | Medium, the order events are reusable | High |
 | Breaks when | A second channel or location arrives | Peak day; a customer asks the ERP a parcel question | A missed event; a routing rule nobody owns | The team changes |
 
-My judgement: stay with the platform's order until two of the four conditions hold, then choose between the ERP and an OMS by asking who should answer a customer's parcel question. If the answer is "not the finance system", it is an OMS. Build only when order management *is* the product.
+My judgement: stay with the platform's order until two of the four conditions hold, then choose between the ERP and an OMS by asking who should answer a customer's parcel question. If the answer is "not the finance system", it is an OMS. Build only when order management *is* the product. Kestrel & Pine meets all four conditions, and its customers' parcel questions should not go to the finance system. Its choice is Waypoint W2: the OMS becomes the order hub, every channel's order is created there, the shop platform keeps the checkout and the storefront order history, and the ERP keeps the financial record.
 
 ## Across Scale Stages: When It Fits and When It Limits
 
@@ -206,7 +206,13 @@ The shape of the record does not change with scale: an order has lines, money, p
 
 Waypoint W2 is implemented through 2027, seam by seam, one order source or connection at a time ([[replatforming-and-migration]] describes the method). The OMS shadow-copies all orders in August 2027 (keeps its own copy without acting on it), runs in parallel from 1 to 14 September (differences on about 1.4% of orders in the first week, mostly status mapping and timing, illustrative), takes marketplace orders on 15 September and storefront orders on 13 October, pauses for a change freeze (no releases) around Black Friday, and takes EDI and manual wholesale orders on 8 December; the old order paths retire in January 2028. From then on every order, whatever its channel, is created in the OMS by an event keyed on its order number, gets a number from one family continuing the platform's sequence, and keeps the channel's own id as a reference.
 
-Under W2, each interaction with the OMS has its own freshness, consistency, speed and fallback. Only order creation and edits must be exact and immediate; the invoice trigger may run in a daily batch, provided it is idempotent per shipment. The figures are the author's illustrative targets for an Omnichannel merchant of Kestrel & Pine's size, not Kestrel & Pine's records. Figure 5 shows how an order like Eva's would run once storefront orders pass through the OMS.
+Replay #1052877 through W2. The shop platform's order event creates the OMS record. An illustrative routing rule allows a consumer order under €150 to wait one working day for replenishment before splitting. When the socks are still unavailable on Monday 7 December, the OMS creates two fulfillment orders and tells both the status page and notification service: **ships in two parcels**.
+
+The fleece's dispatch and delivery update its own fulfillment order, 1052877-1. The order summary becomes "Partially delivered: 1 of 2 parcels". Each dispatch also requests an invoice, using the shipment id to prevent duplicates. Finance would issue one invoice for the fleece on 7 December and another for the socks on 14 December; both would retain the original order number ([[tax-invoicing-and-ledger]]).
+
+Support can now see both parcels. The customer still waits for the socks; that stock problem remains ([[inventory-and-availability]]). What improves is the explanation and the need to contact support repeatedly.
+
+Behind that replay, each interaction with the OMS has its own freshness, consistency, speed and fallback. Only order creation and edits must be exact and immediate; the invoice trigger may run in a daily batch, provided it is idempotent per shipment. The figures are the author's illustrative targets for an Omnichannel merchant of Kestrel & Pine's size, not Kestrel & Pine's records. Figure 5 shows how an order like Eva's would run once storefront orders pass through the OMS.
 
 | Interaction | How fresh | How consistent | How fast | If the OMS is down |
 | --- | --- | --- | --- | --- |
@@ -218,12 +224,6 @@ Under W2, each interaction with the OMS has its own freshness, consistency, spee
 
 ![Diagram: Eva's order under Waypoint](assets/images/13-order-management/fig03-eva-s-order-under-waypoint-platform.jpeg)
 **Figure 5:** *How an order like Eva's would run under Waypoint once the OMS takes storefront orders, from 13 October 2027: the shop platform confirms and pays, the OMS commits stock, requests fulfillment, receives the warehouse's and the carrier's events, computes the goods state per parcel and publishes it to the storefront and the ERP.*
-
-Replay #1052877 through that design. The shop platform's order event creates the OMS record. An illustrative routing rule allows a consumer order under €150 to wait one working day for replenishment before splitting. When the socks are still unavailable on Monday 7 December, the OMS creates two fulfillment orders and tells both the status page and notification service: **ships in two parcels**.
-
-The fleece's dispatch and delivery update its own fulfillment order, 1052877-1. The order summary becomes "Partially delivered: 1 of 2 parcels". Each dispatch also requests an invoice, using the shipment id to prevent duplicates. Finance would issue one invoice for the fleece on 7 December and another for the socks on 14 December; both would retain the original order number ([[tax-invoicing-and-ledger]]).
-
-Support can now see both parcels. The customer still waits for the socks; that stock problem remains ([[inventory-and-availability]]). What improves is the explanation and the need to contact support repeatedly.
 
 ## When It Goes Wrong
 

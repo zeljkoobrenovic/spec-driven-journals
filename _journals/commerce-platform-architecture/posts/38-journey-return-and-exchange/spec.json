@@ -1,0 +1,1718 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "journey-return-and-exchange",
+  "journal": "commerce-platform-architecture",
+  "part": "part-9",
+  "title": "Journey 2: The Jacket Comes Back",
+  "status": "draft",
+  "revised": "2026-11-13",
+  "basis": "Reconstructed from the published chapter (posts/38-journey-return-and-exchange/index.md) and its former spec.md, whose Non-goals, Modalities, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (the thesis paragraph p03, the roadmap p04 and the conclusion's synthesis p61); these are listed under decision_log.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Which system owns each fact of a return in the late-2027 design (the OMS the order, eligibility and the return record; the WMS inspection, disposition and physical stock; the availability service what may be sold again; the PSP the refund; the ERP the credit note and the new invoice), and the twelve steps from request to reconciliation.",
+        "The EU clocks a return runs on (14 days to withdraw from possession, a refund within 14 days of the notice, the right to withhold until the goods or evidence of sending arrive), the four dispositions, the three release policies for an exchange, and why refunds are asynchronous and can fail days after acceptance.",
+        "Kestrel & Pine's cases on this path: Eva's exchange (requested 19 April 2027, inspected and graded resellable 22 April, size L shipped that day; a credit note of −€199 against the original invoice and a new invoice of €199), the Double Refund of January 2027 (212 returns, €19,400 refunded twice) and its February 2027 fix, the 190 Black Friday returns refunded about €3,000 too much, and the marketplace and store variants."
+      ],
+      "believe": [
+        "A return is finished only when stock, money and books agree.",
+        "The refund belongs to the warehouse's disposition event, with one writer and one key.",
+        "An exchange is a return plus a new order, never an edit."
+      ],
+      "can_do": [
+        "Count the systems that can call the PSP's refund API in their own landscape and name the key on the request.",
+        "Design an exchange and a refund so that a returned unit raises sellable stock only on its disposition and the books record a credit note."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture; most of all the engineer or product manager who has read the capability chapters and Journey 1 and now needs to see returns, refunds and credit notes as one path. Finance and operations readers get the money-and-books half in plain words.",
+      "already_knows": [
+        "What returning something bought online is like from the customer's side; roughly what an API, a database and a queue are.",
+        "Kestrel & Pine, its people, its 2026 and January 2027 incidents in outline and the names of the sixteen failure patterns.",
+        "From Part I: the thirteen steps of an order, promise and handoff, the three status lines (money, goods, returns), 'system', 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, business models and the four scale stages, the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation, the Waypoint decisions W1 to W8.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+        "From Parts II and III: product, variant, SKU and GTIN with one owning system per attribute; prices frozen at order placement; promotions as data, discounts allocated to lines; available-to-promise, one writer each for on hand and committed; authorization, capture, settlement and payout, refunds as new payments; one order record with three status lines; tax from three facts, one invoice per shipment, credit notes as the only correction, the monthly match of invoices, payouts and bank lines.",
+        "From Journey 1 (chapter 37): Eva's order #1072455 of 13 April 2027, paid by iDEAL, invoiced by the ERP and delivered on 15 April; the entity-owner table, the step table and the handoff-requirements table as reading devices; 'operations by event, finance by batch'."
+      ],
+      "does_not_know": [
+        "Returns portal; RMA; reverse fulfillment order; disposition and the four dispositions; held exchange order and its release policies.",
+        "The EU right of withdrawal and its clocks; 'evidence of having sent back the goods'; refunded-reversed; 'refunded externally'."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given refunds paid twice, the reader names two writers and no key as the cause and plans one writer, one key and a daily match, rather than retraining support.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A brand's returns app refunds customers through the shop platform after the warehouse inspects a return, which takes two to five days. Support agents, seeing a carrier scan at the warehouse and no refund yet, refund impatient customers in the payment provider's console. At month-end finance finds hundreds of returns credited twice. Using only this chapter: what went wrong, and what should change?",
+        "expected": "Two systems could write the refund and neither request named the return, so the payment provider accepted both. One writer may call the refund API (the returns app, later the OMS when it holds the return record), with support's console access read-only; each request carries the return id as its idempotency key; the refund is raised by the warehouse's disposition event, not the request or the carrier scan; its state (requested, accepted, refunded or failed) is driven by webhooks and confirmed by a fetched status; a daily job matches every PSP refund to a refunded return, every refunded return to a credit note and every credit note to an invoice; and support sees which of receipt, inspection and refund has happened."
+      },
+      {
+        "id": "AC-2",
+        "statement": "The reader can say why an exchange is not an edit and when a returned unit may be sold again.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A customer exchanges a €199 jacket in size M for size L. The team proposes to change the original order line from M to L, ship the L once the parcel is scanned at the dock, and add the M back to stock at that scan. Using only this chapter: what is wrong with the plan, and what should happen?",
+        "expected": "The M was picked, invoiced and paid for, so editing the line leaves an invoice for a jacket the customer no longer has. An exchange is a return plus a new order: at request time a held order for one L is created at the original frozen price with a €0 balance and the unit is committed in the availability service; the disposition releases it (release on scan or an instant exchange are other policies with their own risks). The ERP issues a credit note of −€199 against the original invoice and a new invoice of €199, which net to zero. The M raises sellable stock only when inspection grades it restockable, never at the dock scan, because some returns need processing or cannot be resold."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can compute a return's legal dates and say what changes when the return comes through a marketplace or a store.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Goods are delivered on 15 April; the customer gives notice of withdrawal on 19 April and drops the parcel at a carrier point on 20 April. Using only this chapter: by when must the merchant refund, from when may it no longer withhold the refund, and what changes if the same jacket was bought through a marketplace or is returned in a store?",
+        "expected": "The withdrawal window runs 14 days from possession, to 29 April; the refund is due within 14 days of the notice, by 3 May; the merchant may withhold it until it has the goods or evidence of sending, so the carrier's acceptance scan on 20 April ends the withholding right. The OMS computes delivery, notice, evidence of sending and refund dates per line. On a marketplace the policy is the marketplace's; the OMS must accept returns it did not create and refunds it did not issue, keyed on the marketplace's return id, with the money state 'refunded externally'. In a store the POS records the return against the order number, the stock lands in that store's location and the refund goes to the original payment method through the same single writer, not as cash."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "That receiving a returned parcel does not say whether the item can be resold, whether the replacement is reserved or whether money is due, decisions owned by different systems; that if each treats its own step as the finished return a customer can be refunded twice or wait for an unsecured replacement; that a return is three flows (goods, money, books), the refund is triggered by the warehouse's disposition with one writer and one key, and an exchange is a return plus a new order, with marketplace and store returns as variants; Kestrel & Pine's return figures (72,000 return parcels in 2026, 24% of items, 28% exchanges, 61% resold as new) beside the NRF's; Eva's exchange from 19 April, followed through authorization, transport back, inspection, replacement and accounting. Evidence: Kestrel & Pine's exchange and the Double Refund, vendor documentation (Shopify, commercetools, Adyen, Stripe, Mollie, Odoo, Amazon, Zalando) and the Consumer Rights Directive."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How does a return and exchange travel back through the systems, and where do the money, the stock and the books part ways?",
+    "claim": "A return travels back on one path until the warehouse's disposition event, which alone releases three flows with three owners: stock in the warehouse system, money through the payment provider (or, for an exchange, a held new order at the price on the original order line) and books through a credit note in the ERP. Exactly one system calls the refund API, keyed on the return id, and an exchange is never an edit of the original order or invoice.",
+    "disputed_by": "The view that a return is a refund button: the returns app or support refunds when the customer asks or the carrier scans the parcel, stock goes back on the shelf when the parcel arrives, and an exchange is an edit of the original order line.",
+    "so_what": "A merchant that accepts the claim lets exactly one system call the refund API, keys every refund on the return, raises stock and settlement only on the disposition, and matches refunds to credit notes daily. In January 2027 Kestrel & Pine refunded 212 returns twice, €19,400, because the returns portal and support in the PSP console could both refund with no key naming the return, and finance found it at month-end; in February it made the portal the single writer, set support's console access to read-only and started a daily match. Eva's exchange, requested on 19 April 2027 and graded resellable on 22 April, ships size L the same day and leaves a credit note of −€199 and a new invoice of €199 that net to zero.",
+    "how_why": "EU law gives the consumer 14 days to withdraw from possession and the merchant 14 days from the notice to refund, withholdable only until the goods or evidence of sending arrive, so the return needs dates per line from the order record. Refunds are asynchronous and can fail days after acceptance, and a PSP accepts two requests that carry no shared key, so the count of writers and the key decide whether money goes out once. Only inspection knows whether a unit is sellable (39% of Kestrel & Pine's returned items in 2026 were not graded new), so stock raised at the dock scan promises units in a repair bin; and an issued invoice is immutable, so the books change only by credit note.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Many systems hold a piece of one return, and that is normal: each fact (the order and the return record, eligibility, inspection and disposition, physical stock, sellable stock, the refund, the credit note) has exactly one system of record, and the return follows one path from request to inspection that each of them sees."
+      },
+      {
+        "id": "S2",
+        "claim": "The warehouse's disposition event, and nothing earlier, releases the three flows: a returned unit raises sellable stock only when inspection grades it restockable, the held exchange or the refund is released by the same event, and the books follow it."
+      },
+      {
+        "id": "S3",
+        "claim": "Exactly one system may call the refund API, with the return id as its idempotency key, inside the EU's 14-day refund clock; because refunds are asynchronous and can fail days later, the money state is driven by the PSP's webhooks and a fetched status, never assumed."
+      },
+      {
+        "id": "S4",
+        "claim": "An exchange is a return plus a new order at the price frozen on the original order, never an edit: the books record a credit note against the original invoice and a new invoice that net to zero, and a daily match ties every refund to a return, a credit note and an invoice."
+      },
+      {
+        "id": "S5",
+        "claim": "Marketplace and store returns are the same flow with a different first step: the OMS accepts returns it did not create and refunds it did not issue, and a store return lands stock in the store and refunds the original payment through the same single writer."
+      },
+      {
+        "id": "S6",
+        "claim": "Each handoff on the way back needs a key and a delivery style matched to its clock, and on the January 2027 landscape, where one return lived in three records and the refund had two writers and no key, the path broke at those handoffs: the Double Refund paid 212 returns twice while every system did what it was built to do."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Walks Eva's exchange, with the refund as its alternative and the Double Refund as its failure path, back through the late-2027 design, separates the goods, money and books flows released by one disposition event, and compares the January 2027 path.",
+    "supports": [
+      "P9-2",
+      "P9-5"
+    ]
+  },
+  "flow": {
+    "pattern": "chronological",
+    "additional_patterns": [
+      {
+        "pattern": "grouping",
+        "applies_to": "handoffs to wrong: the main path read back as requirements, then two variants, a comparison and failures"
+      }
+    ],
+    "rationale": "The return's facts and owners come first because every step refers to them; the step table then gives the whole way back, and the sections walk it in the order the return lives it (request, transit, inspection, then the exchange, the refund alternative and the books that the inspection releases), closing the main path with what each of its handoffs requires. Only then do the last three sections step outside it: two variants that change only the first step, the same return on the January 2027 landscape (to which the store variant's January gap leads), and four failures with their detection. Moving the variants before the walk would change a first step the reader has not seen; moving the failures or the January comparison earlier would describe joins the reader has not yet met; putting the requirements after the variants would separate them from the path they describe."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "A customer returns a jacket and asks for a larger size. Receiving the parcel does not tell the merchant whether the original can be sold again, whether the replacement is reserved or whether a financial adjustment is due; those decisions belong to different systems, and if each treats its own step as the completed return, the customer can be refunded twice or wait for a replacement that was never secured."
+    },
+    "bridge": {
+      "from_reader_world": "A return that looks to the customer like one parcel sent back.",
+      "to_topic": "At 72,000 return parcels a year, the several systems that each decide part of it and the order of events that makes their decisions agree."
+    },
+    "thesis_statement": {
+      "text": "The return travels one path until the warehouse's disposition event, which alone releases stock, money (or the held exchange order) and the books, each with its own owner; exactly one system calls the refund API, keyed on the return id, and an exchange is never an edit of the original order or invoice.",
+      "placement": "KEY POINTS callout (bullets 1 to 3) and paragraph p03"
+    },
+    "roadmap": {
+      "placement": "Paragraph p04",
+      "promises": [
+        {
+          "promise": "Set out the return, the replay through the late-2027 design and the owner of each fact.",
+          "kept_in": [
+            "order"
+          ]
+        },
+        {
+          "promise": "Give the twelve steps in one table.",
+          "kept_in": [
+            "steps"
+          ]
+        },
+        {
+          "promise": "Follow the jacket through the request, the way back, inspection at the dock, the exchange order, the refund alternative and the books.",
+          "kept_in": [
+            "request",
+            "wayback",
+            "dock",
+            "exchange",
+            "refund",
+            "books"
+          ]
+        },
+        {
+          "promise": "State what each handoff on that path requires.",
+          "kept_in": [
+            "handoffs"
+          ]
+        },
+        {
+          "promise": "Show the marketplace and store returns as variants.",
+          "kept_in": [
+            "variants"
+          ]
+        },
+        {
+          "promise": "Run the same return through the January 2027 landscape.",
+          "kept_in": [
+            "january"
+          ]
+        },
+        {
+          "promise": "End with four failures, the Double Refund first, and how each is caught.",
+          "kept_in": [
+            "wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "When a customer returns a jacket and asks for a larger size, receiving the parcel does not decide whether it can be resold, whether the replacement is reserved or whether money is due; those decisions belong to different systems, and if each treats its own step as the finished return the customer can be refunded twice or wait for a replacement that was never secured.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "figure",
+            "what": "Figure 1: three paths labeled goods, money and books, each with its own clock, converging on a seal labeled agree.",
+            "shows": "The return as three flows that must end in agreement."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Returns are a main road at Kestrel & Pine, the book's fictional brand, because the scattered decisions are made tens of thousands of times a year: 72,000 return parcels in 2026, 24% of items and 19% of orders, 28% exchanges and 61% resold as new, beside the NRF's 19.3% online return rate and 9% fraudulent returns, measures whose definitions differ.",
+        "function": "evidence",
+        "evidence": [
+          {
+            "kind": "statistic",
+            "what": "72,000 return parcels after 336,000 shipped; 24% of items, 19% of orders; 28% exchanges; 61% resold as new.",
+            "source": "Kestrel & Pine scenario ledger",
+            "shows": "The way back is a high-volume path, so a one-in-a-thousand failure recurs."
+          },
+          {
+            "kind": "statistic",
+            "what": "NRF: 19.3% online return rate for 2025, 9% of returns fraudulent (October 2025).",
+            "source": "NRF with Happy Returns, 2025 Retail Returns Landscape, 2025-10-15",
+            "shows": "Kestrel & Pine's volume is ordinary for the industry, and the fraud share is one reason merchants wait to see the goods before refunding; the definitions differ and are kept apart."
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "One return's decisions spread across systems.",
+          "introduces": "Why that matters at Kestrel & Pine's volume.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter's answer in short: the return travels one path until the warehouse's disposition event, which alone releases stock, money (or the held exchange order) and the books, each with its own owner; exactly one system calls the refund API, keyed on the return id, and an exchange is never an edit of the original order or invoice.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "Decisions spread across systems at a volume where failures recur.",
+          "introduces": "The order of events that makes them agree, stated as the chapter's claim.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter first sets out the return, the replay and the owner of each fact, gives the twelve steps in one table, follows the jacket through the request, the way back, inspection, the exchange order, the refund alternative and the books, and states what each handoff on that path requires; it then shows the marketplace and store variants, runs the same return through the January 2027 landscape and ends with four failures, using Eva's exchange, vendor documentation and the EU consumer rights directive as evidence.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The claim.",
+          "introduces": "The order in which the chapter argues it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "In the order's journey this chapter takes Journey 1's delivered order #1072455, paid by iDEAL and invoiced in the ERP, back the other way from Eva's request on 19 April, with a credit note where the invoice was and, in the refund branch, a refund where the payment was; the returns chapter examines the choices behind each step.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "place",
+          "carries_over": "The chapter's plan.",
+          "introduces": "Where it sits after Journey 1 and beside the returns chapter.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "order",
+      "heading": "The Return, the Setting and the Rules of This Walk",
+      "controlling_idea": "The walk replays Eva's April 2027 exchange, with the ledger's dates and amounts, through the late-2027 Waypoint design, in which each fact of the return has one named system of record.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Fixes the return, the design it runs through and the owner of each fact before the walk starts."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The return's facts come first, then the design it is replayed through and why the replay keeps the real dates, then the owners in that design; the walk needs all three, and the owner table cannot be read before the reader knows which design it describes."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The roadmap's first item: the return, the replay and the owner of each fact.",
+        "introduces": "The return itself.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "Eva exchanges her €199 Ridgewalker women's M jacket in moss for an L because it is too small, keeps the socks, and Duiven receives, inspects and grades it resellable on 22 April and sends the replacement that day.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Exchange requested 19 April 2027 (reason: too small); received, inspected and graded resellable 22 April; exchange ships 22 April; the two €18 pairs of socks kept.",
+              "source": "Kestrel & Pine scenario ledger (Eva's jacket)",
+              "shows": "The exact facts every later step must preserve."
+            }
+          ]
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The refund of €199 through iDEAL with a credit note is a separate branch of the example, and times within a day, identifiers and carrier scans are illustrative.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The exchange.",
+            "introduces": "The refund alternative and what in the walk is illustrative.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The walk replays the return through the late-2027 design, in which Waypoint gives physical stock to the WMS with an availability service beside it (W1), adds an order management system with its own return states (W2) and a product information management system (W3).",
+          "function": "context",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The return's facts.",
+            "introduces": "The design the return is walked through.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "None of these systems was live for Eva's real April return, when portal, shop platform and warehouse each held a piece and only the refund had been fixed (the portal as single writer since February, after the January Double Refund), so the walk keeps her dates in the late-2027 design and a later section runs the return through the January 2027 landscape, where this path's incidents happened.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The late-2027 design.",
+            "introduces": "The fact that the real return ran before it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "An owner table names, for each fact of the return, the system of record whose value is trusted when copies disagree, and the systems that hold copies.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eight facts (the original order, eligibility, the return record, inspection and disposition, physical stock, sellable stock, the refund, the credit note and new invoice) with their system of record in late 2027 and who holds copies.",
+              "shows": "One owner per fact and many copies."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The replay's design.",
+            "introduces": "The owner of each fact in it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "A fact with two writers is the problem, and in January 2027 the refund had two: the portal and support in the PSP console both refunded without naming the return, and 212 returns, €19,400, were paid twice, the Double Refund taken apart near the end.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The owner table.",
+            "introduces": "What to read from it: count writers, not systems.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "steps",
+      "heading": "Twelve Steps in One Table",
+      "controlling_idea": "The way back takes twelve steps, each with a system, the data it moves, the promise made, the failure that belongs to it and the chapter that owns it, and one event, the disposition, releases stock, money and books.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "Lays out the whole path before the walk and marks the disposition as the hinge."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The owners of each fact.",
+        "introduces": "The steps in which they act.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p12",
+          "controlling_idea": "The step table gives the whole way back at a glance (step, system, data, promise made, what could fail and the owning chapter) and runs ahead of the walk, whose sections explain its new terms.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Twelve steps from the return request on 19 April to reconciliation, with the held exchange order, the label, transit, receiving, disposition, the exchange release or refund, notifications, credit note and the daily match.",
+              "shows": "Each step's promise and failure sit with a named system."
+            }
+          ]
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Rows 7, 9 and 11 are stock, money and books, and none happens before the inspection: the WMS reports the disposition as two events at once, the stock event (row 7) and the disposition event (row 8), which releases the exchange or refund (row 9) and the books (row 11).",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: the way back in the late-2027 architecture, from the returns portal to one disposition event that releases stock, the exchange or refund, and the credit note.",
+              "shows": "The single release point and the single refund writer and key."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The twelve rows.",
+            "introduces": "The hinge among them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "request",
+      "heading": "The Request: Eligibility, Reason and the Choice",
+      "controlling_idea": "The request fixes, from facts the OMS and the PIM own and from the law, whether and until when Eva may return the jacket, and turns her choice of an exchange into a held order that reserves size L at once.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3",
+          "S4"
+        ],
+        "how": "Shows eligibility and the legal dates computed from owned facts, and the exchange created as a new held order."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The portal is defined before it acts; eligibility comes before the law that sits under the policy; the choice comes after eligibility; the release policy explains the held order the choice created; the record is created last, at 20:40, as it was. The release policy cannot be read before the held order it releases."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Step 1 of the table.",
+        "introduces": "The request in detail.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p14",
+          "controlling_idea": "A returns portal is the customer-facing page for requesting a return, and in the target design it owns only the conversation with Eva while the facts it shows and the return it creates live in the OMS; the industry's RMA is this book's return record.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Rented since 2025 at €650 a month plus €0.95 per return.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "The portal is a bought service with a narrow role."
+            }
+          ]
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Eligibility is computed from three facts with three owners: the delivery date on the OMS's order, the merchant's policy, and the product's returnability attributes from the PIM.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Delivered 15 April (PostNL scan); free returns within 14 days of delivery in all three countries; the EU exemptions for made-to-specification, perishable and unsealed hygiene goods.",
+              "source": "Scenario ledger (returns-and-exchanges); Directive 2011/83/EU, Article 16",
+              "shows": "'Returnable' is a product attribute, not a portal setting."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The portal reads its facts from the OMS.",
+            "introduces": "Which facts decide eligibility and who owns them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Under the policy sits the EU directive's clocks (14 days from possession to withdraw, 14 days from the notice to refund by the same means of payment, withholdable until the goods or evidence of sending arrive), so four dates must be computable per order line.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Directive 2011/83/EU, Articles 9, 13 and 14: Eva's window to 29 April; sending back within 14 days of notice; refund within 14 days of notice, withholdable until goods or evidence of sending; return cost on the consumer only as the directive allows.",
+              "source": "Directive 2011/83/EU (2011)",
+              "shows": "The law sets the clocks the OMS must compute."
+            }
+          ],
+          "transition_in": {
+            "relationship": "place",
+            "carries_over": "The merchant's policy.",
+            "introduces": "The law beneath it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Eva chooses an exchange, and Kestrel & Pine models it as a held order: at request time the OMS commits one L moss through the availability service and creates order #1072455-X1 at a €0 balance, held until the return is graded.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "28% of returns are exchanges; held order #1072455-X1 created at request time.",
+              "source": "Scenario ledger (returns-and-exchanges)",
+              "shows": "The size is reserved from the request; the parcel waits for inspection."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "An eligible request.",
+            "introduces": "Eva's choice and how it is modelled.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "When the held order is released is a policy with three settings (on disposition, on scan, instant exchange), and Kestrel & Pine releases on disposition until inspection results are measured per SKU.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify's returns model: 'release the exchange and collect a balance'.",
+              "source": "Shopify developer documentation, n.d., accessed 2026-11",
+              "shows": "The instant-exchange mechanics exist in a public model."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The held order.",
+            "introduces": "When it is released.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "At 20:40 on 19 April the portal creates return R-20270419-1 in the OMS, linked to the order, its line and the held order, with the reason, the outcome and the four dates, as the third state machine on the order record beside money and goods.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The choice and its policy.",
+            "introduces": "The record that holds them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wayback",
+      "heading": "The Way Back: Label, Drop-off and the Scan That Ends a Right",
+      "controlling_idea": "The label and the warehouse's notice carry the return reference, and the carrier's acceptance scan is a legal event that ends the merchant's right to withhold the refund.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3"
+        ],
+        "how": "Shows the reference carried on every handoff and the scan that moves the legal clock."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Label, warehouse notice, drop-off and arrival in the order they happen."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "An approved return record.",
+        "introduces": "The parcel's way back to Duiven.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p20",
+          "controlling_idea": "The return label from the shipping service must carry the return reference, or the parcel arrives as a jacket from nobody.",
+          "function": "process"
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "In the same minute the OMS tells the WMS to expect the return with a reverse fulfillment order, separating the return (the OMS's intent and money) from the warehouse's work, and the return reference makes a repeated message harmless.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Shopify: a return 'represents the intent of a buyer to ship one or more items from an order back'; a reverse fulfillment order 'represents the work that's required to process a return'.",
+              "source": "Shopify developer documentation, n.d., accessed 2026-11",
+              "shows": "A public model draws the same split."
+            },
+            {
+              "kind": "source",
+              "what": "commercetools keeps goods-side and money-side return states apart.",
+              "source": "commercetools API documentation, n.d., accessed 2026-11",
+              "shows": "A second public model draws the same line."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The label.",
+            "introduces": "The warehouse's notice.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Eva's drop-off scan on 20 April is evidence of having sent back the goods under Article 13(3), so from then the merchant may no longer withhold the refund, while the refund deadline of 3 May still runs from her notice and transit time eats into it.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Directive 2011/83/EU, Article 13(3): 'evidence of having sent back the goods'.",
+              "source": "Directive 2011/83/EU (2011)",
+              "shows": "The scan is a legal event, not only tracking."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The parcel labelled and announced.",
+            "introduces": "The drop-off and its legal weight.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "PostNL delivers the parcel to Duiven on Thursday 22 April, but a parcel on the dock is not yet a return.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The parcel in transit.",
+            "introduces": "Its arrival and the step it still needs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dock",
+      "heading": "At the Dock: Receiving, Inspection and Disposition",
+      "controlling_idea": "Only inspection knows whether a returned unit can be sold again, so its result, the disposition, is the event that raises stock and releases the rest of the return.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Establishes the disposition as the hinge and why stock may not rise before it."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Receiving and inspection, then the dispositions it can produce, then Eva's grade and the two events it emits."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "A parcel on the dock that is not yet a return.",
+        "introduces": "The step that makes it one.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p24",
+          "controlling_idea": "Returns receiving is a separate flow with one rule, nothing is restocked that has not been looked at: the reference finds the reverse fulfillment order, the GTIN confirms the item, and the inspection checks its condition.",
+          "function": "process"
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "A disposition is the warehouse's decision about a returned unit, one of four, and since 39% of Kestrel & Pine's returned items were not graded new, a WMS that raises on-hand at the dock scan promises jackets that are in a repair bin.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify's four dispositions: restocked, processing required, not restocked, missing.",
+              "source": "Shopify developer documentation, n.d., accessed 2026-11",
+              "shows": "The industry's four outcomes under any name."
+            },
+            {
+              "kind": "statistic",
+              "what": "2026: 61% resold as new, 27% after processing, 9% recycled or donated, 3% missing or wrong item (split illustrative).",
+              "source": "Scenario ledger (returns-and-exchanges)",
+              "shows": "Most returns are fine, but not enough to raise stock before inspection."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The inspection.",
+            "introduces": "Its result and why stock waits for it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "At 10:15 on 22 April Eva's jacket is graded resellable and the WMS emits a stock event to the availability service and a disposition event to the OMS, and the second is the hinge of the journey.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: the inspector's bench with four bins: restocked 61%, processing 27%, not restocked 9%, missing 3%.",
+              "shows": "Only the units graded new go back to sellable stock at full price."
+            },
+            {
+              "kind": "fact",
+              "what": "The returns bench handles about 280 parcels a day with two people (illustrative).",
+              "source": "Scenario ledger (returns-and-exchanges)",
+              "shows": "Inspection is a staffed step with a capacity."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The four dispositions.",
+            "introduces": "Eva's grade and the two events it triggers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "exchange",
+      "heading": "The Exchange Order",
+      "controlling_idea": "The disposition releases the held exchange order at the price frozen on the original order, which then ships on the normal path, because an exchange is a return plus a new order and never an edit.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S4"
+        ],
+        "how": "Shows the exchange released by the disposition and why it is a new order."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The release, then the shipment, then why the alternative (an edit) would fail."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The disposition event reaching the OMS.",
+        "introduces": "What it releases for Eva.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p27",
+          "controlling_idea": "On the disposition event the OMS releases the held order #1072455-X1 for size L at the frozen €199 and a €0 balance, because an exchange is a return plus a new order.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Frozen price rule adopted April 2027 ('invoices and exchanges copy them'); a €119 fleece would leave −€80 for the refund path.",
+              "source": "Scenario ledger (pricing-architecture)",
+              "shows": "The exchange carries the original price, not today's."
+            }
+          ]
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "From the release the exchange follows Journey 1's path from the fulfillment order onwards: 13:00 wave, PostNL label, evening collection, a shipping confirmation when the WMS reports the shipment, and delivery on 23 April, with the original order, its return and the exchange each keeping its own state.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "13:00 wave on 22 April; delivered 23 April (illustrative).",
+              "source": "Scenario ledger (returns-and-exchanges, journey-return-and-exchange)",
+              "shows": "The exchange ships the same day on the normal path."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The released exchange order.",
+            "introduces": "Its way to Eva.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Editing the line from M to L would leave an invoice for a jacket Eva no longer has, because the M was picked, invoiced and paid for.",
+          "function": "refutation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The exchange as a new order.",
+            "introduces": "Why the edit is wrong.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "refund",
+      "heading": "The Refund Alternative: One Writer, One Key",
+      "controlling_idea": "Had Eva asked for her money, the same disposition would release one refund request from one writer, keyed on the return id, whose result arrives later and may still fail.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "States the trigger, the writer, the key and the asynchronous money state."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The branch, then the trigger, then who writes, then with what key, then what happens after the request is accepted and the state that tracks it: each answer assumes the one before."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The exchange released by the disposition.",
+        "introduces": "The refund the same event would release.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p30",
+          "controlling_idea": "If Eva asks for her money, everything up to the disposition event is the same, and the event releases a €199 refund instead.",
+          "function": "context"
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "The refund is triggered by the disposition, not the request or the scan, which keeps money and goods in one causal chain and leaves eleven days of margin to the 3 May deadline.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Notice 19 April, deadline 3 May, inspection 22 April: eleven days of margin.",
+              "shows": "The trigger is safe only while the dock inspects quickly."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The refund released by the disposition.",
+            "introduces": "Why the disposition and not an earlier event.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "In the target design exactly one system, the OMS, raises the refund through the shop platform's refund API to the PSP; support, the portal and the ERP cannot, and support's console access is read-only.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "The OMS as the single refund writer once it holds return records (Q4 2027); support's PSP console read-only.",
+              "source": "Scenario ledger (journey-return-and-exchange, commerce-payments)",
+              "shows": "The design counts writers: one."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "When the refund is raised.",
+            "introduces": "Who may raise it.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "The request carries the return id as its idempotency key so that a retry does nothing twice; the PSP's own duplicate protection is a backstop, not the design.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Stripe saves the first response to a key; Mollie 'blocks duplicate refunds made in a short time frame' and asks merchants to 'do not retry automatically'.",
+              "source": "Stripe and Mollie documentation, n.d., accessed 2026-11",
+              "shows": "Providers expect a key and a status check from the merchant."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "One writer.",
+            "introduces": "One key.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Refunds are asynchronous and can fail late: accepting a request starts work that continues, and Adyen and Stripe document refunds that fail days after a success message and reach the customer days later, while for iDEAL the refund is a new transfer to the shopper's bank account.",
+          "function": "evidence",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "A single keyed request.",
+            "introduces": "What happens after it is accepted.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Adyen: 'the refund process is asynchronous', a refund 'can fail after you received' the success webhook, refunded-reversed for iDEAL; Stripe: 'approximately 5-10 business days', fees not returned.",
+              "source": "Adyen and Stripe documentation, n.d., accessed 2026-11",
+              "shows": "Late failure is documented behaviour, not an edge case."
+            }
+          ]
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "So the return's money state is a small machine of its own, requested, accepted, refunded or failed, driven by webhooks and confirmed by a fetched status, and Eva's messages follow it.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: one writer and one key, the PSP's answer by webhook confirmed by a fetch, the ERP matching credit notes to payout lines, and the dotted second writer the Double Refund closed.",
+              "shows": "The refund path as one writer, one key and a confirmed state."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Refunds that fail late.",
+            "introduces": "The state machine that tracks it.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "books",
+      "heading": "The Books: Credit Note, New Invoice, Reconciliation",
+      "controlling_idea": "The books change only by credit note: an exchange is a credit note and a new invoice that net to zero, a refund pairs the credit note with a PSP refund, and a daily three-leg match ties them together.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Shows the third flow and the reconciliation that makes the three agree."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The rule (no edit), then the exchange's two documents, then the refund variant, then the match that checks all of them. The match cannot be read before the documents it matches."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The money flow.",
+        "introduces": "The books, the third flow.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p37",
+          "controlling_idea": "The third flow is the books: the original invoice stays as it is, so when the OMS reports the return settled the ERP issues a credit note of −€199 against it for the jacket line.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Original invoice net €194.21, VAT €40.79, gross €235.00; credit note −€199.00 (net −€164.46, VAT −€34.54).",
+              "source": "Scenario ledger (tax-invoicing-and-ledger, journey-return-and-exchange)",
+              "shows": "The correction is a new document with exact figures."
+            }
+          ]
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "An exchange is two documents that net to zero: the credit note and a new €199 invoice for #1072455-X1, so Eva's bank statement shows nothing while the ledger shows the whole history.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The credit note.",
+            "introduces": "Its partner document for the exchange.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The refund variant pairs the same credit note with a refund at the PSP, reversing the revenue recognized at delivery.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The exchange's two documents.",
+            "introduces": "The refund variant's pair.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Reconciliation is daily, not monthly: since February 2027, after the Double Refund, a daily job matches PSP refunds to the shop platform's to catch any duplicate the key lets through, and in the target design the match has three legs (refund to return, return to credit note, credit note to invoice).",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Daily job from February 2027 matching PSP refunds on order number and amount, exceptions to finance.",
+              "source": "Scenario ledger (events-consistency-and-reconciliation)",
+              "shows": "The match runs on the clock of the failure it catches."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Documents and refunds in two systems.",
+            "introduces": "The check that they agree.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "handoffs",
+      "heading": "What Each Handoff Requires",
+      "controlling_idea": "Each handoff on the way back has its own freshness, consistency, latency and availability, so stock and disposition must move by event while the credit note may move by daily batch.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "States the key and style each join needs."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The main path's joins, from the request to the books.",
+        "introduces": "What each of them requires.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p50",
+          "controlling_idea": "The requirements table gives, for each join of the walk just followed, freshness, consistency, latency, availability and style, with figures labelled as the author's assumptions.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six handoffs from portal to OMS through OMS to ERP, each with its key and style under W5.",
+              "shows": "Every join has a key and a style matched to its clock."
+            }
+          ]
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "The stock and disposition events cannot be batch because a returned unit and Eva's exchange wait on them, while the credit note can: operations by event, finance by batch.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The table.",
+            "introduces": "The rule it shows.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "variants",
+      "heading": "Two Variants: The Marketplace Return and the Store Return",
+      "controlling_idea": "A return through a marketplace or a store changes the first step and who sets the rules, while the rest of the path, the one writer and the books stay as they are.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Shows the same flow with different first steps."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The marketplace return first (policy, fees, what the OMS must accept), then the store return (lookup, inspection, stock, refund); each group follows the path in order."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The handoffs of the main path through the portal and Duiven.",
+        "introduces": "Two other doors the jacket can come back through.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p41",
+          "controlling_idea": "The handoffs above serve the main path, but the same jacket can come back through two other doors, and only the first step changes.",
+          "function": "transition"
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "On a marketplace, illustrated by two Amazon.de buyers of 13 April, the return policy is the marketplace's, not the seller's.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "One Ridgewalker seller-fulfilled from Duiven, one shipped by the marketplace's fulfillment program.",
+              "source": "Scenario ledger (the marketplace variant)",
+              "shows": "Two marketplace cases with different owners of the goods."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Two other doors.",
+            "introduces": "The marketplace door.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Amazon's US guidance for seller-fulfilled returns sets a 30-day window, a 24-hour response and a two-day refund, or Amazon may refund automatically.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Refund 'within two days of receiving returns, or Amazon may issue an automatic refund' (15 April 2025; European terms not verified).",
+              "source": "Amazon seller blog, 2025-04-15",
+              "shows": "The marketplace sets the clocks."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The marketplace's policy.",
+            "introduces": "The seller-fulfilled rules.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "For marketplace-fulfilled goods the marketplace receives, grades and refunds, and charges the seller for it.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Zalando's return shipping and processing fees; Amazon's FBA returns processing fee.",
+              "source": "Partner and seller pages, 2026, subject to change",
+              "shows": "The money for the return moves through the marketplace."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Seller-fulfilled returns.",
+            "introduces": "Marketplace-fulfilled returns.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "The OMS must therefore accept returns it did not create and refunds it did not issue, keyed on the marketplace's return id with the money state 'refunded externally'.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The marketplace's policy and refunds.",
+            "introduces": "What the OMS must accept.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "A store return of a web order could not be handled in January 2027, because the POS had no link to the shop platform.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The marketplace door.",
+            "introduces": "The store door, as it was in January 2027.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "In the target design the store looks the order up in the OMS and the POS records the return against it, while store sales themselves reach the OMS only from 2028.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The January store with no link.",
+            "introduces": "The target-design store return.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "Against the online return two things differ, both on the goods side: inspection happens at the counter with the same four dispositions, and the stock lands in the Nijmegen store location, whose system of record is the POS.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The store return recorded against the order.",
+            "introduces": "The two differences from the online return, both on the goods side.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "One thing deliberately does not differ: the refund still goes to Eva's original iDEAL payment through the same single writer, never as cash from the till, because the directive's same-means rule and the reconciliation depend on it.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The goods-side differences.",
+            "introduces": "The money, which stays the same.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "january",
+      "heading": "The Same Return in January 2027",
+      "controlling_idea": "On the January 2027 landscape the same return kept its dates but lived in three records, committed the L in a stale copy, had two refund writers without a key and restocked through an hourly chain: the failures were in the joins.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Holds the dates constant and changes only the joins."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "The store variant's January 2027 gap and the late-2027 joins.",
+        "introduces": "The same return on the whole January 2027 landscape.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p52",
+          "controlling_idea": "Run through the January 2027 landscape, the return keeps its dates while four things change: one return record becomes three, the exchange commits a unit in a stock copy up to two hours stale, the refund has two writers and no key, and returned stock reaches the shop platform through an hourly chain.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Late 2027 against January 2027 for the return record, the exchange, the refund and the stock from returns; in the May 2027 stock count about 90 of the roughly 390 variants whose shop-platform stock differed from the WMS's were returns not yet carried through the hourly chain.",
+              "source": "Scenario ledger (events-consistency-and-reconciliation, W1)",
+              "shows": "The differences are all in the joins."
+            }
+          ]
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "The jacket still came back and the L still shipped on 22 April; what the January landscape could not do was show one agent that the refund had already been sent.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The four differences.",
+            "introduces": "The one that cost money.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong Along This Path",
+      "controlling_idea": "Four failures on the way back each have a mechanism at a join, a detection and a recovery, and the Double Refund shows what two writers and no key cost.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S6"
+        ],
+        "how": "Gives each failure's mechanism, detection and recovery, each at a join."
+      },
+      "flow": {
+        "pattern": "order_of_importance",
+        "rationale": "The Double Refund first, because it is the chapter's incident and the January comparison has just led to it; then the late refund failure, the premature restock and the wrong amount, each smaller and each mapped to a step of the table."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "An agent who could not see that the refund had been sent.",
+        "introduces": "Four failures with their detection and recovery.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p54",
+          "controlling_idea": "The step table names a failure per step, and four deserve the mechanism, the detection and the recovery.",
+          "function": "transition"
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "In January 2027, 212 returns were refunded twice, €19,400; in the illustrative mechanism support refunded by hand after the carrier's warehouse scan while the portal refunded again on inspection.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Double Refund: 212 returns, €19,400, January 2027; the illustrative mechanism of support and portal both refunding.",
+              "source": "Scenario ledger (problem 3, commerce-payments)",
+              "shows": "Two writers on one fact pay twice."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Four failures.",
+            "introduces": "The first and largest.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Neither request named the return, so the PSP accepted both, and the duplicates were found only at month-end by Sanne de Wit and mostly recovered by asking customers to pay back.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Two refunds for one return.",
+            "introduces": "Why the PSP paid both and how it was found.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "From February 2027 the returns portal is the only refund writer with the return id as key, support's console is read-only and a daily job matches refunds; the single writer moved to the OMS with the return records in Q4 2027, and support can see which of receipt, inspection and refund has happened.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "February 2027 fix: one writer, return id as key, read-only console, daily refund reconciliation to finance; the writer moves to the OMS in Q4 2027.",
+              "source": "Scenario ledger (commerce-payments, events-consistency-and-reconciliation, journey-return-and-exchange)",
+              "shows": "The fix is the count of writers, the key and the match."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Duplicates found at month-end.",
+            "introduces": "The February fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "A refund the PSP accepted can fail days later, so it is detected by the failure webhook or a daily list of refunds not in a terminal state and recovered by a service case, never a blind retry.",
+          "function": "example",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "A refund paid twice.",
+            "introduces": "A refund that does not arrive.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Eva's refund accepted, then a refund-failed or refunded-reversed webhook three days later because the bank account could not take the transfer (illustrative).",
+              "shows": "A refund's money state must be able to go backwards."
+            }
+          ]
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "Stock raised at the dock scan, the mechanism described under inspection, promises a jacket in a repair bin; it is detected by matching restocks to dispositions and cured by emitting the stock event only on the disposition.",
+          "function": "example",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "A money failure.",
+            "introduces": "A stock failure.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "On-hand raised at the dock scan, 'processing required' an hour later, a shopper's order short-picked (illustrative).",
+              "shows": "Stock raised before the disposition promises units that cannot be sold."
+            }
+          ]
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "During Black Friday 2026, 190 returned jackets were refunded at €159.20 instead of the €143.28 paid, about €3,000, because the order-level discount was not allocated to lines in the order export; the export now carries the allocated net price per line.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "190 returns, €159.20 against €143.28, about €3,000; allocated net price per line added under W5.",
+              "source": "Scenario ledger (commerce-promotions)",
+              "shows": "A wrong amount comes from data missing at a join, not from the refund call."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "A stock failure.",
+            "introduces": "An amount failure.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The parcel at Duiven told nobody whether the jacket could be sold, whether the L was reserved or whether money was due; walked back step by step, each answer has one owner and waits for one event. The L was committed when Eva asked, the disposition released it with the stock and the credit note, and no refund was involved. On the January 2027 landscape the same systems held the same pieces, but three return records and two refund writers without a key paid 212 returns twice.",
+    "so_what": "A merchant that makes the disposition the only trigger, allows one refund writer with the return id as key and matches refunds to credit notes daily closes each return in agreement instead of reconciling it by hand at month-end.",
+    "callback": {
+      "to": "The introduction's hook: a returned jacket whose arrival does not say whether it can be resold, whether the replacement is reserved or whether money is due, with a double refund or an unsecured replacement as the risk.",
+      "how": "The reader can now name the owner and the event behind each of the three answers, and the joins where the two risks arise."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Count the systems that can call the refund API; if the answer is not one, fix that first, then make the disposition the only trigger for stock, money and the books and measure the time from dock scan to disposition every day."
+    },
+    "hand_off": {
+      "to": "journey-wholesale-order",
+      "relationship": "contrast",
+      "carries_over": "Journeys 1 and 2: a consumer who orders at a checkout, pays at once and receives a parcel, and the same Duiven stock and systems behind her.",
+      "introduces": "A buyer that is a company: an order that arrives as a message nobody typed, goods that leave on pallets with a despatch advice, and money that arrives thirty days later against an invoice."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The four failures, each at a join.",
+      "introduces": "What the whole walk shows, set against the opening.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p61",
+        "controlling_idea": "The parcel at Duiven answered none of the opening's three questions by itself; walked back, each answer has one owner and waits for the disposition, which on the January 2027 landscape had three return records and two refund writers behind it, so a merchant that makes the disposition the only trigger, allows one refund writer with one key and matches daily closes returns in agreement instead of at month-end.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The opening's three questions set against Eva's late-2027 exchange and the January 2027 Double Refund.",
+            "shows": "The reader can now say where a return goes right or wrong."
+          }
+        ]
+      },
+      {
+        "id": "p62",
+        "form": "list",
+        "controlling_idea": "Established: a return is three flows with three owners, as Shopify, commercetools and every ERP model it; refunds are asynchronous and can fail late, as Adyen, Stripe and Mollie document; and EU law fixes the clocks.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "The points it rests on, starting with what the sources establish.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p63",
+        "form": "list",
+        "controlling_idea": "Depends on context: whether the refund waits for inspection, whether the OMS owns the return record, and whether stores take online returns.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established.",
+          "introduces": "What depends on the merchant's situation.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p64",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: count the systems that can call the refund API and stop the review if the answer is not one, and make the disposition event the only trigger for stock, settlement and the credit note, measuring the time from dock scan to disposition daily.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What depends on context.",
+          "introduces": "The author's own reading.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p65",
+        "form": "list",
+        "controlling_idea": "Seven questions let a reader check their own return path: refund writers and key, the refund trigger, when stock rises, the four legal dates, exchange as new order, external returns and refunds, and last month's refund match.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The author's reading.",
+          "introduces": "The questions that apply it to the reader's own landscape.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p66",
+        "controlling_idea": "Eva has her L and the books net to zero; the next journey turns from a consumer to a buyer that is a company, whose order of 6 April arrived as a message nobody typed, leaves on pallets with a despatch advice and is paid thirty days after the invoice.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The questions about one return.",
+          "introduces": "The wholesale order, in the next chapter.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Teaching returns, refunds or credit notes in depth: RMA, disposition, exchange and refund reconciliation; refund mechanics and webhooks; credit notes and the ledger; the right of withdrawal; the variants' home systems.",
+      "covered_in": [
+        "returns-and-exchanges",
+        "commerce-payments",
+        "tax-invoicing-and-ledger",
+        "commerce-regulation",
+        "stores-and-omnichannel",
+        "marketplaces-and-channel-integration"
+      ]
+    },
+    {
+      "topic": "The forward path, the wholesale path and the peak day.",
+      "covered_in": [
+        "journey-consumer-order",
+        "journey-wholesale-order",
+        "journey-peak-day"
+      ]
+    },
+    {
+      "topic": "An 'Across Scale Stages' section; journeys do not carry one."
+    },
+    {
+      "topic": "Return fraud models and returns-portal vendor comparison."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "After the confirming round 3 (ESCALATE: 2 transitions and 6 corroborated flow points, one of them at fault in the spec, plus one corroborated term), the cheap, plainly right fixes were applied without another round: p09 opens on the contrast with the late-2027 design, glosses the returns portal and says why the comparison is January 2027 (the landscape of this path's incidents); p52 opens on the store's January gap and says the old chain still ran in May 2027 (events-consistency-and-reconciliation line); p40 marks the February 2027 match as the interim fix and glosses RECONCILED; p48 and p49 now say two things differ and the refund deliberately does not (spec ideas of p09, p48, p49 updated); minor: p25's split marked illustrative beyond the ledger's 61%, p22 points to the refund section, p28's confirmation now comes before the evening collection, p31 'after a peak' instead of 'in January', p56 'two credits per order in the ERP' as the ledger says. Not changed: the repeated forward mentions of the Double Refund (judge: at fault in the spec; p11's one-sentence gloss was the round-1 readers' corroborated request and the KEY POINTS and step-table row 12 are the author's; rule 10, the current position stands); 'Why not edit' after the shipment (one reader; rule 10).",
+      "rejected": [
+        "A fourth round.",
+        "Cutting the Double Refund gloss from p11."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12, after round 2 (ESCALATE: one spec fault, 13 corroborated or fixed-question draft faults, 7 minor): (1) p47 at fault in the spec (two ideas, three differences split over three paragraphs): p47 now holds only how the store return is recorded and when store sales reach the OMS; p48 states the goods-side differences (counter inspection and store stock) and p49 the money; transitions rewritten (rule 3; brief's pre-approval of paragraph ideas). (2) Draft faults fixed in the named units, ledger lines cited: p02 says what the NRF comparison shows; p03 glosses the held order; p09 lists the three dates (January 2027 two writers; February fix and Eva's April return; late-2027 replay) (problem 3, commerce-payments line, ruling 4); p13 says plainly the disposition is reported as two events and releases rows 9 and 11; p18 glosses 'hero products' (rule 6); p28 drops Journey 1's step number; p40 names the shop platform's refunds and why a match runs beside the key (events-consistency-and-reconciliation line); p42 introduces the two marketplace buyers; p44 expands FBA (rule 6); p50 ties the table to the walk; p52 states the May 2027 count as the ledger does (about 90 of roughly 390 variants); p55 marks which details are illustrative; p60 glosses the order export and rewrites the detection sentence; row 9b of the step table now names the wrong amount, so p54's claim holds. Minor points fixed cheaply: p31 'enough to cover a parcel that spends a week in transit', p45 the US clocks named as such, p48 W1 glossed for store stock. Not changed: p46's January aside (one reader; rule 10, the current position stands).",
+      "rejected": [
+        "Escalating to the author."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Draft check round 1 ended in ESCALATE because three corroborated flow points were at fault in the spec; the brief pre-approves changing paragraph ideas to fix them, so: p09 now states which landscape Eva's April return really ran on (before the Waypoint systems, with the refund already fixed in February) and that the comparison is with January 2027, before the fix (the timeline readers found contradictory; ledger: problem 3, commerce-payments, W-seam dates in ruling 4); p13 and its prose say the disposition is sent as two events at once, the stock event and the disposition event, instead of 'row 8 releases all three' (p26's mechanism unchanged; thesis wording unchanged); p21 now cites commercetools, so the conclusion's Established list no longer introduces it. Draft-fault fixes: p02, p14, p37 and p54 openings carry their declared transitions; p11 tells the Double Refund in one sentence at first mention; p12 says the table runs ahead of the walk and glosses disposition; p16 states the same-means rule; p37 explains the 'return settled' message; p52's table glosses the May 2027 stock reconciliation; p22 'margin' becomes time left to refund; the sizing-data sentence moves from p16 into p19 and the 2028 store-receipt sentence from p49 into p47 (one idea each); p31's two cryptic phrases rewritten (minor).",
+      "rejected": [
+        "Escalating the spec faults to the author (the brief pre-approves spec order and idea changes).",
+        "Moving the Double Refund into the refund section (the author's order of failures stands; a one-sentence gloss removes the forward references)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (fresh agent, verdict 'sound with notes'); the author asked for the rubric notes to be taken without review. Taken: 'What Each Handoff Requires' moved before the variants so the main path's read-back sits with the walk and the store variant's January gap leads into the January comparison (transitions of handoffs, variants and january rewritten; roadmap p04 reordered); the refund-writer history (portal from February 2027, OMS from Q4 2027) moved out of p32 into the Double Refund fix p57, removing a forward reference to the incident; p34 and p35 merged (claim and its vendor evidence made one point); p37 opens on the credit note as the consequence rather than restating p29's 'never edit'; p22 names the 3 May deadline. Not taken: a gloss of 'disposition' in the step table (p03 now glosses it before the table); overlap of the conclusion synthesis p61 with the author's synthesis list p64 (the author's list is kept as written; p61 carries the callback and so-what).",
+      "rejected": [
+        "Moving the January comparison or the Double Refund before the walk.",
+        "Cutting the author's synthesis list."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric rerun after the reorder (fresh agent, verdict 'sound with notes'); the author asked for the rubric notes to be taken without review. Taken: p05 frames the exchange as a credit note and the refund as the branch; p40 says the daily match came after the Double Refund told later; p59 points back to the dock mechanism instead of repeating it; p52's idea names the four January changes the table shows; rationales of 'request' and 'books' say what would break. Not taken: splitting the January section into one paragraph per change or merging it into the failures (the table carries the four changes within the length; rule 10, the author's structure stands); dropping the prescription from p61 or p64 (p64 is the author's own list).",
+      "rejected": [
+        "Merging 'The Same Return in January 2027' into 'When It Goes Wrong'."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Converted spec.md to spec.json from the published chapter, one spec paragraph per unit; intent, thesis and role copied unchanged from the journal spec, with its five acceptance criteria and no added criteria. spec.md's success criteria are inventories (step-table columns, diagram counts, take-away tiers, term coverage, source list, word count) and are dropped; the outcomes they aimed at are carried by the journal spec's AC-1 to AC-4. The old spec's limit (at or under 7,000 words, target 6,500) is kept as length.max_words 7,000 and target_words 6,500.",
+      "rejected": [
+        "Rewriting the inventory criteria as minor custom criteria."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Added the units the contract asks for and the published chapter lacked: a short thesis paragraph (p03) and a roadmap (p04) in the introduction, the roadmap announcing every section, and a synthesis paragraph (p61) at the head of 'What to Take Away' that calls back to the opening's three questions and answers so-what. The sentence 'We follow authorization, transport back, inspection, replacement and accounting' moves from p05 into the roadmap, and p05 now carries over Journey 1's delivered, paid and invoiced order as the journal spec's transition_in asks. The hand-off p66 now says what the journal spec's next transition_in introduces (pallets with a despatch advice, payment thirty days after the invoice).",
+      "rejected": [
+        "Stating the thesis only in KEY POINTS.",
+        "A conclusion of lists only."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Under the book-wide vocabulary ruling the hosted product is called 'the shop platform' where the text means Kestrel & Pine's platform; vendor-neutral uses of 'platform' stay. W1 and W5 are glossed at first use in the chapter.",
+      "rejected": [
+        "Leaving 'the platform' throughout."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p28: the exchange parcel's shipping confirmation is stated as sent when the WMS reports the shipment, the April 2027 rule; the later first-scan target rule is not mentioned.",
+      "rejected": [
+        "Leaving 'that afternoon' without the trigger."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: spec.md's open questions are closed. (1) The single refund writer moving from the returns portal to the OMS in Q4 2027 through the same platform refund API is the ledger's journey-return-and-exchange line (rule 1). (2) The Double Refund's mechanism follows the commerce-payments ledger line, which the page already follows (rule 1). (3) The returns policy, the held order #1072455-X1, the return id R-20270419-1, the 23 April delivery and the credit-note figures are all in the returns-and-exchanges and journey-return-and-exchange ledger lines (rule 1).",
+      "rejected": [
+        "Leaving them open for the author."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Made the WMS disposition event the hinge that releases stock, settlement and the credit note, rather than the return request or the carrier scan, because that single ordering is what makes the three flows agree and is the clearest answer to the Boomerang. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Told the Double Refund with the ledger's mechanism (two writers, no key, no single view) and spent the words on the fix (one writer, one key, read-only console, daily match), since commerce-payments owns the incident's payment side. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Treated the exchange as a held order at the frozen price, created at request time and released by the disposition, with a credit note and a new invoice netting to zero, following the returns chapter's held-order model, the pricing chapter's 'exchanges copy frozen prices' rule and the ERP's invoice immutability, rather than as an order edit. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Kept marketplace and store returns as two short variants on the same step table rather than two further walks, to stay within the length cap. (from spec.md)"
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md (Eva's jacket; the marketplace variant; problem 3; W1-W5; lines returns-and-exchanges, journey-return-and-exchange, commerce-payments, events-consistency-and-reconciliation, tax-invoicing-and-ledger, commerce-promotions, pricing-architecture, stores-and-omnichannel) and _research/consistency-issues.md (rulings 1, 4, 9, 18)",
+      "contributed": "Every figure, date and time of the return, the exchange and the refund variant, the Double Refund and its fix, the returns figures, the Black Friday refunds and the May 2027 reconciliation."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (journey-return-and-exchange; part-9; journey-wholesale-order transition_in)",
+      "contributed": "Intent, thesis, role, acceptance criteria and the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "PLAN.md (Part IX contract for chapter 38); _research/style-guide.md; _research/brief-inventory-fulfillment-returns.md, brief-checkout-payments-tax.md, brief-security-privacy-regulation.md; journey-consumer-order; meet-kestrel-and-pine",
+      "contributed": "Scope, page format, return data models, refund behaviour, credit notes, the 14-day right of withdrawal and the forward path's figures (from spec.md)."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify returns documentation; commercetools order states (n.d., accessed 2026-11)",
+      "contributed": "The return versus reverse-fulfillment-order split, dispositions, return item states."
+    },
+    {
+      "kind": "external",
+      "ref": "Adyen, Stripe and Mollie refund and idempotency documentation (n.d., accessed 2026-11)",
+      "contributed": "Asynchronous refunds, late failures, duplicate blocking, idempotency keys."
+    },
+    {
+      "kind": "external",
+      "ref": "Odoo 18.0 credit-note documentation; IFRS 15",
+      "contributed": "Invoice immutability, credit notes, revenue reversal."
+    },
+    {
+      "kind": "external",
+      "ref": "Directive 2011/83/EU, Articles 9, 13, 14 and 16",
+      "contributed": "The withdrawal and refund clocks, withholding until goods or evidence of sending, return costs, diminished value, exemptions."
+    },
+    {
+      "kind": "external",
+      "ref": "Amazon seller-fulfilled returns guidance (2025-04-15); Fulfillment by Amazon; Zalando partner logistics overview",
+      "contributed": "Marketplace return obligations and fees."
+    },
+    {
+      "kind": "external",
+      "ref": "NRF with Happy Returns, 2025 Retail Returns Landscape (2025-10-15)",
+      "contributed": "Return rate and fraud share."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Draft check round 3 (confirming): escalate (9 major incl. 1 spec fault, 9 minor; AC-1 to AC-5 pass). Closing fixes applied to p09, p22, p25, p28, p31, p40, p48, p49, p52, p56 (see decision_log); check-report.json is now stale."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Draft check round 2: escalate (15 major incl. 1 spec fault, 7 minor). Auto-resolved per RESOLVE.md: p47-p49 regrouped in the spec; p02, p03, p09, p13, p18, p28, p40, p42, p44, p50, p52, p55, p60 and the step table revised; minor fixes in p31, p45, p48."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Draft check round 1: escalate (15 major: 3 at fault in the spec, 12 draft). Spec ideas of p02, p09, p11, p12, p13, p16, p19, p21, p22, p37, p47 revised; prose revised to match (see decision_log)."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Flow rubric notes taken: handoffs section moved before the variants, refund-writer history moved to the Double Refund fix, p34 and p35 merged, p37 and p22 reworded; index.md revised to match, with 'the shop platform', W1 and W5 glosses, the shipping-confirmation trigger and the Article 14 cost sentence as the directive states it."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "spec.md converted to spec.json (reconstructed from the published chapter); thesis paragraph, roadmap and conclusion synthesis added; spec.md's open questions auto-resolved; status draft."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator). (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: trimmed under 6,500 words, Belgian mandate hedged, orphaned sources removed. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article. (from spec.md)"
+    }
+  ],
+  "length": {
+    "max_words": 7000,
+    "target_words": 6500
+  }
+}

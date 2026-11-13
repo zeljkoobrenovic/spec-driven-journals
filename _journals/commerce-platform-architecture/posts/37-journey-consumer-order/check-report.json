@@ -1,0 +1,492 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/37-journey-consumer-order/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/37-journey-consumer-order/index.md",
+  "spec_sha": "f1fb6e5003e3dc2f",
+  "draft_sha": "88e460e1ba9bfe1a",
+  "run_at": "2026-11-13T00:30:51+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter goal: trace one order and see who keeps each promise",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Key points: handoffs as promises, one owner per fact, at-least-once delivery needs keys and reconciliation",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three failure patterns the chapter addresses",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "One simple purchase depends on many systems passing records",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Order volume makes rare failures frequent; the company is fictional",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Thesis: one system of record per fact, keyed handoffs with the right clock, reconciliation",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the chapter's sections and evidence",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "Where this walkthrough sits among neighbouring journey chapters",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "The Order, the Setting and the Rules of This Walk ¶1",
+      "summary": "Details of Eva's example order",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "The Order, the Setting and the Rules of This Walk ¶2",
+      "summary": "Target design: Waypoint's availability service, OMS and PIM",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "The Order, the Setting and the Rules of This Walk ¶3",
+      "summary": "The order is replayed through the later design, not the one it really used",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "The Order, the Setting and the Rules of This Walk ¶4",
+      "summary": "Entity-owner table naming each system's authoritative facts",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "The Order, the Setting and the Rules of This Walk ¶5",
+      "summary": "Many systems is normal; two writers for one fact is the problem",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Fifteen Steps in One Table ¶1",
+      "summary": "Introduces the fifteen-step journey table",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Fifteen Steps in One Table ¶2",
+      "summary": "Owner changes between rows make the joins the failure points",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Before the Buy: Search, Product Page and \"In Stock\" ¶1",
+      "summary": "Search runs on a published copy of the catalog",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Before the Buy: Search, Product Page and \"In Stock\" ¶2",
+      "summary": "Product facts and price have separate owners; the price drift shows the cost of copies",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Before the Buy: Search, Product Page and \"In Stock\" ¶3",
+      "summary": "Definition of available-to-promise stock",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Before the Buy: Search, Product Page and \"In Stock\" ¶4",
+      "summary": "How platforms document available stock and its lag",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Before the Buy: Search, Product Page and \"In Stock\" ¶5",
+      "summary": "Even a short lag can oversell a hot item",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Before the Buy: Search, Product Page and \"In Stock\" ¶6",
+      "summary": "Target stock chain: WMS events feed one availability service",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Checkout: Six Promises Under a Clock ¶1",
+      "summary": "A cart is a draft that reserves nothing",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Checkout: Six Promises Under a Clock ¶2",
+      "summary": "Checkout as orchestration through six steps, including a computed delivery promise",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Checkout: Six Promises Under a Clock ¶3",
+      "summary": "Keep integrations out of checkout markup; Shopify's checkout.liquid lesson",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Checkout: Six Promises Under a Clock ¶4",
+      "summary": "The payment method decides the money's state machine",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Checkout: Six Promises Under a Clock ¶5",
+      "summary": "iDEAL's properties: no capture, shopper may not return, webhook is only a notification",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Checkout: Six Promises Under a Clock ¶6",
+      "summary": "Order created pending, then marked paid and confirmed",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "The Order Becomes a Record: Platform to OMS to WMS ¶1",
+      "summary": "Order ownership passes from shop platform to OMS",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "The Order Becomes a Record: Platform to OMS to WMS ¶2",
+      "summary": "Order-placed event and the OMS's separate money and goods states",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "The Order Becomes a Record: Platform to OMS to WMS ¶3",
+      "summary": "Order number as idempotency key against duplicate messages",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "The Order Becomes a Record: Platform to OMS to WMS ¶4",
+      "summary": "Stock moves from available to committed",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "The Order Becomes a Record: Platform to OMS to WMS ¶5",
+      "summary": "Fulfillment order as a request-and-accept contract with the warehouse",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "The Order Becomes a Record: Platform to OMS to WMS ¶6",
+      "summary": "Picking and packing, then stock and shipped events",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "The Order Becomes a Record: Platform to OMS to WMS ¶7",
+      "summary": "Shipping service hides carrier label and manifest differences",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "The Order Becomes a Record: Platform to OMS to WMS ¶8",
+      "summary": "Manifest closes and the parcel is collected",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "In Transit: Tracking, Notifications and \"Where Is My Order\" ¶1",
+      "summary": "Carrier tracking events normalized and fed to the OMS",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "In Transit: Tracking, Notifications and \"Where Is My Order\" ¶2",
+      "summary": "Three customer notifications; status page and agent read one record",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "In Transit: Tracking, Notifications and \"Where Is My Order\" ¶3",
+      "summary": "WISMO contacts as a signal of broken tracking relay",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "In Transit: Tracking, Notifications and \"Where Is My Order\" ¶4",
+      "summary": "Delivery transfers legal risk, so the delivered event matters",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "The Money and the Books ¶1",
+      "summary": "After delivery, invoice, payment and bank must still agree",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "The Money and the Books ¶2",
+      "summary": "ERP issues the invoice because numbering must be sequential",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "The Money and the Books ¶3",
+      "summary": "Issued invoices are immutable; corrections need credit notes",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "The Money and the Books ¶4",
+      "summary": "Invoice amounts for the order; invoice follows what shipped",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "The Money and the Books ¶5",
+      "summary": "Revenue recognized at delivery, separate from payment and invoice",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "The Money and the Books ¶6",
+      "summary": "PSP payouts arrive later in batches",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "The Money and the Books ¶7",
+      "summary": "Payout reconciliation report joins deposits to orders",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "The Money and the Books ¶8",
+      "summary": "ERP's three-way match closes the order's money",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "What Each Handoff Requires ¶1",
+      "summary": "Four questions that set each join's style, with a table",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "What Each Handoff Requires ¶2",
+      "summary": "Availability and fulfillment need events; finance can be batch",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "The Same Order in January 2027 ¶1",
+      "summary": "Same order through the old landscape: four changes",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "The Same Order in January 2027 ¶2",
+      "summary": "Old joins lacked owner, key and reconciliation, as the Three-Status Order showed",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "When It Goes Wrong Along This Path ¶1",
+      "summary": "Introduces five recurring failures to examine",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "When It Goes Wrong Along This Path ¶2",
+      "summary": "Duplicate order caught by the idempotency key",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "When It Goes Wrong Along This Path ¶3",
+      "summary": "Paid but unconfirmed order caught by a daily sweep",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "When It Goes Wrong Along This Path ¶4",
+      "summary": "Short pick detected at the scan and handled",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "When It Goes Wrong Along This Path ¶5",
+      "summary": "Lost parcel detected by tracking rule and re-shipped",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "When It Goes Wrong Along This Path ¶6",
+      "summary": "Mismatched payout found by the three-way match",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "The joins, not the systems, decide whether the order goes right",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "Established findings: single owners, at-least-once delivery, invoice and revenue rules",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "Context-dependent choices: OMS, computed promise, capture timing",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "Author's method: walk one order, count writers not boxes",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Nine review questions about owners, keys and reconciliation",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Hand-off to the return-and-exchange journey",
+      "matched_spec_paragraph": "p60"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "All 60 outline summaries match the controlling ideas of their aligned spec paragraphs p01-p60, in spec order; the three intro callouts align to no spec paragraph."
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "The two units the outliner marked two_ideas (Introduction ¶2: volume plus the fiction disclaimer; In Transit ¶2: three notifications plus one record for status page and agent) each carry exactly the two parts the spec's own controlling idea for p02 and p34 joins; no other unit was marked."
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Every unit serves a supporting claim: the owner table and p10 serve S1, the step table and the walk serve S2, p27/p50/p51 serve S3, p45-p46 serve S4, p47-p48 serve S5; intro and conclusion units carry the thesis."
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Each table is introduced and read (p09-p10, p11-p12, p45-p46, p47-p48), each figure has a stated point, and each statistic and quotation (Baymard, Dutch Payments Association, Mollie, Stripe, Shopify, Gorgias, DeHoratius and Raman, PostNL 97%, IFRS 15, Odoo, 24% returns) is followed by what it shows for this order."
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Every declared transition_in (paragraph and section level, introduction and conclusion) is expressed at its boundary: e.g. 'So what has to go right' (problem_solution), 'None was live for Eva's actual April order' (contrast), 'Because checkout only orchestrates' (cause_effect), 'The parcel's journey ends at the door. The order's does not.' (contrast), 'Those requirements describe the late-2027 design' (contrast)."
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Both flow readers describe the declared organising principle (setup, chronological walk, then grouped read-back) and mark no section's position unclear; their remaining lost-thread points other than those failed below are known terms or incidents on audience.already_knows (W-codes, Duiven, iPaaS, Three-Status Order, Black Friday Oversell, Sanne de Wit, scale stages, Giant's Boots) or a resolved re-read of the replay premise."
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "The introduction opens on Eva's concrete purchase and its two dangers, bridges via 293,000 orders a year, states the thesis and gives a roadmap; no weak pattern."
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "The conclusion synthesizes rather than restates, separates established from context-dependent points, and ends with a course of action and a hand-off; no weak pattern."
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "p55 sets late-2027 against January 2027 on the same systems and answers the so-what: 'A merchant that checks these four things on one ordinary order finds its next incidents before its customers do, and before it buys another system.'"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "p55: 'The two dangers named at the start, a wrong stock answer and a late warehouse instruction, are both joins: the stock copy and the fulfillment order.'"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "The intro reader predicted the section order exactly as the roadmap promises (owners, step table, search to books, handoff requirements, January 2027 replay, five failures), the thesis, the 293,000-order stakes and the evidence (replayed order, vendor documentation, official rules)."
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "The reader located the duplicate parcels at the order handoff (no idempotency key on the order number, count of received against created) and the stuck iDEAL orders at the PSP webhook (outcome from webhook not browser, status fetched, Mollie's retries, daily sweep within the expiry window, mark paid once, webhooks never replace reconciliation), as expected."
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "The reader assigned PIM, platform price list, WMS, availability service, OMS (separate money, goods, returns), PSP (reference on order) and ERP (gap-free numbering) as expected, stated copies allowed but no second writer, and named invoice posting and payouts as batch and availability and the fulfillment order as events, with the reasons."
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "The reader answered: promised Wednesday, picked Wednesday and delivered Thursday because the static sentence ignores the 21:00 last wave; the promise should come from a delivery-promise service using the wave and the 22:30 collection; 'in stock' is a copy up to two hours old (Black Friday Oversell) and should be available-to-promise from the availability service fed by WMS stock events, seconds old, with a per-channel buffer."
+    },
+    {
+      "verdict": "fail",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "severity": "major",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Checkout: Six Promises Under a Clock ¶3",
+      "quote": "5. **Payment.** See the subsection below.",
+      "finding": "The numbered list points ahead to the payment subsection, but the checkout.liquid paragraph and Figure 2 come between them, so both readers felt the paragraph interrupt the sequence (reader A: 'That paragraph felt out of place in the middle of the checkout sequence'). Drop the forward pointer or bridge p22 back to step 5 so the spec's order (p20, p21, p22) reads as a consequence followed by a return to the list.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, 'Where I lost the thread' item 7"
+    },
+    {
+      "verdict": "fail",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "severity": "major",
+      "spec_locus": "/sections/6/paragraphs/4",
+      "draft_locus": "The Money and the Books ¶5",
+      "quote": "Kestrel & Pine was paid on Tuesday, invoiced on Wednesday and earned the revenue on Thursday",
+      "finding": "The draft gives the order day only as 13 April 2027 and never says it is a Tuesday, so the three-dates point (paid, invoiced, earned) forces both readers to work out the weekday (reader A: 'The text never says that 13 April is a Tuesday, so I had to work it out'). Name the weekday where the order is set out (p06) or here.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, 'Where I lost the thread' item 10"
+    },
+    {
+      "verdict": "fail",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "severity": "major",
+      "spec_locus": "/sections/6/paragraphs/7",
+      "draft_locus": "The Money and the Books ¶8",
+      "quote": "The ERP matches Eva's €235 inside Tuesday's batch to the invoice",
+      "finding": "Right after p42 says payouts arrive days later, 'Tuesday's batch' reads as a payout on Tuesday; both readers had to infer it means the batch of Tuesday's sales (reader A: 'made me stop for the same reason, because the paragraph before says the payout comes days later'). The same phrase recurs in p54 ('Tuesday's batch is short by €235').",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, 'Where I lost the thread' item 9"
+    },
+    {
+      "verdict": "fail",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "severity": "minor",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "In Transit: Tracking, Notifications and \"Where Is My Order\" ¶2",
+      "quote": "Wednesday at 08:40, before PostNL collects the parcel that evening",
+      "finding": "The previous section ends with the parcel collected at 22:30 on Wednesday ('Eva's jacket has left the building'); this paragraph jumps back to 08:40 that morning for the shipping confirmation, and reader B paused at both the backward jump and a confirmation sent before collection. Reported by one reader only.",
+      "fault": "draft"
+    },
+    {
+      "verdict": "fail",
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "severity": "major",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Checkout: Six Promises Under a Clock ¶2",
+      "quote": "Duiven releases its last pick wave at 21:00 and PostNL collects at 22:30",
+      "finding": "'Pick wave' is on audience.does_not_know and is used here, in the delivery-promise step, before it is glossed in The Order Becomes a Record ¶6 ('a pick wave, a group of orders released together...'). Gloss it at first use or move the gloss here.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, 'Where I lost the thread' bullet 5 ('This comes before \"pick wave\" is defined')"
+    }
+  ]
+}

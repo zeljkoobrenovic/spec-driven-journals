@@ -34,7 +34,7 @@ So the part sets rules, one chapter for each of four systems that handle the ord
 
 [[cart-and-checkout]] explains **how checkout coordinates its dependencies and creates one order despite retries**. Eva's payment redirect to her bank's app shows why order creation cannot depend on the thank-you page.
 
-[[commerce-payments]] then follows the pending payment through **authorization, collection, settlement and payout**. January 2027's 212 duplicate refunds, costing €19,400, explain why a refund needs one authorized writer and an identifier shared across retries.
+[[commerce-payments]] then follows the pending payment through **authorization, collection, settlement and payout**: the money is reserved, taken, moved to the provider and paid to the merchant. January 2027's 212 duplicate refunds, costing €19,400, explain why a refund needs one authorized writer and an identifier shared across retries, its key.
 
 [[order-management]] then gives **the order a shared home with separate payment, shipment and return states**. A fleece delivered before its socks left one customer with three contradictory statuses and eleven tickets. The chapter shows how to represent partial completion honestly, and when to add an **order management system (OMS)**.
 

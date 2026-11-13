@@ -1,0 +1,1288 @@
+{
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "journey-peak-day",
+  "journal": "commerce-platform-architecture",
+  "part": "part-9",
+  "title": "Journey 4: Black Friday, Hour by Hour",
+  "status": "draft",
+  "revised": "2026-11-13",
+  "basis": "Reconstructed from the published chapter (posts/40-journey-peak-day/index.md) and its former spec.md, whose Non-goals, Modalities, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (the conclusion's chapter synthesis p40 and the part closing p45 to p47 under a 'Closing Part IX' heading); these are listed under decision_log.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Black Friday week 2026 at Kestrel & Pine: 31,000 D2C orders in the week, 2,300 in the peak hour of Friday 27 November (38 a minute, about 41 times an average hour's traffic); the order flow to the WMS, about seven orders a minute one at a time under the vendor's rate limit, falling behind at about 13:00 and four hours behind by 21:00; the 19:40 sell-out reaching the ERP at 19:45, the storefronts at about 20:30 and the marketplaces at about 21:35; and what each person saw and could do.",
+        "The outcome (1,340 units oversold, 1,120 orders affected: 760 canceled and 360 delayed, about €96,000; about 8,000 orders that missed next-day delivery outside that figure) and the December 2026 post-mortem's five findings.",
+        "The 2027 plan for 26 November 2027: a forecast of 60 orders a minute, every link tested at 80 and the OMS-to-WMS link at 120, the order path through the OMS (marketplaces from 15 September, D2C from 13 October, wholesale from 8 December, a freeze from 15 November to 5 December), stock events through the availability service within a minute, eight switches with owners and triggers, a runbook, a rehearsal and a reconciliation report at 08:00 on Saturday."
+      ],
+      "believe": [
+        "The evening was lost in the afternoon, by a queue nobody could see.",
+        "A stock chain of scheduled copies is harmless on an ordinary day and a two-hour blind spot at peak.",
+        "Most of a peak fix is visibility and switches rather than new systems."
+      ],
+      "can_do": [
+        "Write a peak plan as a journey hour by hour, with a capacity figure per link, a gauge on every queue and a name in every row.",
+        "Build a degradation ladder whose switches each have an owner, a trigger and a rehearsal, with checkout, payment and the order path never switched off."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture, in particular the engineer or product manager asked to make sure Black Friday does not happen again, and the operations or ecommerce lead who will own a row of the runbook.",
+      "already_knows": [
+        "Kestrel & Pine, its people, its 2026 and January 2027 incidents in outline, the Waypoint decisions W1 to W8 and the names of the sixteen failure patterns.",
+        "From Part I: the thirteen steps of an order, promise and handoff, the three status lines, 'system', 'the shop platform' for the hosted product, the four scale stages, system of record, single writer, events, idempotency and reconciliation.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+        "From Parts II to VIII: available-to-promise and per-channel buffers; promotions as data; checkout and payment; one order record; warehouse waves and cut-offs; integration styles, queues, events and reconciliation; peak load and reliability (capacity in orders per minute, controlled queues, degradation, incident teams).",
+        "From Part IX: Journeys 1 to 3 (Eva's order #1072455, its exchange, Bergzicht's EDI reorder), each walked through the late-2027 design and compared with the January 2027 landscape."
+      ],
+      "does_not_know": [
+        "Rate limit; dead-letter queue; stock event; degradation ladder; waiting room; p95 response time; game day; thundering herd and backoff with jitter; marked test orders."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a peak evening on which the storefront stayed up but orders oversold and deliveries slipped, the reader locates the failure in the chain behind the platform and lists what next year's plan needs, rather than a bigger platform.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A brand's storefront stayed up all Black Friday evening, yet hundreds of orders were for a jacket that had already sold out and thousands missed next-day delivery. Its agency proposes a larger platform plan for next year. Using only this chapter: where did the evening go wrong, and what should next year's plan contain?",
+        "expected": "Behind the platform, which held: the integration that created orders in the warehouse system one at a time under the vendor's rate limit had been falling behind since the afternoon in a queue with no gauge, alarm or owner, and the sell-out reached the channels through scheduled copies up to two hours late. The plan needs a forecast (about 1.5 times last year), a capacity figure per link tested with marked orders through the whole path, fulfillment orders sent in batches within the limit and keyed on the order number, a gauge and alarm on the age of the oldest unsent order, a dead-letter queue with an owner, stock as events through an availability service, a degradation ladder whose switches have owners and triggers with checkout, payment and the order path never switched off, a change freeze, a runbook and a reconciliation the morning after."
+      },
+      {
+        "id": "AC-2",
+        "statement": "The reader can explain why a stock chain that works every other day oversells at peak.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A merchant copies stock from its warehouse system to its ERP every 15 minutes, from the ERP to its shop hourly and from the shop to its marketplace connector hourly, and has never had an oversell. Using only this chapter: why not, and what happens when a jacket sells out at 38 orders a minute?",
+        "expected": "The chain is up to about two hours late by design (15 minutes plus up to an hour plus up to an hour), which is harmless when nothing sells out inside the window. At peak the sell-out at 19:40 reached the ERP at 19:45, the storefronts at about 20:30 and the marketplaces at about 21:35, and the channels sold 1,340 units the warehouse did not have (about 790 on the storefronts and 550 on the marketplaces); marketplace cancellations cost more because the seller is measured on them (a strike from bol). The fix is stock events from the WMS through an availability service that publishes available-to-promise per channel with a buffer within a minute, with a fallback of a marketplace buffer and a person pausing listings."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can say what the team could and could not do on the evening, and what the plan gives it instead.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "At 20:20 on the peak evening the warehouse tells the ecommerce manager that a jacket is out and orders keep coming. Using only this chapter: what could the team do in 2026, and what does the 2027 plan give them?",
+        "expected": "In 2026: set the jacket's quantities to zero by hand in the platform, one variant at a time; edit listings by hand in the connector, with no pause switch; wait for the WMS vendor to raise its limit (ticket at 21:30, answer at 22:40); send a mass e-mail to everyone who ordered after 17:00, with no list of affected orders; edit a theme sentence to change the delivery promise; and no view of orders per minute against the warehouse's intake. In 2027: eight rehearsed switches, each with one owner who may flip it without a meeting and a trigger (stock badges from the buffered copy, a raised marketplace buffer with listings paused, a widened delivery promise, a waiting room and others), a one-screen dashboard in business units, an incident commander, vendor contacts for Friday night, and customer messages filled with order numbers from the OMS."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "That in Black Friday week 2026 Kestrel & Pine took 31,000 orders, 2,300 in one hour, and the platform kept accepting purchases while the integrations could not send orders to the warehouse or return stock updates fast enough, so customers bought jackets that had sold out; that the evening was lost in the afternoon, the sell-out took two hours to reach the channels, and the 2027 plan changes the chain, not the platform; that the evening is told twice, the November 2026 incident and then the November 2027 plan, with the totals fixed (19:40, 1,340 units, 1,120 orders, €96,000, four hours) and hourly figures labeled reconstructions; and that the methods come from the peak-load chapter. Evidence: Kestrel & Pine's reconstructed evening and its 2027 plan, with dated public practice (Shopify, Zalando, AWS) cited for the methods."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What happened hour by hour on the 2026 peak day, and what does the 2027 plan change?",
+    "claim": "On 27 November 2026 the platform held while the chain behind it failed unseen: the order flow to the warehouse fell behind from about 13:00 under the WMS vendor's rate limit, and the 19:40 sell-out of the Ridgewalker jacket reached the channels 50 minutes to two hours late through scheduled stock copies. The 2027 plan changes that chain, not the platform: tested capacity per link, stock events, a gauged queue and eight degradation switches with owners.",
+    "disputed_by": "The view that peak readiness is the platform's scalability: if the storefront and checkout stay up the peak went well, and the remedy for an oversell is a larger platform plan or more servers.",
+    "so_what": "A merchant that accepts the claim writes its peak plan as a journey hour by hour, tests its own order path rather than relying on the vendor's tests, and gives every queue a gauge and every switch an owner before buying anything. Kestrel & Pine's evening cost 1,340 oversold units and 1,120 affected orders (760 canceled, 360 delayed), about €96,000, and roughly 8,000 missed next-day deliveries; its post-mortem found no forecast, no capacity figure per link, a queue with no gauge, stock copied on a schedule and nobody with authority to flip anything. The 2027 plan forecasts 60 orders a minute, tests every link at 80 and the OMS-to-WMS link at 120 (which found a batch size that broke the rate limit), alarms at ten minutes of queue age, sends stock within a minute and closes the morning with an 08:00 reconciliation.",
+    "how_why": "A queue between the platform and the warehouse keeps checkout working when the warehouse link is slow, but it adds no capacity, so without a gauge it hides the delay: about four calls per order against a limit of about 30 a minute capped the flow near seven orders a minute, below the afternoon's arrival rate. Stock that travels by a 15-minute copy and two hourly copies is up to two hours late by design, which matters only when a product sells out inside the window, as the Ridgewalker jacket did at 38 orders a minute. The people who saw the problem had no switch to pull and no view to read, and a vendor's load tests find the vendor's bottleneck, so only the merchant's own test with marked orders finds its own.",
+    "supporting_claims": [
+      {
+        "id": "C1",
+        "claim": "The evening was lost in the afternoon: the order flow to the WMS, creating orders one at a time under the vendor's rate limit, fell behind from about 13:00 in a queue with no gauge, alarm or owner and was four hours behind by 21:00."
+      },
+      {
+        "id": "C2",
+        "claim": "A stock chain of three scheduled copies, harmless on an ordinary day, let the 19:40 sell-out reach the storefronts at about 20:30 and the marketplaces at about 21:35, so the channels sold 1,340 units the warehouse did not have, and marketplace cancellations cost the most."
+      },
+      {
+        "id": "C3",
+        "claim": "The people who saw the problem had no gauge, no switch and no authority, and the clean-up was done by hand: 1,120 orders and about €96,000, plus roughly 8,000 missed next-day deliveries, with five post-mortem findings."
+      },
+      {
+        "id": "C4",
+        "claim": "The 2027 plan changes the chain, not the platform: a forecast of 60 orders a minute and a tested capacity figure per link, an order path through the OMS in batches keyed on the order number with a gauged queue, and stock events through the availability service within a minute."
+      },
+      {
+        "id": "C5",
+        "claim": "Eight switches with owners and triggers, a runbook, a rehearsal and an 08:00 reconciliation turn the 2026 evening's impossible actions into known moves, while checkout, payment and the order path are never switched off."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Walks Black Friday 2026 through the same chain hour by hour, with what each system did and each person saw and could do, then lays out the 2027 plan built from it, and performs the part's closing (the published chapter does not yet do so: it ends with its questions and one paragraph handing off to Part X).",
+    "supports": [
+      "P9-4",
+      "P9-5"
+    ]
+  },
+  "flow": {
+    "pattern": "chronological",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "week, friday and weekend (the 2026 incident) against plan and wrong (the 2027 plan)"
+      }
+    ],
+    "rationale": "The evening is told twice in time order: the week, Friday hour by hour and the weekend's clean-up in 2026, then the plan for the same evening in 2027 and what it does when things still go wrong. The incident comes first because every part of the plan answers one of its mechanisms or one of the post-mortem's findings; putting the plan first would present switches and gauges for problems the reader has not yet seen, and putting the weekend before Friday would count a cost the reader cannot yet explain."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "In Black Friday week 2026 Kestrel & Pine takes 31,000 orders, 2,300 of them in one hour; the storefront keeps accepting purchases while the integrations behind it cannot send orders to the warehouse or bring stock back fast enough, so customers buy jackets that have already sold out from a site that appears to be working."
+    },
+    "bridge": {
+      "from_reader_world": "The first three journeys' chain of handoffs on an ordinary April week, where a handoff takes minutes.",
+      "to_topic": "The same chain at about forty times its normal load, where the same handoffs take hours: what failed, who saw it, and what the 2027 plan changes."
+    },
+    "thesis_statement": {
+      "text": "The platform held while the chain behind it failed unseen: the order flow to the warehouse fell behind from about 13:00 under the vendor's rate limit, and the 19:40 sell-out reached the channels up to two hours late through scheduled copies; the 2027 plan changes the chain, not the platform, with tested capacity per link, stock events, a gauged queue and eight switches with owners.",
+      "placement": "KEY POINTS callout (bullets 1 to 3) and paragraph p01"
+    },
+    "roadmap": {
+      "placement": "Paragraph p03",
+      "promises": [
+        {
+          "promise": "The week before the evening and what the preparation missed.",
+          "kept_in": [
+            "week"
+          ]
+        },
+        {
+          "promise": "Friday 27 November 2026 hour by hour, then the three mechanisms behind it: the unseen queue, the two-hour sell-out and what the team could and could not do.",
+          "kept_in": [
+            "friday"
+          ]
+        },
+        {
+          "promise": "The weekend's clean-up, the cost and the post-mortem.",
+          "kept_in": [
+            "weekend"
+          ]
+        },
+        {
+          "promise": "The 2027 plan for the same evening: the rebuilt order path and stock events, forecast and capacity per link, the switches, the runbook and the rehearsal.",
+          "kept_in": [
+            "plan"
+          ]
+        },
+        {
+          "promise": "What the plan does when things still go wrong.",
+          "kept_in": [
+            "wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "In Black Friday week 2026 Kestrel & Pine takes 31,000 orders, 2,300 in one hour with storefront traffic about 41 times an average hour, and its shop platform keeps accepting purchases while the integrations cannot send orders to the warehouse or return stock fast enough, so customers buy sold-out jackets from a site that seems to work, which a measure of the page's availability would miss.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "statistic",
+            "what": "31,000 orders in the week; 2,300 in the peak hour; storefront traffic about 41 times an average hour.",
+            "shows": "Sets the scale of the evening and shows the failure sat behind a page that stayed up.",
+            "source": "Kestrel & Pine scenario ledger"
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "In the order's journey, the product page, checkout, order export, picking and stock updates all run under peak pressure, so the handoffs that take minutes for the ordinary April orders of the first three journeys now take hours.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "emphasis",
+          "carries_over": "The storefront that kept selling while the chain behind it fell behind; the first three journeys' ordinary April orders and the chain they crossed.",
+          "introduces": "The same chain under peak pressure, where minutes become hours.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter follows the evening twice, first the November 2026 incident (the week before, Friday hour by hour with its three mechanisms, the weekend's clean-up) and then the November 2027 plan (the rebuilt order path and stock events, forecast and capacity, switches, runbook, rehearsal, and what happens when things still go wrong), and closes Part IX; the scenario fixes the totals and the hourly figures are labelled reconstructions.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The chain under peak pressure.",
+          "introduces": "The order in which the chapter tells the evening, and which figures are fixed.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The methods the plan uses (capacity in orders per minute, controlled queues, optional work that can be paused, an incident team and checks after recovery) are explained in the peak-load chapter and drawn from dated public practice at Shopify, Zalando and AWS that the plan cites; this chapter applies them.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The 2027 plan announced in the roadmap.",
+          "introduces": "Where its methods are taught and what evidence they rest on.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "week",
+      "heading": "The Week Before the Evening",
+      "controlling_idea": "The preparation for the week covered the promotion, the campaign pages and the warehouse staff, but not the integrations: no forecast, no load test, no gauge and no owner, and Thursday's busy evening hid how close the order flow was to its ceiling.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "C1",
+          "C3"
+        ],
+        "how": "Shows that nobody measured or owned the links that failed, before the day starts."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The plans come first, then what they missed, then the week as it happened up to Thursday's warning; the warning only reads as a warning once the reader knows nobody measured the ceiling."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The roadmap's first item: the week before.",
+        "introduces": "The plans made for the week.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Milan Petrov plans a 20% outerwear discount for 23 to 29 November (the Ridgewalker from €199 to €159.20), the agency builds campaign pages, Daniel Okafor books temporary pickers and an extra PostNL collection, and the German marketplace stock has already been sent.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "20% outerwear discount 23-29 November; €199 to €159.20; temporary pickers; extra PostNL collection.",
+              "shows": "What the business prepared, all of it outside the integrations.",
+              "source": "Kestrel & Pine scenario ledger (commerce-promotions and journey-peak-day lines)"
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "The preparation misses the integrations: there is no throughput forecast, load test, list of optional work to pause, integration owner on call or dashboard comparing accepted orders with warehouse intake, only the platform's status page, a process fitted to a smaller business.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the business prepared.",
+            "introduces": "What it did not prepare.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The week built up day by day to 11,500 orders on Friday and 31,000 in the week (10.6% of the year's D2C orders), with the strain first showing in Wednesday's first 'where is my order' tickets.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Week table: Monday 2,100 to Sunday 4,600, Friday 11,500, total 31,000 (10.6%); daily figures illustrative, weekly total canonical.",
+              "shows": "Shows the load rising to Friday and where the strain first showed.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The plans for the week.",
+            "introduces": "The week as it happened, day by day.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Thursday evening was the warning nobody read: the order flow kept up only because Thursday's rate was below a ceiling nobody knew.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "Thursday's row in the table.",
+            "introduces": "Why it was a warning.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "friday",
+      "heading": "Friday 27 November 2026, Hour by Hour",
+      "controlling_idea": "On Friday the order flow fell behind from about 13:00 in a queue nobody could see, the 19:40 sell-out reached the channels up to two hours late through scheduled copies, and the people who noticed had almost nothing they could switch.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "C1",
+          "C2",
+          "C3"
+        ],
+        "how": "Tells the evening hour by hour and then isolates the three mechanisms the 2027 plan is built against."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "additional_patterns": [
+          {
+            "pattern": "grouping",
+            "applies_to": "p10-p17: the three mechanisms, each under its own subheading"
+          }
+        ],
+        "rationale": "The clocks and the hour table give the whole day first, in the order the systems lived it; the three mechanisms are then pulled out of the table in the order they began (the queue at 13:00, the sell-out at 19:40, the team's response from 19:50). Explaining a mechanism before the table would describe an evening the reader has not yet seen."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "The week up to Thursday's warning.",
+        "introduces": "Friday itself, hour by hour.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "form": "list",
+          "controlling_idea": "Three clocks shape Friday's 11,500 orders: the order export that creates orders one at a time in the WMS, about four API calls per order against the vendor's limit of about 30 calls a minute, so about seven orders a minute, the stock updates that pass through three scheduled copies and take up to two hours, and the picking and collection times with the 22:00 next-day promise; the hour table then shows what the systems did and what the team saw.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Hour table, 00:00 to Saturday 03:00: orders per period (illustrative), queue about 500 at 17:00, 2,500 at 20:00, 4,400 at 21:00; 19:40 sell-out; 19:45 ERP; about 20:30 storefronts; 21:05 Milan zeroes the connector by hand; about 21:35 marketplaces sold out after the connector's next scheduled sync; 20:20, 20:35, 20:50 calls; ticket 21:30 answered 22:40; batch import at about 00:00, queue empty about 02:30.",
+              "shows": "Shows the systems' events and the people's discoveries side by side, with the gap between them.",
+              "source": "Kestrel & Pine scenario ledger (Peak; journey-peak-day line)"
+            }
+          ]
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "Three things in the table are the mechanisms the 2027 plan is built against: the queue nobody could see, the two-hour sell-out, and what the team could and could not do.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The hour table.",
+            "introduces": "The three mechanisms pulled out of it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "The queue kept checkout working and lost no orders, but it added no capacity, and with no gauge, alarm or owner it hid a delay that was four hours by 21:00, until Ruben Alves looked at 20:50.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Ruben opens the iPaaS at 20:50; four hours behind at 21:00; 20:00 orders reach the WMS after midnight.",
+              "shows": "The delay was large and long before anyone saw it.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The first mechanism named.",
+            "introduces": "How the queue hid the delay.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The limit sat in the integration, not the warehouse: the flow was capped by its calls per order against the vendor's rate limit, while picking capacity at Duiven stayed available and the afternoon waves were thin.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Thin 15:00 and 16:00 pick waves at Duiven while the queue grew; picking never the limit.",
+              "shows": "Locates the ceiling in the integration, not the warehouse.",
+              "source": "Kestrel & Pine scenario ledger (journey-peak-day line)"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: orders piling up in an unmonitored tunnel between a busy storefront and an idle warehouse.",
+              "shows": "Pictures a queue with no gauge, alarm or owner."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The hidden delay.",
+            "introduces": "What caused the ceiling.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "The sequence diagram shows the two hours in which the oversell happened, in which each arrow is a scheduled copy.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: the 19:40 sell-out reached the ERP in five minutes, the storefronts in about fifty and the marketplaces in about two hours.",
+              "shows": "Shows the delay hop by hop and the window in which 1,340 units were oversold."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first mechanism, the queue.",
+            "introduces": "The second, the sell-out.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "The two-hour window was the chain's design, not a fault: a chain of three scheduled copies is harmless on any day when nothing sells out inside it, and the inventory chapter explains why the copied number was also the wrong one.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The diagram's arrows.",
+            "introduces": "Why the window was by design.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Three channels sold against the same zero: of the 1,340 oversold units the weekend later counted, about 790 were storefront and 550 marketplace orders, and the marketplace share cost more because a seller is measured on its cancellations, with about 160 marketplace orders affected, 140 canceled and a strike from bol.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "790 storefront and 550 marketplace units; 160 marketplace orders, 140 canceled; one bol strike.",
+              "shows": "Shows why the smaller marketplace share cost more.",
+              "source": "Kestrel & Pine scenario ledger (inventory-and-availability and marketplaces lines)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The window by design.",
+            "introduces": "What was sold inside it, channel by channel.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "By 20:50 four people knew something was wrong, and the table of what they could reach shows that most actions were impossible or possible only by hand.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "What someone wanted to do / was it possible / what happened: zero the storefronts by hand (24 variants); edit marketplace listings by hand at 21:05; speed up the flow only with the vendor (ticket 21:30, answer 22:40); a mass e-mail Saturday 10:00; the theme sentence promising next day for orders before 22:00; no orders-per-minute view.",
+              "shows": "Maps each gap the 2027 plan turns into a switch, gauge or contract.",
+              "source": "Kestrel & Pine scenario ledger (journey-peak-day line)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The second mechanism, the sell-out.",
+            "introduces": "The third, what the team could do.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "The first and third rows say the most: the sell-out could have been stopped on the storefronts by hand at 19:50 if anyone had known to, the order flow could not be fixed by anyone at Kestrel & Pine before the vendor answered, and the 2027 plan is largely the table's 'No' and 'Only' cells turned into switches, gauges and contracts.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The table's rows.",
+            "introduces": "The two rows that matter most and what they lead to.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "weekend",
+      "heading": "Saturday to Monday: Finding Out What Was Sold",
+      "controlling_idea": "The damage stayed invisible until support's tickets showed it, the clean-up was done by hand because no system linked the lists, and the cost and the post-mortem name the missing forecast, figures, gauge, events and authority.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "C3"
+        ],
+        "how": "Counts the cost of the unseen chain and records the five findings the plan answers."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Saturday's discovery comes before the weekend's clean-up, the clean-up before the totals it produced, the hand reconciliations before the December post-mortem that named their cause; the post-mortem last hands the reader to the plan built on it. Giving the totals before the clean-up would present numbers nobody had yet been able to count, and putting the post-mortem earlier would separate the plan from the findings it answers."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "Friday night and the queue drained by 02:30.",
+        "introduces": "Saturday morning, when the damage was still invisible.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p18",
+          "controlling_idea": "On Saturday morning the queue was empty but the damage was invisible: the platform showed 11,500 paid orders, the WMS 11,500 received with about 1,100 holding a Ridgewalker line it could not allocate, and support found the oversell from customers' tickets.",
+          "function": "description"
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "The clean-up took three people the weekend and finance the week after, matching the WMS shortage list to orders by hand because marketplace orders had no shared identifier, and ended with 760 orders canceled and 360 delayed, 1,120 orders and 1,340 units in all.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Outcome table: canceled 760 orders, 900 units (refund, €15 voucher, seller cancellations); delayed 360 orders, 440 units (supplier delivery due 1 December); total 1,120 and 1,340.",
+              "shows": "Gives the canonical totals with their breakdown.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The oversell found.",
+            "introduces": "The work to find which orders it touched.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The €96,000 breaks down, illustratively, into about €65,700 lost margin, €16,800 vouchers, about €6,500 marketplace penalties and about €7,000 support and re-shipping, while the roughly 8,000 orders placed between 17:00 and midnight that missed next-day delivery are not in that figure.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "€65,700 + €16,800 + €6,500 + €7,000 ≈ €96,000; about 8,000 missed next-day deliveries.",
+              "shows": "Shows where the cost came from and the cost outside it.",
+              "source": "Kestrel & Pine scenario ledger (journey-peak-day and warehouse-and-fulfillment lines)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The orders canceled and delayed.",
+            "introduces": "What they cost, and what the figure leaves out.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Three reconciliations ran by hand that weekend that should have been jobs: platform orders against WMS orders, WMS shortages against orders, and refunds against cancellations.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The weekend's manual work.",
+            "introduces": "The three checks it was, and what they should have been.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The December post-mortem found five things (no forecast, no capacity figure for any link, a queue with no gauge, stock copied on a schedule, nobody with authority to flip anything) and recorded Milan's ten-unit marketplace buffer, and Noor Visser built the Waypoint proposal on it.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Five findings; the December ten-unit connector buffer.",
+              "shows": "The list the 2027 plan answers point by point.",
+              "source": "Kestrel & Pine scenario ledger (journey-peak-day and marketplaces lines)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The weekend's cost and manual work.",
+            "introduces": "What the post-mortem made of it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "plan",
+      "heading": "The 2027 Plan: The Same Evening, Rehearsed",
+      "controlling_idea": "The 2027 plan answers each post-mortem finding in the chain, not the platform: a forecast and a tested capacity figure per link, an order path through the OMS in batches keyed on the order number with a gauged queue, stock events through the availability service, eight switches with owners and triggers, a runbook and a rehearsal.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "C4",
+          "C5"
+        ],
+        "how": "Lays out the plan link by link and switch by switch."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "additional_patterns": [
+          {
+            "pattern": "prerequisite_order",
+            "applies_to": "p23-p37: the rebuilt links, the forecast and capacity they are tested at, the switches, the runbook that uses them, the rehearsal that tests all of it"
+          }
+        ],
+        "rationale": "The rebuilt links come first, because every row of the capacity table and every switch trigger names them (the OMS, its batches and queue alarm, the stock events); the forecast and the capacity table then set the number each link is tested at; the switches act on those links; the runbook says who uses the switches and when; the rehearsal tests the whole. Putting the capacity table first would name links the reader has not met (both round-3 readers stumbled on exactly that); describing the switches before the links would name triggers (queue age, event lag) the reader has not met."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The post-mortem's five findings.",
+        "introduces": "The plan for 26 November 2027 that answers them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p23",
+          "controlling_idea": "Black Friday 2027 falls on Friday 26 November, and the plan for it answers the post-mortem's five findings one by one; approved with Waypoint in March 2027, it is owned by Noor as incident commander, and its figures are fictional and the public practices it borrows are cited in the peak-load chapter.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "26 November 2027; peak week 22-28 November; Cyber Monday 29 November; approved March 2027; Noor incident commander.",
+              "shows": "Fixes the date and the owner.",
+              "source": "Kestrel & Pine scenario ledger (peak-load-and-reliability line)"
+            }
+          ]
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "The order path now runs through a shared order management system (OMS) (marketplaces from 15 September after a parallel run in early September, D2C from 13 October), which sends warehouse work in batches sized to the API limit and keys each request on the order number so a repeat cannot create a second pick list, and the order flow gets first claim on the shop platform's per-app API budget, which nine apps and connectors share.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "The platform's API budget is granted per app; nine consumers shared it; the plan allocates the budget with the order flow first.",
+              "shows": "Shows why the plan also orders the platform-side traffic.",
+              "source": "Kestrel & Pine scenario ledger (multi-tenancy-and-isolation line)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The plan announced as the answer to the post-mortem's findings.",
+            "introduces": "The first answer: the order path rebuilt through the OMS.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "The queue now shows its oldest unsent order and alarms at ten minutes, failed messages go to a dead-letter queue that Ruben owns and the team has practiced replaying, wholesale and EDI orders move onto the OMS only after the peak (8 December), and changes freeze from 15 November to 5 December.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The rebuilt order path.",
+            "introduces": "The gauge, the dead-letter queue and the dates that protect it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "The stock loop is replaced by stock events from the WMS to the availability service, which publishes available-to-promise per channel with buffers of three and one units within a minute, with a go/no-go on 15 October and a rehearsed fallback to the 2026 chain with the ten-unit buffer.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: the 2027 chain with orders through the OMS, stock events through the availability service and one dashboard.",
+              "shows": "Shows both rebuilt paths together and the checkout that is never switched off."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The order path to the warehouse.",
+            "introduces": "The stock path back from it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "With the links rebuilt, the forecast of 60 orders a minute, about one and a half times 2026, sets the number they are tested against: every link the merchant runs at 80 and the OMS-to-WMS link alone at 120, the slowest link setting the promise and the waiting room (glossed here), and the capacity table gives each link's 2026 figure, its 2027 target and the proof.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify Engineering, 2025: forecasting at roughly 150% of the previous year's load.",
+              "shows": "Grounds the one-and-a-half convention in dated public practice.",
+              "source": "Shopify Engineering, November 2025"
+            },
+            {
+              "kind": "table",
+              "what": "Capacity table: storefront and checkout, PSP (200 a minute), order into the OMS (150), OMS to WMS (120, alarm at 10 minutes), stock events (under a minute, 300 a minute), marketplace push, picking, ERP (daily batch, W5).",
+              "shows": "Shows a figure and a proof for every link, which 2026 lacked.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The rebuilt order path and stock path.",
+            "introduces": "The forecast and the capacity each link is tested at.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The degradation ladder has eight switches, each existing, flipped once in the October rehearsal and owned by one person who may flip it without a meeting, with a trigger for each, so that the essential functions (checkout, payment, order creation and the order path) keep working and are never switched off.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Switch table: eight rungs with owner, trigger and effect, and the 'never' row.",
+              "shows": "Turns the 2026 table's 'No' and 'Only' cells into named actions.",
+              "source": "Kestrel & Pine scenario ledger (peak-load-and-reliability line)"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: the ladder standing on a locked checkout.",
+              "shows": "Pictures the order of the rungs and what sits below them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The rebuilt links and their tested capacity.",
+            "introduces": "The switches that act on them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Rung 5, the widened delivery promise, is the one 2026 lacked most: the 2026 promise was a sentence in a theme file, Noor specified a promise service in May 2027 that widens the promise as the queue grows, and the switch is the override with an owner and a trigger.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The eight rungs.",
+            "introduces": "The one 2026 lacked most.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "The runbook is a four-page document, written in September, rehearsed on 15 November and kept open in the situation room, in five parts.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The switches.",
+            "introduces": "The runbook that says who uses them and when.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Roles: Noor decides as incident commander, and each of Ruben, Milan, Daniel's shift lead, Sanne's team and an agency engineer owns named links, with the vendors' emergency contacts on the first page.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The runbook's five parts.",
+            "introduces": "The first, who does what.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The dashboard is one screen in business units, refreshed every minute, with orders per minute, queue age, event lag, dead-letter depth, checkout errors, PSP rates and rate-limit headroom, and an alarm for missing orders.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The roles.",
+            "introduces": "What they watch.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "The cadence runs the situation room from 16:00 to midnight with check-ins every 30, then every 15 minutes, reading the dashboard against the switch thresholds.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The dashboard.",
+            "introduces": "When it is read.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Communication uses three templates written in advance, including a delay e-mail filled with order numbers from the OMS, and Mara is told at the first switch.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The cadence.",
+            "introduces": "What is said to customers, marketplaces and the company.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "The morning after, an 08:00 reconciliation report compares orders, stock, payments and refunds across systems by key, each difference with an owner and a fix, produced by Hanna Berg's team under the W7 definition of an order.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "08:00 Saturday 27 November 2027; four comparisons.",
+              "shows": "Turns the weekend's three hand reconciliations into a scheduled job.",
+              "source": "Kestrel & Pine scenario ledger (peak-load-and-reliability line)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Friday evening's communication.",
+            "introduces": "Saturday morning's check.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Two load tests with marked orders that fulfillment skips and a game day preceded the freeze (with a last runbook walk-through on 15 November); the load tests, at 60 in September and at 80 and 120 in October, found the first real defect: a batch size that broke the WMS rate limit at 120 and retries that doubled the load, fixed with a smaller batch and jittered retries.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Zalando Engineering, 2020: order-flow simulators whose orders fulfillment skips.",
+              "shows": "Grounds marked test orders in dated public practice.",
+              "source": "Zalando Engineering, 2020"
+            },
+            {
+              "kind": "source",
+              "what": "AWS Architecture Blog, 2015: exponential backoff and jitter.",
+              "shows": "Explains why synchronized retries doubled the load.",
+              "source": "AWS, 2015"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The plan as written.",
+            "introduces": "The tests that tried it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "The October game day rehearsed three failures (the WMS unreachable for thirty minutes, the availability service stopped, a payment method declining) and each exercise proved or rewrote a runbook page.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Queue to about 1,800, promise switch at minute 11, replay in 22 minutes; fallback chain for an hour; method off within eight minutes (illustrative).",
+              "shows": "Shows the switches and gauges used as planned."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The load tests.",
+            "introduces": "The rehearsal of failures.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong in 2027",
+      "controlling_idea": "The plan does not promise a quiet evening; it gives each expected failure a known trace and a known fix, and deliberately leaves the ERP slow.",
+      "function": "counterargument",
+      "advances_thesis": {
+        "supports": [
+          "C4",
+          "C5"
+        ],
+        "how": "Tests the plan against the failures it expects."
+      },
+      "flow": {
+        "pattern": "order_of_importance",
+        "rationale": "The failures the plan guards against come first because they are the risks to the evening; the delay it accepts on purpose comes last, as the one exception. Reversing them would open on what does not matter on the night."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The plan and its rehearsal.",
+        "introduces": "What happens when the evening still goes wrong.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p38",
+          "controlling_idea": "For each failure it expects on 26 November 2027 (a growing queue, lagging stock events, renewed throttling, a duplicate, a degraded PSP, a platform incident, a forecast wrong by two) the plan names the trace and the fix.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "If / the plan says: seven rows.",
+              "shows": "Shows that each failure has a gauge, a switch or a key behind it."
+            }
+          ]
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The plan deliberately leaves the ERP slow, because late invoices are the one delay the chain can afford.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The failures the plan guards against.",
+            "introduces": "The delay it accepts on purpose.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "For the chapter: the 2026 evening was not lost to slow systems but to links nobody could see or touch, so most of the 2027 plan is visibility and switches. For the part: the Three-Status Order, the Double Refund, the ASN Chargeback and the Black Friday Oversell look like four failures in four areas, but in each every system did what it was built to do and the promise broke at a handoff where a fact had two writers or none, a message had no key or a link had no measure.",
+    "so_what": "A merchant writes its peak plan as a journey hour by hour with a name in every row, and gives every queue a gauge and every switch an owner before buying anything; for the part, Waypoint's answer was mostly in the joins (three of eight decisions add a system; the rest set owners, contracts, keys, reconciliations, the despatch advice's source and one definition of an order), and the 2027 peak plan is mostly gauges and switches with owners.",
+    "callback": {
+      "to": "The chapter's opening storefront that kept accepting purchases while the chain behind it fell behind; and, for the part, the Part IX opening's warehouse that reports a parcel shipped while the storefront still shows it being prepared.",
+      "how": "p40 answers the chapter's opening: the page's availability was the wrong measure. p45, under the heading Closing Part IX, returns to the part opening's warehouse and storefront, names each journey's incident and shows they are one failure at a handoff; p46 and p47 perform the part closing's so-what and take-away."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Walk one ordinary order, one return, one business order and last peak's busiest hour through your own landscape with a step table; at each row name the system of record and count the writers of each fact, and ask of each handoff its idempotency key, whether its style matches its clock and which reconciliation catches what it misses, starting where the promise and the system of record belong to different systems."
+    },
+    "hand_off": {
+      "to": "part-10",
+      "relationship": "time",
+      "carries_over": "The landscape as it works at one moment, shown in the four journeys.",
+      "introduces": "How the same decisions look different as the business moves through the four stages."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The plan tested against its failures.",
+      "introduces": "What the evening and the plan say together, then what holds, sorted by how settled it is.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p40",
+        "controlling_idea": "The opening's storefront that kept selling while the chain behind it fell behind shows that the page's availability was the wrong measure: the right ones were orders per minute against the warehouse's intake, the age of the oldest unsent order and the time a sell-out takes to reach each channel, and the 2027 plan puts each on a screen with an owner.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The opening scenario set against the queue, the stock chain and the plan.",
+            "shows": "Calls back to the hook and states what the sections show together."
+          }
+        ]
+      },
+      {
+        "id": "p41",
+        "form": "list",
+        "controlling_idea": "Established: a queue between a platform and its warehouse system is right under peak load only with a gauge, an alarm, an owner and a replay procedure; stock copied on a schedule oversells in proportion to the sales rate and the delay; only a load test of the merchant's own path with marked orders finds its bottleneck.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer.",
+          "introduces": "The points it rests on, starting with what the sources establish.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p42",
+        "form": "list",
+        "controlling_idea": "Depends on context: the ladder's order depends on what the business can afford to lose, a static but honest peak promise is the interim without a computed promise, and an OMS cutover belongs before the peak only when its parallel run and load test finished in time.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established.",
+          "introduces": "What depends on the merchant's situation.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p43",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: the lesson is not that the systems were too slow but that nobody could see or touch them, so most of the plan is visibility and switches, and a peak plan should be written as a journey hour by hour with a name in every row.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established and what depends on context.",
+          "introduces": "The author's own judgement, labelled as such.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p44",
+        "form": "list",
+        "controlling_idea": "Eight questions let the reader find in their own company when the order flow fell behind, how long a sell-out takes to reach each channel, which switches were rehearsed and by whom, the promise change, vendor contacts, marked test orders, the Saturday reconciliations and the runbook's first row.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions that apply them to the reader's own company.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p45",
+        "controlling_idea": "Part IX opened with a warehouse that reports a parcel shipped while the storefront still shows it being prepared; its four journeys' incidents (the Three-Status Order, the Double Refund, the ASN Chargeback, the Black Friday Oversell) look like four failures in four areas but are one: every system did what it was built to do, and the promise broke at a handoff where a fact had two writers or none, a message had no key or a link had no measure.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The part opening's warehouse and storefront set against the four incidents: three statuses for one order (#1052877, six days, eleven tickets), two writers of one refund (212 returns, €19,400), a despatch advice written before the pallets were packed (€14,200), a stock copy two hours old behind a queue nobody watched (1,340 units).",
+            "shows": "Performs the synthesis and callback of the part's closing declared in the journal spec.",
+            "source": "journal-spec.json part-9 closing; Kestrel & Pine scenario ledger"
+          }
+        ],
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "This chapter's answer, the last of the part's four journeys.",
+          "introduces": "A marked turn: this chapter also closes Part IX, and what the four journeys say together, set against the part opening.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p46",
+        "controlling_idea": "Kestrel & Pine's answer was therefore mostly in the joins: three of Waypoint's eight decisions add a system (the availability service, the OMS, the PIM), while its integration standards, EDI rules and single definition of an order set owners, contracts, idempotency keys, reconciliations and the despatch advice's source, and the 2027 peak plan is mostly gauges and switches with owners.",
+        "function": "recommendation",
+        "evidence": [
+          {
+            "kind": "case",
+            "what": "W1-W3 add systems; W5, W6 and W7 set owners, contracts, keys, reconciliations and the despatch advice's source; the peak plan's gauges and switches.",
+            "shows": "Performs the so-what of the part's closing.",
+            "source": "Kestrel & Pine scenario ledger (Waypoint program)"
+          }
+        ],
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The one failure behind the four incidents.",
+          "introduces": "The answer Waypoint gave to it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p47",
+        "controlling_idea": "A reader can find next year's incidents in their own landscape before comparing any vendor by walking one ordinary order, one return, one business order and last peak's busiest hour through it with a step table, naming the system of record and counting writers at each row and asking each handoff for its key, its clock and its reconciliation.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Kestrel & Pine's answer in the joins.",
+          "introduces": "The same walk for the reader's own landscape.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p48",
+        "controlling_idea": "The journeys showed Kestrel & Pine's landscape at one moment; Part X follows the same decisions over time (buy or build, stay or replatform, how to organize the team) as questions every merchant faces, and how the answers change as a business moves through the four stages.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "time",
+          "carries_over": "The landscape as it works at one moment, shown in the four journeys.",
+          "introduces": "How the same decisions look different as the business moves through the four stages.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The concepts (peak profiles, capacity planning, backpressure, waiting rooms, degradation, observability, SLOs, the four postures, the scale-stage table) and the public evidence behind them.",
+      "covered_in": [
+        "peak-load-and-reliability"
+      ]
+    },
+    {
+      "topic": "Why the copied stock number was the wrong number and how available-to-promise is computed.",
+      "covered_in": [
+        "inventory-and-availability"
+      ]
+    },
+    {
+      "topic": "The promotion settings and the stacking bug of the same week.",
+      "covered_in": [
+        "commerce-promotions"
+      ]
+    },
+    {
+      "topic": "Waves, cut-offs and warehouse staffing; the promise service.",
+      "covered_in": [
+        "warehouse-and-fulfillment",
+        "shipping-and-delivery"
+      ]
+    },
+    {
+      "topic": "The API-budget analysis in detail; the OMS cutover sequence.",
+      "covered_in": [
+        "multi-tenancy-and-isolation",
+        "replatforming-and-migration"
+      ]
+    },
+    {
+      "topic": "Marketplace cancellation standards and the strike.",
+      "covered_in": [
+        "marketplaces-and-channel-integration"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-11-07",
+      "decision": "Told the evening in the order the people discovered it (warehouse at 19:50, operations at 20:20, ecommerce at 20:35, integration at 20:50) rather than in the order the problems began (13:00), so the reader feels the absence of a gauge; the 'could and could not do' table then maps each gap to a 2027 switch. (Carried from spec.md.)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Reconstructed the queue from the ledger's two fixed points (four hours behind at 21:00; 20:00 orders in the WMS after midnight) with a throughput of about seven a minute, which the multi-tenancy chapter's June 2027 analysis also gives, rather than inventing a faster flow that fails earlier. (Carried from spec.md.)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Placed the OMS cutover before the peak, following the ledger's replatforming line (D2C orders through the OMS from 13 October), and used the load tests and the game day to justify it; an earlier draft scheduled the cutover after the peak and was corrected. (Carried from spec.md.)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Kept the 2027 plan's figures (60 and 80 orders a minute, 120 on the OMS-to-WMS link, buffers of 3, 1 and 25 units, the 08:00 Saturday report) as the plan's own commitments and appended them to the ledger so the chapters on scaling stages and organizing engineering can reuse them. (Carried from spec.md.)"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Converted spec.md to spec.json from the published chapter, one spec paragraph per unit; intent, thesis and role copied unchanged from the journal spec, with its five acceptance criteria and no added criteria. spec.md's success criteria are inventories (figures reproduced, diagrams present, sections present, take-away tiers, word range) and are dropped; the outcomes they aimed at are carried by the journal spec's AC-1 to AC-4, the ledger and the length limit of 6,000 words (the old range's upper bound), which stays.",
+      "rejected": [
+        "Rewriting the inventory criteria as minor custom criteria."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Added the units the contract asks for and the published chapter lacked: a chapter synthesis (p40) at the head of 'What to Take Away' that calls back to the opening's storefront, and the part closing under a new heading 'Closing Part IX' (p45 synthesis and callback to the Part IX opening, p46 so-what, p47 take-away), as the journal spec assigns Part IX's closing to this chapter; the hand-off (p48) moves under that heading and is rewritten to express the time relationship Part X declares (one moment, then change over the stages). The intro paragraph p02 is widened into a roadmap that announces every section and the part closing.",
+      "rejected": [
+        "A conclusion of lists only.",
+        "Leaving the part closing to the Part X intro."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Ledger alignment (rule 1 of the author's standing instruction): the stock chain is stated as three scheduled copies taking up to two hours, without listing hop intervals that sum to more (p09, p14, p41, the capacity table); the 21:05 hand edit in the connector reaches the marketplaces at the connector's next scheduled sync, which is why they show sold out only at about 21:35 (the ledger's connector has a scheduled stock sync); the theme sentence promised next day for orders before 22:00, not 'until 23:30' (ledger: static 'ordered before 22:00' rule); the May 2027 promise service is described only as specified by Noor in May (shipping-and-delivery line), not as running since May; 'storefront traffic about 41 times an average hour' and 'placed between 17:00 and midnight' added from the Peak section and the warehouse-and-fulfillment line.",
+      "rejected": [
+        "Keeping the published wording where it disagrees with the ledger."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Flow rubric (fresh agent, output of validate_spec.py --flow only): sound with notes. The author asked (2026-11-12) for the rubric notes to be taken without review. Taken: the roadmap (p02, now p03) announces the rebuilt order path and stock events; p07 no longer repeats Thursday's warning; p13 no longer states the €96,000 before the weekend counts it and p15 marks its figures as the weekend's count; the June 2027 throttle finding moves from p12 to p25, where it explains the plan's API-budget order; the weekend section's rationale says what breaks; the 'wrong' section gets a declared order; p40 states the measures the page should have had, so it does not repeat the author's synthesis; the part closing opens with a marked turn. Not taken: merging p07 and p08 (the table sits between them; trimming p07 removed the overlap). The rubric was not rerun, because no unit changed position.",
+      "rejected": [
+        "Rerunning the rubric for content moves within units."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "After draft check round 1 (escalate on one spec fault): the 2028 look-ahead in p39 is cut, because both flow readers found it out of place at the end of the failure section and it supports no supporting claim (pre-approved spec change; rule 3); the introduction is reordered so that 'Where we are in the order's journey' (now p02) follows the hook and names the first three journeys, before the roadmap (p03) and the methods paragraph (p04), as one reader asked and both found the paragraph out of place; the four-calls arithmetic moves into the order-export item of p09, as both readers asked, and p12 now states where the limit sat; p24, p25, p26 and p28 gain the wording readers needed (120 on the OMS-to-WMS link alone, the 2026 throttles as the per-app API budget, wholesale and EDI orders onto the OMS, the never-switched-off functions in the ladder's gloss); p04 says the methods rest on dated public practice (Shopify, Zalando, AWS), which the Sources cite.",
+      "rejected": [
+        "Moving the rehearsal before the switches (one reader; the prerequisite order stands).",
+        "Making 'When It Goes Wrong' a subsection of the plan (one reader)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12 (after draft check round 2, escalate on one spec fault): (1) the June 2027 finding of about 1,900 platform-side throttles is cut, because both readers in both rounds found it out of place wherever it stood (in Friday's p12 and in the plan's p25) and it supports no supporting claim; p25 keeps the plan's API-budget order (rule 3); (2) the theme-file paragraph p29 drops 'for peak week the service is set to within three working days from the start', which both readers found contradicts rung 5 and which the ledger's peak-load line does not state (rules 1 and 3); (3) the 21:05 hand edit is described as putting the zero in the connector ten minutes early but not stopping the marketplaces before the connector's next sync at about 21:35, so the two tables agree (rule 1: ledger 21:05 and the journal spec's 21:35); (4) 'OMS' and 'waiting room' are glossed at first use in p24 and the forecast subsection is retitled 'The forecast and the capacity per link', with a new subheading 'The rebuilt order path and stock events' before p25, as both readers asked (rules 3, 6 and 8; subheadings only); (5) the plan section opens by saying it answers the post-mortem's five findings (the declared problem_solution transition); (6) the runbook's 15 November rehearsal is named in the rehearsal paragraph as a last walk-through on the day the freeze began; (7) one-reader points fixed cheaply: 'built for a smaller business', Mara's role, the three stock-writing apps, 'wrong by a factor of two'; the methods pointer stays in the introduction and the weekend totals stay flagged in p15 (rule 10, current position). The four open questions are closed: the week and hour shapes and the €96,000 breakdown are the ledger's journey-peak-day line (rule 1); the game day is the ledger's peak-load line, its timings illustrative under the section's 'every figure is fictional' (rule 1); the part closing is now in the spec and the prose.",
+      "rejected": [
+        "Moving the 1,900 throttles into the post-mortem paragraph (the review postdates it).",
+        "Leaving the questions for the author."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12, after the confirming round 3 (escalate: 2 corroborated flow points, one at fault in the spec): (1) the subsection 'The rebuilt order path and stock events' (p25-p27, Figure 3) now comes before 'The forecast and the capacity per link' (p24 and the capacity table), as both readers asked, with the transitions of p25, p24 and p28 and the plan section's flow rewritten, the OMS glossed in p25 and the forward pointer 'described after the table' removed (rule 3); the roadmap p03 lists the plan's parts in the new order; (2) the 21:00-22:00 row tells Milan's 21:05 edit once, in the team column, and the systems column names the 21:15 push as the shop platform's push to the connector (rule 3). Cheap one-reader fixes: the stock-chain item says the connector passes the zero to the marketplaces at its own next sync (the ledger's connector sync), 'every link the merchant runs is tested at 80' (the storefront is the vendor's), the waiting-room gloss is given once. Not changed: the 11,500 platform orders against 1,100 unallocatable WMS orders (one reader; the ledger gives no figure that relates them), the forward jump to the Double Refund and the October rehearsal pointers (rule 10, current position). No further round, as the instruction prescribes; check-report.json (round 3) is stale after these edits.",
+      "rejected": [
+        "Moving the capacity table out of p24 instead of reordering units.",
+        "A fourth round."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Under the book-wide vocabulary ruling the hosted product is called 'the shop platform' where the text means Kestrel & Pine's platform; vendor-neutral uses of 'platform' stay.",
+      "rejected": [
+        "Leaving 'the platform' throughout."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md (Peak; problem 1; W1-W8; lines journey-peak-day, peak-load-and-reliability, multi-tenancy-and-isolation, inventory-and-availability, marketplaces-and-channel-integration, warehouse-and-fulfillment, shipping-and-delivery, replatforming-and-migration, commerce-promotions) and _research/consistency-issues.md",
+      "contributed": "Every figure, date, time and name of the 2026 evening and the 2027 plan."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (journey-peak-day; part-9 and its closing; part-10 transition_in)",
+      "contributed": "Intent, thesis, role, acceptance criteria, the part closing and the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine; peak-load-and-reliability; inventory-and-availability, warehouse-and-fulfillment, marketplaces-and-channel-integration, multi-tenancy-and-isolation, commerce-promotions, shipping-and-delivery, replatforming-and-migration; _research/brief-platform-engineering-scale.md, brief-shopify.md, brief-integration-and-data.md",
+      "contributed": "The concepts applied and the sibling reconstructions this journey agrees with (from spec.md)."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify Engineering, How we prepare Shopify for BFCM (2025)",
+      "contributed": "The 150% forecast convention and Game Days."
+    },
+    {
+      "kind": "external",
+      "ref": "Zalando Engineering, How Zalando prepares for Cyber Week (2020)",
+      "contributed": "Test orders that fulfillment skips; the Situation Room."
+    },
+    {
+      "kind": "external",
+      "ref": "AWS Architecture Blog, Exponential backoff and jitter (2015)",
+      "contributed": "The thundering-herd finding in the October load test."
+    },
+    {
+      "kind": "external",
+      "ref": "AWS Builders' Library (2019), Amazon SQS documentation (n.d.), Google SRE book (2017), Hodgson (2017), Cloudflare (2021), Stripe rate-limit documentation (n.d.), Shopify 2018 and 2023 and webhook documentation, Zalando 2019",
+      "contributed": "As cited in the article's Sources."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Confirming draft check round 3: escalate on two corroborated flow points (the capacity table before the links it names, at fault in the spec; the doubled 21:05 event in the hour table), three minor; all fixed cheaply without another round (see decision_log): plan units reordered p23, p25, p26, p27, p24, p28-p37 with subheadings moved, hour-table row rewritten. check-report.json is stale after these edits."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Draft check round 2: escalate (9 blocking: 7 corroborated flow points, 1 corroborated term, 1 transition; one at fault in the spec, the 1,900 throttles). Auto-resolved (see decision_log); p23, p24, p25, p29 and p36 redrafted in the same units, subheadings adjusted, open questions closed."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Draft check round 1: escalate (13 blocking: 8 corroborated flow points, 1 corroborated term, AC-1, AC-4, AC-5 at p12 and its transition; one flow point at fault in the spec, p39's 2028 note). Spec: intro reordered (p02 where we are, p03 roadmap, p04 methods), p09/p12 arithmetic moved, p39 cut to the ERP, p24-p28 wording. Prose redrafted in the same units; the 21:00-22:00 row now gives Milan's 21:05 edit before the 21:15 push; ATP spelled out."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Converted spec.md to spec.json (outcome-spec pass); added the chapter synthesis and the Part IX closing; aligned the stock-chain wording, the 21:05/21:35 marketplace timing, the 22:00 promise and the May 2027 promise service with the ledger."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator). (Carried from spec.md.)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: cut-off aligned with item 15, ERP batch contradiction removed. (Carried from spec.md.)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article. (Carried from spec.md.)"
+    }
+  ],
+  "length": {
+    "max_words": 6000
+  }
+}

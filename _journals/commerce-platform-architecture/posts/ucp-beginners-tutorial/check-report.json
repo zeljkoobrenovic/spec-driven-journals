@@ -1,0 +1,693 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/ucp-beginners-tutorial/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/ucp-beginners-tutorial/index.md",
+  "spec_sha": "042a1b7396c9a77d",
+  "draft_sha": "238f2f21f5d89621",
+  "run_at": "2026-11-13T02:39:24+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Buying via an assistant needs many steps that differ per merchant",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "UCP gives shared messages while the merchant keeps responsibility",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Learn UCP by tracing one purchase and a lost response, reporting only established state",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the appendix and the API prerequisite",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "The Purchase We Will Follow ¶1",
+      "summary": "The example jacket purchase and its price",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "The Purchase We Will Follow ¶2",
+      "summary": "The lab assumptions are illustrative only",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "The Purchase We Will Follow ¶3",
+      "summary": "Permission to search is not permission to buy",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Who Talks to Whom? ¶1",
+      "summary": "Platform and Business protocol roles",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Who Talks to Whom? ¶2",
+      "summary": "Definitions of credential and payment service provider",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Who Talks to Whom? ¶3",
+      "summary": "Put UCP in front of existing commerce systems, not beside them",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "The Vocabulary, Before the Messages ¶1",
+      "summary": "Merchants differ in what they support and UCP must describe it",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "The Vocabulary, Before the Messages ¶2",
+      "summary": "Profiles declare capabilities named by namespaced identifiers",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "The Vocabulary, Before the Messages ¶3",
+      "summary": "The tutorial uses REST as transport",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Step 1: Discover What the Merchant Supports ¶1",
+      "summary": "Documentation version used and caveats on excerpts",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Step 1: Discover What the Merchant Supports ¶2",
+      "summary": "First the application reads the merchant profile",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Step 1: Discover What the Merchant Supports ¶3",
+      "summary": "What the profile excerpt shows and omits",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Step 1: Discover What the Merchant Supports ¶4",
+      "summary": "How to read the profile and its endpoint",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Step 1: Discover What the Merchant Supports ¶5",
+      "summary": "Application profile and capability negotiation, not purchase permission",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Step 1: Discover What the Merchant Supports ¶6",
+      "summary": "Both lab profiles support fulfillment; use a fallback otherwise",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Step 2: Choose an Exact Item ¶1",
+      "summary": "A purchase needs the exact variant identifier",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Step 2: Choose an Exact Item ¶2",
+      "summary": "Catalog search vs lookup, not required for checkout",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Step 2: Choose an Exact Item ¶3",
+      "summary": "Record the exact identifier, and let checkout set the price",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Step 2: Choose an Exact Item ¶4",
+      "summary": "Cart vs checkout session; tutorial goes straight to checkout",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Step 3: Create a Checkout Session ¶1",
+      "summary": "Creating a checkout session does not place the order",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Step 3: Create a Checkout Session ¶2",
+      "summary": "Checkout REST endpoint with authentication omitted",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Step 3: Create a Checkout Session ¶3",
+      "summary": "Key request headers and idempotency",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Step 3: Create a Checkout Session ¶4",
+      "summary": "Lead-in to the create response",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Step 3: Create a Checkout Session ¶5",
+      "summary": "Full response fields and the schema as contract",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Step 3: Create a Checkout Session ¶6",
+      "summary": "Incomplete status is a business state, not an HTTP result",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Step 4: Supply the Address and Choose Delivery ¶1",
+      "summary": "Delivery must come from the merchant after an address is given",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Step 4: Supply the Address and Choose Delivery ¶2",
+      "summary": "Fulfillment extension vocabulary for methods and options",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Step 4: Supply the Address and Choose Delivery ¶3",
+      "summary": "Update Checkout replaces state, so resend retained fields",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Step 4: Supply the Address and Choose Delivery ¶4",
+      "summary": "Lab update returns the €199 delivered quote",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Step 4: Supply the Address and Choose Delivery ¶5",
+      "summary": "Money in minor units, and the ready_for_complete status",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Step 4: Supply the Address and Choose Delivery ¶6",
+      "summary": "Avoid double-counting tax, then ask the shopper to approve",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Read the Checkout State Before Taking the Next Step ¶1",
+      "summary": "Checkout status shows only remaining work",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Read the Checkout State Before Taking the Next Step ¶2",
+      "summary": "Buyer handoff via continue_url is a normal outcome",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Read the Checkout State Before Taking the Next Step ¶3",
+      "summary": "The checkout lifecycle's six states",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Read the Checkout State Before Taking the Next Step ¶4",
+      "summary": "ready_for_complete does not mean purchased",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Step 5: Arrange Payment Without Giving the Model Card Details ¶1",
+      "summary": "Payment instrument vs payment handler",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Step 5: Arrange Payment Without Giving the Model Card Details ¶2",
+      "summary": "The wallet returns a token whose limits come from the handler",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Step 5: Arrange Payment Without Giving the Model Card Details ¶3",
+      "summary": "A payment token is not a receipt",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Step 5: Arrange Payment Without Giving the Model Card Details ¶4",
+      "summary": "Keep card details out of the model and logs",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Step 5: Arrange Payment Without Giving the Model Card Details ¶5",
+      "summary": "Payment may require extra buyer authentication",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Three Permissions That Are Easy to Confuse ¶1",
+      "summary": "Application trust, account access and purchase authority are separate",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Three Permissions That Are Easy to Confuse ¶2",
+      "summary": "Identity linking via OAuth scopes is optional for guests",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Three Permissions That Are Easy to Confuse ¶3",
+      "summary": "AP2 mandates for autonomous buying are not assumed here",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Step 6: Complete the Checkout and Keep the Order Reference ¶1",
+      "summary": "Shopper approval and the completion request with a new key",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Step 6: Complete the Checkout and Keep the Order Reference ¶2",
+      "summary": "Completion body must follow the selected payment handler",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Step 6: Complete the Checkout and Keep the Order Reference ¶3",
+      "summary": "Completion cannot change the agreed terms",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Step 6: Complete the Checkout and Keep the Order Reference ¶4",
+      "summary": "Lead-in to the completion response",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Step 6: Complete the Checkout and Keep the Order Reference ¶5",
+      "summary": "The order is confirmed; keep checkout and order identifiers",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Step 6: Complete the Checkout and Keep the Order Reference ¶6",
+      "summary": "Handling complete_in_progress, and authorization, capture and fulfillment as separate steps",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Step 7: Follow the Order After Checkout ¶1",
+      "summary": "Delivery answers come from order records",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Step 7: Follow the Order After Checkout ¶2",
+      "summary": "Order capability separates delivery promises from actual events",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "Step 7: Follow the Order After Checkout ¶3",
+      "summary": "Order updates via webhook or GET retrieval",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "Step 7: Follow the Order After Checkout ¶4",
+      "summary": "Keep a correlation record linking conversation to order",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "Step 7: Follow the Order After Checkout ¶5",
+      "summary": "Order access needs authorization checks",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "When the Completion Response Disappears ¶1",
+      "summary": "A lost completion response leaves the outcome uncertain",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "When the Completion Response Disappears ¶2",
+      "summary": "Reconcile by reading the existing checkout, not buying again",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "When the Completion Response Disappears ¶3",
+      "summary": "Completion contract: retrieve first, retry with the same key",
+      "matched_spec_paragraph": "p66"
+    },
+    {
+      "draft_locator": "When the Completion Response Disappears ¶4",
+      "summary": "Operation key vs per-attempt signatures; persist the key",
+      "matched_spec_paragraph": "p67"
+    },
+    {
+      "draft_locator": "When the Completion Response Disappears ¶5",
+      "summary": "Make the lost response the first failure exercise",
+      "matched_spec_paragraph": "p68"
+    },
+    {
+      "draft_locator": "Other Things That Go Wrong ¶1",
+      "summary": "Five other failures where no outcome may be invented",
+      "matched_spec_paragraph": "p68a"
+    },
+    {
+      "draft_locator": "Other Things That Go Wrong ¶2",
+      "summary": "These failure responses are context-dependent recommendations",
+      "matched_spec_paragraph": "p69"
+    },
+    {
+      "draft_locator": "Try It: A Small Learning Exercise ¶1",
+      "summary": "Practise on a test system without a language model",
+      "matched_spec_paragraph": "p70"
+    },
+    {
+      "draft_locator": "Try It: A Small Learning Exercise ¶2",
+      "summary": "Official samples repository and version check",
+      "matched_spec_paragraph": "p71"
+    },
+    {
+      "draft_locator": "Try It: A Small Learning Exercise ¶3",
+      "summary": "Six hands-on exercises in order",
+      "matched_spec_paragraph": "p72"
+    },
+    {
+      "draft_locator": "Try It: A Small Learning Exercise ¶4",
+      "summary": "The exercise output is a trace",
+      "matched_spec_paragraph": "p73"
+    },
+    {
+      "draft_locator": "What a Merchant Should Implement First ¶1",
+      "summary": "UCP does not fix stale merchant data",
+      "matched_spec_paragraph": "p74"
+    },
+    {
+      "draft_locator": "What a Merchant Should Implement First ¶2",
+      "summary": "Narrow first scope and six responsibilities to prove",
+      "matched_spec_paragraph": "p75"
+    },
+    {
+      "draft_locator": "What a Merchant Should Implement First ¶3",
+      "summary": "Vendor vs custom implementation trade-off",
+      "matched_spec_paragraph": "p76"
+    },
+    {
+      "draft_locator": "What a Merchant Should Implement First ¶4",
+      "summary": "Adopt only the capabilities a purchase depends on",
+      "matched_spec_paragraph": "p77"
+    },
+    {
+      "draft_locator": "How UCP Differs from ACP, MCP and AP2 ¶1",
+      "summary": "Why merchants need to compare the protocols",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "How UCP Differs from ACP, MCP and AP2 ¶2",
+      "summary": "ACP also covers broad commerce workflows",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "How UCP Differs from ACP, MCP and AP2 ¶3",
+      "summary": "UCP's focus, its MCP binding and optional AP2",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "How UCP Differs from ACP, MCP and AP2 ¶4",
+      "summary": "Map ACP and UCP onto shared commerce logic",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "Recap through the jacket shopper's instruction",
+      "matched_spec_paragraph": "p78"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "Established conclusions",
+      "matched_spec_paragraph": "p79"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "Context-dependent conclusions",
+      "matched_spec_paragraph": "p80"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "Author's synthesis",
+      "matched_spec_paragraph": "p81"
+    },
+    {
+      "draft_locator": "Questions for Your First Review ¶1",
+      "summary": "Questions for a first design review",
+      "matched_spec_paragraph": "p82"
+    },
+    {
+      "draft_locator": "Questions for Your First Review ¶2",
+      "summary": "Run the exercises before review, with related chapters",
+      "matched_spec_paragraph": "p83"
+    },
+    {
+      "draft_locator": "Questions for Your First Review ¶3",
+      "summary": "Hand-off to the Reference part",
+      "matched_spec_paragraph": "p84"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 84 outline summaries, written without the spec, match the controlling idea of the aligned spec paragraph in the spec's order (introduction p01-p04, sections purchase through comparison, conclusion p78-p84); no unit is unmatched.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Outliner marked five units two_ideas (Introduction ¶4, Step 2 ¶3, Step 4 ¶5, Step 4 ¶6, Step 6 ¶6); in each the aligned spec paragraph's controlling idea declares both parts as one idea (p04 route plus reader, p26 exact identifier and checkout sets terms, p38 minor units shown by the ready_for_complete fragment, p39 omitted tax then approval, p57 complete_in_progress and the later activities it does not collapse).",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit ties to a supporting claim S1-S6 through its section's advances_thesis, or to the introduction/conclusion apparatus; no orphan paragraph.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Each excerpt and table is followed or framed by a sentence saying what it shows: profile excerpt ('Read it from the outside in'), create request (three headers), create response (status incomplete as a business state), quote fragment (omissions, approve the merchant's total), completed response ('Now \"Your order has been placed\" is supported'), states table ('The practical mistake to avoid'), participants, vocabulary, fulfillment, permissions, correlation, five-situations, six-responsibilities and comparison tables framed by their lead paragraphs; figures sit with the paragraph they illustrate.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Step 1: Discover What the Merchant Supports ¶1",
+      "quote": "**Technical reference.** The walkthrough uses UCP's published **2026-08-25** documentation, checked on 9 November 2026",
+      "finding": "The section transition (sequence: the vocabulary of profiles and capabilities -> the first step, reading the merchant's profile, placement start_of_this) is not at the boundary: Step 1 opens with a page-level reference note that picks up nothing from the vocabulary; the sequence arrives one paragraph later ('Now the first message'). The spec itself puts p08 first in Step 1 (flow rationale: 'The technical reference opens Step 1'), so the declared start-of-section transition cannot land where declared.",
+      "fault": "spec",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Step 4: Supply the Address and Choose Delivery ¶1",
+      "quote": "A jacket cannot be quoted for delivery without knowing where it will go.",
+      "finding": "Declared carries_over 'An incomplete checkout' -> 'Supplying what it lacks'. The opening does not pick up the incomplete checkout or what it lacked: Step 3's response reported the missing email, and Step 4 starts from the address instead; the email returns only as 'buyer details' in ¶4. Flow reader B was unsure whether the Step 3 problem had been resolved.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Every other transition_in (p02-p84 and each section start) is expressed at its boundary and picks up the declared known information, e.g. 'for these exchanges' (elaboration), 'The token answers who pays, not who may act' (contrast), 'Because only the token travels' (cause_effect), 'Suppose the merchant creates the order, but the network connection drops' (problem_solution), 'In each of these five situations, too' (similarity), 'Such a trace shows what a first integration has to prove' (cause_effect), 'Go back to the shopper who said' (conclusion_summary).",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both flow readers state an organising principle that agrees with the declared chronological pattern with prerequisite_order (purchase, participants, vocabulary before the first message) and problem_solution (lost response, other failures, exercise, first scope, comparison), and both found it easy to follow overall. Both thought the ACP/MCP/AP2 comparison weakly placed but neither found its position unclear ('not confusing', 'still workable'), so it is not counted. The 'request signature' point both reported is recorded under known_before_new.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Step 1: Discover What the Merchant Supports ¶1",
+      "quote": "Technical reference. The walkthrough uses UCP's published 2026-08-25 documentation",
+      "finding": "Flow reader A: the Technical reference note opens Step 1 before the first message and 'interrupts the step it heads'; it would read better in the introduction or before Step 1. The prose is fine; the difficulty comes from the order the spec declares (p08 first in Step 1).",
+      "fault": "spec",
+      "corroborated_by": "flow_B item 'Technical reference. The walkthrough uses...': a page-level caveat placed inside a step that pushes the first message down a paragraph",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/1",
+      "draft_locus": "Read the Checkout State Before Taking the Next Step ¶2",
+      "quote": "Some of that work may belong to the buyer, and a handoff is a normal outcome. The merchant can supply a continue_url",
+      "finding": "Flow reader A: the handoff comes before the status table that names its state (requires_escalation), so the paragraph 'only made sense after I read the table'. The spec orders p43 before p41 deliberately ('the handoff is explained before the table of states that names it'), so the difficulty comes from the declared order.",
+      "fault": "spec",
+      "corroborated_by": "flow_B item 'Some of that work may belong to the buyer...': handoff explained before the table that introduces requires_escalation, reads slightly out of order",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/12/paragraphs/3",
+      "draft_locus": "When the Completion Response Disappears ¶4",
+      "quote": "A retry involves two kinds of identity. ... the replay rules stop an old attempt from being sent again.",
+      "finding": "Flow reader A: the hardest paragraph; replay and signed headers are new here and the line between them and the operation key took two readings. The spec's order is sound; the prose packs two new notions (signed per-attempt headers, replay rules) into the paragraph without enough setup.",
+      "fault": "draft",
+      "corroborated_by": "flow_B item 'A retry involves two kinds of identity...': densest paragraph, 'replay rules' new here, had to re-read to keep the two identities apart",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "The Purchase We Will Follow ¶2",
+      "quote": "(For readers of the book: this lab purchase is separate from Eva's €235 order and from Kestrel & Pine's decision not to launch a shopper-facing agent in 2027.)",
+      "finding": "Flow reader A: Eva has not been introduced; 'a beginner meets an unknown name and stalls'. The spec requires the separation for book readers (p06), but the draft can meet it without stalling a newcomer (a short gloss of who Eva is, or wording that does not depend on knowing her).",
+      "fault": "draft",
+      "corroborated_by": "flow_B item '(For readers of the book: this lab purchase is separate from Eva's €235 order...)': refers to material outside the page and distracts",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "a ready checkout is not yet an order, and a lost completion response is resolved by reading the existing checkout, not by buying again.",
+      "finding": "Flow reader A only: the densest sentence on first reading, since checkout, completion and 'ready' are not yet explained. The spec places the thesis here.",
+      "fault": "unclear",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/5",
+      "draft_locus": "Step 6: Complete the Checkout and Keep the Order Reference ¶6",
+      "quote": "A payment authorization, not the shopper's approval, reserves or approves funds, capture collects them, and fulfillment prepares and delivers goods.",
+      "finding": "Flow reader A only: three terms in one sentence, and 'authorization' clashes with the buyer authorization of the previous section; had to re-read.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/14/paragraphs/0",
+      "draft_locus": "Try It: A Small Learning Exercise ¶1",
+      "quote": "Practise these on a test system.",
+      "finding": "Flow reader A only: the referent of 'these' is unclear until the numbered list.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Step 4: Supply the Address and Choose Delivery ¶2",
+      "quote": "Figure 5 (Thursday delivery, €199 total)",
+      "finding": "Flow reader A only: Figure 5 shows Thursday delivery and the €199 total before ¶4 sets up those lab assumptions.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Step 1: Discover What the Merchant Supports ¶5",
+      "quote": "With each API request it identifies that profile, allowing the merchant to determine which capabilities both sides support.",
+      "finding": "Flow reader B only: how the application identifies its profile (the UCP-Agent header) is answered only in Step 3; a pointer would help.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/5",
+      "draft_locus": "Step 4: Supply the Address and Choose Delivery ¶6",
+      "quote": "If the merchant's full response lists the tax as a separate line, the app must not add it again to a price that already includes tax.",
+      "finding": "Flow reader B only: had to re-read to see which number the app should show.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Every does_not_know term is given at or before first use: UCP, Platform, Business, profile/service/capability/extension/transport/schema (vocabulary table), namespace names, REST, credential, PSP, payment instrument, payment handler, token, identity linking, OAuth 2.0, scopes, AP2 mandate, ACP and MCP (comparison table), variant, cart vs checkout session, minor units, the six states, continue_url (glossed in place), correlation record; idempotency, reconciliation, webhook, authorization and capture are glossed. Eva (already_knows for book readers) is recorded under flow_is_followable.",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/0",
+      "draft_locus": "Three Permissions That Are Easy to Confuse ¶1",
+      "quote": "A request signature proves which application sent a request.",
+      "finding": "'Request signature' is neither on already_knows nor explained; Step 3 only said authentication headers were omitted. The later replay paragraph builds on it.",
+      "fault": "draft",
+      "corroborated_by": "flow_A item 'A request signature proves which application sent a request.': signatures have not appeared before; flow_B item (same sentence): signatures had not been introduced",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The introduction opens on the jacket shopper (intriguing_example), defines UCP, states the thesis (¶3) and gives a roadmap (¶4); none of placeholder, restated question, dictionary, 'dawn of man' or book report.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion does not open with 'in conclusion', adds no new subtopic (the MCP binding in 'Depends on context' was introduced in the comparison), holds no new evidence and does not end on a rephrased thesis: it ends with the course of action and the hand-off to the Reference part.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "What to Take Away ¶1 joins profiles, checkout states and the lost-response recovery into one answer no single section gives (what the application actually knows at each step); ¶4 gives the so-what (judge the first integration by whether it can explain and recover one uncertain purchase; keep the merchant's rules authoritative), and Questions ¶2 the course of action.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "¶1 returns to the opening shopper: 'Go back to the shopper who said, \"Find this jacket, show me the delivered total, and ask before buying.\"' and reads which message carried each part; 'Permission to search never became authority to buy'.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted the roadmap's order exactly (purchase, participants, vocabulary; seven steps with stops for checkout states and three permissions; lost completion response and other failures; exercise, first implementation, comparison), one worked purchase through protocol messages and states, the merchant keeping its promises, the lost-response recovery, the API-only prerequisite and the link to chapter 45.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Matches expected: the outcome is uncertain; read the existing checkout; completed -> recover the order reference; complete_in_progress -> wait with a bounded delay; expired/canceled -> stop automatic attempts, investigate; never a fresh checkout; retry only the identical completion with the same idempotency key and only if reading fails to establish the outcome; a new completion uses a new key; the key is persisted; the shopper is told the app is checking whether the order was placed.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Matches expected: 'Purchased' is not allowed after ready_for_complete (a form ready for its final button; shopper must authorize, merchant accept); only completed with an order reference confirms; complete_in_progress means wait; requires_escalation means the buyer continues through the continue_url handoff after recoverable issues. The answer does not mention incomplete or canceled, which the probe did not ask.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Matches expected: one product type, one market, one payment route, explicit approval; recovery path before loyalty, split shipments, unattended purchases; the six proofs (versions negotiated, variant resolves to current data, price and delivery from merchant operations, payment outcomes distinguishable, uncertain completion resolved without a second purchase, support links report to checkout/order/payment); the merchant's price, stock and order rules stay authoritative and stale stock in UCP format is still stale.",
+      "severity": "minor"
+    }
+  ]
+}

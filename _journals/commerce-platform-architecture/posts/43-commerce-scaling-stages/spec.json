@@ -1,0 +1,1549 @@
+{
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "commerce-scaling-stages",
+  "journal": "commerce-platform-architecture",
+  "part": "part-10",
+  "title": "What Changes at Each Scale: From First Store to Group",
+  "status": "draft",
+  "revised": "2026-11-13",
+  "basis": "Reconstructed from the published chapter (posts/43-commerce-scaling-stages/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (a thesis paragraph, a roadmap and a conclusion paragraph that answers the opening); two Group-stage paragraphs that made one point are merged. These are recorded in decision_log.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The four stages (Starting, Growing, Omnichannel, Group) as shapes of channels and stock locations, with revenue bands as rough markers only, and the map of what is typical and what becomes necessary at each: where the order and stock truth live, product data, fulfillment, finance, integration style, who builds and runs, fees met, peak day, decisions due and failure patterns.",
+        "How fresh each fact must be at each stage, the Group stage's share-or-separate table per capability, and the transition signals (a fee cliff, a second stock location, a retail chain asking for EDI, two order counts, a connector without an owner, support opening several systems, an app writing a fact another system owns, a first peak-day integration failure, a second brand).",
+        "Kestrel & Pine's path priced: Starting 2016–2018, Growing 2019–2022, Omnichannel since 2023; the April 2027 stage map, which maps its thirteen systems to their stages, attributes eight of its ten incidents to Growing-stage designs, finds six signals in 2026 and defers the Group stage to the 2029 review because no stage-4 signal is planned for 2027–2028."
+      ],
+      "believe": [
+        "A stage is a shape, not a revenue number.",
+        "Most incidents at a stage are designs from the stage before still running; the leftover, not the missing tool, is what fails.",
+        "Two transition signals in one year mean the stage has changed, whatever the revenue says."
+      ],
+      "can_do": [
+        "Place a merchant on the map by its channels and stock locations and list which stage each of its systems was bought for.",
+        "Sort a program's decisions into those for the current stage, those left from the last one and those copied from a larger company, and say for a group which capabilities to share."
+      ]
+    },
+    "audience": {
+      "who": "Newcomers to commerce architecture; most of all the engineering lead or architect who, like Noor Visser, inherits systems bought at earlier stages and must explain to a board which decisions belong to the company it is now. Product managers and consultants who need to read a vendor's price list as a map of expectations are the second readers.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side; roughly what an API, a database and a queue are.",
+        "Kestrel & Pine, its people, its ten incidents of 2026 and early 2027 in outline (among them the Black Friday Oversell, the Three-Status Order, the Price Drift, the ASN Chargeback, the Store Stock Mirage, the App That Wrote Stock and the Deprecated Endpoint) and the names of the sixteen failure patterns.",
+        "From Part I: the thirteen steps of an order, promise and handoff, the three status lines, 'system', 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, the business models and the four scale stages (Starting, Growing, Omnichannel, Group) with Kestrel & Pine's years, the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation, the Waypoint decisions W1 to W8.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system (OMS), availability service, D2C, B2B, PIM, POS.",
+        "From Parts II and III: one owning system per product attribute; prices frozen at order placement; available-to-promise; one order record with an OMS once two of four conditions hold; the monthly match of invoices, payouts and bank lines.",
+        "From chapters 41 and 42: W4, stay and surround (keep the shop platform, buy the hubs beside it, own the joins), and migrations moved one seam at a time, named there as the moments a merchant moves from one stage to the next."
+      ],
+      "does_not_know": [
+        "Stock location as a counting unit of a stage; GMV; fee cliffs and plan thresholds as transition signals.",
+        "The transition-signal rule (two signals in one year) and the three directions of a stage mismatch (too early, too late, sideways).",
+        "The Group stage's share-or-separate question and the public group evidence (VF Corporation, Zalando and ABOUT YOU, Jacobs 2020, Uber 2020)."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a merchant whose revenue says one stage and whose shape says another, the reader places it by shape and names the decision due, rather than by revenue or by adding a tool.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A brand with €15M revenue runs a web shop, two stores, wholesale including EDI with one retail chain, and a marketplace, all from one warehouse whose stock its ERP copies to the shop every hour. This year it held its first 'which number is right' meeting and had its first peak-day integration failure. Its board calls it a Growing business. Using only this chapter: which stage is it in, and what should it decide first?",
+        "expected": "Omnichannel by shape: stores, wholesale by EDI and a marketplace sell from one stock, and revenue bands are only markers; it has at least three transition signals this year (an EDI request, two order counts, a first peak integration failure), and two in a year mean the stage has changed. The first decision is which Growing-stage leftovers to retire, not which tool to add: the hourly ERP-to-shop copy and the ERP as stock hub give way to a system of record per fact, availability computed from stock events, an order hub and integration standards with owners, contracts, idempotency and reconciliation. Copying a Group-stage architecture would be The Giant's Boots."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given a group adding a brand, the reader decides capability by capability what to share, rather than one stack or full separation.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A group acquires a second outdoor brand that runs its own stack. Using only this chapter: which capabilities should the group share, which may stay separate, and how should it proceed?",
+        "expected": "Always share the integration layer and data definitions, peak tooling, security and compliance, and the PSP contract and fraud rules (with separate merchant accounts where legal entities require). Share the storefront when the brands are positioned alike, keep it separate when brand identity is the product; share the attribute model in a PIM with brand workspaces; share stock and availability when warehouses serve both brands; share the order hub when customers buy across brands. An acquisition turns the question into sequencing, which is a migration. Forcing one stack by decree, or keeping everything apart, without measuring the benefit is One Size Fits None; autonomy without shared standards produces the Spaghetti Junction at group scale."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can explain why a merchant's current-stage incidents are attributed to the stage before, and what that changes in its program.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Kestrel & Pine's incidents of 2026 and early 2027 happened while it was an Omnichannel business. Using only this chapter: why does the stage map attribute most of them to the Growing stage, and what follows for Waypoint?",
+        "expected": "Eight of the ten incidents trace to designs from 2019–2022 still running in 2026: the hourly stock sync built when marketplace orders were a few a day, agency scripts written for one channel at a time, the ERP as hub for stock it did not hold, and the nightly POS sync from when there was one store. The company had moved stage and the architecture had not. So Waypoint's €1.1M buys the Omnichannel stage's hubs and standards (OMS, PIM, availability service, integration standards) and retires the Growing-stage chain, and it defers Group-stage questions to the 2029 review because no second brand, fourth country or revenue past about €200M is planned for 2027–2028."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "That a first store, wholesale customer, marketplace or second brand changes what systems must coordinate (stock in two places) before volume becomes a problem; that the book's four stages, Starting, Growing, Omnichannel and Group, are brought together in one map to recognize transitions, not to copy a larger company's system list; that the stages rest on common practice, dated vendor evidence and the fictional example and are not validated revenue thresholds; that Eva's order crosses products bought at different stages, each with its original assumptions; that a stage is a shape, that leftovers from the previous stage cause the incidents, and that signals arrive before the architecture changes. Evidence: Kestrel & Pine's stage map and priced path, vendor pricing pages and thresholds, and dated public reports of groups."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "Which architecture decisions change as a business grows, and what are the signs that a stage is ending?",
+    "claim": "A scale stage is a shape (the channels that sell, the locations that hold stock), not a revenue band. Each stage moves the order record, stock record and integration style to a system that owns each fact, and retires the previous stage's systems, which still run on its assumptions. A stage is ending when two signals of a new shape, such as a second stock location or a connector nobody owns, arrive in one year.",
+    "disputed_by": "The view that a business grows along a revenue line and its architecture should be scaled up when volume demands it: buy the systems that companies in the next revenue band use, and keep what works until it breaks under load.",
+    "so_what": "A merchant that accepts the claim places itself by shape, retires the previous stage's leftovers before adding tools, and sorts each decision by the stage it belongs to. Kestrel & Pine's April 2027 stage map found it had been in the Omnichannel stage since 2023, attributed eight of its ten incidents to Growing-stage designs still running in 2026, counted six transition signals in 2026, and deferred Group-stage questions to the 2029 review because none of their signals (a second brand, a fourth country, revenue past about €200M) is planned for 2027–2028. Waypoint, its 2027 improvement program, spends €1.1M on the Omnichannel hubs and retires the hourly chain. The fee cliff that matters most to it is payments, not the platform plan: on €27.0M of online revenue each half percentage point of payment cost is about €135,000 a year.",
+    "how_why": "Each channel or stock location added multiplies the systems that must agree about the same stock, order and product facts, so the same fact must travel faster and more reliably at each stage: from the platform's own count, to a scheduled copy from the ERP, to an availability service fed by stock events. Systems are bought when a channel arrives, by whoever is available, with that moment's assumptions (one store, a few marketplace orders a day), and because they keep working nobody retires them; under the next stage's load the assumption fails at the join. Vendors tier their prices on volume and shape, so fee cliffs and plan thresholds mark a transition before an incident does. Each signal is either a new channel or stock location the existing joins were not built for, or a join already slipping (a connector without an owner, two counts of one fact); one can be a one-off, but two in one year (the author's rule) mean the channels and the joins have both changed.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "A scale stage is a shape of business (how many channels sell and how many locations hold stock, and at the Group stage how many brands or units share them), not a revenue band; revenue bands are only markers, and vendors' price tiers and fee cliffs mark the same shape changes."
+      },
+      {
+        "id": "S2",
+        "claim": "At each stage the order record, the stock record and the integration style move toward a hub that owns each fact, because the same fact must reach more systems faster and more reliably: the platform's own count, then a scheduled copy, then an availability service fed by events."
+      },
+      {
+        "id": "S3",
+        "claim": "Systems are bought for the stage the business is in and keep running into the next one; those leftovers are where the next stage's incidents come from (eight of Kestrel & Pine's ten), so the decision at a transition is which leftovers to retire, and a stage mismatch fails too early, too late or sideways."
+      },
+      {
+        "id": "S4",
+        "claim": "The signals of a transition (a fee cliff, a second stock location, an EDI request, two order counts, an unowned connector, a first peak-day integration failure, a second brand) arrive before the incidents, and two in one year mean the stage has changed."
+      },
+      {
+        "id": "S5",
+        "claim": "At the Group stage the question is no longer which systems but which are shared, answered capability by capability with conditions, because forcing one stack and keeping everything apart both fail."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Gives the part its rule about timing: one map of the four stages, the signals that a stage is ending and the Group stage's share-or-separate table, with Kestrel & Pine's April 2027 stage map tracing its incidents to leftovers from the stage before.",
+    "supports": [
+      "P10-3"
+    ]
+  },
+  "flow": {
+    "pattern": "large_to_small",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene: the board's question and the stage map's answer, which the chapter then generalizes"
+      },
+      {
+        "pattern": "chronological",
+        "applies_to": "stages and practice: the stages in the order a business meets them, and Kestrel & Pine's path from 2016 to 2027"
+      }
+    ],
+    "rationale": "The scene ('Setting the Scene') gives the board's question and the stage map's uncomfortable row, so the reader knows what the chapter must explain. 'What a Scale Stage Is' defines the unit the map is drawn in; 'The Map' then sets all four stages side by side before any is examined, and 'How Fresh Must a Fact Be?' explains the map's main movement (records moving to hubs) by the requirement behind it. 'Stage by Stage' goes from the whole to each part, in the order a business meets the stages, and its Group section raises the share-or-separate question that 'The Group's Decision Table' answers next to it. 'The Transition Signals' gathers the ending signals each stage named into one table and the two-signal rule, which needs every stage told first. 'In Practice' prices one merchant's whole path, which needs the stages and signals; 'When It Goes Wrong' comes last because each direction of failure (too early, too late, sideways) is read against the stages and the table. Putting 'How Fresh Must a Fact Be?' after the stage sections would leave the map's movement toward hubs unexplained while each stage relies on it; folding the decision table into the Group stage's section would bury the chapter's one recommendation table among the evidence. Putting the map after 'Stage by Stage' would leave the stage sections without the frame they fill in; putting the signals before the stages would list endings of stages not yet described; putting 'In Practice' first would price leftovers the reader cannot yet place."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "A merchant opens its first store while still selling online: the servers have room to spare, but stock now sits in two places and either channel may fulfill an order, so systems built for one warehouse must coordinate decisions they were never designed for."
+    },
+    "bridge": {
+      "from_reader_world": "Anyone who has watched a small business add a shop, a wholesale customer or a marketplace knows that the work changes before the volume does.",
+      "to_topic": "Chapter 42's migrations are how a merchant crosses from one such shape to the next; the stages themselves say which decisions each shape makes necessary and how to see the next one coming."
+    },
+    "thesis_statement": {
+      "text": "A stage is a shape (how many channels sell and how many locations hold stock), not a revenue band. At each stage the order record, stock record and integration style move toward a hub that owns each fact, while the systems bought for the previous stage keep running (at Kestrel & Pine they caused eight of the ten incidents) and are retired at the transition. Two transition signals in one year mean a stage is ending.",
+      "placement": "KEY POINTS callout and paragraph p05"
+    },
+    "roadmap": {
+      "placement": "Paragraph p06",
+      "promises": [
+        {
+          "promise": "Start from the one-page stage map the board asks Noor Visser for.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Define a stage and check the definition against vendors' price lists.",
+          "kept_in": [
+            "definition"
+          ]
+        },
+        {
+          "promise": "Set the four stages side by side and say how fresh each fact must be at each.",
+          "kept_in": [
+            "map",
+            "freshness"
+          ]
+        },
+        {
+          "promise": "Go through the stages one by one and give the Group stage a table of what to share and what to keep separate.",
+          "kept_in": [
+            "stages",
+            "group-table"
+          ]
+        },
+        {
+          "promise": "List the signals that a stage is ending.",
+          "kept_in": [
+            "signals"
+          ]
+        },
+        {
+          "promise": "Price Kestrel & Pine's path and end with the three ways a stage mismatch goes wrong.",
+          "kept_in": [
+            "practice",
+            "wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A merchant that opens its first store has stock in two places and new decisions to coordinate before its servers are strained; a first wholesale customer, marketplace or second brand does the same, often before volume is a problem.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "A first store beside the web shop: stock in two places, either channel may fulfill.",
+            "shows": "The change that strains systems is a change of shape, not of volume."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Chapter 42 called migrations the moments a merchant moves from one stage to the next; this chapter looks at the stages themselves, the book's four (Starting, Growing, Omnichannel, Group), brought into one map to recognize transitions, not to copy a larger company's system list.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The merchant whose shape has changed, and chapter 42's migrations as the moments of moving stage.",
+          "introduces": "The four stages and the map that brings their decisions together.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The stages combine common practice, dated vendor evidence and the fictional example; they are not validated revenue thresholds, because no public survey of system counts or team sizes by revenue was found.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The four stages.",
+          "introduces": "What they rest on and what they are not.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The stages show up even in a single order: Eva's order at Kestrel & Pine crosses systems bought at different stages (the shop platform in 2016, the marketplace connector in 2021, warehouse and finance systems in 2023, the returns portal in 2025), each still carrying the assumptions of its time.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Eva's jacket order and the years of the systems it crosses.",
+            "shows": "One order already runs through four stages' worth of assumptions.",
+            "source": "Kestrel & Pine scenario ledger"
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "Stages as the setting for decisions.",
+          "introduces": "Where the stages show in the order's journey.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "The chapter's claim: a stage is a shape (channels that sell and locations that hold stock), not a revenue band; at each stage the order record, stock record and integration style move toward a hub that owns each fact, while systems bought for the previous stage keep running with their old assumptions and, at Kestrel & Pine, caused most of the incidents, so they are retired at the transition; two transition signals in one year mean a stage is ending.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Systems that carry the assumptions of the stage they were bought for.",
+          "introduces": "The claim that starts from those assumptions: what changes at each stage and how to see a stage ending.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p06",
+        "controlling_idea": "The chapter starts from the board's stage map, defines a stage and checks it against vendors' price lists, sets the four stages side by side and says how fresh each fact must be, goes stage by stage with the Group stage's share-or-separate table, lists the transition signals, prices Kestrel & Pine's path and ends with too early, too late and sideways; its evidence is the stage map and costs, dated vendor price lists and annual reports and engineering accounts of larger companies.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The chapter's claim.",
+          "introduces": "The order in which the chapter argues it, and its evidence.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Kestrel & Pine: The Stage Map",
+      "controlling_idea": "In April 2027 the board asks Noor Visser for a one-page stage map; it places Kestrel & Pine in the Omnichannel stage since 2023, keeps Waypoint on that stage's problems and defers the Group stage to 2029, and its uncomfortable row traces eight of the ten incidents to Growing-stage designs still running.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "Gives the case the chapter generalizes: a company that moved stage while its architecture did not, and the signals that would move it again."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The board's question first, then Noor's placement and the signals of the next stage, then the uncomfortable entry (eight of ten incidents from Growing-stage leftovers), and last what Waypoint does and defers because of it. The decision follows its reason, so a reader never meets a 'therefore' before the evidence."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap, which starts from the board's stage map.",
+        "introduces": "Kestrel & Pine in April 2027.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p07",
+          "controlling_idea": "In April 2027 the board asks Head of Engineering Noor Visser for a one-page stage map that shows which of Waypoint's planned fixes suit the company now and what would make them worth revisiting.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "April 2027; the board asks Noor Visser for a one-page stage map; Waypoint launched March 2027.",
+              "shows": "The question the chapter answers comes from a board, not from engineers.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Noor places Kestrel & Pine in the Omnichannel stage since 2023, maps its thirteen systems to the stages they came from, and names the Group-stage signals (a second brand, a fourth country, revenue past about €200 million), none planned for 2027–2028.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Stage 3 since 2023; thirteen systems mapped to their stages; stage-4 signals, none planned for 2027–2028.",
+              "shows": "Placement by shape, with the next transition named in advance.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The board's question.",
+            "introduces": "Noor's placement and the next stage's signals.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "The map's uncomfortable row attributes eight of the ten incidents of 2026 and early 2027 to Growing-stage designs still running (the hourly stock sync, one-channel agency scripts, the ERP as hub for stock it did not hold, the nightly POS sync), the Black Friday Oversell the costliest: the company had moved stage and the architecture had not.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Eight of ten incidents to Growing-stage (2019–2022) designs; the Black Friday Oversell, 1,340 units, 1,120 orders, about €96,000.",
+              "shows": "The leftovers, not missing tools, caused the incidents.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: an omnichannel building on three cracked supports labeled hourly sync, agency scripts and ERP as hub.",
+              "shows": "Pictures the leftovers carrying Omnichannel load."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Noor's placement of the company in the Omnichannel stage.",
+            "introduces": "The uncomfortable entry: the incidents came from the stage before.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "So Waypoint retires those leftovers, adding an OMS, a PIM and an availability service for today's coordination problems, and defers group-wide choices to the 2029 review.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Growing-stage leftovers behind eight of ten incidents, and no Group-stage signal planned.",
+            "introduces": "What Waypoint does and what it defers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "definition",
+      "heading": "What a Scale Stage Is, and Is Not",
+      "controlling_idea": "A scale stage is a shape defined by how many channels sell and how many locations hold stock; revenue bands are markers, vendors' price tiers confirm the shape, and a stage is not a target or a verdict.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Defines the stage as a shape and shows vendors tiering on the same shape changes."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The definition first, then the book's stage table, then the vendors' price lists that support it, then what a stage is not, so the reader does not take the definition as a ranking."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The stage map's placement of Kestrel & Pine by shape.",
+        "introduces": "What a stage is, defined.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "controlling_idea": "A stage is a shape defined by the number of channels and stock locations, because those two numbers decide how many systems must agree about the same facts: one channel and one location need no integration, four and four need every system to learn what every other has sold or moved.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: one channel and one stockroom beside four channels and four locations joined by a dense web.",
+              "shows": "The number of joins grows with channels and locations."
+            }
+          ]
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The book's stage table gives each stage its typical size, shape and Kestrel & Pine's years, with revenue bands as rough markers.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four stages with typical size, shape and Kestrel & Pine's years (2016–2018, 2019–2022, 2023 to now, not yet).",
+              "shows": "The stages are told apart by shape; the revenue column is a marker.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The definition.",
+            "introduces": "The four stages as the book defined them in chapter 2.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Vendors' price lists mark the same transitions: their tiers rise with volume but each assumes a different kind of merchant, as Shopify's euro pricing tiers its plans and its fee for a third-party payment provider by size (Basic at €21 a month to Plus from €2,100; the fee from 2% to 0.2%), with different decisions to make.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shopify pricing (EUR), accessed November 2026: Basic €21 a month paid yearly, Plus from €2,100; third-party gateway fee 2% on Basic, 0.2% on Plus.",
+              "shows": "Vendors price the transition.",
+              "source": "Shopify pricing page"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Stages as shapes.",
+            "introduces": "A vendor's price list that tiers on the same changes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Other vendors tier on GMV, the value of orders through a platform before refunds and the vendor's cut: Shopware bases its plans on it with a paid plan above €1 million, and BigCommerce assigns tiers by trailing-twelve-month GMV and auto-upgrades at $2 million.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shopware pricing (accessed November 2026): paid plan above €1M GMV in a rolling year; BigCommerce (accessed November 2026): tiers by trailing-twelve-month GMV, auto-upgrade at $2M.",
+              "shows": "Thresholds mark where a vendor expects a different customer.",
+              "source": "Shopware and BigCommerce pricing pages"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Shopify's tiers.",
+            "introduces": "GMV, glossed, and two more vendors that tier on it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "The vendors' numbers change often, but the mechanism does not: a vendor's tiers map which decisions it expects at which size.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Three vendors' tiers.",
+            "introduces": "The lesson of the tiers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "A stage is not a target, a maturity score or a verdict: a merchant can stay at the Growing stage profitably, and the stage only says which problems are now its own.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What a stage is.",
+            "introduces": "What it is not.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "map",
+      "heading": "The Map: Four Stages Side by Side",
+      "controlling_idea": "One map sets the four stages side by side on fifteen questions; read across it, the order and stock records move toward a hub, the integration style changes faster than the systems, and the failure patterns cluster by stage.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "Shows, row by row, what is typical and necessary at each shape and the movement toward hubs."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The definition of a stage.",
+        "introduces": "What is typical and necessary at each of the four.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p17",
+          "controlling_idea": "The chapter's centerpiece map gives, for each stage, the shape, channels, storefront, where the order and stock truth live, product data, fulfillment, finance, integration style, who builds and runs, fees, peak day, necessary decisions, failure patterns, ending signals and Kestrel & Pine's years, each row linked to the chapter that owns it.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The stage map: fifteen rows by four stages, with the owning chapter linked in each row; WMS, PSP, iPaaS, SSCC and B2B2C glossed before it.",
+              "shows": "Every chapter's 'Across Scale Stages' row reads as part of one picture."
+            }
+          ]
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Three things stand out: the order and stock records move from 'the platform knows' to 'a hub knows', the integration style changes faster than the systems, and the failure patterns are stage-specific, clustering where one fact first lives in four systems.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: each stage entered by adding a channel or a stock location and carrying the previous stage's systems; a dotted arrow where eight of Kestrel & Pine's ten incidents came from.",
+              "shows": "The leftovers travel with the business into the next stage."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The map's rows.",
+            "introduces": "What the rows show when read across.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "freshness",
+      "heading": "How Fresh Must a Fact Be? Requirements by Stage",
+      "controlling_idea": "Stock, order status and price must travel faster and more reliably at each stage, so a requirement met for free with one writer becomes an engineering problem with four, and the Growing stage's scheduled copies are what breaks between them.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Explains why the joins must be rebuilt at each stage and why the scheduled copies fail."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The map's records moving toward a hub.",
+        "introduces": "Why they must: how fresh each fact must be.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "controlling_idea": "For stock, order status and price, the requirement tightens from one writer at the Starting stage to scheduled copies at the Growing stage to events within minutes at the Omnichannel stage, and Kestrel & Pine's incidents are the failures in between.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Three facts by four stages, latencies labeled illustrative; the two-hour chain (1,340 units oversold), the Three-Status Order (11 tickets, six days), the Price Drift (€179 for nine days, about €8,200).",
+              "shows": "Each failure is a Growing-stage copy under Omnichannel load.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The point is not the numbers: a requirement met for free with one writer and one reader becomes an engineering problem with four of each, and the scheduled copies are the bridge that collapses between them, which is also why the integration style changes faster than the systems; the ownership decision comes first.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The requirements table.",
+            "introduces": "What it means for the joins.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Stage by Stage",
+      "controlling_idea": "Each stage has its own shape, its necessary decisions, the failure pattern that strikes and the signals that it is ending: the Starting stage is a purchase, the Growing stage accretes joins, the Omnichannel stage makes the joins the architecture, and the Group stage asks what to share.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Walks each stage with dated public evidence, showing what each leaves behind and the signals of its end."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The stages in the order a business meets them, each told in the same order (shape and evidence, what becomes necessary, the failure that strikes, the signals of its end), so each stage's ending signals lead straight into the next stage's shape. The Group stage has no end and closes on its remaining questions instead."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The map and the requirements by stage.",
+        "introduces": "Each stage in turn, with dated public evidence.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p21",
+          "controlling_idea": "At the Starting stage the architecture is a purchase: a hosted platform, a PSP and a 3PL or back room; most of a platform vendor's merchants are here, while most of its GMV is not.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shopify's 10-K for fiscal 2025 (filed February 2026): most merchants on Basic and Grow, most GMV from Plus and enterprise merchants.",
+              "shows": "The Starting stage is where most merchants are and most volume is not.",
+              "source": "Shopify Form 10-K FY2025"
+            }
+          ]
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "What becomes necessary is small (an exportable platform, understood PSP fees, an app inventory with permissions, the founder holding the logins); the pattern that strikes is The Lynchpin, as Kestrel & Pine's agency of 2017 still shows at €14,000 a month.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Agency retained 2017; still holds theme, apps and scripts at €14,000 a month.",
+              "shows": "A Starting-stage habit survives ten years.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Starting stage's shape.",
+            "introduces": "What it requires and what fails.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "The Starting stage ends with a second channel or a first store: once stock in two places both sells, the business has an integration problem whether or not it has an integration.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What the Starting stage needs.",
+            "introduces": "The signal that it is ending.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The Growing stage adds a store on a POS, a marketplace through a connector and wholesale keyed into an ERP that often becomes the hub; Microsoft preinstalling its Shopify connector for new Business Central sign-ups shows that shape is mainstream.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Microsoft Learn, 22 September 2026: the Shopify connector preinstalled for all new Business Central sign-ups.",
+              "shows": "A hosted storefront with the ERP as hub is the mainstream Growing-stage shape in at least one vendor channel.",
+              "source": "Microsoft Learn"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The end of the Starting stage.",
+            "introduces": "The Growing stage's shape.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Each Growing-stage join is built when its channel arrives, by whoever is available, and is right for that day's volume, so the Spaghetti Junction accretes rather than being built, as Kestrel & Pine's 2021 hourly marketplace sync shows.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The connector's hourly sync of 2021, when marketplace orders were a few a day (illustrative); 43,000 marketplace orders in 2026 and a two-hour chain.",
+              "shows": "A join correct for its day becomes the architecture nobody chose.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The channels the Growing stage adds.",
+            "introduces": "How their joins are built and what they become.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "At the Growing stage fees change character (the third-party gateway fee, per-order tool prices, open-source plans paid above €1 million GMV), and a merchant moving to Omnichannel crosses several thresholds at once, so price lists are a transition signal.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shopify gateway fee 2% on Basic; Picqer €379 a month including 3,000 orders, then €0.28 an order (accessed November 2026); Shopware's €1M GMV line.",
+              "shows": "Fee changes mark the transition.",
+              "source": "Shopify, Picqer and Shopware pricing pages"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The joins the Growing stage accretes.",
+            "introduces": "The fees it starts to meet.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "The Growing stage ends on concrete signals: a retail chain asks for EDI (still most of European B2B electronic ordering by value), a second stock location must be sold from, two reports show two order counts, and the first peak day's failure is in an integration, followed closely by an unowned connector, support opening several systems and an app writing another system's fact; the EDI request often comes first because European B2B electronic ordering is still mostly EDI by value.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Eurostat 2024 data (extracted February 2026): EDI-type sales 11.07% of EU enterprise turnover against 8.39% for web sales.",
+              "shows": "A wholesale line meets EDI before a B2B web shop.",
+              "source": "Eurostat"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The Growing stage's joins and fees.",
+            "introduces": "The signals that it is ending.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "At the Omnichannel stage three or four business models share one stock, and for a retailer with stores omnichannel is the business, with an order hub what makes store stock sellable online.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Target's 10-K for fiscal 2025 (filed March 2026): stores fulfilled 97.6% of merchandise sales.",
+              "shows": "Store stock is the online business's stock.",
+              "source": "Target Form 10-K FY2025"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The end of the Growing stage.",
+            "introduces": "The Omnichannel stage's shape.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "What becomes necessary at the Omnichannel stage is Waypoint's set: a system of record per fact, an OMS, a PIM, an availability service and integration standards with owner, contract, idempotency and reconciliation, with the ERP demoted from hub.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Akeneo guidance (accessed November 2026): content scattered across teams, manual channel launches and inconsistent storefront data signal a PIM.",
+              "shows": "Vendor guidance places the PIM at this stage (vendor content).",
+              "source": "Akeneo"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Omnichannel stage's shape.",
+            "introduces": "The decisions it makes necessary.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "The Omnichannel stage's temptation is The Giant's Boots: public examples come from companies with hundreds of engineers, so a 14-person team should adopt composable per capability around a kept core and own the joins.",
+          "function": "counterargument",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Fowler, MonolithFirst (June 2015): boundaries are hard to get right at the beginning; Shopify Engineering (February 2019): a modular monolith for over a thousand developers; MACH Alliance survey (February 2026): 37% of 600 cite integration complexity.",
+              "shows": "Even the advocates' evidence warns against copying a large company's style.",
+              "source": "Fowler; Shopify Engineering; MACH Alliance"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the Omnichannel stage needs.",
+            "introduces": "What it is tempted to copy instead.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "The Omnichannel stage ends with a second brand or unit, an acquisition, a fourth country with its own books, or the platform's tenancy binding; a vendor's enterprise band of $50 million to $500 million of GMV hints at the stage's top.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shopify enterprise page (accessed November 2026): organizations with GMV of $50M to $500M and more.",
+              "shows": "The nearest public hint of where a vendor sees the top of this stage.",
+              "source": "Shopify for Enterprise"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The Omnichannel stage's needs and temptation.",
+            "introduces": "The signals that it is ending.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The Group stage is defined by plurality (several brands, units or countries that could each run a stack), so its question becomes which systems are shared and who owns them.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The end of the Omnichannel stage.",
+            "introduces": "The Group stage's shape and question.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "VF Corporation's direct-to-consumer business across brand stores and sites, 44% of revenue, shows one group with many brand storefronts and a shared question about what sits behind them.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "VF Corporation 10-K for the fiscal year to March 2026: DTC across brands such as The North Face and Timberland, 44% of revenue.",
+              "shows": "Many brand storefronts in one group.",
+              "source": "VF Corporation Form 10-K FY2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The share-or-separate question.",
+            "introduces": "A multi-brand group that faces it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "An acquisition changes a group's metrics on day one and its architecture over years, as Zalando's consolidation of ABOUT YOU diluted its reported partner share before any system was touched.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Zalando Annual Report 2025 (March 2026): partner-business share of GMV fell to 32.1% from 34.2% by dilution after consolidating ABOUT YOU.",
+              "shows": "The numbers change before the systems.",
+              "source": "Zalando SE Annual Report 2025"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "A group with many brands.",
+            "introduces": "What an acquisition does first.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "The Group stage's failure pattern is One Size Fits None (one stack forced without measuring, or shareable work duplicated), and the public cautions against too much autonomy, Zalando's services in six languages and Uber's 2,200 microservices, are six years old and from far larger companies, but the lesson transfers: autonomy without shared standards produces the Spaghetti Junction at group scale.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Jacobs 2020: more than 260 teams, similar services 'written in six languages', which 'hurts productivity at scale'; Uber 2020: about 2,200 microservices, an investigation through fifty services owned by twelve teams.",
+              "shows": "Autonomy without standards is costly at scale; both sources flagged as old.",
+              "source": "Jacobs 2020; Uber Engineering 2020"
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Groups that must decide what to share, seen in VF and Zalando.",
+            "introduces": "The failure pattern of that decision and the evidence of what too much autonomy costs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "The Group stage's remaining questions are vendor-scale ones (tenancy, extensibility, data residency, exit terms), and the Data Act's ban on switching charges from 12 January 2027 may or may not reach hosted commerce platforms; the main question, which capabilities to share, is left to the decision table that follows.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Regulation (EU) 2023/2854: switching charges for data processing services prohibited from 12 January 2027; whether hosted commerce platforms fall under it is open as of November 2026.",
+              "shows": "Exit terms become a group-level contract question.",
+              "source": "Data Act"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "What a group shares and what it keeps apart.",
+            "introduces": "The vendor-scale questions left.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "group-table",
+      "heading": "Multi-Brand and Multi-Country: The Group's Decision Table",
+      "controlling_idea": "The Group stage's question is answered capability by capability: share the integration layer, data definitions, peak tooling, security and the PSP contract always, and share storefront, PIM, stock and the order hub only under stated conditions; acquisitions turn the question into a migration.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Gives the share-or-separate decision per capability with its conditions."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The Group stage's question of what to share.",
+        "introduces": "The answer per capability.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p38",
+          "controlling_idea": "The author's default shares expensive capabilities with common requirements, run once by a platform team, and leaves brand-visible ones with the brands; the decision table says, per capability, when to share across brands or units and when to keep separate: always share the PSP contract and fraud rules, the integration layer and data definitions, peak tooling, security and compliance; share storefront, PIM, stock and the order hub under conditions.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven capabilities with 'share when' and 'keep separate when' conditions; separate definitions of 'order' per brand named as the Group-stage Schrödinger's Order.",
+              "shows": "The question is settled per capability, not for the whole stack."
+            }
+          ]
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "Two conditions govern the table: an acquired brand brings its own stack, so the question becomes sequencing, which is a migration; and a group that runs a marketplace or partner program has become a platform vendor with its tenancy concerns.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The table's recommendations.",
+            "introduces": "The two conditions that change how it is applied.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "signals",
+      "heading": "The Transition Signals",
+      "controlling_idea": "Each transition signal was visible at Kestrel & Pine before the incident that priced it, and two signals in one year mean the stage has changed, whatever the revenue says.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Maps each signal to what it means, the pattern it precedes and Kestrel & Pine's case, and states the two-signal rule."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The signals named for each stage in turn and the Group stage's question.",
+        "introduces": "All the signals in one table, with the pattern each precedes.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "controlling_idea": "The table gathers the ending signals each stage section named, and every signal that led to an incident was visible at Kestrel & Pine before the incident that priced it: a fee threshold, a second stock location, an EDI request, two order counts, an unowned connector, support opening several systems, an app writing another system's fact, a peak-day integration failure, and the not-yet second brand.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Nine signals with what each means, the pattern it precedes and Kestrel & Pine's case (enterprise tier 2023; Duiven 2023; Bergzicht 2025 and the ASN Chargeback; three definitions of 'order'; the Deprecated Endpoint; the Three-Status Order; the App That Wrote Stock; Black Friday 2026; not yet).",
+              "shows": "Signals arrive before incidents.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "The author's rule is that two signals in one year mean the stage has changed, whatever the revenue says; Kestrel & Pine had six in 2026 (stores selling online stock, the ASN Chargeback, the App That Wrote Stock, the Three-Status Order, the Black Friday integration failure, three definitions of order), signals that marked its 2023 change of shape long before the April 2027 stage map named it.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: transitions triggered by shape changes, with self-loops where a stage does its work.",
+              "shows": "Shape, not revenue, moves a business between stages."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The signals and their incidents.",
+            "introduces": "The rule for reading them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "heading": "In Practice: Kestrel & Pine's Path, Priced",
+      "controlling_idea": "Kestrel & Pine's path from 2016 to 2027, priced from its own figures, shows a Starting stage that left a habit, a Growing stage whose joins caused eight of the ten incidents, an Omnichannel stage whose incidents cost about €138,000 directly, a payment fee worth more than all of them, and a 2027 stage map that sorts decisions by shape.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S1"
+        ],
+        "how": "Prices the leftovers and the fee cliff for one merchant."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The stages in Kestrel & Pine's own order, then the fee example that the Omnichannel costs make comparable, then the 2027 stage map that the whole path leads to."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The signals and the two-signal rule.",
+        "introduces": "One merchant's whole path, with costs.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "controlling_idea": "The stage map is more persuasive with costs, so the section gives Kestrel & Pine's figures with one illustrative calculation.",
+          "function": "transition"
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Kestrel & Pine's Starting stage (2016–2018) was the vendor's architecture and caused no 2026 incident, except the habit that the agency owns the storefront.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "One Dutch web shop on the shop platform, one PSP, a 3PL in Tiel, an agency from 2017.",
+              "shows": "The Starting stage left a habit, not a system failure.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The costs to come.",
+            "introduces": "The first stage.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Its Growing stage (2019–2022) built every join when its channel arrived, and eight of the ten incidents descend from that era's designs, the clearest being the Store Stock Mirage, the Deprecated Endpoint and the Black Friday Oversell's cadence.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Arnhem store and nightly POS sync (2019), Belgium (2020), Utrecht, connector, iPaaS, GTINs (2021), Germany, investor, Ruben Alves (2022); the Store Stock Mirage (37 items), the Deprecated Endpoint.",
+              "shows": "The incidents trace to this era's joins.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The Starting stage.",
+            "introduces": "The Growing stage.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "Its Omnichannel stage (2023–2026) brought thirteen systems, four order records, four copies of stock and three definitions of 'order', technology spend of about €2.6 million (5.4% of revenue, high against a judged 2–4%), and incidents with about €138,000 of direct cost.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "€2.6M, 5.4% of revenue; €96,000 (Oversell), €19,400 refunded twice, €8,200 (Price Drift), €14,200 (ASN Chargeback): about €138,000.",
+              "shows": "What the leftovers cost one merchant.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The Growing stage.",
+            "introduces": "The Omnichannel stage and its costs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "The fee cliff that matters most to Kestrel & Pine is payments, not the €2,300-a-month platform tier: on €27.0 million of online revenue each half point of payment cost is about €135,000 a year, nearly as much as the four priced incidents and recurring every year.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "0.5% × €27.0M ≈ €135,000 a year (illustrative arithmetic on ledger figures); enterprise tier €2,300 a month.",
+              "shows": "The PSP contract is an architecture decision.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The incidents' direct cost.",
+            "introduces": "A fee that outweighs them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "In 2027 the stage map lets Waypoint's €1.1 million buy the Omnichannel stage's hubs and standards, retire the Growing stage's chain and defer the Group stage: the stages sort decisions by the shape they belong to.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Waypoint, €1.1M over 2027–2028; Group stage deferred to the 2029 review.",
+              "shows": "The stages are used to sort decisions, not to predict revenue.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The path and its costs.",
+            "introduces": "What the 2027 stage map does with them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong: Too Early, Too Late, Sideways",
+      "controlling_idea": "A stage mismatch fails too early (The Giant's Boots), too late (The Phantom Stock, Schrödinger's Order) or sideways (One Size Fits None), each with a detection and a recovery, and every recovery runs through an entity–owner table and a reconciliation job per copy.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S5"
+        ],
+        "how": "Shows the three directions in which decisions taken for the wrong stage fail, and how each is detected and recovered."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The three directions in the order of a business's growth (ahead of its stage, behind it, then across a group), then the two tools all three recoveries share."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Kestrel & Pine's path, where decisions were sorted by stage.",
+        "introduces": "What happens when they are not.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p48",
+          "controlling_idea": "A stage mismatch fails in three directions, each with a detection and a recovery.",
+          "function": "transition"
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Too early, a Growing-stage merchant adopts a composable core or microservices from larger companies' case studies; it shows when the integration layer is the largest effort and nobody is on call, and it is recovered by consolidating, as Segment did.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Segment (2018) folded more than 140 services back into one (its own account, eight years old).",
+              "shows": "Consolidation is a known recovery.",
+              "source": "Twilio Segment 2018"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The three directions.",
+            "introduces": "The first: too early.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Too late, an Omnichannel merchant runs Growing-stage copies; one reconciliation detects it cheaply, as Kestrel & Pine's May 2027 count of 2.3% differing variants did, and Waypoint's hubs, events and kept reconciliation are the recovery.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "First weekly reconciliation, May 2027: 2.3% of active variants with a different quantity, most from the apps that wrote stock.",
+              "shows": "The leftover shows up as soon as someone counts.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Moving too early.",
+            "introduces": "Moving too late.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "Sideways, a group forces one stack or keeps everything apart without measuring; it shows as consolidation with no per-capability benefit or as many definitions of 'customer', and the decision table applied per capability is the recovery.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Too early and too late.",
+            "introduces": "The third direction: sideways, at the Group stage.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Every recovery runs through an entity–owner table and a reconciliation job per copy; the stage sets how many rows those tools have, not whether they are needed.",
+          "function": "synthesis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The three recoveries.",
+            "introduces": "What they share.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The first store, Eva's order across systems from four different years and Kestrel & Pine's incidents are one fact seen three times: a stage changes when the shape of the business changes, and the systems bought for the old shape keep running until someone decides to retire them. The stage map turns that into a decision rule: place the business by shape, retire the previous stage's leftovers, and wait for the next stage's signals before buying for it.",
+    "so_what": "A merchant that asks which shape it has and which stage each system was bought for can tell a board which decisions are due now, which are leftovers and which belong to a larger company; revenue answers none of these. Kestrel & Pine spends Waypoint's €1.1 million on its own stage and leaves the Group stage to the 2029 review.",
+    "callback": {
+      "to": "The introduction's merchant that opens a first store and has stock in two places, and Eva's order crossing systems bought in 2016, 2021, 2023 and 2025.",
+      "how": "Paragraph p53 reads both as changes of shape whose systems were never retired, and names the eight of ten incidents that followed at Kestrel & Pine."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Place the business by shape, list which stage each system was bought for, and ask the eight questions: the stage by shape, the vendor thresholds ahead, the stock writers, the order records, the integrations' owners, last year's signals, what a second brand would share, and which current decisions belong to which stage."
+    },
+    "hand_off": {
+      "to": "organizing-commerce-engineering",
+      "relationship": "sequence",
+      "carries_over": "The stage map's sorting of decisions by stage, including its row on who builds and runs at each stage.",
+      "introduces": "The people who make and keep the decisions: who owns each system, integration and app, how a fourteen-person team works with an agency and a dozen vendors, and governance that fits a merchant."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The three ways a stage mismatch fails and the two tools that recover them.",
+      "introduces": "What the chapter establishes.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p53",
+        "controlling_idea": "The opening's first store and Eva's order are changes of shape whose systems were never retired: Kestrel & Pine had been an Omnichannel business since 2023 while eight of its ten incidents came from Growing-stage designs, so Waypoint retires them and leaves the Group stage to its signals; a merchant asks which shape it has and which stage each system was bought for, which revenue cannot answer.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The hook's first store, Eva's order across systems from 2016 to 2025, the eight of ten incidents, Waypoint's €1.1 million and the 2029 review.",
+            "shows": "The chapter's answer applies to the opening's cases."
+          }
+        ]
+      },
+      {
+        "id": "p54",
+        "form": "list",
+        "controlling_idea": "Established: vendors tier on volume and shape; by value European B2B electronic ordering is still mostly EDI; for a retailer with stores omnichannel fulfillment is the business; and autonomy without shared standards is costly at group scale.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "The points that are established.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p55",
+        "form": "list",
+        "controlling_idea": "Depends on context: whether an OMS, PIM or WMS is needed (channel and location counts, not volume), how to read revenue bands, when the ERP as hub stops working, and what a group shares.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established.",
+          "introduces": "What depends on the merchant's situation.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p56",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: the first decision at each stage is which leftovers to retire; and two transition signals in one year mean the stage has changed, so a stage map that lists the signals is worth more to a board than a roadmap of tools.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established and what depends on context.",
+          "introduces": "The author's own judgement, labeled as such.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p57",
+        "form": "list",
+        "controlling_idea": "Eight questions let the reader apply the map: the stage by shape and each system's stage, the vendor thresholds ahead, the stock writers and comparisons, the order records, the integrations' builders and owners, last year's signals, what a second brand would share, and which current decisions belong to which stage.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions that apply them to the reader's own business.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p58",
+        "controlling_idea": "The stages sort the decisions but people make them; the map's 'who builds and runs' row only sketched the team at each stage, and the next chapter covers who owns each system, integration and app, how a 14-person team works with an agency and vendors, and what governance fits a merchant.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The stage map's sorting of decisions by stage.",
+          "introduces": "The people who make and keep them.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The economics of each business model and the per-order unit economics; used here only as fee thresholds.",
+      "covered_in": [
+        "commerce-business-models"
+      ]
+    },
+    {
+      "topic": "The mechanics of any single capability's scale table (availability, OMS, PIM, WMS, EDI, integration standards).",
+      "covered_in": [
+        "inventory-and-availability",
+        "order-management",
+        "product-information",
+        "warehouse-and-fulfillment",
+        "edi-and-e-invoicing",
+        "events-consistency-and-reconciliation"
+      ]
+    },
+    {
+      "topic": "The build/buy/assemble decision and total cost of ownership; replatforming and migration mechanics; architecture styles and The Giant's Boots in depth.",
+      "covered_in": [
+        "build-buy-or-assemble",
+        "replatforming-and-migration",
+        "commerce-architecture-styles"
+      ]
+    },
+    {
+      "topic": "Team shape by stage beyond one row of the map.",
+      "covered_in": [
+        "organizing-commerce-engineering"
+      ]
+    },
+    {
+      "topic": "Tenancy and extensibility at vendor scale.",
+      "covered_in": [
+        "multi-tenancy-and-isolation",
+        "extensibility-and-app-ecosystems"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Carried from spec.md: no public survey of commerce system counts or team sizes by revenue band was found; the map's shapes are a composite and the chapter says so (Avasant's retail chapter is paywalled).",
+    "Carried from spec.md: the 2–4% retail IT-spend range is judgement from secondary sources; Kestrel & Pine's 5.4% is presented against it as a judgement, not a benchmark.",
+    "Carried from spec.md: whether hosted commerce platforms are 'data processing services' under the Data Act (switching charges prohibited from 12 January 2027) is an open legal question; the chapter presents it as such."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Converted spec.md to spec.json from the published chapter, one spec paragraph per unit. Intent outcome, the five acceptance criteria, thesis and role copied unchanged from journal-spec.json; audience written for this chapter. The old success criteria were inventories (table rows, sources listed, diagrams, word count) and are dropped as criteria: their outcomes are covered by AC-1 to AC-5, the dated evidence by the evidence items, and the word limit by length.max_words (6,500, the old limit).",
+      "rejected": [
+        "Keeping the inventory criteria as minor criteria (rule 7 of the standing instruction would drop them)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Added the units the contract asks for and the published chapter lacked: p05 (thesis statement), p06 (roadmap announcing every section) and p53 (a conclusion paragraph with synthesis, so-what and a callback to the opening's first store and Eva's order). The opening paragraph p02 now carries the journal spec's transition_in from chapter 42 (migrations as the moments of moving stage). Merged the one-sentence Group-stage paragraph ('Both sources are six years old...') into the paragraph whose evidence it qualified (p36).",
+      "rejected": [
+        "Leaving the introduction without a thesis paragraph or roadmap (AC-4 needs the sections predicted).",
+        "Treating the 'What to Take Away' lists as the synthesis: none of them answers the opening."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Canonical facts: the stage map is asked for by the board, as the commerce-scaling-stages ledger line says (the page had CEO Mara Lindqvist asking); the revenue signal is 'past about €200 million' (the page had 'near'). The journal thesis's 'leftovers cause most of the new stage's incidents' is stated on the page only as the ledger supports it: eight of Kestrel & Pine's ten incidents traced to Growing-stage designs (KEY POINTS bullet 2, Figure 3's caption and the author's synthesis bullet changed from 'most Omnichannel incidents'). 'The ledger defines the stages' becomes 'Chapter 2 defined the stages', since readers do not know the ledger. Kestrel & Pine's hosted product is 'the shop platform' where the text means it.",
+      "rejected": [
+        "Keeping 'most incidents' as a general claim (not supported beyond Kestrel & Pine's eight of ten)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Flow rubric (fresh agent, outline only): sound with notes. Taken without review, as the author asked on 2026-11-12: GMV glossed before Shopware's tiers use it (p14); the integration-style point of p18 explained in p20; the three signals the signals table introduced new (unowned connector, support opening several systems, an app writing another system's fact) named in the Growing stage's signals (p27); the author's share-or-separate default moved from p35 to the decision table's opening (p38), so p35 states only the failure and the question; the eight-of-ten figure removed from the author's synthesis bullet (p56) so the conclusion states it once (p53); p41 says which transition the six 2026 signals point at; the flow rationale now says what breaks if the requirements section followed the stages or the decision table sat inside the Group section. No order change, so the rubric was not rerun.",
+      "rejected": [
+        "Rewording p13 to say the tiers evidence changing decisions rather than the definition (p15 already says so; optional note)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round 1 (REVISE) fixes in the named units only: p04 opens with its link to the stages and ends on the stage each system was bought for; p05 opens with its cause_effect link; p13 says the vendors' tiers mark the transitions rather than 'shape and volume, not headcount'; p41 says the six 2026 signals show the 2023 change went unnamed until the stage map; p45 names the Double Refund and says 'early 2027'; p47's label says 2027 is still Omnichannel; 'the ledger' replaced by the company's own records (p19, p42); the Truth patterns named by example (p18); Peppol given as e-invoices in the map (p17). Cheap minor fixes: p10 'one entry on the map'; p35 points to the next section; glosses for fee cliff (KEY POINTS), headless (map), Business Central (p24), composable commerce, microservices, modular monolith and the MACH Alliance (p30), Segment (p49)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12, after round 2 (REVISE): (rule 1) the fee example said €135,000 a year was 'more than' the four priced incidents' about €138,000; it now says 'nearly as much as', and 'ledger figures' became Kestrel & Pine's figures; (rule 1) 'six in 2026' is kept from the journal spec and now lists the six 2026 signals so the reader can count them; (rule 3, both flow readers) the Eurostat evidence moved out of the middle of the Growing stage's list of signals to follow it (p27), the forward pointer to the decision table moved from p35 to the end of the Group section (p37), the repeated POS, ERP and PSP glosses in Stage by Stage removed, and p05 gives the figure as 'most of the incidents' so the eight-of-ten figure is not stated three times before the first section; p05's transition changed from cause_effect to elaboration (the claim starts from the old assumptions) and p14 opens with its link to Shopify's tiers; (rule 6) glosses for suite, platform plus specialist layers, item master, teams owning one flow of work, parity rules, data residency, blended payment cost, ABOUT YOU and the partner share; the double comma fixed; the signals table's opening limited to the signals that led to incidents.",
+      "rejected": [
+        "Moving the vendor price-list paragraphs out of 'What a Scale Stage Is' (the two readers asked for different destinations; rule 10 keeps the current position).",
+        "Dropping the eight-of-ten figure from the KEY POINTS (it is the page's evidence for the thesis; the repetition was reduced in p05 instead)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Closing fixes after round 3 (ESCALATE; no further round), taken by the author's standing instruction of 2026-11-12 (rule 3: both flow readers): in 'Setting the Scene' the Waypoint paragraph (p09) now follows the eight-of-ten entry (p10), so the decision follows its reason; the one-sentence One Size Fits None paragraph (former p35) merged into the autonomy paragraph (p36), which also fixes its missing link; the signals section opens by saying it gathers the stage sections' ending signals (p40); p41 says the six 2026 signals marked the 2023 change long before the stage map named it; 'EDI heads the list' replaces 'often comes first'; 'Kestrel & Pine's 14-person technology team' (ledger: 14 in technology); The Giant's Boots placed at the Growing or Omnichannel stage in the callout and in 'Too early', matching the Omnichannel section. Glosses (rule 6): tenant, interchange-plus pricing, books per legal entity, intercompany flows; 'fair-use line' made 'line for a paid plan', as the definition section says. The check report (round 3) is stale after these edits. Word limit raised from 6,500 to 6,600 (rule 4, within the 10% the author allows): the closing fixes and the glosses readers asked for brought the article to 6,546 words after the agent-added text had already been trimmed in round 2.",
+      "rejected": [
+        "Moving 'The Transition Signals' before the Group material (one reader in round 3, one in round 1; rule 10 keeps the declared order).",
+        "Moving 'What a stage is not' or the vendor price lists (single readers, different destinations)."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Built the map from the stage definitions, the briefs' evidence (fee cliffs, plan thresholds, OMS/PIM/WMS triggers) and Kestrel & Pine's own path rather than from other chapters' tables; rows are linked to their owning chapters so a later pass can reconcile."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Chose one big stage-by-stage table over four per-stage tables, and added a separate requirements-by-stage table and a transition-signals table rather than overloading the map's cells."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Set the Kestrel & Pine scene as an April 2027 board stage map that places the company in stage 3 and names the stage-4 signals as not planned for 2027–2028, so the chapter can discuss the Group stage without contradicting Waypoint's scope or the 2029 review; appended to the ledger."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Used Zalando's ABOUT YOU consolidation and VF Corporation's multi-brand DTC figure as the only real-company Group-stage evidence, and Jacobs 2020 and Uber 2020 as cautions, with evidence-age flags; declined to infer any company's internal multi-brand architecture."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Did not use a required 'Across Scale Stages' heading, since the whole chapter is that section for the book; the centerpiece heading says so."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the thesis claim and how_why, copied unchanged from the journal spec, no longer say the previous stage's systems 'cause most of the new stage's incidents' (the ledger supports only the stage map's eight of ten, which so_what keeps); the claim names the signals and how_why gives the mechanism of the two-signal rule. The six transition signals of 2026 in so_what stay, matching the page. The page's thesis paragraph (p05, 'caused most of the incidents of 2026 and early 2027') is consistent with the eight of ten and was not edited here.",
+      "rejected": [
+        "Keeping 'cause most of the new stage's incidents' as a general rule the ledger cannot support.",
+        "Changing six signals to five: the page lists six."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md and _research/consistency-issues.md",
+      "contributed": "The commerce-scaling-stages line (April 2027 stage map, stage 3 since 2023, thirteen systems, eight of ten incidents, stage-4 signals, 2029 review), stages, systems, incidents and their costs, Waypoint, technology spend, the May 2027 reconciliation."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (commerce-scaling-stages; organizing-commerce-engineering transition_in; part-10)",
+      "contributed": "Intent, thesis, role, acceptance criteria and the hand-off to chapter 44."
+    },
+    {
+      "kind": "internal",
+      "ref": "PLAN.md contract 43; _research/brief-commerce-business-models.md; _research/brief-platform-landscape.md; _research/brief-platform-engineering-scale.md; meet-kestrel-and-pine",
+      "contributed": "Vendor tiers and thresholds, OMS/PIM/WMS triggers, IT-spend caveat, Data Act, style and scale cautions, the growth timeline."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify pricing, Plus plan and enterprise pages (accessed 2026-11); Shopify Form 10-K FY2025",
+      "contributed": "Plan prices, gateway fee tiers, enterprise GMV band, merchant and GMV distribution."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopware, BigCommerce and Picqer pricing pages (accessed 2026-11)",
+      "contributed": "GMV thresholds and per-order fees."
+    },
+    {
+      "kind": "external",
+      "ref": "Eurostat e-commerce statistics (2024 data); Microsoft Learn, Shopify Connector (2026)",
+      "contributed": "EDI-type vs web sales; the ERP-as-hub Growing-stage shape."
+    },
+    {
+      "kind": "external",
+      "ref": "Target Form 10-K FY2025; VF Corporation Form 10-K FY2026; Zalando Annual Report 2025",
+      "contributed": "Omnichannel and group evidence."
+    },
+    {
+      "kind": "external",
+      "ref": "Akeneo (accessed 2026-11); Fowler 2015; Shopify Engineering 2019; Jacobs 2020; Uber Engineering 2020; Segment 2018; MACH Alliance 2026",
+      "contributed": "PIM triggers; style and scale cautions."
+    },
+    {
+      "kind": "external",
+      "ref": "Regulation (EU) 2023/2854 (Data Act); Avasant IT Spending and Staffing Benchmarks 2025/2026, Retail",
+      "contributed": "Switching charges; the paywalled benchmark."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Thesis claim and how_why copied from the journal spec (no 'most of the new stage's incidents'; signals named; two-signal mechanism)."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Converted spec.md to spec.json (outcome-spec pass): thesis paragraph, roadmap and a synthesis paragraph added; chapter 42 hand-off picked up in the opening; two Group-stage paragraphs merged; the board, not the CEO, asks for the stage map; 'most incidents' stated as eight of ten; 'the shop platform' vocabulary. spec.md removed."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator)."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: incident attribution made consistent (eight of ten), incident-cost period corrected, American spelling."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article."
+    }
+  ],
+  "length": {
+    "max_words": 6600
+  }
+}

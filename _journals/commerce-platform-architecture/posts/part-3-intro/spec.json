@@ -7,7 +7,7 @@
   "part": "part-3",
   "title": "Part III — ORDER: Cart, Checkout, Payment and the Order Record",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published page (posts/part-3-intro/index.md, 443 words, ten units) and its former spec.md, then reordered the same day (see decision_log); the page was revised to match. One spec paragraph per unit of the page (nine since p05 was cut on 2026-11-12); the KEY POINTS callout, Figure 1 (the relay of four systems) and Figure 2 (the shape Part III recommends) are evidence of the claim paragraph (p03).",
   "intent": {
     "outcome": {
@@ -29,7 +29,7 @@
         "Kestrel & Pine in outline: a fictional outdoor brand, its systems, its incidents and the Waypoint program; Eva's jacket order of 13 April 2027 as the book's worked order."
       ],
       "does_not_know": [
-        "Authorization, collection and settlement as stages of a payment (owned by commerce-payments; only named here); payout is glossed in a clause.",
+        "Authorization, collection and settlement as stages of a payment (owned by commerce-payments; glossed here in one clause each, with payout).",
         "Peppol, the network for structured e-invoices (owned by tax-invoicing-and-ledger; glossed in a clause here).",
         "The order's state model, split shipments and the ledger's posting rules: each is owned by a Part III chapter and only named here."
       ]
@@ -270,7 +270,7 @@
         },
         {
           "id": "p07",
-          "controlling_idea": "The payments chapter follows the pending payment through authorization, collection, settlement and payout: January 2027's 212 duplicate refunds, costing €19,400, show why a refund needs one authorized writer and an identifier shared across retries.",
+          "controlling_idea": "The payments chapter follows the pending payment through authorization, collection, settlement and payout, glossed in one clause each (reserved, taken, moved to the provider, paid to the merchant): January 2027's 212 duplicate refunds, costing €19,400, show why a refund needs one authorized writer and an identifier shared across retries, its key.",
           "function": "description",
           "advances_thesis": {
             "supports": [
@@ -423,6 +423,15 @@
   "modalities": [],
   "open_questions": [],
   "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Auto-resolved in the cleanup pass, 2026-11-13: rule 4 raises max_words from 534 to 553 (published 443 + 25%) for glosses only. Rule 6: p07 glosses the four payment stages in one clause ('the money is reserved, taken, moved to the provider and paid to the merchant'), so settlement and collection are no longer only named (does_not_know updated; Figure 1's 'settles it' now has its gloss); p07 calls the author's 'identifier shared across retries' 'its key', tying it to the key of KEY POINTS bullet 2 and p03 (the author's wording kept, rule 10). KEY POINTS bullet 3's 'one writer per money movement' under documents stays as written (the author's callout, rule 10); p03 already places one writer per money movement at the payment provider, and no rule settles moving it. The author's cut sentences stay cut: none fits in the remaining two words.",
+      "rejected": [
+        "Glossing in the author's KEY POINTS",
+        "Replacing 'identifier shared across retries' with 'key'",
+        "Restoring an author sentence over 553"
+      ]
+    },
     {
       "date": "2026-11-12",
       "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming draft-check round 4 (escalate: 28 passed, 24 failed; 14 major, 10 minor; two at fault in the spec), p05 (the company's other failures) is cut (rule 3: readers found it out of place in both positions tried, after Eva's order in round 3 and between the opening scene and its cause in round 4, both readers each time, and it supports no supporting claim; each chapter paragraph already names its own case, so no sentence of it is needed later). Its words pay for the round's cheap fixes within the 534-word limit: p02 ties the late PSP message to the unpaid order and opens on the click instead of 'the catalog's facts'; p03 puts the key on every message (as KEY POINTS bullet 2 does), glosses the ledger as finance's book of accounts and drops the relative clause that split 'written' from 'matched'; p04 marks the contrast with the opening order and says 'when it closes April's books in May'; p09 says the invoice carries the VAT split, puts the legal-entity gloss in a parenthesis before the cause and effect, and rewords the Peppol clause; p10 drops 'Together' (overstated).",
@@ -608,6 +617,10 @@
   ],
   "changelog": [
     {
+      "date": "2026-11-13",
+      "change": "Cleanup pass: max_words 553; p07 glosses authorization, collection, settlement and payout and names the retry identifier as its key; check-report.json stale. (AI-mediated session)"
+    },
+    {
       "date": "2026-11-12",
       "change": "Confirming draft-check round 4: escalate (28 pass, 24 fail). p05 cut by rule 3; cheap fixes in p02, p03, p04, p09, p10 within 534 words; check-report.json is stale. (AI-mediated session)"
     },
@@ -653,7 +666,7 @@
     }
   ],
   "length": {
-    "max_words": 534,
+    "max_words": 553,
     "target_words": 510
   }
 }

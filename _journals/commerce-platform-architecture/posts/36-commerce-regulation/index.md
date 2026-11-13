@@ -26,20 +26,22 @@ logo: "assets/images/36-commerce-regulation/logo.jpeg"
 <br>
 A rule about displaying an earlier price can require price history that the merchant has never stored. Engineering then needs a data source, a collection process and a checkout or product-page change. Learning about the rule just before it applies leaves little time for that work, even if the deadline has been public for years. This book calls that avoidable delay **The Long Fuse**.
 
-Commerce rules also affect returns, product details, invoices and unsold goods. For each applicable requirement, ask **which data it needs, who owns that data, how the behavior will be tested, and when it must work**. These questions turn a legal deadline into work the team can schedule and verify, reducing the risk of a rushed release or interrupted selling. Legal interpretation and national differences still require care. [[commerce-security]] and [[privacy-and-customer-data]] cover related controls.
+The price rule is not the only one. The previous chapter's one-month deadline for answering a deletion request is another rule with a date, and commerce rules also affect returns, product details, invoices and unsold goods. So, for each applicable requirement, ask **which data it needs, who owns that data, how the behavior will be tested, and when it must work**. These questions turn a legal deadline into work the team can schedule and verify, reducing the risk of a rushed release or interrupted selling. Legal interpretation and national differences still require care. [[commerce-security]] and [[privacy-and-customer-data]] cover related controls.
 
 **Where we are in the order's journey.** Eva buys a jacket from Kestrel & Pine, the fictional outdoor brand. Rules affect the displayed price, product information, checkout and later return process. This chapter connects those obligations to the systems that must implement them.
+
+The chapter starts from four rules that reached Kestrel & Pine through four doors, shows how to read a law as a requirement, and applies that reading to each rule's official text, grouped by what it touches. Kestrel & Pine's 2027 calendar collects them, and one row is taken through the method. The Long Fuse explains why deadlines arrive late, and the United States serves as a contrast. Then come four ways to run compliance, how the choice changes with scale, what goes wrong, and the close of Part VIII.
 
 ## Setting the Scene at Kestrel & Pine: Four Rules Through Four Doors
 
 Kestrel & Pine is a Dutch company with 310 employees selling in three countries. In February 2027, Head of Engineering Noor Visser finds that four regulations reached engineering through four unrelated channels. The legal dates below are sourced; the company's discovery of them is fictional.
 
 - **The listing rejections (December 2024).** The **General Product Safety Regulation** (GPSR, Regulation (EU) 2023/988) applied from 13 December 2024 and requires every online offer to show the manufacturer's name and address, a responsible person in the EU where the manufacturer is outside it, product identification and warnings. Amazon.de and Zalando turned those into mandatory listing fields, the connector began rejecting third-party equipment products, and Milan Petrov, who owns the marketplaces, filled the gaps from a spreadsheet over three weeks.
-- **The accessibility audit (summer 2025).** The **European Accessibility Act** applied from 28 June 2025 to e-commerce services, exempting only microenterprises. The agency audited the three storefronts in May 2025 (illustrative: about 140 findings, mostly contrast, labels and keyboard navigation in the customized theme) and fixed them over the summer. The checkout page was the platform's problem; the theme was Kestrel & Pine's.
+- **The accessibility audit (summer 2025).** The **European Accessibility Act** applied from 28 June 2025 to e-commerce services, exempting only microenterprises. The agency that builds Kestrel & Pine's storefront theme audited the three storefronts in May 2025 (illustrative: about 140 findings, mostly contrast, labels and keyboard navigation in the customized theme) and fixed them over the summer. The checkout page was the platform's problem; the theme was Kestrel & Pine's.
 - **The refused PDF (December 2025).** Belgium made structured electronic invoices mandatory between Belgian VAT-registered businesses from 1 January 2026. Whether that binds a Dutch supplier without a Belgian establishment is not settled by the sources; what mattered was that the Belgian customer's bookkeeping now expected a Peppol invoice. Kestrel & Pine learned of it when a larger Belgian account announced it would no longer process PDFs ([[tax-invoicing-and-ledger]] tells it from finance's side); the EDI (electronic data interchange) provider, already an access point to Peppol, the European network for exchanging structured business documents, was connected to the ERP (the finance and invoicing system) in six weeks, and Peppol invoices have gone to all Belgian business customers since January 2026.
-- **The newsletter (June 2026).** The **Ecodesign for Sustainable Products Regulation** (ESPR, Regulation (EU) 2024/1781) prohibits, from 19 July 2026, the destruction of unsold apparel and footwear by large enterprises, and its definition of "unsold" includes goods returned under the right of withdrawal. Teun Baas, who owns the seasons, had an August routine for end-of-line stock and returns not resold as new (about 39% of returned items); it now needs a documented disposition per unit and a yearly disclosure. Sanne de Wit, the Finance Director, found the rule in an auditor's newsletter in June 2026, weeks before it applied.
+- **The newsletter (June 2026).** The **Ecodesign for Sustainable Products Regulation** (ESPR, Regulation (EU) 2024/1781) prohibits, from 19 July 2026, the destruction of unsold apparel and footwear by large enterprises, and its definition of "unsold" includes goods returned under the right of withdrawal (the consumer's right to cancel an online purchase within 14 days). Teun Baas, who owns the seasons, had an August routine for end-of-line stock and returns not resold as new (about 39% of returned items); it now needs a documented disposition per unit and a yearly disclosure. Sanne de Wit, the Finance Director, found the rule in an auditor's newsletter in June 2026, weeks before it applied.
 
-An error log, an agency, a customer and a newsletter delivered the warnings. The product-safety, accessibility and sustainable-product rules had been published years earlier. Noor adds a regulatory calendar to **Waypoint**, the company's improvement program, with a named owner for every applicable requirement.
+An error log, an agency, a customer and a newsletter delivered the warnings. The product-safety, accessibility and sustainable-product rules had been published years earlier. Two of them applied because of the company's size: microenterprises are exempt from the accessibility rule, and the ESPR ban reaches only large enterprises until 2030. Noor adds a regulatory calendar to **Waypoint**, the company's improvement program, with a named owner for every applicable requirement.
 
 ![A company building with four doors where legal envelopes arrive, labeled error log, agency, customer and newsletter, and a regulatory calendar on the wall inside.](assets/images/36-commerce-regulation/36-four-rules-four-doors.jpeg)
 **Figure 1:** *Four rules, four doors: an error log, an agency, a customer and a newsletter brought the law in, and none of them was a door the company owned; the 2027 calendar is the door of its own.*
@@ -53,7 +55,7 @@ A legal text is written for courts, not engineers; the translation follows four 
 3. **Which system of record holds that, and which channels must show it?** The field belongs where the fact is owned ([[boundaries-and-systems-of-record]]); a manufacturer field kept only in the marketplace connector is a copy with no owner.
 4. **When does it apply, and how will we know we comply?** The application date, the national transposition date for a directive, and a test: a query, a report or a check in the release process.
 
-The table uses **OMS** for order management system, **PIM** for product information management and **WMS** for warehouse management. **ViDA** means VAT in the Digital Age, **PPWR** the Packaging and Packaging Waste Regulation, and **WCAG** the Web Content Accessibility Guidelines. Each row links a rule to the records and controls it requires.
+The table applies the four questions to eight rules, which the next section explains in full. It uses **OMS** for order management system, **PIM** for product information management and **WMS** for warehouse management. **ViDA** means VAT in the Digital Age, **PPWR** the Packaging and Packaging Waste Regulation, **WCAG** the Web Content Accessibility Guidelines, and **EN 16931** the European standard for the content of an electronic invoice.
 
 | Rule | Data requirement | System of record | Channels that must show it | Test |
 | --- | --- | --- | --- | --- |
@@ -66,18 +68,20 @@ The table uses **OMS** for order management system, **PIM** for product informat
 | Accessibility (European Accessibility Act) | Storefront, checkout, identification and payment meet WCAG 2.1 AA | Theme and embedded widgets ([[storefront-architecture]]) | Storefronts | An audit per release; vendor statements on file |
 | AI transparency (AI Act, Art. 50) | Disclosure that a shopper talks to an AI; machine-readable marking of generated content | Any assistant or content tool ([[ai-and-agentic-commerce]]) | Storefronts, service | No undisclosed assistant; generated images marked |
 
-The pattern to notice is the third column: **most rows land in a system Kestrel & Pine did not have or did not own in 2026** (the PIM, the OMS, the price history, a disposition record). Regulation is one more reason the Waypoint hubs exist.
+The pattern to notice is the third column: **most rows land in a system Kestrel & Pine did not have or did not own in 2026** (the PIM, the OMS, the price history, a disposition record). Regulation is one more reason for the hubs Waypoint adds beside the shop platform: the PIM and the OMS.
 
 ![Diagram: Reading a law as a requirement](assets/images/36-commerce-regulation/fig01-reading-law-requirement-scope-first-then.jpeg)
 **Figure 2:** *Reading a law as a requirement: scope first, then the field or clock it demands, the system that owns it, the channels that show it, a test, and a dated row with a name on it.*
 
 ## The Rules, by What They Touch
 
+The method table gave eight rules one line each; this section reads each rule from its official text, grouped by what it touches.
+
 ### Consumer law: withdrawal, the button, the prior price, reviews
 
 Consumer protections affect both the purchase decision and the customer's ability to undo it. The checkout must make the commitment clear, while returns and payment systems need the dates and records used to handle withdrawal.
 
-The **Consumer Rights Directive** (2011/83/EU, applying to contracts from 13 June 2014) gives a consumer "a period of 14 days to withdraw from a distance or off-premises contract, without giving any reason", extended to 12 months if the trader fails to inform them; the trader must refund "not later than 14 days from the day on which he is informed of the consumer's decision to withdraw", and may withhold it until the goods are back; and an order button must be labeled "only with the words 'order with obligation to pay' or a corresponding unambiguous formulation" (Directive 2011/83/EU, 2011). Three clocks and one string. The clocks need the right events recorded: delivery (the carrier's scan), the withdrawal notice (the returns portal) and receipt of the goods (the WMS). Eva's exchange request of 19 April 2027 started the clock that day, not on 22 April when the jacket reached Duiven.
+The **Consumer Rights Directive** (2011/83/EU, applying to contracts from 13 June 2014) gives a consumer "a period of 14 days to withdraw from a distance or off-premises contract, without giving any reason", extended to 12 months if the trader fails to inform them; the trader must refund "not later than 14 days from the day on which he is informed of the consumer's decision to withdraw", and may withhold it until the goods are back; and an order button must be labeled "only with the words 'order with obligation to pay' or a corresponding unambiguous formulation" (Directive 2011/83/EU, 2011). Three clocks and one string. The clocks need the right events recorded: delivery (the carrier's scan), the withdrawal notice (the returns portal) and receipt of the goods (the WMS). Eva's request of 19 April 2027 to exchange her jacket is recorded as her notice. Had she asked for a refund instead, it would have been due by 3 May, 14 days from that notice, not 14 days from 22 April, when the jacket reached Kestrel & Pine's warehouse in Duiven.
 
 The **Omnibus Directive** (2019/2161, applied from 28 May 2022) added the **prior-price rule**: "any announcement of a price reduction shall indicate the prior price", meaning "the lowest price applied by the trader during a period of time not shorter than 30 days prior to the application of the price reduction" (Directive (EU) 2019/2161, 2019). It also made ranking parameters and review provenance material information, blacklisted claiming reviews are genuine "without taking reasonable and proportionate steps to check", and required disclosure of prices personalized by automated decision-making. [[pricing-architecture]] works the Black Friday case where an autumn campaign at €179 makes the lawful "was" price €179, not €199; [[commerce-search-and-discovery]] covers reviews. **A 30-day price history per SKU per country is a legal record**, and a merchant whose prices live in seven copies, as Kestrel & Pine's did in 2026, cannot produce it.
 
@@ -95,11 +99,18 @@ Since 9 October 2025 euro-area banks also apply **verification of payee** (Regul
 
 Electronic invoicing requirements determine which structured invoice a trading partner or authority can receive and when. A valid PDF may not satisfy that exchange. [[edi-and-e-invoicing]] provides the full mandate calendar; for a Dutch brand selling to businesses in three countries, as of November 2026:
 
+- **Belgium** requires structured e-invoices over Peppol between Belgian VAT-registered businesses since 1 January 2026, with fines of €1,500 to €5,000 for lacking the technical means (FPS Finance, 2024 and 2025).
+- **Germany** requires receiving since 1 January 2025 and issuing from 1 January 2027 for German-established issuers above €800,000 prior-year turnover, from 2028 for all (Federal Ministry of Finance FAQ, n.d.).
+- **The Netherlands** plans a domestic mandate from 1 July 2030 and reporting from 1 July 2031 (Rijksoverheid, 11 September 2026).
+- **ViDA** requires e-invoicing-based reporting for cross-border business-to-business supplies from 1 July 2030 (Council Directive (EU) 2025/516).
+
+The mandates are domestic in scope. The German one binds German-established issuers, not a Dutch one; the sources do not settle whether the Belgian one reaches a Dutch supplier without a Belgian establishment. Either way, business customers in both countries can demand the format, and many do.
+
 ### Platforms and marketplaces: the DSA and product safety
 
 A marketplace needs to know who is selling and make relevant product information available to buyers. For the merchant, this creates seller and product records that must remain consistent across sales channels.
 
-The **Digital Services Act** (Regulation (EU) 2022/2065, applying from 17 February 2024) requires a marketplace, before a trader may sell, to obtain the trader's identity and contact details, an identification document, "the payment account details of the trader", the trade-register number and a self-certification to offer only compliant products, and to verify them (Art. 30); it bans deceptive interfaces (Art. 25) and requires the interface to let traders provide compliance and product-safety information (Art. 31). For a merchant selling on three marketplaces this is an onboarding data set to keep current three times; for one operating a marketplace or dropship program, a seller-onboarding workflow with verification (LISTED's [[marketplace-regulation]] treats the operator's side).
+The **Digital Services Act** (Regulation (EU) 2022/2065, applying from 17 February 2024) requires a marketplace, before a trader may sell, to obtain the trader's identity and contact details, an identification document, "the payment account details of the trader", the trade-register number and a self-certification to offer only compliant products, and to verify them (Art. 30); it bans deceptive interfaces (Art. 25) and requires the interface to let traders provide compliance and product-safety information (Art. 31). For a merchant selling on three marketplaces this is an onboarding data set to keep current three times; for one operating a marketplace or dropship program, a seller-onboarding workflow with verification (LISTED, the companion book on marketplace architecture, treats the operator's side in [[marketplace-regulation]]).
 
 The **GPSR** (Regulation (EU) 2023/988, applying from 13 December 2024) treats a product offered online as made available in the EU if the offer targets EU consumers, and requires every distance offer to show the manufacturer's name and address, the responsible person's where the manufacturer is outside the EU, identification including a picture, and warnings in a language the consumer understands (Art. 19); marketplaces must let traders provide this per product (Art. 22(9)). In data terms: **four mandatory attributes per product, owned by the PIM and syndicated everywhere**, with publication blocked when they are missing.
 
@@ -137,7 +148,7 @@ The **Data Act** (Regulation (EU) 2023/2854) applies from 12 September 2025; its
 
 ## The Regulatory Calendar for 2027
 
-Kestrel & Pine's calendar as Noor and Sanne write it in March 2027, with application dates as of November 2026 from the official sources in this chapter. *Maintain* rows are in force and need a test; *prepare* rows have a date ahead; *watch* rows are pending. Owners and statuses are illustrative; dates are documented.
+Kestrel & Pine's calendar as Noor and Sanne write it in March 2027, with application dates as of November 2026 from the official sources in this chapter. *Maintain* rows are in force and need a test; *prepare* rows have a date ahead; *watch* rows are pending, among them the Digital Omnibus on data and the Digital Fairness Act, proposals with no adopted text yet, and the appeal against the EU–US Data Privacy Framework (DPF) for personal-data transfers. Owners and statuses are illustrative; dates are documented. Some rows add details the sections above left out, such as transition periods and the number of business accounts a mandate reaches.
 
 | Date | Rule (official source) | What it requires of Kestrel & Pine | Owner | 2027 status |
 | --- | --- | --- | --- | --- |
@@ -156,15 +167,25 @@ Kestrel & Pine's calendar as Noor and Sanne write it in March 2027, with applica
 | 15 Aug 2026 | Dutch Cyberbeveiligingswet (NIS2) | Out of direct scope; vendor clauses with 24/72-hour clocks | Noor Visser | *Maintain*: clause inventory |
 | 2 Dec 2027 | AI Act high-risk, Annex III | Worker monitoring in warehouse software would be in scope | Daniel Okafor | *Watch*: ask the WMS vendor |
 | 11 Dec 2027 | Cyber Resilience Act 2024/2847 | Vendors' product security duties (reporting since 11 Sep 2026) | Noor Visser | *Watch* |
-| Pending | PSD3 and PSR; Digital Omnibus (data); Digital Fairness Act; DPF appeal C-703/25 P | Fraud liability and payee checks; cookie rules; dark patterns; transfers | Noor Visser | *Watch*: quarterly review of status |
+| Pending | PSD3 and PSR; Digital Omnibus (data); Digital Fairness Act; DPF appeal C-703/25 P | Fraud liability and wider payee checks; cookie rules; dark patterns; transfers | Noor Visser | *Watch*: quarterly review of status |
 | 1 Jul 2030 / 1 Jul 2031 | ViDA 2025/516; Netherlands e-invoicing and reporting (planned) | Cross-border e-invoicing and reporting; domestic Dutch mandate for 640 accounts | Sanne de Wit | *Prepare*: the Peppol path already exists; watch the Dutch bill in 2027 |
 | Not yet set | ESPR delegated act for textiles; digital product passport | Resolvable identifier and passport data per product *(assumption on timing)* | Teun Baas | *Watch*: verify the Commission's working plan each quarter |
 
 Three readings. **Most rows are maintenance, not projects.** **The 2027 projects are few**: Data Act clauses in two contracts, the GPSR publication rule when the PIM arrives, the first ESPR disclosure. And **the owners are mostly not engineers**, because they own the facts; Noor owns the calendar and the vendor rows. The toolkit card is in [[toolkit]].
 
+### Kestrel & Pine's 2027 worked example
+
+Now take one whole row of the calendar through the method, from scope to owner. **GPSR, Art. 19.** Scope: a trader offering products to EU consumers at a distance, so every product, own-brand and third-party. Data: manufacturer name and address (Kestrel & Pine B.V. for own brand; the supplier for third-party equipment), a responsible person where the manufacturer is outside the EU, a picture and an identifier (the GTIN, the global trade item number behind the barcode, that every own-brand SKU has carried since 2021), warnings in Dutch, French and German.
+
+System of record: the PIM from Q3 2027 (W3, the decision to make a PIM the system of record for product content); until then the platform and the connector, which is why the 2024 fix lived in a spreadsheet. Channels: three storefronts, three marketplaces.
+
+Test: a PIM rule that blocks publication without the four fields, run on the 1,200 new variants each season. Owner: Teun Baas. Cost (illustrative): two days of PIM configuration and a clean-up of about 850 third-party variants.
+
+Three weeks of spreadsheet work in 2024 becomes a validation rule in 2027, because the system that should own the field now exists.
+
 ### Requirements for the compliance data flows
 
-The rows become flows between systems, with requirements like any other ([[integration-styles]]).
+Like the GPSR row, every row becomes a flow between systems, with requirements like any other ([[integration-styles]]): how fresh the data must be, whether there is one consistent version, how fast it must arrive, and what happens when it is unavailable. Two rows show what such requirements look like: the price history behind the prior price and the dated events behind the refund clocks.
 
 | Flow | Freshness | Consistency | Latency | Availability |
 | --- | --- | --- | --- | --- |
@@ -173,12 +194,10 @@ The rows become flows between systems, with requirements like any other ([[integ
 
 ## The Long Fuse: Why Deadlines Arrive Late
 
-Every row had the same life: a proposal, an adopted text, often a national transposition, an application date, then enforcement. Publication to application is usually two to four years.
+Every row of the calendar, including the one just taken through the method, had the same life: a proposal, an adopted text, often a national transposition, an application date, then enforcement. Publication to application is usually two to four years, and the evidence supports five lessons.
 
 ![Diagram: The Long Fuse](assets/images/36-commerce-regulation/fig02-long-fuse-rule-public-years-before.jpeg)
 **Figure 3:** *The Long Fuse: a rule is public years before it applies, a calendar notices it at adoption, and a merchant without one notices it when a customer, a marketplace or a regulator enforces it.*
-
-Five lessons the evidence supports.
 
 **Dates slip; scope does not.** The AI Act's high-risk dates moved by more than a year (Regulation (EU) 2026/1744); the PCI Council softened its script requirements weeks before they took effect ([[commerce-security]]); the Dutch e-invoicing mandate moved to 2030 before it was a bill. Plan the capability to the scope and schedule it to the date.
 
@@ -186,22 +205,32 @@ Five lessons the evidence supports.
 
 **Partners enforce before regulators do.** Marketplaces turn the GPSR and the DSA into listing fields with their own deadlines; business customers turn a mandate into a refused PDF; retail chains write label standards into purchasing conditions with penalties ([[edi-and-e-invoicing]]). The Pulled Rug and the Long Fuse are often one event seen from two sides.
 
-**Courts and appeals are calendar events too.** *South Dakota v. Wayfair* created sales-tax obligations for remote sellers in a day (21 June 2018); the Eighth Circuit vacated the FTC's click-to-cancel rule in July 2025; the pending appeal against the EU–US Data Privacy Framework (C-703/25 P) could change every US transfer. A "watch" row is a real row.
+**Courts and appeals are calendar events too.** *South Dakota v. Wayfair*, a US Supreme Court decision the next section returns to, created sales-tax obligations for remote sellers in a day (21 June 2018); the Eighth Circuit vacated the FTC's click-to-cancel rule on cancelling subscriptions in July 2025; the pending appeal against the EU–US Data Privacy Framework (C-703/25 P) could change every US transfer. A "watch" row is a real row.
 
 **The platform absorbs some of it, never all of it.** A hosted platform ships the button text, the cookie banner, the withdrawal flow, the card-data scope of its checkout and the accessibility of the pages it renders. It does not ship the merchant's price history, product-safety fields, packaging reports, disposition records or deletion fan-out. The rows that remain are the data rows.
-
-## The Choices: Four Ways to Run Compliance
 
 ![A hosted platform carries a light tray with a checkout button, cookie banner and card shield, while the merchant carries heavy crates of price history, safety fields, packaging reports and disposition records.](assets/images/36-commerce-regulation/36-platform-absorbs-some.jpeg)
 **Figure 4:** *The platform absorbs some of it, never all of it: the button, the banner and the checkout's card scope travel with the platform, while the data rows stay with the merchant.*
 
-**React when someone complains.** No calendar; rules arrive through customers, marketplaces, auditors and fines. The default, and nearly adequate for a Starting-stage shop on a hosted platform in one country, because the platform carries most of what applies.
+## In Practice: The United States as the Contrast
+
+The calendar holds EU and national rules, and the Long Fuse lessons drew on one US court decision. A European merchant selling into the United States meets a different shape of law: few federal rules, many state ones, and lawsuits where the EU has regulations. **Sales tax**: since *South Dakota v. Wayfair* (21 June 2018) a state may tax remote sellers without physical presence (thresholds of $100,000 of sales or 200 transactions were upheld), and marketplace-facilitator laws make the marketplace collect, so US sales tax is a tax-engine problem ([[tax-invoicing-and-ledger]]).
+
+**Marketplace sellers**: the INFORM Consumers Act (effective 27 June 2023) requires marketplaces to collect and verify bank, tax and contact data from high-volume sellers and to disclose sellers above $20,000 on listings, with penalties of $53,088 per violation (Federal Trade Commission, FTC, n.d., accessed November 2026), a mirror of DSA Art. 30.
+
+**Reviews**: the FTC rule of 14 August 2024 bans fake or AI-generated reviews. **Accessibility**: no federal rule for private sites; exposure is litigation (a vendor counted 5,114 suits in 2025, 70% against e-commerce; UsableNet, 2025). **Privacy**: an opt-out model across at least 19 state laws (IAPP, 2025) against the EU's opt-in.
+
+A platform serving both regions needs a tax engine, a consent record that expresses both models, and the same onboarding data twice.
+
+## The Choices: Four Ways to Run Compliance
+
+The data rows stay with the merchant, and it has four ways to keep them. **React when someone complains.** No calendar at all; rules arrive through customers, marketplaces, auditors and fines. The default, and nearly adequate for a Starting-stage shop on a hosted platform in one country, because the platform carries most of what applies.
 
 **One owner, one calendar, reviewed quarterly.** A named person keeps the table, reads the official source per row and brings new instruments to a quarterly review. Cheap; it removes the surprise but does not put the fields in the systems.
 
 **Calendar plus requirement cards tied to the system-of-record map.** Each row becomes a card (scope, data requirement, system of record, channels, test, date, owner, as in Figure 2), attached to the entity–owner table of [[boundaries-and-systems-of-record]], with the tests in the release process. Where an Omnichannel merchant should be, because that is when rules start landing in systems it owns.
 
-**A compliance function with counsel and tooling.** Legal and compliance staff, tracking subscriptions, controls testing, local advisers. Right for a group or a vendor; at Kestrel & Pine's size the Giant's Boots.
+**A compliance function with counsel and tooling.** Legal and compliance staff, tracking subscriptions, controls testing, local advisers. Right for a group or a vendor; at Kestrel & Pine's size the Giant's Boots: the machinery of a much larger company, copied without its reasons.
 
 | Approach | Cost (illustrative) | Catches | Misses | Right when |
 | --- | --- | --- | --- | --- |
@@ -221,39 +250,19 @@ My recommendation: **the third approach, built from the second, the quarter the 
 | **3 — Omnichannel** (about €20M–€200M) | Calendar plus requirement cards on the system-of-record map; owners in finance, operations and merchandising | Fields owned by the PIM and OMS; tests in releases; vendor clauses with incident clocks; packaging and disposition reporting; a Data Act check on new contracts | Three national calendars in people's heads; a rule found in a newsletter (June 2026); a report rebuilt by hand each year |
 | **4 — Group** | A compliance function tied to the map; per-country entities | Country clearance systems behind one invoicing service; one consent model across brands; a regulatory watch with counsel | Each brand reading the law separately; a marketplace business bringing DSA and NIS2 duties of its own |
 
-Here **scope follows size**: a microenterprise is exempt from the Accessibility Act, a small enterprise from the ESPR ban, a Dutch company below the small-business threshold from the planned e-invoicing mandate, and a retailer that becomes a marketplace operator picks up the DSA's and NIS2's duties that day. Growth is a change of scope, and a row should say which size or role triggers it.
-
-## In Practice
-
-### The United States, as the contrast
-
-A European merchant selling into the United States meets a different shape of law: few federal rules, many state ones, and lawsuits where the EU has regulations. **Sales tax**: since *South Dakota v. Wayfair* (21 June 2018) a state may tax remote sellers without physical presence (thresholds of $100,000 of sales or 200 transactions were upheld), and marketplace-facilitator laws make the marketplace collect, so US sales tax is a tax-engine problem ([[tax-invoicing-and-ledger]]).
-
-**Marketplace sellers**: the INFORM Consumers Act (effective 27 June 2023) requires marketplaces to collect and verify bank, tax and contact data from high-volume sellers and to disclose sellers above $20,000 on listings, with penalties of $53,088 per violation (Federal Trade Commission, FTC, n.d., accessed November 2026), a mirror of DSA Art. 30.
-
-**Reviews**: the FTC rule of 14 August 2024 bans fake or AI-generated reviews. **Accessibility**: no federal rule for private sites; exposure is litigation (a vendor counted 5,114 suits in 2025, 70% against e-commerce; UsableNet, 2025). **Privacy**: an opt-out model across at least 19 state laws (IAPP, 2025) against the EU's opt-in.
-
-A platform serving both regions needs a tax engine, a consent record that expresses both models, and the same onboarding data twice.
-
-### Kestrel & Pine's 2027 worked example
-
-Take one row through the method. **GPSR, Art. 19.** Scope: a trader offering products to EU consumers at a distance, so every product, own-brand and third-party. Data: manufacturer name and address (Kestrel & Pine B.V. for own brand; the supplier for third-party equipment), a responsible person where the manufacturer is outside the EU, a picture and an identifier (the GTIN, the global trade item number behind the barcode, that every own-brand SKU has carried since 2021), warnings in Dutch, French and German.
-
-System of record: the PIM from Q3 2027 (W3); until then the platform and the connector, which is why the 2024 fix lived in a spreadsheet. Channels: three storefronts, three marketplaces.
-
-Test: a PIM rule that blocks publication without the four fields, run on the 1,200 new variants each season. Owner: Teun Baas. Cost (illustrative): two days of PIM configuration and a clean-up of about 850 third-party variants.
-
-Three weeks of spreadsheet work in 2024 becomes a validation rule in 2027, because the system that should own the field now exists.
+The table shows the approach growing with the stage. Here **scope follows size**: a microenterprise is exempt from the Accessibility Act, a small enterprise from the ESPR ban, a Dutch company below the small-business threshold from the planned e-invoicing mandate, and a retailer that becomes a marketplace operator picks up the DSA's and NIS2's duties that day. Growth is a change of scope, and a row should say which size or role triggers it.
 
 ## When It Goes Wrong
 
-**A deadline discovered late.** Detection: a customer, marketplace or auditor says so. Recovery: the capability first, the evidence second; Belgium's tolerance of December 2025 spared only businesses that could show timely steps ("under no circumstances" a general postponement), and a dated plan, a signed provider contract and a test log are that evidence. Then ask which other rows have no owner.
+Rows and events still fail, in three recurring ways. **A deadline discovered late.** Detection: a customer, marketplace or auditor says so. Recovery: the capability first, the evidence second. In December 2025 Belgium announced a tolerance for the first three months of 2026, but it spared only businesses that could show timely steps; it was "under no circumstances" a general postponement. A dated plan, a signed provider contract and a test log are that evidence. Then ask which other rows have no owner.
 
 **A clock that nobody started.** A withdrawal notice received by e-mail and typed into the returns portal four days later; the clock ran from the e-mail. Detection: a refund-age report using the notice date. Recovery: every notice channel creates the event with its real date.
 
 **A partner's deadline before the law's.** A marketplace requires a field months before a regulation applies, or a chain demands a label standard the law never mentions. Detection: partner notices read by the row's owner. Recovery: the partner's date becomes the row's date, because the partner is the enforcer that matters.
 
 ## What to Take Away
+
+The opening's price rule shows the pattern: a rule public for years becomes an emergency only when its data, here a 30-day price history, has no owning system. Refund clocks, product-safety fields, structured invoices and disposition records work the same way; with a system of record, a test, a date and an owner on one calendar, each deadline becomes ordinary engineering work.
 
 **Established.**
 
@@ -282,13 +291,20 @@ Three weeks of spreadsheet work in 2024 becomes a validation rule in 2027, becau
 7. Which vendors pass NIS2 or Cyber Resilience Act clauses to us, and do this year's contracts carry Data Act switching terms?
 8. Which marketplaces or customers enforce a rule earlier than the law does, and who reads their notices?
 
-With security, privacy and regulation in place, Part VIII is complete, and the book turns from the parts to the whole: four journeys that follow one order, one return, one wholesale order and one peak day through every system at once. Continue with [[part-9]].
+## Closing Part VIII
+
+This chapter closes Part VIII. The part opened with a puzzle: the checkout that accepts a real purchase also received 48,000 attempts with stolen cards in one night, because the attackers used it exactly as it was built. Its three chapters each started from a Kestrel & Pine case: the Card-Testing Night of August 2026 ([[commerce-security]]), the Request From Ghent of May 2027, a customer found in nine systems ([[privacy-and-customer-data]]), and four rules through four doors. They look like three disciplines, each with a product to buy, but they have one answer. In each case something from outside (a script, a person with rights, a rule with a date) used or demanded what the merchant already had, the platform did what its vendor promised, and the gap was an item nobody had on a list with an owner: keys and a decline rate nobody watched, a person in nine systems with no index, a field with no system of record and a date nobody tracked.
+
+Kestrel & Pine therefore answered with three lists on Noor Visser's ownership map rather than three products. The April 2027 security baseline gives every integration one identity and one restricted key with an owner, enforces multi-factor authentication, alerts when the decline rate reaches three times its 30-day median, tests a kill switch for guest card payments every quarter, keeps an inventory of checkout scripts and has three runbooks. The privacy map, with the request orchestrator running from October 2027, answered the second deletion request in two working days. The March 2027 regulatory calendar has an owner per row, most of them not engineers.
+
+A reader can extend their own map with the same three columns: for every identity and key, its owner and scope; for every system that holds personal data, its legal role, the action a request requires there and its retention clock; for every rule that applies, its data, system of record, test, date and owner. Start with the integrations that have no named owner: each is a key, a data flow and a fact at once.
+
+With the three lists in place, Part VIII is complete. Parts II to VIII taught each capability, join and rule separately; the book now follows them all at once through four journeys: one order, one return, one wholesale order and one peak day. Continue with [[part-9]].
 
 ## Sources and Evidence
 
 *Company, product and investor sources*
 
-- [Sephora settlement](https://oag.ca.gov/news/press-releases/attorney-general-bonta-announces-settlement-sephora-part-ongoing-enforcement) — California Attorney General, 2022-08-24; the CCPA settlement and the Global Privacy Control requirement.
 - [2025 Year-End Digital Accessibility Lawsuit Report](https://info.usablenet.com/2025-year-end-digital-accessibility-lawsuit-report-plain-text) — UsableNet, 2025-12; US lawsuit counts, quoted as a vendor figure.
 - [US State Privacy Legislation Tracker chart](https://prod.iapp.org/media/pdf/resource_center/State_Comp_Privacy_Law_Chart.pdf) — IAPP, 2025; the count of comprehensive state privacy laws.
 

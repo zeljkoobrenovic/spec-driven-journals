@@ -18,9 +18,9 @@ logo: "assets/images/bibliography/logo.jpeg"
 > * **Keep documented facts, inferences and Kestrel & Pine distinct.** The sources support the documented facts. Reference architectures for real platforms are labeled inferences, the recommendations are my judgement, and Kestrel & Pine, the omnichannel brand the book follows, is fictional: no source here describes it.
 
 <br>
-The chapters draw on company accounts, technical documentation, research and official rules. This register lets you trace a claim to its source and see when that evidence was published or checked. Research took place in **November 2026**; entries retain publication, access, update and version dates. **'n.d.' means undated**, so the access month is the indication of when that documentation was read.
+Use this register to trace a claim in any chapter to its public source and see when that evidence was published or checked: look the source up by topic, or find a chapter's identifiers under **Sources by Chapter** near the end. The chapters draw on company accounts, technical documentation, research and official rules. Research took place in **November 2026**; entries retain publication, access, update and version dates. **'n.d.' means undated**, so the access month is the indication of when that documentation was read.
 
-Some sources are in Dutch, German, French or Polish, with translations used in the chapters. Productscape domain models appear once as the author's planning material, not evidence of a company's internal design.
+Some sources are in Dutch, German, French or Polish, with translations used in the chapters. The page first explains how to read an entry (its R-number, fields and evidence type), then gives a topic index, the entries by topic and, near the end, the sources by chapter.
 
 ## How to Read This Register
 
@@ -44,11 +44,11 @@ Each entry provides a linked title, publisher or author, date, supported claim, 
 | Encyclopedia | 7 | Wikipedia entries, used for definitions, dates and widely reported incidents | Tertiary; the chapters use it only where no primary source was reachable, and the primary source wins where one is cited |
 | Author's working model | 1 | The author's Productscape domain models of eleven commerce products, inferred from public product behavior and mapped in [[domain-coverage]] | Not public evidence and not a description of any company's systems; they were used to check the book's coverage, never as a source for a fact |
 
-Private research notes and the book plan are excluded. Their claims point to public sources, which are listed here. Links to companion books such as RECONCILED and LISTED are reading cross-references and are also excluded from this external-source register.
+Private research notes and the book plan are excluded. Their claims point to public sources, which are listed here. The author's Productscape domain models (the last row of the table) appear once as planning material, not evidence of a company's internal design. Links to companion books such as RECONCILED and LISTED are reading cross-references and are also excluded from this external-source register.
 
 ## Topic Index
 
-Browse by topic or use **Sources by Chapter** near the end. A source sits under the topic citing it most; its **Cited in** field lists all uses. Most legal sources sit with security, privacy and regulation, while tax and electronic-invoicing texts remain with those specialist topics.
+Browse by topic or use **Sources by Chapter** near the end. A source sits under the topic citing it most; its **Cited in** field lists all uses. Most legal sources sit with security, privacy and regulation, while most tax and electronic-invoicing texts remain with those specialist topics. Each range below runs from a topic's lowest to its highest identifier; because new sources take the next unused number, ranges are not contiguous and can overlap.
 
 The final topic collects company filings, results and announcements, plus evidence used only in case studies. Engineering posts and product documentation remain under the technical subject they support.
 
@@ -68,7 +68,7 @@ The final topic collects company filings, results and announcements, plus eviden
 
 **Security, privacy and regulation (R576–R635, 60 sources; [[part-8]]).** Card-data security, bots, account takeover and skimmers, privacy, consent and data transfers, and the consumer, payment, accessibility and platform law (with its guidance and decisions) that turns into requirements. The most widely cited is R579, *FAQ E-Rechnung*, cited in 5 pages.
 
-**Journeys (R637–R642, 6 sources; [[part-9]]).** The four end-to-end journeys mostly reuse sources listed under the parts above; this topic holds only the sources a journey alone cites. The most widely cited is R637, *Stripe: Idempotent requests*, cited in 7 pages.
+**Journeys (R637–R642, 6 sources; [[part-9]]).** The four end-to-end journeys mostly reuse sources listed under the parts above; this topic holds the sources the journeys cite most. The most widely cited is R637, *Stripe: Idempotent requests*, cited in 7 pages.
 
 **Evolution, organization and AI (R643–R838, 102 sources; [[part-10]]).** Build, buy or assemble, replatforming and migration, scaling stages, team design and engineering organization, and AI assistants, agents and agentic payment protocols as of 2026. The most widely cited is R652, *Regulation (EU) 2023/2854 (Data Act)*, cited in 5 pages.
 
@@ -710,7 +710,7 @@ The final topic collects company filings, results and announcements, plus eviden
 - **R601** · [Credential stuffing](https://community.owasp.org/attacks/Credential_stuffing) — OWASP, n.d., accessed 2026-11. Definition and MFA as countermeasure. *Standard or specification.* Cited in: [[commerce-security]].
 - **R602** · [British Airways data breach](https://en.wikipedia.org/wiki/British_Airways_data_breach) — Wikipedia, citing the ICO penalty notice of 16 October 2020, accessed 2026-11. The entry point, the script, the numbers and the penalty. Eight years after the incident; the ICO's own pages could not be fetched. *Encyclopedia.* Cited in: [[commerce-security]].
 - **R603** · [Protected customer data](https://shopify.dev/docs/apps/launch/protected-customer-data) — Shopify developer documentation, n.d., accessed 2026-11. Minimum data, purpose limitation, consent, retention, encryption and level-2 controls for apps. *Product and API documentation.* Cited in: [[privacy-and-customer-data]].
-- **R604** · [Attorney General Bonta announces settlement with Sephora](https://oag.ca.gov/news/press-releases/attorney-general-bonta-announces-settlement-sephora-part-ongoing-enforcement) — California Attorney General, 2022-08-24. Trackers as a sale, Global Privacy Control, the US$1.2 million settlement. *Regulation and official source.* Cited in: [[privacy-and-customer-data]], [[commerce-regulation]].
+- **R604** · [Attorney General Bonta announces settlement with Sephora](https://oag.ca.gov/news/press-releases/attorney-general-bonta-announces-settlement-sephora-part-ongoing-enforcement) — California Attorney General, 2022-08-24. Trackers as a sale, Global Privacy Control, the US$1.2 million settlement. *Regulation and official source.* Cited in: [[privacy-and-customer-data]].
 - **R605** · [Latombe's challenge to EU-US data transfers fails](https://www.lewissilkin.com/insights/2025/09/03/transatlantic-trouble-not-this-time-latombes-challenge-to-eu-us-data-transfers-fails) — Lewis Silkin, 2025-09-03. The General Court judgment and the advice to keep SCCs as a fallback. *Practitioner and press.* Cited in: [[privacy-and-customer-data]].
 - **R606** · [Digital Omnibus reshapes EU cookie rules, leaves banner fatigue largely intact](https://www.osborneclarke.com/insights/digital-omnibus-reshapes-eu-cookie-rules-leaves-banner-fatigue-largely-intact) — Osborne Clarke, 2025-12-10. A reading of the November 2025 proposal. *Practitioner and press.* Cited in: [[privacy-and-customer-data]].
 - **R607** · [Directive 2009/136/EC](https://publications.europa.eu/resource/celex/32009L0136) — Official Journal text, 2009. The amended Article 5(3) device rule of the ePrivacy Directive. *Regulation and official source.* Cited in: [[privacy-and-customer-data]].
@@ -995,7 +995,7 @@ Each line lists the identifiers a page cites in its **Sources and Evidence** sec
 - [[peak-load-and-reliability]] (24): R409, R428, R434, R438, R439, R485, R521, R522, R547, R565, R566, R567, R568, R569, R570, R571, R572, R573, R574, R575, R642, R725, R741, R742.
 - [[commerce-security]] (18): R198, R213, R222, R223, R234, R576, R580, R592, R593, R594, R595, R596, R597, R598, R599, R600, R601, R602.
 - [[privacy-and-customer-data]] (21): R534, R577, R586, R603, R604, R605, R606, R607, R608, R609, R610, R611, R612, R613, R614, R615, R616, R617, R618, R619, R620.
-- [[commerce-regulation]] (35): R97, R205, R263, R578, R579, R580, R581, R582, R583, R584, R585, R587, R588, R589, R590, R591, R604, R617, R620, R621, R622, R623, R624, R625, R626, R627, R628, R629, R630, R631, R632, R633, R634, R635, R652.
+- [[commerce-regulation]] (34): R97, R205, R263, R578, R579, R580, R581, R582, R583, R584, R585, R587, R588, R589, R590, R591, R617, R620, R621, R622, R623, R624, R625, R626, R627, R628, R629, R630, R631, R632, R633, R634, R635, R652.
 - [[journey-consumer-order]] (41): R1, R2, R5, R8, R9, R11, R12, R13, R25, R95, R96, R136, R174, R186, R188, R190, R191, R199, R209, R220, R221, R229, R236, R260, R261, R262, R263, R264, R281, R282, R283, R291, R409, R410, R412, R637, R638, R639, R640, R641, R642.
 - [[journey-return-and-exchange]] (13): R6, R187, R189, R208, R258, R261, R263, R272, R322, R323, R637, R639, R640.
 - [[journey-wholesale-order]] (35): R12, R54, R202, R251, R253, R254, R255, R269, R276, R277, R278, R279, R341, R389, R390, R391, R392, R393, R394, R395, R397, R398, R579, R583, R588, R590, R591, R635, R636, R637, R638, R639, R640, R641, R642.
@@ -1013,4 +1013,6 @@ Each line lists the identifiers a page cites in its **Sources and Evidence** sec
 - [[domain-coverage]] (1): R94.
 - [[toolkit]] (10): R221, R279, R409, R439, R547, R575, R623, R659, R664, R665.
 
-Kestrel & Pine is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.
+No source above describes Kestrel & Pine, which is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.
+
+This register closes the four reference pages, which answer the four lookups a chapter leaves you with: where a topic is covered ([[domain-coverage]]), which record a decision needs ([[toolkit]]), what a word means ([[glossary]]) and which source backs a claim (this page). Each answer points back to the chapter that owns it, so a disagreement between a chapter and a reference page is a defect to fix in one of them. As [[domain-coverage]] says at the start of these pages, the book does not cover every business job equally: check coverage before treating it as a complete map. Before relying on a figure or a rule from the book, find its source here, check the source's type and date, and keep documented facts, labeled inferences and Kestrel & Pine apart.
