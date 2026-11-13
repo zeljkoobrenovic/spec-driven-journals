@@ -1,345 +1,345 @@
 {
   "spec": "_journals/listing-systems-architecture/posts/07-listing-aggregate/spec.json",
   "draft": "_journals/listing-systems-architecture/posts/07-listing-aggregate/index.md",
-  "spec_sha": "63ddf9be0403bb8e",
-  "draft_sha": "2d96db4e77886e4d",
-  "run_at": "2026-11-13T01:07:40+01:00",
-  "round": 6,
+  "spec_sha": "aeaa468826627837",
+  "draft_sha": "df7280ae86ac2aa3",
+  "run_at": "2026-11-13T08:44:57+01:00",
+  "round": 7,
   "verdict": "escalate",
   "reverse_outline": [
     {
       "draft_locator": "Introduction callout",
-      "summary": "Chapter goals: listing as aggregate, followed via one bike",
+      "summary": "Chapter goals: model the listing as an aggregate and trace one bike through it",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction callout",
-      "summary": "Business cost of stale or wrong listing states",
+      "summary": "Business cost of stale, mispriced or reposted listings",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction callout",
-      "summary": "Listing is copied by every context, so vague states spread",
+      "summary": "Every context copies the listing, so vague states make copies diverge",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction callout",
-      "summary": "Key points: offer not thing, two-dimension lifecycle, events with deadlines",
+      "summary": "Three takeaways: offer not thing, two-dimensional lifecycle, events with deadlines",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction callout",
-      "summary": "Failure patterns addressed: ghost inventory, search as record, billing by guesswork",
+      "summary": "Failure patterns the chapter targets",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction ¶1",
-      "summary": "The listing table is old, heavily copied and poorly designed",
+      "summary": "The legacy listings table grows without design",
       "matched_spec_paragraph": "p01"
     },
     {
       "draft_locator": "Introduction ¶2",
-      "summary": "Chapter designs the listing as a DDD aggregate, scoped to the Supply core",
+      "summary": "Listing framed as a DDD aggregate / scope versus neighbouring chapters",
       "matched_spec_paragraph": "p02"
     },
     {
       "draft_locator": "Introduction ¶3",
-      "summary": "Test: can the platform say if a listing is for sale, visible, contactable and why",
+      "summary": "Test question: can the platform state a listing's status for every copy",
       "matched_spec_paragraph": "p03"
     },
     {
       "draft_locator": "Introduction ¶4",
-      "summary": "Roadmap of the chapter",
+      "summary": "Roadmap of the chapter's sections",
       "matched_spec_paragraph": "p04"
     },
     {
       "draft_locator": "Setting the Scene at Veldmark: Four Answers to One Question ¶1",
-      "summary": "Femke's bike sold but an alert digest still promoted it",
+      "summary": "Femke's bike sold yet still pushed to alert subscribers",
       "matched_spec_paragraph": "p05"
     },
     {
       "draft_locator": "Setting the Scene at Veldmark: Four Answers to One Question ¶2",
-      "summary": "Ingrid asks what the bike's state was Tuesday 08:00; Daan gathers answers",
+      "summary": "Architect asks what the bike's state was; answers gathered from systems",
       "matched_spec_paragraph": "p06"
     },
     {
       "draft_locator": "Setting the Scene at Veldmark: Four Answers to One Question ¶3",
-      "summary": "The systems disagreed: search right by accident, analytics and alerts wrong",
+      "summary": "Systems disagreed, each wrong in its own way",
       "matched_spec_paragraph": "p07"
     },
     {
       "draft_locator": "Setting the Scene at Veldmark: Four Answers to One Question ¶4",
-      "summary": "A listing event contract needs agreement on what a listing is",
+      "summary": "Event contract requires agreeing what a listing is first",
       "matched_spec_paragraph": "p08"
     },
     {
       "draft_locator": "What a Listing Is, and What It Is Not ¶1",
-      "summary": "Definition of a listing and separating it from neighbors",
+      "summary": "Definition of a listing and why neighbours stay outside it",
       "matched_spec_paragraph": "p09"
     },
     {
       "draft_locator": "What a Listing Is, and What It Is Not ¶2",
-      "summary": "One entity yields many listings; eBay product vs item aspects and PBSE rollback",
+      "summary": "Many listings per real-world entity; eBay's product/item split and its limits",
       "matched_spec_paragraph": "p10"
     },
     {
       "draft_locator": "What a Listing Is, and What It Is Not ¶3",
-      "summary": "Rule: listing references the entity via entity_ref, never is it",
+      "summary": "Listing points to the entity, never becomes it",
       "matched_spec_paragraph": "p11"
     },
     {
       "draft_locator": "What a Listing Is, and What It Is Not ¶4",
-      "summary": "Transactional test for what belongs inside the aggregate",
+      "summary": "Transactional test for what lives inside the aggregate",
       "matched_spec_paragraph": "p12"
     },
     {
       "draft_locator": "What a Listing Is, and What It Is Not ¶5",
-      "summary": "Paid visibility and moderation decisions are references, not listing fields",
+      "summary": "Paid visibility kept as a reference / moderation decisions kept as references",
       "matched_spec_paragraph": "p13"
     },
     {
       "draft_locator": "Identity: One ID, Several Keys ¶1",
-      "summary": "One immutable meaningless internal ID; other keys map to it",
+      "summary": "Single immutable internal ID with mapped keys",
       "matched_spec_paragraph": "p14"
     },
     {
       "draft_locator": "Identity: One ID, Several Keys ¶2",
-      "summary": "External partner keys honored at the boundary (Rightmove, mobile.de)",
+      "summary": "Partner feed keys honoured at the boundary, internal ID inside",
       "matched_spec_paragraph": "p15"
     },
     {
       "draft_locator": "Identity: One ID, Several Keys ¶3",
-      "summary": "Relisting identity depends on whether it is the same campaign",
+      "summary": "Relisting identity hinges on the selling campaign",
       "matched_spec_paragraph": "p16"
     },
     {
       "draft_locator": "Identity: One ID, Several Keys ¶4",
-      "summary": "Same campaign keeps ID; new campaign gets new ID tied to the entity",
+      "summary": "Same campaign keeps ID, new campaign gets new ID",
       "matched_spec_paragraph": "p17"
     },
     {
       "draft_locator": "The Lifecycle: Two Dimensions, Not One Status ¶1",
-      "summary": "Lifecycle definition and three parties that change listing state",
+      "summary": "Lifecycle defined; three independent actors change state",
       "matched_spec_paragraph": "p22"
     },
     {
       "draft_locator": "The Lifecycle: Two Dimensions, Not One Status ¶2",
-      "summary": "Split single status into publication state plus enforcement overlay",
+      "summary": "One status column breaks; split publication state and enforcement overlay",
       "matched_spec_paragraph": "p23"
     },
     {
       "draft_locator": "The Lifecycle: Two Dimensions, Not One Status ¶3",
-      "summary": "Enforcement overlay states, independence and DSA statement-of-reasons duty",
+      "summary": "Enforcement overlay states and their legal weight",
       "matched_spec_paragraph": "p24"
     },
     {
       "draft_locator": "The Lifecycle: Two Dimensions, Not One Status ¶4",
-      "summary": "Visibility, contact and alerting derived from both dimensions",
+      "summary": "Visibility, contact and alerting derived from state",
       "matched_spec_paragraph": "p25"
     },
     {
       "draft_locator": "The Lifecycle: Two Dimensions, Not One Status ¶5",
-      "summary": "URL/SEO handling depends on why the listing left",
+      "summary": "URL handling depends on why a listing ended",
       "matched_spec_paragraph": "p26"
     },
     {
       "draft_locator": "The Lifecycle: Two Dimensions, Not One Status ¶6",
-      "summary": "Feed state vocabularies (RESO) must map to the platform lifecycle",
+      "summary": "Mapping rich feed status vocabularies into the lifecycle",
       "matched_spec_paragraph": "p39"
     },
     {
       "draft_locator": "The Lifecycle: Two Dimensions, Not One Status ¶7",
-      "summary": "Three timestamps that ranking and analytics depend on",
+      "summary": "Three distinct timestamps for ranking and analytics",
       "matched_spec_paragraph": "p27"
     },
     {
       "draft_locator": "The Lifecycle: Two Dimensions, Not One Status ¶8",
-      "summary": "Bumps and renewals move ranked_at only, not created_at",
+      "summary": "Bumps and renewals shift ranking time only, not creation",
       "matched_spec_paragraph": "p28"
     },
     {
       "draft_locator": "The Lifecycle: Two Dimensions, Not One Status ¶9",
-      "summary": "Expiry as a data-quality control enforced by downstream channels",
+      "summary": "Expiry as a cheap control against stale inventory",
       "matched_spec_paragraph": "p29"
     },
     {
       "draft_locator": "The Lifecycle: Two Dimensions, Not One Status ¶10",
-      "summary": "Terminal transitions get an outcome record, not just 'sold'",
+      "summary": "Outcome record for each terminal transition",
       "matched_spec_paragraph": "p30"
     },
     {
       "draft_locator": "Invariants: What Must Always Be True ¶1",
-      "summary": "Invariants defined and distinguished from cross-aggregate policies",
+      "summary": "Invariants versus asynchronous cross-listing policies",
       "matched_spec_paragraph": "p18"
     },
     {
       "draft_locator": "Invariants: What Must Always Be True ¶2",
-      "summary": "Trader-status declaration as a regulatory publish invariant",
+      "summary": "Trader declaration as a regulatory publish invariant",
       "matched_spec_paragraph": "p19"
     },
     {
       "draft_locator": "Invariants: What Must Always Be True ¶3",
-      "summary": "Validate by state: lenient drafts, strict at publish",
+      "summary": "Validation strictness varies by state",
       "matched_spec_paragraph": "p20"
     },
     {
       "draft_locator": "Invariants: What Must Always Be True ¶4",
-      "summary": "Enforce rules on create and revise, exempting price/pause-only edits",
+      "summary": "Apply current rules on creation and every revision, with exemptions",
       "matched_spec_paragraph": "p21"
     },
     {
       "draft_locator": "Availability, Units and Multi-Item Listings ¶1",
-      "summary": "Aggregate must state units and availability",
+      "summary": "Aggregate must express quantity and availability",
       "matched_spec_paragraph": "p37"
     },
     {
       "draft_locator": "Availability, Units and Multi-Item Listings ¶2",
-      "summary": "Parent is a listing only if contactable; sold out differs from sold",
+      "summary": "Parent counts as listing only if contactable / sold out differs from sold",
       "matched_spec_paragraph": "p38"
     },
     {
       "draft_locator": "Versions, Change History and Price History ¶1",
-      "summary": "Listing versions and their four jobs: ordering, concurrency, evidence, re-moderation",
+      "summary": "Immutable versions and their four purposes",
       "matched_spec_paragraph": "p31"
     },
     {
       "draft_locator": "Versions, Change History and Price History ¶2",
-      "summary": "Default storage: current state, history table and outbox",
+      "summary": "Default storage: current row plus history plus outbox",
       "matched_spec_paragraph": "p32"
     },
     {
       "draft_locator": "Versions, Change History and Price History ¶3",
-      "summary": "Outbox pattern; aggregate defines event meaning, CDC is only a stage",
+      "summary": "Outbox publishing; the aggregate defines event meaning",
       "matched_spec_paragraph": "p33"
     },
     {
       "draft_locator": "Versions, Change History and Price History ¶4",
-      "summary": "Why price needs its own history, including EU prior-price rule",
+      "summary": "Why price needs separate, regulated history",
       "matched_spec_paragraph": "p34"
     },
     {
       "draft_locator": "Versions, Change History and Price History ¶5",
-      "summary": "Per-listing price event series feeding badges and alerts",
+      "summary": "Per-listing price event series feeds badges and alerts",
       "matched_spec_paragraph": "p35"
     },
     {
       "draft_locator": "Versions, Change History and Price History ¶6",
-      "summary": "Recalculable regulated attributes need effective dates (bitemporal, DPE)",
+      "summary": "Recalculated regulated attributes need effective dates",
       "matched_spec_paragraph": "p36"
     },
     {
       "draft_locator": "Architecture: One Owner, Many Copies ¶1",
-      "summary": "One listing service owns the aggregate; others read",
+      "summary": "One listing service owns the aggregate",
       "matched_spec_paragraph": "p40"
     },
     {
       "draft_locator": "Architecture: One Owner, Many Copies ¶2",
-      "summary": "Intent-named command interface instead of generic PATCH",
+      "summary": "Intent-named commands instead of generic patch",
       "matched_spec_paragraph": "p41"
     },
     {
       "draft_locator": "Architecture: One Owner, Many Copies ¶3",
-      "summary": "Eighteen events folded into twelve contract types; three properties follow",
+      "summary": "Named events condensed into fewer contract types",
       "matched_spec_paragraph": "p42"
     },
     {
       "draft_locator": "Architecture: One Owner, Many Copies ¶4",
-      "summary": "Events carry state and versions so consumers converge",
+      "summary": "Events carry full state so consumers converge by version",
       "matched_spec_paragraph": "p43"
     },
     {
       "draft_locator": "Architecture: One Owner, Many Copies ¶5",
-      "summary": "Each consumer declares and is monitored on a removal deadline",
+      "summary": "Each consumer declares and is measured on removal latency",
       "matched_spec_paragraph": "p44"
     },
     {
       "draft_locator": "Architecture: One Owner, Many Copies ¶6",
-      "summary": "Caching consumers must re-check state at send time",
+      "summary": "Caching consumers must re-verify state before sending",
       "matched_spec_paragraph": "p45"
     },
     {
       "draft_locator": "In Practice: What Public Evidence Shows ¶1",
-      "summary": "Public evidence comes from contracts, compared in a table",
+      "summary": "Public evidence comes from contracts, not internals",
       "matched_spec_paragraph": "p46"
     },
     {
       "draft_locator": "In Practice: What Public Evidence Shows ¶2",
-      "summary": "Auto Trader Deal Builder: who triggers transitions is a business-model choice",
+      "summary": "Auto Trader shows transition rights are a business choice",
       "matched_spec_paragraph": "p47"
     },
     {
       "draft_locator": "The Rotterdam City Bike, Transition by Transition ¶1",
-      "summary": "Replay of the bike's lifecycle under the new contract",
+      "summary": "Setup of the bike replay under the new contract",
       "matched_spec_paragraph": "p48"
     },
     {
       "draft_locator": "The Rotterdam City Bike, Transition by Transition ¶2",
-      "summary": "Replay lessons: phishing off-aggregate, order-set reservation, sale price in outcome",
+      "summary": "Replay lessons: aggregate changes only for offer facts",
       "matched_spec_paragraph": "p49"
     },
     {
       "draft_locator": "The Rotterdam City Bike, Transition by Transition ¶3",
-      "summary": "Digest fix under the new contract / audit finds 41,000 lingering ended listings",
+      "summary": "Digest fix under the contract / audit shows stale copies are common",
       "matched_spec_paragraph": "p50"
     },
     {
       "draft_locator": "Trade-offs ¶1",
-      "summary": "Four trade-off decisions where simple options stop fitting at scale",
+      "summary": "Four trade-offs that flip as teams or regulation grow",
       "matched_spec_paragraph": "p51"
     },
     {
       "draft_locator": "Trade-offs ¶2",
-      "summary": "Delete semantics balanced by DSA appeal window and GDPR via tiered retention",
+      "summary": "Retention bounded by appeal windows and data-protection rules",
       "matched_spec_paragraph": "p52"
     },
     {
       "draft_locator": "Vertical Differences ¶1",
-      "summary": "Lifecycle, units and invariants vary by vertical",
+      "summary": "Lifecycle, units and invariants differ by vertical",
       "matched_spec_paragraph": "p53"
     },
     {
       "draft_locator": "Vertical Differences ¶2",
-      "summary": "Veldmark brands configure rather than fork / Golf dealer-feed lag as ghost source",
+      "summary": "Brands configure a shared model / late dealer feed leaves a ghost car",
       "matched_spec_paragraph": "p54"
     },
     {
       "draft_locator": "Failure Modes ¶1",
-      "summary": "Failure mode: overloaded status column",
+      "summary": "Failure: overloaded status column",
       "matched_spec_paragraph": "p55"
     },
     {
       "draft_locator": "Failure Modes ¶2",
-      "summary": "Failure mode: consumers that never hear removals",
+      "summary": "Failure: copies that ignore removals",
       "matched_spec_paragraph": "p56"
     },
     {
       "draft_locator": "Failure Modes ¶3",
-      "summary": "Failure mode: bumps that reset age",
+      "summary": "Failure: bumps resetting listing age",
       "matched_spec_paragraph": "p57"
     },
     {
       "draft_locator": "Failure Modes ¶4",
-      "summary": "Failure mode: hard deletes destroying evidence",
+      "summary": "Failure: hard deletes destroy evidence",
       "matched_spec_paragraph": "p58"
     },
     {
       "draft_locator": "Failure Modes ¶5",
-      "summary": "Failure mode: edits bypassing moderation",
+      "summary": "Failure: edits skipping moderation",
       "matched_spec_paragraph": "p59"
     },
     {
       "draft_locator": "Failure Modes ¶6",
-      "summary": "Failure mode: expiry jobs falling behind",
+      "summary": "Failure: lagging expiry jobs",
       "matched_spec_paragraph": "p60"
     },
     {
       "draft_locator": "Failure Modes ¶7",
-      "summary": "Failure mode: purges that miss copies",
+      "summary": "Failure: erasure that misses copies",
       "matched_spec_paragraph": "p61"
     },
     {
       "draft_locator": "The Chief Architect's View ¶1",
-      "summary": "Fix the lifecycle contract at group level, brands own services",
+      "summary": "Fix the lifecycle contract group-wide, brands keep services",
       "matched_spec_paragraph": "p62"
     },
     {
@@ -349,32 +349,32 @@
     },
     {
       "draft_locator": "The Chief Architect's View ¶3",
-      "summary": "Govern state vocabulary changes like API changes",
+      "summary": "Treat state vocabulary changes as versioned API changes",
       "matched_spec_paragraph": "p64"
     },
     {
       "draft_locator": "The Chief Architect's View ¶4",
-      "summary": "Four fitness functions to watch",
+      "summary": "Four fitness functions to monitor",
       "matched_spec_paragraph": "p65"
     },
     {
       "draft_locator": "The Chief Architect's View ¶5",
-      "summary": "Resist widening the listing; use projections",
+      "summary": "Keep the aggregate narrow; serve readers via projections",
       "matched_spec_paragraph": "p66"
     },
     {
       "draft_locator": "Questions to Ask ¶1",
-      "summary": "Design-review questions for the listing model",
+      "summary": "Design-review question list",
       "matched_spec_paragraph": "p67"
     },
     {
       "draft_locator": "From Aggregate to Category ¶1",
-      "summary": "Answer to the bike question and how the rules fix each copy",
+      "summary": "Bike's state answered; each missing rule recapped",
       "matched_spec_paragraph": "p68"
     },
     {
       "draft_locator": "From Aggregate to Category ¶2",
-      "summary": "Hand-off: category and taxonomy as the next chapter",
+      "summary": "Hand-off to category and taxonomy design",
       "matched_spec_paragraph": "p69"
     }
   ],
@@ -387,131 +387,780 @@
       "finding": "sections, unit counts and unit forms match the spec"
     },
     {
-      "criterion": "reverse_outline_matches_spec",
+      "criterion": "AC-3",
       "check": "reverse_outline_matches_spec",
       "verdict": "pass",
-      "finding": "All 69 aligned unit summaries match the controlling idea of their spec paragraph in spec order; the five callout summaries map to the KEY POINTS / IN THIS CHAPTER callouts the spec places in the introduction.",
+      "finding": "All 69 aligned units' outline summaries state the controlling idea of their spec paragraph, in spec order (scene, what-is, identity, lifecycle incl. p39 after p26, invariants, availability, versions, architecture, in-practice, bike, trade-offs, verticals, failure modes, CA view, questions, conclusion). The five callouts are unaligned framing (null). Minor: unit 36's summary ('aggregate must express quantity and availability') stresses the need rather than the six shapes, but the aligned table carries them.",
       "severity": "blocker"
     },
     {
       "criterion": "one_controlling_idea_per_paragraph",
       "check": "one_controlling_idea_per_paragraph",
       "verdict": "pass",
-      "finding": "Bike ¶3 (p50) was marked two_ideas (digest fix / 41,000 audit), but the audit is the paragraph's declared evidence that the digest's ghost inventory is common, not a second claim; it holds one controlling idea with support.",
+      "draft_locus": "Introduction ¶2",
+      "finding": "Outliner flagged two ideas; on inspection the unit serves one controlling idea. Framing as an aggregate and stating its scope against other chapters are both parts of p02's single controlling idea (this chapter designs the offer as an aggregate, with neighbours only as references).",
       "severity": "major"
     },
     {
       "criterion": "one_controlling_idea_per_paragraph",
       "check": "one_controlling_idea_per_paragraph",
-      "verdict": "fail",
-      "spec_locus": "/sections/verticals/paragraphs/1 (p54)",
+      "verdict": "pass",
+      "draft_locus": "What a Listing Is, and What It Is Not ¶5",
+      "finding": "Outliner flagged two ideas; on inspection the unit serves one controlling idea. Paid visibility and moderation decisions are the two halves of one idea, announced by 'Two rows matter most': the two most consequential references.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "draft_locus": "Availability, Units and Multi-Item Listings ¶2",
+      "finding": "Outliner flagged two ideas; on inspection the unit serves one controlling idea. The two rules are announced together ('Two rules keep this manageable') and serve one idea: rules that keep units manageable.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "draft_locus": "The Rotterdam City Bike, Transition by Transition ¶3",
+      "finding": "Outliner flagged two ideas; on inspection the unit serves one controlling idea. The audit statistic supports the paragraph's single idea (the digest is Ghost Inventory in miniature, and not rare); spec p50 includes both.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
       "draft_locus": "Vertical Differences ¶2",
-      "quote": "At Veldmark the table translates into configuration, not forks.",
-      "finding": "The outliner needed two summaries ('Veldmark brands configure rather than fork / Golf dealer-feed lag as ghost source'). The paragraph makes two claims: the vertical table becomes per-brand configuration of one lifecycle, and the Essen Golf shows a late-feed ghost source the aggregate can measure but not fix. The split follows the 'and' in the spec's own controlling idea, so the spec bundles two ideas in one paragraph; a draft-side alternative is a framing sentence that names both as what the table means at Veldmark (what it configures, and the one row configuration cannot fix).",
-      "fault": "spec",
+      "finding": "Outliner flagged two ideas; on inspection the unit serves one controlling idea. The Golf is the example of the configured model's limit; spec p54 holds both under one idea (the vertical table becomes Veldmark configuration, with the Golf as the automotive ghost source).",
       "severity": "major"
     },
     {
       "criterion": "paragraph_traces_to_thesis",
       "check": "paragraph_traces_to_thesis",
       "verdict": "pass",
-      "finding": "Every unit ties to a supporting claim: what-is to L1, identity to L2, lifecycle to L4, invariants to L3, availability/versions to L4-L5, architecture, bike and failure modes to L6, judgement sections and conclusion to the thesis's so_what.",
+      "finding": "Every unit traces to a supporting claim: scene to L6; what-is to L1; identity to L2; lifecycle and availability to L4; invariants to L3; versions to L5; architecture and bike to L5/L6; in-practice, trade-offs, verticals, failure modes, CA view and questions to the claims listed in advances_thesis. Callouts restate the thesis. No orphan units.",
       "severity": "major"
     },
     {
       "criterion": "evidence_is_explained",
       "check": "evidence_is_explained",
       "verdict": "pass",
-      "finding": "Each table, figure, quotation and statistic is introduced or followed by a sentence saying what it shows (e.g. the scene table by ¶3's 'Only the order service and Yardstick agreed', the inside/outside table by 'Two rows matter most', the 41,000 audit by 'the problem was not rare', the vertical table by ¶2's configuration paragraph).",
+      "finding": "Each spec evidence item appears and is interpreted in the prose: the scene table by p07's analysis; the neighbours table ('each neighbor has its own identity and lifetime'); eBay aspects/PBSE; inside/outside table by 'Two rows matter most'; key and relisting tables by p15/p17; DSA Art. 17, visibility table (URL column in p26), RESO, timestamps table, mobile.de/Vinted, Google expiry, productscape quotations; invariants table by p19-p21; eBay Inventory/Taxonomy quotes; units table by p38; versions list, storage table, Debezium, Omnibus Art. 6a, DPE; Figure 5, command table, 12-type fact; evidence table and Auto Trader; replay table by p49; 41,000 audit; trade-off, vertical and fitness-function tables each with a lead stating what they show. Figures 1-5 sit beside the paragraphs that make their point. Table bodies are not in units.json and were judged by the surrounding prose.",
       "severity": "major"
     },
     {
       "criterion": "transition_expresses_declared_relationship",
       "check": "transition_expresses_declared_relationship",
       "verdict": "pass",
-      "finding": "All transition_in boundaries read at the aligned units express the declared relationship and pick up the declared known information (e.g. 'Identity names the listing; the lifecycle gives its state', 'With the states defined, which rules must always hold?', 'The sold transition so far assumes one thing that sells once', 'Public contracts show a lifecycle's edges; a replay shows its inside', 'Group-scale decisions prevent these failures', 'The aggregate holds a category ID and a taxonomy version, and treats both as given. They are not.').",
+      "spec_locus": "/introduction/paragraphs/p02",
+      "draft_locus": "Introduction ¶2",
+      "finding": "Boundary into p02 expresses the declared elaboration.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/p03",
+      "draft_locus": "Introduction ¶3",
+      "finding": "Boundary into p03 expresses the declared elaboration.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/p04",
+      "draft_locus": "Introduction ¶4",
+      "finding": "Boundary into p04 expresses the declared sequence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/scene/transition_in",
+      "draft_locus": "Setting the Scene at Veldmark: Four Answers to One Question ¶1",
+      "finding": "Boundary into section:scene expresses the declared example.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/scene/paragraphs/p06",
+      "draft_locus": "Setting the Scene at Veldmark: Four Answers to One Question ¶2",
+      "finding": "Boundary into p06 expresses the declared cause_effect.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/scene/paragraphs/p07",
+      "draft_locus": "Setting the Scene at Veldmark: Four Answers to One Question ¶3",
+      "finding": "Boundary into p07 expresses the declared conclusion_summary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/scene/paragraphs/p08",
+      "draft_locus": "Setting the Scene at Veldmark: Four Answers to One Question ¶4",
+      "finding": "Boundary into p08 expresses the declared cause_effect.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/what-is/transition_in",
+      "draft_locus": "What a Listing Is, and What It Is Not ¶1",
+      "finding": "Boundary into section:what-is expresses the declared elaboration.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/what-is/paragraphs/p10",
+      "draft_locus": "What a Listing Is, and What It Is Not ¶2",
+      "finding": "Boundary into p10 expresses the declared emphasis.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/what-is/paragraphs/p11",
+      "draft_locus": "What a Listing Is, and What It Is Not ¶3",
+      "finding": "Boundary into p11 expresses the declared cause_effect.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/what-is/paragraphs/p12",
+      "draft_locus": "What a Listing Is, and What It Is Not ¶4",
+      "finding": "Boundary into p12 expresses the declared elaboration.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/what-is/paragraphs/p13",
+      "draft_locus": "What a Listing Is, and What It Is Not ¶5",
+      "finding": "Boundary into p13 expresses the declared emphasis.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/identity/transition_in",
+      "draft_locus": "Identity: One ID, Several Keys ¶1",
+      "finding": "Boundary into section:identity expresses the declared sequence. Weak: no explicit carry-over sentence; the heading and 'Everything else is a key' carry it.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/identity/paragraphs/p15",
+      "draft_locus": "Identity: One ID, Several Keys ¶2",
+      "finding": "Boundary into p15 expresses the declared emphasis.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/identity/paragraphs/p16",
+      "draft_locus": "Identity: One ID, Several Keys ¶3",
+      "finding": "Boundary into p16 expresses the declared contrast.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/identity/paragraphs/p17",
+      "draft_locus": "Identity: One ID, Several Keys ¶4",
+      "finding": "Boundary into p17 expresses the declared conclusion_summary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/lifecycle/transition_in",
+      "draft_locus": "The Lifecycle: Two Dimensions, Not One Status ¶1",
+      "finding": "Boundary into section:lifecycle expresses the declared sequence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/lifecycle/paragraphs/p23",
+      "draft_locus": "The Lifecycle: Two Dimensions, Not One Status ¶2",
+      "finding": "Boundary into p23 expresses the declared problem_solution.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/lifecycle/paragraphs/p24",
+      "draft_locus": "The Lifecycle: Two Dimensions, Not One Status ¶3",
+      "finding": "Boundary into p24 expresses the declared elaboration.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/lifecycle/paragraphs/p25",
+      "draft_locus": "The Lifecycle: Two Dimensions, Not One Status ¶4",
+      "finding": "Boundary into p25 expresses the declared cause_effect.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/lifecycle/paragraphs/p26",
+      "draft_locus": "The Lifecycle: Two Dimensions, Not One Status ¶5",
+      "finding": "Boundary into p26 expresses the declared example.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/lifecycle/paragraphs/p39",
+      "draft_locus": "The Lifecycle: Two Dimensions, Not One Status ¶6",
+      "finding": "Boundary into p39 expresses the declared elaboration. Implicit: 'Feeds bring their own state vocabulary' links via the states just listed.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/lifecycle/paragraphs/p27",
+      "draft_locus": "The Lifecycle: Two Dimensions, Not One Status ¶7",
+      "finding": "Boundary into p27 expresses the declared sequence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/lifecycle/paragraphs/p28",
+      "draft_locus": "The Lifecycle: Two Dimensions, Not One Status ¶8",
+      "finding": "Boundary into p28 expresses the declared elaboration.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/lifecycle/paragraphs/p29",
+      "draft_locus": "The Lifecycle: Two Dimensions, Not One Status ¶9",
+      "finding": "Boundary into p29 expresses the declared contrast.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/lifecycle/paragraphs/p30",
+      "draft_locus": "The Lifecycle: Two Dimensions, Not One Status ¶10",
+      "finding": "Boundary into p30 expresses the declared additional_support. The 'Outcomes' subheading and '\"Sold\" is not one fact' carry the step from expiry to endings.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/invariants/transition_in",
+      "draft_locus": "Invariants: What Must Always Be True ¶1",
+      "finding": "Boundary into section:invariants expresses the declared elaboration.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/invariants/paragraphs/p19",
+      "draft_locus": "Invariants: What Must Always Be True ¶2",
+      "finding": "Boundary into p19 expresses the declared elaboration.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/invariants/paragraphs/p20",
+      "draft_locus": "Invariants: What Must Always Be True ¶3",
+      "finding": "Boundary into p20 expresses the declared cause_effect.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/invariants/paragraphs/p21",
+      "draft_locus": "Invariants: What Must Always Be True ¶4",
+      "finding": "Boundary into p21 expresses the declared sequence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/availability/transition_in",
+      "draft_locus": "Availability, Units and Multi-Item Listings ¶1",
+      "finding": "Boundary into section:availability expresses the declared contrast.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/availability/paragraphs/p38",
+      "draft_locus": "Availability, Units and Multi-Item Listings ¶2",
+      "finding": "Boundary into p38 expresses the declared cause_effect.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/versions/transition_in",
+      "draft_locus": "Versions, Change History and Price History ¶1",
+      "finding": "Boundary into section:versions expresses the declared sequence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/versions/paragraphs/p32",
+      "draft_locus": "Versions, Change History and Price History ¶2",
+      "finding": "Boundary into p32 expresses the declared cause_effect.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/versions/paragraphs/p33",
+      "draft_locus": "Versions, Change History and Price History ¶3",
+      "finding": "Boundary into p33 expresses the declared elaboration.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/versions/paragraphs/p34",
+      "draft_locus": "Versions, Change History and Price History ¶4",
+      "finding": "Boundary into p34 expresses the declared contrast.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/versions/paragraphs/p35",
+      "draft_locus": "Versions, Change History and Price History ¶5",
+      "finding": "Boundary into p35 expresses the declared problem_solution.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/versions/paragraphs/p36/transition_in",
+      "draft_locus": "Versions, Change History and Price History ¶6",
+      "quote": "Some attributes change meaning without anyone editing the listing.",
+      "finding": "Declared relationship is similarity (price as a time series -> other facts that change over time without an edit). The paragraph opens on its own topic with no wording that relates it to the price series just described; only the subheading carries the link. Both flow readers independently said the DPE/bitemporal subsection 'fits only loosely' under versions, which is the symptom of the missing bridge.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/architecture/transition_in",
+      "draft_locus": "Architecture: One Owner, Many Copies ¶1",
+      "finding": "Boundary into section:architecture expresses the declared elaboration.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/architecture/paragraphs/p41",
+      "draft_locus": "Architecture: One Owner, Many Copies ¶2",
+      "finding": "Boundary into p41 expresses the declared elaboration.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/architecture/paragraphs/p42",
+      "draft_locus": "Architecture: One Owner, Many Copies ¶3",
+      "finding": "Boundary into p42 expresses the declared contrast.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/architecture/paragraphs/p43",
+      "draft_locus": "Architecture: One Owner, Many Copies ¶4",
+      "finding": "Boundary into p43 expresses the declared sequence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/architecture/paragraphs/p44",
+      "draft_locus": "Architecture: One Owner, Many Copies ¶5",
+      "finding": "Boundary into p44 expresses the declared sequence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/architecture/paragraphs/p45",
+      "draft_locus": "Architecture: One Owner, Many Copies ¶6",
+      "finding": "Boundary into p45 expresses the declared sequence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/in-practice/transition_in",
+      "draft_locus": "In Practice: What Public Evidence Shows ¶1",
+      "finding": "Boundary into section:in-practice expresses the declared contrast.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/in-practice/paragraphs/p47",
+      "draft_locus": "In Practice: What Public Evidence Shows ¶2",
+      "finding": "Boundary into p47 expresses the declared elaboration.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/bike/transition_in",
+      "draft_locus": "The Rotterdam City Bike, Transition by Transition ¶1",
+      "finding": "Boundary into section:bike expresses the declared contrast.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/bike/paragraphs/p49",
+      "draft_locus": "The Rotterdam City Bike, Transition by Transition ¶2",
+      "finding": "Boundary into p49 expresses the declared conclusion_summary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/bike/paragraphs/p50",
+      "draft_locus": "The Rotterdam City Bike, Transition by Transition ¶3",
+      "finding": "Boundary into p50 expresses the declared problem_solution.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/trade-offs/transition_in",
+      "draft_locus": "Trade-offs ¶1",
+      "finding": "Boundary into section:trade-offs expresses the declared sequence. Links to the storage choice rather than to the tests just run; sequence still clear.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/trade-offs/paragraphs/p52",
+      "draft_locus": "Trade-offs ¶2",
+      "finding": "Boundary into p52 expresses the declared elaboration.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/verticals/transition_in",
+      "draft_locus": "Vertical Differences ¶1",
+      "finding": "Boundary into section:verticals expresses the declared contrast.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/verticals/paragraphs/p54",
+      "draft_locus": "Vertical Differences ¶2",
+      "finding": "Boundary into p54 expresses the declared example.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/failure-modes/transition_in",
+      "draft_locus": "Failure Modes ¶1",
+      "finding": "Boundary into section:failure-modes expresses the declared contrast.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/failure-modes/paragraphs/p56",
+      "draft_locus": "Failure Modes ¶2",
+      "finding": "Boundary into p56 expresses the declared sequence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/failure-modes/paragraphs/p57",
+      "draft_locus": "Failure Modes ¶3",
+      "finding": "Boundary into p57 expresses the declared sequence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/failure-modes/paragraphs/p58",
+      "draft_locus": "Failure Modes ¶4",
+      "finding": "Boundary into p58 expresses the declared sequence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/failure-modes/paragraphs/p59",
+      "draft_locus": "Failure Modes ¶5",
+      "finding": "Boundary into p59 expresses the declared sequence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/failure-modes/paragraphs/p60",
+      "draft_locus": "Failure Modes ¶6",
+      "finding": "Boundary into p60 expresses the declared sequence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/failure-modes/paragraphs/p61",
+      "draft_locus": "Failure Modes ¶7",
+      "finding": "Boundary into p61 expresses the declared sequence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/ca-view/transition_in",
+      "draft_locus": "The Chief Architect's View ¶1",
+      "finding": "Boundary into section:ca-view expresses the declared problem_solution.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/ca-view/paragraphs/p63",
+      "draft_locus": "The Chief Architect's View ¶2",
+      "finding": "Boundary into p63 expresses the declared additional_support.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/ca-view/paragraphs/p64",
+      "draft_locus": "The Chief Architect's View ¶3",
+      "finding": "Boundary into p64 expresses the declared additional_support.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/ca-view/paragraphs/p65",
+      "draft_locus": "The Chief Architect's View ¶4",
+      "finding": "Boundary into p65 expresses the declared additional_support.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/ca-view/paragraphs/p66",
+      "draft_locus": "The Chief Architect's View ¶5",
+      "finding": "Boundary into p66 expresses the declared additional_support.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/questions/transition_in",
+      "draft_locus": "Questions to Ask ¶1",
+      "finding": "Boundary into section:questions expresses the declared cause_effect.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/transition_in",
+      "draft_locus": "From Aggregate to Category ¶1",
+      "finding": "Boundary into conclusion expresses the declared conclusion_summary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/p69",
+      "draft_locus": "From Aggregate to Category ¶2",
+      "finding": "Boundary into p69 expresses the declared contrast.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "spec_locus": "/flow",
+      "finding": "Both flow readers describe the organising principle as the declared prerequisite_order (build the model 'in the order a contract needs it'), then test (assertion-evidence: public evidence, bike replay), then judgement (grouping). Both found the chapter easy to follow overall. Specific material points are recorded below as separate results.",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/invariants/paragraphs/0 (p18)",
+      "spec_locus": "/sections/in-practice",
+      "draft_locus": "In Practice: What Public Evidence Shows ¶1",
+      "quote": "Two sources cited above and one new one, side by side:",
+      "finding": "reader-flow2 marks In Practice's position 'unclear': 'It breaks the move from architecture to the bike replay, and its main lesson (who may trigger a transition) is about the lifecycle, not the architecture.' The spec's order (in-practice before bike) causes it, not the prose: the bridge 'Public contracts show a lifecycle's edges; a replay shows its inside' is already there.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow1 item 4: 'Put the bike replay directly after \"Architecture: One Owner, Many Copies\"... \"In Practice\" mostly repeats Rightmove and RESO, and coming in between, it delays that payoff.'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/availability",
+      "draft_locus": "Availability, Units and Multi-Item Listings ¶1",
+      "quote": "The sold transition so far assumes one thing that sells once, and not every listing offers that.",
+      "finding": "reader-flow1: Availability is 'half clear. It is justified as a correction to the sold transition, but that ties it to the lifecycle, not to invariants'; 'in its current place it interrupts the run from invariants to versions' (suggests moving it directly after Outcomes). The difficulty comes from the order: after round 2 moved the Lifecycle before the Invariants, the Invariants now sit between the sold transition and the section that qualifies it.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow2 sections item 'Availability, Units': 'It reads as a short detour between invariants and versions', and reorder item 'Move Availability/Units up... right after Lifecycle/Outcomes'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/invariants/transition_in",
       "draft_locus": "Invariants: What Must Always Be True ¶1",
       "quote": "In the table, the moderation gate is the pending-review check, and a *material* edit changes what moderation approved.",
-      "finding": "Both readers stopped here: the gloss defines terms for a table not yet shown, interrupts the definition of an invariant before the invariant/policy distinction, and 'material' is only properly defined later in Versions ('A change is **material** if it alters what was approved'). The spec's order is fine; the sentence's placement obscures it (move it after the table or into the row, or add a forward pointer).",
+      "finding": "reader-flow1: 'This definition is crammed into the invariants intro, and \"material\" is only properly defined later, under Versions.' The spec asks for a gloss of material edit; the gloss is placed before the invariant definition and is too thin to stand alone (the criteria list appears only in Versions).",
       "fault": "draft",
-      "corroborated_by": "flow-2, section 3 item 2 ('This defines terms for a table that has not yet appeared ... reads like an inserted footnote'); flow-1 is the primary ('These definitions come before the table ... read out of place').",
+      "corroborated_by": "reader-flow2 item 3.1: 'These definitions come before the paragraph explaining what an invariant is. \"Material\" is only fully defined later, in Versions, so it reads as a forward patch.'",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/invariants/paragraphs/0 (p18), table row on created_at",
-      "draft_locus": "Invariants: What Must Always Be True ¶1 (invariants table)",
-      "quote": "`created_at` never changes; the ranking timestamp moves only through renewal or a paid bump",
-      "finding": "Both readers re-read to reconcile this invariant with the timestamp table, which says `ranked_at` is also moved by 'relist within the same campaign'. The two tables appear to disagree; the row should name the same three movers.",
-      "fault": "draft",
-      "corroborated_by": "flow-2, section 3 item 3 ('The earlier timestamp table says ranked_at is also moved by \"relist within the same campaign\". I stopped to check whether these disagree.'); flow-1 item 3 is the primary.",
-      "severity": "major"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/architecture/paragraphs/2 (p42)",
+      "spec_locus": "/sections/architecture/paragraphs/p42",
       "draft_locus": "Architecture: One Owner, Many Copies ¶3",
       "quote": "The table names eighteen events by meaning; the contract folds them into twelve domain event types",
-      "finding": "Both readers stopped to count the eighteen and found the folding into twelve asserted but not shown, a detour with no payoff here. The spec asks only that the mapping be explained; one clause naming which events fold together (e.g. the enforcement events into one type with a cause) would let the reader see the arithmetic.",
+      "finding": "reader-flow1: 'I stopped to count, and the fold into twelve is never explained here.' The sentence invites a check the reader cannot complete; the spec only needs the meaning/mechanics split, not the counts.",
       "fault": "draft",
-      "corroborated_by": "flow-2, section 3 item 4 ('I counted to check the eighteen. The folding into twelve is asserted but not shown, so it is a small detour with no payoff here.'); flow-1 item 5 is the primary.",
+      "corroborated_by": "reader-flow2 item 3.2: 'I had to count the events and still could not check the twelve. The sentence slows the reader without helping.'",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/bike/paragraphs/0 (p48), replay table Submit row",
-      "draft_locus": "The Rotterdam City Bike, Transition by Transition ¶1 (replay table)",
-      "quote": "the leaf before the November 2027 bikes split",
-      "finding": "Both readers paused on a forward reference to a future taxonomy change that the chapter never explains. It needs a few words of gloss (or a pointer to the categories chapter) so it does not read as a missing earlier passage.",
+      "spec_locus": "/sections/bike/paragraphs/p48",
+      "draft_locus": "The Rotterdam City Bike, Transition by Transition ¶1 (replay table, Sun 19:42 Submit row)",
+      "quote": "category Bikes, the leaf before the November 2027 bikes split",
+      "finding": "reader-flow1: 'This forward reference to a later event is distracting in the middle of the replay.' The aside was restored by a decision-log ruling (2026-11-12) to keep the published text, but readers still cannot place it; it needs a pointer to the next chapter or removal.",
       "fault": "draft",
-      "corroborated_by": "flow-2, section 3 item 5 ('This refers to a future event never mentioned anywhere else in the chapter, and it made me pause.'); flow-1 item 9 is the primary.",
+      "corroborated_by": "reader-flow2 item 3.3: 'A March replay refers to a later taxonomy change the reader knows nothing about. It is a puzzling aside.'",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/bike/paragraphs/0 (p48), replay table Purge row",
-      "draft_locus": "The Rotterdam City Bike, Transition by Transition ¶1 (replay table)",
-      "quote": "Every registered copy erases her personal data, including the public sold page, still inside its display window",
-      "finding": "Both readers were surprised that the sold display window is still open six months later, since nothing earlier says how long it lasts; flow-1 also notes the opening callout promises a 'two-day life'. The spec requires the September purge row; the draft needs to state or drop the display-window length so the row does not contradict the reader's model.",
+      "spec_locus": "/sections/failure-modes/paragraphs/p59",
+      "draft_locus": "Failure Modes ¶5",
+      "quote": "leaving them out is the failure pattern Moderation as an Afterthought, here at the aggregate level.",
+      "finding": "reader-flow1: 'This pattern is not in the opening's failure-pattern box, so I went back to check.' The audience knows the pattern names from the opening pages, but the chapter's own box lists only three, so the named pattern reads as missing from it.",
       "fault": "draft",
-      "corroborated_by": "flow-2, section 3 item 6 ('A sold display window still open six months after the sale surprised me, because nothing earlier says how long that window lasts.'); flow-1 item 10 is the primary.",
+      "corroborated_by": "reader-flow2 item 3.7: 'It is named as a known pattern but is not in the failure-pattern box at the top. It caught me briefly.'",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/failure-modes/paragraphs/0 (p55)",
-      "draft_locus": "Failure Modes ¶1",
-      "quote": "Each failure is a missing rule. **The overloaded status column.**",
-      "finding": "Both readers had to re-read because the section's framing sentence and the first bolded failure share one paragraph while every later failure starts its own, so the first list item is easy to miss as an item.",
+      "spec_locus": "/sections/ca-view/paragraphs/p62",
+      "draft_locus": "The Chief Architect's View ¶1",
+      "quote": "This is \"share platforms, not products\" applied to the most central object",
+      "finding": "reader-flow1: 'A slogan quoted with no explanation.' Nothing in the chapter says where the slogan comes from.",
       "fault": "draft",
-      "corroborated_by": "flow-2, section 3 item 8 ('The section's framing sentence and the first bolded failure share one paragraph, so the list's first item is easy to miss as an item.'); flow-1 item 12 is the primary.",
+      "corroborated_by": "reader-flow2 item 3.6: 'The slogan is quoted as though the reader knows it, with no source or explanation.'",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/1 (p02)",
-      "draft_locus": "Introduction ¶2",
-      "quote": "Here I design the Supply-side core they share.",
-      "finding": "flow-2 had to re-read to resolve 'they' (the earlier chapters, the contexts, or cars and apartments). Only one reader reported it.",
+      "spec_locus": "/sections/identity/paragraphs/p16",
+      "draft_locus": "Identity: One ID, Several Keys ¶3 (relisting table)",
+      "quote": "new version, state back to active",
+      "finding": "reader-flow1 only: 'Versions are used before they are defined... The definition only arrives two sections later.' The audience knows versioning generally; a short gloss would remove the snag. Not reported by reader-flow2.",
       "fault": "draft",
       "severity": "minor"
     },
@@ -519,10 +1168,10 @@
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/architecture/paragraphs/1 (p41), command table",
-      "draft_locus": "Architecture: One Owner, Many Copies ¶2 (command table)",
-      "quote": "`ListingRestricted`, `ListingBlocked`, `ListingRestored`",
-      "finding": "flow-1 went back to check whether the 'held' overlay state was dropped: the overlay has five states including held, but the enforcement commands emit no held event. Only one reader reported it.",
+      "spec_locus": "/sections/bike/paragraphs/p48",
+      "draft_locus": "The Rotterdam City Bike, Transition by Transition ¶1",
+      "quote": "replayed as if it had applied to the March events",
+      "finding": "reader-flow1 only: 'I had to re-read to work out which timeline I was in.' reader-flow2 commented on the 'versions 4 to 7' note only as minor and said it explains the jump well enough, so this is not the same problem.",
       "fault": "draft",
       "severity": "minor"
     },
@@ -530,90 +1179,118 @@
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/in-practice/paragraphs/1 (p47)",
+      "spec_locus": "/sections/bike/paragraphs/p49",
+      "draft_locus": "The Rotterdam City Bike, Transition by Transition ¶2",
+      "quote": "The phishing episode, which dominates Femke's evening,",
+      "finding": "reader-flow1 only: the phishing row 'appears first inside the replay table. The scene never mentioned it, yet the text then says it \"dominates Femke's evening\".'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/bike/paragraphs/p48",
+      "draft_locus": "The Rotterdam City Bike, Transition by Transition ¶1 (replay table, Purge row)",
+      "quote": "brought forward by Femke's erasure request",
+      "finding": "reader-flow2 only: re-read the Purge row's timing; a sold page 'still on display six months later seems at odds with a \"display window\"', and the callout's 'six months' 'does not quite match \"brought forward\"'.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/in-practice/paragraphs/p47",
       "draft_locus": "In Practice: What Public Evidence Shows ¶2",
       "quote": "that lesson is my interpretation rather than Auto Trader's statement",
-      "finding": "flow-1 found the hedge placed before the evidence it qualifies, so it had to read on and come back. Only one reader reported it; the decision log keeps the lesson with its evidence, which this does not contest.",
+      "finding": "reader-flow1 only: 'The hedge comes before the evidence and breaks the sentence's flow.' Minor; moving the hedge after the evidence would fix it.",
       "fault": "draft",
       "severity": "minor"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/verticals/paragraphs/1 (p54)",
+      "verdict": "pass",
+      "spec_locus": "/sections/verticals/paragraphs/p54",
       "draft_locus": "Vertical Differences ¶2",
-      "quote": "Motorvane's Essen Volkswagen Golf shows the automotive ghost source",
-      "finding": "flow-1 read the definite phrasing as implying it had met this car before. Only one reader reported it. (Both readers noted Motorvane and Hearthly lack a gloss, but the audience knows Veldmark's brands from Part I, so that is not counted as a failure.)",
-      "fault": "draft",
-      "severity": "minor"
+      "finding": "reader-flow1 noted Motorvane and Hearthly 'appear here for the first time'. Not material: the audience already knows Veldmark's brands from Part I (audience.already_knows), and reader-flow2 did not report it.",
+      "severity": "major"
     },
     {
       "criterion": "known_before_new",
       "check": "known_before_new",
       "verdict": "fail",
-      "spec_locus": "/sections/invariants/paragraphs/0 (p18); audience.does_not_know (materiality is chapter-specific)",
-      "draft_locus": "Invariants: What Must Always Be True ¶1",
-      "quote": "a *material* edit changes what moderation approved",
-      "finding": "'Material' is used in the invariants paragraph and table ('Publish, material edit') before it is defined in Versions ¶1 ('A change is **material** if it alters what was approved'). The italic gloss here does not define it. Other does_not_know terms (overlay, outcome records, invariant vs policy, statement of reasons, trader status, Omnibus prior-price, DPE, RESO) are each explained at first substantive use.",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "The Chief Architect's View ¶1",
+      "quote": "This is \"share platforms, not products\" applied to the most central object",
+      "finding": "The slogan is used as known but is neither in already_knows nor explained or attributed anywhere in the chapter; both flow readers reported it as unexplained. (Same passage as the flow_is_followable result.)",
       "fault": "draft",
-      "corroborated_by": "flow-1 section 3 item 1 and flow-2 section 3 item 2 both report 'material' as used before it is properly defined.",
+      "corroborated_by": "reader-flow1 item 3: 'A slogan quoted with no explanation'; reader-flow2 item 3.6: 'quoted as though the reader knows it, with no source or explanation'",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "spec_locus": "/intent/audience/does_not_know",
+      "finding": "Every does_not_know term is given before or where it is used: enforcement overlay (Lifecycle ¶2-3), outcome records (¶10), renewal vs creation (¶7-8), units (Availability), regulated price history (Versions ¶4), invariant vs policy (Invariants ¶1), DSA statement of reasons (Lifecycle ¶3), trader status (Invariants ¶2), Omnibus prior-price rule (Versions ¶4), DPE (Versions ¶6), RESO statuses (Lifecycle ¶6). 'Material edit' is glossed (placement flagged under flow). 'Moderation as an Afterthought' is a failure-pattern name the audience knows from the opening pages.",
       "severity": "major"
     },
     {
       "criterion": "no_weak_introduction_pattern",
       "check": "no_weak_introduction_pattern",
       "verdict": "pass",
-      "finding": "The introduction opens with an intriguing example (the fifteen-year-old `ads` table), bridges to Part II's claim and the aggregate, states the test and gives a roadmap; none of the weak patterns.",
+      "finding": "Opens with the intriguing example of the accreted `ads` table, then bridge, test question and roadmap; no dictionary opening, throat-clearing or 'in this chapter we will' as the first move.",
       "severity": "major"
     },
     {
       "criterion": "no_weak_conclusion_pattern",
       "check": "no_weak_conclusion_pattern",
       "verdict": "pass",
-      "finding": "The conclusion answers the opening question, synthesizes across systems and hands off with a contrast; no 'in conclusion', no new subtopic, no evidence that belongs in the body.",
+      "finding": "No 'in conclusion' restatement, no new evidence, no moral: the close answers the scene's question, synthesises and hands off to categories.",
       "severity": "major"
     },
     {
       "criterion": "conclusion_synthesizes_and_answers_so_what",
       "check": "conclusion_synthesizes_and_answers_so_what",
       "verdict": "pass",
-      "finding": "p68 states what no single section states (each failing system exposed a different missing rule, and only the rules together answer for every copy) and says why it matters (ghost inventory becomes a per-consumer measure fixed in the copy, not in search; it is the agreement Sven's contract needed).",
+      "finding": "'Each system that went wrong exposed a different missing rule... Only the rules together answer the chapter's test for every copy, and they are the agreement Sven's contract needed. Ghost inventory then becomes a measure per consumer, fixed in the copy that missed the event rather than in search.' Matches the spec's synthesis and so-what.",
       "severity": "major"
     },
     {
       "criterion": "conclusion_calls_back_to_introduction",
       "check": "conclusion_calls_back_to_introduction",
       "verdict": "pass",
-      "finding": "'So what was the state of Femke's bike at 08:00 on Tuesday?' returns to Ingrid's question with one answer (sold, no enforcement, version 9, outcome sold on platform at €225) and says why each of the four systems got it wrong.",
+      "finding": "'So what was the state of Femke's bike at 08:00 on Tuesday? Under the contract, one answer: sold, no enforcement, version 9, outcome \"sold on platform, €225\".' Calls back to Ingrid's question and the intro's 'for every copy' test.",
       "severity": "major"
     },
     {
       "criterion": "AC-2",
       "check": "intro_predicts_content",
       "verdict": "pass",
-      "finding": "The intro reader predicted all fifteen sections in the draft's order (scene, definition, identity, two-dimensional lifecycle, invariants, multi-unit listings, versions and price history, one owner and its events, public APIs and standards, bike replay, trade-offs, verticals, failure modes, Chief Architect's view, review questions), the Veldmark worked example plus public APIs and standards as evidence, and a declarative, practical tone. Its uncertainties (same bike twice, 'availability' under multi-unit, 'outcomes' undefined) are minor and do not miss a section.",
+      "finding": "The intro reader predicted the sections in the roadmap's order: bike case, definition, identity, two-dimensional lifecycle with renewals and outcomes, invariants, multi-unit, versions and price history, owner and events, test on public APIs/standards, bike replay, then trade-offs, verticals, failure modes, CA view, review questions; evidence as fictional Veldmark plus public APIs and standards. Matches AC-2 expected.",
       "severity": "major"
     },
     {
       "criterion": "AC-1",
       "check": "custom",
       "verdict": "pass",
-      "finding": "The reader located the failure in the digest copy, not search ('assembled at 17:30 Monday from a MySQL replica snapshot ... nothing re-checked it'), and named the fixes: versioned events with state, subscription to sold/expired/withdrawn/blocked events, re-check at send, a declared and monitored removal deadline per consumer. It did not mention that the sale price is recorded as an outcome rather than a price change, a side point of the expected answer that does not affect locating the failure or naming the fix.",
+      "finding": "Reader located the failure in the digest (snapshot assembled before the sale, nothing re-checked it), not search, and named the fixes: one owner emitting events, a removal deadline per consumer (alerts under 2 minutes), re-check at send, subscription to sold/expired/withdrawn/blocked. Minor gap: the reader did not mention that the sale price is recorded as an outcome rather than a price change; that part of expected is ancillary to the probe.",
       "severity": "major"
     },
     {
       "criterion": "AC-4",
       "check": "custom",
       "verdict": "pass",
-      "finding": "The reader identified one status field written by three owners (seller, clock, trust and safety) so one overwrites another, and gave the structure: publication state owned by the listing, enforcement overlay owned by trust and safety, visibility derived from both, and the invariant that no seller command lifts a block, enforced by the listing service on every seller command. Matches expected.",
+      "finding": "Reader names the single status shared by seller, clock and trust and safety, so one overwrites another, and the fix: publication state owned by the listing plus an enforcement overlay owned by trust and safety, visibility derived from both, and the invariant that no seller command lifts a block. Matches expected.",
       "severity": "minor"
     },
     {
       "criterion": "AC-5",
       "check": "custom",
       "verdict": "pass",
-      "finding": "The reader classified (a) invariant at submission and on edits of an active listing, not in draft, by the listing service against the category schema; (b) policy, asynchronous duplicate detection after publish; (c) policy, entitlement service at publish with a reservation, reconciled later; (d) invariant, listing service on every command, bumps move only ranked_at. Matches expected.",
+      "finding": "(a) invariant, listing service against the category schema at submit and on edit of an active listing, not in draft; (b) policy, asynchronous duplicate detection after publish; (c) policy, entitlement service at publish with a reservation, reconciled later; (d) invariant, listing service on every command. Matches expected. Reader noted small gaps (paused-listing edits, who reconciles) that do not defeat the criterion.",
       "severity": "minor"
     }
   ]

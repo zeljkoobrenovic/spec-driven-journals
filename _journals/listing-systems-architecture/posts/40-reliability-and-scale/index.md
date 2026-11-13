@@ -283,7 +283,7 @@ By the end of 2027, the changes from the review have been built for Tradeyard NL
 
 | Measure | Sunday 17 January 2027 | Sunday 16 January 2028 |
 | --- | --- | --- |
-| Peak search requests at origin, Tradeyard NL | ~13,000/s (cluster saturated) | ~8,200/s of ~13,000 arriving, after edge cache and bot shedding |
+| Peak search requests at origin, Tradeyard NL | ~13,000/s: the ~10,000/s Sunday peak plus the TV spot's ~30% (cluster saturated) | ~8,200/s of ~13,000 arriving, after edge cache and bot shedding |
 | Share of peak requests shed or served from cache | ~2% | ~37% |
 | Reindex or backfill running in peak window | Yes, full in-place reindex | No; blocked by the peak calendar |
 | Degradation level reached | None defined | Level 2 for 6 minutes (approximate facets, personalization off) |
