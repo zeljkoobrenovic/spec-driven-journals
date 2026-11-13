@@ -7,7 +7,7 @@
   "part": "part-5",
   "title": "Rules of the Marketplace: DSA, DAC7 and Vertical Regulation",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the marketplace-regulation entry in journal-spec.json; the conclusion realises Part V's closing (synthesis, so-what, callback, takeaway) from the same file, and the hand-off uses Part VI's transition_in. Units added or split by this conversion: introduction p03/p04 (split), roadmap p05, GDPR p38/p39 (split), one lead-in paragraph each for Trade-offs (p59) and Vertical Differences (p60), and two conclusion paragraphs.",
   "intent": {
     "outcome": {
@@ -56,7 +56,7 @@
         "method": "cold_reader",
         "severity": "major",
         "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
-        "expected": "Regulation now written in the vocabulary of systems design, the chapter's scope (EU first, UK and US briefly, not legal advice) and its claim that many obligations ask for a few artifacts; the five exporters and the irreproducible report; legal roles defined by features; the DSA as requirements and the statement-of-reasons pipeline; ranking, advertising and consumer transparency; GDPR; DAC7; property and vehicle rules; UK and US; compliance as architecture; trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: EU legal texts in the Official Journal, the DSA Transparency Database, national rules and the fictional Veldmark."
+        "expected": "Regulation now written in the vocabulary of systems design, the chapter's scope (EU first, UK and US briefly, not legal advice) and its claim that many obligations ask for a few artifacts; the five exporters and the irreproducible report; legal roles defined by features; the DSA as requirements and the statement-of-reasons pipeline; ranking, advertising and consumer transparency; GDPR; DAC7; property and vehicle rules and vertical differences; UK and US; compliance as architecture; trade-offs, failure modes, the Chief Architect's view and questions. Evidence: EU legal texts in the Official Journal, the DSA Transparency Database, national rules and the fictional Veldmark."
       },
       {
         "id": "AC-3",
@@ -120,14 +120,14 @@
     "additional_patterns": [
       {
         "pattern": "order_of_importance",
-        "applies_to": "dsa to beyond-eu: the law that most changes the architecture first (DSA), then the disclosure rules that reach lead generation, GDPR retention, DAC7 (the clearest perimeter shift), vertical listing fields, and rules outside the EU last"
+        "applies_to": "dsa to beyond-eu: the law that most changes the architecture first (DSA), then the disclosure rules that reach lead generation, GDPR retention, DAC7 (the clearest perimeter shift), vertical listing fields followed at once by exposure by vertical across every rule, and rules outside the EU last"
       },
       {
         "pattern": "grouping",
-        "applies_to": "trade-offs, verticals, failure-modes, ca-view, questions: the book's standard judging sections"
+        "applies_to": "trade-offs, failure-modes, ca-view, questions: the book's standard judging sections"
       }
     ],
-    "rationale": "The scene states the problem (an irreproducible report and an unmapped list of duties); the concepts give the roles and the obligation-control-evidence vocabulary every later section uses; the rules follow law by law, most consequential first, each ending in the component it asks for; the compliance section then assembles the five components the rules have named one by one, and the judging sections test that design. Putting the components before the laws would present five abstractions before the reader has seen the obligations that justify them; putting DAC7 before the role concepts would show a perimeter shift before the reader knows what a perimeter is; GDPR comes before DAC7 because it sets up the per-data-class retention model into which DAC7's seller data then fits as one class (the table names it; the DAC7 section explains it); after DAC7, the tax profile's separation and retention would be argued before the reader has the retention model."
+    "rationale": "The scene states the problem (an irreproducible report and an unmapped list of duties); the concepts give the roles and the obligation-control-evidence vocabulary every later section uses; the rules follow law by law, most consequential first, each ending in the component it asks for; the compliance section then assembles the five components the rules have named one by one, and the judging sections test that design. Putting the components before the laws would present five abstractions before the reader has seen the obligations that justify them; putting DAC7 before the role concepts would show a perimeter shift before the reader knows what a perimeter is; GDPR comes before DAC7 because it sets up the per-data-class retention model into which DAC7's seller data then fits as one class (the table names it; the DAC7 section explains it); after DAC7, the tax profile's separation and retention would be argued before the reader has the retention model. The vertical-differences comparison sits directly after Vertical Rules, not among the judging sections, because it recaps exposure by vertical across the laws just covered; placed after Trade-offs it read as a template section far from the rules it summarizes (draft check, two flow readers)."
   },
   "introduction": {
     "hook": {
@@ -164,12 +164,13 @@
           ]
         },
         {
-          "promise": "Cover ranking, advertising and consumer transparency, GDPR, DAC7, vertical rules and UK and US rules.",
+          "promise": "Cover ranking, advertising and consumer transparency, GDPR, DAC7, vertical rules and how exposure differs by vertical, and UK and US rules.",
           "kept_in": [
             "transparency",
             "gdpr",
             "dac7",
             "vertical",
+            "verticals",
             "beyond-eu"
           ]
         },
@@ -180,10 +181,9 @@
           ]
         },
         {
-          "promise": "Close with trade-offs, vertical differences, failure modes, the Chief Architect's view and questions, and Part V's closing.",
+          "promise": "Close with trade-offs, failure modes, the Chief Architect's view and questions, and Part V's closing.",
           "kept_in": [
             "trade-offs",
-            "verticals",
             "failure-modes",
             "ca-view",
             "questions"
@@ -232,7 +232,7 @@
       },
       {
         "id": "p04",
-        "controlling_idea": "Neighboring chapters own the machinery this chapter regulates (moderation and enforcement, identity levels and the business registry, payment flows, ranking and advertising), and Veldmark is the running example.",
+        "controlling_idea": "This chapter states what the law asks of the records rather than rebuilding them or their machinery, which stays with neighboring chapters (moderation and enforcement, identity levels and the business registry, payment flows, ranking and advertising); Veldmark is the running example.",
         "function": "context",
         "transition_in": {
           "relationship": "contrast",
@@ -244,7 +244,7 @@
       },
       {
         "id": "p05",
-        "controlling_idea": "The chapter runs from Veldmark's irreproducible 2026 transparency report through the legal roles, the DSA, ranking and consumer transparency, GDPR, DAC7, vertical rules and UK and US rules, to the five components that serve every law, then the closing sections and Part V's closing.",
+        "controlling_idea": "The chapter runs from Veldmark's irreproducible 2026 transparency report through the legal roles, the DSA, ranking and consumer transparency, GDPR, DAC7, vertical rules with exposure by vertical, and UK and US rules, to the five components that serve every law, then trade-offs, failure modes, the Chief Architect's view, questions and Part V's closing.",
         "function": "transition",
         "transition_in": {
           "relationship": "sequence",
@@ -752,7 +752,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "Report for 2027 published February 2028, each template cell generated by a named query over decision, notice, complaint and enforcement events with policy and model versions.",
+              "what": "Report for 2027 published February 2028, each template cell generated by a named query over decision, notice, complaint and enforcement events with policy and model versions; the shared platform wrote events directly from November 2027, and earlier months and brands not yet on the platform were loaded from their own logs in the same event shape before any number was computed (ledger ruling, 2026-11-13).",
               "source": "_research/scenario-ledger.md (Veldmark is fictional)",
               "shows": "Lucía's 'no' became 'yes, here is the query and the snapshot'."
             },
@@ -794,7 +794,7 @@
       "paragraphs": [
         {
           "id": "p29",
-          "controlling_idea": "Four overlapping sources regulate how a marketplace orders and labels what users see, and read together they ask for three disclosure surfaces.",
+          "controlling_idea": "Four overlapping sources (five rules, because the UCPD contributes two) regulate how a marketplace orders and labels what users see, and read together they ask for three disclosure surfaces; the section then covers further P2B rules for seller tooling and Omnibus rules for price badges and reviews.",
           "function": "claim",
           "evidence": [
             {
@@ -1298,6 +1298,40 @@
       ]
     },
     {
+      "id": "verticals",
+      "heading": "Vertical Differences in Legal Exposure",
+      "controlling_idea": "General classifieds, real estate and automotive face the same horizontal laws with different weight, differ most in their listing rules, and fall under DAC7 only when they handle payments.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3"
+        ],
+        "how": "Shows how the roles and regulated fields differ by vertical."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The listing fields of Vertical Rules, the section just above.",
+        "introduces": "Across every rule in the chapter, how exposure differs by vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p60",
+          "controlling_idea": "Across every rule in the chapter, not only the listing fields just described, the three verticals share the horizontal laws with different weight; they differ most in listing rules and enter DAC7 only when the platform handles payments (two plain sentences).",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Horizontal exposure, vertical listing rules and DAC7 per vertical.",
+              "shows": "DAC7 applies only with in-platform payment, rent collection or sale payments."
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "beyond-eu",
       "heading": "Beyond the EU: UK and US Rules in Brief",
       "controlling_idea": "UK and US rules differ in structure from the EU's but reward the same components, and INFORM repeats DAC7's payment trigger.",
@@ -1311,7 +1345,7 @@
       },
       "transition_in": {
         "relationship": "place",
-        "carries_over": "EU vertical and horizontal rules.",
+        "carries_over": "EU vertical and horizontal rules, ending with exposure by vertical.",
         "introduces": "Rules outside the EU, for groups with brands there.",
         "form": "sentence",
         "placement": "start_of_this"
@@ -1351,7 +1385,7 @@
         },
         {
           "id": "p55",
-          "controlling_idea": "INFORM repeats the DAC7 pattern, so launching in-platform payments is a regulatory decision outside the EU as well: because only marketplace-processed sales count, a US lead-generation classifieds site is largely outside its seller-verification and disclosure duties, and payments bring it in.",
+          "controlling_idea": "Because only marketplace-processed sales count toward INFORM's threshold (stated first), INFORM repeats the DAC7 pattern and launching in-platform payments is a regulatory decision outside the EU as well: a US lead-generation classifieds site is largely outside its seller-verification and disclosure duties, and payments bring it in.",
           "function": "analysis",
           "evidence": [
             {
@@ -1482,40 +1516,6 @@
       ]
     },
     {
-      "id": "verticals",
-      "heading": "Vertical Differences in Legal Exposure",
-      "controlling_idea": "General classifieds, real estate and automotive face the same horizontal laws with different weight, differ most in their listing rules, and fall under DAC7 only when they handle payments.",
-      "function": "comparison",
-      "advances_thesis": {
-        "supports": [
-          "S1",
-          "S3"
-        ],
-        "how": "Shows how the roles and regulated fields differ by vertical."
-      },
-      "transition_in": {
-        "relationship": "elaboration",
-        "carries_over": "The approaches for the group as a whole, and the listing fields of Vertical Rules.",
-        "introduces": "Across every rule in the chapter, how exposure differs by vertical.",
-        "form": "phrase",
-        "placement": "start_of_this"
-      },
-      "paragraphs": [
-        {
-          "id": "p60",
-          "controlling_idea": "Across every rule in the chapter, not only the listing fields of Vertical Rules, the three verticals share the horizontal laws with different weight, differ most in listing rules, and enter DAC7 only when the platform handles payments.",
-          "function": "comparison",
-          "evidence": [
-            {
-              "kind": "table",
-              "what": "Horizontal exposure, vertical listing rules and DAC7 per vertical.",
-              "shows": "DAC7 applies only with in-platform payment, rent collection or sale payments."
-            }
-          ]
-        }
-      ]
-    },
-    {
       "id": "failure-modes",
       "heading": "Failure Modes",
       "controlling_idea": "Seven failure modes, from exporters instead of records to personal data in the public database, are what happens when obligations are met by projects, code or habit instead of components.",
@@ -1529,7 +1529,7 @@
       },
       "transition_in": {
         "relationship": "contrast",
-        "carries_over": "Alternatives and verticals.",
+        "carries_over": "The alternatives to the recommended design.",
         "introduces": "What goes wrong in practice.",
         "form": "sentence",
         "placement": "start_of_this"
@@ -1726,7 +1726,7 @@
       },
       {
         "id": "p69",
-        "controlling_idea": "The part's test can now be answered for Femke's suspension: the decision record says who decided and under which policy version, the acknowledged enforcement event says where it propagated, and the statement keyed by decision ID with the saved query proves it a year later.",
+        "controlling_idea": "The part's test can now be answered for Femke's suspension as it would run on the records Part V built (the same counterfactual as the DSA section): the decision record would say who decided and under which policy version, the acknowledged enforcement event where it propagated, and the statement keyed by decision ID with the saved query would prove it a year later.",
         "function": "synthesis",
         "evidence": [
           {
@@ -1791,7 +1791,8 @@
   "modalities": [],
   "open_questions": [
     "Status of the proposed P2B repeal and the Digital Fairness Act proposal should be rechecked at the next revision.",
-    "National DAC7 record-keeping periods were not researched per country."
+    "National DAC7 record-keeping periods were not researched per country.",
+    "Minor draft-check findings left as recorded (one reader each): DAC7 platform exclusion after the definitions (p40/p41 order), P2B process rules under the transparency heading (p32), 'as of October 2026' tense shift (p65)."
   ],
   "decision_log": [
     {
@@ -1924,6 +1925,38 @@
     {
       "date": "2026-11-12",
       "decision": "Orchestrator: conclusion 'Ingrid's \"no\"' corrected to 'Lucía's \"no\"': in the scene Ingrid asked the question and Lucía answered no."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "fixed under the author's delegation (fix-only pass): p04 opens with the declared contrast (this chapter states obligations rather than rebuilding records or machinery) and names the owning chapters once as owners, removing the flat repeat of p03 (transition finding, Introduction ¶4)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "fixed under the author's delegation (fix-only pass): Section 'Vertical Differences in Legal Exposure' moved from between Trade-offs and Failure Modes to directly after Vertical Rules (both flow readers marked its position unclear); transitions of verticals, beyond-eu and failure-modes, flow patterns, roadmap promises and p05 updated. AC-2 expected lists the old order: replacement reported as a journal-spec edit, not made."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "fixed under the author's delegation (fix-only pass): p60 split into two plain sentences instead of one sentence with three scope qualifiers and three claims."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "fixed under the author's delegation (fix-only pass): p28: the conflict between the November 2027 go-live and a whole-year, all-brand 2027 report resolved by stating that earlier months and brands not yet on the platform were loaded into the evidence store from their own logs in the same event shape (ledger silent; reported as a ledger ruling)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "fixed under the author's delegation (fix-only pass): p69 close keeps the counterfactual of p26 ('would name ... would prove') instead of stating the suspension as an actual record of the new pipeline."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "fixed under the author's delegation (fix-only pass): p29 explains five rules from four sources (the UCPD contributes two) and names what the section covers after the surfaces in a separate sentence."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "fixed under the author's delegation (fix-only pass): p55 states the marketplace-processed-sales fact first and the conclusion after it."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "fixed under the author's delegation (fix-only pass): Minor p62: 'decision record' made 'architecture decision record' to avoid collision with the moderation decision record."
     }
   ],
   "sources": [
@@ -1969,6 +2002,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass under the author's delegation: seven blocking draft-check findings fixed (p04 contrast, verticals section moved after Vertical Rules, p60 split, p28 backfill ruling, p69 counterfactual, p29 rule count, p55 order) and one minor (p62); check report now stale. (AI-mediated session)"
+    },
     {
       "date": "2026-11-12",
       "change": "Escalation resolved under the author's delegation: INFORM correction kept; 'Vertical Differences' renamed 'Vertical Differences in Legal Exposure' with a lead-in that separates it from Vertical Rules; p70 adds messaging and the four-stacks cost (AC-4); max_words 8,811 to 9,000. (AI-mediated session)"

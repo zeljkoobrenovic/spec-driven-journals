@@ -35,7 +35,7 @@ The stakes are asymmetric: a minute of failed search at the weekly peak loses mo
 
 The chapter builds on its neighbors: [[search-architecture]] owns index design and reindexing mechanics, [[event-driven-listings]] the event backbone, and [[multi-country-platforms]] the shared-platform model whose blast radius this chapter has to manage. What it adds — journey objectives, a degradation ladder, a regional ambition and unit costs per brand — is what [[part-8]] weighs when it decides which of Veldmark's stacks to consolidate.
 
-The chapter takes one brown-out apart. It sets out the load (traffic shape, automated traffic included), what reliability means (journey objectives), what protects it (control points with the bot controls at the edge, capacity, degradation, regions, incidents) and what it costs. The evidence comes from SRE, Vinted, Adevinta, Rightmove, FinOps and bot reports. A rerun a year later, trade-offs, vertical differences, failure modes, the Chief Architect's view, questions and Part VII's closing follow.
+The chapter takes one brown-out apart in four steps. First comes the load: the traffic shape, automated traffic included. Second, what reliability means: objectives set on user journeys. Third, what protects those objectives: control points in the search path, starting with the bot controls at the edge, then capacity planning, degradation, multiple regions and incident management. Fourth, what all of it costs. The evidence comes from SRE, Vinted, Adevinta, Rightmove, FinOps and bot reports. Then the design is tested on a rerun of the same evening a year later, and the chapter steps back: the trade-offs, the vertical differences, the failure modes, the Chief Architect's view, the questions to ask and Part VII's closing.
 
 ## Setting the Scene at Veldmark: Forty-Eight Minutes on a Sunday Evening
 
@@ -114,14 +114,14 @@ Peak-hour weighting is the marketplace-specific refinement. A failure at the wee
 
 ## Architecture: Control Points in the Search Path
 
-Control points protect those objectives. Search is the journey most exposed to peaks, but the same control points apply to every journey: classify at the edge, admit and degrade at a gateway, separate optional work from essential work, and keep batch work out of peak windows with the peak calendar set out under capacity planning.
+Control points protect those objectives. Search is the journey most exposed to peaks, but the same control points apply to every journey, and this section takes them in order: classify automated traffic at the edge, isolate batch and optional work from essential work, admit requests at a gateway with retry budgets and timeouts, and cache in layers. Batch work is kept out of peak windows by a **peak and campaign calendar**, one shared schedule of planned campaigns, sends and batch jobs, which capacity planning sets out below. Degradation, the gateway's other job, gets its own section.
 
 ![Diagram: Control points in the search path](assets/images/40-reliability-and-scale/fig03-control-points-search-path-edge-classifies.jpeg)
 **Figure 3:** *Control points in the search path. The edge classifies and throttles automated traffic and serves cached pages; the gateway admits, sheds and degrades requests; facets and personalization are separate, optional calls; batch reindexing is throttled and kept out of peak windows by the same calendar that drives pre-scaling.*
 
 ### Bots, scrapers and crawlers at the edge
 
-The first control point is the edge, where automated traffic is classified, and policy for it starts from why bots come. Listing data is valuable to others. Competitors and aggregators copy inventory; price-monitoring services track dealers' stock; data brokers harvest phone numbers and e-mail addresses; and scammers copy real listings, photos and prices to create convincing fakes. The Barcelona fake-rental ring of July 2027 posted 180 listings in Eixample using photos copied from real listings (see [[fraud-prevention]]). Scraping is therefore a capacity problem, a commercial problem and a trust-and-safety problem at once. No single control stops it, so control is layered.
+The first control point is the edge, where the automated groups named under traffic shape are classified. A policy for each group starts from what it wants, and what most of them want is listing data, which is valuable to others. Competitors and aggregators copy inventory; price-monitoring services track dealers' stock; data brokers harvest phone numbers and e-mail addresses; and scammers copy real listings, photos and prices to create convincing fakes. The Barcelona fake-rental ring of July 2027 posted 180 listings in Eixample using photos copied from real listings (see [[fraud-prevention]]). Scraping is therefore a capacity problem, a commercial problem and a trust-and-safety problem at once. No single control stops it, so control is layered.
 
 | Layer | Control | Notes |
 | --- | --- | --- |
@@ -137,10 +137,10 @@ AI crawlers add a commercial question that is not only technical. On 1 July 2025
 
 ### Isolation: separating what can wait from what cannot
 
-Behind the edge, the brown-out happened because interactive queries, reindexing and cache warm-up shared the same nodes at the same time. Five standard rules keep them apart.
+The second control point sits behind the edge, in how work shares capacity. The brown-out happened because interactive queries, reindexing and cache warm-up shared the same nodes at the same time. Five standard rules keep them apart.
 
-1. **Batch work never shares capacity with peak interactive work by default.** Reindexing, backfills, sitemap rebuilds and model scoring run on separate capacity, or are throttled and scheduled outside peak windows by a calendar the platform enforces. Vinted's indexing team switched its connectors to "idle indexing" after catch-up to reduce cluster pressure ([Vinted Engineering, 2021](https://vinted.engineering/2021/02/08/elasticsearch-index-management/)).
-2. **A reindex is a deployment.** Building a new index beside the old one and switching an alias, as [[search-architecture]] describes, lets the new index warm before it takes traffic. An in-place full reindex that evicts caches is the Search as System of Record failure in operational form: the index cannot be rebuilt cheaply from upstream data, so it is rebuilt in place.
+1. **Batch work never shares capacity with peak interactive work by default.** Reindexing, backfills, sitemap rebuilds and model scoring run on separate capacity, or are throttled and scheduled outside peak windows by the peak and campaign calendar, which the platform enforces. Vinted's indexing team switched its connectors to "idle indexing" after catch-up to reduce cluster pressure ([Vinted Engineering, 2021](https://vinted.engineering/2021/02/08/elasticsearch-index-management/)).
+2. **A reindex is a deployment.** Building a new index beside the old one and switching an alias, as [[search-architecture]] describes, lets the new index warm before it takes traffic. An in-place full reindex that evicts caches is the Search as System of Record failure in operational form: the index cannot be rebuilt cheaply from upstream data, so a second copy beside it is never built and the live one is rebuilt in place.
 3. **Optional calls are separate calls.** Vinted split facet requests from item search in 2023, accepting about 20% more cluster CPU to make item search about 71 ms faster, and cached facet responses at about a 50% hit ratio ([Vinted Engineering, 2023](https://vinted.engineering/2023/03/21/faceted-search-using-elasticsearch/)). Separate calls can be degraded separately.
 4. **Bulk writers are rate-limited separately from consumers.** A dealer group's 40,000-listing price update should queue behind interactive edits, not beside them (see [[listing-ingestion]]).
 5. **Tenants are isolated where blast radius matters.** On a shared platform, one brand's surge should not slow another's search. Separate clusters, or separate node pools with quotas, per brand or per country are the usual answer.
@@ -149,7 +149,7 @@ Behind the edge, the brown-out happened because interactive queries, reindexing 
 
 Google's SRE book gives the rules that would have shortened the brown-out: "always use randomized exponential backoff when scheduling retries", "consider having a server-wide retry budget", and "avoid amplifying retries by issuing retries at multiple levels" ([Ulrich, in *Site Reliability Engineering*, 2016](https://sre.google/sre-book/addressing-cascading-failures/)). The same chapter recommends that overloaded servers shed load and that degraded modes be tested regularly, because rarely used paths break.
 
-In a marketplace, apps retry search at most once, with jitter, and only on errors that a retry can fix. The gateway enforces a retry budget across clients. Timeouts shrink as requests move down the stack, so a slow search node fails a request quickly instead of holding it. Admission control at the gateway rejects or degrades requests when concurrency passes a limit, rather than letting queues grow until everything is slow. OLX is reported to have published a two-part post in 2021 on load shedding with NGINX using adaptive concurrency control; it could not be retrieved or verified for this book, so treat it as a pointer, not evidence.
+In a marketplace, apps retry search at most once, with jitter, and only on errors that a retry can fix. The gateway enforces a retry budget across clients. Timeouts shrink as requests move down the stack, so a slow search node fails a request quickly instead of holding it. Admission control at the gateway rejects or degrades requests when concurrency passes a limit, rather than letting queues grow until everything is slow. A pointer for further reading, not evidence: OLX is reported to have published a two-part post in 2021 on load shedding with NGINX using adaptive concurrency control; it could not be retrieved or verified for this book.
 
 ### Caching in three layers
 
@@ -169,7 +169,7 @@ Two lessons from the brown-out apply. **Warm before you switch**: any operation 
 
 What the controls do not absorb, the backend must hold. Capacity planning in a marketplace starts from the weekly peak, not the average. Veldmark's group-wide search load averages 9,000 queries per second and peaks at 31,000, a ratio of about 3.4. Tradeyard carries about 70% of that, roughly **21,700** queries per second at the Sunday peak, and Tradeyard NL a little under half of Tradeyard's, nearly **10,000**.
 
-Figures here count queries, meaning results-page requests; each query fans out to about 2.6 engine requests at Tradeyard (see [[search-architecture]]). A simple model for the capacity a search backend must hold at peak:
+Every figure in this chapter counts one unit: a query, meaning one results-page request; "search request" and "search" mean the same thing. Inside the engine each query fans out to about 2.6 engine requests at Tradeyard (see [[search-architecture]]), but the peak and the cluster size are both stated in queries, so the sizing below stays in queries and the fan-out does not change it. A simple model for the capacity a search backend must hold at peak:
 
 > required capacity = expected peak × campaign factor × failure headroom × (1 − share served from cache or shed)
 
@@ -214,7 +214,7 @@ Each journey has its own ladder. For messaging, degraded mode delays attachments
 
 ### What the documented record shows
 
-Losing a site is degradation's larger form. Classifieds are mostly country-scoped businesses, which shapes the regional question. Vinted, which runs one cross-border catalog, described in 2026 a design in which "all writes happen in the primary site and read-only projections are replicated around the world", and in which a multi-writer design was avoided because its operational cost is hard to justify "without a strong business need" ([Vinted Engineering, 2026](https://vinted.engineering/2026/01/09/building-global-event-driven-platform-part-2/)). Adevinta's shared Kubernetes platform reduced blast radius by running many clusters and shifting traffic between them with weighted DNS records and a controller that watches pod health ([Adevinta Tech Blog, 2023](https://adevinta.com/techblog/achieve-a-smaller-blast-radius-with-highly-available-kubernetes-clusters/)). Neither writes everywhere.
+Losing a site is degradation's larger form, and the regional question is how far to go to survive it. The answer depends on scope: classifieds are mostly country-scoped businesses. Vinted is the exception that shows the other end: it runs one cross-border catalog and described in 2026 a design in which "all writes happen in the primary site and read-only projections are replicated around the world", and in which a multi-writer design was avoided because its operational cost is hard to justify "without a strong business need" ([Vinted Engineering, 2026](https://vinted.engineering/2026/01/09/building-global-event-driven-platform-part-2/)). Adevinta's shared Kubernetes platform reduced blast radius by running many clusters and shifting traffic between them with weighted DNS records and a controller that watches pod health ([Adevinta Tech Blog, 2023](https://adevinta.com/techblog/achieve-a-smaller-blast-radius-with-highly-available-kubernetes-clusters/)). Neither writes everywhere.
 
 A single primary, however, depends on its region. Regional failures of a cloud provider happen, and they take shared dependencies down together. AWS's post-event summary of the 19–20 October 2025 disruption in its N. Virginia (us-east-1) region describes a latent defect in DynamoDB's automated DNS management that left the regional endpoint with an empty DNS record; the effects spread over about 14.5 hours to EC2 instance launches, Network Load Balancer, Lambda, container services, the Security Token Service and console sign-in ([AWS, 2025](https://aws.amazon.com/message/101925/)). Two lessons transfer to any platform. **Regional control planes are shared dependencies**: identity tokens, instance launches and load balancers can fail together. And **autoscaling is not capacity during a regional event**: if new instances cannot launch, only capacity that is already running counts.
 
@@ -248,7 +248,7 @@ Reviews should be blameless and should produce architectural actions, not only o
 
 Shedding, caching and headroom change spending. The FinOps Foundation describes unit economics as bringing together "what an organization spends on technology and the value that technology spending creates" ([FinOps Foundation, n.d.](https://www.finops.org/framework/capabilities/unit-economics/)). For a listing platform, three unit costs are worth computing and publishing.
 
-- **Cost per thousand searches** — search infrastructure cost divided by search requests. In this book, **cost per search** means the fully allocated run cost of the search path (engine, gateway, caches, observability for that path) divided by search requests, reported separately for human and automated traffic.
+- **Cost per thousand searches** — search infrastructure cost divided by search requests, which the table below calls queries. In this book, **cost per search** means the fully allocated run cost of the search path (engine, gateway, caches, observability for that path) divided by search requests, reported separately for human and automated traffic where the split is measured; the table below gives totals, and the readings after it give Tradeyard's automated share.
 - **Cost per live listing per month** — platform run cost attributable to a brand, divided by its average live listings.
 - **Cost per contact** — the run cost of the journeys that lead to a contact, divided by contacts. It is the hardest to compute and the most useful, because it relates infrastructure to liquidity.
 
@@ -289,7 +289,7 @@ By the end of 2027, the changes from the review have been built for Tradeyard NL
 | Degradation level reached | None defined | Level 2 for 6 minutes (approximate facets, personalization off) |
 | Search p99 latency at peak | ~7 s for 48 minutes | ~1.3 s for 6 minutes, then ~450 ms |
 | Failed human search requests | ~9% for 48 minutes | under 0.2% |
-| Peak-window search error budget spent | ~30% of the 28-day budget | ~2% |
+| Search error budget spent (28-day, Tradeyard NL) | ~30% of the 28-day budget | ~2% |
 | App retries | Two, no backoff | One, with jitter, within a gateway retry budget |
 
 The redesign did not need a new search engine; Tradeyard NL is still on Solr in January 2028, ahead of the move to OpenSearch. It needed the architecture to know four things it did not know a year earlier: when the peak is, what is optional, who the bots are and how much budget remains.
@@ -313,7 +313,7 @@ The most contested trade-off is the shared search platform. Sharing reduces dupl
 
 ## Vertical Differences
 
-The verticals differ too.
+The trade-offs above hold for every vertical; the loads behind them do not. General classifieds, real estate and automotive differ in traffic shape, the journey that matters most, write load, what scrapers want, the SLAs professionals expect and what drives cost.
 
 | Concern | General classifieds | Real estate | Automotive |
 | --- | --- | --- | --- |

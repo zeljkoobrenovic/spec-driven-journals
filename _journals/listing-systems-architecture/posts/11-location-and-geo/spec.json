@@ -7,7 +7,7 @@
   "part": "part-2",
   "title": "Where Is It? Location, Geocoding and Privacy",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the location-and-geo entry in journal-spec.json. Units added by this conversion: a lead paragraph for the Trade-offs section (p51) and a synthesis paragraph (p63) before the hand-off in the closing section; the introduction's third paragraph gained the roadmap.",
   "intent": {
     "outcome": {
@@ -324,7 +324,7 @@
       "paragraphs": [
         {
           "id": "p08",
-          "controlling_idea": "A listing can carry four kinds of location, item, seller, handover and service area, and confusing them is the first modeling mistake; a kind says what is located, while the three representations say how precisely one location is stored and shown.",
+          "controlling_idea": "A listing can carry four kinds of location, item, seller, handover and service area, and confusing them is the first modeling mistake; a kind says what is located, while how precisely one location is stored and shown is a separate question that the precision levels and the architecture answer.",
           "function": "definition",
           "evidence": [
             {
@@ -471,7 +471,7 @@
           "transition_in": {
             "relationship": "sequence",
             "carries_over": "Places and hierarchies.",
-            "introduces": "Levels of detail named after them.",
+            "introduces": "Levels of detail named after them, completed by two finer levels (street and exact address).",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -625,7 +625,7 @@
             "applies_to": "p27-p31: the distance rule, the internal exception and the event and search document that carry it out"
           }
         ],
-        "rationale": "The value object first, because every later paragraph refers to its three parts, followed directly by why its precise part is restricted (personal data) and then how the parts derive from each other; then the components that produce the parts; then the one derivation that decides privacy (the public point), closed by Airbnb's documented example of the same separation; then the rule for distances that depends on it; then the event and search document that carry the result downstream. Starting with the search document would show fields before the reader knows which part they come from, and the components before the classification would present a restricted store with no reason for it."
+        "rationale": "The value object first, because every later paragraph refers to its three parts, followed directly by how the parts derive from each other in the table's order; then the components that produce the parts, with Figure 2 after the list that numbers them, and the reason the precise part's store is restricted (personal data) right after the restricted store it explains; then the one derivation that decides privacy (the public point), closed by Airbnb's documented example of the same separation; then the rule for distances that depends on it; then the event and search document that carry the result downstream. Starting with the search document would show fields before the reader knows which part they come from; placing the personal-data evidence between the table and the derivation interrupted the table's line of thought."
       },
       "paragraphs": [
         {
@@ -641,39 +641,13 @@
           ]
         },
         {
-          "id": "p22",
-          "controlling_idea": "A private seller's precise location is personal data while the gazetteer is not, which the GDPR states and which reference models such as Productscape show is easy to get wrong.",
-          "function": "evidence",
-          "evidence": [
-            {
-              "kind": "quotation",
-              "what": "GDPR Art. 4(1): location data as one of the identifiers that make a person identifiable.",
-              "shows": "The precise part carries a legal classification the other parts do not.",
-              "source": "GDPR Art. 4(1), unofficial reproduction"
-            },
-            {
-              "kind": "source",
-              "what": "Productscape real-estate model classifies geo reference data as non-personal and listings with a private owner's location as 'possible-personal'; the general-listings model's own review notes its non-personal classification is wrong for private sellers.",
-              "shows": "Even reference models get the classification wrong for private sellers.",
-              "source": "productscape-digest"
-            }
-          ],
-          "transition_in": {
-            "relationship": "elaboration",
-            "carries_over": "The three parts and their classifications in the table.",
-            "introduces": "Why the precise part is restricted: it is personal data for private sellers.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
           "id": "p21",
-          "controlling_idea": "Each part can be recomputed from the one above it, which makes policy changes and boundary reforms backfills rather than migrations.",
+          "controlling_idea": "The table's order is also the order of derivation: each part can be recomputed from the one above it, which makes policy changes and boundary reforms backfills rather than migrations.",
           "function": "explanation",
           "transition_in": {
-            "relationship": "sequence",
-            "carries_over": "The three parts and the restriction on the precise one.",
-            "introduces": "How each part derives from the one above, which makes changes backfills.",
+            "relationship": "elaboration",
+            "carries_over": "The three parts in the table's order.",
+            "introduces": "The table's order as the order of derivation, which makes changes backfills.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -692,8 +666,34 @@
           ],
           "transition_in": {
             "relationship": "sequence",
-            "carries_over": "The value object and its classification.",
-            "introduces": "The services behind it.",
+            "carries_over": "The value object and how its parts derive from each other.",
+            "introduces": "The services behind it, with Figure 2 after the list that numbers them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The store is restricted because a private seller's precise location is personal data while the gazetteer is not, which the GDPR states and which the author's generic Productscape reference models show is easy to get wrong.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "GDPR Art. 4(1): location data as one of the identifiers that make a person identifiable.",
+              "shows": "The precise part carries a legal classification the other parts do not.",
+              "source": "GDPR Art. 4(1), unofficial reproduction"
+            },
+            {
+              "kind": "source",
+              "what": "The author's two generic reference models built with Productscape, a product-domain modeling method introduced in business-capabilities, describing no real company: the real-estate model classifies geo reference data as non-personal and listings with a private owner's location as 'possible-personal'; the general-listings model's own review notes its non-personal classification is wrong for private sellers.",
+              "shows": "Even reference models get the classification wrong for private sellers.",
+              "source": "productscape-digest"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The restricted location store (component 6) and Figure 2's audited path.",
+            "introduces": "Why the precise part is restricted: it is personal data for private sellers.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1011,7 +1011,7 @@
         {
           "id": "p43",
           "form": "list",
-          "controlling_idea": "Replayed under the policy adopted later in 2027, Femke's bike, another private seller's listing in Rotterdam, is captured, geocoded, placed, given a P3 public point, indexed and searched in six steps, with a 2.6 km buyer seeing 'about 3 km'.",
+          "controlling_idea": "Femke, a different private seller in Rotterdam from the scene's complainant, listed her bike on the old model on 7 March; replayed under the policy adopted later in 2027, it is captured, geocoded, placed, given a P3 public point, indexed and searched in six steps, with a 2.6 km buyer seeing 'about 3 km'.",
           "function": "example",
           "evidence": [
             {
@@ -1030,13 +1030,13 @@
         },
         {
           "id": "p44",
-          "controlling_idea": "Nothing a buyer sees reveals more than the district, and the precise centroid exists only in the restricted store.",
+          "controlling_idea": "Nothing a buyer sees reveals more than the district: the precise centroid exists only in the restricted store, and a would-be visitor finds nothing more precise than a 5 km² cell.",
           "function": "analysis",
           "evidence": [
             {
               "kind": "scenario",
-              "what": "The real 20:11 fake payment link of that evening, introduced as a risk that is not a location one and pointed to messaging-and-leads; under the replayed model a would-be visitor finds nothing more precise than a 5 km² cell.",
-              "shows": "Separates the location fix from the other risks of the evening.",
+              "what": "Under the replayed model a would-be visitor finds nothing more precise than a 5 km² cell (H3 resolution 7).",
+              "shows": "What the six steps guarantee for the location.",
               "source": "scenario-ledger"
             }
           ],
@@ -1044,6 +1044,26 @@
             "relationship": "cause_effect",
             "carries_over": "Six steps.",
             "introduces": "What they guarantee.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44a",
+          "controlling_idea": "The model closes the location route and no other: the real 20:11 fake payment link of 7 March is a messaging and fraud risk, covered in messaging-and-leads.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "At 20:11 on 7 March 2027 a 'buyer' sent Femke a fake payment link.",
+              "shows": "Separates the location fix from the other risks of the evening.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the replayed model guarantees for the location.",
+            "introduces": "A risk of the real evening that the location model does not address.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1436,7 +1456,7 @@
   ],
   "conclusion": {
     "heading": "From Place to Seller",
-    "synthesis": "The five answers in Ingrid's table failed for one reason: each brand stored one location and let every reader take what it needed. That fault let a stranger reach the Rotterdam door and left coordinates nobody could say were licensed; the Lyon page that left out Villeurbanne had a different cause, no place references to choose between, and the same model's third representation fixes it. Three representations under a group policy, one gazetteer and a licence on every coordinate answer all three.",
+    "synthesis": "The failures this chapter met had two causes. The first runs through all five answers in Ingrid's table: each brand stored one location and let every reader take what it needed, which let a stranger reach the Rotterdam door and left coordinates nobody could say were licensed. The second explains the opening's 'apartments in Lyon' landing page that left out Villeurbanne: there were no place references to choose between. One model removes both: three representations under a group policy, one gazetteer and a licence on every coordinate answer all three failures.",
     "so_what": "The group fixes location once, as a shared service, instead of five brand fixes, and can then answer the regulator, the licensor and the cross-border buyer.",
     "callback": {
       "to": "The Rotterdam seller who found a stranger at her door, and the five answers to 'where is it?'.",
@@ -1462,7 +1482,7 @@
     "paragraphs": [
       {
         "id": "p63",
-        "controlling_idea": "The five answers failed for one reason, one location read by every consumer, which caused the leak and the unlicensed coordinates; the Villeurbanne gap had a different cause (no place references) that the same model's place references fix, so the Rotterdam payload would now carry a cell centre and a district, never a doorstep.",
+        "controlling_idea": "The chapter's failures had two causes, one location read by every consumer (the leak and the unlicensed coordinates, in all five answers) and no place references (the opening's Villeurbanne gap); one model removes both, so the Rotterdam payload would carry a cell centre and a district, never a doorstep, and the group fixes location once as a shared service that answers the regulator, the licensor and the cross-border buyer.",
         "function": "synthesis"
       },
       {
@@ -1531,6 +1551,14 @@
     "A minimum-address-count rule for sparse areas is recommended without a published benchmark; consider adding one if a source appears. (Carried over from spec.md.)"
   ],
   "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Round-4 blocking findings fixed under the author's delegation (fix-only pass). Spec faults: (1) p44 held two ideas and the fake-payment-link aside broke the case's close: split into p44 (the location guarantee, now ending on the 5 km² cell) and a new p44a (the model closes the location route only; the real 20:11 link is a messaging and fraud risk), no published fact cut. (2) The personal-data paragraph p22 interrupted the table and the derivation: architecture order is now p20, p21, p23, p22, a third order (the two earlier ones were both tried), with p22 opening as the reason for the restricted store (component 6) just listed; transitions of p21, p23 and p22 and the flow rationale rewritten. (3) The conclusion's 'one reason' then 'a different cause': synthesis and p63 now announce two causes and place the Villeurbanne page in the opening. Draft faults: p08 no longer points back to the callouts; Figure 2 moved after the list that numbers its components; Femke's opening says plainly she is not the complainant and that every step shows the new model; Productscape glossed with chapter 4's own wording (the author's generic reference models, no real company, pointer to business-capabilities); p63 now states the so-what (fix once as a shared service; answer the regulator, the licensor and the cross-border buyer). Minor: Trade-offs lead split into three sentences; p16 bridge no longer claims a street level the gazetteer did not list. Left minor: p31's exact-display exception (needs a fact the ledger does not give)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "length.max_words raised from 8,350 to 8,500 (+1.8%) for the glosses, the split paragraph and the so-what; fixed under the author's delegation (fix-only pass)."
+    },
     {
       "date": "2026-11-12",
       "decision": "Flow rubric note not taken: the Failure Modes list could cite where each control was introduced, and the Questions list restates much of it; kept as reference apparatus per house chapter shape. (accepted under the author's delegation, 2026-11-12; rule 8: published text kept.)"
@@ -1673,6 +1701,10 @@
   ],
   "changelog": [
     {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on the round-4 blocking findings: architecture order p20, p21, p23, p22; p44 split (new p44a); conclusion synthesis reworded to two causes with the so-what; Figure 2 after the component list; glosses for Productscape and Femke; length raised to 8,500. (AI-mediated session)"
+    },
+    {
       "date": "2026-11-12",
       "change": "Resolved the round-3 escalation under the author's delegation: p44 setup, p22 framing, conclusion synthesis reworded, draft faults on the public-point table, Vertical Differences lead, replay tense, kinds vs representations and five unexplained terms; two cut author sentences restored; max_words 8,134 to 8,350."
     },
@@ -1706,6 +1738,6 @@
     }
   ],
   "length": {
-    "max_words": 8350
+    "max_words": 8500
   }
 }

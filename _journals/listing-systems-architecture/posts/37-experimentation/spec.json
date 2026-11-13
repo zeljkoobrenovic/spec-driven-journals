@@ -7,7 +7,7 @@
   "part": "part-7",
   "title": "Testing a Two-Sided Market: Experimentation Platforms",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, thesis and role are copied unchanged from the experimentation entry in journal-spec.json; the hand-off uses ml-platform's transition_in. Units added by this conversion: roadmap p04, one lead-in each for Trade-offs (p47) and Vertical Differences (p48), and a synthesis paragraph p54 before the published hand-off.",
   "intent": {
     "outcome": {
@@ -444,7 +444,19 @@
         },
         {
           "id": "p12",
-          "controlling_idea": "The primary metric is chosen before the test as the one metric it is powered to move, and exposure, the moment a unit meets the treatment, often comes well after assignment.",
+          "controlling_idea": "Two more terms recur in the metrics and architecture sections; the first, the primary metric, is the one metric a test is powered to move, chosen before the test so the winner cannot be picked afterwards.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The five terms in the table.",
+            "introduces": "Two further terms the later sections depend on, starting with the primary metric.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12a",
+          "controlling_idea": "Exposure, the moment a unit meets the treatment, often comes well after assignment.",
           "function": "definition",
           "evidence": [
             {
@@ -455,9 +467,9 @@
           ],
           "transition_in": {
             "relationship": "additional_support",
-            "carries_over": "The five terms in the table.",
-            "introduces": "Two further terms the architecture depends on.",
-            "form": "sentence",
+            "carries_over": "The first of the two further terms, the primary metric.",
+            "introduces": "The second term, exposure.",
+            "form": "phrase",
             "placement": "start_of_this"
           }
         }
@@ -684,8 +696,20 @@
         },
         {
           "id": "p32",
-          "controlling_idea": "Geographic experiments assign whole cities or countries for market-level changes, but so few units force synthetic-control (a weighted mix of untreated cities as the comparison) or difference-in-differences analysis whose results are estimates with wide uncertainty, not A/B tests; the table then compares all six designs.",
+          "controlling_idea": "Geographic experiments assign whole cities or countries for market-level changes, but so few units force synthetic-control (a weighted mix of untreated cities as the comparison) or difference-in-differences analysis whose results are estimates with wide uncertainty, not A/B tests.",
           "function": "analysis",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Clusters and time slots.",
+            "introduces": "The coarsest unit, whole geographies.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32a",
+          "controlling_idea": "Across the six designs the trade-off runs one way: coarser units mean less interference and less power, and the first question in choosing is whether the change reallocates something units compete for.",
+          "function": "comparison",
           "evidence": [
             {
               "kind": "table",
@@ -699,9 +723,9 @@
             }
           ],
           "transition_in": {
-            "relationship": "sequence",
-            "carries_over": "Clusters and time slots.",
-            "introduces": "The coarsest unit, whole geographies.",
+            "relationship": "conclusion_summary",
+            "carries_over": "The six designs, from the finest unit to whole geographies.",
+            "introduces": "Their comparison in one table and the decision rule.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1076,13 +1100,13 @@
         },
         {
           "id": "p20",
-          "controlling_idea": "The group's statistics came from one marketplace: Fisher, built at Marktplaats, became the basis of Houston's engine, and results were computed incrementally on a stream.",
+          "controlling_idea": "The group's statistics came from one marketplace: Fisher, built at Marktplaats and used in most of its experiments, became the basis of Nightingale, Houston's engine.",
           "function": "evidence",
           "evidence": [
             {
               "kind": "source",
-              "what": "Adevinta Tech Blog 2023: Fisher in more than 90% of Marktplaats experiments, about three hours of analyst time per experiment, Nightingale as Houston's engine; Kafka Streams with weighted Welford updates; posts predate the 2025 decentralization.",
-              "shows": "Shows the engine was centralized from a proven package and made near-real-time."
+              "what": "Adevinta Tech Blog 2023: Fisher in more than 90% of Marktplaats experiments, about three hours of analyst time per experiment, Nightingale as Houston's engine.",
+              "shows": "Shows the engine was centralized from a proven package."
             }
           ],
           "transition_in": {
@@ -1090,6 +1114,25 @@
             "carries_over": "Adevinta's consolidation of tools.",
             "introduces": "Where its statistics came from.",
             "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20a",
+          "controlling_idea": "Beyond the statistics, Adevinta computed results incrementally on a stream so rollout problems show in near real time; all these posts predate the 2025 decentralization.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Adevinta Tech Blog 2023: Kafka Streams with user-level aggregates and weighted Welford updates; posts predate the 2025 decentralization.",
+              "shows": "Shows the engine made near-real-time, and the limit of the public record."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Where the group's statistics came from.",
+            "introduces": "How results were computed in near real time.",
+            "form": "phrase",
             "placement": "start_of_this"
           }
         },
@@ -1357,13 +1400,25 @@
         },
         {
           "id": "p52",
-          "controlling_idea": "Ownership is split among data and ML, product and monetization, the guild, legal and regulatory, and the Group Chief Architect, and the gap between experiment estimates and post-rollout effects is the platform's real report card.",
+          "controlling_idea": "Ownership of the decisions is split among data and ML, product and monetization, the guild, legal and regulatory, and the Group Chief Architect.",
           "function": "recommendation",
           "transition_in": {
             "relationship": "elaboration",
             "carries_over": "The five decisions.",
-            "introduces": "Who owns them and what to watch.",
+            "introduces": "Who owns them.",
             "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52a",
+          "controlling_idea": "Five measures show whether the decisions work, and the gap between experiment estimates and post-rollout effects is the platform's real report card.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Who owns the decisions.",
+            "introduces": "What to watch.",
+            "form": "phrase",
             "placement": "start_of_this"
           }
         }
@@ -1592,6 +1647,30 @@
     {
       "date": "2026-11-13",
       "decision": "Reader-found error fixed by the orchestrator (author request 'fix the errors readers found'): Analysis-unit row: the nesting was backwards (an analysis unit nested in the randomization unit is the failure the row warns against); now 'match … or contain it'."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p12 split into p12 (primary metric) and p12a (exposure), with an opening that marks them as two further terms (one_controlling_idea + transition findings). — fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p32 split: geographic experiments (p32, synthetic-control gloss moved next to its term) and p32a, the six-design comparison table and Figure 4. — fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p20 split: Fisher as Houston's engine (p20) and streaming computation with the predates-2025 caveat (p20a). — fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p52 split: ownership (p52) and what to watch with the report card (p52a). — fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Draft wording: callout reordered to body order and 'contracts'; p03 opens from the wrong-sign stakes; scene sum split into three sentences; ranking forward pointer made its own sentence naming In Practice; assignment bullet states the cluster constraint plainly (retest ran in Tradeyard Belgium, ledger line 165); exposure parenthetical replaced; 72-hour fraud restatement glossed from data-platform's definition; Failure Modes opening names its antecedents. Minor findings also cleared: 'such a transfer', 'neither', 'Its recital 45', 'That is why', Johari sentence split. — fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "length.max_words raised 6,650 → 6,800 (+2.3%) to fit the glosses, pointers and lead-in sentences added by the fixes; no published fact cut — fixed under the author's delegation (fix-only pass)."
     }
   ],
   "sources": [
@@ -1648,6 +1727,10 @@
   ],
   "changelog": [
     {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on round-6 blocking findings: four paragraph units split (p12a, p32a, p20a, p52a); draft wording fixes for transitions, flow and one gloss. (AI-mediated session)"
+    },
+    {
       "date": "2026-11-12",
       "change": "Escalation resolved under the author's delegation: max_words 6,433 → 6,650; p11, p13, p33, p37, p39, p40, p46 revised (bump-test pickup, registry not a fifth contract, interleaving not a seventh design, no forward pointers, the review rule argued, the price stayed live until the retest was reviewed). (AI-mediated session)"
     },
@@ -1681,6 +1764,6 @@
     }
   ],
   "length": {
-    "max_words": 6650
+    "max_words": 6800
   }
 }

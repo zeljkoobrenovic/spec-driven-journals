@@ -36,7 +36,7 @@ This part argues that trust is **a platform capability, not a team with a queue*
 ![Four separate moderation stacks on the left contrasted with one shared trust platform carrying four brands, each with its own rulebook, on the right.](assets/images/part-5-intro/trust-shared-platform-local-policy.jpeg)
 **Figure 1:** *Part V replaces four moderation stacks that cannot share a signal with one shared decision service, signals and evidence, while each brand keeps its own policy, thresholds and legal grounds.*
 
-Each chapter plugs into the one before. The first builds the decision record, enforcement that reaches every system, and appeals, leaving detection as a slot. Fraud prevention fills that slot, scoring linked accounts and listings, and ends on the strongest friction, an identity check. The third designs those checks and the trader record the law requires. Regulation comes last: it turns the law into requirements those records serve. Then come a table, the part's place in the book and the Veldmark thread.
+Each chapter plugs into the one before. Trust-and-safety architecture comes first: it builds the decision record, enforcement that reaches every system, and appeals, and leaves detection as an open slot, a place where detectors plug in. Fraud prevention fills that slot, scoring linked accounts and listings, and ends on the strongest friction, an identity check. Identity and verification designs those checks and the trader record the law requires. Marketplace regulation comes last: it turns the law into requirements that the decision record and the trader record serve. Then come a table, the part's place in the book and the Veldmark thread.
 
 ## Chapters in this part
 
@@ -55,11 +55,13 @@ Trust reads the lifecycle and enforcement overlay from [[part-2]], the publicati
 
 ## The Veldmark thread
 
-Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]), starts 2027 with four trust-and-safety stacks, four identity systems and five sources of statements of reasons (the DSA's required explanation of each restriction). Two 2027 incidents show what that split costs. On 7 March 2027 a fake Safe Deal payment link reached Femke, a Rotterdam seller, sixteen minutes after her first buyer contact; the scammer's phone number had a Motorvane account Tradeyard could not see. In July a Barcelona ring of 26 accounts posted 180 fake rentals, and 63 people lost about €71,000 while photo and price signals sat in separate queues. Ingrid Halvorsen's team, with Aisha Rahman (trust and safety) and Lucía Ortega (data protection), decides:
+Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]), starts 2027 with four trust-and-safety stacks, four identity systems and five sources of statements of reasons (the DSA's required explanation of each restriction; Hearthly exports France's and Spain's separately). Its first DSA transparency report, due in February 2027, drew on all five, and their counts disagreed. Two 2027 incidents show what else that split costs. On 7 March 2027 a fake Safe Deal payment link reached Femke, a Rotterdam seller, sixteen minutes after her first buyer contact; the scammer's phone number had a Motorvane account Tradeyard could not see. In July a Barcelona ring of 26 accounts posted 180 fake rentals, and 63 people lost about €71,000 while photo and price signals sat in separate queues.
 
+Ingrid Halvorsen's team, with Aisha Rahman (trust and safety) and Lucía Ortega (data protection), answers the split, not each incident, with four decisions, each joining what the brands kept apart:
+
+- an **obligation register** that maps the DSA and related rules to controls and evidence queries, grown from the gaps the February report exposed;
 - **Veldmark ID** (June 2027): one login across brands with brand profiles, designed so that a sold brand can be cut out;
-- an **obligation register** that maps the DSA and related rules to controls and evidence queries;
-- a **shared trust-and-safety platform**, live for Tradeyard NL and BE in November 2027, with a cross-brand block list of hashed identifiers;
+- a **shared trust-and-safety platform**, live for Tradeyard NL and BE in November 2027, with a cross-brand block list of hashed identifiers, so signals like the Barcelona ring's meet in one record;
 - **first-contact friction** on Tradeyard (December 2027) against scams like Femke's.
 
 ## Where to begin

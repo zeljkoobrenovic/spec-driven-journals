@@ -7,7 +7,7 @@
   "part": "preface",
   "title": "Unlisted: Fifteen Ways Listing Systems Go Wrong",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (unit for unit, in its own order except where the decision log records a move) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criterion AC-1, thesis and role are copied unchanged from the post's entry in journal-spec.json. Each pattern subsection's seven units (quote with figure, what it looks like, why it happens, what it costs, an illustration, the remedy direction, where this book helps) are paragraphs of the one section 'Fifteen Patterns to Recognize'; tables, figures and the matrix are evidence.",
   "intent": {
     "outcome": {
@@ -301,7 +301,7 @@
       },
       "flow": {
         "pattern": "grouping",
-        "rationale": "Families in pipeline order let the reader place each pattern in the machine before its details; within a pattern the fixed anatomy moves from symptom to cause to cost to remedy, so every description can be compared with the others."
+        "rationale": "Families in pipeline order let the reader place each pattern in the machine before its details; within a pattern the fixed anatomy moves from symptom to cause to cost to remedy, so every description can be compared with the others. Within the data family the order follows the pipeline: the tree that frames every listing, then Feed Roulette, the way most professional supply enters, before the three patterns it feeds (The Attribute Junkyard, Ghost Inventory, Seeing Double), then the index built from all of them."
       },
       "transition_in": {
         "relationship": "elaboration",
@@ -468,7 +468,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "Four trees of 1,420, 1,380, 980 and 760 leaves; six weeks per category; bikes in 19 leaves with about 640,000 listings; the 1 November 2027 split re-classifies about 410,000 listings, rewrites about 1.3 million saved searches, needs about 2,300 redirects and 2,900 landing pages; Fatbikes added in two days a month later.",
+              "what": "Four trees of 1,420, 1,380, 980 and 760 leaves; six weeks per category; bikes in 19 leaves with about 640,000 listings; the 1 November 2027 split re-classifies about 410,000 listings, rewrites about 1.3 million saved searches, needs about 2,300 redirects and 2,900 landing pages; Fatbikes added in two days a month later. The taxonomy service is introduced as part of the shared platform Veldmark's consolidation program builds (told under Deal-Shaped Architecture).",
               "source": "Scenario ledger (fictional Veldmark)",
               "shows": "The cost of the hard-coded tree and the payoff of a versioned one, in one brand's numbers."
             }
@@ -525,13 +525,170 @@
           }
         },
         {
+          "id": "p038",
+          "controlling_idea": "An on-call engineer's 'The dealer's file looked fine last night. We'll find out what happened when support opens' shows that nobody checks a feed before it changes live stock.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"The dealer's file looked fine last night...\" (an ingestion on-call engineer), with Figure 4: a truncated file unpublishing 38,400 Motorvane listings at 02:40.",
+              "source": "Composite quote attributed to a role",
+              "shows": "Feeds are trusted until the partner's customers report the damage."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Shows Feed Roulette as a sensible-sounding statement by one role."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The chapters that address The Category Straitjacket.",
+            "introduces": "The next pattern, Feed Roulette, the way most professional supply comes in, opened by a role's quote and its figure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p039",
+          "controlling_idea": "Feed Roulette is ingesting professional and partner feeds without a feed contract, so records skip validation, writes are not idempotent, partners get no error report and nothing guards a truncated file.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W1"
+            ],
+            "how": "Gives the warning signs of Feed Roulette."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The quote.",
+            "introduces": "What Feed Roulette looks like and its observable signs.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p040",
+          "controlling_idea": "Feeds are integrated one partner at a time as code adapters, rejecting a paying customer's data feels risky, full snapshots are easy and dangerous, error reporting has no owner and vendors do the minimum.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Explains Feed Roulette by its mechanism, not by blame."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The signs.",
+            "introduces": "The incentives and ownership gaps that produce them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p041",
+          "controlling_idea": "Feed Roulette loses the professional stock that is most of the supply in automotive and real estate, and because dealers multi-home, lost confidence moves stock to competitors; public partner APIs show the remedy.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Bundeskartellamt (2026): \"many platforms offer dealers data export to other platforms\"; dealer multi-homing treated as a competitive constraint.",
+              "source": "Bundeskartellamt, 2026",
+              "shows": "A dealer who loses confidence in one platform's feed can shift attention to another."
+            },
+            {
+              "kind": "source",
+              "what": "mobile.de's Seller API makes creation idempotent through an insertion request ID, answers a retry with 303 to the existing ad, and returns stable error keys; RFC 9457 standardizes problem details.",
+              "source": "mobile.de Seller API documentation, n.d.; IETF, 2023",
+              "shows": "A feed contract with idempotency and machine-readable errors exists in public practice."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3"
+            ],
+            "how": "Prices Feed Roulette and grounds it in the public record."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The mechanism.",
+            "introduces": "What it costs, with dated public evidence.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p042",
+          "controlling_idea": "Truncated files for 286 Motorvane dealers unpublish 38,400 listings overnight, a fifth return with new identifiers, and a few Hearthly vendors cause most incidents.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Monday 8 March 2027, 02:40 CET: files for 286 dealers; 38,400 listings unpublished by 02:55, about 1,900 with paid top placements; complete files at 09:40; a fifth back with new identifiers; more than 600 support calls; about 30 of 160 Hearthly vendors cause most incidents.",
+              "source": "Scenario ledger (fictional Veldmark)",
+              "shows": "One unguarded snapshot damages stock, paid placements and identifiers at once."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3",
+              "W1"
+            ],
+            "how": "Shows Feed Roulette in the fictional Veldmark group."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The cost.",
+            "introduces": "A fictional Veldmark illustration with ledger figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p043",
+          "controlling_idea": "The remedy is a contract for every channel: an envelope, schema versions, stable error codes, per-run reports, stable keys, a mass-change guard and reconciliation.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Gives the direction of the remedy for Feed Roulette."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The illustrated failure.",
+            "introduces": "The direction of the fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p044",
+          "controlling_idea": "Five chapters address Feed Roulette: feed contracts and guards, shared validation, integration partners, partner error views and automotive dealer APIs.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Points to the chapters that address Feed Roulette."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The remedy direction.",
+            "introduces": "The chapters that carry it out.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p017",
           "controlling_idea": "A feed-integration engineer's 'put it in the extra-fields column for now; we'll clean the data up after launch' shows the shortcut that fills the Junkyard.",
           "function": "example",
           "evidence": [
             {
               "kind": "quotation",
-              "what": "\"Just put it in the extra-fields column for now...\" (a feed-integration engineer), with Figure 4: fuel under four spellings, so a petrol filter finds one car.",
+              "what": "\"Just put it in the extra-fields column for now...\" (a feed-integration engineer), with Figure 5: fuel under four spellings, so a petrol filter finds one car.",
               "source": "Composite quote attributed to a role",
               "shows": "The cleanup is always deferred, and the cost of deferral lands on buyers who filter."
             }
@@ -544,7 +701,7 @@
           },
           "transition_in": {
             "relationship": "sequence",
-            "carries_over": "The chapters that address The Category Straitjacket.",
+            "carries_over": "The chapters that address Feed Roulette.",
             "introduces": "The next pattern, The Attribute Junkyard, opened by a role's quote and its figure.",
             "form": "phrase",
             "placement": "start_of_this"
@@ -619,7 +776,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "3,900 keys in 2026, 41% used on fewer than 0.1% of listings; about 610 worth promoting to typed index fields in 2027; frame size present on 23% of Dutch bike listings before the extraction pilot.",
+              "what": "3,900 keys in 2026, 41% used on fewer than 0.1% of listings; about 610 worth promoting to typed index fields in 2027; frame size present on 23% of Dutch bike listings before the extraction pilot. The search platform is named as the group's new shared one (pointer to The Forced Fit).",
               "source": "Scenario ledger (fictional Veldmark)",
               "shows": "The Junkyard's cost in one number a buyer feels: three quarters of the inventory invisible to a filter."
             }
@@ -682,7 +839,7 @@
           "evidence": [
             {
               "kind": "quotation",
-              "what": "\"It's marked sold in the database...\" (a listing-service engineer), with Figure 5: Femke's bike leaves search a minute after it sells but goes to 214 users in the next morning's digest.",
+              "what": "\"It's marked sold in the database...\" (a listing-service engineer), with Figure 6: Femke's bike leaves search a minute after it sells but goes to 214 users in the next morning's digest.",
               "source": "Composite quote attributed to a role",
               "shows": "Removal is correct at the source and wrong in the copies nobody owns."
             }
@@ -776,7 +933,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "Listed on the evening of Sunday 7 March 2027; sold on Monday 8 March 2027 at 18:10, removed from search at 18:11; a digest built at 17:30 from a replica snapshot goes to 214 users at 07:00 on Tuesday; about 41,000 Dutch listings a week still in a downstream copy 24 hours after ending; at Motorvane the Essen Golf's removal arrives 26 hours late and three enquiries arrive in between.",
+              "what": "Listed on the evening of Sunday 7 March 2027; sold on Monday 8 March 2027 at 18:10, removed from search at 18:11; the evening digest, already built on Monday at 17:30 before the sale from a replica snapshot, goes to 214 users at 07:00 on Tuesday; about 41,000 Dutch listings a week still in a downstream copy 24 hours after ending; at Motorvane the Essen Golf's removal arrives 26 hours late and three enquiries arrive in between.",
               "source": "Scenario ledger (fictional Veldmark)",
               "shows": "Removal can be fast at the source and slow in every copy that does not listen for it."
             }
@@ -839,7 +996,7 @@
           "evidence": [
             {
               "kind": "quotation",
-              "what": "\"Three agencies hold the mandate...\" (a real-estate portal product owner), with Figure 6: one Lyon flat at €389,000 arriving three times and stacking three pins on one building.",
+              "what": "\"Three agencies hold the mandate...\" (a real-estate portal product owner), with Figure 7: one Lyon flat at €389,000 arriving three times and stacking three pins on one building.",
               "source": "Composite quote attributed to a role",
               "shows": "Duplicates feel legitimate to the people who produce them."
             }
@@ -984,163 +1141,6 @@
           }
         },
         {
-          "id": "p038",
-          "controlling_idea": "An on-call engineer's 'The dealer's file looked fine last night. We'll find out what happened when support opens' shows that nobody checks a feed before it changes live stock.",
-          "function": "example",
-          "evidence": [
-            {
-              "kind": "quotation",
-              "what": "\"The dealer's file looked fine last night...\" (an ingestion on-call engineer), with Figure 7: a truncated file unpublishing 38,400 Motorvane listings at 02:40.",
-              "source": "Composite quote attributed to a role",
-              "shows": "Feeds are trusted until the partner's customers report the damage."
-            }
-          ],
-          "advances_thesis": {
-            "supports": [
-              "W2"
-            ],
-            "how": "Shows Feed Roulette as a sensible-sounding statement by one role."
-          },
-          "transition_in": {
-            "relationship": "sequence",
-            "carries_over": "The chapters that address Seeing Double.",
-            "introduces": "The next pattern, Feed Roulette, opened by a role's quote and its figure.",
-            "form": "phrase",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p039",
-          "controlling_idea": "Feed Roulette is ingesting professional and partner feeds without a feed contract, so records skip validation, writes are not idempotent, partners get no error report and nothing guards a truncated file.",
-          "function": "description",
-          "advances_thesis": {
-            "supports": [
-              "W1"
-            ],
-            "how": "Gives the warning signs of Feed Roulette."
-          },
-          "transition_in": {
-            "relationship": "elaboration",
-            "carries_over": "The quote.",
-            "introduces": "What Feed Roulette looks like and its observable signs.",
-            "form": "phrase",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p040",
-          "controlling_idea": "Feeds are integrated one partner at a time as code adapters, rejecting a paying customer's data feels risky, full snapshots are easy and dangerous, error reporting has no owner and vendors do the minimum.",
-          "function": "cause_effect",
-          "advances_thesis": {
-            "supports": [
-              "W2"
-            ],
-            "how": "Explains Feed Roulette by its mechanism, not by blame."
-          },
-          "transition_in": {
-            "relationship": "cause_effect",
-            "carries_over": "The signs.",
-            "introduces": "The incentives and ownership gaps that produce them.",
-            "form": "phrase",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p041",
-          "controlling_idea": "Feed Roulette loses the professional stock that is most of the supply in automotive and real estate, and because dealers multi-home, lost confidence moves stock to competitors; public partner APIs show the remedy.",
-          "function": "evidence",
-          "evidence": [
-            {
-              "kind": "quotation",
-              "what": "Bundeskartellamt (2026): \"many platforms offer dealers data export to other platforms\"; dealer multi-homing treated as a competitive constraint.",
-              "source": "Bundeskartellamt, 2026",
-              "shows": "A dealer who loses confidence in one platform's feed can shift attention to another."
-            },
-            {
-              "kind": "source",
-              "what": "mobile.de's Seller API makes creation idempotent through an insertion request ID, answers a retry with 303 to the existing ad, and returns stable error keys; RFC 9457 standardizes problem details.",
-              "source": "mobile.de Seller API documentation, n.d.; IETF, 2023",
-              "shows": "A feed contract with idempotency and machine-readable errors exists in public practice."
-            }
-          ],
-          "advances_thesis": {
-            "supports": [
-              "W3"
-            ],
-            "how": "Prices Feed Roulette and grounds it in the public record."
-          },
-          "transition_in": {
-            "relationship": "cause_effect",
-            "carries_over": "The mechanism.",
-            "introduces": "What it costs, with dated public evidence.",
-            "form": "phrase",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p042",
-          "controlling_idea": "Truncated files for 286 Motorvane dealers unpublish 38,400 listings overnight, a fifth return with new identifiers, and a few Hearthly vendors cause most incidents.",
-          "function": "example",
-          "evidence": [
-            {
-              "kind": "scenario",
-              "what": "Monday 8 March 2027, 02:40 CET: files for 286 dealers; 38,400 listings unpublished by 02:55, about 1,900 with paid top placements; complete files at 09:40; a fifth back with new identifiers; more than 600 support calls; about 30 of 160 Hearthly vendors cause most incidents.",
-              "source": "Scenario ledger (fictional Veldmark)",
-              "shows": "One unguarded snapshot damages stock, paid placements and identifiers at once."
-            }
-          ],
-          "advances_thesis": {
-            "supports": [
-              "W3",
-              "W1"
-            ],
-            "how": "Shows Feed Roulette in the fictional Veldmark group."
-          },
-          "transition_in": {
-            "relationship": "example",
-            "carries_over": "The cost.",
-            "introduces": "A fictional Veldmark illustration with ledger figures.",
-            "form": "phrase",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p043",
-          "controlling_idea": "The remedy is a contract for every channel: an envelope, schema versions, stable error codes, per-run reports, stable keys, a mass-change guard and reconciliation.",
-          "function": "recommendation",
-          "advances_thesis": {
-            "supports": [
-              "W5"
-            ],
-            "how": "Gives the direction of the remedy for Feed Roulette."
-          },
-          "transition_in": {
-            "relationship": "problem_solution",
-            "carries_over": "The illustrated failure.",
-            "introduces": "The direction of the fix.",
-            "form": "phrase",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p044",
-          "controlling_idea": "Five chapters address Feed Roulette: feed contracts and guards, shared validation, integration partners, partner error views and automotive dealer APIs.",
-          "function": "description",
-          "advances_thesis": {
-            "supports": [
-              "W5"
-            ],
-            "how": "Points to the chapters that address Feed Roulette."
-          },
-          "transition_in": {
-            "relationship": "elaboration",
-            "carries_over": "The remedy direction.",
-            "introduces": "The chapters that carry it out.",
-            "form": "phrase",
-            "placement": "start_of_this"
-          }
-        },
-        {
           "id": "p045",
           "controlling_idea": "A search engineer's 'Don't touch the Solr collection. Some of those fields only exist there' shows an index that has become the only copy.",
           "function": "example",
@@ -1160,7 +1160,7 @@
           },
           "transition_in": {
             "relationship": "sequence",
-            "carries_over": "The chapters that address Feed Roulette.",
+            "carries_over": "The chapters that address Seeing Double.",
             "introduces": "The next pattern, Search as System of Record, opened by a role's quote and its figure.",
             "form": "phrase",
             "placement": "start_of_this"
@@ -1392,7 +1392,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "Layers in 2016, 2019, 2021 (×1.8), 2023 and 2025 (×1.3); paid share 12% in 2021 to 38% in 2026; sessions with a contact 10.6% to 9.4%; new private listings without contact in 48 hours 24% to 33%; policy v1 on 1 December 2027: paid share 17%, sessions with a contact 9.9%, visibility revenue per search down 2.5%.",
+              "what": "Layers in 2016, 2019, 2021 (×1.8), 2023 and 2025 (×1.3); paid share 12% in 2021 to 38% in 2026; sessions with a contact 10.6% to 9.4%; new private listings without contact in 48 hours 24% to 33%; policy v1 (relevance floor, at most four paid in the top 20) tested cluster-randomized before launch: in the test paid share 17%, sessions with a contact 9.9%, visibility revenue per search down 2.5%; live on 1 December 2027 (told in that order).",
               "source": "Scenario ledger (fictional Veldmark)",
               "shows": "The trade-off can be measured and bounded, and bounding it costs little revenue."
             }
@@ -1549,7 +1549,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "94% of decisions automated, 6% (about 138,000 a week) to human review, about 210 moderators; sampled prevalence about 0.6% against an assumed 0.2%; median time to action 3 hours 10 minutes; the rule written on 7 March after the phishing link that reached Femke (told under Fast Mail for Fraudsters) in Belgium on Wednesday, never in Poland or Portugal; 180 Barcelona listings produce about 41,000 alert notifications.",
+              "what": "94% of decisions automated, 6% (about 138,000 a week) to human review, about 210 moderators; sampled prevalence about 0.6% against an assumed 0.2%; median time to action 3 hours 10 minutes; the phishing link that reaches Femke in chat on the evening of Sunday 7 March, told here first in one sentence (Fast Mail for Fraudsters, next, tells how it got through), then the rule written that evening, in Belgium on Wednesday with the next Yardstick deploy, never in Poland or Portugal; 180 Barcelona listings produce about 41,000 alert notifications.",
               "source": "Scenario ledger (fictional Veldmark)",
               "shows": "Moderation outside the flow is slow, uneven across countries and beaten by alert fan-out."
             }
@@ -1706,7 +1706,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "Sunday 7 March 2027: 14 conversations in 24 hours; fake link at 20:11; report at 20:19; suspension at 20:26; a new rule then withholds 37 similar messages; about 41,000 payment-link phishing reports in the Netherlands and Belgium in 2026.",
+              "what": "Sunday 7 March 2027: 14 conversations in 24 hours; fake link at 20:11, delivered because nothing checks domain age; report at 20:19; suspension at 20:26; a new rule then withholds 37 similar messages; about 41,000 payment-link phishing reports in the Netherlands and Belgium in 2026.",
               "source": "Scenario ledger (fictional Veldmark)",
               "shows": "Without checks in the delivery path the victim is the detector."
             }
@@ -2328,9 +2328,9 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "Three definitions in March 2027; qualified contact v1.0 replay: Tradeyard's contact index (weekly contacts, 100 under the old definition) 100 to 37, Motorvane 86, Hearthly 106; Femke's 52 'contacts' and 13 qualified; bumps up 48% in a seller-randomized test, control sellers' contacts per bump fell unwatched and the cause was never established, contacts per bump down 31% after rollout.",
+              "what": "Three definitions in March 2027; qualified contact v1.0 replay: Tradeyard's contact index (weekly contacts, 100 under the old definition) 100 to 37, Motorvane 86, Hearthly 106; Femke's 52 'contacts' (every message in her 14 conversations plus phone reveals) and 13 qualified; bumps up 48% in a seller-randomized test, control sellers' contacts per bump fell unwatched and the cause was never established, contacts per bump down 31% after rollout. A closing sentence states the lesson: the decision followed a number that did not measure matches, and a test that watched only the treated sellers missed the contacts the bumps were meant to bring.",
               "source": "Scenario ledger (fictional Veldmark)",
-              "shows": "Without one governed definition, decisions follow numbers that do not measure matches."
+              "shows": "Without one governed definition, decisions follow numbers that do not measure matches; a one-sided test approved a price that cost contacts."
             }
           ],
           "advances_thesis": {
@@ -3071,7 +3071,8 @@
   ],
   "modalities": [],
   "open_questions": [
-    "The matrix was drawn from the plan before chapters 3, 29, 39 and Parts VIII and IX (other than Adevinta) had callouts; those chapters now exist, and the matrix has not yet been re-checked against their opening callouts. (Carried over from spec.md.)"
+    "The matrix was drawn from the plan before chapters 3, 29, 39 and Parts VIII and IX (other than Adevinta) had callouts; those chapters now exist, and the matrix has not yet been re-checked against their opening callouts. (Carried over from spec.md.)",
+    "Minor round-5 findings left by the fix-only pass: 41,000 used for three unrelated quantities (ledger figures, kept); the trust chain describes fake listings scamming buyers while its only worked example is a fake buyer scamming a seller; Multiplier Creep is described before its roots; the 8 March truncated-snapshot incident illustrates only part of the supply chain."
   ],
   "decision_log": [
     {
@@ -3163,6 +3164,22 @@
     {
       "date": "2026-11-12",
       "decision": "After draft-check round 4 (corroborated flow findings), under the author's delegation: Billing by Guesswork is now named among the roots (reverses the earlier flow-rubric note that kept it out) and The Category Straitjacket is called a root outside the four chains; Femke's dates told in order in p028; p063 says the phishing attempt is told under Fast Mail for Fraudsters; p098 says the cause of the control sellers' fall was not established (no cause invented). W4, the thesis statement, p005 and the chains section's controlling idea aligned with the corrected thesis."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Feed Roulette (p038-p044) moved from fifth to second in the data family, after The Category Straitjacket and before The Attribute Junkyard, Ghost Inventory and Seeing Double, which it feeds (corroborated flow finding: effects met before their cause). Transitions of p038, p017 and p045 rewritten; section flow rationale extended; figures renumbered 4-7; the family table, indicators table, matrix columns and column-code list reordered to match. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p063: the phishing link that reached Femke is now told in one sentence in place, before the anti-phishing rule it caused, with a pointer to Fast Mail for Fraudsters for how it got through (corroborated finding: consequence before cause). Yardstick glossed as Tradeyard's monolith there. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Draft fixes for corroborated findings: p098 ends with the lesson of the bump-price test (one-sided test, number that did not measure matches); p095 glosses qualified contact at first use from the ledger's qualified contact v1.0, and p098 calls v1.0 the group's common definition; p057 glosses two-sided guardrail metrics at first use; p028 places the 17:30 digest assembly on Monday, before the sale; p056 tells Ranking policy v1, its cluster-randomized test and the test's results before the go-live date (ledger: the 17%, 9.9% and -2.5% are test results); p014 and p021 point to where the shared platform and shared search platform are introduced. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Minor findings also fixed in wording: system of record glossed in the family table; Femke's 52 old contacts reconciled with her 14 conversations; domain-age sentence in p070 says nothing checked it; Multiplier Creep's experiment sentence expanded; the legal Trust point split; the DSA gloss moved after the verb; 'archipelago' given its referent; the roots paragraph says a fourth pattern stands apart. Left: the three uses of 41,000, the trust chain's direction versus Femke's story, and Multiplier Creep preceding its roots (order kept; the chains section relates them), and the supply-chain incident's fit to every branch. Fixed under the author's delegation (fix-only pass)."
     }
   ],
   "sources": [
@@ -3213,6 +3230,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on the round-5 blocking findings: Feed Roulette moved to second in the data family; the phishing incident told before its rule; glosses for qualified contact, two-sided guardrails and system of record; bump-test lesson stated; digest and ranking-test timelines told in order. index.md revised to match. (AI-mediated session)"
+    },
     {
       "date": "2026-11-12",
       "change": "Round-4 fixes: p028, p063, p098, p120 controlling ideas or evidence reworded; KEY POINTS gloss The Attribute Junkyard and Multiplier Creep; W4, thesis statement, p005 and chains section aligned with the corrected thesis ('a missing contract, a vanity metric or a hand-off nobody owns'). length.max_words unchanged (draft at 11,2xx of 13,300). (AI-mediated session)"

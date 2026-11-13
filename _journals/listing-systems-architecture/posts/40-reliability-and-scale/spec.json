@@ -7,7 +7,7 @@
   "part": "part-7",
   "title": "Sunday Evening Peaks: Reliability, Performance and Cost",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, AC-1 to AC-3, the thesis and the role are copied unchanged from the chapter's entry in journal-spec.json; the conclusion carries Part VII's closing from the same file. Where the published text did not yet do what the contract asks (a roadmap, the part closing), the spec asks for it and the units are listed in decision_log.",
   "intent": {
     "outcome": {
@@ -650,7 +650,7 @@
       "paragraphs": [
         {
           "id": "p19",
-          "controlling_idea": "The same control points apply to every journey, not only search: classify at the edge, admit and degrade at a gateway, separate optional from essential work and keep batch work out of peak windows with the peak calendar set out under capacity planning.",
+          "controlling_idea": "The same control points apply to every journey, not only search, and the section takes them in order: classify automated traffic at the edge, isolate batch and optional work, admit requests at a gateway with retry budgets and timeouts, and cache in layers; batch work is kept out of peak windows by the peak and campaign calendar (glossed here, set out under capacity planning), and degradation gets its own section.",
           "function": "claim",
           "evidence": [
             {
@@ -662,7 +662,7 @@
         },
         {
           "id": "p40",
-          "controlling_idea": "The first control point is the edge, where automated traffic is classified; listing data is valuable to others, so scraping is a capacity, commercial and trust-and-safety problem at once, met by seven control layers from policy to legal.",
+          "controlling_idea": "The first control point is the edge, where the automated groups named under traffic shape are classified; what most of them want is listing data, so scraping is a capacity, commercial and trust-and-safety problem at once, met by seven control layers from policy to legal.",
           "function": "explanation",
           "evidence": [
             {
@@ -709,7 +709,7 @@
         {
           "id": "p20",
           "form": "list",
-          "controlling_idea": "Five standard isolation rules keep work that can wait apart from work that cannot, because the brown-out came from interactive queries, reindexing and cache warm-up sharing nodes.",
+          "controlling_idea": "The second control point sits behind the edge: five standard isolation rules keep work that can wait apart from work that cannot, because the brown-out came from interactive queries, reindexing and cache warm-up sharing nodes.",
           "function": "recommendation",
           "evidence": [
             {
@@ -845,7 +845,7 @@
         },
         {
           "id": "p26",
-          "controlling_idea": "Counting queries as results-page requests, the backend's required capacity is expected peak × campaign factor × failure headroom × (1 − share served from cache or shed).",
+          "controlling_idea": "Counting one unit throughout (a query, search or search request is one results-page request; the 2.6 engine-request fan-out does not change sizing stated in queries), the backend's required capacity is expected peak × campaign factor × failure headroom × (1 − share served from cache or shed).",
           "function": "definition",
           "evidence": [
             {
@@ -1427,7 +1427,7 @@
       "transition_in": {
         "relationship": "contrast",
         "carries_over": "Trade-offs that hold for every vertical.",
-        "introduces": "Where the verticals differ.",
+        "introduces": "Where the verticals differ: the loads behind those trade-offs, in six named concerns.",
         "form": "sentence",
         "placement": "start_of_this"
       },
@@ -1776,7 +1776,8 @@
   "open_questions": [
     "No classifieds operator published journey SLOs or degradation ladders; both are labeled recommendations. Replace with documented examples if they appear. (Carried over from spec.md.)",
     "OLX's 2021 load-shedding post could not be retrieved; only its existence is cited. (Carried over from spec.md.)",
-    "Cost per contact is described but not computed for Veldmark; a later chapter or the toolkit may define it precisely. (Carried over from spec.md.)"
+    "Cost per contact is described but not computed for Veldmark; a later chapter or the toolkit may define it precisely. (Carried over from spec.md.)",
+    "Fix-only pass 2026-11-13: the minor finding that 'Solr is self-hosted' does not say where (Amsterdam data center or AWS) was left: the ledger does not place Tradeyard's Solr, and no location was invented."
   ],
   "decision_log": [
     {
@@ -1866,6 +1867,42 @@
     {
       "date": "2026-11-13",
       "decision": "Reader-found error fixed by the orchestrator (round-6 findings, author request): Worked-example table: said how ~13,000/s relates to the ~10,000/s Sunday peak (×1.3 campaign spike; ledger brown-out details and the 12 Nov peak ruling)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Fixed under the author's delegation (fix-only pass): Roadmap (introduction p04) rewritten as four numbered steps plus the closing sections, removing nested parentheses (flow_is_followable, major)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Fixed under the author's delegation (fix-only pass): Control Points opener (p15) lists the control points in subsection order and glosses the peak and campaign calendar on first use; isolation rule 1 names the calendar (known_before_new, major; minor control-point list mismatch)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Fixed under the author's delegation (fix-only pass): Bot subsection opener (p16) picks up the automated groups named under traffic shape instead of reintroducing bots (flow_is_followable, major)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Fixed under the author's delegation (fix-only pass): Isolation opener names 'the second control point sits behind the edge' as its own sentence (flow_is_followable, major); rule 2 states why the live index is rebuilt in place (minor)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Fixed under the author's delegation (fix-only pass): OLX sourcing caveat reframed as 'a pointer for further reading, not evidence' after the admission-control argument closes (flow_is_followable, major)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Fixed under the author's delegation (fix-only pass): Capacity unit sentence (p26) states that query, search and search request are one unit and why the 2.6 fan-out does not change the sizing; cost definition ties 'search requests' to the table's queries and says the table gives totals (flow_is_followable, major; minor cost-split finding)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Fixed under the author's delegation (fix-only pass): Vertical Differences opener now contrasts with the trade-offs and names the six concerns (transition_expresses_declared_relationship and flow_is_followable, major); transition_in.introduces updated."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Fixed under the author's delegation (fix-only pass): Minor: worked-example row relabelled 'Search error budget spent (28-day, Tradeyard NL)' to match the ~30% of the 28-day budget (ledger reliability-and-scale brown-out details); Multiple Regions opener poses the regional question and marks Vinted as the contrasting case."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Fixed under the author's delegation (fix-only pass): max_words raised 7,700 -> 7,900 (+2.6%) for the glosses and pointers."
     }
   ],
   "sources": [
@@ -1896,6 +1933,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass under the author's delegation: all 8 major round-7 findings and 7 of 9 minor findings fixed in wording (roadmap, control-point opener and calendar gloss, bot opener, isolation opener, OLX pointer, query unit, Vertical Differences bridge); max_words 7,900; check report stale. (AI-mediated session)"
+    },
     {
       "date": "2026-11-12",
       "change": "Escalations resolved under the author's delegation: bot controls moved into Control Points, published counts made explicit, worked-example origin load corrected to ~8,200/s, Tradeyard NL peak stated, calendar forward pointer; max_words 7,700. (AI-mediated session)"
@@ -1938,6 +1979,6 @@
     }
   ],
   "length": {
-    "max_words": 7700
+    "max_words": 7900
   }
 }

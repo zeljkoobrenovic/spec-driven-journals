@@ -35,7 +35,7 @@ Every listing marketplace has a table called something like `ads`, `items` or `l
 
 The test of a listing model: **at any moment, can the platform say whether a listing is for sale, who can see it, who can contact it and why?** Most platforms can answer for the owning database and fail for the copies.
 
-The chapter starts from one sold bike that four Veldmark systems described differently, then builds the model in the order a contract needs it: definition, identity, a two-dimensional lifecycle with renewals and outcomes, invariants, multi-unit listings, versions and price history, and one owner with its events. It tests the model on public APIs and standards and on the bike, replayed transition by transition, and ends with trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions.
+The chapter starts from one sold bike that four Veldmark systems described differently, then builds the model in the order a contract needs it: definition, identity, a two-dimensional lifecycle with renewals and outcomes, multi-unit listings, invariants, versions and price history, and one owner with its events. It replays the bike transition by transition, tests the model on public APIs and standards, and ends with trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions.
 
 ## Setting the Scene at Veldmark: Four Answers to One Question
 
@@ -115,7 +115,7 @@ The hard identity question is **relisting**. When a sold or expired listing come
 
 | Situation | Same listing ID | New listing ID | My default |
 | --- | --- | --- | --- |
-| Seller renews an expired listing within the renewal window | Keeps URL, history and favorites | Loses them | **Same ID**, new version, state back to active |
+| Seller renews an expired listing within the renewal window | Keeps URL, history and favorites | Loses them | **Same ID**, new version (a numbered snapshot; see Versions), state back to active |
 | Seller sold, the sale fell through, item is back | Honest history, "back on the market" signal | Looks fresh | **Same ID**, transition sold → active, recorded |
 | Seller deletes and reposts to look new | Not what the seller asked for | What the seller asked for | **New ID**, but linked by [[entity-resolution]] to the old one, so ranking and duplicate rules can see the repost |
 | A property is put on the market again a year later | Mixes two sale campaigns | Clean campaign metrics | **New ID**, same entity reference |
@@ -178,9 +178,24 @@ Ranking and analytics depend on three timestamps, and confusing them breaks both
 
 "Sold" is not one fact. The productscape model notes that "capturing whether it sold on-platform, off-platform, or was withdrawn improves future supply and pricing signals". I give every terminal transition an **outcome record**: sold on platform (with the order reference and final price), sold elsewhere, no longer available, sold through this marketplace's contact but paid off-platform, or unknown (expired without an answer). The outcome is what [[liquidity-and-network-effects]] measures as sell-through, and what valuation and price-guidance models train on. Without it, Snowflake's fallback rule turned Femke's sale into an expiry.
 
+## Availability, Units and Multi-Item Listings
+
+The sold transition so far assumes one thing that sells once, and not every listing offers that. The aggregate must say how many things it offers and when they are available, because search filters, alerts and the sold transition all depend on it.
+
+| Shape | Example | Model | Sold transition |
+| --- | --- | --- | --- |
+| **Single unique item** | A used bike, a used car, an apartment for sale | One listing, quantity 1 | One sale ends it |
+| **Fungible quantity** | A shop's 12 identical chairs | One listing with `quantity_available` | Each sale decrements; zero means sold out, not sold |
+| **Variants** | Shoes in sizes 38–44 | Parent listing with variant children, each with quantity | Per variant |
+| **Program with units** | A new-build development with 40 apartments in four types | Development (parent) → unit types → units, each unit listable | Per unit; the program ends when all units are reserved or sold |
+| **Rental with availability window** | A flat available from 1 September; a holiday let | One listing with `available_from` and optional calendar | "Let agreed" ends the campaign; the flat returns as a new campaign |
+| **Multiple openings** | A job with five vacancies | One listing with `openings` | Filled when all are filled, or when the employer closes it |
+
+Two rules keep this manageable. **The parent is a listing only if buyers can contact it.** A new-build program page is a listing (it collects leads); a variant family is usually not (buyers buy a variant). And **"sold out" and "sold" are different states**: a shop listing at zero stock may be restocked, so it should pause rather than end, while a unique item that sells is finished.
+
 ## Invariants: What Must Always Be True
 
-With the states defined, which rules must always hold? An **invariant** is a rule that holds after every successful command on the aggregate. In the table, the moderation gate is the pending-review check, and a *material* edit changes what moderation approved. Invariants are the reason to have an aggregate at all: if a rule can be checked only across many listings or many services, it is a policy, not an invariant, and it is enforced asynchronously. Mixing the two is the commonest modeling error, because it leads either to distributed transactions or to rules that silently stop being checked.
+With the states and unit shapes defined, which rules must always hold? An **invariant** is a rule that holds after every successful command on the aggregate. Invariants are the reason to have an aggregate at all: if a rule can be checked only across many listings or many services, it is a policy, not an invariant, and it is enforced asynchronously. Mixing the two is the commonest modeling error, because it leads either to distributed transactions or to rules that silently stop being checked. Two terms in the table need a word first. The **moderation gate** is the pending-review check a listing passes before it becomes active. A **material** edit is one that changes what moderation approved, such as the category, the title, the images or the price by more than a threshold; Versions, below, gives the full list and what such an edit triggers.
 
 | Rule | Invariant or policy | Where it is enforced | When |
 | --- | --- | --- | --- |
@@ -201,22 +216,6 @@ The trader-status row is regulatory. The Omnibus amendments to the EU Consumer R
 The table's "When" column gives two design rules. The first is to **validate by state, not once.** A draft must accept incomplete data, or the insertion funnel dies. eBay's Inventory API shows the split: an offer becomes a live listing only when it is published, and some fields are required only at publish time ([eBay Inventory API overview](https://developer.ebay.com/api-docs/sell/inventory/overview.html), n.d.). The same listing schema therefore has a lenient mode for drafts and a strict mode for the transition to pending review or active.
 
 The second rule is to **enforce on create and on revise.** eBay's aspect metadata warns that a seller "will be blocked from listing or revising an item without" required aspects ([eBay Taxonomy API specification](https://developer.ebay.com/develop/api/spec/taxonomy_api.json), n.d.). That is how a marketplace backfills a newly required attribute over time without a mass migration: each edit must satisfy the current rules. The price is friction for sellers who want to change only the price, so I exempt price-only and pause-only commands from new attribute requirements and apply them on every other edit.
-
-## Availability, Units and Multi-Item Listings
-
-The sold transition so far assumes one thing that sells once, and not every listing offers that. The aggregate must say how many things it offers and when they are available, because search filters, alerts and the sold transition all depend on it.
-
-| Shape | Example | Model | Sold transition |
-| --- | --- | --- | --- |
-| **Single unique item** | A used bike, a used car, an apartment for sale | One listing, quantity 1 | One sale ends it |
-| **Fungible quantity** | A shop's 12 identical chairs | One listing with `quantity_available` | Each sale decrements; zero means sold out, not sold |
-| **Variants** | Shoes in sizes 38–44 | Parent listing with variant children, each with quantity | Per variant |
-| **Program with units** | A new-build development with 40 apartments in four types | Development (parent) → unit types → units, each unit listable | Per unit; the program ends when all units are reserved or sold |
-| **Rental with availability window** | A flat available from 1 September; a holiday let | One listing with `available_from` and optional calendar | "Let agreed" ends the campaign; the flat returns as a new campaign |
-| **Multiple openings** | A job with five vacancies | One listing with `openings` | Filled when all are filled, or when the employer closes it |
-
-Two rules keep this manageable. **The parent is a listing only if buyers can contact it.** A new-build program page is a listing (it collects leads); a variant family is usually not (buyers buy a variant). And **"sold out" and "sold" are different states**: a shop listing at zero stock may be restocked, so it should pause rather than end, while a unique item that sells is finished.
-
 
 ## Versions, Change History and Price History
 
@@ -247,7 +246,7 @@ I store a **price event series** per listing: amount, currency, price state, eff
 
 ### Facts that change without the listing changing
 
-Some attributes change meaning without anyone editing the listing. France's energy performance diagnosis (DPE), which sale and rental ads must display, is recalculated with new primary-energy factors: the official guidance describes a factor change on 1 January 2026 and a further change on 1 January 2027 ([Service-Public.fr, DPE](https://www.service-public.gouv.fr/particuliers/vosdroits/F16096), 2026). A flat's class can move from E to D with no change to the flat. This is the case for **bitemporal** thinking: record when a fact was true (valid time) separately from when the platform learned it (recorded time). I do not make the whole listing bitemporal; I make the few regulated, recalculable attributes carry an effective date and a source, and I keep the version history to answer "what did the ad show on 3 May?".
+Price is not the only fact that needs a dated series. Some attributes change meaning without anyone editing the listing. France's energy performance diagnosis (DPE), which sale and rental ads must display, is recalculated with new primary-energy factors: the official guidance describes a factor change on 1 January 2026 and a further change on 1 January 2027 ([Service-Public.fr, DPE](https://www.service-public.gouv.fr/particuliers/vosdroits/F16096), 2026). A flat's class can move from E to D with no change to the flat. This is the case for **bitemporal** thinking: record when a fact was true (valid time) separately from when the platform learned it (recorded time). I do not make the whole listing bitemporal; I make the few regulated, recalculable attributes carry an effective date and a source, and I keep the version history to answer "what did the ad show on 3 May?".
 
 ## Architecture: One Owner, Many Copies
 
@@ -273,7 +272,7 @@ The command interface is small and explicit. I prefer intent-named commands to a
 | `ApplyEnforcement`, `LiftEnforcement` | Any | `ListingRestricted`, `ListingBlocked`, `ListingRestored` | Search, alerts, messaging: minutes, faster for fraud |
 | `Archive`, `Purge` (clock) | Terminal states | `ListingArchived`, `ListingPurged` | Every copy, including media and analytics, within the erasure deadline |
 
-The table names eighteen events by meaning; the contract folds them into twelve domain event types: drafts and internal moderation steps stay inside Supply, and related transitions share one type distinguished by a `cause` field (see [[event-driven-listings]]). Three properties make the contract work.
+The table names its eighteen events by meaning, and the contract does not ship them one for one: drafts and internal moderation steps stay inside Supply, and related transitions share one type distinguished by a `cause` field. That leaves twelve domain event types, which [[event-driven-listings]] lists one per row; here only the meanings matter. Three properties make the contract work.
 
 **Events carry state, not only notice.** Each event carries the new version, the publication state, the overlay and the changed fields, so a consumer that missed an event can still converge on the latest one. A consumer receiving version 7 when it holds version 5 applies version 7; a consumer receiving version 5 when it holds 7 ignores it.
 
@@ -281,26 +280,14 @@ The table names eighteen events by meaning; the contract folds them into twelve 
 
 **Consumers that cache must re-check at send time.** A digest, an e-mail campaign or a recommendation batch that assembles candidates hours before sending must verify each listing's current state at send time, or subscribe to removals and purge its candidate set. This rule alone would have kept Femke's bike out of Tuesday's digests.
 
-## In Practice: What Public Evidence Shows
-
-No classifieds company has published its full listing lifecycle or event model. The evidence comes from partner APIs, help pages, standards and investor reports, which reveal contracts rather than internals. Two sources cited above and one new one, side by side:
-
-| Source | What it documents | Lesson for the aggregate |
-| --- | --- | --- |
-| Rightmove RTDF v1.4.1 (2023) | `Agent_Ref` as key; snapshot reconciliation to find listings "still live … which should have been removed" | Lost deletes are normal; reconcile |
-| RESO Data Dictionary 2.0 (revised 2023) | Eleven standard statuses, including *Active Under Contract*, *Coming Soon* and *Hold* | Vertical lifecycles are richer than goods lifecycles; map them explicitly |
-| Auto Trader plc FY26 results (2026) | Retailer backlash to the Deal Builder reservation rollout in late 2025; Auto Trader paused auto-rollout and introduced "request a reservation" | A platform-controlled state on a dealer's stock changes the dealer's operating model |
-
-The Auto Trader case shows that **who may trigger a transition is part of the business model**; that lesson is my interpretation rather than Auto Trader's statement. In its results for the year to March 2026, Auto Trader describes pausing the automatic rollout of Deal Builder, holding listening sessions and introducing "request a reservation" after retailer pushback ([Auto Trader Group plc, FY26 results](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf), 2026). Trade press reported that the original flow let consumers place a paid reservation and that the revised one leaves the reservation to the retailer's discretion ([Car Dealer Magazine](https://cardealermagazine.co.uk/auto-trader-tweaks-deal-builder-product-making-reservations-optional/320706), 2025). In a dealer-supplied vertical, a "reserved" state that the platform sets on the dealer's inventory is a change to the dealer's sales process. Transition permissions belong in the lifecycle specification, per vertical and per seller type, and should be configurable without code.
-
 ## The Rotterdam City Bike, Transition by Transition
 
-Public contracts show a lifecycle's edges; a replay shows its inside. Here is Femke's bike under the lifecycle that Veldmark adopted in 2027 for Listing event contract v1, replayed as if it had applied to the March events. The times and version numbers match the event log in [[event-driven-listings]]; versions 4 to 7, Femke's Sunday-night edits and a photo reorder, are omitted.
+With an owner, commands and events in place, the case that opened the chapter can be replayed. Here is Femke's bike under the lifecycle that Veldmark adopted in 2027 for Listing event contract v1, replayed as if it had applied to the March events. The times and version numbers match the event log in [[event-driven-listings]]; versions 4 to 7, Femke's Sunday-night edits and a photo reorder, are omitted.
 
 | Time (CET) | Command | Version | Publication state / overlay | Event | What should happen downstream |
 | --- | --- | --- | --- | --- | --- |
 | Sun 19:31 | `CreateDraft` from the app | 1 | Draft / none | `ListingDrafted` | Nothing public |
-| Sun 19:42 | `Submit` (category Bikes, the leaf before the November 2027 bikes split, €240, approximate Rotterdam location, six photos) | 2 | Pending review / none | `ListingSubmitted` | Automated moderation and risk scoring |
+| Sun 19:42 | `Submit` (category Bikes, a single leaf until the group's bikes split of November 2027 (see [[categories-and-taxonomies]]), €240, approximate Rotterdam location, six photos) | 2 | Pending review / none | `ListingSubmitted` | Automated moderation and risk scoring |
 | Sun 19:48 | `Approve` (automated) | 3 | Active / none | `ListingPublished` | Searchable; matched against **312** saved searches |
 | Sun 19:55 | — | 3 | Active | — | First contact; **14** conversations within 24 hours |
 | Sun 20:11–20:26 | — | 3 | Active | — | A buyer account sends a fake Safe Deal payment link; Femke reports at 20:19; the *buyer's account* is suspended at 20:26. The listing is untouched: the enforcement targets an account, not this listing |
@@ -311,6 +298,18 @@ Public contracts show a lifecycle's edges; a replay shows its inside. Here is Fe
 The replay shows the aggregate changing only for facts about the offer, in three ways. The phishing episode, which dominates Femke's evening, **never touches the listing aggregate**, and it should not: it is an account and messaging case. A model that "blocked the listing" to stop the scam would have punished the victim. The reservation is set by the order, not by Femke, which is allowed for private Safe Deal sales and would be configurable for a dealer. And the sale price of €225 differs from the asking price of €240. It is recorded in the outcome, not written back as a price change, because writing it back would trigger a "price reduced" signal and price-drop alerts on an item that is no longer for sale.
 
 The 07:00 digest on Tuesday is the Ghost Inventory failure in miniature. Under the new contract the digest service subscribes to the sold, expired, withdrawn and blocked events, removes those listings from assembled digests, and re-checks state through the listing read API in the last minute before sending. Veldmark's March 2027 audit found the problem was not rare: in one week, about **41,000** Tradeyard NL listings that had ended in Yardstick were still present in at least one downstream copy 24 hours later. Most were in the digest cache and the recommendations candidate store, neither of which listened to Yardstick's removal hook.
+
+## In Practice: What Public Evidence Shows
+
+The replay is fictional, so the model also needs testing against what real companies have published. No classifieds company has published its full listing lifecycle or event model. The evidence comes from partner APIs, help pages, standards and investor reports, which reveal contracts rather than internals. Two sources cited above and one new one, side by side:
+
+| Source | What it documents | Lesson for the aggregate |
+| --- | --- | --- |
+| Rightmove RTDF v1.4.1 (2023) | `Agent_Ref` as key; snapshot reconciliation to find listings "still live … which should have been removed" | Lost deletes are normal; reconcile |
+| RESO Data Dictionary 2.0 (revised 2023) | Eleven standard statuses, including *Active Under Contract*, *Coming Soon* and *Hold* | Vertical lifecycles are richer than goods lifecycles; map them explicitly |
+| Auto Trader plc FY26 results (2026) | Retailer backlash to the Deal Builder reservation rollout in late 2025; Auto Trader paused auto-rollout and introduced "request a reservation" | A platform-controlled state on a dealer's stock changes the dealer's operating model |
+
+The Auto Trader case shows that **who may trigger a transition is part of the business model**. In its results for the year to March 2026, Auto Trader describes pausing the automatic rollout of Deal Builder, holding listening sessions and introducing "request a reservation" after retailer pushback ([Auto Trader Group plc, FY26 results](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf), 2026). Trade press reported that the original flow let consumers place a paid reservation and that the revised one leaves the reservation to the retailer's discretion ([Car Dealer Magazine](https://cardealermagazine.co.uk/auto-trader-tweaks-deal-builder-product-making-reservations-optional/320706), 2025). In a dealer-supplied vertical, a "reserved" state that the platform sets on the dealer's inventory is a change to the dealer's sales process. The lesson is my interpretation rather than Auto Trader's statement, and its consequence is that transition permissions belong in the lifecycle specification, per vertical and per seller type, and should be configurable without code.
 
 ## Trade-offs
 
@@ -352,7 +351,7 @@ Each failure is a missing rule. **The overloaded status column.** One enum that 
 
 **Hard deletes.** A seller deletes a listing that was reported as a scam an hour earlier. Without a soft-delete and retention design, the evidence for the statement of reasons, the appeal and any police request is gone.
 
-**Edits that bypass the gate.** If only `Submit` triggers moderation, a scammer edits an approved listing into a different one. Materiality rules and re-scoring on edit close the gap; leaving them out is the failure pattern Moderation as an Afterthought, here at the aggregate level.
+**Edits that bypass the gate.** If only `Submit` triggers moderation, a scammer edits an approved listing into a different one. Materiality rules and re-scoring on edit close the gap; leaving them out is Moderation as an Afterthought, a pattern from the book's catalogue in [[where-listing-systems-go-wrong]] that belongs mainly to the trust-and-safety chapters, here at the aggregate level.
 
 **Expiry jobs that fall behind.** A clock-driven transition implemented as a nightly batch job can fall days behind after an outage, and nobody notices because nothing alerts on listings that should have expired. Monitor the backlog of overdue transitions as a first-class metric.
 
@@ -360,7 +359,7 @@ Each failure is a missing rule. **The overloaded status column.** One enum that 
 
 ## The Chief Architect's View
 
-Group-scale decisions prevent these failures. **Decide the lifecycle contract at group level; let brands own the services.** At Veldmark, the decision record adopted at the architecture advice forum ahead of the contract's July 2027 go-live says that the Listing event contract v1 fixes the publication states, the enforcement overlay, the event names, the version semantics and the outcome codes for every brand. Each marketplace may keep its own listing service, which is the only realistic path while Yardstick still runs Tradeyard, but it must emit the contract. This is "share platforms, not products" applied to the most central object: the shared thing is the language, not the code.
+Group-scale decisions prevent these failures. **Decide the lifecycle contract at group level; let brands own the services.** At Veldmark, the decision record adopted at the architecture advice forum ahead of the contract's July 2027 go-live says that the Listing event contract v1 fixes the publication states, the enforcement overlay, the event names, the version semantics and the outcome codes for every brand. Each marketplace may keep its own listing service, which is the only realistic path while Yardstick still runs Tradeyard, but it must emit the contract. This is "share platforms, not products", Veldmark's Common Ground principle that brands keep their own products while the group shares capabilities beneath them (see [[meet-veldmark]]), applied to the most central object: the shared thing is the language, not the code.
 
 **Make ownership explicit for every dimension.** The listing team owns publication states and invariants. Trust and safety owns the overlay and its decisions. Monetization owns placements and entitlements. Data owns the outcome taxonomy's analytical definitions. Every disputed field gets one owner, recorded in a decision record, because the listing is where unowned fields accumulate.
 

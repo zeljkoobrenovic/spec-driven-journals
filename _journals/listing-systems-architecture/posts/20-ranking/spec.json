@@ -7,7 +7,7 @@
   "part": "part-4",
   "title": "Ranking for Two Sides: Relevance, Freshness and Paid Visibility",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the ranking entry in journal-spec.json. Added units not in the published text: the roadmap paragraph p04 and the synthesis paragraph p62.",
   "intent": {
     "outcome": {
@@ -827,7 +827,7 @@
       },
       "flow": {
         "pattern": "assertion_evidence_reasoning",
-        "rationale": "The claim that the default is political, the case for newest first with the rules that keep its bump sound, the Tradeyard failure that shows why the bump must be a bounded policy term under a relevance default (the bounded term itself is stated in Ranking policy v1), then the other exposure rules of the policy: exploration slots for new listings (the listings position bias hurts most), exposure as an allocated resource, and the per-seller cap."
+        "rationale": "The claim that the default is political, the case for newest first with the rules that keep its bump sound, the Tradeyard failure that shows why the bump must be a bounded policy term under a relevance default (the bounded term itself is stated in Ranking policy v1), then the other exposure rules of the policy: exploration slots for new listings (the listings the cold-start loop hurts most, which position-bias correction cannot fix), exposure as an allocated resource, and the per-seller cap."
       },
       "transition_in": {
         "relationship": "sequence",
@@ -839,7 +839,7 @@
       "paragraphs": [
         {
           "id": "p20",
-          "controlling_idea": "The default sort is the most political decision in a classifieds product, and its three common options each favor different sellers.",
+          "controlling_idea": "The default sort is the sort order a buyer gets before choosing one; the marketplace sets it, so it is a policy decision and the most political in a classifieds product, and its three common options each favor different sellers.",
           "function": "comparison",
           "evidence": [
             {
@@ -899,7 +899,7 @@
         {
           "id": "p31",
           "form": "list",
-          "controlling_idea": "New listings need exposure most and cannot earn it, because position bias hurts them most, which in classifieds is a supply problem; two tools address it: exploration slots in the policy and content-based priors in the model.",
+          "controlling_idea": "New listings need exposure most and cannot earn it, because of the cold-start loop (no engagement history means low rank means no engagement), which position-bias correction cannot fix and which in classifieds is a supply problem; two tools address it: exploration slots in the policy and content-based priors in the model.",
           "function": "recommendation",
           "evidence": [
             {
@@ -911,14 +911,14 @@
           "transition_in": {
             "relationship": "contrast",
             "carries_over": "The bump, exposure a seller buys through recency.",
-            "introduces": "New listings, which need exposure most and can neither buy nor earn it, because position bias hurts them most.",
+            "introduces": "New listings, which need exposure most and can neither buy nor earn it, because of the cold-start loop that position-bias correction does not fix.",
             "form": "sentence",
             "placement": "start_of_this"
           }
         },
         {
           "id": "p32",
-          "controlling_idea": "Like freshness, exploration slots are an exposure policy, as is the per-seller cap that follows, and Singh and Joachims framed exposure as a resource a ranking allocates under constraints.",
+          "controlling_idea": "Exploration slots, like the bump before them and the per-seller cap after them, are exposure rules that decide how attention is shared, and Singh and Joachims framed exposure as a resource a ranking allocates under constraints.",
           "function": "explanation",
           "evidence": [
             {
@@ -930,7 +930,7 @@
           ],
           "transition_in": {
             "relationship": "similarity",
-            "carries_over": "Freshness and the bump, and now exploration slots, as ways the policy shares attention.",
+            "carries_over": "The bump and now exploration slots, as ways the policy shares attention.",
             "introduces": "Exposure as a resource the ranking allocates, which the per-seller cap also governs.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -988,7 +988,7 @@
       "paragraphs": [
         {
           "id": "p34",
-          "controlling_idea": "Paid visibility is a product to keep honest rather than hide, and the design question is how it competes with organic results; of four approaches, only unified ranking with a relevance floor and a cap removes a paid listing that would hurt the page.",
+          "controlling_idea": "Paid visibility is a product to keep honest rather than hide, and the design question is how it competes with organic results; the table compares four approaches, and only unified ranking with a relevance floor and a cap removes a paid listing that would hurt the page.",
           "function": "comparison",
           "evidence": [
             {
@@ -1053,7 +1053,7 @@
         },
         {
           "id": "p38",
-          "controlling_idea": "Measuring whether paid exposure creates value needs causal methods, because sellers self-select into packages.",
+          "controlling_idea": "Counting what was delivered is the easier half; measuring whether paid exposure creates value needs causal methods, because sellers self-select into packages.",
           "function": "evidence",
           "evidence": [
             {
@@ -1600,7 +1600,7 @@
   ],
   "conclusion": {
     "heading": "From Ranking to Recommendations",
-    "synthesis": "The forum's two questions have one answer: the order is owned when the model says what buyers will act on, the policy says what the business adds and within what bounds, and the log proves both. That separation is what lets the same order be trained, billed, explained to a regulator and moved to another engine, and it is why a floor could make paid listings more valuable rather than less.",
+    "synthesis": "The forum's two questions have one answer: the order is owned when the model says what buyers will act on, the policy says what the business adds and within what bounds, and the log proves both. That separation is what lets the same order be trained, billed, explained to a regulator and moved to another engine, and it is why a floor could make paid listings more valuable rather than less: only with entitlements kept out of the model can the policy apply a floor, so each paid listing reaches buyers whose query it matched.",
     "so_what": "A group that keeps model, policy and log apart can change any one of them, the model, a paid product or the engine, without breaking the others; a group that mixes them gets Multiplier Creep and cannot move its ranking.",
     "callback": {
       "to": "The opening claim that there is no neutral order, only orders whose effects someone has measured, and Femke's bike at position 14.",
@@ -1769,6 +1769,10 @@
     {
       "date": "2026-11-12",
       "decision": "Accepted under the author's delegation, 2026-11-12: the added units p04 and p62, minor criteria AC-4 and AC-5, the renamed headings, the Figure 2 alt-text fix, the 'complement' wording and the Keybridge gloss. Flow-rubric notes not taken in earlier rounds stay not taken (they would change the author's text and no option is clearly better): merging p32/p33 and p51/p52, a closing paragraph for the policy section, stating the bounded bump term in p22, moving p39, the forward and back references in p38, p43 and p59, and merging p26/p27. The empty modalities list stands until other modalities are written."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-5 blocking findings fixed under the author's delegation (fix-only pass): 'entitlement' glossed at first use in the introduction (p03) as a seller's purchased right to a paid effect such as a top slot or a bump; sort-order definition says the ranking policy sets the default, and p20 says why the default sort is a policy decision; p31 names the cold-start loop as the reason new listings cannot earn exposure and says position-bias correction does not fix it; p32 drops the antecedent-less 'Like freshness' and names the bump and the per-seller cap as the other exposure rules; p34's four-row preview sentence shortened to the one point (only a floor with a cap removes a paid listing that would hurt the page), the table carries the rest; subheading renamed 'Delivery and value accounting' and p38 opens by contrasting counting with valuing; the conclusion names the link from the division of labor to the floor's result. Minor (one reader): 'among others' added to the position-14 list. The minor P2B colon finding is left (one reader only). length.max_words raised from 8,500 to 8,600 (+1.2%, within the 10% allowance) to fit the glosses and pointers (draft 8,506 words)."
     }
   ],
   "sources": [
@@ -1820,6 +1824,10 @@
   ],
   "changelog": [
     {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on round-5 flow and known-before-new findings (entitlement gloss, default-sort reason, cold-start loop, exposure-rule framing, blending lead, delivery and value accounting, conclusion link). (AI-mediated session)"
+    },
+    {
       "date": "2026-11-12",
       "change": "Escalation resolved (author's delegation): policy exposure rules gathered under one 'Ranking Policy' heading (p31 moved from Learning to Rank), blending-table reading sentence, cannibalization and Spotlight glosses, Failure Modes lead; max_words 8,288 to 8,500. (AI-mediated session)"
     },
@@ -1853,6 +1861,6 @@
     }
   ],
   "length": {
-    "max_words": 8500
+    "max_words": 8600
   }
 }

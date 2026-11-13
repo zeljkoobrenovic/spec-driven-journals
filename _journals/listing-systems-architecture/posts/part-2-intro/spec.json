@@ -7,7 +7,7 @@
  "part": "part-2",
  "title": "Part II — LISTING: Modeling the Thing Being Sold",
  "status": "draft",
- "revised": "2026-11-12",
+ "revised": "2026-11-13",
  "basis": "Reconstructed on 2026-11-12 from the published page (posts/part-2-intro/index.md) and its former spec.md (accepted 2026-10-20), which it replaces; one spec paragraph per unit of the page, in the page's order. Intent outcome, AC-1 to AC-3 and role are copied unchanged from the post's entry in journal-spec.json; the introduction realises Part II's opening (hook, bridge, roadmap) from the same file. The journal spec gives this post no thesis, so the thesis and its two supporting claims are written here from the part's thesis and flow. The five callouts (IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS, FAILURE PATTERNS) stand before the first paragraph and are kept as the house format; the KEY POINTS callout carries the part's claim in three bullets. Units added to the published page to meet the contract: the roadmap paragraph (p03), the lead-in to the chapter table (p04) and a synthesis and hand-off in the closing paragraph (p08, grown from 'By the end of Part II… Begin with [[listing-aggregate]]').",
  "intent": {
   "outcome": {
@@ -74,10 +74,10 @@
  },
  "thesis": {
   "question": "What does this part argue, and in what order should its chapters be read?",
-  "claim": "Part II argues that a listing is an offer about a thing, not the thing: a small, strict aggregate that references categories, attributes, media, location, and sellers and accounts by ID, each a governed subdomain with its own owner and rate of change; its six chapters are read in an order where each needs the one before, starting with the aggregate because it decides what sits inside the listing and what is only a reference, and ending with sellers and accounts because they own what the earlier chapters only point to.",
+  "claim": "Part II argues that a listing is an offer about a thing, not the thing: a small, strict aggregate that references categories, attributes, media, location, and sellers and accounts by ID, each a governed subdomain with its own owner and rate of change; its six chapters are read in an order where each needs the one before, starting with the aggregate because it decides what sits inside the listing and what is only a reference, and ending with sellers and accounts because they build on all the others: an agency's location precision and its branches' media and attribute duties use the earlier models, while those models need only a seller's ID.",
   "disputed_by": "The common practice of modeling the listing as one wide `ads` table that every team extends, so the listing chapters are a catalog of columns a reader may consult in any order.",
   "so_what": "A reader who accepts it reads the aggregate chapter first, or opens the one chapter that answers the problem in front of them, and expects every later stage (ingestion, search, trust, monetization) to read these models as contracts rather than copy a table.",
-  "how_why": "The aggregate makes the slots the other chapters fill; the category selects the contract for attributes, fees and facets; an attribute schema is bound to a category; media and location apply the same governed-data discipline to photos and places, and media strips the GPS coordinates location's privacy rule would otherwise leave exposed; sellers and accounts hold the display level and trader facts the earlier chapters only reference.",
+  "how_why": "The aggregate makes the slots the other chapters fill; the category selects the contract for attributes, fees and facets; an attribute schema is bound to a category; media and location apply the same governed-data discipline to photos and places, and media strips the GPS coordinates location's privacy rule would otherwise leave exposed; sellers and accounts come last because an agency's location precision and its branches' media and attribute duties build on the earlier models, while those models need only a seller's ID.",
   "supporting_claims": [
    {
     "id": "PII-1",
@@ -149,7 +149,7 @@
    },
    {
     "id": "p02",
-    "controlling_idea": "The part's claim is that a listing is an offer about a thing, not the thing itself: a small, strict aggregate surrounded by five subdomains (categories, attributes, media, location, and sellers and accounts), each with its own owner and rate of change, so that with a contract for each, ingestion, search, trust and billing read the same meaning.",
+    "controlling_idea": "The part's claim is that a listing is an offer about a thing, not the thing itself; because an offer only needs to point at what describes the thing, the aggregate stays small and strict, surrounded by five subdomains (categories, attributes, media, location, and sellers and accounts), each with its own owner and rate of change, so that with a contract for each, ingestion, search, trust and billing read the same meaning.",
     "function": "claim",
     "evidence": [
      {
@@ -168,7 +168,7 @@
    },
    {
     "id": "p03",
-    "controlling_idea": "The six chapters come in an order where each needs the one before: the aggregate first, because it decides what is inside the listing and what is only a reference; then categories, which select the rules for the rest; attributes, which are bound to a category; media and location, which then govern photos and places as owned, versioned data, media before location because location hides a private seller's precise point, which a photo's GPS coordinates would reveal unless media strips them; and sellers and accounts last, because they hold the seller facts the others point to. The page then says when to open each, how the part connects to the book and what Veldmark decides.",
+    "controlling_idea": "The six chapters come in an order where each needs the one before: the aggregate first, because it decides what is inside the listing and what is only a reference; then categories, which select the rules for attributes, fees and facets; attributes, which are bound to a category; media, which applies the attribute chapter's move (one contract for every consumer) to photos, and comes before location because it strips the GPS coordinates that location's privacy rule relies on to hide a private seller's precise point; location, which governs its register of places the way categories govern their tree; and sellers and accounts last, because they build on all the others (an agency's location precision and its branches' media and attribute duties use the earlier models), while the earlier chapters need only a seller's ID. The page then says when to open each, how the part connects to the book and what Veldmark decides.",
     "function": "transition",
     "transition_in": {
      "relationship": "sequence",
@@ -262,7 +262,7 @@
     {
      "id": "p06",
      "form": "list",
-     "controlling_idea": "Veldmark (fictional) shows the part's models becoming contracts: it starts 2027 with four Tradeyard country category trees and 3,900 attribute keys, 41% of them used on fewer than 0.1% of listings, and Ingrid Halvorsen's team turns each chapter's model into a dated decision, each listed under the chapter that owns it, in chapter order.",
+     "controlling_idea": "Veldmark (fictional) shows the part's models becoming contracts: it starts 2027 with four Tradeyard country category trees and 3,900 attribute keys, 41% of them used on fewer than 0.1% of listings, and Ingrid Halvorsen's team turns each chapter's model into a dated decision, each listed under the chapter that owns it, in chapter order; the lead-in says the dates do not follow that order, and the May 2027 item is marked as the earliest date.",
      "function": "example",
      "evidence": [
       {
@@ -324,7 +324,7 @@
   "paragraphs": [
    {
     "id": "p08",
-    "controlling_idea": "Read together, the six chapters replace the two-hundred-column `ads` table with a small aggregate and five contracts, so every system that copies a listing copies the same meaning; a reader should end Part II able to say who owns each part of a listing, how it is versioned and which systems copy it, and begins with listing-aggregate, which defines the aggregate.",
+    "controlling_idea": "Read together, the six chapters replace the two-hundred-column `ads` table with a small aggregate and five contracts, so every system that copies a listing copies the same meaning; a reader should end Part II able to say who owns each part of a listing, how it is versioned and which systems copy it, and begins with listing-aggregate, which decides what sits inside the listing and what is only a reference.",
     "function": "synthesis"
    }
   ]
@@ -467,6 +467,14 @@
    "rejected": [
     "Cutting published Veldmark details or callout text to stay under 1,000."
    ]
+  },
+  {
+   "date": "2026-11-13",
+   "decision": "Round-4 blocking flow findings fixed under the author's delegation (fix-only pass). Spec fault: the reason for sellers and accounts last ('they hold the seller facts the others point to') contradicted 'each needs the one before'; thesis claim, how_why, p03 and the prose now give the journal spec's own reason (an agency's location precision and its branches' media and attribute duties build on the earlier models, which need only a seller's ID). Draft faults: KEY POINTS bullet 1 split into two lifecycle dimensions; p02 says why an offer keeps the aggregate small; p03 names what the category selects (attributes, fees and facets) and leads the media/location sentence with the GPS dependency; the Veldmark lead-in says the dates do not follow chapter order and marks May 2027 as the earliest. Minor findings also fixed: p03 says what media and location take from earlier chapters; the closing reuses the roadmap's reason for starting with listing-aggregate. length.max_words raised from 1,050 to 1,110 (5.7%) for the added clauses (page now 1,108 words).",
+   "rejected": [
+    "Cutting published Veldmark details or callout text to make room.",
+    "Softening the dependency principle instead of giving a reason that fits it."
+   ]
   }
  ],
  "sources": [
@@ -498,6 +506,10 @@
  ],
  "changelog": [
   {
+   "date": "2026-11-13",
+   "change": "Fix-only pass on round-4 draft-check findings: sellers-last reason, KEY POINTS split, offer-to-small-aggregate link, roadmap wording, Veldmark date note, closing reason; max_words 1,110. (AI-mediated session)"
+  },
+  {
    "date": "2026-11-12",
    "change": "Escalation resolved under the author's delegation: one term 'sellers and accounts'; bikes split glossed; Veldmark decisions labelled as chapter order; p03 antecedent fixed; max_words 1,050; open questions closed; draft check round 4. (AI-mediated session)"
   },
@@ -519,6 +531,6 @@
   }
  ],
  "length": {
-  "max_words": 1050
+  "max_words": 1110
  }
 }

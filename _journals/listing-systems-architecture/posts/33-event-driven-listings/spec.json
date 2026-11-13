@@ -7,7 +7,7 @@
   "part": "part-7",
   "title": "Every Change Is an Event: Event-Driven Listing Architecture",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the event-driven-listings entry in journal-spec.json. Four units are additions to the published text: the lead-ins to the trade-off table (p54) and the vertical table (p57), and the conclusion's synthesis (p68); p03 gains a roadmap sentence and p21 a gloss of 'tenant'. See decision_log.",
   "intent": {
     "outcome": {
@@ -288,7 +288,7 @@
       "paragraphs": [
         {
           "id": "p04",
-          "controlling_idea": "On 9 March 2027 Ingrid reads that Femke's €240 bike, sold on Monday for €225 through Safe Deal and removed from search a minute after it was marked sold, still appeared in Tuesday morning's alert digest, and three buyers messaged her.",
+          "controlling_idea": "On 9 March 2027 Ingrid reads that Femke's €240 bike, sold on Monday for €225 through Safe Deal and removed from search a minute after it was marked sold, still appeared in Tuesday morning's alert digest, and three buyers messaged her. The phishing account appears only later, in the replay table and p38, not as an aside here.",
           "function": "example",
           "organization": "narration",
           "evidence": [
@@ -489,10 +489,9 @@
           "function": "definition",
           "evidence": [
             {
-              "kind": "source",
-              "what": "Kafka order within a partition; Debezium's outbox router keys by aggregate ID, 'which preserves per-aggregate order'.",
-              "source": "Debezium documentation, n.d.",
-              "shows": "Grounds per-listing ordering in the documented behaviour of the tools."
+              "kind": "reasoning",
+              "what": "Kafka preserves order within a partition, so keying by listing ID gives per-listing order; no useful global order across listings.",
+              "shows": "Grounds per-listing ordering without relying on the outbox, which the next section introduces."
             },
             {
               "kind": "reasoning",
@@ -543,7 +542,7 @@
           "evidence": [
             {
               "kind": "figure",
-              "what": "Figure 2: one producer, one contract, many consumers; outbox, domain-event topic and compacted state topic.",
+              "what": "Figure 2: one producer, one contract, many consumers; outbox, domain-event topic and compacted state topic. The caption glosses the compacted state topic as keeping only each listing's latest state.",
               "shows": "Shows publication as part of the write and the state topic serving consumers built later."
             },
             {
@@ -602,6 +601,12 @@
               "kind": "example",
               "what": "ListingSold with a sale channel and price instead of status=4; the relay can publish a row twice; order holds when the relay keeps table order and keys by listing ID.",
               "shows": "Makes each property concrete for listing events."
+            },
+            {
+              "kind": "source",
+              "what": "Debezium's outbox router keys by aggregate ID, 'which preserves per-aggregate order'.",
+              "source": "Debezium documentation, n.d.",
+              "shows": "Shows a real relay keeping per-listing order."
             }
           ],
           "transition_in": {
@@ -738,7 +743,7 @@
         },
         {
           "id": "p25",
-          "controlling_idea": "Contract v1 defines twelve event types (pausing and resuming are one type) and keeps the list short on purpose, because every new type is a cost for every consumer.",
+          "controlling_idea": "Contract v1 defines twelve event types, one per table row, under thirteen names because pausing and resuming are one type emitted under either name, and keeps the list short on purpose, because every new type is a cost for every consumer.",
           "function": "description",
           "evidence": [
             {
@@ -958,7 +963,7 @@
         },
         {
           "id": "p31",
-          "controlling_idea": "The first decision accepts one contract with three publication paths (CDC into a translator for Tradeyard, an outbox for Motorvane, an outbox and a Pub/Sub bridge for Hearthly), because each brand reaches v1 differently in 2027, while Keybridge stays off the stream.",
+          "controlling_idea": "The first decision accepts one contract with three publication paths (CDC into a translator for Tradeyard, an outbox for Motorvane, an outbox and a Pub/Sub bridge for Hearthly), because each brand reaches v1 differently in 2027, while Keybridge stays off the stream. The lead says that three brands publish and the fourth, Keybridge, stays off the stream for a reason given after the table; the Keybridge row does not name the neutrality decision before p32 explains it.",
           "function": "description",
           "evidence": [
             {
@@ -1038,14 +1043,14 @@
         },
         {
           "id": "p35",
-          "controlling_idea": "The fourth decision uses Avro schemas in Confluent Schema Registry under FULL_TRANSITIVE compatibility on the events topic, with a one-clause reason (independent upgrades and replays), set against the other modes in the schema section.",
+          "controlling_idea": "The fourth decision uses Avro schemas in Confluent Schema Registry (the component that stores every schema version and rejects incompatible changes); the compatibility mode that completes the decision needs the registry's modes, so it is chosen in the schema section.",
           "function": "description",
           "evidence": [
             {
               "kind": "scenario",
-              "what": "Avro, Confluent Schema Registry, FULL_TRANSITIVE on listing.events.v1.",
+              "what": "Avro in Confluent Schema Registry on listing.events.v1; the mode is named in p42.",
               "source": "_research/scenario-ledger.md (Veldmark is fictional)",
-              "shows": "Names the compatibility rule the schema section justifies."
+              "shows": "Names the format and registry and points to the section that chooses the mode."
             }
           ],
           "transition_in": {
@@ -1103,7 +1108,7 @@
         },
         {
           "id": "p38",
-          "controlling_idea": "Versions 4 to 7 are Femke's edits, and the log also shows what the stream does not do: it does not detect the phishing message or decide the sold page's SEO treatment; it makes every such system hear the same facts in the same order.",
+          "controlling_idea": "After the table, versions 4 to 7 are named as Femke's edits and a photo reorder, and the log also shows what the stream does not do: it does not detect the phishing message (the account that messaged Femke, suspended Sunday 20:26, shown in the table) or decide the sold page's SEO treatment; it makes every such system hear the same facts in the same order.",
           "function": "analysis",
           "evidence": [
             {
@@ -1159,7 +1164,7 @@
       },
       "transition_in": {
         "relationship": "elaboration",
-        "carries_over": "The fourth design decision, FULL_TRANSITIVE compatibility, promised for this section.",
+        "carries_over": "The fourth design decision's second half, the compatibility mode, left for this section.",
         "introduces": "Why the contract needs it and how the schema changes over years.",
         "form": "sentence",
         "placement": "start_of_this"
@@ -1192,13 +1197,19 @@
         },
         {
           "id": "p42",
-          "controlling_idea": "A multi-brand listing stream needs full transitive compatibility because producers and consumers upgrade independently and replay old events, and in Avro that allows little beyond adding or removing optional fields with defaults, which is the point.",
+          "controlling_idea": "A multi-brand listing stream needs full transitive compatibility because producers and consumers upgrade independently and replay old events, so contract v1 sets FULL_TRANSITIVE on listing.events.v1, and in Avro that allows little beyond adding or removing optional fields with defaults, which is the point.",
           "function": "claim",
           "evidence": [
             {
               "kind": "reasoning",
               "what": "Any consumer, on any schema version, can read any event on the topic.",
               "shows": "Shows why independent upgrades and replay need both directions against all versions."
+            },
+            {
+              "kind": "scenario",
+              "what": "FULL_TRANSITIVE on listing.events.v1 in Confluent Schema Registry.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Completes the fourth decision of In Practice."
             }
           ],
           "transition_in": {
@@ -1281,7 +1292,7 @@
       "paragraphs": [
         {
           "id": "p46",
-          "controlling_idea": "A listing stream earns most of its value on bad days, when an index must be rebuilt, a new service bootstrapped or 300,000 wrong listings corrected, and each of these is a replay.",
+          "controlling_idea": "A contract must not only change safely but replay safely: a listing stream earns most of its value on bad days, when an index must be rebuilt, a new service bootstrapped or 300,000 wrong listings corrected, and each of these is a replay.",
           "function": "claim",
           "evidence": [
             {
@@ -1586,7 +1597,7 @@
         {
           "id": "p60",
           "form": "list",
-          "controlling_idea": "Nine failures recur: the forgotten publisher, consumers on producer tables, ordering broken by re-keying, the unversioned upsert, semantic drift, snapshot consumers, missed tombstones, personal data on the stream and the stream as a dumping ground, each with its control.",
+          "controlling_idea": "Nine failures recur: the forgotten publisher, consumers on producer tables, ordering broken by re-keying, the unversioned upsert, semantic drift, snapshot consumers, missed tombstones, personal data on the stream and the stream as a dumping ground, each with its control. The tombstone failure's weekly reconciliation (state topic key set against the system of record) is named as separate from the nightly read-model reconciliation.",
           "function": "explanation",
           "evidence": [
             {
@@ -1745,7 +1756,7 @@
         {
           "id": "p67",
           "form": "list",
-          "controlling_idea": "Ten questions test who emits each transition, how a commit becomes an event, keying, version-gated apply, consumers on producer tables, compatibility and semantic review, rebuilds, end-to-end removal latency, personal data on the stream, and artifacts delivered later than computed.",
+          "controlling_idea": "Ten questions test who emits each transition, how a commit becomes an event, keying, version-gated apply, consumers on producer tables, compatibility and semantic review, rebuilds, end-to-end removal latency, personal data on the stream, and artifacts delivered later than computed; the lead names which decisions (from who emits each event to how removals are measured).",
           "function": "recommendation"
         }
       ]
@@ -1754,7 +1765,7 @@
   "conclusion": {
     "heading": "From Events to Copies",
     "synthesis": "Reliable publication and safe consumption are two halves of one contract: the producer's half (one emitter, outbox or translator, key and version) makes every committed change one event in order, and the consumer's half (version-gated apply, state that heals, a separate backfill topic, a removal objective) makes sure no redelivery, replay or late batch undoes it; most listing incidents sit where one half is missing.",
-    "so_what": "A design with both halves catches the Sunday-peak, backfill and schema-change failures before buyers do, and lets a new consumer start without asking the producer.",
+    "so_what": "A design with both halves, under the schema rules, catches the Sunday-peak, backfill and schema-change failures before buyers do, and lets a new consumer start without asking the producer.",
     "callback": {
       "to": "The hook: one listing written once and read by ten or twenty systems, and the scene's bike that a digest featured after it sold.",
       "how": "The bike needed both halves: an event the digest heard, and a digest that re-checked state when it sent."
@@ -1924,6 +1935,54 @@
     {
       "date": "2026-11-12",
       "decision": "Modalities: none exists in the folder; left empty, accepted under the author's delegation, 2026-11-12; writing them stays a separate request."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Replay section opener: 'Its events must also replay safely' replaced by a sentence carrying over schema evolution ('A contract must not only change safely; its events must also replay safely'); p46 updated. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Phishing aside moved out of the scene (p04) into the replay table row and p38; no fact cut (20:26 suspension and the fraud-prevention link kept). Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Spec fault: Debezium outbox-router quote moved from p13 (Concepts) to p17 (outbox properties), so the outbox is not used before it is defined. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Figure 2 caption glosses the compacted state topic; the Kleinanzeigen sentence points back to Figure 2 instead of forward. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Spec fault: p25 states twelve types under thirteen names; the catalog lead explains the count. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Keybridge row no longer names the March 2027 neutrality decision before p32 explains it; the first-decision lead says three brands publish and Keybridge stays off. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Spec fault: FULL_TRANSITIVE moved from p35 (In Practice) to p42 (Schema Evolution), after the modes are defined; p35 names Avro and the registry and points forward; schema section transition updated. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "'Versions 4 to 7' note moved after the bike table, as p38 specifies. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Failure modes: weekly tombstone reconciliation distinguished from the nightly read-model check. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Intro roadmap sentence split; source list separated from stages. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Questions lead names the decisions it tests. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Conclusion so_what and prose: 'under the schema rules' added so schema-change failures are covered. Fixed under the author's delegation (fix-only pass)."
     }
   ],
   "sources": [
@@ -2022,6 +2081,10 @@
     {
       "date": "2026-11-12",
       "change": "Escalations resolved under the author's delegation: backfill version wording, event count (twelve), 20:26 example, digest timing, corroborated flow points, AC-2 source kinds; max_words 8,555. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on round-4 draft-check findings: 12 fixes (5 corroborated major flow findings, 3 spec-fault moves: Debezium quote to p17, FULL_TRANSITIVE to p42, catalog count wording; plus minors). No check round run; check-report.json is stale. (AI-mediated session)"
     }
   ],
   "length": {

@@ -6,7 +6,7 @@
   "part": "part-5",
   "title": "Who Is on the Other Side? Identity and Verification",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the identity-and-verification entry in journal-spec.json. Added for this post: the audience, supporting claims S1 to S6, AC-4 and AC-5 (minor), a roadmap sentence set in the introduction, a lead paragraph for Trade-offs and a synthesis and so-what in the conclusion.",
   "intent": {
     "outcome": {
@@ -1065,18 +1065,18 @@
         "supports": [
           "S6"
         ],
-        "how": "Answers the group question with the public Schibsted/Vend case, Veldmark ID's five rules and chosen option, and the rule that accounts are linked only after proof of control."
+        "how": "Answers the group question with the public Schibsted/Vend case, the four options and Veldmark's choice, its five rules, and the rule that accounts are linked only after proof of control."
       },
       "transition_in": {
         "relationship": "cause_effect",
-        "carries_over": "Claims, levels, authentication and proofing as parts a group could share.",
+        "carries_over": "Claims, levels, authentication and proofing as parts a group could build once and share.",
         "introduces": "Whether and how a group shares them, and the policies built on them.",
         "form": "sentence",
         "placement": "start_of_this"
       },
       "flow": {
         "pattern": "small_to_large",
-        "rationale": "The public case first (Schibsted's split and Vend), then its lesson, then Veldmark's rules and the option they select, then the pre-hijacking risk of linking the brands' existing accounts into the chosen design; the rules need the lesson, the option table needs the rules, and the linking risk needs the shared account it attacks."
+        "rationale": "The public case first (Schibsted's split and Vend), then its lesson, then the four options and the one Veldmark chose, then the five rules that make the chosen option cheap to cut, then the pre-hijacking risk of linking the brands' existing accounts into the chosen design; the options need the lesson, the rules need the chosen option, and the linking risk needs the shared account it attacks. (Options before rules since 2026-11-13: both round-4 flow readers met the rules before the options they select from.)"
       },
       "paragraphs": [
         {
@@ -1132,9 +1132,28 @@
           }
         },
         {
+          "id": "p47",
+          "controlling_idea": "Because a private-equity owner may sell any brand, Veldmark weighed four group identity options and chose shared identity with brand profiles and pairwise identifiers, the only one that shares authentication, recovery, verification and bans while staying separable, passing through a federation broker for Hearthly.es.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Per-brand identity, shared identity and profile, shared identity with brand profiles and pairwise IDs, federation broker: what users see, gains, costs, when right.",
+              "shows": "Only the third option shares authentication, recovery, verification and bans while staying separable."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A group identity as a bet on the group's shape.",
+            "introduces": "Veldmark's brief to make the cut cheap, the four options a group can choose among, and the one Veldmark chose.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p46",
           "form": "list",
-          "controlling_idea": "Because a private-equity owner may sell any brand, Veldmark ID was designed to be cut, under five rules the forum adopted in June 2027.",
+          "controlling_idea": "The chosen option is made cheap to cut by five rules the forum adopted in June 2027.",
           "function": "recommendation",
           "evidence": [
             {
@@ -1142,25 +1161,6 @@
               "what": "One account with brand profiles; pairwise identifiers; controller per brand, processor for the group; separable by export; Keybridge staying outside (March 2027 commitment).",
               "source": "_research/scenario-ledger.md (Veldmark is fictional)",
               "shows": "Each rule makes a later sale cheaper."
-            }
-          ],
-          "transition_in": {
-            "relationship": "cause_effect",
-            "carries_over": "A group identity as a bet on the group's shape.",
-            "introduces": "Veldmark's design for a shape that may change.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p47",
-          "controlling_idea": "Of four group identity options, Veldmark chose shared identity with brand profiles and pairwise identifiers, passing through a federation broker for Hearthly.es.",
-          "function": "comparison",
-          "evidence": [
-            {
-              "kind": "table",
-              "what": "Per-brand identity, shared identity and profile, shared identity with brand profiles and pairwise IDs, federation broker: what users see, gains, costs, when right.",
-              "shows": "Only the third option shares authentication, recovery, verification and bans while staying separable."
             },
             {
               "kind": "figure",
@@ -1170,8 +1170,8 @@
           ],
           "transition_in": {
             "relationship": "elaboration",
-            "carries_over": "The five rules.",
-            "introduces": "The options they were chosen against and the migration path.",
+            "carries_over": "The chosen option (shared identity with brand profiles and pairwise identifiers).",
+            "introduces": "The five rules inside it that make a sale cheap.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1707,7 +1707,8 @@
   "open_questions": [
     "EUDI Wallet relying-party fees and per-country availability in Veldmark's markets are not yet known (as of October 2026); revisit when wallets launch. (Carried over from spec.md.)",
     "The exact date of the Art. 5f(2) private-relying-party obligation is inferred from the implementing acts' entry into force; confirm when the Commission publishes guidance. (Carried over from spec.md.)",
-    "Whether Spain's or France's national eID schemes can serve Hearthly's L4 checks at acceptable cost was not researched. (Carried over from spec.md.)"
+    "Whether Spain's or France's national eID schemes can serve Hearthly's L4 checks at acceptable cost was not researched. (Carried over from spec.md.)",
+    "Round-4 minor (spec fault, not fixed): readers meet the receiver-of-sensitive-data principle first in Vertical Differences; consider preparing it earlier in a later revision."
   ],
   "decision_log": [
     {
@@ -1810,6 +1811,42 @@
     {
       "date": "2026-11-12",
       "decision": "Recorded, 2026-11-12: draft check ended ESCALATE at round 3 (20 pass, 16 fail); cheap fixes applied after it (group-section opener names 'these parts', duplicated vertical sentence cut, 'those decisions' before the questions, DMS glossed, two referents fixed, scene-table lead-in) are kept, and round 4 re-checks the draft."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-4 flow finding (spec fault, both flow readers): in-practice reordered so p47 (four options and the choice) precedes p46 (five rules); p47 now opens with the private-equity brief and a sentence reading the table; p46 opens by saying the rules make the chosen option cheap to cut; Figure 4 moved with the rules; transitions and section flow rewritten. Thesis, intent, role and acceptance criteria unchanged; AC-2's section order unaffected. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-4 transition and flow findings at in-practice ¶1: the opener now names claims, levels, authentication and proofing as parts a group could build once and share, and states the cause-effect link. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-4 evidence finding at p07: the lead-in to the scene table now reads it (each brand verifies something different; no brand re-checks a business). Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-4 evidence finding at p47: the lead-in to the option table says why only the third option fits. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-4 flow finding at p50: the prose now states why the forum approved a policy costing more than one ring's loss (the €71,000 excludes support and reputation cost; the old rules left the same open path for the next ring). No new figures. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-4 flow finding at p54: the 8 March Safe Deal sale (ledger, Rotterdam city bike) is now prepared ('The scam did not stop the sale') and the switch from the scammer to Femke's account is stated. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-4 minor findings also fixed: architecture opener drops 'therefore'; the link-holding rule is introduced as a rule of the level policy, not 'the new policy'; failure mode 1 marked as general; pre-hijacking transition unwound; the wallet's 36-month clock contrasted with the 24-month deadline; Schibsted 'longest-running public example' (unsourced superlative, AC-5) qualified to 'a well-documented public example'. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Left open: round-4 minor spec-fault finding at verticals p0 (receiver identity introduced late); it is minor, the spec places it there and moving it is not needed to clear a blocking finding. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "length.max_words raised from 8,100 to 8,400 (+3.7%, within the 10% allowance) to fit the glosses, table readings and stated reasons added by this pass; no published fact cut. Fixed under the author's delegation (fix-only pass)."
     }
   ],
   "sources": [
@@ -1866,6 +1903,10 @@
   ],
   "changelog": [
     {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on the round-4 blocking findings under the author's delegation: in-practice reordered (options and choice before rules), group-section opener, two table readings, Barcelona approval reason, Femke sale prepared, minor fixes; check report stale. (AI-mediated session)"
+    },
+    {
       "date": "2026-11-12",
       "change": "Resolved the round-3 escalations under the author's delegation: pre-hijacking subsection moved into the group identity section; Architecture opening sentence; DAC7 paragraph tied to the minimization rule; minor fixes; max_words 8,100. (AI-mediated session)"
     },
@@ -1919,6 +1960,6 @@
     }
   ],
   "length": {
-    "max_words": 8100
+    "max_words": 8400
   }
 }

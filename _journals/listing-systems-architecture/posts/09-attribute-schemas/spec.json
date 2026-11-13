@@ -7,7 +7,7 @@
   "part": "part-2",
   "title": "Attributes Without Chaos: Schemas, Dictionaries and Validation",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-20), which it replaces. Intent outcome, the three acceptance criteria, the thesis and the role are copied unchanged from the attribute-schemas entry in journal-spec.json. Two changes to the published text are specified: a roadmap paragraph in the introduction (p04, for AC-2) and a synthesis paragraph before the hand-off in the conclusion (p85).",
   "intent": {
     "outcome": {
@@ -215,7 +215,7 @@
       },
       {
         "id": "p03",
-        "controlling_idea": "Preventing the Junkyard takes a contract, and this chapter gives attributes one (dictionary, category schema, storage model, validation and governance) one layer below the category, which decides which schema applies but does not define it, without forcing one storage model on every brand; ingestion, enrichment and search then depend on that contract.",
+        "controlling_idea": "Preventing the Junkyard takes a contract, and this chapter gives attributes one (dictionary, category schema, storage model, validation and governance) without forcing one storage model on every brand; stated first, the contract is then placed one layer below the category, which decides which schema applies but does not define it, and ingestion, enrichment and search depend on it.",
         "function": "claim",
         "transition_in": {
           "relationship": "problem_solution",
@@ -372,12 +372,12 @@
         {
           "id": "p10",
           "form": "list",
-          "controlling_idea": "The three layers are the attribute definition, the category schema that binds definitions to a category and the attribute value with its provenance, each with its own owner and rate of change; the dictionary that collects definitions and reference data complete the vocabulary.",
+          "controlling_idea": "The three layers are the attribute definition, the category schema that binds definitions to a category and the attribute value with its provenance, each with its own owner and rate of change; listed after them, the dictionary that collects definitions and reference data are supporting terms that complete the vocabulary.",
           "function": "definition",
           "evidence": [
             {
               "kind": "table",
-              "what": "The layer table: question, typical owner, rate of change and example for definition, schema, reference data and value.",
+              "what": "The layer table: question, typical owner, rate of change and example for definition, schema, value and reference data (the dictionary has no row because it is the collection of the definitions).",
               "shows": "Each layer has a different owner and changes at a different rate, so they cannot be one structure."
             }
           ]
@@ -745,7 +745,7 @@
       "paragraphs": [
         {
           "id": "p42",
-          "controlling_idea": "Enumerations do not scale to thousands of hierarchical, aliased and supplied values, which are reference data with their own service and governance, coming from suppliers, regulation or curation.",
+          "controlling_idea": "Enumerations do not scale to thousands of hierarchical, aliased and supplied values, which are reference data with their own service and governance, coming from suppliers, regulation or curation; the section takes them by vertical: cars (supplier trees, plus regulation for new cars), property (regulation) and brands (curation).",
           "function": "definition"
         },
         {
@@ -814,7 +814,7 @@
           "transition_in": {
             "relationship": "additional_support",
             "carries_over": "The Essen Golf, where supplier data shapes vehicle attributes.",
-            "introduces": "Regulation, which shapes vehicle attributes too: the German new-car labeling rules.",
+            "introduces": "Regulation, the second source for cars after supplier trees: the German new-car labeling rules.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1280,7 +1280,7 @@
           ],
           "transition_in": {
             "relationship": "elaboration",
-            "carries_over": "The compiler's inbound feed mappings from partner standards, the one output that faces partners.",
+            "carries_over": "The compiler's inbound feed mappings, which translate what partners send into dictionary attributes: the one output that faces partners.",
             "introduces": "The vocabularies partners bring: inbound feed standards.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -1530,12 +1530,12 @@
         },
         {
           "id": "p71",
-          "controlling_idea": "Step 6 brought Motorvane and Hearthly into the dictionary without moving their storage, and search typing followed the dictionary too.",
+          "controlling_idea": "Step 6 brought Motorvane and Hearthly into the dictionary without moving their storage; both now validate with the compiled schemas.",
           "function": "process",
           "evidence": [
             {
               "kind": "case",
-              "what": "Motorvane's 212 vehicle attributes in vehicle.*; Hearthly's property.* with DPE companions and a separate Spanish certificate; typed index fields for about 610 of Tradeyard's original keys.",
+              "what": "Motorvane's 212 vehicle attributes in vehicle.*; Hearthly's property.* with DPE companions and a separate Spanish certificate.",
               "shows": "The dictionary is shared while storage stays per brand.",
               "source": "scenario-ledger.md"
             }
@@ -1549,12 +1549,32 @@
           }
         },
         {
+          "id": "p71a",
+          "controlling_idea": "Search typing followed the dictionary too: the first group schema version gave typed index fields only to canonical attributes with facet, filter or sort purposes, which replace about 610 of Tradeyard's 3,900 original keys; everything else sits in a flattened field.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "First group schema version: typed index fields for the canonical attributes that replace about 610 of Tradeyard's 3,900 keys; the rest in a flattened field.",
+              "shows": "Search reads the dictionary's purposes instead of every key a country ever created.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The brands' attributes, now validated by the compiled schemas.",
+            "introduces": "The search index, which followed the dictionary too.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p72",
           "controlling_idea": "Step 7 put governance on a clock: a reviewed new attribute is live in two working days, stewardship is federated, and the core changes only by decision record.",
           "function": "process",
           "transition_in": {
             "relationship": "sequence",
-            "carries_over": "The brands joining.",
+            "carries_over": "The brands joining and search typing following the dictionary.",
             "introduces": "The governance that keeps the result.",
             "form": "phrase",
             "placement": "start_of_this"
@@ -2030,6 +2050,41 @@
       "rejected": [
         "Cutting published text to make room."
       ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p71 split into p71 (Motorvane and Hearthly join without moving storage) and p71a (search typing followed the dictionary), each with one controlling idea; p72's transition updated. Fixed under the author's delegation (fix-only pass).",
+      "rejected": [
+        "One unifying controlling idea for both: the readers saw two ideas, and the search fact is not about the brands."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p03 reordered so the contract comes first and the cross-references follow it; no reference cut. Fixed under the author's delegation (fix-only pass).",
+      "rejected": [
+        "Moving cross-references out of the introduction (would cut published links)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p10 list reordered: the three layers first, then the dictionary and reference data marked as supporting terms; lead sentence says why the table has no dictionary row. Fixed under the author's delegation (fix-only pass).",
+      "rejected": [
+        "Adding a dictionary row to the table (would invent an owner and rate of change)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Reference-data section keeps its order (p48 after the Golf); p42 now announces the by-vertical grouping and p48 opens as the second source for cars, so the cars-then-property-then-brands order is stated before it is followed. Fixed under the author's delegation (fix-only pass).",
+      "rejected": [
+        "Moving p48 after the general rules or into the property group (the flow rationale keeps cars together)."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p57 opening reworded from 'faces outward: the inbound feed mappings' to 'faces partners', with a gloss of what an inbound mapping does; p71a's '610' sentence names what 610 counts (original keys); VIN decoding glossed on first use in the scene. Fixed under the author's delegation (fix-only pass).",
+      "rejected": [
+        "Expanding the VIN with its length or standard (a new real-world claim)."
+      ]
     }
   ],
   "sources": [
@@ -2136,6 +2191,10 @@
     {
       "date": "2026-11-12",
       "change": "Escalation resolved under the author's delegation: feed standards moved to the schema-service section, p69 merged into the bikes-split step, Steps 4 and 5 swapped into date order, open questions closed into the decision log, max_words 9,300. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on the round-5 blocking findings under the author's delegation: p71 split into p71 and p71a, p03, p10, p42, p48 and p57 reworded in spec and prose, VIN glossed. (AI-mediated session)"
     }
   ],
   "length": {

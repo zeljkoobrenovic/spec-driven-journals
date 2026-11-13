@@ -7,7 +7,7 @@
   "part": "part-4",
   "title": "Search Architecture for Listings: Indices, Freshness and Scale",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the search-architecture entry in journal-spec.json. Units added by this conversion: a roadmap paragraph in the introduction (p04), a paragraph introducing the Trade-offs table, and a synthesis paragraph before the hand-off.",
   "intent": {
     "outcome": {
@@ -415,7 +415,7 @@
       "paragraphs": [
         {
           "id": "p09",
-          "controlling_idea": "A search document is one listing denormalized and shaped for queries, and an index is a named set of documents with one mapping and one layout of shards and replicas.",
+          "controlling_idea": "The first two terms name the unit and the set that holds it: a search document is one listing denormalized and shaped for queries, and an index is the named set of such documents with one mapping and one layout of shards and replicas.",
           "function": "definition"
         },
         {
@@ -528,7 +528,7 @@
         },
         {
           "id": "p17",
-          "controlling_idea": "The search contract is the API product applications call in marketplace terms, translated by engine adapters, which Vinted credits with letting it change engines without changing product applications.",
+          "controlling_idea": "The search contract is the API product applications call in marketplace terms, translated by engine adapters, which Vinted credits with letting it change engines without changing product applications; Vespa is glossed on first use as a search engine not built on Lucene, the library under Elasticsearch, OpenSearch and Solr.",
           "function": "definition",
           "evidence": [
             {
@@ -971,7 +971,7 @@
         },
         {
           "id": "p34",
-          "controlling_idea": "Every refresh costs merges and, in Solr, cold caches, so high-traffic sites lengthen the interval and must buy freshness elsewhere, with in-place updates or a read-path recheck.",
+          "controlling_idea": "Every refresh costs merges and, in Solr, cold caches, so high-traffic sites lengthen the interval and must buy freshness elsewhere, with an engine that changes a field in memory without rewriting the document (which Lucene-based engines cannot do, explained under update storms) or a read-path recheck.",
           "function": "analysis",
           "evidence": [
             {
@@ -1474,12 +1474,12 @@
         {
           "id": "p55",
           "form": "list",
-          "controlling_idea": "Vinted's 'Search Scaling' series is the most useful public record of a listing search estate evolving over a decade; it gathers in order the steps earlier sections used one at a time and adds only what they left out, from re-sharding in 2017 to one Vespa deployment and a billion items.",
+          "controlling_idea": "Vinted's 'Search Scaling' series is the most useful public record of a listing search estate evolving over a decade; it gathers in order the four steps earlier sections used one at a time, opening each year with what is new and repeating in a clause the number an earlier section gave, from re-sharding in 2017 to one Vespa deployment and a billion items.",
           "function": "evidence",
           "evidence": [
             {
               "kind": "case",
-              "what": "2017 46 indices, re-sharding to ~2.5-3M documents per shard cut weekly slow queries from ~7M to under 200,000; 2021 Kafka Connect and browse-index cache hit ratios above 90%; 2023 delta jobs every seven minutes and week-long backfills replaced, items visible 'within a minute'; 2024 six clusters of 20 nodes to one Vespa deployment of 60 nodes, 5 s visibility, ~10,300 operations/s, ~20,000 requests/s under 150 ms p99, 200,000 ranking candidates; 2025 one billion items. Facts already given earlier (ten countries and hot nodes, offset versioning, the browse index's partitioning, CDC with Kafka and Flink, the 300-second refresh, 4.64 s) appear there only, with a pointer from the timeline.",
+              "what": "2017 re-sharding 46 indices to ~2.5-3M documents per shard cut weekly slow queries from ~7M to under 200,000 (the hot-nodes fix); 2021 browse-index cache hit ratios above 90%, Kafka Connect with offsets as versions; 2023 items visible 'within a minute', up from delta jobs every seven minutes and week-long backfills; 2024 six clusters of 20 nodes to one Vespa deployment of 60 nodes, visibility from the 300-second refresh to 5 s (Vinted's summary figure, related to the 4.64 s p99 Flink-to-Vespa figure under Measuring freshness), ~10,300 operations/s, ~20,000 requests/s under 150 ms p99, 200,000 ranking candidates; 2025 one billion items. Steps already given earlier (hot nodes, offset versioning, the browse index, CDC, the 300-second refresh) are restated in a clause with their number, after the new fact.",
               "shows": "Shows the order in which the hard problems arrived.",
               "source": "Vinted Engineering, 2017–2025"
             }
@@ -1494,7 +1494,7 @@
         },
         {
           "id": "p56",
-          "controlling_idea": "Vinted's before-and-after figures cannot be credited to the engine alone, because they combine engine, hardware and topology changes, and Vespa's benchmark is a vendor's.",
+          "controlling_idea": "Vinted's before-and-after figures cannot be credited to the engine alone, because they combine engine, hardware and topology changes, and Vespa's own published comparison with Elasticsearch is a vendor benchmark.",
           "function": "counterargument",
           "transition_in": {
             "relationship": "contrast",
@@ -2010,7 +2010,7 @@
     "paragraphs": [
       {
         "id": "p77",
-        "controlling_idea": "Ingrid's three questions have answers that name no engine: any index carries a listing-owned version, is built only from sourced data, removes on its own lane and is proved by a quarterly drill; the platform shares engine operations, indexer, contract and capacity; marketplaces keep schemas, analyzers and ranking; so the brown-out is prevented by how the index is run and the 2029 review becomes an adapter change.",
+        "controlling_idea": "Ingrid's three questions have answers that name no engine: any index carries a listing-owned version, is built only from sourced data, removes on its own lane and is proved by a quarterly drill; the platform shares engine operations, indexer, contract and capacity; marketplaces keep schemas, analyzers and ranking; so the brown-out is prevented by how the index is run and the 2029 review becomes an adapter change. The course of action follows: contract, sourced and versioned documents, a quarterly rebuild drill and a removal lane come before any engine change, which is then a workload decision tested with shadow traffic.",
         "function": "synthesis",
         "evidence": [
           {
@@ -2089,7 +2089,8 @@
     "No primary source was found for the search engines of OLX, Marktplaats, Kleinanzeigen, Idealista or AutoScout24; the engine table may grow when sources appear. (Carried over from spec.md.)",
     "Vinted's before-and-after figures mix engine, hardware and topology changes; a neutral engine comparison for listing workloads is not public. (Carried over from spec.md.)",
     "Whether the read-path status recheck should be part of the search contract or of each marketplace's hydration layer. (Carried over from spec.md.)",
-    "Thesis rubric (2026-11-12, fail) not acted on, because the thesis is copied from the journal spec and is the author's to change: the claim strings together the contents of S2-S6 and reads as a summary holding two theses (a throwaway read model; the engine as a replaceable adapter); the rubric suggests a one-sentence claim leaving the mechanisms to the supporting claims. how_why's first sentence repeats S1; S5 lists six items."
+    "Thesis rubric (2026-11-12, fail) not acted on, because the thesis is copied from the journal spec and is the author's to change: the claim strings together the contents of S2-S6 and reads as a summary holding two theses (a throwaway read model; the engine as a replaceable adapter); the rubric suggests a one-sentence claim leaving the mechanisms to the supporting claims. how_why's first sentence repeats S1; S5 lists six items.",
+    "Round-4 minor findings left: 'facets last' stated three times (p53/p57/p58), p69's Vinted facet-count fact new in a section that gathers earlier failures, and the licensing paragraph (p54) read as an aside; all minor, left for a later pass."
   ],
   "decision_log": [
     {
@@ -2174,6 +2175,38 @@
     {
       "date": "2026-11-12",
       "decision": "Word limit raised from 8,086 to 8,150 (+0.8%, within the 10% the delegation allows) for the pointers and announcement that resolve the round-3 escalation; no published fact was cut to make room."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p09: the bridge and the two definitions merged into one bold-led entry ('Search document and index') so the paragraph reads as one idea and the glossary start is visible; fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p17: Vespa glossed on first use as a search engine not built on Lucene, the library under Elasticsearch, OpenSearch and Solr (also places Lucene before the document section uses it); the forward pointer in p11 removed (added 2026-11-12); p37's gloss shortened to point back; fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p34: 'an engine that updates in place' replaced by what it means and why Lucene engines cannot do it, with a pointer to update storms; fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p24 table: 'external version' glossed in the cell; the undefined 'text path' replaced by 'kept out of the document in Lucene-based engines and joined at ranking time', the wording update storms uses; fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p55 (spec fault): the timeline now opens each year with what is new and repeats the earlier number in a clause (300-second refresh restated); the 5-second visibility tied to the 4.64-second Flink-to-Vespa p99 as Vinted's summary versus measured figure; spec controlling idea and evidence rewritten; fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p77: the takeaway stated as a course of action (contract, versioned sourced documents, quarterly rebuild drill and removal lane before any engine change) to clear AC-1; fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Minor reader findings also cleared: p56 benchmark introduced, p64 Yardstick extraction glossed, p66 Lyon example attributed, p67 failure list distinguished from the opening patterns; fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Word limit raised from 8,150 to 8,350 (+2.5%, within 10%) for the glosses and the stated takeaway; no published fact cut; fixed under the author's delegation (fix-only pass)."
     }
   ],
   "sources": [
@@ -2219,6 +2252,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on the round-4 blocking findings (p09, p17, p24, p34, p55, p77) and five minor ones; limit 8,350. (AI-mediated session)"
+    },
     {
       "date": "2026-11-12",
       "change": "Escalation resolved under the author's delegation: Vinted timeline cut to facts not given earlier, with pointers; Failure Modes announced honestly as failures touched on earlier; Vespa 'attribute fields' aside reworded; unsupported slow-tail explanation of the 15 s share removed; minor fixes (budget, option C, roadmap, capacity arithmetic). (AI-mediated session)"
@@ -2277,6 +2314,6 @@
     }
   ],
   "length": {
-    "max_words": 8150
+    "max_words": 8350
   }
 }

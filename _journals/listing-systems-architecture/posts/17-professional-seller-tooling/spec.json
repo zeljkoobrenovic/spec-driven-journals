@@ -7,7 +7,7 @@
   "part": "part-3",
   "title": "Serving the Pros: Dealer, Agent and Merchant Tooling",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the professional-seller-tooling entry in journal-spec.json; the conclusion realises Part III's closing (synthesis, so-what, takeaway) from the same file, and the hand-off uses Part IV's transition_in. Units added by this conversion: the roadmap paragraph p04 and two conclusion paragraphs (p67, p68).",
   "intent": {
     "outcome": {
@@ -502,7 +502,7 @@
       },
       "flow": {
         "pattern": "large_to_small",
-        "rationale": "The whole architecture and its pieces first, then each capability in the order of the professional's jobs (inventory, performance, leads, pricing, team), ending with the partner API, which exposes all of them. Putting the API first would describe an interface to capabilities not yet introduced."
+        "rationale": "The whole architecture and its pieces first, then each capability in the order of the professional's jobs (inventory, performance, leads, pricing, team), ending with the partner API, which exposes all of them. Putting the API first would describe an interface to capabilities not yet introduced. Consent to automated actions sits with the organization's settings, before the API, so the failure mode about platform-controlled states has a design to violate. The API's new callers, AI agents, close the section because they are callers of the API just described."
       },
       "paragraphs": [
         {
@@ -652,7 +652,7 @@
             {
               "kind": "source",
               "what": "Autotrader's 'Buying Signals' intent model built on 'verified but anonymised sales transactions and consumer interactions'.",
-              "shows": "Model outputs become part of what is exported and must be explainable."
+              "shows": "Once a lead carries a model's score, the score travels with the export and the marketplace must be able to say how it was computed."
             }
           ],
           "transition_in": {
@@ -719,6 +719,18 @@
           }
         },
         {
+          "id": "p29b",
+          "controlling_idea": "Consent to automated actions is a per-organization setting: a reserved flag, an automatic price suggestion or an AI agent answering buyers can be switched off and reversed, with a record of who changed it, whether the action comes from the workspace or a partner integration.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The organization as owner of listings, leads and permissions.",
+            "introduces": "The organization's consent to automated actions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p30",
           "controlling_idea": "For many professionals the marketplace's own UI is secondary, as the scale of leading portals' partner integrations shows.",
           "function": "evidence",
@@ -731,7 +743,7 @@
           ],
           "transition_in": {
             "relationship": "elaboration",
-            "carries_over": "Integrations as principals.",
+            "carries_over": "Integrations acting for the organization.",
             "introduces": "How much professionals work through them.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -752,6 +764,25 @@
             "relationship": "cause_effect",
             "carries_over": "Partner integrations at scale.",
             "introduces": "The author's judgement that the API is a product.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p64",
+          "controlling_idea": "As AI agents acting for professionals begin to call the pro API, scoped authorization, explainable outputs and audit trails matter more.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "As of 2026 Autotrader and OLX have shipped apps inside ChatGPT, Rightmove has submitted one, and mobile.de's call assistant answers buyers for dealers.",
+              "shows": "Agents already sit between professionals and portals."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The pro API as a product whose customers are software vendors.",
+            "introduces": "A new kind of caller from 2025-2026 on: AI agents acting for professionals.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1146,7 +1177,7 @@
           "transition_in": {
             "relationship": "additional_support",
             "carries_over": "Owning SaaS as a separate business.",
-            "introduces": "Its effect on a group exit.",
+            "introduces": "What it means when a group sells one of its businesses or keeps it while selling others.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1399,7 +1430,7 @@
       },
       "flow": {
         "pattern": "grouping",
-        "rationale": "What to decide, who decides, what to watch, then the change that raises the stakes; the measures make sense only after the decisions they monitor."
+        "rationale": "What to decide, who decides, then what to watch; the measures make sense only after the decisions they monitor."
       },
       "paragraphs": [
         {
@@ -1449,25 +1480,6 @@
             "carries_over": "Who decides.",
             "introduces": "What to watch.",
             "form": "phrase",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p64",
-          "controlling_idea": "As AI agents acting for professionals begin to call the pro API, scoped authorization, explainable outputs and audit trails matter more.",
-          "function": "analysis",
-          "evidence": [
-            {
-              "kind": "fact",
-              "what": "As of 2026 Autotrader and OLX have shipped apps inside ChatGPT, Rightmove has submitted one, and mobile.de's call assistant answers buyers for dealers.",
-              "shows": "Agents already sit between professionals and portals."
-            }
-          ],
-          "transition_in": {
-            "relationship": "time",
-            "carries_over": "Today's decisions and measures.",
-            "introduces": "How agents change the stakes from 2025-2026 on.",
-            "form": "sentence",
             "placement": "start_of_this"
           }
         }
@@ -1691,6 +1703,38 @@
     {
       "date": "2026-11-12",
       "decision": "Thesis-rubric notes (thesis copied from the journal spec) and the flow-rubric notes not taken (caption merges, p60/p61 merge, p56/p59 grounding, 'separate clouds') closed without change, keeping the published text; spec.md's unchecked modality boxes closed (no modality files exist). Accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p26: the Buying Signals example now states what it shows (a model score travels with the exported lead and must be explainable), and the turn from export records to model outputs is bridged. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p09: the productscape sentence split so the jobs are not separated from their subject by two qualifications. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p28: the forward reference to the P2B Regulation replaced by its one-clause gist (Article 9: who can see data business users generate, including aggregated). Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p51 (Table 5): the automotive cell now says what the Deal Builder pause was instead of pointing ahead to Failure Modes. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p49: opening sentence says plainly what a group exit means (selling one business or keeping it while selling others) and ties it to separate tenancy. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Spec fault: new paragraph p29b in Architecture (Team, branches and permissions) on per-organization consent to automated actions, so the failure mode p59 and review question 10 have a design behind them; p59 points back to it; p30's transition_in updated. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Spec fault: p64 (AI agents calling the pro API) moved from the end of The Chief Architect's View to the end of the partner API subsection, where it extends the API's callers; its transition_in and both sections' flow rationales rewritten. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "length.max_words raised from 7250 to 7600 (under 10%) for the added glosses and p29b. Fixed under the author's delegation (fix-only pass)."
     }
   ],
   "sources": [
@@ -1737,6 +1781,10 @@
   ],
   "changelog": [
     {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on the round-5 blocking findings: five draft-fault wording fixes, p29b added, p64 moved to the partner API subsection, max_words 7600. (AI-mediated session)"
+    },
+    {
       "date": "2026-11-12",
       "change": "Escalation resolved under the author's delegation: 'Pro SaaS and the neutrality problem' moved to open Neutrality by Design; Failure Modes opener; glosses for layer-2/layer-4 and the 90-second/10-second targets; minor fixes ('both clouds', AI-agents tie, Buying Signals, Valuo); max_words 7,123 to 7,250 (draft 7,173). Round 4 draft check follows."
     },
@@ -1782,6 +1830,6 @@
     }
   ],
   "length": {
-    "max_words": 7250
+    "max_words": 7600
   }
 }

@@ -7,7 +7,7 @@
   "part": "part-1",
   "title": "Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the chapter's entry in journal-spec.json. Two units were added to the published text: a roadmap paragraph (p03) and a synthesis paragraph in the conclusion (p56).",
   "intent": {
     "outcome": {
@@ -52,7 +52,7 @@
         "method": "cold_reader",
         "severity": "major",
         "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
-        "expected": "Veldmark's Portugal-versus-Netherlands question; two-sided markets, network effects and the liquidity cell; competing for liquidity (seeding, winner-take-most, multi-homing, disintermediation); the metric tree; Veldmark's cell analysis; metrics turned into requirements; trade-offs, vertical differences, failure modes and the Chief Architect's view. Evidence: dated public sources and research, and fictional Veldmark figures."
+        "expected": "Veldmark's Portugal-versus-Netherlands question; two-sided markets, network effects and the liquidity cell; competing for liquidity (seeding, multi-homing, winner-take-most, disintermediation); the metric tree; Veldmark's cell analysis; metrics turned into requirements; trade-offs, vertical differences, failure modes and the Chief Architect's view. Evidence: dated public sources and research, and fictional Veldmark figures."
       },
       {
         "id": "AC-3",
@@ -158,7 +158,7 @@
           ]
         },
         {
-          "promise": "How marketplaces compete for liquidity: seeding, winner-take-most, multi-homing and disintermediation.",
+          "promise": "How marketplaces compete for liquidity: seeding, multi-homing, winner-take-most and disintermediation.",
           "kept_in": [
             "competing"
           ]
@@ -346,9 +346,9 @@
       },
       "transition_in": {
         "relationship": "elaboration",
-        "carries_over": "The meeting's new question about which cells can become liquid.",
+        "carries_over": "The meeting's new question about which Portuguese cells can become liquid, restated by name after the heading.",
         "introduces": "The concepts behind it, starting with two-sided markets.",
-        "form": "phrase",
+        "form": "sentence",
         "placement": "start_of_this"
       },
       "flow": {
@@ -424,7 +424,7 @@
             {
               "kind": "quotation",
               "what": "The Productscape reference model of a general-listings marketplace (describes no real company): value is 'enough fresh, relevant supply in a given place and category'; 'success in one metro/category does not transfer automatically'; 'a perfect match 300 km away is useless to a pickup buyer'.",
-              "shows": "Corroborates the place-and-category part of the definition."
+              "shows": "Corroborates the place-and-category part of the definition; the reference model is introduced once, after the definition and before the three parts, so the third part only quotes it."
             },
             {
               "kind": "figure",
@@ -490,7 +490,7 @@
       },
       "flow": {
         "pattern": "chronological",
-        "rationale": "Follows a marketplace's life in a cell: getting started (seeding), leading (winner-take-most and its limits), then the two forces that cap a lead (multi-homing, disintermediation). Reversed, the limits would arrive before the dominance they limit."
+        "rationale": "Follows a marketplace's life in a cell: getting started (seeding), the non-exclusive market it then competes in (multi-homing and its consequence), leading (winner-take-most and its limits), then the deals that leave the platform (disintermediation). Multi-homing is defined before winner-take-most because the mechanism of dominance uses it; reversed, the limits would arrive before the dominance they limit."
       },
       "paragraphs": [
         {
@@ -526,85 +526,6 @@
           }
         },
         {
-          "id": "p17",
-          "form": "list",
-          "controlling_idea": "Once a marketplace leads a country and vertical its lead tends to widen, and vertical portals document that dominance each in its own measure.",
-          "function": "evidence",
-          "evidence": [
-            {
-              "kind": "statistic",
-              "what": "Rightmove 89% of time (Comscore) vs 75% (SimilarWeb, Data.ai, SensorTower) in December 2025; Autotrader 11x time vs nearest competitor; REA 6.3M exclusive of 12.7M; Hemnet about 90% of property sold.",
-              "source": "Rightmove 2026; Autotrader FY26; REA FY26; Hemnet, read 2026",
-              "shows": "Documents winner-take-most and shows that the panel must be named because measures differ by 14 points."
-            }
-          ],
-          "transition_in": {
-            "relationship": "time",
-            "carries_over": "A cell that has become liquid.",
-            "introduces": "What happens after a marketplace leads: the lead widens.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p18",
-          "controlling_idea": "The mechanism is local cross-side effects plus an asymmetry in multi-homing (glossed here, defined below), which lets the leader capture a disproportionate share of attention, and attention turns listings into leads.",
-          "function": "explanation",
-          "transition_in": {
-            "relationship": "cause_effect",
-            "carries_over": "The dominance figures.",
-            "introduces": "The mechanism that produces them.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p19",
-          "controlling_idea": "Gurley's marketplace factors explain why these markets tip, and fragmented professionals cannot easily coordinate against a leading portal.",
-          "function": "evidence",
-          "evidence": [
-            {
-              "kind": "quotation",
-              "what": "'High buyer and supplier fragmentation is a huge positive'; frequency 'obviously better'; 'network effects are rare but golden'.",
-              "source": "Bill Gurley, 2012",
-              "shows": "Explains why listing markets tip toward one leader."
-            }
-          ],
-          "transition_in": {
-            "relationship": "additional_support",
-            "carries_over": "The mechanism.",
-            "introduces": "A practitioner's account of why such markets tip.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p20",
-          "controlling_idea": "Dominance has documented limits: a leader's share of attention protects it from buyers leaving, not from suppliers paying less or listing elsewhere.",
-          "function": "counterargument",
-          "evidence": [
-            {
-              "kind": "fact",
-              "what": "Autotrader forecourts fell 0.5% (1.7% in H2), partly attributed to Deal Builder roll-out concerns; the stock lever subtracted £48 from ARPR.",
-              "source": "Autotrader FY26 results, 2026",
-              "shows": "Shows suppliers reducing what they pay without leaving."
-            },
-            {
-              "kind": "fact",
-              "what": "Hemnet announced free entry-level formats on 29 September 2026 after net sales fell 23.1%; the cause is undocumented and any supply-moving reading is labeled an inference.",
-              "source": "Hemnet investor page, read 2026",
-              "shows": "Shows a leader acting on supply, with the inference labeled."
-            }
-          ],
-          "transition_in": {
-            "relationship": "contrast",
-            "carries_over": "Why leads widen.",
-            "introduces": "Where dominance stops protecting the leader.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
           "id": "p21",
           "form": "list",
           "controlling_idea": "Multi-homing, taking part in several competing platforms at once, is asymmetric: professionals do it cheaply, buyers do it at first and then concentrate, and private sellers do it occasionally.",
@@ -624,9 +545,9 @@
             }
           ],
           "transition_in": {
-            "relationship": "elaboration",
-            "carries_over": "The multi-homing asymmetry named as part of the mechanism and the suppliers' room to list elsewhere.",
-            "introduces": "Its definition and three forms.",
+            "relationship": "cause_effect",
+            "carries_over": "Keeping a liquid cell after seeding.",
+            "introduces": "Why that is hard: neither side belongs to one platform (multi-homing), its definition and three forms.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -640,13 +561,92 @@
               "kind": "quotation",
               "what": "NFX: multi-tenanting occurs with 'low costs or no costs' and can 'harm the defensibility of a network ... but only up to a point'; a16z lists 'prevalence of multi-tenanting' as a defensibility metric.",
               "source": "NFX 2019/2024; a16z, 2020",
-              "shows": "Supports multi-homing as a limit on network-effect defensibility."
+              "shows": "Supports multi-homing as a limit on network-effect defensibility; the text says multi-tenanting is NFX's and a16z's name for multi-homing and that the more suppliers list elsewhere, the more the defence must come from the platform's own systems."
             }
           ],
           "transition_in": {
             "relationship": "cause_effect",
-            "carries_over": "Multi-homing's forms.",
-            "introduces": "Its architecture consequence.",
+            "carries_over": "Multi-homing's forms, above all supply that multi-homes.",
+            "introduces": "Its architecture consequence, and NFX's and a16z's name for it (multi-tenanting).",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "form": "list",
+          "controlling_idea": "Once a marketplace leads a country and vertical its lead tends to widen, and vertical portals document that dominance each in its own measure.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Rightmove 89% of time (Comscore) vs 75% (SimilarWeb, Data.ai, SensorTower) in December 2025; Autotrader 11x time vs nearest competitor; REA 6.3M exclusive of 12.7M; Hemnet about 90% of property sold.",
+              "source": "Rightmove 2026; Autotrader FY26; REA FY26; Hemnet, read 2026",
+              "shows": "Documents winner-take-most and shows that the panel must be named because measures differ by 14 points."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Non-exclusive supply.",
+            "introduces": "A leader pulls ahead anyway: the lead widens, and vertical portals document it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "The mechanism is local cross-side effects plus the multi-homing asymmetry defined above (professionals list everywhere, buyers concentrate), which lets the leader capture a disproportionate share of attention, and attention turns listings into leads.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The dominance figures.",
+            "introduces": "The mechanism that produces them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Gurley's marketplace factors name the conditions under which that mechanism tips a market to one leader: fragmented professionals cannot easily coordinate against a leading portal.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'High buyer and supplier fragmentation is a huge positive'; frequency 'obviously better'; 'network effects are rare but golden'.",
+              "source": "Bill Gurley, 2012",
+              "shows": "Explains why listing markets tip toward one leader."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The mechanism.",
+            "introduces": "The market conditions under which it tips a market, from a practitioner's list.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Dominance has documented limits: a leader's share of attention protects it from buyers leaving, not from suppliers paying less or listing elsewhere.",
+          "function": "counterargument",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Autotrader forecourts fell 0.5% (1.7% in H2), partly attributed to Deal Builder roll-out concerns; the stock lever (the paid vehicles retailers advertise) subtracted £48 from average revenue per retailer.",
+              "source": "Autotrader FY26 results, 2026",
+              "shows": "Shows suppliers reducing what they pay without leaving."
+            },
+            {
+              "kind": "fact",
+              "what": "Hemnet announced free entry-level formats on 29 September 2026 after net sales fell 23.1%; Hemnet has not said why, and the reading that supply was shifting elsewhere is labeled this book's inference.",
+              "source": "Hemnet investor page, read 2026",
+              "shows": "Shows a leader acting on supply, with the inference labeled."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Why leads widen.",
+            "introduces": "Where dominance stops protecting the leader.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -658,7 +658,7 @@
           "function": "definition",
           "transition_in": {
             "relationship": "additional_support",
-            "carries_over": "Supply that leaves to other platforms.",
+            "carries_over": "Suppliers listing elsewhere (multi-homing, and p20's closing limit).",
             "introduces": "Deals that leave the platform after the match.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -858,14 +858,14 @@
       "paragraphs": [
         {
           "id": "p32",
-          "controlling_idea": "Priya's team defined a liquid cell by thresholds on listings, searches and time to first contact and keyed cells by region and leaf category; the definition was a judgement, valuable because it was applied the same way everywhere.",
+          "controlling_idea": "Back at Veldmark, this is the full cell analysis whose result the scene gave: the liquid cell used the scene's three minimums (not restated) and keyed cells by region and leaf category; the definition was a judgement, valuable because it was applied the same way everywhere.",
           "function": "definition",
           "evidence": [
             {
               "kind": "table",
               "what": "NL 1,420 leaf categories, 17,040 cells, 38% liquid, 86% of listings in them; PT 760, 15,200, 11%, 52%; 64% in Lisbon and Porto.",
               "source": "scenario-ledger.md",
-              "shows": "Gives the cell-level evidence the scene summarized."
+              "shows": "Gives the full cell table behind the scene's summary; the text and Figure 3's caption say it is the same analysis, so the 38% against 11% reads as a reprise, not a new result."
             },
             {
               "kind": "figure",
@@ -944,7 +944,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "Sold Monday 8 March for €225 via Safe Deal 'pay at pickup', marked sold 18:10, removed from search 18:11, still in the evening digest the next morning.",
+              "what": "Sold Monday 8 March for €225 via Safe Deal 'pay at pickup', marked sold 18:10, removed from search 18:11; the digest had been built that evening from a snapshot taken before the sale and was not rechecked at send time, so the next morning's digest still featured the bike; per cell the same gap repeats for every listing sold between a digest's snapshot and its sending.",
               "source": "scenario-ledger.md, worked example 1",
               "shows": "Shows a sold listing still reaching buyers through alerts."
             }
@@ -1041,7 +1041,7 @@
               "kind": "fact",
               "what": "Rightmove's busiest minute was 8:48 pm on a Wednesday during a prime-time ad break.",
               "source": "Google Cloud, 2021",
-              "shows": "The documented public example of a predictable peak; Veldmark's Sunday peak is labeled an illustration."
+              "shows": "The documented public example of a predictable peak; Veldmark's Sunday peak is labeled an illustration right after the peak figure, before the incident, so the incident and its cost (p40) read without a break."
             }
           ],
           "transition_in": {
@@ -1059,7 +1059,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "Nearly 10,000 queries/s on Tradeyard NL at peak (31,000 x 70% x 45% = about 9,800); about 3.4 million failed requests; about 9,800 fewer first contacts.",
+              "what": "Nearly 10,000 queries/s on Tradeyard NL at peak, derivation shown in the text (31,000 x about 70% = roughly 21,700 on Tradeyard, x about 45% = about 9,800); about 3.4 million failed requests; about 9,800 fewer first contacts.",
               "source": "scenario-ledger.md, [reliability-and-scale] line",
               "shows": "Translates an incident into a liquidity cost."
             }
@@ -1087,7 +1087,7 @@
       },
       "transition_in": {
         "relationship": "contrast",
-        "carries_over": "Requirements that follow from the metrics.",
+        "carries_over": "The brown-out estimate, which depended on how a first contact was counted, and the requirements that follow from the metrics.",
         "introduces": "The choices that decide how the metrics are measured in the first place.",
         "form": "sentence",
         "placement": "end_of_previous"
@@ -1121,7 +1121,7 @@
       },
       "transition_in": {
         "relationship": "elaboration",
-        "carries_over": "The trade-offs, whose answers depend on the vertical.",
+        "carries_over": "The sold signal and most trade-off rows, whose answers depend on the vertical.",
         "introduces": "How cells and the other liquidity dimensions differ by vertical.",
         "form": "sentence",
         "placement": "end_of_previous"
@@ -1160,8 +1160,8 @@
       },
       "transition_in": {
         "relationship": "contrast",
-        "carries_over": "How the metrics should differ by vertical.",
-        "introduces": "How they go wrong.",
+        "carries_over": "How cells, windows and success events differ by vertical.",
+        "introduces": "How the metrics go wrong in the same ways in every vertical.",
         "form": "phrase",
         "placement": "start_of_this"
       },
@@ -1326,7 +1326,7 @@
         },
         {
           "id": "p53",
-          "controlling_idea": "Multi-homing is a given, so investment goes to what it cannot copy, and neutrality commitments protect the trust that keeps professionals using the group's tools.",
+          "controlling_idea": "Multi-homing is a given, so investment goes to what it cannot copy, and neutrality commitments (Veldmark's commitment that Hearthly does not use Keybridge agency data for ranking or sales targeting, glossed at first use) protect the trust that keeps professionals using the group's tools.",
           "function": "recommendation",
           "transition_in": {
             "relationship": "sequence",
@@ -1425,7 +1425,7 @@
     ]
   },
   "length": {
-    "max_words": 7200
+    "max_words": 7600
   },
   "non_goals": [
     {
@@ -1480,6 +1480,28 @@
   "modalities": [],
   "open_questions": [],
   "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Spec fault (round 4, both flow readers): multi-homing was used as the dominance mechanism before it was defined. Moved p21 and p22 (Multi-homing subsection) before p17 (Winner-take-most); rewrote transitions of p21, p22, p17, p19 and p23, p18's controlling idea (defined above), the section flow rationale and the roadmap promise order (seeding, multi-homing, winner-take-most, disintermediation); fixed under the author's delegation (fix-only pass).",
+      "rejected": [
+        "Moving only the definition list p21 and leaving p22 after p20, which would separate the consequence from its cause."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Spec fault (round 4): p32 restated the scene's liquid-cell thresholds and result as if new. p32 now opens 'Back at Veldmark' as the full analysis behind the scene's result and points to the scene's three minimums instead of restating them (they stay in p07); Figure 3's caption says it is the scene's result again; fixed under the author's delegation (fix-only pass).",
+      "rejected": [
+        "Removing the 38%/11% row or caption figures, which would cut published figures."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Draft faults (round 4) fixed in wording: concepts opening names the question; Scout24 statistic moved after the concept and tied to the negative buyer-side effect; reference model introduced after the definition, not inside the third bullet; p22 opens on the cause-effect, says multi-tenanting is NFX's and a16z's name for multi-homing and states what the a16z metric shows; Gurley paragraph says it names the conditions under which the mechanism tips; Autotrader stock lever split and glossed; Hemnet inference stated as this book's reading; HBR sentence qualified as 'according to published summaries'; OLX sentence split; bike digest built from a pre-sale snapshot and not rechecked (ledger worked example 1 and [listing-aggregate]/[editor] lines), per-cell stream explained; p38 opening split; Rightmove disclaimer moved before the incident; peak derivation shown (31,000 x 70% = about 21,700, x 45% = nearly 10,000); trade-offs signpost now follows from the estimate; failure-modes opening contrasts the verticals; Keybridge neutrality glossed (ledger Mar 2027 commitment); minor: Figure 1 caption glosses paid visibility, Rightmove figures split, vertical bridge, conclusion 'So' replaced; fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "max_words raised from 7,200 to 7,600 (under 10%) to make room for the glosses and pointers; nothing published was cut; fixed under the author's delegation (fix-only pass)."
+    },
     {
       "date": "2026-11-12",
       "decision": "Peak arithmetic ruled by the orchestrator's rule 3: the ledger's liquidity line (about 9,000 queries/s) contradicts its own search line (31,000 peak x 70% Tradeyard x 45% NL = about 9,800) and the reliability line (NL peak about 10,000 expected). The text now says 'nearly 10,000 queries per second at the peak'; p37 evidence updated. Ledger not edited; reported as a ledger ruling.",
@@ -1634,6 +1656,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on the round-4 blocking findings under the author's delegation: Multi-homing moved before Winner-take-most, p32 reframed as the scene's analysis in full, wording fixes across sections 1, 2, 4, 5, 8 and 9, max_words 7,600. Check report now stale; no new check round."
+    },
     {
       "date": "2026-11-12",
       "change": "Escalation resolved under the author's delegation: peak figure corrected to nearly 10,000 queries/s; scene states the liquid-cell minimums; reference model introduced; OLX paragraph under its own subheading; brand glosses at first use; max_words 7,200; open questions closed."

@@ -42,7 +42,7 @@ The chapter moves from six AI requests at Veldmark, the terms and where AI has s
 
 ## Setting the Scene at Veldmark: Six AI Requests in One Quarter
 
-Veldmark shows what treating output as a proposal means. By **November 2027**, Noor Hassan, Veldmark's Group Chief Product Officer, has six AI proposals on her desk, each from a different team and each with a vendor demo behind it.
+At Veldmark that claim first arrives as a question, posed six times; the worked example later in the chapter answers it for one assistant. By **November 2027**, Noor Hassan, Veldmark's Group Chief Product Officer, has six AI proposals on her desk, each from a different team and each with a vendor demo behind it.
 
 1. **Tradeyard** wants a photo-to-listing assistant: a private seller takes photos and the app proposes category, attributes, title, description and price. Tradeyard publishes about **2.3 million** new listings a week, **78%** from private sellers, and its insertion flow is its biggest conversion funnel.
 2. **Hearthly** wants conversational search in France and Spain ("three rooms near a metro, under €400,000, quiet street") and an app inside a third-party AI assistant.
@@ -128,7 +128,7 @@ These checks enforce four boundaries:
 
 ### Five steps before the seller confirms
 
-Tradeyard's assistant, the control layer applied, was approved for a pilot on **Monday 15 November 2027**: Tradeyard Netherlands, iOS first, goods categories only, excluding vehicles, property, jobs and services, for 5% of private sellers. The exclusions follow the documented sequence at eBay and Kleinanzeigen and Tradeyard's own constraint: vehicles need decoded vehicle data, not photos, and property needs addresses and mandatory disclosures.
+Tradeyard's assistant shows the control layer applied. It was approved for a pilot on **Monday 15 November 2027**: Tradeyard Netherlands, iOS first, goods categories only, excluding vehicles, property, jobs and services, for 5% of private sellers. The exclusions follow the documented sequence at eBay and Kleinanzeigen and Tradeyard's own constraint: vehicles need decoded vehicle data, not photos, and property needs addresses and mandatory disclosures.
 
 It depends on two Common Ground capabilities that went live just before it: the **group taxonomy and attribute service** (October 2027), which publishes the category tree and each category's attribute schema as machine-readable reference data, and the **shared trust-and-safety platform** for Tradeyard Netherlands and Belgium (November 2027). Without the first, the model would have nothing to compile into; without the second, nothing would check what it produced.
 
@@ -274,7 +274,7 @@ Faithfulness, whether the output is supported by the input, deserves its own met
 
 ## Regulation: The EU AI Act for Marketplaces
 
-Cost and evaluation are controls Veldmark chooses; the law adds controls it must have. The EU Artificial Intelligence Act (Regulation (EU) 2024/1689) applies in phases, and the Digital Omnibus on AI, published as Regulation (EU) 2026/1744 on 24 July 2026, moved some of them ([European Parliament Legislative Train, updated September 2026](https://www.europarl.europa.eu/legislative-train/theme-a-europe-fit-for-the-digital-age/file-digital-omnibus-on-ai); [implementation timeline, updated August 2026](https://artificialintelligenceact.eu/implementation-timeline/)). The law as it stood when this book was checked, in October 2026 (the book's research date, not a date in the Veldmark story):
+Cost and evaluation are controls Veldmark chooses; the law adds controls it must have. The EU Artificial Intelligence Act (Regulation (EU) 2024/1689) applies in phases, and the Digital Omnibus on AI, published as Regulation (EU) 2026/1744 on 24 July 2026, moved some of them ([European Parliament Legislative Train, updated September 2026](https://www.europarl.europa.eu/legislative-train/theme-a-europe-fit-for-the-digital-age/file-digital-omnibus-on-ai); [implementation timeline, updated August 2026](https://artificialintelligenceact.eu/implementation-timeline/)). The table gives the law as it stood when this book was checked, in October 2026. The Veldmark story runs from November 2027 to February 2028, so in the story the first three dates have passed and the high-risk date of 2 December 2027 falls between Noor's six requests and the pilot's widening in January 2028:
 
 | Obligation | Applies from | Marketplace relevance |
 | --- | --- | --- |
@@ -284,7 +284,7 @@ Cost and evaluation are controls Veldmark chooses; the law adds controls it must
 | High-risk obligations for stand-alone Annex III systems | 2 December 2027 | Candidate selection and job-ad targeting; creditworthiness of natural persons |
 | High-risk systems embedded in regulated products | 2 August 2028 | Rarely relevant to listings |
 
-Annex III point 4(a) lists AI systems "intended to be used for the recruitment or selection of natural persons", in particular "to place targeted job advertisements, to analyse and filter job applications, and to evaluate candidates" ([AI Act, Annex III](https://artificialintelligenceact.eu/annex/3/)). Any jobs marketplace that ranks candidates or targets job ads with AI is in scope, and so is Tradeyard's small jobs section in Poland and Portugal if it builds such features. Point 5(b) covers creditworthiness evaluation of natural persons, which matters if a valuation or affordability model feeds a lender's decision (see [[ml-platform]]). So Lucía's answer: as proposed, none of the six requests is high-risk, and the Article 50 transparency duties in the table above reach every one that generates content or talks to people.
+Annex III point 4(a) lists AI systems "intended to be used for the recruitment or selection of natural persons", in particular "to place targeted job advertisements, to analyse and filter job applications, and to evaluate candidates" ([AI Act, Annex III](https://artificialintelligenceact.eu/annex/3/)). Any jobs marketplace that ranks candidates or targets job ads with AI is in scope, and so is Tradeyard's small jobs section in Poland and Portugal if it builds such features. Point 5(b) covers creditworthiness evaluation of natural persons, which matters if a valuation or affordability model feeds a lender's decision (see [[ml-platform]]). So Lucía's answer, which still holds after 2 December 2027: as proposed, none of the six requests is high-risk, and the Article 50 transparency duties in the table above reach every one that generates content or talks to people.
 
 Article 50's marking duty applies to providers of systems that generate synthetic text, images, audio or video, with an exception for systems that only assist standard editing or do not substantially alter the input ([AI Act, Article 50](https://artificialintelligenceact.eu/article/50/)). Whether a marketplace that builds a listing assistant on a third-party model is a provider of that system, and whether a seller-confirmed description falls under the exception, are questions for counsel. Veldmark's architectural answer is not to depend on the answer: assisted descriptions and AI-edited images carry machine-readable provenance metadata and a visible label from launch, and every conversational surface says it is an AI assistant.
 
@@ -363,7 +363,7 @@ Questions for reviewing any AI feature:
 6. Which evaluation sets guard each feature, in which languages and categories, and do they run on every prompt and model change?
 7. Which brands expose search to external assistants, what data do the tools return, and how are leads from that channel attributed and protected?
 8. What is our crawler and licensing policy per brand, and is it a decision or a default?
-9. Which of our AI uses are covered by Article 50 of the AI Act, and which could become high-risk from 2 December 2027, especially in jobs and credit-adjacent uses?
+9. Which of our AI uses are covered by Article 50 of the AI Act, and which are, or could become, high-risk under the obligations that apply from 2 December 2027, especially in jobs and credit-adjacent uses?
 10. Which data may we send to which model provider, and where is that rule enforced?
 
 ## From AI to the Long View

@@ -7,7 +7,7 @@
   "part": "part-3",
   "title": "Many Doors In: Forms, APIs and Bulk Feeds",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the listing-ingestion entry in journal-spec.json. Units added by this conversion: a roadmap paragraph in the introduction (p04), a split of the two key-design rules into p24 and p25, lead-in paragraphs for the trade-off table (p46) and the vertical table (p48), and a synthesis paragraph (p70) before the hand-off. After the flow rubric, the one-sentence 'Four lessons recur' paragraph was merged into p15 (no p16) and the insertion-flow metric (p36) moved before the architectural list (p35).",
   "intent": {
     "outcome": {
@@ -120,7 +120,7 @@
         "applies_to": "in-practice: the design is run on Motorvane's volumes and the Essen Golf, then on Hearthly's vendors"
       }
     ],
-    "rationale": "The scene poses the problem as three incidents and Ingrid's three-part question. The concepts give the words the answer needs (channels, where the truth lives, snapshot and delta, the contract), and the public contracts show that operators already wrote those clauses down, so the architecture can be presented as the design that enforces them. In practice tests the design on real volumes and shows a removal deadline nobody chose; trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions are judgements about a design the reader has already seen. Moving the architecture before the concepts would use snapshot, delta and the contract before they are defined; moving the public contracts after the architecture would present evidence for decisions already taken; moving the Golf before the architecture would show components the reader cannot yet name."
+    "rationale": "The scene poses the problem as three incidents and Ingrid's three-part question. The concepts give the words the answer needs (channels, where the truth lives, snapshot and delta, the contract), and the public contracts show that operators already wrote those clauses down, so the architecture can be presented as the design that enforces them. In practice tests the design on real volumes and shows a removal deadline nobody chose; trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions are judgements about a design the reader has already seen. Moving the architecture before the concepts would use snapshot, delta and the contract before they are defined; moving the public contracts after the architecture would present evidence for decisions already taken; moving the Golf before the architecture would show components the reader cannot yet name. Vertical differences follow the trade-offs because they show how the same trade-offs land in each vertical, once the reader has seen the options."
   },
   "introduction": {
     "hook": {
@@ -901,45 +901,6 @@
           }
         },
         {
-          "id": "p34",
-          "controlling_idea": "The insertion flow is a conversion funnel in which every step that asks a casual seller for something they lack loses supply.",
-          "function": "context",
-          "evidence": [
-            {
-              "kind": "source",
-              "what": "Productscape seller-journey pains: forced account creation, mobile uploads over weak connections, a rejection 'with an unclear reason'.",
-              "source": "Productscape domain models, n.d.",
-              "shows": "Where the funnel loses sellers."
-            }
-          ],
-          "transition_in": {
-            "relationship": "contrast",
-            "carries_over": "The partner records and the machinery around them.",
-            "introduces": "The first door in the channel table, the human one, on the same path.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p36",
-          "controlling_idea": "The funnel metric that matters is published-and-contacted, not form completion, because asking for less can move the problem downstream.",
-          "function": "recommendation",
-          "evidence": [
-            {
-              "kind": "example",
-              "what": "Tradeyard measures start-to-publish rate and first contact within 48 hours side by side.",
-              "shows": "Two measures together catch a faster but emptier funnel."
-            }
-          ],
-          "transition_in": {
-            "relationship": "elaboration",
-            "carries_over": "The insertion flow as a funnel.",
-            "introduces": "The funnel metric that matters.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
           "id": "p35",
           "form": "list",
           "controlling_idea": "Architecturally the insertion flow is a channel like the others: drafts are listing state, the category selects the schema, the form uses the same validator and command gateway, and assistance only suggests values whose provenance is recorded.",
@@ -960,8 +921,47 @@
           ],
           "transition_in": {
             "relationship": "contrast",
-            "carries_over": "The funnel view and its metric.",
-            "introduces": "The same flow seen as a channel.",
+            "carries_over": "The partner records and the machinery around them.",
+            "introduces": "The first door in the channel table, the human one, as a channel like the others on the same path.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "The insertion flow is a conversion funnel in which every step that asks a casual seller for something they lack loses supply.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Productscape seller-journey pains: forced account creation, mobile uploads over weak connections, a rejection 'with an unclear reason'.",
+              "source": "Productscape domain models, n.d.",
+              "shows": "Where the funnel loses sellers."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The insertion flow as a channel like the others.",
+            "introduces": "The same flow seen as the product team sees it: a conversion funnel.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "The funnel metric that matters is published-and-contacted, not form completion, because asking for less can move the problem downstream.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Tradeyard measures start-to-publish rate and first contact within 48 hours side by side.",
+              "shows": "Two measures together catch a faster but emptier funnel."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The insertion flow as a funnel.",
+            "introduces": "The funnel metric that matters.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1126,18 +1126,37 @@
               "what": "160 vendors, 36,500 agencies in France and Spain; 40 / 90 / 30 vendor classes; Casavista's importer since 2025.",
               "source": "scenario-ledger.md, listing-ingestion line",
               "shows": "Contract compliance varies by vendor, so the contract must be explicit and measured."
-            },
-            {
-              "kind": "case",
-              "what": "Two real-estate software vendors and Keybridge supplied the Lyon apartment's three listings in May 2027.",
-              "source": "scenario-ledger.md, Lyon apartment",
-              "shows": "One property reaches Hearthly through several vendors."
             }
           ],
           "transition_in": {
             "relationship": "contrast",
             "carries_over": "Motorvane's depth of volume through few vendors.",
             "introduces": "Hearthly's breadth of vendors.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44a",
+          "controlling_idea": "Run through the write path, Hearthly's ghosts are a contract gap: a vendor that never sends deletes is a delta channel without its correction, so scheduled reconciliation through the mass-change guard applies, while the Lyon apartment's three listings come from three sellers, which ingestion keeps apart and entity resolution clusters.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The scheduled-reconciliation and one-seller-two-doors rules from the architecture section applied to Hearthly's vendors that never send deletes.",
+              "shows": "The design answers Hearthly's ghost problem without a new mechanism."
+            },
+            {
+              "kind": "case",
+              "what": "Two real-estate software vendors and Keybridge supplied the Lyon apartment's three listings in May 2027.",
+              "source": "scenario-ledger.md, Lyon apartment",
+              "shows": "One property reaches Hearthly through several vendors and agencies; ingestion keeps three sellers' listings apart and entity resolution clusters them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Hearthly's vendor classes, including those that never send deletes.",
+            "introduces": "The design run on Hearthly's ghosts and on the Lyon apartment.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1864,6 +1883,46 @@
     {
       "date": "2026-11-12",
       "decision": "Thesis-rubric notes (claim length, missing general reason in how_why) and the remaining flow-rubric notes not taken (change detection paragraph, gloss of reconciler and error catalog, cutting the 23 leads, the breaking-change rule in architecture, citing public contracts in the key paragraphs, merging p34 and p36, so-what in the synthesis, the five neighbor pointers, 'Common Ground review'): accepted as is under the author's delegation, 2026-11-12; the thesis stays as copied from the journal spec."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p10: opening sentence now links back to channels whose truth lives outside ('A partner sends that outside truth in one of two ways'). fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p31: opening sentence now refers to the changes a run computes, holds or applies before stating that partners experience a marketplace through its error reports. fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p32: opening sentence links errors flowing back to load flowing in. fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p39: Golf run table no longer uses the external key as the request idempotency key; the Submit command carries the external key plus a request idempotency key, matching the three-keys table. fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p14: Productscape glossed as the author's domain model before its measures, and the reason the merger ruling matters (partners can send stock elsewhere) stated before the ruling. fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p44: the Lyon apartment glossed on use (68 m² flat in Lyon 7e, see meet-veldmark) and moved, with its evidence, into the new p44a. fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Spec fault (roadmap promises a test on Hearthly's vendors): p44 split; new p44a runs the design on Hearthly's ghosts (scheduled reconciliation through the mass-change guard) and on the Lyon apartment (three sellers kept apart, clustered by entity resolution). fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Spec fault (insertion-flow subsection read as out of place in Architecture): p35 (a channel like the others) moved before p34 and p36, transitions of p35 and p34 rewritten. fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Minor findings also fixed: 'Motorvane's own Seller API' in p37; flow rationale states why Vertical Differences follows Trade-offs. fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Raised length.max_words from 8,700 to 8,850 (1.7%, within the 10% allowance) to pay for p44a and the transition glosses (draft at 8,749 by check_draft.py); fixed under the author's delegation (fix-only pass)."
     }
   ],
   "sources": [
@@ -1904,6 +1963,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on round-4 blocking findings: transitions in p10, p31, p32; Golf table key fixed; p14 reordered; Lyon apartment glossed; p44 split into p44/p44a; p35 moved before p34/p36. (AI-mediated session)"
+    },
     {
       "date": "2026-11-12",
       "change": "Escalation resolved under the author's delegation: p45 moved to the Chief Architect's View, p25a (same-seller merge) and p51a (failure-modes lead) added, round-3 draft faults fixed, insertion flow and DSA placement kept, max_words 8,460 to 8,700. Draft check round 4 follows. (AI-mediated session)"
@@ -1962,6 +2025,6 @@
     }
   ],
   "length": {
-    "max_words": 8700
+    "max_words": 8850
   }
 }

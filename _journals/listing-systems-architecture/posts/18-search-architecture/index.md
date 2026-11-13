@@ -52,11 +52,11 @@ When Ingrid Halvorsen joined as Group Chief Architect in February 2027, the sear
 
 ## Concepts: What a Listing Search Layer Is
 
-Ingrid's questions need precise terms. **Search document.** The denormalized representation of one listing in the index, assembled from several sources and shaped for queries, not for writes. An **index** (Solr: collection) is a named set of documents with one mapping and one layout of shards and replicas.
+**Search document and index.** Ingrid's questions need precise terms, and the first two name the unit the index holds and the set that holds it. A search document is the denormalized representation of one listing, assembled from several sources and shaped for queries, not for writes; an index (Solr: collection) is the named set of such documents, with one mapping and one layout of shards and replicas.
 
 **Index alias.** A stable name that points at one or more physical indices. Clients read and write through the alias, so the physical index behind it can be replaced. In Elasticsearch, removing and adding an alias target in one request is atomic: the alias "never points to both" targets during the swap ([Elastic documentation, n.d.](https://www.elastic.co/docs/manage-data/data-store/aliases)).
 
-**Browse query and text query.** A browse query is filters with no free text: category, location, price, attributes, sort. A text query adds keywords. Unlike web or retail search, listing search is dominated by browse traffic over short-lived, often unique items written by millions of non-professional sellers. Vinted, whose engineering blog is the most detailed public record of a listing search estate and this chapter's main public case (its steps are gathered in order under Choosing an Engine), split "browsing queries (filters without search text)" onto a dedicated index with no analyzed text fields in 2021, because they behaved differently from text search ([Vinted Engineering, 2021](https://vinted.engineering/2021/12/14/divide-and-conquer/)).
+**Browse query and text query.** A browse query is filters with no free text: category, location, price, attributes, sort. A text query adds keywords. Unlike web or retail search, listing search is dominated by browse traffic over short-lived, often unique items written by millions of non-professional sellers. Vinted, whose engineering blog is the most detailed public record of a listing search estate and this chapter's main public case, split "browsing queries (filters without search text)" onto a dedicated index with no analyzed text fields in 2021, because they behaved differently from text search ([Vinted Engineering, 2021](https://vinted.engineering/2021/12/14/divide-and-conquer/)).
 
 **Filtering versus scoring.** A filter decides whether a document matches, contributes no score and can be cached as a bit set. Scoring orders the matches. Listing queries are mostly filters, which stay cheap and cacheable until a per-user element enters them.
 
@@ -68,7 +68,7 @@ Ingrid's questions need precise terms. **Search document.** The denormalized rep
 
 **Reindexing.** Rebuilding an index's documents, usually into a new physical index with a new mapping, then switching readers to it. It is needed for mapping changes, analyzer changes, shard-count changes and engine upgrades. In Elasticsearch, `number_of_shards` "can only be set at index creation time" ([Elastic documentation, n.d.](https://www.elastic.co/docs/reference/elasticsearch/index-settings/index-modules)), so even a capacity change can mean a reindex.
 
-**Search contract.** The API that product applications use to search, expressed in marketplace terms (category, attribute keys, geo, sort keys, ranking profile) rather than engine terms. Engine adapters translate it. Vinted's 2024 account of its Vespa migration credits a "search contract" in a Go gateway with letting the engine change without changing product applications ([Vinted Engineering, 2024](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/)).
+**Search contract.** The API that product applications use to search, expressed in marketplace terms (category, attribute keys, geo, sort keys, ranking profile) rather than engine terms. Engine adapters translate it. Vinted's 2024 account of its migration to Vespa, a search engine not built on Lucene, the library underneath Elasticsearch, OpenSearch and Solr (the engine section compares them), credits a "search contract" in a Go gateway with letting the engine change without changing product applications ([Vinted Engineering, 2024](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/)).
 
 ## Architecture: The Index as a Rebuildable Read Model
 
@@ -103,7 +103,7 @@ The design decision is how to group the fields by source and change rate, not th
 
 | Field group | Examples | Source | Change rate | Index treatment |
 | --- | --- | --- | --- | --- |
-| Identity and version | listing ID, seller ID, sequence number | System of record | Every change | Keyword; sequence used as external version (see the write path) |
+| Identity and version | listing ID, seller ID, sequence number | System of record | Every change | Keyword; the sequence is written as the document's version, so the engine rejects older writes (external versioning; see the write path) |
 | Lifecycle | status, published, bumped and expiry timestamps | System of record | Low, but critical | Keyword and date; status is a filter on every query |
 | Taxonomy | category path at each level, taxonomy version | Taxonomy service (see [[categories-and-taxonomies]]) | Low; bulk on migrations | Keyword per level |
 | Filterable attributes | frame size, make, model, year, mileage, rooms, energy class | Attribute schema (see [[attribute-schemas]]) | Low | **Typed fields** for attributes used as filters, facets or sort |
@@ -111,7 +111,7 @@ The design decision is how to group the fields by source and change rate, not th
 | Price | amount, currency, normalized value, price band | System of record | Medium; bulk from dealers | Numeric plus pre-computed band keyword |
 | Location | point, administrative area IDs, precision level | Geocoding (see [[location-and-geo]]) | Low | Geo point plus keyword area IDs |
 | Text | title and description per language | Seller input, translations | Low | Analyzed per language |
-| Ranking features | quality score, seller reputation, engagement aggregates | Feature pipelines | **High** | Kept off the text path; see update storms |
+| Ranking features | quality score, seller reputation, engagement aggregates | Feature pipelines | **High** | Kept out of the document in Lucene-based engines and joined at ranking time; see update storms |
 | Monetization flags | promoted, bump timestamp, product tier | Entitlements (see [[products-and-entitlements]]) | Medium; bursty | Separately updatable fields |
 | Embeddings | image or text vectors | ML enrichment | Low | Vector field, if hybrid retrieval is used (see [[query-understanding]]) |
 
@@ -157,7 +157,7 @@ Belgium shows why a multilingual country needs language fields, not language ind
 
 In Lucene-based engines, a document becomes searchable when a **refresh** (Elasticsearch and OpenSearch) or a **soft commit** (Solr) opens a new view of the index segments. Elasticsearch refreshes every second by default, but only for indices that received a search in the previous 30 seconds ([Elastic documentation, n.d.](https://www.elastic.co/docs/manage-data/data-store/near-real-time-search)). Solr's guidance is to choose "as long an interval as your application can tolerate" for soft commits, often 15–60 seconds, and to consider disabling caches when the interval is very short ([Apache Solr Reference Guide, n.d.](https://solr.apache.org/guide/solr/latest/configuration-guide/commits-transaction-logs.html)).
 
-The trade-off is direct: every refresh creates segments to merge and, in Solr, a new searcher with cold caches. Vinted ran Elasticsearch with a 300-second refresh interval before its 2024 move to Vespa, which shows how far a high-traffic site may push the interval to protect query performance. Freshness then has to be bought elsewhere: with an engine that updates in place, or with a read-path recheck for the fields that matter.
+The trade-off is direct: every refresh creates segments to merge and, in Solr, a new searcher with cold caches. Vinted ran Elasticsearch with a 300-second refresh interval before its 2024 move to Vespa, which shows how far a high-traffic site may push the interval to protect query performance. Freshness then has to be bought elsewhere: with an engine that changes a field in memory without rewriting the whole document, which Lucene-based engines cannot do (Update storms below explains why), or with a read-path recheck for the fields that matter.
 
 ### Ordering and idempotency
 
@@ -167,7 +167,7 @@ A delete is a write and needs a version too. If the indexer processes a late "pr
 
 ### Update storms
 
-Listing documents change for reasons unrelated to their text. A dealer group cuts prices on 4,000 cars at 09:00. A seller is suspended and every one of their 900 listings must disappear. A paid bump campaign starts. A seller's rating changes. In Lucene-based engines, Elastic documents that the update API gets the document, applies the change and indexes the result ([Elastic documentation, n.d.](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-update)). Because Lucene segments are immutable, a partial update is a full re-index of that document, plus merge pressure later. Vespa, an engine outside the Lucene family that the engine section returns to, avoids this for fields it keeps in memory by updating them in place; its documentation names "real-time inventory and price changes" and feeding click or view counts into ranking as typical uses ([Vespa documentation, n.d.](https://docs.vespa.ai/en/partial-updates.html)).
+Listing documents change for reasons unrelated to their text. A dealer group cuts prices on 4,000 cars at 09:00. A seller is suspended and every one of their 900 listings must disappear. A paid bump campaign starts. A seller's rating changes. In Lucene-based engines, Elastic documents that the update API gets the document, applies the change and indexes the result ([Elastic documentation, n.d.](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-update)). Because Lucene segments are immutable, a partial update is a full re-index of that document, plus merge pressure later. Vespa, the non-Lucene engine named in the Concepts section, avoids this for fields it keeps in memory by updating them in place; its documentation names "real-time inventory and price changes" and feeding click or view counts into ranking as typical uses ([Vespa documentation, n.d.](https://docs.vespa.ai/en/partial-updates.html)).
 
 Whatever the engine, five mitigations recur. They are my design recommendations drawn from this evidence, not a documented recipe from one company.
 
@@ -270,15 +270,15 @@ Licensing no longer separates Elasticsearch from OpenSearch: both are now availa
 
 ### Vinted's migration: the best-documented case
 
-Vinted's numbered "Search Scaling" series is the most useful public record of a listing search estate evolving over a decade. Earlier sections used several of its steps; here they are in order, with what those sections left out.
+Vinted's numbered "Search Scaling" series is the most useful public record of a listing search estate evolving over a decade. Earlier sections used four of its steps one at a time. The list puts them in order, opens each year with what is new and repeats in a clause the number an earlier section gave.
 
-- **2017.** The hot nodes under Index Topology came from one Elasticsearch cluster with 46 indices; re-sharding to about 2.5–3 million documents per shard cut weekly slow queries from about 7 million to under 200,000 ([Vinted Engineering, 2017](https://vinted.engineering/2017/06/05/sharding-out-elasticsearch/)).
-- **2021.** Kafka Connect wrote the offset-versioned documents described under the Write Path ([Vinted Engineering, 2021](https://vinted.engineering/2021/01/12/elasticsearch-indexing-pipeline/)), and the text-free browse index from the Concepts section reached cache hit ratios above 90% ([Vinted Engineering, 2021](https://vinted.engineering/2021/12/14/divide-and-conquer/)).
-- **2023.** The change-data-capture pipeline described under Architecture replaced delta jobs every seven minutes, with week-long backfills; new items became visible "within a minute" ([Vinted Engineering, 2023](https://vinted.engineering/2023/09/25/search-indexing-pipeline/)).
-- **2024.** Six Elasticsearch clusters of 20 data nodes became one Vespa deployment of 60 content nodes. Visibility of changes fell to 5 seconds from the refresh interval described under the Write Path, the feed carried about 10,300 update or remove operations per second, peak load was about 20,000 requests per second under 150 ms p99, and ranking depth rose to 200,000 candidates. Vinted contributed Lucene analyzers to Vespa so language analysis carried over ([Vinted Engineering, 2024](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/)).
+- **2017.** Re-sharding one Elasticsearch cluster of 46 indices to about 2.5–3 million documents per shard cut weekly slow queries from about 7 million to under 200,000; this was the fix for the hot nodes under Index Topology ([Vinted Engineering, 2017](https://vinted.engineering/2017/06/05/sharding-out-elasticsearch/)).
+- **2021.** The text-free browse index from the Concepts section reached cache hit ratios above 90% ([Vinted Engineering, 2021](https://vinted.engineering/2021/12/14/divide-and-conquer/)). Kafka Connect wrote the documents, with Kafka offsets as their versions, the scheme whose repartitioning problem the Write Path describes ([Vinted Engineering, 2021](https://vinted.engineering/2021/01/12/elasticsearch-indexing-pipeline/)).
+- **2023.** New items became visible "within a minute", up from delta jobs every seven minutes with week-long backfills, once the change-data-capture pipeline described under Architecture replaced them ([Vinted Engineering, 2023](https://vinted.engineering/2023/09/25/search-indexing-pipeline/)).
+- **2024.** Six Elasticsearch clusters of 20 data nodes became one Vespa deployment of 60 content nodes. Visibility of changes fell from the 300-second refresh interval to 5 seconds, Vinted's summary figure; its measured p99 from Flink to Vespa is the 4.64 seconds quoted under Measuring freshness, the feed carried about 10,300 update or remove operations per second, peak load was about 20,000 requests per second under 150 ms p99, and ranking depth rose to 200,000 candidates. Vinted contributed Lucene analyzers to Vespa so language analysis carried over ([Vinted Engineering, 2024](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/)).
 - **2025.** The index passed one billion searchable items, up from about 100 million in late 2019 ([Vinted Engineering, 2025](https://vinted.engineering/2025/01/10/1-billion-items-in-search/)).
 
-Vinted's before-and-after figures cannot be credited to the engine alone: they combine an engine change with a hardware change (from 0.5 TB SSD to 3 TB NVMe) and a topology change (from six clusters to one). Vespa's own 2024 benchmark against Elasticsearch is a vendor benchmark.
+Vinted's before-and-after figures cannot be credited to the engine alone: they combine an engine change with a hardware change (from 0.5 TB SSD to 3 TB NVMe) and a topology change (from six clusters to one). Vespa has also published its own 2024 comparison with Elasticsearch, but that is a vendor benchmark.
 
 What the series does show is the order in which the hard problems arrived: shard sizing, update ordering, workload separation, freshness, then one engine for lexical, vector and structured retrieval. Facets were the last workload Vinted moved.
 
@@ -317,7 +317,7 @@ The Rotterdam bike shows what the new write path is meant to buy. Femke's listin
 
 Removal gets a tighter target: **10 seconds p95** for sold, removed and taken-down listings, on a priority lane. On the old platform, when the bike sold on 8 March, removal from search took one minute, 18:10 to 18:11. Yet the alert digest that buyers received the next morning still featured the bike, and that copy belongs to [[saved-searches-and-alerts]]. That is the point of measuring removal across every copy, not only the index.
 
-The migration order follows risk. Tradeyard Portugal, the smallest market, moves first in the second quarter of 2028, behind the contract, with shadow traffic for four weeks. Tradeyard Poland follows, then Belgium and the Netherlands, timed with Yardstick's search extraction in the fourth quarter of 2028. Hearthly moves last. Analyzer parity is the explicit migration risk: Vinted had to bring its Lucene analyzers into Vespa, and Tradeyard's Solr analyzers for Dutch and French carry fifteen years of tuned synonyms and stopwords. Every analyzer is ported with a test set of real queries whose tokens must match before and after.
+The migration order follows risk. Tradeyard Portugal, the smallest market, moves first in the second quarter of 2028, behind the contract, with shadow traffic for four weeks. Tradeyard Poland follows, then Belgium and the Netherlands, timed with the move of search out of Yardstick, Tradeyard's monolith, in the fourth quarter of 2028. Hearthly moves last. Analyzer parity is the explicit migration risk: Vinted had to bring its Lucene analyzers into Vespa, and Tradeyard's Solr analyzers for Dutch and French carry fifteen years of tuned synonyms and stopwords. Every analyzer is ported with a test set of real queries whose tokens must match before and after.
 
 ## Trade-offs
 
@@ -345,11 +345,11 @@ No choice in this chapter is right everywhere. The table states when each option
 | Freshness emphasis | Insertion and removal both | Removal of let or sold homes; new listings for alerts | Removal after sale; feeds often lag | Expiry |
 | Geo | Radius around the buyer | Polygon and map dominate (see [[map-search]]) | Radius with delivery options | Commute |
 
-Veldmark's decision puts three verticals on one platform. The table explains why one engine can serve them while one document schema cannot. Hearthly's documents carry a property-cluster ID from entity resolution so results can collapse the three agency listings of one Lyon apartment, the example in [[entity-resolution]], into one card; Motorvane's carry decoded vehicle attributes and dealer IDs; Tradeyard's carry the promoted and flattened attribute fields. The platform shares the engine, the indexer framework, the contract and the operations, while each marketplace owns its schema.
+Veldmark's decision puts three verticals on one platform. The table explains why one engine can serve them while one document schema cannot. Hearthly's documents carry a property-cluster ID from entity resolution so results can collapse the three agency listings of one Lyon apartment, the worked example of [[entity-resolution]], into one card; Motorvane's carry decoded vehicle attributes and dealer IDs; Tradeyard's carry the promoted and flattened attribute fields. The platform shares the engine, the indexer framework, the contract and the operations, while each marketplace owns its schema.
 
 ## Failure Modes
 
-Each of these choices can fail in a recognizable way. Four failures, all touched on in earlier sections, recur often enough to deserve a name, a symptom and a check.
+Each of these choices can fail in a recognizable way. Four failures, a different list from the three patterns named at the start of the chapter and all touched on in earlier sections, recur often enough to deserve a name, a symptom and a check.
 
 **The index as the only copy.** This is how Search as System of Record usually begins: a batch job writes a field, say a moderation score, into the index and nowhere else. Months later a mapping change requires a reindex, and the field cannot be rebuilt. The rebuild drill exists to find these fields while they are few.
 
@@ -392,7 +392,7 @@ Ten questions test the decisions above in a design review.
 
 ## From Engine to Intent
 
-Ingrid's three questions now have answers, and none of them names an engine. What must be true of any index: every document comes from the event stream and the system of record under a listing-owned version, removals take their own lane and objective, and a quarterly drill proves the rebuild. What is shared: engine operations, the indexer framework, the contract and capacity. What may stay different: schemas, analyzers and ranking. The Sunday-evening brown-out came from how the index was run at the peak, not from which engine ran it, and with the contract in place the 2029 engine review becomes an adapter change rather than a rewrite.
+Ingrid's three questions now have answers, and none of them names an engine. What must be true of any index: every document comes from the event stream and the system of record under a listing-owned version, removals take their own lane and objective, and a quarterly drill proves the rebuild. What is shared: engine operations, the indexer framework, the contract and capacity. What may stay different: schemas, analyzers and ranking. The Sunday-evening brown-out came from how the index was run at the peak, not from which engine ran it, and with the contract in place the 2029 engine review becomes an adapter change rather than a rewrite. So the order of work is fixed: put product applications behind the search contract, build documents only from the event stream with a listing-owned version, prove the rebuild every quarter and give removal its own lane, and only then decide any engine change, as a workload decision tested with shadow traffic.
 
 A search layer that is fast, fresh and rebuildable still has to understand what people type into it. A buyer in Utrecht who types "ebike" and one who types "elektrische fiets" mean the same thing, and neither has told the engine which category, which attributes or which language they mean. That translation from words to structured queries is the subject of the next chapter, [[query-understanding]].
 

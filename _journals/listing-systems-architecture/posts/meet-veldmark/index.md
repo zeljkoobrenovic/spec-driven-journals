@@ -113,7 +113,7 @@ The brands' rounded 2026 figures are what every design is sized against.
 | Duplicates | Hearthly France: 1.9M listings describe about **1.12 million** distinct properties, **1.7** listings per property |
 | Taxonomy | Tradeyard: four country trees with 1,420 (NL), 1,380 (BE), 980 (PL) and 760 (PT) leaf categories; **3,900** distinct attribute keys, 41% of them used on fewer than 0.1% of listings |
 
-Two caveats on reading it. The **Sunday-evening peak is a Veldmark illustration**, not an industry statistic; the documented public example of a weekly peak, Rightmove's, is in [[reliability-and-scale]]. And ratios matter more than totals: Tradeyard Netherlands and Portugal have almost the same monthly users per live listing (2.3 and 2.5), yet a new Dutch listing gets its first contact in a median of 2.6 hours and a Portuguese one in 19. [[liquidity-and-network-effects]] explains why, and why every latency target in this book names the liquidity metric it protects.
+Two caveats on reading it. The **Sunday-evening peak is a Veldmark illustration**, not an industry statistic; the documented public example of a weekly peak, Rightmove's, is in [[reliability-and-scale]]. And neither totals nor simple ratios show liquidity, how fast a listing meets a buyer: Tradeyard Netherlands and Portugal have almost the same monthly users per live listing (2.3 and 2.5), yet a new Dutch listing gets its first contact in a median of 2.6 hours and a Portuguese one in 19. The same ratio hides very different speeds of matching. [[liquidity-and-network-effects]] explains why the two countries differ, and why every latency target in this book names the liquidity metric it protects.
 
 ## The Systems Landscape
 
@@ -144,7 +144,7 @@ These brands and systems have owners, and most of the book's tensions are betwee
 
 | Name | Role | What they own and want |
 | --- | --- | --- |
-| **Ingrid Halvorsen** (she/her) | Group Chief Architect | The book's point of view; joined on **Monday 1 February 2027**. Reports to Mateus; chairs the architecture advice forum (set up April 2027); owns the capability map, the context map and the cross-brand decision records. Has influence, not command, over the brands' teams. |
+| **Ingrid Halvorsen** (she/her) | Group Chief Architect | The book's point of view; joined on **Monday 1 February 2027**. Reports to Mateus; chairs the architecture advice forum (a weekly, open meeting that gives advice rather than approvals, set up in April 2027 as part of Common Ground, below); owns the capability map, the context map and the cross-brand decision records. Has influence, not command, over the brands' teams. |
 | **Henrik de Boer** (he/him) | Group CEO | Answers to the private-equity owner; wants growth without eating the Common Ground budget. |
 | **Mateus Carvalho** (he/him) | Group CTO | Sponsor of Common Ground's engineering work; Ingrid's line manager; owns the cloud decision. |
 | **Noor Hassan** (she/her) | Group Chief Product Officer | Owns the cross-brand product roadmap, from the bikes split (new bike categories) to AI listing tools. |
@@ -180,7 +180,7 @@ When Ingrid arrives, the marketplaces work and the group is profitable, but its 
 ![Four separate islands, labeled Tradeyard, Motorvane, Hearthly and Keybridge, each with its own identity, trust, search and data towers and its own cloud, joined only by one thin shared bridge.](assets/images/meet-veldmark/four-of-everything.jpeg)
 **Figure 3:** *Four of everything: in 2027 the brands run four identity systems, four trust-and-safety stacks, three search engines and three clouds, with little more than advertising and finance shared beneath them.*
 
-None of these is a technology problem alone. The phishing exists because messaging was built as a feature, not as a trust surface; the neutrality problem because a commercial promise has no architecture yet; and the Polish overlap is a portfolio decision that systems can make easier or harder, but cannot make.
+None of the eight problems is a technology problem alone. The phishing exists because messaging was built as a feature, not as a trust surface; the neutrality problem because a commercial promise has no architecture yet; and the Polish overlap is a portfolio decision that systems can make easier or harder, but cannot make.
 
 ## The Common Ground Program
 
@@ -199,7 +199,7 @@ Common Ground is also a governance change. In **April 2027** the group adopted a
 
 One standing decision frames the rest: **AWS is the group's primary cloud** from 2027. **Hearthly stays on Google Cloud through 2028** and **Keybridge stays on Azure**; the book treats a multi-cloud group as normal, not as a failure.
 
-The dated decisions the chapters rely on, by year (Figure 5's four plateaus):
+The dated decisions the chapters rely on, by date. They fall into Common Ground's four plateaus, one per year: 2027 govern and decide, 2028 move, 2029 retire and 2030 harvest (Figure 5, after the table).
 
 | Date | Decision or milestone | Chapter that works it |
 | --- | --- | --- |
@@ -223,7 +223,7 @@ The dated decisions the chapters rely on, by year (Figure 5's four plateaus):
 
 ## The Recurring Worked Examples
 
-Single listings show the problems and the program's decisions best. Five stories recur throughout the book. Their facts never change, so a reader can follow one listing across many chapters.
+Concrete stories show the problems and the program's decisions best. Five recur throughout the book: three single listings, one fraud ring and one search incident. Their facts never change, so a reader can follow one story across many chapters.
 
 | Example | Core facts | Where it does most work |
 | --- | --- | --- |
@@ -233,7 +233,7 @@ Single listings show the problems and the program's decisions best. Five stories
 | **The Barcelona fake-rental ring** (Hearthly ES) | In **July 2027**, **26** accounts post **180** fake rental listings in Eixample using photos stolen from real listings, priced about **35%** below market, asking for deposits by bank transfer outside the platform. Detected through perceptual-hash matches (image fingerprints that survive resizing) against existing listings plus price anomalies; **63** people report losses of about **€71,000** before takedown. | [[fraud-prevention]], [[media-pipeline]], [[identity-and-verification]], [[saved-searches-and-alerts]] |
 | **The Sunday-evening brown-out** (Tradeyard NL) | **Sunday 17 January 2027, 20:35 CET**: search p99 latency rises from about **400 ms** to about **7 s** for **48 minutes**, and about **9%** of searches fail. Causes: a TV campaign, a scheduled reindex job and Solr cache eviction at the weekly peak. | [[search-architecture]], [[reliability-and-scale]] |
 
-The **Rotterdam bike is the book's spine.** Its chapters follow one €240 listing through a dozen systems in about 24 hours; it exposes a different weakness in almost every one: batch delays behind the six minutes, a messaging check that ran after delivery, a rule that reached Belgium three days late, an analytics extract that recorded the sale as "expired", and a digest that never asked whether the bike was still for sale. Six months later, Femke's erasure request finds **seven** copies of the listing. None of this is exotic; it is what a successful classifieds platform looks like after twenty years of reasonable local decisions.
+The **Rotterdam bike is the book's spine.** Its chapters follow one €240 listing through a dozen systems in about 24 hours and add what the table leaves out, because each chapter uncovers a different weakness in almost every system the bike passes through: batch delays behind the six minutes, a messaging check that ran after delivery, a rule that reached Belgium three days late, an analytics extract that recorded the sale as "expired", and a digest that never asked whether the bike was still for sale. Six months later, Femke's erasure request finds **seven** copies of the listing. None of this is exotic; it is what a successful classifieds platform looks like after twenty years of reasonable local decisions.
 
 In its chapters, the **Golf** plays the same role for professional supply: a complete but slow feed, a lead count the dealer disputes, a carousel that recommends a sold car, and a "Pro 150" package (150 listing slots for €1,450 a month) that billed Ruhrblick for cars the platform never showed. The **Lyon apartment** carries property identity, agency structure and valuation; the **Barcelona ring** shows signals that existed from the first hour failing because nothing combined them; the **brown-out** shows three harmless things becoming an incident at peak.
 
@@ -262,7 +262,7 @@ Three conventions hold throughout. **Veldmark is always labeled fictional** the 
 
 The three preface pages make one argument at three sizes: a listing marketplace is a liquidity machine ([[introduction]]); it loses matches at its boundaries in fifteen named ways ([[where-listing-systems-go-wrong]]); and Veldmark's 2027 problems are instances of those patterns, with Common Ground's principle, share platforms, not products, as the book's claim written as a program. The introduction's general-manager scene returns with names attached: the six minutes to searchable is Veldmark's problem 2, and the sold bike in Tuesday's alert e-mails is Femke's €240 city bike in 214 of them.
 
-So every chapter's opening scene is one more view of a group you already know, and each chapter explains a decision about a boundary, not a product choice. Part I turns to the business behind the listings and begins where Ingrid began in February 2027: by asking what kind of marketplace each part of Veldmark is, and why the answer decides the architecture. Continue with [[part-1]].
+So, because the book's failures happen at boundaries and Common Ground shares platforms beneath the products, every chapter's opening scene is one more view of a group you already know, and each chapter explains a decision about a boundary, such as which part of a capability the brands share, not a product choice. Part I turns to the business behind the listings and begins where Ingrid began in February 2027: by asking what kind of marketplace each part of Veldmark is, and why the answer decides the architecture. Continue with [[part-1]].
 
 ## Sources and Evidence
 

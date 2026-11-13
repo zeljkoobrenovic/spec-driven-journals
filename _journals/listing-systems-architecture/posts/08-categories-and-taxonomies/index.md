@@ -48,7 +48,7 @@ Daan Visser, Tradeyard's engineering director, explains why the answer has alway
 - asking the analytics team to update dashboards that filter by category *name*;
 - telling the professional sellers whose feeds send category codes, some of which map by name.
 
-Bike data is spread across **19 country-specific leaves** holding about **640,000** live listings: about 380,000 in the Netherlands, 120,000 in Belgium, 95,000 in Poland and 45,000 in Portugal. About **410,000** of them sit in generic "bikes" leaves that the split must divide; the other 230,000 are in sport-bike and parts leaves that map one to one.
+Bike data is spread across **19 country-specific leaves** holding about **640,000** live listings: about 380,000 in the Netherlands, 120,000 in Belgium, 95,000 in Poland and 45,000 in Portugal. About **410,000** of them sit in generic "bikes" leaves that the split must divide; the other 230,000 are in road, mountain, and parts and accessories leaves that map one to one.
 
 Ingrid Halvorsen, the Group Chief Architect, does not want to solve bikes. She wants the next request to take two days, which is the target Common Ground set for new categories. The group taxonomy and attribute service, one of Common Ground's shared capabilities, goes live in October 2027 with Tradeyard as its first consumer. The bikes split, live on **Monday 1 November 2027**, is its first real migration and the first step in harmonizing the four country trees. Tomasz Wiśniewski, who heads the group search platform, and Priya Raman, Head of Data and ML, join her to design it. Katarzyna Nowak, Tradeyard Poland's general manager, joins with a condition: Poland's tree must stay recognizably Polish.
 
@@ -186,7 +186,7 @@ Public evidence is mostly product-level. eBay's 2023 "magical listing" announcem
 Four design rules follow, and they are my recommendations rather than any company's documented practice.
 
 - **Suggest the top three; let the seller choose.** A wrong silent assignment puts the listing under the wrong schema, fee and policy. A seller who confirms a suggestion has also confirmed the contract.
-- **Make the model taxonomy-version-aware.** A model trained on version 2027.10 cannot predict leaves that exist only in 2027.11. Either retrain per release or, better, pass candidate categories as input, as Mercari's 2024 attribute-extraction work passed attribute keys at request time ([Mercari Engineering, "Fine-Tuning an LLM to Extract Dynamically Specified Attributes"](https://engineering.mercari.com/en/blog/entry/20240913-fine-tuning-an-llm-to-extract-dynamically-specified-attributes/), 2024).
+- **Make the model taxonomy-version-aware.** A model trained on one release cannot predict leaves that exist only in the next: at Veldmark, whose releases are calendar-versioned, a model trained on 2027.10, the first canonical tree, cannot predict the bike leaves added in 2027.11, the split described later in this chapter. Either retrain per release or, better, pass candidate categories as input, as Mercari's 2024 attribute-extraction work passed attribute keys at request time ([Mercari Engineering, "Fine-Tuning an LLM to Extract Dynamically Specified Attributes"](https://engineering.mercari.com/en/blog/entry/20240913-fine-tuning-an-llm-to-extract-dynamically-specified-attributes/), 2024).
 - **Measure acceptance and correction, not only accuracy.** The useful labels are the seller's choice among suggestions and later recategorizations by moderators or the seller.
 - **Treat category manipulation as a fraud signal.** Sellers who choose a cheaper or less-moderated category for a high-risk item are a known abuse. A large disagreement between the predicted and chosen category on a high-risk leaf should raise the listing's risk score (see [[fraud-prevention]]).
 
@@ -242,7 +242,7 @@ Every country view enables all seven canonical leaves (four new, plus road, moun
 
 ### Reclassifying 410,000 listings
 
-The 230,000 listings in sport-bike and parts leaves mapped one to one. The 410,000 in generic leaves went through three tiers.
+The 230,000 listings in road, mountain, and parts and accessories leaves mapped one to one. The 410,000 in generic leaves went through three tiers.
 
 | Tier | Method | Listings | Share |
 | --- | --- | --- | --- |
@@ -255,7 +255,7 @@ A moderator audit of 3,000 automatically moved listings found **96.8%** correctl
 ![Bike listings sorted by rules, a model and sellers, with an audit gate before they reach city, e-bike, cargo and kids' bike bins.](assets/images/08-categories-and-taxonomies/bikes-reclassification-tiers.jpeg)
 **Figure 6:** *Veldmark moved 410,000 generic bike listings by rules (46%), a model above 0.92 confidence (50%) and seller confirmation (4%), with a moderator audit gating the automated moves.*
 
-Femke's Rotterdam city bike, sold in March 2027 and archived, illustrates the version rule from [[listing-aggregate]]: its archived record still says it was classified under the old Dutch generic leaf in the old version, and the analytics mapping view reports it as a City bikes sale. Nobody rewrote history; the mapping translates it.
+Live listings moved; archived ones did not. Femke's Rotterdam city bike, sold in March 2027 and archived, illustrates the version rule from [[listing-aggregate]]: its archived record still says it was classified under the old Dutch generic leaf in the old version, and the analytics mapping view reports it as a City bikes sale. Nobody rewrote history; the mapping translates it.
 
 ### Everything else that moved
 

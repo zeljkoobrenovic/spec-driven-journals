@@ -7,7 +7,7 @@
   "part": "part-4",
   "title": "Searching by Place: Map, Polygon and Commute Search",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the map-search entry in journal-spec.json. Added units not in the published text: the roadmap paragraph p04, the canonical-property paragraph p24a (from the flow rubric) and the synthesis paragraph p56.",
   "intent": {
     "outcome": {
@@ -777,8 +777,8 @@
           },
           "transition_in": {
             "relationship": "example",
-            "carries_over": "The ownership rule.",
-            "introduces": "One pan as a worked sequence.",
+            "carries_over": "The ownership rule and the components of Figure 1.",
+            "introduces": "One pan as the components in motion, with a pointer forward to the performance levers that reuse its choices.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1315,7 +1315,7 @@
           "transition_in": {
             "relationship": "cause_effect",
             "carries_over": "The isochrone cache and its hit rate.",
-            "introduces": "The peak routing volumes that remain with the cache in place, and the routing decision they force.",
+            "introduces": "The peak routing volumes that remain with the cache in place (premises: every commute request looks up an isochrone and needs a matrix for the pins on screen), and the routing decision they force, marked as its own step.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1425,7 +1425,7 @@
             {
               "kind": "statistic",
               "what": "Group peak about 31,000 queries/s, Sunday 20:00-22:00 CET; Hearthly 2,700 of 4,200.",
-              "shows": "The map is the majority of Hearthly's peak load.",
+              "shows": "The group peak is the load the shared platform carries; Hearthly's 4,200 requests per second are its part of it, and the map, nearly two thirds of them, sets Hearthly's capacity need.",
               "source": "Scenario ledger; Veldmark is fictional"
             },
             {
@@ -1446,7 +1446,7 @@
         {
           "id": "p41",
           "form": "list",
-          "controlling_idea": "Five levers, in the order to pull them, keep the map fast: tile-aligned caching of aggregations, cheaper shapes, approximate counts and separate paths, zoom-dependent limits, and degradation modes.",
+          "controlling_idea": "Five levers, in the order to pull them, keep the map fast: tile-aligned caching of aggregations, cheaper shapes, approximate counts and separate paths, zoom-dependent limits, and degradation modes; the first and third apply the pan's tile snapping and separate count path (p20-p21) to the peak, and the list refers back to them rather than introducing them anew.",
           "function": "recommendation",
           "advances_thesis": {
             "supports": [
@@ -1456,7 +1456,7 @@
           },
           "transition_in": {
             "relationship": "problem_solution",
-            "carries_over": "The peak.",
+            "carries_over": "The peak, which the map sets for Hearthly, and the pan choices of p20-p21.",
             "introduces": "The levers that carry it.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -2075,6 +2075,42 @@
     {
       "date": "2026-11-13",
       "decision": "Reader-found error fixed by the orchestrator (author request 'fix the errors readers found'): Commute arithmetic sentence was ungrammatical; reworded, figures unchanged (270 × 50 × 1–2 = 13,500–27,000)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Intro p01 (flow, draft): opening sentence now carries over only recommendations' lesson; the map claim stays after the place-first argument. 'Part IV argues' made 'This part of the book, Part IV, argues' so readers know the chapter belongs to Part IV. (fixed under the author's delegation (fix-only pass))."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p14 (flow, draft): section bridge now says the map is not a list with pins (own query mix, ranking, metrics) before the Airbnb evidence. (fixed under the author's delegation (fix-only pass))."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p20/p21 vs p41 (flow, spec): subsection kept in the architecture section (published order), introduced as the components in motion with a pointer forward; p41's lead-in now refers back to the pan's tile snapping and count path instead of presenting levers 1 and 3 as new. Spec p20 transition and p41 controlling idea updated; no published lever cut. (fixed under the author's delegation (fix-only pass))."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p32 (flow, draft): sentence rewritten to name the two technical patterns (isochrone filter computed once and cached; per-listing travel times by matrix call) and to separate them from the two product forms. (fixed under the author's delegation (fix-only pass))."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p47 (flow, draft): premises stated (each commute request looks up an isochrone, cached or computed, and needs a matrix for the pins on screen); the routing decision marked as its own step. Figures unchanged. (fixed under the author's delegation (fix-only pass))."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p40 (evidence and flow, draft): the 31,000 group peak related to Hearthly (its 4,200 requests/s are Hearthly's part of the peak, nearly two thirds map) and to the point of the section (the map sets Hearthly's capacity need); Rightmove sentence given its point (peaks are sharp and marketing-driven). (fixed under the author's delegation (fix-only pass))."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p45 (flow, draft): timeline stated plainly: in September 2027 the team replays a May 2027 session on the target design. (fixed under the author's delegation (fix-only pass))."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p50 (flow, draft): 'postcode in German (Umkreissuche)' made 'postcode, called Umkreissuche in German'; minor: 'the table below' made 'the table at the end of this section'. (fixed under the author's delegation (fix-only pass))."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "length.max_words raised from 8,750 to 8,900 (+1.7%, within the 10% allowance) to fit the glosses and pointers added by the fixes; draft is 8,808 words; no published facts cut (fixed under the author's delegation (fix-only pass))."
     }
   ],
   "sources": [
@@ -2116,6 +2152,10 @@
   ],
   "changelog": [
     {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on the round-6 blocking findings (9 fixed: intro, map-product bridge, pan subsection/levers back-reference, commute patterns, commute arithmetic premises, peak paragraph, worked-example timeline, Umkreissuche); spec p20, p40, p41, p47 updated; status draft. (AI-mediated session)"
+    },
+    {
       "date": "2026-11-12",
       "change": "Converted spec.md to spec.json (reconstructed from index.md); added roadmap, canonical-property and synthesis units; status draft. (AI-mediated session)"
     },
@@ -2133,6 +2173,6 @@
     }
   ],
   "length": {
-    "max_words": 8750
+    "max_words": 8900
   }
 }

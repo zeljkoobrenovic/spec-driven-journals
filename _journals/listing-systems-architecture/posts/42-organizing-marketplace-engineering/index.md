@@ -67,7 +67,7 @@ Mateus Carvalho, the Group CTO, asks Ingrid the question this chapter answers: *
 
 Mateus's question is about teams before it is about platforms. Melvin Conway observed in 1968 that organizations which design systems produce designs that copy their own communication structures ([Conway, 1968](https://www.melconway.com/Home/Committees_Paper.html)). In a marketplace group the observation is easy to verify: four brands with four engineering organizations have four identity systems. The useful reading is the reverse one, sometimes called the *inverse Conway maneuver*: **if you want a shared search platform, create a team whose job is the search platform**, and give the brands' discovery teams a reason to depend on it.
 
-The maneuver has two limits. First, changing teams does not change code; the old structure persists in the systems until someone migrates them, which is why [[modernization-and-migration]] follows this chapter. Second, teams have a limited capacity for complexity. The Team Topologies authors, Matthew Skelton and Manuel Pais, put it as a principle: "Teams can only handle so much complexity before breaking down" ([Team Topologies, key concepts](https://teamtopologies.com/key-concepts), n.d.). A team asked to own Tradeyard's insertion flow in four countries, the pro-seller API and the image pipeline will own all three badly.
+The maneuver has two limits. First, changing teams does not change code; the old structure persists in the systems until someone migrates them, which is why [[modernization-and-migration]] follows this chapter. Second, teams have a limited capacity for complexity, their **cognitive load**. The Team Topologies authors, Matthew Skelton and Manuel Pais, put it as a principle: "Teams can only handle so much complexity before breaking down" ([Team Topologies, key concepts](https://teamtopologies.com/key-concepts), n.d.). A team asked to own Tradeyard's insertion flow in four countries, the pro-seller API and the image pipeline will own all three badly.
 
 ### Four team types and three interaction modes
 
@@ -162,7 +162,7 @@ The best-documented example in the classifieds record is Adevinta's internal pla
 
 ### Decision rights across group, platform and brand
 
-Governance starts with a table, not a forum. The decision-rights matrix below is Veldmark's, used here as the example. Veldmark's architecture advice forum, an open weekly meeting set up in April 2027 and described in the worked example, adopted it that month and revised it in September. *D* means decides, *A* means must be asked for advice, *I* means informed.
+Governance starts with a table, not a forum. The decision-rights matrix below is the shape I recommend for any group of marketplaces; the entries are Veldmark's, as its forum adopted them in April 2027 and revised them in September. *D* means decides, *A* means must be asked for advice, *I* means informed.
 
 | Decision | Group (CTO, Chief Architect) | Platform team | Brand engineering | Brand product |
 | --- | --- | --- | --- | --- |
@@ -232,7 +232,7 @@ The public record can test only parts of this design. Few marketplace groups pub
 
 A third OLX fragment concerns ownership: a July 2025 post explains that recommendations serving moved out of "a shared backend service" to the data team "to gain greater autonomy and flexibility" ([OLX Tech, 2025](https://tech.olx.com/scaling-recommendations-service-at-olx-db4548813e3a)) — a complicated subsystem taking ownership of its own runtime, with the efficiency trade-offs the post describes.
 
-**Adevinta: voluntary platforms, harvested inventions, and a swing back.** Adevinta's record covers the full swing between central and local and is told in [[case-adevinta]]. For organization design, three fragments matter. The deployment abstraction that ran across its marketplaces, FIAAS, came from FINN.no, and its experimentation analysis package, Fisher, came from Marktplaats; both were local inventions promoted to group level (2017–2023 sources). In 2023 the group "redesigned the operating model and created a robust structure organised by verticals", and in 2025 it "evolved from a centralised structure to a decentralised, standalone operating model", with "the ramp-down of central functions, the transfer of key capabilities, the localisation of intellectual property" (Adevinta Annual Report 2023; Strategic Report 2025). In a September 2026 post about an infrastructure self-service bot, leboncoin's engineering blog described about ten infrastructure engineers supporting about 70 feature teams ([leboncoin tech blog, 2026](https://medium.com/feed/leboncoin-tech-blog); figures from the blog's feed summary, the full post not retrieved). That is the platform-team pattern at local scale after the decentralization: about seven feature teams per infrastructure engineer, reached through a self-service bot.
+**Adevinta: voluntary platforms, harvested inventions, and a swing back.** Adevinta's record covers the full swing between central and local and is told in [[case-adevinta]]. For organization design, three fragments matter, and a fourth shows what followed them. The deployment abstraction that ran across its marketplaces, FIAAS, came from FINN.no, and its experimentation analysis package, Fisher, came from Marktplaats; both were local inventions promoted to group level (2017–2023 sources). In 2023 the group "redesigned the operating model and created a robust structure organised by verticals" and planned to converge the leboncoin and Kleinanzeigen product platforms; in 2025 it "evolved from a centralised structure to a decentralised, standalone operating model", with "the ramp-down of central functions, the transfer of key capabilities, the localisation of intellectual property" (Adevinta Annual Report 2023; Strategic Report 2025). In a September 2026 post about an infrastructure self-service bot, leboncoin's engineering blog described about ten infrastructure engineers supporting about 70 feature teams ([leboncoin tech blog, 2026](https://medium.com/feed/leboncoin-tech-blog); figures from the blog's feed summary, the full post not retrieved). That is the platform-team pattern at local scale after the decentralization: about seven feature teams per infrastructure engineer, reached through a self-service bot.
 
 > **INFERENCE, NOT DOCUMENTED:** Read as Conway's law in reverse, Adevinta's 2023 reorganization by verticals preceded its plan to converge the leboncoin and Kleinanzeigen product platforms, and its 2025 decentralization preceded the localization of intellectual property and the parallel running of central and local services. In both directions the organization moved first and the platforms were expected to follow. The public record does not describe the internal team designs, so this is the author's reading of the sequence, not a description of Adevinta's organization.
 
@@ -244,7 +244,7 @@ The common thread is modest: **journey-aligned teams, domain maps before reorgan
 
 ### Three options
 
-Veldmark answered Mateus's question with this design, through its architecture advice forum. In May 2027 Ingrid and Yara Mendes, the Head of Platform Engineering, bring three organization options to the forum, whose twelve principles include "share platforms, not products".
+Veldmark answered Mateus's question with this design, through its architecture advice forum. Veldmark set up the forum in April 2027: an open weekly meeting where cross-brand decisions get advice in public. That month it adopted the decision-rights matrix shown earlier and twelve architecture principles on one page. One of them decides the question here: "share platforms, not products", meaning the brands share the capabilities beneath their products, not the products themselves. In May 2027 Ingrid and Yara Mendes, the Head of Platform Engineering, bring three organization options to the forum.
 
 | Option | Description | For | Against |
 | --- | --- | --- | --- |
@@ -260,7 +260,7 @@ The forum's advice is option B, with conditions. Mateus Carvalho decides it on *
 4. **People move with work, not with a date.** Engineers move to a platform team when their capability moves, not on 1 September. About **150** engineers transfer from brands in 2027 and about **80** are hired, giving the platform organization about **230** engineers in **24** teams by the end of 2027.
 5. **Keybridge stays outside.** Keybridge's engineering organization is not merged into the platform organization and is not a tenant of the shared trust-and-safety platform or the listing event stream; group security standards apply. The March 2027 neutrality decision makes this a structural choice, not a postponement.
 
-> **BY DECEMBER 2027:** Of the nine capabilities the board's January 2027 program named (Veldmark ID, trust and safety, media, search, messaging, catalog and entitlements, event backbone, data platform, and taxonomy and attributes; part 1 adds the listing and developer platforms), eight had one owning team, and country-cut, overloaded and Yardstick-bound teams had fallen.
+> **BY DECEMBER 2027:** The board's January 2027 program named nine shared capabilities: Veldmark ID, trust and safety, media, search, messaging, catalog and entitlements, event backbone, data platform, and taxonomy and attributes. (Part 1 of the decision record also gives the platform organization the listing and developer platforms, which are not among the nine.) By December, eight of the nine had one owning team. Fewer teams were cut by country, owned too much, or could ship only with a Yardstick deploy, as the table shows.
 
 | Measure | March 2027 | December 2027 |
 | --- | --- | --- |
@@ -289,7 +289,7 @@ Olivier Petit, VP Monetization, adds one condition that turns out to matter: the
 
 ### The architecture advice forum, one year in
 
-The forum that advised on these decisions was set up in April 2027, together with the architecture principles, and made decision records mandatory for cross-brand decisions. It meets weekly, for an hour, and anyone may attend; about 60 people do on a typical week. Its first year can be read from its decision log.
+The forum that advised on these decisions made decision records mandatory for cross-brand decisions from its start in April. It meets weekly, for an hour, and anyone may attend; about 60 people do on a typical week. Its first year can be read from its decision log.
 
 | Month (2027) | Decision records the forum advised on, as told in other chapters |
 | --- | --- |
@@ -378,7 +378,7 @@ When the design is missing or half applied, nine failures recur.
 
 ## Questions to Ask
 
-These questions test whether that design is in place.
+These questions test whether those decisions are made and those signals are watched in your own group.
 
 1. For each shared capability, which single team is woken up when it breaks, and who decides its roadmap?
 2. Which bounded contexts or journeys are owned by more than one team, and which by none?

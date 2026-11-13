@@ -7,7 +7,7 @@
   "part": "part-5",
   "title": "Trust and Safety as a Platform",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the trust-and-safety-architecture entry in journal-spec.json. Added units not in the published text: the roadmap paragraph p03 and the synthesis paragraph p59.",
   "intent": {
     "outcome": {
@@ -136,7 +136,7 @@
         "applies_to": "architecture, enforcement, intake and measuring follow one decision through its life: detected and decided, enforced everywhere, contested and reported, then counted"
       }
     ],
-    "rationale": "The scene ends on Ingrid's question, which parts of trust and safety are one platform and which stay four, and the body supplies, in order, what that answer needs. The five functions and policies as data come first because every later component is named by the function it serves and cites a policy version. The pipeline then shows how detection and decision work, with the public evidence (Sigma, Stripe Radar, OLX, Adevinta's shared OCR service) right after the component table, because it anchors the reference design the section labels as an inference; enforcement follows because it acts on what the decision service decided; intake, cases and appeals come next because an appeal reverses an enforced decision and a statement of reasons describes one; measurement comes after them because its figures are computed from decision records, samples and overturns. The sharing decision comes after measurement because it can only be argued once every shared component has been introduced; vertical differences follow it directly because they justify its local side (thresholds, policy overlays, vertical detectors). Trade-offs, failure modes, the Chief Architect's view and questions apply the whole design, so they come last."
+    "rationale": "The scene ends on Ingrid's question, which parts of trust and safety are one platform and which stay four, and the body supplies, in order, what that answer needs. The five functions and policies as data come first because every later component is named by the function it serves and cites a policy version. The pipeline then shows how detection and decision work, opening with the public evidence (Sigma, Stripe Radar, OLX, Adevinta's shared OCR service) that the reference design, labeled as an inference, is assembled from; enforcement follows because it acts on what the decision service decided; intake, cases and appeals come next because an appeal reverses an enforced decision and a statement of reasons describes one; measurement comes after them because its figures are computed from decision records, samples and overturns. The sharing decision comes after measurement because it can only be argued once every shared component has been introduced; vertical differences follow it directly because they justify its local side (thresholds, policy overlays, vertical detectors). Trade-offs, failure modes, the Chief Architect's view and questions apply the whole design, so they come last."
   },
   "introduction": {
     "hook": {
@@ -167,7 +167,7 @@
           ]
         },
         {
-          "promise": "The moderation pipeline: its components and the public evidence behind them, gate and asynchronous path, moderation modes, human review and LLMs.",
+          "promise": "The moderation pipeline: the public evidence behind it and its components, gate and asynchronous path, moderation modes, human review and LLMs.",
           "kept_in": [
             "architecture"
           ]
@@ -492,13 +492,18 @@
         },
         {
           "id": "p13",
-          "controlling_idea": "The functions decide on actors as well as listings, and the decision record links the two views; Trust is its own bounded context in which a listing is a subject under evaluation.",
+          "controlling_idea": "The functions decide on actors as well as listings, and the decision record links the two views; a takeover account with clean listings and a verified badge is the sharpest actor case; Trust is its own bounded context in which a listing is a subject under evaluation.",
           "function": "explanation",
           "evidence": [
             {
               "kind": "example",
               "what": "A weapon or a discriminatory rental ad violates on its own; a fraud ring or a takeover account is a problem even when every listing looks clean.",
               "shows": "Shows why decisions must cover both views."
+            },
+            {
+              "kind": "example",
+              "what": "A takeover account whose listings look clean while its verified badge still vouches for it to buyers.",
+              "shows": "Introduces the badge that failure mode 10 recaps."
             }
           ],
           "transition_in": {
@@ -564,7 +569,7 @@
     {
       "id": "architecture",
       "heading": "Architecture: The Moderation Pipeline and Its Components",
-      "controlling_idea": "The moderation pipeline is a set of components around one decision service, run at two speeds whose split, together with the moderation mode, human queues and LLM use, is set by risk, and anchored in what the public record documents.",
+      "controlling_idea": "The moderation pipeline, anchored first in what the public record documents, is a set of components around one decision service, run at two speeds whose split, together with the moderation mode, human queues and LLM use, is set by risk.",
       "function": "description",
       "advances_thesis": {
         "supports": [
@@ -581,7 +586,7 @@
             "applies_to": "p18 to p20: the gate a listing meets first, then the asynchronous path after it"
           }
         ],
-        "rationale": "The whole component set first, with the public evidence that anchors it as a reference design directly after the component table, then the two speeds a listing meets, the risk decision that splits them and the range of modes it produces, then human review, sampling and LLMs, which act on what the automated path leaves uncertain. Placed before the components, the modes would describe paths the reader cannot locate. The public evidence sits under its own subheading next to the reference-design statement it supports; at the end of the section, after the LLM rules, both flow readers of round 3 read it as an appendix."
+        "rationale": "The public evidence first, because the reference design is assembled from it and labeled as an inference; then the whole component set; then the two speeds a listing meets, the risk decision that splits them and the range of modes it produces; then human review, sampling and LLMs, which act on what the automated path leaves uncertain. Placed before the components, the modes would describe paths the reader cannot locate. The evidence was tried at the end of the section (round 3 readers read it as an appendix) and directly after the component table (round 5 readers found it interrupted the component walkthrough and repeated the section's opening), so it now opens the section and the reference-design paragraph points back to it instead of listing the sources a second time."
       },
       "transition_in": {
         "relationship": "sequence",
@@ -591,28 +596,6 @@
         "placement": "start_of_this"
       },
       "paragraphs": [
-        {
-          "id": "p17",
-          "controlling_idea": "The reference architecture, assembled from public building blocks and labeled as an inference, makes one decision service the only writer of decision records, with every other component feeding it or deriving from its records.",
-          "function": "description",
-          "evidence": [
-            {
-              "kind": "source",
-              "what": "Meta's Sigma (2015), Stripe Radar's rule operations, OLX's chat moderation, the DSA, the Ofcom-commissioned report (July 2026).",
-              "shows": "The design is assembled from public evidence, not a description of any company."
-            },
-            {
-              "kind": "figure",
-              "what": "Figure 2: detection and review feed one decision service.",
-              "shows": "All outputs derive from decision records."
-            },
-            {
-              "kind": "table",
-              "what": "Component table: responsibility and key interface of eleven components.",
-              "shows": "Each function has a component with a defined interface."
-            }
-          ]
-        },
         {
           "id": "p47",
           "form": "list",
@@ -650,13 +633,6 @@
               "shows": "Labels the shared-platform reading as inference."
             }
           ],
-          "transition_in": {
-            "relationship": "additional_support",
-            "carries_over": "The reference design, labeled as an inference, and its component table.",
-            "introduces": "The public record that anchors it, and its limits.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          },
           "advances_thesis": {
             "supports": [
               "S1",
@@ -666,12 +642,41 @@
           }
         },
         {
+          "id": "p17",
+          "controlling_idea": "The reference architecture, assembled from public building blocks and labeled as an inference, makes one decision service the only writer of decision records, with every other component feeding it or deriving from its records.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Meta's Sigma (2015), Stripe Radar's rule operations, OLX's chat moderation, the DSA, the Ofcom-commissioned report (July 2026).",
+              "shows": "The design is assembled from public evidence, not a description of any company."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: detection and review feed one decision service.",
+              "shows": "All outputs derive from decision records."
+            },
+            {
+              "kind": "table",
+              "what": "Component table: responsibility and key interface of eleven components.",
+              "shows": "Each function has a component with a defined interface."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The public building blocks just surveyed.",
+            "introduces": "The reference architecture assembled from them and its single decision writer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p18",
           "controlling_idea": "The synchronous gate sits inside the user's action with a budget of a few hundred milliseconds, so it can afford only rules, block-list lookups and a cheap model, and answers allow, hold or reject.",
           "function": "description",
           "transition_in": {
             "relationship": "sequence",
-            "carries_over": "The components and the public evidence behind them.",
+            "carries_over": "The components in the table.",
             "introduces": "The first component a listing meets, the gate.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -945,7 +950,7 @@
         },
         {
           "id": "p31",
-          "controlling_idea": "A removal is not finished when the listing's status changes, because search, alerts, recommendations, messaging, SEO pages, ads, payments, partner feeds and analytics each hold their own copy.",
+          "controlling_idea": "A removal is not finished when the listing's status changes, because search, alerts, recommendations, messaging, SEO pages, ads, payments, partner feeds, profile badges and analytics each hold their own copy.",
           "function": "claim",
           "evidence": [
             {
@@ -1008,7 +1013,7 @@
         },
         {
           "id": "p34",
-          "controlling_idea": "Figure 4's counterparty warning is the target design: on 7 March 2027 the sellers the account had already contacted were not warned.",
+          "controlling_idea": "Figure 4's counterparty warning is the target design: on 7 March 2027 the 9 sellers the account had already messaged before its suspension, unlike the 37 messages the rule withheld, were not warned.",
           "function": "example",
           "evidence": [
             {
@@ -1494,7 +1499,7 @@
         {
           "id": "p54",
           "form": "list",
-          "controlling_idea": "Ten failure modes, from moderation only at creation to badges that outlive an account's integrity, each break one part of the design.",
+          "controlling_idea": "Ten failure modes, from moderation only at creation to badges that outlive an account's integrity (introduced with the actor view and the consumer table), each break one part of the design.",
           "function": "description"
         }
       ]
@@ -1715,11 +1720,15 @@
   ],
   "modalities": [],
   "open_questions": [
-    "No classifieds company has published a T&S architecture; revisit the 'In practice' section if Adevinta, OLX or Vinted publish one. (Carried over from spec.md.)",
+    "No classifieds company has published a T&S architecture; revisit the public-evidence list that opens the Architecture section if Adevinta, OLX or Vinted publish one. (Carried over from spec.md.)",
     "Whether the shared hashed block list across brands survives a full DPIA in every Veldmark country is asserted in the story, not analyzed; identity-and-verification or marketplace-regulation may need to pick this up. (Carried over from spec.md.)",
     "Known differences between generated figures and their mermaid sources (Figure 2: case management drawn inside the Detection panel; Figure 7: three arrows end at the wrong box) are recorded in the 2026-10-20 changelog entry and not fixed. (Carried over from spec.md.)"
   ],
   "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Fixed under the author's delegation (fix-only pass), round-5 blocking findings: (1) Concepts p13 opening rewritten as an elaboration from decisions about items to decisions about actors, replacing the 'functions also separate' non sequitur; (2) spec fault: the public-evidence list (p47) moved from after the component table to open the Architecture section, p17 now points back to it rather than listing the sources twice, transitions of p17 and p18, the section flow rationale, the post flow rationale and the roadmap promise and p03 wording updated; (3) Enforcement p33: digest timing reordered so the 17:30 Monday assembly before the 18:10 sale and the Tuesday morning send are explicit (ledger: [listing-aggregate], [editor]); (4) Enforcement p34: the 9 counterparties introduced from the scene before Figure 4's step and distinguished from the 37 withheld messages (9 kept as published in Figure 4; ledger silent); (5) spec fault: badges introduced in the body (p13 takeover-account sentence and a 'Profile and badges' row in the consumer table) so failure mode 10 recaps rather than introduces, with a pointer back from the item. The minor Measuring p46 finding was left (non-blocking). length.max_words raised 8,400 to 8,600 (2.4%) for the added glosses and the badge row."
+    },
     {
       "date": "2026-11-12",
       "decision": "Round-3 escalation resolved under the author's delegation ('auto resolve all ESCALATE topics'): moved the '### In practice: what is publicly documented' subsection (p47) from the end of the architecture section to directly after the component table (p17), where both round-3 flow readers independently wanted it; rewrote p47's opening sentence and transition, p18's transition, the enforcement section's transition and the roadmap (p03 and its promises).",
@@ -1865,6 +1874,10 @@
   ],
   "changelog": [
     {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on round-5 blocking findings (6 fixed): p13 transition, public evidence moved to open the Architecture section, digest timing, 9 counterparties explained, badges introduced in the body; max_words 8,400 to 8,600. Spec status stays draft; check report now stale. (AI-mediated session)"
+    },
+    {
       "date": "2026-11-12",
       "change": "Escalation resolved under the author's delegation: In practice moved to follow the component table; Vertical Differences moved next to the sharing section; moderator target stated as about 135 (120 on review, 15 on sampling and appeals); Figure 4 counterparty paragraph, Article 20 pointer and minor round-3 findings fixed; max_words 8,237 to 8,400. (AI-mediated session)"
     },
@@ -1898,6 +1911,6 @@
     }
   ],
   "length": {
-    "max_words": 8400
+    "max_words": 8600
   }
 }

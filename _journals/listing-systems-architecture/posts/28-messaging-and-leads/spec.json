@@ -7,7 +7,7 @@
   "part": "part-6",
   "title": "From Interest to Contact: Messaging and Lead Management",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the messaging-and-leads entry in journal-spec.json. Added units not in the published text: the roadmap paragraph p04 and the synthesis paragraph p75.",
   "intent": {
     "outcome": {
@@ -461,7 +461,7 @@
         {
           "id": "p11",
           "form": "list",
-          "controlling_idea": "Ingrid's question what a lead is needs definitions first, so the book fixes contact, conversation, message, lead, lead routing and connection, owning conversation, lead and lead routing, because the industry uses these words loosely and published counts differ.",
+          "controlling_idea": "Both of Ingrid's questions, where safety checks sit and what a lead is, need definitions first, so the book fixes contact, conversation, message, lead, lead routing and connection, owning conversation, lead and lead routing, because the industry uses these words loosely and published counts differ.",
           "function": "definition",
           "evidence": [
             {
@@ -771,8 +771,8 @@
           ],
           "transition_in": {
             "relationship": "example",
-            "carries_over": "Mutable metadata on immutable messages.",
-            "introduces": "A marketplace's documented store.",
+            "carries_over": "Metadata that changes on messages whose content does not.",
+            "introduces": "How far that reaches in a documented store: the compaction strategy.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1087,7 +1087,7 @@
         },
         {
           "id": "p43",
-          "controlling_idea": "A lead needs states that both sides recognize, because each state is a potential dispute.",
+          "controlling_idea": "A lead needs states that both sides recognize, because each state is a potential dispute; the prose walks the states of Figure 4 (Created, Merged or Delivered, Acknowledged, Responded, Qualified or Disqualified, Won or Lost, Disputed) and says that Qualified is the professional's verdict, not the qualification data captured at contact.",
           "function": "claim",
           "evidence": [
             {
@@ -1228,7 +1228,7 @@
     {
       "id": "attribution",
       "heading": "Attribution, ROI and Disintermediation",
-      "controlling_idea": "Lead value is proven only with outcomes from the professional's systems, lead counts are an operational signal, and users are best kept on the platform with value rather than walls.",
+      "controlling_idea": "Lead value is proven only with outcomes from the professional's systems, and users are best kept on the platform with value rather than walls.",
       "function": "analysis",
       "advances_thesis": {
         "supports": [
@@ -1238,7 +1238,7 @@
       },
       "flow": {
         "pattern": "large_to_small",
-        "rationale": "The section defines attribution and says where its data lives, adds the operational use of lead counts, and ends on contacts that leave the platform and the answer to that leakage. Disintermediation placed first would argue about leakage before the reader knows what the platform loses when an outcome goes unattributed."
+        "rationale": "The section defines attribution and says where its data lives, then turns to contacts that leave the platform and the answer to that leakage. Disintermediation placed first would argue about leakage before the reader knows what the platform loses when an outcome goes unattributed. The operational use of lead counts moved to the Chief Architect's metrics decision on 2026-11-13, because flow readers found it interrupted the line from attribution to disintermediation."
       },
       "transition_in": {
         "relationship": "sequence",
@@ -1262,33 +1262,13 @@
           ]
         },
         {
-          "id": "p53",
-          "controlling_idea": "Lead counts are also an operational signal: a broken contact button looks like a quiet day unless someone watches lead counts against a forecast.",
-          "function": "claim",
-          "evidence": [
-            {
-              "kind": "statistic",
-              "what": "Adevinta's Artemis monitors more than 140 product metrics and caught a drop in iOS leads of about 100,000 a day, about €41,000 a day, within a day.",
-              "shows": "Lead-volume monitoring pays.",
-              "source": "Adevinta (2024)"
-            }
-          ],
-          "transition_in": {
-            "relationship": "additional_support",
-            "carries_over": "Leads as a commercial measure proven by outcomes.",
-            "introduces": "Leads as an operational signal.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
           "id": "p54",
           "controlling_idea": "Disintermediation, buyers and sellers moving off the platform once they have met, is the other side of attribution: part of the business model for visibility businesses, revenue leakage for pay-per-lead and transactional models, and fighting it with walls works only until it damages the match.",
           "function": "definition",
           "transition_in": {
             "relationship": "contrast",
-            "carries_over": "Measuring what leads produce.",
-            "introduces": "Contacts that leave the platform.",
+            "carries_over": "Outcomes that come back from the professional's systems.",
+            "introduces": "Contacts whose outcomes the portal cannot see because the deal leaves the platform.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1401,7 +1381,7 @@
       "paragraphs": [
         {
           "id": "p59",
-          "controlling_idea": "The advice forum adopted the reference design in May 2027 as part of Common Ground, replacing four brand-specific contact systems (Keybridge as the receiving fourth), none of which checked a message before delivery or gave a lead an identifier the recipient's software shared.",
+          "controlling_idea": "The advice forum adopted the reference design in May 2027 as part of Common Ground, replacing four contact systems, one per brand: three portals where buyers contact sellers and Keybridge, the group's CRM software for agencies, which runs no buyer-facing contact system but receives leads from many portals; none checked a message before delivery or gave a lead an identifier the recipient's software shared.",
           "function": "context",
           "evidence": [
             {
@@ -1646,7 +1626,7 @@
       },
       "flow": {
         "pattern": "order_of_importance",
-        "rationale": "Sharing comes first because it fixes the platform the other decisions govern; AI comes last because it extends the design rather than founds it. Governance or ownership placed before sharing would assign owners to a platform not yet decided. The Adevinta evidence that was a separate 'In Practice' section until 2026-11-12 now sits in the first decision, which it supports."
+        "rationale": "Sharing comes first because it fixes the platform the other decisions govern; AI comes last because it extends the design rather than founds it. Governance or ownership placed before sharing would assign owners to a platform not yet decided. The Adevinta evidence that was a separate 'In Practice' section until 2026-11-12 now sits in the first decision, which it supports. The Artemis lead-monitoring evidence (p53) moved here from Attribution on 2026-11-13 and follows the metrics decision it supports."
       },
       "transition_in": {
         "relationship": "problem_solution",
@@ -1718,6 +1698,26 @@
           }
         },
         {
+          "id": "p53",
+          "controlling_idea": "Lead counts on the metrics dashboard are also an operational signal: a broken contact button looks like a quiet day unless someone watches lead counts against a forecast.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Adevinta's Artemis monitors more than 140 product metrics and caught a drop in iOS leads of about 100,000 a day, about €41,000 a day, within a day.",
+              "shows": "Lead-volume monitoring pays.",
+              "source": "Adevinta (2024)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The metrics on the group dashboard.",
+            "introduces": "Lead counts on that dashboard as an operational alarm.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p73",
           "controlling_idea": "Plan for AI on both sides of the conversation, so the conversation model marks machine-generated messages, the lead contract records them and lead rules decide whether an assistant's enquiry is a lead.",
           "function": "recommendation",
@@ -1731,7 +1731,7 @@
           ],
           "transition_in": {
             "relationship": "sequence",
-            "carries_over": "The fourth decision.",
+            "carries_over": "The fourth decision and its operational use of lead counts.",
             "introduces": "The fifth: AI.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -1885,9 +1885,47 @@
     "Whether marketplace chat is an 'interpersonal communications service' under the European Electronic Communications Code is presented as a legal question; a reviewer with EU telecoms-law expertise should check the framing. (Carried over from spec.md.)",
     "The ADF (Auto-lead Data Format) XML convention for US dealer CRMs is stated as industry practice without a primary-source citation; verify before print. (Carried over from spec.md.)",
     "No primary source on pay-per-call or masked-number products at European portals was found; the call-tracking discussion is reference architecture. (Carried over from spec.md.)",
-    "Known differences between generated figures and their mermaid sources (Figure 2: an extra arrow from the gate to the lead service carrying the BookingConfirmed label and two parallel lines from call tracking; Figure 4: Merged points to Acknowledged instead of the end) are recorded in the 2026-10-20 changelog entry and not fixed. (Carried over from spec.md.)"
+    "Known differences between generated figures and their mermaid sources (Figure 2: an extra arrow from the gate to the lead service carrying the BookingConfirmed label and two parallel lines from call tracking; Figure 4: Merged points to Acknowledged instead of the end) are recorded in the 2026-10-20 changelog entry and not fixed. (Carried over from spec.md.)",
+    "Minor round-5 finding left: the replay does not say how the nine other sellers the phisher reached before the report relate to the 37 messages withheld afterwards; the ledger does not settle it, so no wording was added.",
+    "Minor round-5 finding left: Vertical Differences cites the Golf's removal 26 hours after the sale (ledger, Essen Golf), a fact the scene and replay do not mention; kept as published."
   ],
   "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Raised length.max_words from 9,457 to 9,650 (2%) to make room for the glosses and pointers that clear the round-5 findings; the draft is about 9,600 words. Vertical Differences now opens with prose and places its table after p65, because a table attaches to the unit before it. (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Minor findings also cleared: Kleinanzeigen quote referent, 150 ms budget dated to the May 2027 forum, 'the four decisions', 'points toward sharing it', disintermediation as outcomes the portal cannot see, and the 600/160 peak ratio stated as about 3.75 (arithmetic). (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Vertical Differences (p65): added an opening sentence tying the section to the trade-offs (elaboration), clearing both the transition and the flow finding. (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Golf replay (p62): the merged booking is described once, and the sentence about Motorvane's 23 now clearly refers to the 23 contacts, not the 19. (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Worked example (p59): Keybridge's role (the group's agency CRM software, no buyer-facing contact system, receiving leads from many portals) now has its own sentences. (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Spec-fault: moved p53 (Adevinta Artemis lead monitoring) from Attribution to the Chief Architect's View after 'Measure the path' (p72), rewrote its opener and transition, p54's and p73's transition_in and both flows. No section order changed; journal-spec AC order unaffected. (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Lead lifecycle (p43): prose now walks Figure 4's states and says Qualified is the professional's verdict, not the qualification data captured at contact; caption assigns Acknowledged to the professional's side. (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Storing conversations (p25): opener no longer restates mutable metadata a second time; it says what the OLX evidence adds (the compaction strategy). (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Concepts opener (p11): both of Ingrid's questions need the definitions, so readers no longer expect the lead question to be answered first. (fixed under the author's delegation (fix-only pass))"
+    },
     {
       "date": "2026-11-12",
       "decision": "Resolved the round-3 escalation under the author's delegation ('auto resolve all ESCALATE topics'): dissolved 'In Practice: The Public Record', the move both flow readers converged on in rounds 1-3. Adevinta's annual-report quotation, its citation, the note that no architecture post is public and the bold strategic reading moved into the Chief Architect's first decision (p69), together with the scope sentence that marketplaces publish little on messaging and lead architecture; the CarGurus TCPA point, quotation and citation became the fourth observation of Contact Channels (p58). Dropped only the parenthetical recap of sources already cited in the body (OLX, Rightmove, Autotrader, CarGurus, Zillow), whose citations all remain where they are used. Rewrote the ca-view transition and opener (p68), the channels opener (three to four observations), the roadmap (p04 and its promises) and the flow rationales. Journal-spec AC-2's expected answer still lists the public record and retention before leads; the replacement text is handed to the orchestrator, the journal spec is not edited here.",
@@ -2030,6 +2068,10 @@
   ],
   "changelog": [
     {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on the round-5 blocking findings (fixed under the author's delegation (fix-only pass)): 8 major findings fixed (one spec move: Artemis paragraph p53 into the Chief Architect's View), 7 minor findings fixed; no draft-check round run, so check-report.json is stale. (AI-mediated session)"
+    },
+    {
       "date": "2026-11-12",
       "change": "Escalation resolved under the author's delegation: In Practice dissolved (Adevinta into the Chief Architect's View, CarGurus TCPA into Contact Channels); baseline-table sentence added to the worked example; rubric notes moved to the decision log; draft check round 4. (AI-mediated session)"
     },
@@ -2055,6 +2097,6 @@
     }
   ],
   "length": {
-    "max_words": 9457
+    "max_words": 9650
   }
 }

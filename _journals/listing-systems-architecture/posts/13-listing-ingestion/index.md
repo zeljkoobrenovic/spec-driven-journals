@@ -62,7 +62,7 @@ Scraping is not a fifth channel in this book. Some aggregators have built supply
 
 ### Full snapshots and delta feeds
 
-A **full snapshot** feed sends the partner's complete current inventory each time. Its semantics are simple and dangerous: **absence means removal**. The platform diffs the snapshot against its own state, creates what is new, updates what changed and removes what is missing. A snapshot is self-healing, because any earlier mistake is corrected by the next complete file, but a truncated file is indistinguishable from a dealer who sold everything.
+A partner sends that outside truth in one of two ways. A **full snapshot** feed sends the partner's complete current inventory each time. Its semantics are simple and dangerous: **absence means removal**. The platform diffs the snapshot against its own state, creates what is new, updates what changed and removes what is missing. A snapshot is self-healing, because any earlier mistake is corrected by the next complete file, but a truncated file is indistinguishable from a dealer who sold everything.
 
 A **delta feed** sends only changes: creates, updates and explicit deletes. It is efficient and fast, but it is not self-healing. A lost delete is never re-sent, a delete for a listing the platform never received is an error that nobody notices, and over months the two sides drift.
 
@@ -89,7 +89,7 @@ Snapshot or delta is one clause of a **feed contract**: everything both sides mu
 | **Reconciliation** | How do both sides verify they agree, and how often? | Drift accumulates unnoticed |
 | **Change management** | How much notice before breaking changes; what counts as breaking | Partners learn of changes from failures |
 
-The contract is a product artifact as much as a technical one, because partners judge a marketplace by how predictable its feed is: the Productscape model this book started from (the author's domain model) counts "partner integration reliability", certification lead time and "validation error recurrence" among the integration partner's key measures. In feed-driven verticals that matters commercially: Germany's competition authority, clearing a mobile.de acquisition in October 2026, noted that dealers multi-home and that many platforms offer dealers data export to other platforms ([Bundeskartellamt](https://www.bundeskartellamt.de/SharedDocs/Meldung/DE/Pressemitteilungen/2026/10_08_2026_mobile_carwow.html), 2026). **Inventory in automotive is rarely exclusive, so the feed is where a marketplace competes for the dealer's attention.**
+The contract is a product artifact as much as a technical one, because partners judge a marketplace by how predictable its feed is. Productscape, the author's domain model this book started from, counts "partner integration reliability", certification lead time and "validation error recurrence" among the integration partner's key measures. That predictability matters commercially in feed-driven verticals, where a partner can send the same stock elsewhere: Germany's competition authority, clearing a mobile.de acquisition in October 2026, noted that dealers multi-home and that many platforms offer dealers data export to other platforms ([Bundeskartellamt](https://www.bundeskartellamt.de/SharedDocs/Meldung/DE/Pressemitteilungen/2026/10_08_2026_mobile_carwow.html), 2026). **Inventory in automotive is rarely exclusive, so the feed is where a marketplace competes for the dealer's attention.**
 
 ## The Public Contracts: What Real Marketplaces Publish
 
@@ -188,7 +188,7 @@ Delta channels need a different control: **scheduled reconciliation**. At least 
 
 ### Errors and feedback to partners
 
-Partners experience a marketplace through its error reports. A good report is per run and per record, uses stable machine-readable codes, points to the offending field, and tells the partner what to do.
+Every change a run computes, holds or applies has to reach the partner, because partners experience a marketplace through its error reports. A good report is per run and per record, uses stable machine-readable codes, points to the offending field, and tells the partner what to do.
 
 - **Three outcomes, not two.** Rightmove's responses distinguish success, *warning* ("the call has been successful, but one of the business rules has failed") and error, and makes warnings visible to the agent in an error report in its agent back office ([Rightmove RTDF](https://media.rightmove.co.uk/ps/pdf/guides/adf/Rightmove_Real_Time_Datafeed_Specification.pdf), 2023). The warning tier is what lets a platform accept a listing missing a recommended attribute while still telling the sender.
 - **Standard envelopes.** RFC 9457, "Problem Details for HTTP APIs" (July 2023, obsoleting RFC 7807), defines `type`, `title`, `status`, `detail` and `instance`; its example validation extension carries an `errors` array with JSON Pointers to the failing fields ([RFC 9457](https://www.rfc-editor.org/rfc/rfc9457.html), 2023). mobile.de returns HTTP 400 with an `errors` array of keys and arguments. Either works; what matters is that the codes are stable and documented, and that the same code comes from the insertion flow, the API and the file importer, because they share one validator.
@@ -197,7 +197,7 @@ Partners experience a marketplace through its error reports. A good report is pe
 
 ### Back-pressure, quotas and fairness
 
-Feed traffic is spiky in a way user traffic is not: dealer software exports at the same evening hour, and one dealer group's 200,000-row file can arrive at the same time as 3,000 single-dealer files.
+Errors flow back to partners; load flows in from them, and feed traffic is spiky in a way user traffic is not: dealer software exports at the same evening hour, and one dealer group's 200,000-row file can arrive at the same time as 3,000 single-dealer files.
 
 - **Per-partner queues and concurrency limits** keep one large partner from starving the rest. Work is scheduled by partner and seller, not first come, first served.
 - **Rate limits with honest signals.** API channels return HTTP 429 with a retry hint when a client exceeds its limits; Autotrader documents that inbound connections are subject to "dynamic reputation scoring", so a partner's limits depend on its behavior. File channels accept the upload and queue it, returning the run ID immediately.
@@ -210,20 +210,20 @@ Media dominates feed bytes. Rightmove pulls media by URL rather than accepting p
 
 ### The insertion flow is a channel too
 
-The first door in the channel table runs on the same path. Product teams usually own the insertion flow as a user-experience problem, and it is one: a **conversion funnel** from "start listing" to "published", where every step that asks a casual seller for something they do not have loses supply. The Productscape model's seller journey names the typical pains: forced account creation before the seller sees value, mobile uploads over weak connections, and a moderation rejection "with an unclear reason" that leaves the casual seller stuck.
-
-The funnel metric that matters is not form completion but **published-and-contacted**: a flow that publishes listings faster by asking for less, and so produces listings nobody can find with filters, has moved the problem downstream. Tradeyard measures start-to-publish rate and the share of new listings that receive a first contact within 48 hours, side by side.
-
-Architecturally, it is a channel like the others:
+The first door in the channel table runs on the same path. Architecturally, the insertion flow is a channel like the others:
 
 - **Drafts are listing state.** A draft saved server-side, keyed to the account and resumable on another device, is a listing in the draft state of [[listing-aggregate]], not browser storage. Resumable media uploads need coordination even inside one browser; OLX described in 2026 how several open tabs each tried to resume the same large upload and duplicated objects in storage, which it solved with the Web Locks API ([OLX Engineering](https://tech.olx.com/handling-concurrency-on-the-web-with-web-locks-api-163b7e07eddd), 2026).
 - **Category first, then the schema.** The category selects the attribute schema, fees and moderation rules, so the flow predicts the category early and loads the compiled form for it.
 - **The same validator.** The form renders the compiled schema and submits to the same command gateway. A rule enforced in the form but not in the feed, or the reverse, is a defect.
 - **Assistance is a suggestion layer.** Photo-to-listing features have moved from experiment to mainstream: eBay announced a photo-based "magical listing" tool in September 2023 ([eBay](https://innovation.ebayinc.com/stories/magical-listing-tool-harnesses-the-power-of-ai-to-make-selling-on-ebay-faster-easier-and-more-accurate/), 2023), and German trade press reported in November 2025 that Kleinanzeigen suggests title, description and category from a photo for almost all categories, excluding vehicles and intangibles such as jobs and services ([mobiFlip](https://www.mobiflip.de/?p=471571), 2025). The assistant fills the draft; the seller confirms; provenance records which values came from a model. [[ai-in-listing-systems]] owns the assistant and [[normalization-and-enrichment]] owns the provenance.
 
+Product teams usually own the insertion flow as a user-experience problem, and it is one too: a **conversion funnel** from "start listing" to "published", where every step that asks a casual seller for something they do not have loses supply. The Productscape model's seller journey names the typical pains: forced account creation before the seller sees value, mobile uploads over weak connections, and a moderation rejection "with an unclear reason" that leaves the casual seller stuck.
+
+The funnel metric that matters is not form completion but **published-and-contacted**: a flow that publishes listings faster by asking for less, and so produces listings nobody can find with filters, has moved the problem downstream. Tradeyard measures start-to-publish rate and the share of new listings that receive a first contact within 48 hours, side by side.
+
 ## In Practice: The Essen Golf Comes In Through a Feed
 
-Motorvane is the clearest test of this write path, because most of its supply arrives by machine. Of its **1.45 million** live listings, 91% come from **21,400 dealers**, and **88% of dealer listings arrive through DMS feeds**: about **1.16 million** listings maintained by machine. Most of Motorvane's transfer service providers send a nightly full snapshot per dealer; a minority send deltas through the Seller API during the day. New dealer listings run at about **210,000 a week**, about 30,000 a day, but the nightly snapshots carry well over a million records, because every car in stock is re-sent every night.
+Motorvane is the clearest test of this write path, because most of its supply arrives by machine. Of its **1.45 million** live listings, 91% come from **21,400 dealers**, and **88% of dealer listings arrive through DMS feeds**: about **1.16 million** listings maintained by machine. Most of Motorvane's transfer service providers send a nightly full snapshot per dealer; a minority send deltas through Motorvane's own Seller API during the day. New dealer listings run at about **210,000 a week**, about 30,000 a day, but the nightly snapshots carry well over a million records, because every car in stock is re-sent every night.
 
 That ratio gives the first design fact: **most feed records are unchanged.** After the Common Ground review, Motorvane added content-hash change detection in front of validation: on a typical weekday, about **91% of snapshot records** are byte-identical in their relevant fields to the last accepted version and are dropped before validation, normalization, enrichment and indexing. The remaining roughly 100,000 records a day are creates, price changes, description edits and removals, and they are what the rest of the pipeline pays for.
 
@@ -236,7 +236,7 @@ Autohaus Ruhrblick in Essen (fictional) uses a DMS whose vendor sends a full sna
 | 17:00 | Snapshot arrives | 148 vehicles for Ruhrblick, within its 150-slot package; run ID issued; adapter emits 148 ingestion records |
 | 17:01 | Change detection | 145 records unchanged and skipped; 2 price changes; 1 new external key, the Golf's stock number |
 | 17:01 | Validation | The Golf passes the used-car schema: VIN present, first registration, mileage, price with VAT status, required emissions fields |
-| 17:01 | Reconciliation | No removals; guard not triggered; a `Submit` command with the external key as idempotency key |
+| 17:01 | Reconciliation | No removals; guard not triggered; a `Submit` command carrying the Golf's external key, plus a request idempotency key for safe retries |
 | 17:02 | Listing service | Listing created, version 1, external key mapped; `ListingSubmitted` emitted |
 | 17:02–17:04 | Normalization and enrichment | VIN decoding fills **31 attributes**; market-value estimate **€22,800**, rated "good price" (see [[normalization-and-enrichment]]) |
 | 17:05 | Publication | Searchable; run report shows 1 created, 2 updated, 0 errors, 1 warning (a recommended equipment field missing on another car) |
@@ -255,7 +255,9 @@ The fix Motorvane adopted is a **hybrid contract**. Vendors may keep sending nig
 
 ### Hearthly: 160 vendors, one contract
 
-Hearthly's problem is breadth. About **160 software vendors** send listings for **36,500 agencies** across France and Spain, in formats that grew per vendor over years. The French market has historically worked through per-portal export connectors in the agency software, and Spain's former Casavista platform brought its own importer in 2025. One property can reach Hearthly through several vendors: two real-estate software vendors and Keybridge, the group's own agency-software company, supplied the three listings of the Lyon apartment in May 2027. Hearthly's ingestion team found three classes of vendor: about 40 that send complete, timely data; about 90 that send acceptable data with recurring warnings; and about 30 that cause most incidents, including the vendors that never send deletes. Compliance varies that much by vendor, so the contract must be explicit and measured per vendor.
+Hearthly's problem is breadth. About **160 software vendors** send listings for **36,500 agencies** across France and Spain, in formats that grew per vendor over years. The French market has historically worked through per-portal export connectors in the agency software, and Spain's former Casavista platform brought its own importer in 2025. Hearthly's ingestion team found three classes of vendor: about 40 that send complete, timely data; about 90 that send acceptable data with recurring warnings; and about 30 that cause most incidents, including the vendors that never send deletes. Compliance varies that much by vendor, so the contract must be explicit and measured per vendor.
+
+Run through the write path, Hearthly's ghosts are a contract gap, not an importer bug. A vendor that never sends deletes is a delta channel without its correction, so the contract's **scheduled reconciliation** applies: at least weekly, the vendor's list of live external keys is compared with Hearthly's copy, and listings absent from it become removal candidates through the same mass-change guard. One property can also reach Hearthly through several vendors: two real-estate software vendors and Keybridge, the group's own agency-software company, supplied the three listings of the Lyon apartment, the 68 m² flat in Lyon 7e this book follows (see [[meet-veldmark]]), in May 2027. Those listings come from three agencies, so they are three sellers, not one seller arriving through two doors; ingestion keeps them apart, and [[entity-resolution]] clusters them into one property.
 
 ## Trade-offs
 

@@ -7,7 +7,7 @@
   "part": "part-7",
   "title": "One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the multi-country-platforms entry in journal-spec.json; the supporting claims and audience are this spec's own. Units added by this conversion: introduction roadmap p05 (the published introduction named neighbouring chapters but not the chapter's own sections), a Trade-offs lead-in p50 that says what the two trade-off tables show, and a conclusion widened from one paragraph to two (p61 synthesis and callback, p62 hand-off).",
   "intent": {
     "outcome": {
@@ -393,7 +393,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "Tradeyard NL, BE, PL, PT; Motorvane DE, NL, PL, AT; Hearthly FR, ES; Keybridge a SaaS company, not a marketplace; nine locales, EUR and PLN; about 2,600 branches; trees of 1,420, 1,380, 980 and 760 leaves; Motorvane's one Kotlin stack; Spanish login still on Casavista's code.",
+              "what": "Tradeyard NL, BE, PL, PT; Motorvane DE, NL, PL, AT; Hearthly FR, ES; Keybridge a SaaS company, not a marketplace, and so not a tenant (its March 2027 neutrality commitment is told at decision 3); nine locales, EUR and PLN; about 2,600 branches; trees of 1,420, 1,380, 980 and 760 leaves; Motorvane's one Kotlin stack; Spanish login still on Casavista's code.",
               "source": "_research/scenario-ledger.md (Veldmark is fictional)",
               "shows": "Shows the scale of the problem and that each brand had solved it differently."
             }
@@ -636,12 +636,12 @@
       "paragraphs": [
         {
           "id": "p21",
-          "controlling_idea": "Marketplace groups use six platform models, from the fork per country to the converged product platform, and they are not a maturity ladder: most groups run several at once for different capabilities.",
+          "controlling_idea": "Marketplace groups share more or less in six platform models, from nothing beyond a starting codebase (the fork per country) to the whole product (the converged product platform), and they are not a maturity ladder: most groups run several at once for different capabilities.",
           "function": "comparison",
           "evidence": [
             {
               "kind": "table",
-              "what": "Fork per country (Schibsted-era Blocket-derived sites, primary documentation unavailable); federation with coordinated choices (Marktplaats and eCG, 2015, republished 2017); shared core with local configuration (OLX 2026 one repo three brands; Adevinta Benelux job posting); global components beneath local products (Adevinta's 2019 rule); platform as product (Adevinta Common Platform, Navarro 2020); converged product platform (Adevinta 2023 'a unified global platform'; AVIV 2021).",
+              "what": "Fork per country (Schibsted-era Blocket-derived sites, primary documentation unavailable); federation with coordinated choices (Marktplaats and eCG, 2015, republished 2017); shared core with local configuration (OLX 2026 one repo three brands; Adevinta Benelux job posting); global components beneath local products (Adevinta's 2019 rule); platform as product (Adevinta Common Platform, Navarro 2020); converged product platform (Adevinta 2023 'a unified global platform'; AVIV 2021, named in the table and quoted only in p24).",
               "source": "Sources listed in the chapter; dated as published",
               "shows": "Sets each model beside a dated example, where it works and where it fails."
             }
@@ -946,7 +946,7 @@
         },
         {
           "id": "p38",
-          "controlling_idea": "For an EU group, data residency does not mean keeping data in the user's country: GDPR Chapter V restricts transfers outside the EEA, so EU hosting with governed outside access covers most needs, and stricter constraints go in the register's hosting profile.",
+          "controlling_idea": "Two boundaries limit what tenants share, and whether data spans regions is a separate decision (p40). For an EU group, data residency does not mean keeping data in the user's country: GDPR Chapter V restricts transfers outside the EEA, so EU hosting with governed outside access covers most needs, and stricter constraints go in the register's hosting profile.",
           "function": "explanation",
           "evidence": [
             {
@@ -1079,7 +1079,7 @@
           "evidence": [
             {
               "kind": "table",
-              "what": "1 ten tenant codes; 2 codes in every identifier vm:<brand>:<country>:<id>, event, API call, log line, metric, cache key and cost tag; 3 Keybridge not a tenant; 4 partitioned default; 5 one configuration service, group → brand → tenant → profile → seller segment → experiment; 6 extension points (VIN decoding, energy certificates, Polish insertion fees); 7 release rings; 8 group-urgent classes; 9 tenant exit paths, because a private-equity owner may sell any tenant.",
+              "what": "1 ten tenant codes; 2 codes in every identifier vm:<brand>:<country>:<id>, event, API call, log line, metric, cache key and cost tag; 3 Keybridge not a tenant; 4 partitioned default; 5 one configuration service, group → brand → tenant → profile → seller segment → experiment; 6 extension points (VIN decoding, energy certificates, Polish insertion fees); 7 release rings; 8 group-urgent classes; 9 tenant exit paths, because a private-equity owner may sell any tenant. Decision 3's reason states that Keybridge also serves Hearthly's competitors and the March 2027 neutrality commitment.",
               "source": "_research/scenario-ledger.md (Veldmark is fictional)",
               "shows": "Shows every element of the reference architecture decided for one group."
             }
@@ -1167,7 +1167,7 @@
         },
         {
           "id": "p47",
-          "controlling_idea": "The second test, on the Tradeyard insertion flow leaving Yardstick in Q2 2028, sampled 300 of the 2,600 country branches and found about 70% values, 20% behavior and 10% dead code, and no branch that justified a fork.",
+          "controlling_idea": "The replay was the first test; the second, on the Tradeyard insertion flow leaving Yardstick in Q2 2028, sampled 300 of the 2,600 country branches and found about 70% values, 20% behavior and 10% dead code, and no branch that justified a fork (method before result).",
           "function": "evidence",
           "evidence": [
             {
@@ -1179,7 +1179,7 @@
           ],
           "transition_in": {
             "relationship": "sequence",
-            "carries_over": "The first test, on trust and safety.",
+            "carries_over": "The replay, named as the first test of the tenancy model.",
             "introduces": "The second, on the insertion flow.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -1187,7 +1187,7 @@
         },
         {
           "id": "p48",
-          "controlling_idea": "The Polish vehicles section shows the layers combined: one market, two brands, one shared capability and two commercial owners, all of which the tenancy model has to represent.",
+          "controlling_idea": "Under its own subheading ('One market, two brands'), the Polish vehicles section shows the classification's configuration and extensions combined: one market, two brands, one shared capability and two commercial owners, all of which the tenancy model has to represent.",
           "function": "example",
           "evidence": [
             {
@@ -1329,7 +1329,7 @@
       "transition_in": {
         "relationship": "contrast",
         "carries_over": "Where sharing fits each vertical.",
-        "introduces": "What goes wrong when the tenancy model is missing.",
+        "introduces": "What goes wrong when the tenancy model is missing or half-built.",
         "form": "sentence",
         "placement": "start_of_this"
       },
@@ -1713,6 +1713,46 @@
     {
       "date": "2026-11-12",
       "decision": "The spec's conclusion takeaway ('write the tenancy decision record first') is not stated verbatim in the draft's conclusion; it was a judge note, not a failure, so the published conclusion is kept. Accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-4 flow finding on p09: the Keybridge March 2027 commitment interrupted the tenant count; the scene now says only that Keybridge is not a tenant, and the competitors fact and the commitment moved into decision 3's reason (no fact cut). Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-4 flow finding on p21: the lead no longer says every model combines global components and configuration; the six models now range from sharing nothing beyond a starting codebase to sharing the whole product. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-4 flow finding on p24: the AVIV 2021 quotation is cited once, in p24; the table row names AVIV's 2021 integration ambition and points below. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-4 transition and flow findings on p40: the data-boundaries lead (p38) now announces the region question, and p40 opens by carrying over both boundaries before introducing multi-region deployment. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-4 flow finding on p41: localization opens by saying language runs through every layer and uses the mechanisms just described. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-4 flow finding on p47: the replay is named as the first test, and the branch-classification method precedes its result ('None justified a fork'). Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-4 transition and flow findings on p48: the Polish vehicles paragraph has its own subheading and opens from the branch classification. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-4 transition and flow findings on section 7: the lead carries over sharing per vertical and says 'missing or half-built'; the section transition's 'introduces' updated to match. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Minor single-reader finding on p36 fixed in passing: 'with two mechanisms' became its own sentence. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "length.max_words raised from 7,520 to 7,600 (+1.1%) to hold the fix-only glosses and pointers; no published fact cut. Fixed under the author's delegation (fix-only pass)."
     }
   ],
   "sources": [
@@ -1794,9 +1834,13 @@
     {
       "date": "2026-11-12",
       "change": "Resolved the round-3 escalation under the author's delegation: Trade-offs lead-in unit p49a, cache keys in decision 2, ring sentence reworded, Polish vehicles tenants named, max_words 7,520; open questions reduced to the three source questions."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on the round-4 blocking findings (under the author's delegation): Keybridge commitment moved to decision 3, platform-models lead reworded, AVIV quote cited once, region question announced, localization and branch-test openings, Polish vehicles subheading, failure-modes lead. Four single-reader minors left. max_words 7,600."
     }
   ],
   "length": {
-    "max_words": 7520
+    "max_words": 7600
   }
 }

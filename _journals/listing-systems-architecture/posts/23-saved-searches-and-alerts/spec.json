@@ -7,7 +7,7 @@
   "part": "part-4",
   "title": "Tell Me When It Appears: Saved Searches and Alerts",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-4, the thesis and the role are copied unchanged from the saved-searches-and-alerts entry in journal-spec.json; the conclusion realises Part IV's closing (synthesis, so-what, callback, takeaway) from the same file, and the hand-off uses Part V's transition_in. Units added by this conversion: the roadmap paragraph p04 and two conclusion paragraphs.",
   "intent": {
     "outcome": {
@@ -769,7 +769,7 @@
       "paragraphs": [
         {
           "id": "p29",
-          "controlling_idea": "Figure 4 shows the target architecture Ingrid's team proposes for Common Ground.",
+          "controlling_idea": "Because percolation with candidate selection gives instant alerts their speed and a percolator index is only a projection, the target architecture in Figure 4 puts a store of record behind the percolators.",
           "function": "description",
           "evidence": [
             {
@@ -1043,7 +1043,7 @@
         },
         {
           "id": "p54",
-          "controlling_idea": "At 80 events a second and 50,000 candidates each the percolator evaluates up to 4 million stored queries a second, so reducing candidates is the cheapest lever.",
+          "controlling_idea": "At 80 events a second and 50,000 candidates each the percolator evaluates up to 4 million stored queries a second, so reducing candidates is the cheapest lever; pausing the dormant 38% removes about a third of candidates, less because dormant searches sit less in busy partitions.",
           "function": "analysis",
           "evidence": [
             {
@@ -1433,7 +1433,7 @@
       "paragraphs": [
         {
           "id": "p59",
-          "controlling_idea": "Real-estate alerts go per canonical property, and automotive retractions arrive as late as the dealer feed, which the send-time check cannot see.",
+          "controlling_idea": "The same design is tuned differently per vertical, as the table shows; real-estate alerts go per canonical property, and automotive retractions arrive as late as the dealer feed, which the send-time check cannot see.",
           "function": "example",
           "evidence": [
             {
@@ -1804,6 +1804,53 @@
       "rejected": [
         "Trimming published text to make room."
       ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Vertical Differences: added a lead-in saying what the vertical table shows and moved the table after the paragraph, so its point is stated (evidence_is_explained). fixed under the author's delegation (fix-only pass).",
+      "rejected": [
+        "Leaving the table's point to the reader."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Architecture p29: opening now states that the architecture follows from percolation with candidate selection and from the percolator index being a projection, hence a store of record (cause_effect transition). fixed under the author's delegation (fix-only pass).",
+      "rejected": [
+        "Pointing at the figure only."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Concepts p14: opening links personal data to the dormancy and expiry states of Figure 1; productscape model glossed on first use as the author's working reference model (see [[business-capabilities]]) and pointed back to in Alerts as a Liquidity Lever (transition and known_before_new). fixed under the author's delegation (fix-only pass).",
+      "rejected": [
+        "Adding productscape to already_knows."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Worked example p54 and Consent: one clause explains why pausing 38% of saved searches removes only about a third of candidates (a listing meets only its own partitions' searches; fewer dormant ones sit in busy partitions); Consent points back to it. fixed under the author's delegation (fix-only pass).",
+      "rejected": [
+        "Changing the published 38% or 'about a third'."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Chief Architect p57: Transition paragraph labelled per brand (Tradeyard, then Motorvane), Motorvane's Elasticsearch percolators stated as the target rather than implied as current. fixed under the author's delegation (fix-only pass).",
+      "rejected": [
+        "Splitting the paragraph unit."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Minor reader findings fixed in wording: 'Tradeyard baseline delay' (Setting the Scene) and the buyer side named in Alerts as a Liquidity Lever p41. fixed under the author's delegation (fix-only pass).",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "length.max_words raised from 8,200 to 8,400 (+2.4%, within 10%) for the glosses and lead-ins; nothing published was cut. fixed under the author's delegation (fix-only pass).",
+      "rejected": [
+        "Trimming published text."
+      ]
     }
   ],
   "sources": [
@@ -1886,9 +1933,13 @@
     {
       "date": "2026-10-19",
       "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on the round-5 blocking findings (six majors) and two minors; max_words 8,400. (AI-mediated session)"
     }
   ],
   "length": {
-    "max_words": 8200
+    "max_words": 8400
   }
 }

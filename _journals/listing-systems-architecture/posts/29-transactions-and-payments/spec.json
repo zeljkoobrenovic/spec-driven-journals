@@ -7,7 +7,7 @@
   "part": "part-6",
   "title": "Beyond the Contact: Payments, Shipping and Buyer Protection",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the transactions-and-payments entry in journal-spec.json; the hand-off uses monetization-models' transition_in. Units added, split or moved by this conversion: introduction roadmap p04, the concepts paragraph split into p11 and p12, a lead-in to the payment-model comparison table (p23), lead-ins to the Trade-offs (p47) and Vertical Differences (p50) tables, and two conclusion paragraphs (p67, p68).",
   "intent": {
     "outcome": {
@@ -586,7 +586,7 @@
       "paragraphs": [
         {
           "id": "p18",
-          "controlling_idea": "A marketplace that wants to collect from buyers and pay sellers in the EU has three basic options, which the comparison splits into five models, and classifieds groups have used the first.",
+          "controlling_idea": "A marketplace that wants to collect from buyers and pay sellers in the EU has three basic options (a licensed provider's marketplace product, its own licence, or staying out of the flow of funds); the comparison counts five models because it splits the first by merchant of record and gives specialist institutions their own row; classifieds groups have used the first.",
           "function": "claim"
         },
         {
@@ -739,8 +739,20 @@
       },
       "paragraphs": [
         {
+          "id": "p25a",
+          "controlling_idea": "A provider holding the money does not take the transaction off the marketplace's hands: the public flows of Kleinanzeigen and Marktplaats show the marketplace owning the offer and acceptance, fee pricing, labels and tracking, the release timer and disputes.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "The INFERENCE, NOT DOCUMENTED callout on Kleinanzeigen's and Marktplaats' public flows as a plausible reference architecture.",
+              "shows": "Shows how much of a provider-held transaction stays with the marketplace, labelled as inference rather than a description of either company's systems."
+            }
+          ]
+        },
+        {
           "id": "p25",
-          "controlling_idea": "A transactional pivot adds six bounded contexts beside the listing core, none of which belongs inside the listing service.",
+          "controlling_idea": "Built out, those responsibilities become six bounded contexts beside the listing core, none of which belongs inside the listing service.",
           "function": "description",
           "evidence": [
             {
@@ -753,7 +765,14 @@
               "what": "Figure 2: the transaction platform beside the listing core; the ledger receives both order and money events.",
               "shows": "Shows the contexts' relationships and that finance and tax reporting come from one record."
             }
-          ]
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The responsibilities the marketplace keeps in the public flows.",
+            "introduces": "The six bounded contexts they become.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
         },
         {
           "id": "p26",
@@ -777,14 +796,13 @@
         },
         {
           "id": "p27",
-          "controlling_idea": "When the order completes, the sale must reach every copy of the listing, as the bike still shown in the next morning's digest warns; In Practice walks through the same order.",
-          "function": "example",
+          "controlling_idea": "When the order completes, the sale must reach every copy of the listing; one copy that misses it keeps selling an item that is gone, and In Practice follows Femke's bike to the copy that missed it.",
+          "function": "explanation",
           "evidence": [
             {
-              "kind": "scenario",
-              "what": "Femke's bike sold through Safe Deal at 18:10 on Monday 8 March 2027, gone from search a minute later, but the next morning's alert digest from an older snapshot featured it to 214 users.",
-              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
-              "shows": "Shows that completion is an event every downstream copy must consume."
+              "kind": "reasoning",
+              "what": "Search, saved-search alerts, digests, recommendations and sitemaps as copies of the listing; a forward pointer to the bike order in In Practice.",
+              "shows": "Shows that completion is an event every downstream copy must consume, and sets up the example without telling its outcome early."
             }
           ],
           "transition_in": {
@@ -798,7 +816,7 @@
         {
           "id": "p28",
           "form": "list",
-          "controlling_idea": "Four design rules follow from the order state machine's waiting states (placed, awaiting hand-in or pickup, delivered, disputed): every waiting state has a timer and an owner, release is a decision, money states are reconciled with order states, and states after completion are first-class.",
+          "controlling_idea": "Figure 3 draws the order's whole life (four waiting states with deadlines, exits that return money and release the listing, and chargebacks that reopen a completed order), and four design rules govern that life: every waiting state has a timer and an owner, release is a decision, money states are reconciled with order states, and states after completion are first-class.",
           "function": "explanation",
           "evidence": [
             {
@@ -815,7 +833,7 @@
           "transition_in": {
             "relationship": "sequence",
             "carries_over": "Availability, the order's first rule.",
-            "introduces": "The rules for the order's whole life.",
+            "introduces": "The order's whole life as Figure 3 draws it, and the rules that govern it.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -971,9 +989,22 @@
       },
       "flow": {
         "pattern": "small_to_large",
-        "rationale": "One local pay-at-pickup order first, then the risk the brand attracts in the same story, then a shipped order with a dispute that touches every context and ends on the ledger lines the clearing account lacked; the simpler order comes first so the reader knows the contexts' steps before a dispute complicates them."
+        "rationale": "Femke's story is told in time order: the fake buyer on Sunday evening first, so the reader meets the risk the brand attracts before the real order; then the Monday pay-at-pickup order, what its steps record, and the digest that missed its sale (the example the Architecture section pointed to); then a shipped order with a dispute that touches every context and ends on the ledger lines the clearing account lacked. The simpler order comes first so the reader knows the contexts' steps before a dispute complicates them."
       },
       "paragraphs": [
+        {
+          "id": "p38",
+          "controlling_idea": "Femke's bike listing drew a fake buyer within half an hour, showing that a protected-payment brand is the scammer's favorite disguise, so the countermeasure belongs in the message safety gate, not the payment platform.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "At 20:11 on Sunday a fake Safe Deal link on a domain registered that day reached Femke; about 41,000 payment-link phishing reports in NL and BE in 2026; messaging-and-leads' gate; Fast Mail for Fraudsters.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the safety cost a pivot brings with its brand."
+            }
+          ]
+        },
         {
           "id": "p36",
           "controlling_idea": "Femke's €225 bike order shows pay at pickup: the buyer pays in the app before the meeting, the money is held, and the seller receives it at the handover.",
@@ -986,7 +1017,14 @@
               "source": "_research/scenario-ledger.md (Veldmark is fictional)",
               "shows": "Shows each context's step and the money in it."
             }
-          ]
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The fake buyer on Sunday evening.",
+            "introduces": "The real sale on Monday.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
         },
         {
           "id": "p37",
@@ -1009,21 +1047,21 @@
           }
         },
         {
-          "id": "p38",
-          "controlling_idea": "A protected-payment brand is the scammer's favorite disguise, so the countermeasure belongs in the message safety gate, not the payment platform.",
+          "id": "p37a",
+          "controlling_idea": "The Tuesday digest row is the Architecture section's propagation rule broken: the bike sold at 18:10 and left search a minute later, but a digest assembled at 17:30 from an older replica snapshot and not re-checked still featured it to 214 users.",
           "function": "example",
           "evidence": [
             {
               "kind": "scenario",
-              "what": "At 20:11 on Sunday a fake Safe Deal link on a domain registered that day reached Femke; about 41,000 payment-link phishing reports in NL and BE in 2026; messaging-and-leads' gate; Fast Mail for Fraudsters.",
+              "what": "Sold 18:10 Monday 8 March 2027, removed from search 18:11; the 07:00 Tuesday digest assembled at 17:30 Monday from a MySQL replica snapshot, not re-checked, went to 214 users.",
               "source": "_research/scenario-ledger.md (Veldmark is fictional)",
-              "shows": "Shows the safety cost a pivot brings with its brand."
+              "shows": "Shows that completion is an event every downstream copy must consume."
             }
           ],
           "transition_in": {
-            "relationship": "contrast",
-            "carries_over": "The order working as designed.",
-            "introduces": "The fake order that preceded it.",
+            "relationship": "elaboration",
+            "carries_over": "The bike order's timeline and what its steps record.",
+            "introduces": "The table's Tuesday digest row as the propagation rule broken.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1042,7 +1080,7 @@
           ],
           "transition_in": {
             "relationship": "contrast",
-            "carries_over": "A local order released at the handover.",
+            "carries_over": "A local order released at the handover and the digest that missed its sale.",
             "introduces": "A shipped order with a dispute.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -1203,7 +1241,7 @@
       "paragraphs": [
         {
           "id": "p47",
-          "controlling_idea": "Eight decisions shape a transaction platform, the first two restating the payment models as choices, and each has two options that are right under different conditions.",
+          "controlling_idea": "The forum's decisions fit Veldmark and another marketplace could decide otherwise: eight decisions shape any transaction platform, each with two options right under different conditions, the first two restating the payment models as choices.",
           "function": "comparison",
           "evidence": [
             {
@@ -1234,13 +1272,13 @@
         },
         {
           "id": "p49",
-          "controlling_idea": "Sharing the transaction platform across countries is attractive but most exposed to local differences, and the public record shows the pattern without describing any company's systems.",
+          "controlling_idea": "Sharing the transaction platform across countries is attractive but most exposed to local differences, as Adevinta's move from shared to local ownership shows.",
           "function": "analysis",
           "evidence": [
             {
               "kind": "source",
-              "what": "Adevinta 2023 plan to stop duplicating 'the full transactional journey'; 2025 decentralization; the INFERENCE, NOT DOCUMENTED callout on Kleinanzeigen's and Marktplaats' flows as a plausible reference architecture.",
-              "shows": "Shows the sharing trade-off and labels the inferred reference architecture."
+              "what": "Adevinta 2023 plan to stop duplicating 'the full transactional journey'; 2025 decentralization.",
+              "shows": "Shows the sharing trade-off in both directions."
             }
           ],
           "transition_in": {
@@ -1334,7 +1372,7 @@
       "paragraphs": [
         {
           "id": "p52",
-          "controlling_idea": "The checkout ships before the ledger, and the first month-end finds refunds, label charges and chargebacks unmatched, so the ledger belongs in the launch criteria.",
+          "controlling_idea": "The design rules and choices work only when made on purpose; the first of nine failures, the one Veldmark met, is the checkout shipping before the ledger, so the first month-end finds refunds, label charges and chargebacks unmatched and the ledger belongs in the launch criteria.",
           "function": "cause_effect",
           "advances_thesis": {
             "supports": [
@@ -1802,6 +1840,32 @@
         "Moving p38 before the bike timeline.",
         "Dropping the first two Trade-offs rows."
       ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Spec fault, flow (p49 callout, two readers): the INFERENCE, NOT DOCUMENTED callout moved from Trade-offs to the start of Architecture as new unit p25a, where it shows what the marketplace keeps when a provider holds the money; p25 gets a cause_effect transition from it; p49 now carries only the Adevinta sharing evidence. Also clears evidence_is_explained on the callout. (fixed under the author's delegation (fix-only pass))",
+      "rejected": [
+        "Keeping the callout in Trade-offs with a tying sentence: both readers found it out of place there."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Spec fault, flow (p27, two readers): the bike's outcome (18:10, gone from search, 214-user digest) moved from Architecture p27 to new In Practice unit p37a after the order table, with the reason the digest was stale (assembled 17:30 from a replica snapshot, not re-checked, per the ledger); p27 now states the rule and points forward to In Practice by section name. (fixed under the author's delegation (fix-only pass))",
+      "rejected": [
+        "Leaving the full example in Architecture ahead of its walkthrough."
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Spec fault, flow (p28, two readers): the lead-in no longer claims all four rules follow from the waiting states; it describes Figure 3 in prose (waiting states with deadlines, refund exits, chargebacks after completion) and says four rules govern that life. (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Spec fault, flow (p38, two readers): the Sunday phishing attempt now opens the bike story (p38 first, then p36 'The real sale came on Monday'), so the story runs in time order; this supersedes the 2026-11-12 decision to keep the flashback. p38 loses its transition_in; p36 gains a time transition; flow rationale updated. (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Draft faults fixed: Payment Models opening names the three options and says how the comparison gets five (p18); Trade-offs opens with the declared contrast to the forum's decisions and the 'for each one' ambiguity is removed (p47); Failure Modes opens with a contrast sentence (p52); Veldmark ID glossed as Veldmark's group login, from 2028, in a parenthesis that keeps the March 2027 timeline past tense (p37); the vertical table names Autotrader's reservation backlash with a pointer below (p50). length.max_words 7750 -> 8100 (within 10%) for the added glosses and the moved paragraph. (fixed under the author's delegation (fix-only pass))"
     }
   ],
   "sources": [
@@ -1842,6 +1906,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass under the author's delegation: 11 blocking round-4 findings fixed (callout moved to Architecture as p25a; bike outcome moved to new p37a; phishing p38 moved first in In Practice; p28 lead-in; p18, p37, p47, p50, p52 wording); max_words 7,750 -> 8,100. Check report stale. (AI-mediated session)"
+    },
     {
       "date": "2026-11-12",
       "change": "Escalation resolved under the author's delegation: four corroborated flow faults fixed (p18, p24, p27/p36, p43), p47 lead-in, p40 reverted to the published 'has a ledger line', max_words 7,673 → 7,750. (AI-mediated session)"
@@ -1892,6 +1960,6 @@
     }
   ],
   "length": {
-    "max_words": 7750
+    "max_words": 8100
   }
 }

@@ -60,7 +60,7 @@ Each of these rows was reasonable when it was built. Together they mean that Vel
 
 ### Four kinds of location
 
-The proposed model needs a vocabulary first. A listing can carry several locations, and confusing them is the first modeling mistake. These four kinds are not the three representations named in the callouts: a kind says what is located, a representation says how precisely one location is stored and shown.
+The proposed model needs a vocabulary first. A listing can carry several locations, and confusing them is the first modeling mistake. A kind says what is located; how precisely one location is stored and shown is a separate question, which the precision levels and the architecture below answer.
 
 | Kind | Definition | Example | Who needs it |
 | --- | --- | --- | --- |
@@ -106,7 +106,7 @@ Marketplaces need both multiple parents and places no administration defines. A 
 
 ### Location precision
 
-The place levels, from country down to street, also name levels of detail. **Location precision** is the level of detail at which a location is known, stored or shown. A shared scale makes policies writable. Veldmark adopts six levels:
+The place levels, from country down to neighborhood, also name levels of detail, and two finer levels, street and exact address, complete them. **Location precision** is the level of detail at which a location is known, stored or shown. A shared scale makes policies writable. Veldmark adopts six levels:
 
 | Level | Name | Example (Tradeyard NL) | Example (Hearthly FR) |
 | --- | --- | --- | --- |
@@ -169,14 +169,9 @@ Concepts and licences now combine into the model. Inside the listing aggregate (
 | **Public location** | Public point; display precision level; display label ("3014 Rotterdam"); radius of the circle a map draws around the public point | Public | Search documents, listing pages, maps, apps, partner feeds, structured data |
 | **Place references** | Place ID at the finest level allowed for display, plus all ancestor IDs, with the gazetteer version | Public | Search filters, landing pages, alerts, analytics, ad targeting |
 
-A private seller's precise listing location is personal data; the gazetteer is not. The GDPR is explicit that **location data is one of the identifiers that make a person identifiable** ([GDPR Art. 4(1)](https://gdpr-info.eu/art-4-gdpr/), unofficial reproduction). Reference models show how easily this classification goes wrong. The real-estate Productscape domain model, used in this book's research, classifies its geo reference data as internal and non-personal, but the listing that carries a private owner's location as "possible-personal". Its general-listings model treats the listing as non-personal, which the review notes accompanying that model call wrong for private sellers, whose listings routinely embed location and contact data (see Sources and Evidence).
-
-Back to the table's order: each part can be recomputed from the parts above it: the public point from the precise point and the policy, the place references from the public or precise point and the gazetteer. That is what makes policy changes and boundary reforms backfills rather than migrations.
+The table's order is also the order of derivation. Each part can be recomputed from the parts above it. The public point comes from the precise point and the policy, and the place references come from the public or precise point and the gazetteer. That is what makes policy changes and boundary reforms backfills rather than migrations.
 
 ### Components
-
-![Diagram: Location enters as text and leaves as two different products](assets/images/11-location-and-geo/fig02-location-enters-text-leaves-two-different.jpeg)
-**Figure 2:** *Location enters as text and leaves as two different products. Everything to the right of the precision policy engine (component 5 below) sees only what the policy allows, while duplicate detection and fraud models read the restricted store (component 6) through an audited path.*
 
 Six components produce and guard these three parts:
 
@@ -186,6 +181,11 @@ Six components produce and guard these three parts:
 4. **Place resolver.** Given a point, returns the place IDs that contain it and their ancestors, using the gazetteer version stamped on the result.
 5. **Precision policy engine.** Given the precise location, the brand, category, seller type and the seller's own choice, it produces the public part. It is a pure function with versioned rules, which makes it testable and auditable.
 6. **Restricted location store.** Holds the precise part, separated from the listing's public read models and with access logged. [[listing-data-management]] owns the general model of read models and erasure; for location, the separation is the control.
+
+![Diagram: Location enters as text and leaves as two different products](assets/images/11-location-and-geo/fig02-location-enters-text-leaves-two-different.jpeg)
+**Figure 2:** *Location enters as text and leaves as two different products. Everything to the right of the precision policy engine (component 5) sees only what the policy allows, while duplicate detection and fraud models read the restricted store (component 6) through an audited path.*
+
+The store is restricted because a private seller's precise listing location is personal data; the gazetteer is not. The GDPR is explicit that **location data is one of the identifiers that make a person identifiable** ([GDPR Art. 4(1)](https://gdpr-info.eu/art-4-gdpr/), unofficial reproduction). Reference models show how easily this classification goes wrong. I maintain two generic reference models built with Productscape, a product-domain modeling method (see [[business-capabilities]]); they describe no real company. The real-estate model classifies its geo reference data as internal and non-personal, but the listing that carries a private owner's location as "possible-personal". Its general-listings model treats the listing as non-personal, which the review notes accompanying that model call wrong for private sellers, whose listings routinely embed location and contact data (see Sources and Evidence).
 
 ### Deriving the public point
 
@@ -246,7 +246,7 @@ Each kind of location query hides a decision that produces a visible bug if left
 
 ### The Rotterdam city bike
 
-The three cases run the model end to end. Femke, another private seller in Rotterdam, lists her €240 city bike on Tradeyard Netherlands on Sunday 7 March 2027 at 19:42. Her account profile holds her six-character postcode in Rotterdam. Her listing went live on the old model, a few weeks before the complaint. The six steps below are a replay: they show how the same listing is processed under the precision policy Veldmark adopted later in 2027.
+The three cases run the model end to end. Femke is not the seller from the opening complaint, who listed a sofa; she is another private seller in Rotterdam. She lists her €240 city bike on Tradeyard Netherlands on Sunday 7 March 2027 at 19:42. Her account profile holds her six-character postcode in Rotterdam. On 7 March, a few weeks before the complaint, her listing went live on the old model. The six steps below do not describe that evening. They replay the same listing under the precision policy Veldmark adopted later in 2027, and every step shows the new model.
 
 1. **Capture.** The insertion form pre-fills the postcode from her profile and asks whether the bike is there. She confirms. Her photos were taken in her hallway, and their EXIF metadata carries GPS coordinates within a few meters of her door. The media pipeline strips EXIF on upload ([[media-pipeline]]); this chapter's privacy rule would be pointless without it, since EXIF carries `GPSLatitude` and `GPSLongitude` tags ([ExifTool](https://exiftool.org/TagNames/GPS.html), n.d.).
 2. **Geocode.** The postcode resolves, through the gateway, to the centroid of that six-character postcode from the national address register. Match level: postcode centroid. Stored precision: close to P5 in a dense street, which is exactly why it is restricted.
@@ -255,7 +255,9 @@ The three cases run the model end to end. Femke, another private seller in Rotte
 5. **Indexing.** The search document receives the public point, the place IDs and the label. The event carries the same.
 6. **Search.** A buyer 2.6 km away sees "about 3 km" and a shaded district on the map. Of the 312 saved searches the bike matches, those with a radius are evaluated against the public point ([[saved-searches-and-alerts]]).
 
-Nothing in steps 4 to 6 can reveal more than the district. The precise centroid exists only in the restricted store. Not every risk Femke met that evening was a location one: at 20:11 a "buyer" sent her a fake payment link, a messaging and fraud problem covered in [[messaging-and-leads]]. Under the replayed model, a scammer who wanted to turn up at her door instead would find nothing more precise than a 5 km² cell.
+Nothing in steps 4 to 6 can reveal more than the district. The precise centroid exists only in the restricted store. Under the replayed model, a stranger who wanted to turn up at her door would find nothing more precise than a 5 km² cell.
+
+The model closes the location route and no other. On the real evening of 7 March, at 20:11, a "buyer" sent Femke a fake payment link. That risk is not a location one: it is a messaging and fraud problem, covered in [[messaging-and-leads]].
 
 ### The Lyon apartment
 
@@ -295,7 +297,7 @@ These figures are Veldmark's illustrative baselines. Its coordinate-defects row 
 
 ## Trade-offs
 
-Veldmark's cases rest on three choices: where to store location (three representations suit multi-country groups), which geo index fits which job (engine-native types for queries, H3 for aggregation), and how to derive the public point (each method trades privacy against map quality; a snapped or seeded point, coarsened in sparse areas, balances the two).
+Veldmark's cases rest on three choices. The first is where to store location: three representations suit multi-country groups. The second is which geo index fits which job: engine-native types for queries, H3 for aggregation. The third is how to derive the public point: each method trades privacy against map quality, and a snapped or seeded point, coarsened in sparse areas, balances the two.
 
 ### Where to store location
 
@@ -389,7 +391,7 @@ The decisions become review questions:
 
 ## From Place to Seller
 
-The five answers in Ingrid's table failed for one reason: each brand stored one location and let every reader take what it needed. That fault let a stranger reach the Rotterdam door and left coordinates nobody could say were licensed. The Lyon page that left out Villeurbanne had a different cause, no place references to choose between, and the same model's third representation fixes it. Under it, the Rotterdam payload would carry a cell center and a district, never a doorstep.
+The failures this chapter met had two causes. The first is in all five answers of Ingrid's table: each brand stored one location and let every reader take what it needed. That let a stranger reach the Rotterdam door and left coordinates nobody could say were licensed. The second explains the opening's landing page for "apartments in Lyon", which left out Villeurbanne: there were no place references to choose between. One model removes both causes. Under it, the Rotterdam payload would carry a cell center and a district, never a doorstep, and the place references would let "Lyon" mean the commune or "Lyon and surroundings". Three representations under a group policy, one gazetteer and a licence on every coordinate answer all three failures. That is why the group fixes location once, as a shared service, instead of five brand fixes, and can then answer the regulator, the licensor and the cross-border buyer.
 
 Location tells the marketplace where a listing is, not who is selling it, yet the precision rule already depends on the seller: private sellers get district level, and each agency chooses its level in its account settings. After categories, attributes, media and location, the last subdomain the listing references is who lists: private sellers, dealers, agency networks such as Agence Rhône Habitat with its fourteen branches, and the accounts, roles and integrations behind them. That is the subject of [[sellers-and-accounts]].
 

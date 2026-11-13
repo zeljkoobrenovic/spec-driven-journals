@@ -7,7 +7,7 @@
   "part": "part-7",
   "title": "System of Record and Read Models: Listing Data Management",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21, revised 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the listing-data-management entry in journal-spec.json. Added units: the roadmap paragraph p04, lead-ins p40 (trade-off table) and p42 (vertical table), lead sentences to the failure-mode list (p44) and the questions (p51), and the synthesis paragraph p52; see decision_log.",
   "intent": {
     "outcome": {
@@ -242,7 +242,7 @@
       },
       {
         "id": "p03",
-        "controlling_idea": "The chapter owns the listing system of record, read models and erasure propagation, builds on the lifecycle and the event contract, leaves the search index, analytical copies, legal obligations and failover to their chapters, and sets rules that web-and-seo-architecture and modernization-and-migration depend on.",
+        "controlling_idea": "The chapter owns the listing system of record, read models and erasure propagation, builds on the lifecycle and the event contract, leaves four neighbouring topics (the search index, analytical copies, legal obligations and failover) to their chapters, and sets rules that web-and-seo-architecture and modernization-and-migration depend on, in short sentences that gloss the consumer registry, erasure ledger and Yardstick.",
         "function": "context",
         "evidence": [
           {
@@ -457,7 +457,7 @@
         },
         {
           "id": "p12",
-          "controlling_idea": "The author's rule is that every copy must be either rebuildable, so its only problem is freshness, or governed, with an owner, purpose, retention and deletion path written down before it exists in the consumer registry that this chapter extends to every copy.",
+          "controlling_idea": "The author's rule is that every copy must be either rebuildable, so its only problem is freshness, or governed, with an owner, purpose, retention and deletion path written down before it exists in the consumer registry, whose extended entry the architecture section shows.",
           "function": "recommendation",
           "evidence": [
             {
@@ -536,7 +536,7 @@
       "paragraphs": [
         {
           "id": "p15",
-          "controlling_idea": "Listing marketplaces are polyglot by necessity: the author's generic domain model (not Veldmark's systems) puts one relational system of record with a search projection and a change event at the core, surrounded by store types each with a role, the staleness budget Veldmark sets for it across its brands (a year marking a target not yet met) and a removal path.",
+          "controlling_idea": "Listing marketplaces are polyglot by necessity: the author's generic domain model, stated in its own sentence as describing no Veldmark system, puts one relational system of record with a search projection and a change event at the core (Yardstick uses MySQL and Solr for the same shape), surrounded by store types each with a role, a removal path and the staleness budget Veldmark sets for it across its brands (a year marking a target not yet met); the GDPR Art. 19 notice is glossed with a pointer to the erasure section.",
           "function": "description",
           "organization": "classification",
           "evidence": [
@@ -652,7 +652,7 @@
         },
         {
           "id": "p38",
-          "controlling_idea": "Every copy needs a registry entry: the consumer registry from publication-pipeline, which names a consumer, its events, its removal objective and its owner, is extended so that every store holding listing data also records its source, staleness budget, rebuild path, retention and erasure handler.",
+          "controlling_idea": "Every copy needs a registry entry: the consumer registry entry from publication-pipeline, which names a consumer, its events, its removal objective and its owner, gains five fields for every store holding listing data (source, staleness budget, rebuild path, retention and erasure handler); the chapter uses the one name 'consumer registry' throughout.",
           "function": "definition",
           "evidence": [
             {
@@ -736,7 +736,7 @@
         },
         {
           "id": "p25",
-          "controlling_idea": "Tradeyard shows the cost of one database for all countries, its new listing service will use one schema per country so a country can later move without a data migration, and Vinted met the same capacity pressure at larger scale inside one cross-border catalog.",
+          "controlling_idea": "Tradeyard shows the cost of one database for all countries and its new listing service will use one schema per country so a country can later move without a data migration; Vinted met the same capacity pressure at larger scale and answered it the other way, sharding inside one cross-border catalog, which the stated answer leads before the Vitess numbers.",
           "function": "example",
           "evidence": [
             {
@@ -762,7 +762,7 @@
         },
         {
           "id": "p26",
-          "controlling_idea": "That makes Vinted, whose members widely buy across borders, the counter-case to country partitioning, with a single write primary and replicated projections, so the choice follows the business.",
+          "controlling_idea": "Vinted kept one catalog because its members widely buy across borders, which makes it the counter-case to country partitioning, with a single write primary and replicated projections, so the choice follows the business.",
           "function": "counterargument",
           "evidence": [
             {
@@ -774,8 +774,8 @@
           ],
           "transition_in": {
             "relationship": "contrast",
-            "carries_over": "Vinted's scaling inside one cross-border catalog.",
-            "introduces": "Vinted as the counter-case to country partitioning.",
+            "carries_over": "Vinted's choice to shard inside one cross-border catalog.",
+            "introduces": "The reason for that choice (cross-border buying), stated first, and Vinted as the counter-case.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -858,7 +858,7 @@
         },
         {
           "id": "p29",
-          "controlling_idea": "Veldmark's retention schedule sets a period and an end state for each data class of a closed listing; adopted in October 2027, a month after Femke's request, it made group policy of the periods her case had already used.",
+          "controlling_idea": "Veldmark's retention schedule sets a period and an end state for each data class of a closed listing; the paragraph states the chronology once and forward (Femke's September 2027 request was answered with these periods, and the schedule adopted in October made them group policy), which also explains the scene's six-month-old originals against the 90-day row.",
           "function": "example",
           "organization": "classification",
           "evidence": [
@@ -976,7 +976,7 @@
         },
         {
           "id": "p34",
-          "controlling_idea": "Femke's case came first: applied to her seven copies in September 2027, the workflow gives the outcomes sent to her, each with its basis, and the October schedule later adopted the same periods.",
+          "controlling_idea": "Applied to Femke's seven copies in September 2027, the workflow gives the outcomes sent to her, each with its basis; the placeholder (tombstone) seller ID is distinguished from the Kafka tombstone.",
           "function": "example",
           "evidence": [
             {
@@ -996,7 +996,7 @@
         },
         {
           "id": "p35",
-          "controlling_idea": "Lucía sends the response on 15 September 2027, nine days after the request, and with about 1,900 requests a month the next one must take no investigation.",
+          "controlling_idea": "The first answer cost nine days, two of them spent finding the copies, a cost the outcome table does not show; with about 1,900 requests a month the next one must take no investigation, because the registry already lists the copies.",
           "function": "analysis",
           "evidence": [
             {
@@ -1051,8 +1051,8 @@
       },
       "transition_in": {
         "relationship": "similarity",
-        "carries_over": "Erasure as a change that must reach every copy.",
-        "introduces": "Corrections, which must reach them the same way ('Like erasures, corrections must reach every copy').",
+        "carries_over": "Erasure as a change that must reach every copy, and the rule from 'The index is a read model' that a copy patched in place is no longer rebuildable.",
+        "introduces": "Corrections, which must reach every copy the same way and keep read models rebuildable ('Like erasures, corrections must reach every copy, and they test the rule from \"The index is a read model\"').",
         "form": "sentence",
         "placement": "start_of_this"
       },
@@ -1088,7 +1088,7 @@
       "transition_in": {
         "relationship": "additional_support",
         "carries_over": "The design sections, from the system of record to corrections.",
-        "introduces": "What real marketplaces have published in support of it; the opening says the design rests partly on that evidence.",
+        "introduces": "What real marketplaces have published in support of it; the opening says two of these sources were already quoted where the design used them (Vinted's single-writer reasoning under regions, Adevinta Spain's data contracts under the registry) and that this section gathers all the evidence in one place, adding what the same sources say about read models and personal data.",
         "form": "sentence",
         "placement": "start_of_this"
       },
@@ -1096,7 +1096,7 @@
         {
           "id": "p22",
           "form": "list",
-          "controlling_idea": "The design rests partly on public first-hand evidence, which is sparse: Vinted and Adevinta document a single writer with replicated projections, read models in external stores, compacted topics as views and a personal-data split in the analytical copy.",
+          "controlling_idea": "Gathered in one place, with pointers back to where two of them were quoted, the public first-hand evidence is sparse: Vinted and Adevinta document a single writer with replicated projections, read models in external stores, compacted topics as views and a personal-data split in the analytical copy.",
           "function": "evidence",
           "organization": "classification",
           "evidence": [
@@ -1517,7 +1517,8 @@
     "No marketplace has published a full copy inventory or erasure workflow; revisit if one does.",
     "The Veldmark retention periods (13 months for listing content, 24 months for T&S evidence) are illustrative; marketplace-regulation and trust-and-safety-architecture may refine them.",
     "Re-identification risk of anonymized property price history needs a firmer treatment in ml-platform or case-property-portals.",
-    "The old spec.md listed four unchecked modalities (checklist, summary, dialog, comics); none exists in the folder, so modalities is empty here. Whether to write them is the author's call."
+    "The old spec.md listed four unchecked modalities (checklist, summary, dialog, comics); none exists in the folder, so modalities is empty here. Whether to write them is the author's call.",
+    "Round-5 flow findings on the placement of Corrections and In Practice were answered with transitions, not moves, because AC-2 fixes the order; if a later check still reports them, the author decides whether to change AC-2 in the journal spec."
   ],
   "decision_log": [
     {
@@ -1595,6 +1596,13 @@
     {
       "date": "2026-11-12",
       "decision": "Flow rubric (fresh agent, flow outline only): sound with notes. Taken: the consumer registry is named in p12 as where a governed copy is recorded, so 'registered copy' is known before the architecture and erasure sections; the one-line signpost p16 merged into the read-your-writes paragraph p17; p26 points back to the Vinted evidence instead of re-establishing it; the retention and erasure sections are relabelled problem_solution and large_to_small; the erasure and post-level rationales now say why the residual stores and the evidence section sit where they do."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Fixed under the author's delegation (fix-only pass), clearing the blocking findings of draft-check round 5. Draft faults: Partitioning ¶2 now leads with Vinted's answer (one cross-border catalog, sharded inside) before the Vitess numbers, and ¶3 states the reason (cross-border buying) before calling Vinted the counter-case (one_controlling_idea, transition, flow); Erasure ¶4 no longer attributes the two days to the table and states one idea, the first case's cost against the next (one_controlling_idea, evidence_is_explained, flow); the generic-domain-model sentence split, with Yardstick's MySQL and Solr named (flow); 'consumer registry' used throughout and the extension announced once, in the architecture section, with Concepts pointing forward (flow); the scope paragraph broken into short sentences with the registry, ledger and Yardstick glossed (flow); the placeholder (tombstone) ID distinguished from the Kafka tombstone (known_before_new); the Art. 19 cell glossed with a pointer to the erasure section (known_before_new). Spec faults: the schedule-before-case chronology is stated once, forward, in p29 (which also explains the six-month-old originals), and dropped from p34; In Practice keeps its place (AC-2) but its opening and p22 now say two sources were already quoted where used and the section gathers them; Corrections keeps its place (AC-2 order) and its transition now ties it to 'The index is a read model' as well as erasure. Minor fixes taken: 'pro statistics' glossed; 'The lifecycle' made 'This data lifecycle'. Word count 6,973 against 7,000; max_words unchanged.",
+      "rejected": [
+        "Moving Corrections after 'The index is a read model' and In Practice earlier, which both flow readers suggested, because AC-2's expected order (copied from the journal spec) lists corrections and documented practice after erasure; the transitions were rewritten instead."
+      ]
     }
   ],
   "sources": [
@@ -1655,6 +1663,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on round-5 blocking findings: Vinted partitioning paragraphs, erasure cost paragraph, registry naming, scope paragraph, generic-model sentence, tombstone and Art. 19 glosses, schedule chronology stated once, In Practice and Corrections openings. (AI-mediated session)"
+    },
     {
       "date": "2026-11-12",
       "change": "Escalation resolved under the author's delegation: In Practice moved after Corrections, schedule order made explicit, minor flow points fixed, max_words 6,704 to 7,000. (AI-mediated session)"

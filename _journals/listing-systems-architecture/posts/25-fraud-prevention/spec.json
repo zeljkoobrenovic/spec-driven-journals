@@ -7,7 +7,7 @@
   "part": "part-5",
   "title": "Scams, Fakes and Account Takeovers: Fraud Prevention for Listings",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, the three journal acceptance criteria, the thesis and the role are copied unchanged from the fraud-prevention entry in journal-spec.json. Two units are added to the published text: a roadmap paragraph in the introduction (p04, for AC-2) and a synthesis paragraph before the hand-off (p58).",
   "intent": {
     "outcome": {
@@ -43,7 +43,7 @@
         "method": "cold_reader",
         "severity": "major",
         "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
-        "expected": "The off-platform nature of classifieds fraud and the three terms the chapter owns (fraud signal, risk score, step-up friction); the Barcelona ring; the threat model and typology; vertical differences; signals including duplicate photos; the risk scoring service with real-time and batch paths, rules and models, actor scoring; step-up friction with a threshold example; messaging controls; labels and adaptation; banks and police; back to Barcelona; trade-offs, failure modes, the Chief Architect's view and questions. Evidence: UK Finance, OLX, Which?, Meta, Stripe Radar and Airbnb public sources, and the fictional Veldmark."
+        "expected": "The off-platform nature of classifieds fraud and the three terms the chapter owns (fraud signal, risk score, step-up friction); the Barcelona ring; the threat model and typology; vertical differences; signals including duplicate photos; the risk scoring service with real-time and batch paths, actor scoring, rules and models; step-up friction with a threshold example; messaging controls; labels and adaptation; banks and police; back to Barcelona; trade-offs, failure modes, the Chief Architect's view and questions. Evidence: UK Finance, OLX, Which?, Meta, Stripe Radar and Airbnb public sources, and the fictional Veldmark."
       },
       {
         "id": "AC-3",
@@ -123,14 +123,14 @@
     "additional_patterns": [
       {
         "pattern": "large_to_small",
-        "applies_to": "threat model, vertical differences, signals and architecture: the whole threat and how it varies by vertical, then the signals, then the service that combines them"
+        "applies_to": "threat model (with its vertical-differences subsection), signals and architecture: the whole threat and how it varies by vertical, then the signals, then the service that combines them"
       },
       {
         "pattern": "grouping",
         "applies_to": "trade-offs to questions: the book's reference sections"
       }
     ],
-    "rationale": "The Barcelona scene poses the problem: signals on day one, action on day twelve. The threat model says why controls sit before the payment, vertical differences show how the threat and where the money moves vary by vertical, and the signals section names what the controls can observe; the risk scoring service then combines those signals, so it must follow them. Friction and messaging controls say what to do with a score, labels and bank collaboration keep the scores current, and only then can Barcelona be answered component by component. The reference sections test and govern the design. Putting the architecture before the signals would leave the service combining things the reader has not met; putting Barcelona's answer earlier would leave half its table unexplained."
+    "rationale": "The Barcelona scene poses the problem: signals on day one, action on day twelve. The threat model says why controls sit before the payment, its vertical-differences subsection shows how the threat and where the money moves vary by vertical, and the signals section names what the controls can observe; the risk scoring service then combines those signals, so it must follow them. Friction and messaging controls say what to do with a score, labels and bank collaboration keep the scores current, and only then can Barcelona be answered component by component. The reference sections test and govern the design. Putting the architecture before the signals would leave the service combining things the reader has not met; putting Barcelona's answer earlier would leave half its table unexplained."
   },
   "introduction": {
     "hook": {
@@ -158,7 +158,6 @@
           "promise": "The threat model, how it differs by vertical, and the signals that expose fraud.",
           "kept_in": [
             "threat-model",
-            "verticals",
             "signals"
           ]
         },
@@ -374,7 +373,7 @@
     {
       "id": "threat-model",
       "heading": "The Threat Model: What Classifieds Fraud Looks Like",
-      "controlling_idea": "Classifieds fraud is mostly authorized push payment fraud that the platform cannot see or reverse, so its controls sit before the payment, and a typology names where each kind of fraud can be stopped.",
+      "controlling_idea": "Classifieds fraud is mostly authorized push payment fraud that the platform cannot see or reverse, so its controls sit before the payment; a typology names where each kind of fraud can be stopped, and the threat and where the money moves differ by vertical.",
       "function": "explanation",
       "advances_thesis": {
         "supports": [
@@ -384,7 +383,7 @@
       },
       "flow": {
         "pattern": "assertion_evidence_reasoning",
-        "rationale": "Define the dominant fraud, show its size, draw the consequence for where controls sit, then map the fraud types to those controls."
+        "rationale": "Define the dominant fraud, show its size, draw the consequence for where controls sit, then map the fraud types to those controls, then show how the threat and where the money moves vary by vertical (subsection), ending on what protected payments change."
       },
       "transition_in": {
         "relationship": "elaboration",
@@ -468,44 +467,44 @@
             "form": "sentence",
             "placement": "start_of_this"
           }
-        }
-      ]
-    },
-    {
-      "id": "verticals",
-      "heading": "Vertical Differences",
-      "controlling_idea": "Fraud differs by vertical in type, loss, signal and natural friction, and where the money moves decides the link between fraud and transactions.",
-      "function": "comparison",
-      "advances_thesis": {
-        "supports": [
-          "F1"
-        ],
-        "how": "Shows that moving money onto the platform changes the threat model rather than ending it."
-      },
-      "transition_in": {
-        "relationship": "elaboration",
-        "carries_over": "The fraud typology and the pre-payment controls it implies.",
-        "introduces": "How fraud type, loss, signal, natural friction and where the money moves differ by vertical.",
-        "form": "sentence",
-        "placement": "start_of_this"
-      },
-      "paragraphs": [
+        },
         {
           "id": "p51",
-          "controlling_idea": "Where the money moves explains the strategic link between fraud and transactions: protected on-platform payment turns unrecoverable APP fraud into a mediated dispute but creates a new surface, phishing that imitates the platform's payment product, so launching it changes the threat model rather than ending it.",
-          "function": "analysis",
+          "controlling_idea": "Fraud differs by vertical in dominant type, loss per victim, strongest signal and natural friction, and in where the money moves, which decides where the controls can sit.",
+          "function": "comparison",
           "evidence": [
             {
               "kind": "table",
               "what": "General classifieds, real estate, automotive, jobs, recommerce with payments: dominant fraud, loss per victim, strongest signal, natural friction, where the money moves.",
               "shows": "Compares verticals on the dimensions that matter for fraud."
-            },
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The fraud typology and the pre-payment controls it implies.",
+            "introduces": "How the threat and where the money moves differ by vertical (subsection 'Vertical differences').",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "Where the money moves explains the strategic link between fraud and transactions: protected on-platform payment turns unrecoverable APP fraud into a mediated dispute but creates a new surface, phishing that imitates the platform's payment product, so launching it changes the threat model rather than ending it.",
+          "function": "analysis",
+          "evidence": [
             {
               "kind": "case",
               "what": "Femke's fake Safe Deal link.",
               "shows": "Shows the new surface protected payment creates."
             }
-          ]
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The table's last row: where the money moves in each vertical.",
+            "introduces": "Why that row links fraud to transactions, and the new surface protected payment creates.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
         }
       ]
     },
@@ -666,7 +665,7 @@
             "applies_to": "p26-p27: the rule that stopped the ring, then the model that replaced it"
           }
         ],
-        "rationale": "The service and its provenance first, then its paths and the feature store that feeds them, then the rules and models that consume features and their lifecycle with the Barcelona rule, then the unit of scoring and the identity graph with its limits. Rules and models come before the identity graph because the graph is the source of the features that let them score actors."
+        "rationale": "The service and its provenance first, then its paths and the feature store that feeds them, then the unit of scoring and the identity graph with its limits, then the rules and models that consume item and graph features and their lifecycle with the Barcelona rule. The unit of scoring comes before rules and models because it is the service's deepest design choice and the Barcelona rule already acts on the actor cluster (holds all the account's listings, one case for the cluster)."
       },
       "transition_in": {
         "relationship": "problem_solution",
@@ -750,6 +749,58 @@
           }
         },
         {
+          "id": "p28",
+          "controlling_idea": "The deepest design choice is the unit of scoring: organized fraud is an actor problem, because a ring's listings are designed to pass item checks and its infrastructure is not.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Features precomputed by streaming and batch jobs and served by the feature store.",
+            "introduces": "What those features describe and the service scores: the actor as well as the item.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "form": "list",
+          "controlling_idea": "The identity graph links accounts through shared devices, phone numbers, e-mail patterns, payment accounts, IP ranges, image hashes and near-identical text, and is used to propagate known fraud, detect rings and scope enforcement to the whole cluster.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: clean listings in the item view against a cluster of 26 accounts on five devices and four bank accounts in the actor view.",
+              "shows": "Shows why the ring is invisible per item and obvious per actor."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The actor as the unit of scoring.",
+            "introduces": "The structure that makes actors visible: the identity graph and its three uses.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "The graph has two hard constraints: shared attributes are not proof, so graph features raise scores and widen cases but do not terminate accounts alone, and the graph is personal data, so at Veldmark only hashed identifiers of fraud-terminated accounts cross brands.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Shared cross-brand block list of hashed identifiers of fraud-terminated accounts, two-year retention approved by Lucía Ortega under a fraud-prevention legitimate interest; each brand's graph of ordinary accounts stays in the brand.",
+              "shows": "Shows the data-protection boundary on group sharing.",
+              "source": "Scenario ledger, cast line (Lucía Ortega)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the identity graph can do.",
+            "introduces": "The limits on what it may do.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p24",
           "controlling_idea": "Rules and models are not alternatives but do different jobs: rules handle known patterns fast and fail by rot, models combine weak signals and fail by drift.",
           "function": "comparison",
@@ -762,8 +813,8 @@
           ],
           "transition_in": {
             "relationship": "sequence",
-            "carries_over": "Where features come from.",
-            "introduces": "What consumes them: rules and models.",
+            "carries_over": "Item features and the graph features the identity graph supplies, within its limits.",
+            "introduces": "What consumes those features: rules and models.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -830,58 +881,6 @@
             "relationship": "cause_effect",
             "carries_over": "The rule that stopped the ring.",
             "introduces": "Why a model replaced it and what that says about rules and models together.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p28",
-          "controlling_idea": "The deepest design choice is the unit of scoring: organized fraud is an actor problem, because a ring's listings are designed to pass item checks and its infrastructure is not.",
-          "function": "claim",
-          "transition_in": {
-            "relationship": "elaboration",
-            "carries_over": "Rules and models scoring what they are given.",
-            "introduces": "What they should score: the actor as well as the item.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p29",
-          "form": "list",
-          "controlling_idea": "The identity graph links accounts through shared devices, phone numbers, e-mail patterns, payment accounts, IP ranges, image hashes and near-identical text, and is used to propagate known fraud, detect rings and scope enforcement to the whole cluster.",
-          "function": "definition",
-          "evidence": [
-            {
-              "kind": "figure",
-              "what": "Figure 3: clean listings in the item view against a cluster of 26 accounts on five devices and four bank accounts in the actor view.",
-              "shows": "Shows why the ring is invisible per item and obvious per actor."
-            }
-          ],
-          "transition_in": {
-            "relationship": "elaboration",
-            "carries_over": "The actor as the unit of scoring.",
-            "introduces": "The structure that makes actors visible: the identity graph and its three uses.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p30",
-          "controlling_idea": "The graph has two hard constraints: shared attributes are not proof, so graph features raise scores and widen cases but do not terminate accounts alone, and the graph is personal data, so at Veldmark only hashed identifiers of fraud-terminated accounts cross brands.",
-          "function": "explanation",
-          "evidence": [
-            {
-              "kind": "scenario",
-              "what": "Shared cross-brand block list of hashed identifiers of fraud-terminated accounts, two-year retention approved by Lucía Ortega under a fraud-prevention legitimate interest; each brand's graph of ordinary accounts stays in the brand.",
-              "shows": "Shows the data-protection boundary on group sharing.",
-              "source": "Scenario ledger, cast line (Lucía Ortega)"
-            }
-          ],
-          "transition_in": {
-            "relationship": "contrast",
-            "carries_over": "What the identity graph can do.",
-            "introduces": "The limits on what it may do.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1416,9 +1415,9 @@
         "how": "Restates each rule as the failure that follows from breaking it."
       },
       "transition_in": {
-        "relationship": "sequence",
-        "carries_over": "The trade-offs and their defaults.",
-        "introduces": "The ways fraud stacks commonly fail.",
+        "relationship": "cause_effect",
+        "carries_over": "The design's components and the trade-offs and their defaults.",
+        "introduces": "The ways fraud stacks fail, each a component skipped or a trade-off settled the wrong way, which is why the list follows the trade-offs.",
         "form": "sentence",
         "placement": "start_of_this"
       },
@@ -1639,7 +1638,8 @@
     "The Airbnb targeted-friction evidence comes from a 2018 InfoQ summary; the original Medium post was not fetched (Medium returns 403). Verify against the original before print. (Carried over from spec.md.)",
     "No classifieds fraud-scoring architecture is publicly documented. Revisit if Vinted's Trust & Safety streaming talk or Adevinta material becomes fetchable. (Carried over from spec.md.)",
     "The friction cost model's inputs (€180 harm per fraud account, €25 per lost genuine account, 8% abandonment) are illustrative; a later edition could use published abandonment data if any exists. (Carried over from spec.md.)",
-    "The Verification of Payee non-euro-area date is reported inconsistently by secondary sources; only the euro-area date is used. (Carried over from spec.md.)"
+    "The Verification of Payee non-euro-area date is reported inconsistently by secondary sources; only the euro-area date is used. (Carried over from spec.md.)",
+    "Minor single-reader points left as published (fix-only pass, 2026-11-13): why the third account forms the cluster that evening; what Hearthly Spain's move was brought forward from (the ledger says only 'brought forward'); the one-line bridge into Trade-offs; which four stacks; the October 2026 'now' of the UK Finance aside; the Golf example's reliance on earlier chapters."
   ],
   "decision_log": [
     {
@@ -1729,6 +1729,34 @@
     {
       "date": "2026-11-13",
       "decision": "Reader-found error fixed by the orchestrator (author request 'fix the errors readers found'): Scene: made clear the shared platform did not yet exist in July 2027 (ledger: live November 2027)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Scene p08: the long Casavista/shared-platform sentence split into four short sentences (both readers re-read it). fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Vertical Differences made a subsection of The Threat Model (both readers, spec fault): section 'verticals' removed, its paragraph split into p51 (the table of verticals, introduced before it) and new p60 (the last row's meaning, after the table); Femke glossed as the Tradeyard seller from earlier chapters; roadmap kept_in, flow rationale and threat-model controlling idea updated. fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Architecture: 'Scoring actors, not just items' (p28-p30) moved before 'Rules and models together' (p24-p27) (both readers, spec fault); p28 now opens from the features the feature store serves, p24 from item and graph features; flow rationale rewritten. AC-2 expected lists 'rules and models, actor scoring' in the old order: replacement reported for the journal spec. fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p21: the four public sources now point to where each is described; 'my reference-architecture inference' introduces the author's first-person voice before the Trade-offs recommendation (style guide: first person for judgement). fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Transitions fixed in prose: p24 picks up the features it consumes; Feedback Loops opens from the decisions the controls produce; p49 contrasts sourcing with what friction costs; Messaging p37 reordered so 'the same way' has a clear referent; Failure Modes says why it follows the trade-offs (spec transition updated). fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Known-before-new: 'NL and BE users' written out as users in the Netherlands and Belgium; IBAN glossed at first use in the Signals section; friction worked example names Veldmark's shared T&S platform, live for Tradeyard since November 2027 (ledger, Nov 2027). fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "length.max_words raised from 7,950 to 8,100 (+1.9%) to hold the added glosses, pointers and transitions (draft 7,960 words). fixed under the author's delegation (fix-only pass)."
     }
   ],
   "sources": [
@@ -1808,9 +1836,13 @@
     {
       "date": "2026-11-12",
       "change": "Resolved the round-3 escalation under the author's delegation: Casavista sentence moved to p08, Messaging bridge rewritten, Vertical Differences moved after the threat model (roadmap, flow and transitions updated; AC-2 expected edit pending in the journal spec), max_words raised to 7,950, cheap minor fixes; open questions reduced to the four carried over from spec.md. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on the round-6 blocking findings under the author's delegation: Vertical Differences folded into The Threat Model, actor scoring moved before rules and models, four transitions and three flow points fixed in prose, NL/BE and IBAN glossed; check-report.json is stale. (AI-mediated session)"
     }
   ],
   "length": {
-    "max_words": 7950
+    "max_words": 8100
   }
 }

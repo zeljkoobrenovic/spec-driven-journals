@@ -112,7 +112,7 @@ My rule of thumb: **take part in the transaction where the platform's presence r
 
 ## Payment Models: Who Holds the Money
 
-A marketplace that wants to collect from buyers and pay sellers in the EU has three basic options, which the comparison below splits into five models. In practice, classifieds groups have used the first.
+A marketplace that wants to collect from buyers and pay sellers in the EU has three basic options: use a licensed provider's marketplace product, hold a licence itself, or stay out of the flow of funds. The comparison at the end of this section counts five models, because it splits the first option by who is merchant of record and gives the specialist institutions that also sit under it a row of their own. In practice, classifieds groups have used the first option.
 
 ### Use a licensed provider's marketplace product
 
@@ -146,7 +146,11 @@ Veldmark chose the first row. [[bounded-contexts]] records the consequence: Safe
 
 ## Architecture: The Transaction Platform
 
-With a provider holding the money, a transactional pivot still adds six bounded contexts beside the listing core. None of them belongs inside the listing service.
+A provider holding the money does not take the transaction off the marketplace's hands. The public record of two horizontals that went this way shows how much stays with the marketplace:
+
+> **INFERENCE, NOT DOCUMENTED:** The public descriptions of Kleinanzeigen's and Marktplaats' flows fit a common pattern: a licensed provider holds funds; the marketplace owns the offer and acceptance in chat, the buyer-fee pricing, label generation and tracking, the release timer and dispute handling. It is a plausible reference architecture, not a description of either company's systems.
+
+Built out, those responsibilities become six bounded contexts beside the listing core, and none of them belongs inside the listing service.
 
 | Context | Owns | Key events | Must not own |
 | --- | --- | --- | --- |
@@ -164,14 +168,14 @@ With a provider holding the money, a transactional pivot still adds six bounded 
 
 The most common integration bug in a transactional pivot is the double sale: two buyers pay for the same one-off item because the listing still looked available. The order context must therefore **reserve the listing atomically when payment is committed**, and the listing must treat a reservation from an order as authoritative. At Tradeyard, a Safe Deal order emits `ListingReserved` on the listing event stream and the listing transitions to reserved; search shows a badge and alerts stop notifying ([[event-driven-listings]]). A reservation needs a timeout: an order that is never paid, never shipped or never collected must release the listing again, or the reservation becomes Ghost Inventory in reverse, a sellable item nobody can buy.
 
-When the order completes, the listing becomes sold through the same stream, and every copy of the listing must react: search, saved-search alerts, digests, recommendations and sitemaps ([[saved-searches-and-alerts]], [[publication-pipeline]]). Femke's bike, whose order In Practice walks through step by step, is the canonical warning. It sold through Safe Deal at 18:10 on Monday 8 March 2027 and was gone from search a minute later, but the next morning's alert digest, assembled from an older snapshot, still featured it to **214** users.
+When the order completes, the listing becomes sold through the same stream, and every copy of the listing must react: search, saved-search alerts, digests, recommendations and sitemaps ([[saved-searches-and-alerts]], [[publication-pipeline]]). One copy that misses the sale keeps selling an item that is gone; the In Practice section below follows one Safe Deal order, Femke's bike, to the copy that missed it.
 
 ### The order state machine
 
 ![Diagram: A protected-payment order for goods](assets/images/29-transactions-and-payments/fig03-protected-payment-order-goods-every-waiting.jpeg)
 **Figure 3:** *A protected-payment order for goods. Every waiting state has a deadline, every exit to cancellation or refund returns money and releases the listing, and a completed order can still be reopened by a card chargeback weeks later, which is why the ledger must handle states after payout.*
 
-Four design rules follow from the diagram's waiting states (placed, awaiting hand-in or pickup, delivered, disputed).
+Figure 3 draws the order's whole life: four waiting states (placed, awaiting hand-in or pickup, delivered, disputed), each with a deadline; exits that return money and release the listing; and a chargeback that can reopen a completed order. Four design rules govern that life.
 
 1. **Every waiting state has a timer and an owner.** Unshipped orders, uncollected pickups and silent buyers are the normal case, not the exception. Kleinanzeigen documents one such rule: if the buyer does not confirm receipt, "wird der Betrag nach 14 Tagen automatisch an den Verkäufer überwiesen" (the amount is paid to the seller automatically after 14 days) ([Kleinanzeigen, n.d.](https://themen.kleinanzeigen.de/sicher-bezahlen/)). Marktplaats' successor to its first escrow product, as described in 2022, paid the seller on day 8 if there were no complaints ([AVROTROS Radar, 2022](https://radar.avrotros.nl/artikel/dit-is-de-vervanger-voor-de-gelijk-oversteken-functie-van-marktplaats-52677)).
 2. **Release is a decision, not a side effect.** The order context decides when funds become payable, using the delivery event, the dispute window, the buyer's confirmation and the risk score. The payment edge only executes. A fraud rule must be able to hold a payout, and that hold is itself a restricting decision that needs a statement of reasons under the Digital Services Act ([[marketplace-regulation]]).
@@ -208,7 +212,9 @@ Moving money on-platform turns on obligations that a classifieds site largely av
 
 ### The Rotterdam city bike: pay at pickup
 
-Femke listed her city bike on Tradeyard Netherlands for **€240** on Sunday 7 March 2027 at 19:42. Early on Monday afternoon she agreed **€225** with a buyer in chat. The order shows how "pay at pickup" works: the buyer pays in the app before the meeting, the money is held, and the seller receives it at the handover.
+Femke listed her city bike on Tradeyard Netherlands for **€240** on Sunday 7 March 2027 at 19:42, and the first "buyer" was a fraud. **A protected-payment brand is the scammer's favorite disguise**: at 20:11 that evening the "buyer" sent her a link to a fake Safe Deal payment page, on a domain registered that day. Tradeyard users in the Netherlands and Belgium reported about **41,000** payment-link phishing attempts in 2026. The countermeasure is not in the payment platform, which never saw the fake page; it is in the message safety gate that holds links imitating Safe Deal ([[messaging-and-leads]]). A transactional pivot that does not budget for this is building **Fast Mail for Fraudsters** with its own logo on it.
+
+The real sale came on Monday. Early that afternoon she agreed **€225** with a buyer in chat. The order shows how "pay at pickup" works: the buyer pays in the app before the meeting, the money is held, and the seller receives it at the handover.
 
 | Time (Mon 8 Mar 2027) | Step | Context | Money |
 | --- | --- | --- | --- |
@@ -220,9 +226,9 @@ Femke listed her city bike on Tradeyard Netherlands for **€240** on Sunday 7 M
 | Tue 9 Mar, 07:00 | The alert digest assembled at 17:30 on Monday still features the sold bike to 214 users | Alerts | None |
 | Tue 9 Mar | Payout to Femke's bank account | Payment edge | €225 paid out |
 
-The handover code is the release event: by giving it, the buyer confirms they have seen and accepted the bike, so pay-at-pickup protection covers payment security and the seller not turning up, not "not as described" after handover. Femke had already been verified as a payee by Adyen before her first Safe Deal payout, which is why Veldmark ID will carry that fact as a `payee.verified` claim ([[identity-and-verification]]). The €11.95 fee is charged to the buyer on top of the price, so Femke's DAC7 consideration is €225; with four Safe Deal sales in 2027 totaling €610, she is an excluded seller.
+The handover code is the release event: by giving it, the buyer confirms they have seen and accepted the bike, so pay-at-pickup protection covers payment security and the seller not turning up, not "not as described" after handover. Adyen had already verified Femke as a payee before her first Safe Deal payout, so she could be paid the next day. (From 2028, Veldmark's group login, Veldmark ID, carries that fact as a `payee.verified` claim; see [[identity-and-verification]].) The €11.95 fee is charged to the buyer on top of the price, so Femke's DAC7 consideration is €225; with four Safe Deal sales in 2027 totaling €610, she is an excluded seller.
 
-**A protected-payment brand is the scammer's favorite disguise**, as Femke's Sunday evening showed. At 20:11 on Sunday a "buyer" had sent her a link to a fake Safe Deal payment page, on a domain registered that day. Tradeyard users in the Netherlands and Belgium reported about **41,000** payment-link phishing attempts in 2026. The countermeasure is not in the payment platform, which never saw the fake page; it is in the message safety gate that holds links imitating Safe Deal ([[messaging-and-leads]]). A transactional pivot that does not budget for this is building **Fast Mail for Fraudsters** with its own logo on it.
+The Tuesday 07:00 row is the Architecture section's propagation rule broken. The bike sold at 18:10 on Monday and was gone from search a minute later, but the alert digest had been assembled at 17:30 from an older database replica snapshot and was not re-checked before sending, so it still featured the bike to **214** users. Femke's bike is the canonical warning: every copy of a listing must consume the sale.
 
 ### A shipped order with a dispute
 
@@ -256,7 +262,7 @@ On 22 September 2027 the forum applied the four conditions and the architecture 
 
 ## Trade-offs
 
-Eight decisions shape a transaction platform, the first two restating the payment models above as choices, and for each one, both options are right under some conditions:
+The forum's decisions fit Veldmark; another marketplace could rightly decide otherwise. Eight decisions shape any transaction platform, and each has two options that are right under different conditions. The first two rows restate the payment models above as choices:
 
 | Decision | Option A | Option B | Prefer A when | Prefer B when |
 | --- | --- | --- | --- | --- |
@@ -273,8 +279,6 @@ Eight decisions shape a transaction platform, the first two restating the paymen
 
 **Sharing the transaction platform across countries** is attractive, but it is the layer most exposed to local differences: payment methods, carriers, consumer law and dispute norms. Adevinta's 2023 plan named "the full transactional journey" among the investments it would stop duplicating; under its 2025 decentralization, each market's provider contracts, carriers and consumer-law regimes argue for local ownership again (Adevinta Annual Report 2023; Strategic Report 2025).
 
-> **INFERENCE, NOT DOCUMENTED:** The public descriptions of Kleinanzeigen's and Marktplaats' flows fit a common pattern: a licensed provider holds funds; the marketplace owns the offer and acceptance in chat, the buyer-fee pricing, label generation and tracking, the release timer and dispute handling. It is a plausible reference architecture, not a description of either company's systems.
-
 ## Vertical Differences
 
 The verticals differ in whether the pivot happens at all, what is paid on the platform, who holds the funds and which fear protection answers:
@@ -285,13 +289,13 @@ The verticals differ in whether the pivot happens at all, what is paid on the pl
 | What gets paid on platform | Item, buyer fee, shipping | At most reservation or application fees | Reservation fees, deposits through dealers, financing referrals | Item, fees, shipping, wallet balances |
 | Who holds funds | Licensed provider | Notaries, agents, landlords | Dealers and their banks; finance partners | Provider or own licence (Vinted Pay) |
 | Main fear protection answers | Non-delivery, misdescription | Fake listings and deposit fraud, answered by verification | Deposit scams, hidden damage, answered by history checks and verification | Non-delivery, counterfeits |
-| Typical failure | Ledger missing; Fast Mail for Fraudsters with the platform's brand | Platform holding money it is not allowed to hold | Workflow imposed on dealers (the reservation backlash) | Operational load of shipping and disputes |
+| Typical failure | Ledger missing; Fast Mail for Fraudsters with the platform's brand | Platform holding money it is not allowed to hold | Workflow imposed on dealers (Autotrader's reservation backlash, below) | Operational load of shipping and disputes |
 
 Automotive shows the professional side of the trade-off. Autotrader's Deal Builder moved reservations, part-exchange, finance and delivery steps online; the company attributed part of a fall in retailer forecourts in the second half of its 2026 financial year to "concerns with the speed and nature of our Deal Builder product roll-out", and responded by pausing auto-rollout and, as reported in December 2025, introducing a "request a reservation" option that does not require buyer payment ([Autotrader, 2026](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf); [Car Dealer Magazine, 2025](https://cardealermagazine.co.uk/auto-trader-tweaks-deal-builder-product-making-reservations-optional/320706)). **Transactional state placed on a professional's inventory must be opt-in, configurable and reversible.** [[vertical-requirements]] compares the verticals in full.
 
 ## Failure Modes
 
-**The checkout ships before the ledger.** The order flow goes live, payouts work, and finance discovers at the first month-end that refunds, partial refunds, label charges and chargebacks cannot be matched. Veldmark's €2.3 million clearing balance is the mild version. The fix is to make the ledger and reconciliation part of the launch criteria, not a later phase.
+The design rules and choices above work only when they are made on purpose; each one skipped returns as a failure, and nine recur. The first is the one Veldmark has already met. **The checkout ships before the ledger.** The order flow goes live, payouts work, and finance discovers at the first month-end that refunds, partial refunds, label charges and chargebacks cannot be matched. Veldmark's €2.3 million clearing balance is the mild version. The fix is to make the ledger and reconciliation part of the launch criteria, not a later phase.
 
 **Release by timer only.** Funds released a fixed number of days after payment, regardless of delivery evidence, pay scammers who never ship and make disputes after release unrecoverable. Release should depend on the delivery event and the dispute window, with a fraud hold able to stop it.
 

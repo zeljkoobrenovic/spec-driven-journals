@@ -7,7 +7,7 @@
   "part": "part-7",
   "title": "Models in Production: ML Platforms and Use Cases",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the ml-platform entry in journal-spec.json; the supporting claims and audience are this spec's own. Units added by this conversion: introduction roadmap p04, and a conclusion widened from one paragraph to two (p54 synthesis and callback, p55 hand-off).",
   "intent": {
     "outcome": {
@@ -870,7 +870,7 @@
       "paragraphs": [
         {
           "id": "p23",
-          "controlling_idea": "The public record on marketplace ML platforms is thin and uneven: Adevinta and OLX publish the most, Zillow, Rightmove and the motor portals publish outcomes but little about how, so the evidence is dated.",
+          "controlling_idea": "The public record on marketplace ML platforms is thin and uneven: Adevinta and OLX publish the most, Zillow, Rightmove and the motor portals publish outcomes but little about how, so the evidence is dated, and it comes in two halves: the platforms first, then pricing and valuation products leading to Zillow Offers.",
           "function": "context",
           "advances_thesis": {
             "supports": [
@@ -979,8 +979,8 @@
           },
           "transition_in": {
             "relationship": "contrast",
-            "carries_over": "OLX's platform and model-selection evidence.",
-            "introduces": "Price guidance products in goods, vehicles and stays, where the method is published or not.",
+            "carries_over": "OLX's platform and model-selection evidence, the first half of the record.",
+            "introduces": "The second half: price guidance products in goods, vehicles and stays, building toward Zillow Offers.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1039,7 +1039,7 @@
         {
           "id": "p30",
           "form": "list",
-          "controlling_idea": "Four architectural lessons follow, as the author's interpretation: the forward forecast was the binding problem, selection makes error one-sided, operational capacity couples to model error, and the commit tier needs its own validation regime.",
+          "controlling_idea": "Four architectural lessons follow, as the author's interpretation: the forward forecast was the binding problem, selection makes error one-sided (the 10% conversion figure shows how small and self-selected the accepted subset was), operational capacity couples to model error, and the commit tier needs its own validation regime.",
           "function": "analysis",
           "evidence": [
             {
@@ -1067,7 +1067,7 @@
     {
       "id": "valuo",
       "heading": "In Practice: Valuo and the Pricing Hint",
-      "controlling_idea": "Valuo's pricing hint ships as an inform-tier use under written rules enforced by the pipeline, while the guaranteed offer is declined and the lender license sent to review under the AI Act's postponed dates, and Motorvane's price rating shows an undeclared consumer moving a model up a tier.",
+      "controlling_idea": "Valuo's pricing hint ships as an inform-tier use under written rules enforced by the pipeline, after Motorvane's price rating has shown an undeclared consumer moving a model up a tier, while the guaranteed offer is declined and the lender license sent to review under the AI Act's postponed dates.",
       "function": "example",
       "advances_thesis": {
         "supports": [
@@ -1079,7 +1079,7 @@
       },
       "flow": {
         "pattern": "problem_solution",
-        "rationale": "Valuo's metrics come first because every rule uses them; the Lyon apartment shows one badge before the rules generalize it; the rules come before their enforcement and launch; the two declined uses follow the badge because they are judged against what the badge's validation does not cover, and the regulation note follows the lender license because that decision rests on its dates and scope; Motorvane closes as a second vertical showing tier creep through an undeclared consumer. Placed before the badge, the declined uses would have no validated use to contrast with."
+        "rationale": "Valuo's metrics come first because every rule uses them; the Lyon apartment shows one badge; Motorvane's rating follows as the earlier case of a price model whose second consumer nobody recorded, so the rules that come next, ending with an owner for every consumer, answer a problem the reader has just seen; the rules come before their enforcement and launch; the two declined uses follow the badge because they are judged against what the badge's validation does not cover, and the regulation note follows the lender license because that decision rests on its dates and scope. Placed after the regulation note, Motorvane read as an appendix (draft check, both flow readers); placed before the badge, the declined uses would have no validated use to contrast with."
       },
       "transition_in": {
         "relationship": "problem_solution",
@@ -1135,6 +1135,32 @@
           }
         },
         {
+          "id": "p38",
+          "controlling_idea": "Motorvane's market-value model, earlier in 2027, shows the same pattern of one model with several consumers: it is inform-tier for buyers but order-tier in practice because ranking uses the rating as a feature, an undeclared consumer that moves a model up a tier without anyone deciding it.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Essen Golf: €22,800 rating against €21,900 on Wednesday 14 April 2027; cut to €21,400 on Thursday 22 April, received in that day's 17:00 DMS snapshot, whose import triggers the rescore; alerts to 1,180 watchers.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows a rating consumed by ranking."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Shows tier creep through an undeclared consumer."
+          },
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Valuo's estimate, about to gain the badge as one more consumer.",
+            "introduces": "Motorvane's price model, earlier in 2027: one model with several consumers, one of them unrecorded, ending up in two tiers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p33",
           "controlling_idea": "Before anyone builds the badge, the forum turns it into eight rules covering when to show it, thresholds, coverage, explanation, labels, data exclusion, monitoring and owners.",
           "function": "description",
@@ -1153,9 +1179,9 @@
             "how": "Sets the display, label and data-exclusion rules for a consumer-facing estimate."
           },
           "transition_in": {
-            "relationship": "elaboration",
-            "carries_over": "One badge.",
-            "introduces": "The rules that govern every badge.",
+            "relationship": "problem_solution",
+            "carries_over": "The Lyon badge and Motorvane's unrecorded consumer.",
+            "introduces": "The rules that govern every badge, the last naming an owner for every consumer and version.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1192,7 +1218,7 @@
         },
         {
           "id": "p35",
-          "controlling_idea": "The badge goes live in Lyon and Bordeaux on Monday 22 November 2027, under the ML platform decision of 9 November 2027 that made one registry and one prediction-log standard mandatory, as an experiment randomized by city district, because a badge on one listing changes how buyers judge its neighbors.",
+          "controlling_idea": "The badge goes live in Lyon and Bordeaux on Monday 22 November 2027 as an experiment randomized by city district, because a badge on one listing changes how buyers judge its neighbors.",
           "function": "process",
           "evidence": [
             {
@@ -1200,12 +1226,6 @@
               "what": "District randomization in Lyon and Bordeaux.",
               "source": "_research/scenario-ledger.md (Veldmark is fictional)",
               "shows": "Shows interference handled as experimentation taught."
-            },
-            {
-              "kind": "scenario",
-              "what": "The ML platform decision of Tuesday 9 November 2027 (one group model registry and one prediction-log standard mandatory), named here so the launch is told after the decision it ran under; its options are weighed in Trade-offs.",
-              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
-              "shows": "Keeps the timeline forward: the platform decision precedes the launch in the text as in the scenario."
             }
           ],
           "advances_thesis": {
@@ -1294,32 +1314,6 @@
             "relationship": "elaboration",
             "carries_over": "The lender paragraph's AI Act creditworthiness rule and its 2 December 2027 date.",
             "introduces": "The regulation behind the date and its scope.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p38",
-          "controlling_idea": "Motorvane's market-value model shows the same pattern in vehicles: it is inform-tier for buyers but order-tier in practice because ranking uses the rating as a feature, an undeclared consumer that moves a model up a tier without anyone deciding it.",
-          "function": "example",
-          "evidence": [
-            {
-              "kind": "scenario",
-              "what": "Essen Golf: €22,800 rating against €21,900 on Wednesday 14 April 2027; cut to €21,400 on Thursday 22 April, received in that day's 17:00 DMS snapshot, whose import triggers the rescore; alerts to 1,180 watchers.",
-              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
-              "shows": "Shows a rating consumed by ranking."
-            }
-          ],
-          "advances_thesis": {
-            "supports": [
-              "S2"
-            ],
-            "how": "Shows tier creep through an undeclared consumer."
-          },
-          "transition_in": {
-            "relationship": "similarity",
-            "carries_over": "Valuo's three uses, each decided by its tier, ending with the regulation behind the lender review.",
-            "introduces": "A vehicle model, earlier in 2027, whose second use nobody decided.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1420,7 +1414,7 @@
       "paragraphs": [
         {
           "id": "p41",
-          "controlling_idea": "Of the platform strategies, Veldmark chooses the hybrid: one mandatory registry and monitoring standard over heterogeneous training and serving, because registration first and migration later avoids The Forced Fit; capabilities are then built where they differentiate and bought where they are commodity.",
+          "controlling_idea": "Of the platform strategies, Veldmark chooses the hybrid under the decision of 9 November 2027, under which the Valuo badge launched: one mandatory registry and monitoring standard over heterogeneous training and serving, because registration first and migration later avoids The Forced Fit; for individual capabilities a different rule applies: build where they differentiate, buy where they are commodity.",
           "function": "recommendation",
           "evidence": [
             {
@@ -1498,7 +1492,7 @@
       "paragraphs": [
         {
           "id": "p43",
-          "controlling_idea": "The jobs row matters for Veldmark because any model in Tradeyard's small jobs sections that ranks candidates or filters applications is high-risk under the AI Act from 2 December 2027, so the cheapest option may be not to build one.",
+          "controlling_idea": "The platform and cost decisions apply group-wide, but verticals differ in consequence, labels and regulation, and the jobs row matters for Veldmark because any model in Tradeyard's small jobs sections that ranks candidates or filters applications is high-risk under the AI Act from 2 December 2027, so the cheapest option may be not to build one.",
           "function": "analysis",
           "evidence": [
             {
@@ -1648,7 +1642,7 @@
         },
         {
           "id": "p48",
-          "controlling_idea": "The registry enforces the same lifecycle for every model, with the tier deciding how heavy each gate is and a drift alert sending a production model back to shadow.",
+          "controlling_idea": "Run every model through one lifecycle and let the tier set how heavy each gate is: the registry enforces the same states for every model, and a drift alert sends a production model back to shadow.",
           "function": "process",
           "evidence": [
             {
@@ -2001,6 +1995,22 @@
     {
       "date": "2026-11-12",
       "decision": "max_words raised from 7,634 to 7,700 (under 1% of the 10% allowed) to fit the 9 November mention in p35 and the snapshot clause in p38 without cutting published text."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "fixed under the author's delegation (fix-only pass): spec-fault (flow, both readers) on the 9 November 2027 platform decision met twice out of order: dropped from p35's controlling idea, evidence and prose; Trade-offs p41, which already states it and that the badge launched under it, is now its first and only full statement. No fact lost."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "fixed under the author's delegation (fix-only pass): spec-fault (flow, both readers) on Motorvane read as an appendix after the regulation note: p38 moved from the end of the Valuo section to after p32 (Lyon badge) and before p33 (badge rules), its subheading dropped; p38 and p33 transitions rewritten (similarity: one model, several consumers; problem_solution: rules ending with an owner per consumer); section controlling idea and flow rationale updated. Sharing's transition still holds."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "fixed under the author's delegation (fix-only pass): draft-fault fixes: p29/p30 the 10% Zillow conversion figure explained in lesson 2; p38 opening names the similarity, DMS glossed, callback to Priya's inventory no longer implies the scene listed consumers; p42 opens by tying cost to the platform and build-or-buy choices; Vertical Differences opens on the group-wide decisions before the table (table moved after p43's prose); p17 opening no longer pre-empts p18's reason; p23 announces the record's two halves and p28 opens the second; p41 bridge names a different rule instead of 'the same logic'; p48 cast as a bold directive."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "fixed under the author's delegation (fix-only pass): max_words raised from 7700 to 7,900 (2.6%) for the glosses and bridges, without cutting published text."
     }
   ],
   "sources": [
@@ -2076,9 +2086,13 @@
     {
       "date": "2026-11-12",
       "change": "Escalation resolved under the author's delegation: the 9 November 2027 platform decision named in the Valuo launch paragraph; the April Golf rescore runs through the DMS snapshot import; minor reader points fixed; max_words 7,700; draft check round 4. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on the round-4 blocking findings (fixed under the author's delegation): p38 Motorvane moved before the badge rules, 9 November decision removed from p35, eleven draft-fault wording fixes, max_words 7,900. No new draft-check round; check-report stale. (AI-mediated session)"
     }
   ],
   "length": {
-    "max_words": 7700
+    "max_words": 7900
   }
 }

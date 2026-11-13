@@ -138,19 +138,19 @@ That reverses several defaults. Deletes arrive late or not at all: Rightmove's R
 
 ### Transaction locus: where does the money move?
 
-Verticals range from no platform money flow to a full order platform. A generic real-estate marketplace model (see Sources) records the money of the property sale as "typically settled off-platform at notary or lease signing", with no platform flow at all. Recommerce is the opposite. Vinted describes its marketplace as sitting "in an ecosystem of vertically-integrated shipping and payment infrastructure", with more than 500,000 pick-up and drop-off points in Europe and its own carrier in five countries ([Vinted 2025 results](https://company.vinted.com/newsroom/financial-results-2025), April 2026). Automotive is moving between the two: Autotrader UK reports more than 6,700 retailers on its online reservation product, Deal Builder, and 137,000 full reservations in its year to March 2026 ([Autotrader FY2026 results](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf), May 2026).
+Verticals range from no platform money flow to a full order platform. The Productscape real-estate domain model, a generic reference model from the author's sibling repository (listed under Sources), records the money of the property sale as "typically settled off-platform at notary or lease signing", with no platform flow at all. Recommerce is the opposite. Vinted describes its marketplace as sitting "in an ecosystem of vertically-integrated shipping and payment infrastructure", with more than 500,000 pick-up and drop-off points in Europe and its own carrier in five countries ([Vinted 2025 results](https://company.vinted.com/newsroom/financial-results-2025), April 2026). Automotive is moving between the two: Autotrader UK reports more than 6,700 retailers on its online reservation product, Deal Builder, and 137,000 full reservations in its year to March 2026 ([Autotrader FY2026 results](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf), May 2026).
 
 Where money moves, the listing becomes an order: payment intents, shipping labels, tracking events, disputes and a ledger. [[transactions-and-payments]] owns that pivot. **Transaction locus is the profile dimension most likely to change during a vertical's life**, and with it the whole right-hand half of the architecture.
 
 ## In Practice: What the Public Record Shows
 
-The row sections above cited the record one dimension at a time. Read vertical by vertical, it shows how physics shapes whole systems, and how often groups reversed what they shared.
+The row sections above cited the record one dimension at a time. Read vertical by vertical, it shows how physics shapes whole systems, and how often groups reversed what they shared. Some sources return (the mobile.de Seller API, Rightmove's feed specification, Vinted), each now for facts the rows did not use.
 
 ### Automotive: enriched, not authored
 
 The documented automotive marketplaces describe a listing that is **enriched from authoritative data rather than typed in**, and a supply chain of professional feeds.
 
-- **Supply through integrators.** mobile.de grants Seller API access to *Transfer Service Providers*, the DMS and inventory-tool vendors that upload for dealers, and to self-uploading dealers. It asks clients not to send parallel requests for the same ad and makes create idempotent through a request identifier ([mobile.de Seller API](https://services.mobile.de/manual/seller-api.html), n.d., accessed 2026).
+- **Supply through integrators.** Beyond the type-approval codes, mobile.de grants Seller API access to *Transfer Service Providers*, the DMS and inventory-tool vendors that upload for dealers, and to self-uploading dealers. It asks clients not to send parallel requests for the same ad and makes create idempotent through a request identifier ([mobile.de Seller API](https://services.mobile.de/manual/seller-api.html), n.d., accessed 2026).
 - **Valuation as a listing attribute.** The same API returns a price rating with five labels from "very good" to "high" price and the euro boundaries of each band, or a "no rating" state with a reason; mobile.de recalculates it when images arrive. CarGurus rates eligible used listings in five bands based on its Instant Market Value, recalculated daily from "tens of millions of data points" ([CarGurus 10-K](https://www.sec.gov/Archives/edgar/data/1494259/000119312526059435/carg-20251231.htm), filed February 2026; [CarGurus help center](https://cargurus.helpscoutdocs.com/article/10-what-is-imv), updated May 2026).
 - **Regulation as schema.** Germany's passenger-car labeling ordinance (Pkw-EnVKV) requires dealers advertising new cars to show energy consumption, CO2 emissions and CO2 class as soon as engine data appears, and presumes a car is new if first registered at most eight months ago or driven 1,000 km or less ([Pkw-EnVKV](https://www.gesetze-im-internet.de/pkw-envkv/BJNR103700004.html), as amended March 2026). "New" is therefore a computed classification, not the dealer's category choice.
 
@@ -159,7 +159,7 @@ The documented automotive marketplaces describe a listing that is **enriched fro
 Real-estate portals publish the clearest evidence that a vertical's schema is **driven by law and by an external software ecosystem**.
 
 - **Mandatory disclosures.** In France, property ads must show the energy and climate classes from the energy performance diagnostic (DPE), the estimated annual energy costs, and a warning for F and G homes; G-rated homes may not be let since January 2025 ([Service-Public.fr, DPE](https://www.service-public.gouv.fr/particuliers/vosdroits/F16096), page verified January 2026). The EU's recast Energy Performance of Buildings Directive, (EU) 2024/1275, had to be transposed by 29 May 2026 and moves certificates to a common template by the same date ([Directive (EU) 2024/1275](https://eur-lex.europa.eu/eli/dir/2024/1275/oj), Articles 19 and 35; [European Commission, EPBD](https://energy.ec.europa.eu/topics/energy-efficiency/energy-efficient-buildings/energy-performance-buildings-directive_en), n.d.).
-- **Schema versions track regulation.** Rightmove's feed specification added shared ownership, ground rent, service charge and council-tax band in April 2022, and utilities, flood risk and accessibility in November 2023 ([Rightmove RTDF specification](https://media.rightmove.co.uk/ps/pdf/guides/adf/Rightmove_Real_Time_Datafeed_Specification.pdf), v1.4.1). The fields arrived on regulators' timelines, not product roadmaps.
+- **Schema versions track regulation.** Rightmove's feed specification, cited above for delete reconciliation, added shared ownership, ground rent, service charge and council-tax band in April 2022, and utilities, flood risk and accessibility in November 2023 ([Rightmove RTDF specification](https://media.rightmove.co.uk/ps/pdf/guides/adf/Rightmove_Real_Time_Datafeed_Specification.pdf), v1.4.1). The fields arrived on regulators' timelines, not product roadmaps.
 - **Rich structure at scale.** Zillow's engineers described nearly 50 filters and more than 200 attributes per property in a 2020 post on guided search ([Zillow Tech Hub, via Medium RSS](https://medium.com/feed/zillow-tech-hub), September 2020); the current state is not public.
 - **Country-specific integration standards.** Germany's OpenImmo standard has run as XML exchanged over FTP since 2001; its REST and JSON successor, not compatible with the XML version, was expected as a final release at the end of 2026 ([OpenImmo e.V.](https://www.openimmo.de/), n.d., accessed October 2026). France, the UK and the US each have their own ecosystem.
 
@@ -176,7 +176,7 @@ Jobs marketplaces combine four properties no other vertical has together.
 
 ### Recommerce: an order platform with a search engine attached
 
-In recommerce, the hard problems are order, payment and logistics state, and search over an enormous low-structure catalog, not taxonomies or feed contracts. Vinted's engineering record shows both. Its search moved to Vespa between May 2023 and April 2024 and serves about a billion active items, with 4.64 seconds at the 99th percentile for an item update to reach the index ([Vinted Engineering](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/), September 2024). Its January 2026 post describes moving from synchronous calls to business events with saga-style orchestration across "almost 300" domains ([Vinted Engineering](https://vinted.engineering/2026/01/09/building-global-event-driven-platform-part-1/), January 2026).
+In recommerce, the hard problems are order, payment and logistics state, and search over an enormous low-structure catalog, not taxonomies or feed contracts. Beyond the payments and shipping cited above, Vinted's engineering record shows both. Its search moved to Vespa between May 2023 and April 2024 and serves about a billion active items, with 4.64 seconds at the 99th percentile for an item update to reach the index ([Vinted Engineering](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/), September 2024). Its January 2026 post describes moving from synchronous calls to business events with saga-style orchestration across "almost 300" domains ([Vinted Engineering](https://vinted.engineering/2026/01/09/building-global-event-driven-platform-part-1/), January 2026).
 
 ### Groups organized by vertical, and back again
 
@@ -191,14 +191,16 @@ The public record also shows who, outside the group, can change a vertical's req
 | Vertical | Party that can change requirements | Documented example | Architectural readiness |
 | --- | --- | --- | --- |
 | General classifieds | Regulators; fraudsters | EU trader traceability duties (Digital Services Act, DSA, Article 30) from February 2024 | Trader status and evidence as account data; fast rule deployment |
-| Real estate | Regulators; standards bodies; agents' associations and MLSs | The National Association of Realtors' (NAR) 2025 listing options allowing delayed IDX marketing (IDX: MLS listings shown on other brokers' sites); French DPE changes in 2026 and 2027 | Effective-dated attributes; visibility flags per listing; versioned schemas |
+| Real estate | Regulators; standards bodies; agents' associations and MLSs | The National Association of Realtors' (NAR) 2025 listing options, which let a seller delay IDX marketing (IDX: MLS listings shown on other brokers' sites); French DPE changes in 2026 and 2027 | Effective-dated attributes; visibility flags per listing; versioned schemas |
 | Automotive | Regulators; data providers; dealers as paying customers | Pkw-EnVKV amendments; Autotrader's Deal Builder backlash in late 2025 | Configurable, reversible platform states on dealer inventory; licensed-data abstraction |
 | Jobs | Search engines; regulators | Google's job-posting expiry rules (updated September 2026) | Expiry as a first-class event; indexing integration |
 | Recommerce | Payment and logistics partners; tax authorities | Vinted Pay's own e-money licence and wallet rollout (2023–2026) | Order and ledger boundaries designed for a change of payment partner |
 
 **Table 3:** *Outside parties who can rewrite each vertical's requirements, with a documented example and the readiness the architecture needs for each.*
 
-The automotive row needs one comment. After retailer pushback, Autotrader paused the automatic rollout of Deal Builder and introduced "request a reservation" ([Autotrader FY2026 results](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf), May 2026). In a dealer vertical, **the supplier is also the paying customer**, so per-dealer configuration and reversible platform states are part of the profile.
+Each example is a change the vertical did not choose. The DSA made trader status account data for general classifieds; NAR's options made visibility on other brokers' sites a per-listing flag; Google's rules made a job's expiry a distribution event; Vinted Pay's own licence shows that the payment party behind recommerce orders can change.
+
+The automotive row needs a longer comment. After retailer pushback, Autotrader paused the automatic rollout of Deal Builder and introduced "request a reservation" ([Autotrader FY2026 results](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf), May 2026). In a dealer vertical, **the supplier is also the paying customer**, so per-dealer configuration and reversible platform states are part of the profile.
 
 ## Architecture: A Platform With Vertical Seams
 
@@ -265,13 +267,13 @@ The four layers are one answer; a group could choose others. Groups choose among
 
 **Table 5:** *Four strategies. Most groups end up with B for the platform and D for one or two vertical capabilities; pure A and pure C are each right only under narrow conditions.*
 
-My judgement: **choose option B as the default, use D only for layer-3 capabilities (D is how a layer-3 capability reaches other brands' sections), and keep C available for any business the owners might sell.** Adevinta's 2023–2025 record is the reminder for the last clause. A shared platform that was a synergy in one ownership era became a separation cost in the next. Option B survives that change better than a fully merged product platform, because layer-1 and layer-2 services can be designed to be separable: tenant-scoped data, per-tenant accounts and clean ownership of vertical content.
+My judgement: **choose option B as the default, use D only for layer-3 capabilities, narrowed from Table 5's whole vertical stack to single capabilities (D is how a layer-3 capability reaches other brands' sections), and keep C available for any business the owners might sell.** Adevinta's 2023–2025 record is the reminder for the last clause. A shared platform that was a synergy in one ownership era became a separation cost in the next. Option B survives that change better than a fully merged product platform, because layer-1 and layer-2 services can be designed to be separable: tenant-scoped data, per-tenant accounts and clean ownership of vertical content.
 
 Option B is not free. Without engine teams who treat vertical owners as customers and say no to forks, it decays into A (the engine absorbs vertical content) or into C (each vertical forks the engine).
 
 ## Veldmark Worked Example: Three Listings, Three Physics
 
-Veldmark's workshop applies the profile and the share test; its answer, Table 8 below, is option B with D for two vertical capabilities. The workshop drafts its profiles from recent listings. Over the spring, Ingrid's team checks them against three listings this book follows through Parts II and III (Table 6).
+Veldmark's workshop applies the profile and the share test in three steps. In March it drafts the profiles from the listing each brand brought, and a first classification of the capability list. In April that classification is ratified (Table 8, at the end of this section). From March to May, Ingrid's team checks the profiles against the three listings, one per brand, that this book follows through Parts II and III (Table 6).
 
 | Profile dimension | Rotterdam city bike (Tradeyard NL) | Essen Volkswagen Golf (Motorvane DE) | Lyon apartment (Hearthly FR) |
 | --- | --- | --- | --- |
@@ -289,7 +291,7 @@ Veldmark's workshop applies the profile and the share test; its answer, Table 8 
 
 **Table 6:** *Three listings on the profile's main rows, three different sets of answers. The bike's physics are speed and safety, the car's are identity and feeds, the apartment's are entity resolution and disclosure.*
 
-Table 6 confirms what Felix and Julien argued. The bike's critical numbers are minutes: 6 minutes to searchable (Tradeyard's publication time, not in the table), 13 minutes to first contact, a phishing message 29 minutes after listing (20:11). The Golf's critical numbers are attributes and hours: 31 decoded attributes, a market-value estimate, a 26-hour-late delete. The apartment's critical number is a ratio: Hearthly France's 1.9 million listings describe about 1.12 million properties, **1.7 listings per property**. No single listing model optimizes for all three without making explicit room for identity, external systems of record and vertical schemas.
+Table 6 confirms what Felix and Julien argued. Add Tradeyard's publication time of 6 minutes, and the bike's critical numbers are minutes: 6 minutes to searchable, 13 minutes to first contact, a phishing message 29 minutes after listing (20:11). The Golf's critical numbers are attributes and hours: 31 decoded attributes, a market-value estimate, a 26-hour-late delete. The apartment's critical number is a ratio: Hearthly France's 1.9 million listings describe about 1.12 million properties, **1.7 listings per property**. No single listing model optimizes for all three without making explicit room for identity, external systems of record and vertical schemas.
 
 ![Three panels: a bike with a stopwatch, a car with a spec sheet fed from a dealer, and one apartment building with three listing cards attached.](assets/images/06-vertical-requirements/three-listings-three-physics.jpeg)
 **Figure 4:** *Three listings, three physics: the bike's critical numbers are minutes, the Golf's are decoded attributes and feed hours, and the Lyon flat's is a ratio of 1.7 listings per property.*
@@ -304,7 +306,7 @@ Veldmark's 2026 figures add two profile numbers for platform design: implied lis
 
 **Table 7:** *Implied lifetime is live listings divided by weekly new listings, a steady-state approximation. Revenue per listing differs by a factor of eight between Tradeyard and Motorvane.*
 
-Two consequences follow. **Write load and value are inversely distributed.** Tradeyard produces about 84% of the group's 2.75 million weekly new listings, but each earns a fraction of a Motorvane car, so a pipeline tuned for Tradeyard's volume must not treat a dealer's listing as cheap. And **cost models must be read against the profile**: Hearthly stores 1.8 billion of the group's 6.4 billion images, so a media service charged per image makes Hearthly look like a problem, when each Hearthly listing earns about five times what a Tradeyard listing earns (Table 7).
+Two consequences follow. **Write load and value are inversely distributed.** Tradeyard produces about 84% of the group's 2.75 million weekly new listings, but each earns a fraction of a Motorvane car, so a pipeline tuned for Tradeyard's volume must not treat a dealer's listing as cheap. And **cost models must be read against the profile**. One more group figure shows why: Hearthly stores 1.8 billion of the group's 6.4 billion images, so a media service charged per image makes Hearthly look like a problem, when each Hearthly listing earns about five times what a Tradeyard listing earns (Table 7's last column).
 
 ### Katarzyna's sections
 
@@ -315,7 +317,7 @@ Tradeyard Poland is the case where profiles matter most, because it runs four ve
 
 ### The workshop's classification
 
-In March the workshop drafted a first shared-versus-specific table for the Common Ground capability list. Table 8 is the version the architecture advice forum, the open weekly forum for cross-brand decisions, ratifies in April 2027; the Lyon apartment, listed in May, tests it rather than shapes it.
+In March the workshop drafted a first shared-versus-specific table for the Common Ground capability list. Table 8 is the version the architecture advice forum, the open weekly forum for cross-brand decisions, ratifies in April 2027. Its answer is option B, with D for two vertical capabilities; the Lyon apartment, listed in May, tests it rather than shapes it.
 
 | Capability part | Layer | Owner | Reason |
 | --- | --- | --- | --- |
@@ -339,7 +341,7 @@ Felix accepts the table on one condition: the shared ingestion engine must meet 
 
 ## Failure Modes
 
-**Profiling only the largest vertical.** Felix's gate guards against one way option B decays; this is the first of six. The first shared engine is usually built for the largest brand. At Veldmark that would be Tradeyard, with 84% of insertion volume. The engine then encodes form-based insertion, the marketplace as system of record and weak item identity, and every other vertical becomes an exception. The remedy is to collect requirements from every profile before the engine's contracts are fixed.
+**Profiling only the largest vertical.** Felix's stage gate is the defense against the Forced Fit: a group platform built around one vertical's physics and imposed on the others. That is the first of six ways option B decays, and it starts when only the largest vertical is profiled. The first shared engine is usually built for the largest brand. At Veldmark that would be Tradeyard, with 84% of insertion volume. The engine then encodes form-based insertion, the marketplace as system of record and weak item identity, and every other vertical becomes an exception. The remedy is to collect requirements from every profile before the engine's contracts are fixed.
 
 **Vertical exceptionalism.** The opposite failure: every vertical declares itself unique, every capability lands in layer 3 or 4, and the group pays for everything several times. The profile is the defense here too. If two verticals' profiles match on the dimensions a capability depends on, the capability is shared, whatever the teams prefer.
 
@@ -390,9 +392,9 @@ Turn those decisions and signals into ten review questions:
 
 ## From Physics to Models
 
-This chapter opened with the synergy case's question: can one listing platform, with a category tree per vertical, carry a used sofa, a family car, an apartment and a job? The answer, no for the listing model and yes for the machinery beneath it, completes Part I's reasoning. The marketplace model, liquidity, the industry's history, capabilities and contexts say what every later design must respect before it chooses a technology; the vertical profiles mark where their sameness stops. Together they end in one share test: shared platform, shared engine with vertical content, vertical capability with one owner, or brand product.
+This chapter opened with the synergy case's question: can one listing platform, with a category tree per vertical, carry a used sofa, a family car, an apartment and a job? The answer, no for the listing model and yes for the machinery beneath it, completes Part I's reasoning. Part I's earlier chapters (the marketplace model, liquidity, the industry's history, capabilities and contexts) say what every later design must respect before it chooses a technology, and they treat the verticals alike. The vertical profiles mark where the verticals stop being alike. Together they end in one share test: shared platform, shared engine with vertical content, vertical capability with one owner, or brand product.
 
-The test turns the claim Part I opened with, that the business decides the architecture, into a procedure a group can review. Veldmark's architecture advice forum ratifies a shared-versus-specific table in April 2027 instead of arguing about four of everything, and Motorvane moves onto the shared ingestion engine only when the engine meets its own feed success rate and delete latency. Before proposing a shared platform, write a numbered requirement profile for each vertical and place every capability part in one of the four layers, with an owner and a reason.
+The test turns the claim Part I opened with, that the business decides the architecture, into a procedure a group can review. Veldmark's architecture advice forum ratifies a shared-versus-specific table in April 2027 instead of arguing whether each brand needs its own copy of every capability, and Motorvane moves onto the shared ingestion engine only when the engine meets its own feed success rate and delete latency. Before proposing a shared platform, write a numbered requirement profile for each vertical and place every capability part in one of the four layers, with an owner and a reason.
 
 [[bounded-contexts]] decided that one context owns the listing's truth, and this chapter showed items whose identities and systems of record sit outside the listing. Next, [[part-2]] designs the supply-side core those contexts depend on: the listing aggregate and the governed reference data around it. Its first chapter is [[listing-aggregate]].
 

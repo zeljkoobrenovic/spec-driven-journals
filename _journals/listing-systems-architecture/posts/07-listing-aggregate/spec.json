@@ -7,7 +7,7 @@
   "part": "part-2",
   "title": "The Listing Aggregate: Identity, Lifecycle and Invariants",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the listing-aggregate entry in journal-spec.json. Units changed by this conversion: a roadmap paragraph (p04) added to the introduction; the one-sentence 'Two design rules follow from the table' folded into p20; a lead-in paragraph (p32) added before the history-storage table; the units paragraph split so the RESO mapping is its own unit (p39); a synthesis paragraph (p68) added before the hand-off.",
   "intent": {
     "outcome": {
@@ -54,7 +54,7 @@
         "method": "cold_reader",
         "severity": "major",
         "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
-        "expected": "Veldmark's four systems giving four answers about one sold bike; what a listing is and is not; identity and keys; the two-dimensional lifecycle with renewals and outcomes; invariants; versions and price history; availability and units; one owner and many copies; public evidence and the bike replayed transition by transition; trade-offs, vertical differences, failure modes and the Chief Architect's view. Evidence: documented public APIs and standards and the fictional Veldmark."
+        "expected": "Veldmark's four systems giving four answers about one sold bike; what a listing is and is not; identity and keys; the two-dimensional lifecycle with renewals and outcomes; availability and units; invariants; versions and price history; one owner and many copies; the bike replayed transition by transition, then public evidence; trade-offs, vertical differences, failure modes and the Chief Architect's view. Evidence: documented public APIs and standards and the fictional Veldmark."
       },
       {
         "id": "AC-3",
@@ -127,14 +127,14 @@
     "additional_patterns": [
       {
         "pattern": "assertion_evidence_reasoning",
-        "applies_to": "in-practice and bike: the model tested against public contracts, then the bike replayed through it"
+        "applies_to": "bike and in-practice: the bike replayed through the model, then the model tested against public contracts"
       },
       {
         "pattern": "grouping",
         "applies_to": "trade-offs, verticals, failure-modes, ca-view and questions: judgements about the model the reader has now seen"
       }
     ],
-    "rationale": "Each section supplies what the next needs. The scene poses the question (what was the bike's state?) with four disagreeing answers. The definition of a listing and the inside/outside test come first because identity, the lifecycle and the invariants are all properties of that object. Identity precedes the lifecycle because states are held per listing ID, and the lifecycle precedes the invariants because several invariants are rules about states and transitions (the moderation gate on the transition to active, no seller command lifting an enforcement block, a created_at that never moves). Availability follows because it extends the sold transition to many units, and versions follow because a version is what every accepted change, of state or quantity, leaves behind. Only then can the architecture assign one owner, the commands and the events with removal deadlines, which need every earlier term. Public evidence tests the model's edges, the bike replay its inside and closes the scene's case, and the trade-offs, vertical differences, failure modes, governance and review questions are judgements about a model the reader has seen. Putting the invariants before the lifecycle would state rules about states not yet defined (round 1 and 2 readers both stopped there); putting the architecture before the lifecycle would name events for undefined states; putting the replay before the architecture would show removal deadlines before they exist."
+    "rationale": "Each section supplies what the next needs. The scene poses the question (what was the bike's state?) with four disagreeing answers. The definition of a listing and the inside/outside test come first because identity, the lifecycle and the invariants are all properties of that object. Identity precedes the lifecycle because states are held per listing ID. Availability follows the lifecycle directly because it qualifies the sold transition and outcomes just defined (one thing that sells once) for many units; placing it after the invariants made it read as a detour (round 7 readers). The invariants come next because several of them are rules about states and transitions (the moderation gate on the transition to active, no seller command lifting an enforcement block, a created_at that never moves), and versions follow because a version is what every accepted change, of state or quantity, leaves behind. Only then can the architecture assign one owner, the commands and the events with removal deadlines, which need every earlier term. The bike replay follows the architecture directly, because it is the payoff of the model and closes the scene's case; public evidence then tests the model against real contracts, and its lesson on who may trigger a transition leads into the trade-offs (round 7 readers both asked for the replay right after the architecture). The trade-offs, vertical differences, failure modes, governance and review questions are judgements about a model the reader has seen. Putting the invariants before the lifecycle would state rules about states not yet defined (round 1 and 2 readers both stopped there); putting the architecture before the lifecycle would name events for undefined states; putting the replay before the architecture would show removal deadlines before they exist."
   },
   "introduction": {
     "hook": {
@@ -201,13 +201,13 @@
           ]
         },
         {
-          "promise": "Tested on public APIs and standards.",
+          "promise": "And the model tested on public APIs and standards.",
           "kept_in": [
             "in-practice"
           ]
         },
         {
-          "promise": "And on the bike, replayed transition by transition.",
+          "promise": "The bike, replayed transition by transition.",
           "kept_in": [
             "bike"
           ]
@@ -801,6 +801,52 @@
       ]
     },
     {
+      "id": "availability",
+      "heading": "Availability, Units and Multi-Item Listings",
+      "controlling_idea": "The aggregate must say how many things it offers and when, because filters, alerts and the sold transition depend on it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "L4"
+        ],
+        "how": "Extends the lifecycle just defined, and its sold transition, to quantities, variants, programs, rentals and openings."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "A lifecycle for one listing offering one thing, ending in a sale with an outcome.",
+        "introduces": "Listings that offer many things, or offer them over time.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p37",
+          "controlling_idea": "Listings come in six unit shapes, from a single unique item to a job with several openings, and each changes what the sold transition means.",
+          "function": "description",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Single item, fungible quantity, variants, program with units, rental with availability window, multiple openings, each with example, model and sold transition.",
+              "shows": "'Sold' depends on the unit shape, so the aggregate must model it."
+            }
+          ]
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Two rules keep units manageable: a parent is a listing only if buyers can contact it, and 'sold out' differs from 'sold'.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The six shapes.",
+            "introduces": "The rules that follow.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
       "id": "invariants",
       "heading": "Invariants: What Must Always Be True",
       "controlling_idea": "Rules one listing can check alone are invariants enforced synchronously and by state; rules across listings or services are policies enforced asynchronously.",
@@ -813,8 +859,8 @@
       },
       "transition_in": {
         "relationship": "elaboration",
-        "carries_over": "The publication states and the enforcement overlay just defined.",
-        "introduces": "The rules that must hold in every state, with a gloss of the one later term the table uses (material edit).",
+        "carries_over": "The publication states, the enforcement overlay and the unit shapes just defined.",
+        "introduces": "The rules that must hold in every state; after the definition, a standalone gloss of the two table terms (moderation gate, material edit with its main criteria), pointing forward to Versions for the full list.",
         "form": "sentence",
         "placement": "start_of_this"
       },
@@ -894,52 +940,6 @@
               "shows": "Enforcement on revise is how a marketplace raises its rules over time."
             }
           ]
-        }
-      ]
-    },
-    {
-      "id": "availability",
-      "heading": "Availability, Units and Multi-Item Listings",
-      "controlling_idea": "The aggregate must say how many things it offers and when, because filters, alerts and the sold transition depend on it.",
-      "function": "description",
-      "advances_thesis": {
-        "supports": [
-          "L4"
-        ],
-        "how": "Extends the lifecycle to quantities, variants, programs, rentals and openings, and to feed states."
-      },
-      "transition_in": {
-        "relationship": "contrast",
-        "carries_over": "A model of one listing offering one thing, with states and rules.",
-        "introduces": "Listings that offer many things, or offer them over time.",
-        "form": "sentence",
-        "placement": "start_of_this"
-      },
-      "paragraphs": [
-        {
-          "id": "p37",
-          "controlling_idea": "Listings come in six unit shapes, from a single unique item to a job with several openings, and each changes what the sold transition means.",
-          "function": "description",
-          "organization": "classification",
-          "evidence": [
-            {
-              "kind": "table",
-              "what": "Single item, fungible quantity, variants, program with units, rental with availability window, multiple openings, each with example, model and sold transition.",
-              "shows": "'Sold' depends on the unit shape, so the aggregate must model it."
-            }
-          ]
-        },
-        {
-          "id": "p38",
-          "controlling_idea": "Two rules keep units manageable: a parent is a listing only if buyers can contact it, and 'sold out' differs from 'sold'.",
-          "function": "recommendation",
-          "transition_in": {
-            "relationship": "cause_effect",
-            "carries_over": "The six shapes.",
-            "introduces": "The rules that follow.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
         }
       ]
     },
@@ -1186,59 +1186,6 @@
       ]
     },
     {
-      "id": "in-practice",
-      "heading": "In Practice: What Public Evidence Shows",
-      "controlling_idea": "Public contracts show the model's edges rather than its inside, and Auto Trader's Deal Builder episode shows that who may trigger a transition is a business-model decision.",
-      "function": "evidence",
-      "advances_thesis": {
-        "supports": [
-          "L4"
-        ],
-        "how": "Tests the lifecycle's choices, including transition permissions, against public contracts."
-      },
-      "transition_in": {
-        "relationship": "contrast",
-        "carries_over": "The reference model and its event contract.",
-        "introduces": "What real companies have published: contracts, not internals.",
-        "form": "sentence",
-        "placement": "start_of_this"
-      },
-      "paragraphs": [
-        {
-          "id": "p46",
-          "controlling_idea": "No classifieds company has published its lifecycle or event model, so the evidence is partner APIs, standards and investor reports that reveal contracts rather than internals.",
-          "function": "evidence",
-          "evidence": [
-            {
-              "kind": "table",
-              "what": "Rightmove RTDF v1.4.1 (2023) and RESO Data Dictionary 2.0 (revised 2023), both cited earlier, and Auto Trader plc FY26 results (2026), each with what it documents and the lesson for the aggregate.",
-              "shows": "Lost deletes are normal, vertical lifecycles are richer, and platform-set states change dealers' operations."
-            }
-          ]
-        },
-        {
-          "id": "p47",
-          "controlling_idea": "Auto Trader's Deal Builder episode shows, in the author's interpretation, that who may trigger a transition is part of the business model, so transition permissions belong in the lifecycle specification per vertical and seller type.",
-          "function": "example",
-          "transition_in": {
-            "relationship": "elaboration",
-            "carries_over": "The Auto Trader row.",
-            "introduces": "The lesson drawn from it, labeled as interpretation.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          },
-          "evidence": [
-            {
-              "kind": "source",
-              "what": "Auto Trader paused the automatic rollout of Deal Builder, held listening sessions and introduced 'request a reservation' after retailer pushback; trade press reported that the revised flow leaves reservation to the retailer's discretion.",
-              "source": "Auto Trader Group plc, FY26 results, 2026; Car Dealer Magazine, 2025",
-              "shows": "A platform-set reserved state on a dealer's stock changes the dealer's sales process."
-            }
-          ]
-        }
-      ]
-    },
-    {
       "id": "bike",
       "heading": "The Rotterdam City Bike, Transition by Transition",
       "controlling_idea": "Replayed through the model, Femke's bike shows every transition as a versioned event with its downstream duties, and shows where the Tuesday digest failed and how the contract fixes it.",
@@ -1251,9 +1198,9 @@
         "how": "Closes the scene's case with the full lifecycle and event contract."
       },
       "transition_in": {
-        "relationship": "contrast",
-        "carries_over": "Public contracts that show only a lifecycle's edges.",
-        "introduces": "A fictional replay that shows its inside.",
+        "relationship": "example",
+        "carries_over": "The owner, commands and events just defined.",
+        "introduces": "The scene's bike replayed through them, transition by transition.",
         "form": "sentence",
         "placement": "start_of_this"
       },
@@ -1269,7 +1216,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "Draft 19:31 (v1), submit 19:42 (v2), approve 19:48 (v3, 312 saved searches), 14 conversations, phishing 20:11-20:26 on an account, reserve Mon 14:02 (v8), sold 18:10 (v9, outcome €225), purge on the erasure request of Mon 6 Sep 2027.",
+              "what": "Draft 19:31 (v1), submit 19:42 (v2), approve 19:48 (v3, 312 saved searches), 14 conversations, phishing 20:11-20:26 on an account, reserve Mon 14:02 (v8), sold 18:10 (v9, outcome €225), purge on the erasure request of Mon 6 Sep 2027. The Submit row names the single Bikes leaf and points to the November 2027 bikes split in categories-and-taxonomies.",
               "source": "_research/scenario-ledger.md (worked example 1, editor lines, listing-data-management line)",
               "shows": "Every downstream obligation follows from an event with a version."
             }
@@ -1310,6 +1257,59 @@
       ]
     },
     {
+      "id": "in-practice",
+      "heading": "In Practice: What Public Evidence Shows",
+      "controlling_idea": "Public contracts show the model's edges rather than its inside, and Auto Trader's Deal Builder episode shows that who may trigger a transition is a business-model decision.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "L4"
+        ],
+        "how": "Tests the lifecycle's choices, including transition permissions, against public contracts."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "A fictional replay of the model's inside.",
+        "introduces": "What real companies have published: contracts, not internals.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "controlling_idea": "No classifieds company has published its lifecycle or event model, so the evidence is partner APIs, standards and investor reports that reveal contracts rather than internals.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Rightmove RTDF v1.4.1 (2023) and RESO Data Dictionary 2.0 (revised 2023), both cited earlier, and Auto Trader plc FY26 results (2026), each with what it documents and the lesson for the aggregate.",
+              "shows": "Lost deletes are normal, vertical lifecycles are richer, and platform-set states change dealers' operations."
+            }
+          ]
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "Auto Trader's Deal Builder episode shows, in the author's interpretation, that who may trigger a transition is part of the business model, so transition permissions belong in the lifecycle specification per vertical and seller type.",
+          "function": "example",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Auto Trader row.",
+            "introduces": "The lesson drawn from it, labeled as interpretation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Auto Trader paused the automatic rollout of Deal Builder, held listening sessions and introduced 'request a reservation' after retailer pushback; trade press reported that the revised flow leaves reservation to the retailer's discretion.",
+              "source": "Auto Trader Group plc, FY26 results, 2026; Car Dealer Magazine, 2025",
+              "shows": "A platform-set reserved state on a dealer's stock changes the dealer's sales process."
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "trade-offs",
       "heading": "Trade-offs",
       "controlling_idea": "Four decisions shape every listing model (status model, delete semantics, aggregate scope and ownership across brands), and retention sits between a regulatory floor and ceiling.",
@@ -1323,7 +1323,7 @@
       },
       "transition_in": {
         "relationship": "sequence",
-        "carries_over": "The model as tested by public evidence and the bike replay.",
+        "carries_over": "The model as replayed on the bike and tested against public evidence.",
         "introduces": "The choices it rests on and their alternatives.",
         "form": "sentence",
         "placement": "start_of_this"
@@ -1546,6 +1546,12 @@
               "what": "The decision record adopted at the architecture advice forum ahead of the July 2027 go-live; Yardstick still runs Tradeyard.",
               "source": "_research/scenario-ledger.md (1 Jul 2027 timeline, listing-aggregate line)",
               "shows": "Sharing the language rather than the code is the realistic path while legacy systems run."
+            },
+            {
+              "kind": "scenario",
+              "what": "Common Ground principle 'share platforms, not products': brands keep their own products; the group shares capabilities beneath them. Glossed on use with a pointer to meet-veldmark.",
+              "source": "_research/scenario-ledger.md (Common Ground principles line)",
+              "shows": "The slogan is a named Veldmark principle, not an unexplained quotation."
             }
           ]
         },
@@ -1863,6 +1869,46 @@
     {
       "date": "2026-11-13",
       "decision": "Reader-found error fixed by the orchestrator (round-6 findings, author request): Callout: 'two-day life' clashed with the September purge row; now two days on sale, erased six months later (ledger dates unchanged)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-7 spec fault (flow, both readers): Availability moved directly after the Lifecycle, before the Invariants, because it qualifies the sold transition; roadmap, p04, flow rationale and the availability and invariants transitions rewritten. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-7 spec fault (flow, both readers): the bike replay moved directly after the Architecture and In Practice after it; bike and in-practice openings, roadmap, p04, trade-offs carry-over and flow rationale rewritten. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-7 draft fault: the invariants intro now defines an invariant first and then glosses moderation gate and material edit with the main criteria (category, title, images, price above a threshold) and a pointer to Versions. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-7 draft fault: p36 opens with a bridge from the price series ('Price is not the only fact that needs a dated series'). Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-7 draft fault: p42 no longer invites matching eighteen to twelve; it states the fold reasons and points to event-driven-listings for the twelve (both counts kept). Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-7 draft fault: the bikes-split aside in the replay's Submit row now says Bikes was a single leaf until the November 2027 split and links categories-and-taxonomies (ledger: bikes split live Mon 1 Nov 2027). Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-7 draft fault: Moderation as an Afterthought is introduced as a catalogue pattern from where-listing-systems-go-wrong owned mainly by the trust-and-safety chapters, explaining its absence from the chapter's box. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-7 draft fault: 'share platforms, not products' glossed as Veldmark's Common Ground principle with a pointer to meet-veldmark (ledger principle line); clears flow_is_followable and known_before_new. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-7 minor findings also fixed: version glossed in the relisting table; the Auto Trader interpretation hedge moved after the evidence. Left as minor: the March-replay timeline note, the phishing row's first mention and the Purge row timing. Fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "length.max_words raised from 8,300 to 8,500 (+2.4%) for the glosses and bridges above. Fixed under the author's delegation (fix-only pass)."
     }
   ],
   "sources": [
@@ -1893,6 +1939,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass under the author's delegation: round-7 blocking findings fixed (two section moves, six glosses/bridges), two minors fixed, word limit 8,500; check report stale. (AI-mediated session)"
+    },
     {
       "date": "2026-11-12",
       "change": "Resolved the ESCALATE items under the author's delegation: open questions closed into the decision log, bikes-split aside restored, digest subscription named by meaning, conclusion calls back to Sven's contract, word limit 8,300. (AI-mediated session)"
@@ -1955,6 +2005,6 @@
     }
   ],
   "length": {
-    "max_words": 8300
+    "max_words": 8500
   }
 }

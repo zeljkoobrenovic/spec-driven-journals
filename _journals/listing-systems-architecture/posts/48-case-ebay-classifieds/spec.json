@@ -7,7 +7,7 @@
   "part": "part-9",
   "title": "eBay Classifieds Group: Shared Platforms, Local Brands and a Sale",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, the four acceptance criteria, the thesis and the role are copied unchanged from the case-ebay-classifieds entry in journal-spec.json. Added: one opening clause carrying over from case-olx (p01), a roadmap paragraph (p04) and a conclusion under its own heading (p62 new; p63 is the published closing paragraph moved there).",
   "intent": {
     "outcome": {
@@ -129,7 +129,7 @@
         "applies_to": "chief-architect to questions: rules from the record, their test against the book and Veldmark, and questions for the reader's group"
       }
     ],
-    "rationale": "Reading rules and the timeline come first because every later sentence is a dated fact, a reading or an inference. The phases run in time order, because the sale can only expose dependencies the reader has already seen being built: the portfolio (Phase 1), the shared layers by interface type with Kleinanzeigen's own 2009–2019 backbone beside them (Phase 2), the sale (Phase 3) and its aftermath. The Berlin brands' 2024–2025 work follows the aftermath, whose last piece of evidence, the 2025 migration, hands over to it, so time never runs backwards. The cross-phase views come next because each uses facts from every phase; inside that group they run from what the record shows to what it cannot: the options set side by side by interface type (the central finding), then the same options by vertical, then what went wrong, then the gaps, which close the group so the rules that follow do not outrun them. The author's rules, the comparison and the questions come last because they apply what the record has shown."
+    "rationale": "Reading rules and the timeline come first because every later sentence is a dated fact, a reading or an inference. The phases run in time order, because the sale can only expose dependencies the reader has already seen being built: the portfolio (Phase 1), the shared layers by interface type with Kleinanzeigen's own 2009–2019 backbone beside them (Phase 2), the sale (Phase 3) and its aftermath. The Berlin brands' 2024–2025 work follows the aftermath as a separate, later section on what stayed local under the new owner (not as aftermath evidence), so time never runs backwards. The cross-phase views come next because each uses facts from every phase; inside that group they run from what the record shows to what it cannot: the options set side by side by interface type (the central finding), then the same options by vertical, then what went wrong, then the gaps, which close the group so the rules that follow do not outrun them. The author's rules, the comparison and the questions come last because they apply what the record has shown."
   },
   "introduction": {
     "hook": {
@@ -696,7 +696,7 @@
             },
             {
               "kind": "reasoning",
-              "what": "INFERENCE, NOT DOCUMENTED callout: the evidence is consistent with a shared generalist platform for smaller horizontals; no source confirms it.",
+              "what": "INFERENCE, NOT DOCUMENTED callout: the evidence is consistent with a shared generalist platform for smaller horizontals; no source confirms it. Its transitional-services item is a Phase 3 fact and is marked 'as Phase 3 shows'.",
               "shows": "Keeps a plausible reading apart from fact."
             }
           ],
@@ -753,7 +753,7 @@
           "evidence": [
             {
               "kind": "quotation",
-              "what": "Andre Charton, October 2019: 2009 'plain old database backend' with Solr and a Java monolith; Kafka introduced in 2015 'to break out from the monolith'; saved searches with push notifications not possible 'in real time with MySQL'; 45 million saved searches and up to a million new ads a day by 2019; 'we won big trust'.",
+              "what": "Andre Charton, October 2019: 2009 'plain old database backend' with Solr and a Java monolith; Kafka introduced in 2015 'to break out from the monolith'; saved searches with push notifications not possible 'in real time with MySQL'; 45 million saved searches by 2019, checked against the daily flow of new ads p14 gave (figure not repeated); 'we won big trust'.",
               "source": "Berlin Tech Blog, 2019",
               "shows": "Shows the backbone started from a visible failure."
             }
@@ -773,7 +773,7 @@
           "evidence": [
             {
               "kind": "quotation",
-              "what": "'We are able to fully index 34 million documents in our search cluster in less than 30 minutes' from a compacted topic; a personalized home feed 'consumed like a stream'.",
+              "what": "'We are able to fully index 34 million documents in our search cluster in less than 30 minutes' from a compacted topic; a personalized home feed 'consumed like a stream'. The index holds the same 34 million live ads p14 gave, said as 'those 34 million'.",
               "source": "Berlin Tech Blog, 2019",
               "shows": "Shows the same log reused to make the index disposable."
             }
@@ -788,7 +788,7 @@
         },
         {
           "id": "p30",
-          "controlling_idea": "In the author's reading this is the case's most transferable engineering lesson and owes nothing to the group: an index rebuildable from a durable log cannot quietly become the system of record.",
+          "controlling_idea": "In the author's reading this is the case's most transferable lesson for a single platform's engineering and owes nothing to the group: an index rebuildable from a durable log cannot quietly become the system of record.",
           "function": "analysis",
           "transition_in": {
             "relationship": "elaboration",
@@ -937,7 +937,7 @@
     {
       "id": "aftermath",
       "heading": "Aftermath: Removing a Parent from a Platform",
-      "controlling_idea": "The brands Adevinta kept had to stop being eBay, which took years of domain, app and platform work beneath the logo.",
+      "controlling_idea": "The brands Adevinta kept had to stop being eBay, which took years of domain and app work beneath the logo.",
       "function": "evidence",
       "advances_thesis": {
         "supports": [
@@ -947,7 +947,7 @@
       },
       "flow": {
         "pattern": "assertion_evidence_reasoning",
-        "rationale": "The three pieces of evidence first, then one brand outside the core, then the reading of what they add up to. The reading generalizes from the evidence; placed first it would be an unsupported claim about separation budgets."
+        "rationale": "The two pieces of evidence first, then the reading of what they add up to. The reading generalizes from the evidence; placed first it would be an unsupported claim about separation budgets. The 2025 platform migration and the Kijiji Canada impairment are not separation evidence and sit elsewhere (berlin-platforms, evidence-stops)."
       },
       "transition_in": {
         "relationship": "contrast",
@@ -960,50 +960,24 @@
         {
           "id": "p42",
           "form": "list",
-          "controlling_idea": "Three pieces of evidence show what stopping being eBay took: the name and domain, the apps and the platform.",
+          "controlling_idea": "Two pieces of evidence show what stopping being eBay took: the name and domain, and the apps.",
           "function": "evidence",
           "evidence": [
             {
               "kind": "quotation",
-              "what": "16 May 2023 rebrand with the old domain kept 'several more years'; €15 million rebrand cost and no use of the brand beyond 2024 (Adevinta 2023 annual report, via case-adevinta); mobile.de's Android rebrand 'took only two weeks to implement once the base refactoring was done', removing 'technical debt from 8 years ago' (2025); Kleinanzeigen's 2025 migration, not documented as a consequence of the sale.",
+              "what": "16 May 2023 rebrand with the old domain kept 'several more years'; €15 million rebrand cost and no use of the brand beyond 2024 (Adevinta 2023 annual report, via case-adevinta); mobile.de's Android rebrand 'took only two weeks to implement once the base refactoring was done', removing 'technical debt from 8 years ago' (2025).",
               "source": "Adevinta release 2023; Berlin Tech Blog 2025",
-              "shows": "Shows the work at each layer and keeps the migration's cause unclaimed."
+              "shows": "Shows the work at the domain and app layers."
             }
           ]
         },
         {
-          "id": "p43",
-          "controlling_idea": "Away from the core, Adevinta impaired Kijiji Canada by €147 million in its 2023 results, citing competition and a new 2023 mobile app; Kijiji is still listed among Adevinta's brands.",
-          "function": "evidence",
-          "evidence": [
-            {
-              "kind": "statistic",
-              "what": "€147 million impairment citing competition and a new 2023 mobile app; still listed as of October 2026.",
-              "source": "OnlineMarketplaces, 2024",
-              "shows": "Shows a kept brand outside the core."
-            }
-          ],
-          "transition_in": {
-            "relationship": "contrast",
-            "carries_over": "The core brands' rebrand work.",
-            "introduces": "A kept brand away from the core.",
-            "form": "phrase",
-            "placement": "start_of_this"
-          },
-          "advances_thesis": {
-            "supports": [
-              "E1"
-            ],
-            "how": "Records a kept greenfield brand outside the core, beside the self-sufficient national leaders."
-          }
-        },
-        {
           "id": "p44",
-          "controlling_idea": "In the author's reading, which goes beyond the three examples, separating from a parent takes work at several layers below the logo (domains, identity and design systems), and the logo, the cheapest part, is the one most often budgeted.",
+          "controlling_idea": "In the author's reading, which goes beyond these examples, separating from a parent takes work at several layers below the logo (domains, identity and design systems), and the logo, the cheapest part, is the one most often budgeted.",
           "function": "analysis",
           "transition_in": {
             "relationship": "elaboration",
-            "carries_over": "The name, app and platform evidence from the kept brands.",
+            "carries_over": "The name, domain and app evidence from the kept brands.",
             "introduces": "A general list of the layers a separation budget must cover, which goes beyond those examples.",
             "form": "phrase",
             "placement": "start_of_this"
@@ -1024,32 +998,37 @@
       },
       "flow": {
         "pattern": "grouping",
-        "rationale": "Kleinanzeigen's 2025 migration comes first because the Aftermath's third piece of evidence hands it over; its six design choices and the author's reading of its ownership follow. mobile.de, the other Berlin brand, comes last as a second, narrower example of a brand on its own path, about models rather than platform."
+        "rationale": "One opening sentence frames the section as the latest answer to 'what stayed local'. Kleinanzeigen's 2025 migration comes first, with the explicit note that it is not documented as a consequence of the sale; its six design choices and the author's reading of its ownership follow. mobile.de, the other Berlin brand, comes last as a second example of what stayed local: a marketplace honoring its own dealer contracts in ranking."
       },
       "transition_in": {
-        "relationship": "elaboration",
-        "carries_over": "The Aftermath's third piece of evidence: Kleinanzeigen's 2025 whole-platform migration, which the Aftermath says the next section describes.",
-        "introduces": "The migration in detail, from Kleinanzeigen's own engineers, and the other Berlin brand.",
+        "relationship": "time",
+        "carries_over": "The brands Adevinta kept, after the rebrand.",
+        "introduces": "What the two Berlin brands engineered on their own paths under the new owner, as the latest answer to what stayed local.",
         "form": "sentence",
-        "placement": "both"
+        "placement": "start_of_this"
       },
       "paragraphs": [
         {
+          "id": "p30a",
+          "controlling_idea": "Under their new owner the two Berlin brands kept engineering on their own paths, and what their engineers published is the latest answer to the chapter's question of what stayed local.",
+          "function": "transition"
+        },
+        {
           "id": "p31",
-          "controlling_idea": "Kleinanzeigen's own engineers documented the whole-platform migration the Aftermath named: in 2025 it ran both systems and switched users one at a time, and the post gives no basis for linking the new system to Adevinta's convergence plan.",
+          "controlling_idea": "Kleinanzeigen's own engineers documented a 2025 whole-platform migration that is not documented as a consequence of the sale: it replaced a 2009 platform built for 10,000 ads a day, ran both systems and switched users one at a time, and the post gives no basis for linking the new system to Adevinta's convergence plan.",
           "function": "evidence",
           "evidence": [
             {
               "kind": "quotation",
-              "what": "MD Sayem Ahmed, June 2025: 'KA recently migrated the whole platform to a new system'; ran it 'parallel to our legacy system', 'incrementally switched users' with the option to 'revert the users to the old system'; neither platform named.",
+              "what": "MD Sayem Ahmed, June 2025: 'KA recently migrated the whole platform to a new system'; ran it 'parallel to our legacy system', 'incrementally switched users' with the option to 'revert the users to the old system'; neither platform named. Statement-based binary logs glossed here (moved from the Aftermath).",
               "source": "Berlin Tech Blog, 2025",
               "shows": "Shows a whole-platform migration done per user, and what the post does not say."
             }
           ],
           "transition_in": {
             "relationship": "elaboration",
-            "carries_over": "The Aftermath's third piece of evidence, the 2025 whole-platform migration.",
-            "introduces": "The migration as its engineers described it.",
+            "carries_over": "The Berlin brands' own paths.",
+            "introduces": "Kleinanzeigen's whole-platform migration, as its engineers described it.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1094,7 +1073,7 @@
         },
         {
           "id": "p34",
-          "controlling_idea": "mobile.de, the other Berlin brand, published more about models, and its ranking post shows dealers' exposure guarantees shaping a ranking service moved out of Elasticsearch.",
+          "controlling_idea": "mobile.de, the other Berlin brand, shows a second thing that stayed local, honoring its own dealer contracts in search: its ranking post shows dealers' exposure guarantees shaping a ranking service moved out of Elasticsearch.",
           "function": "evidence",
           "evidence": [
             {
@@ -1105,10 +1084,10 @@
             }
           ],
           "transition_in": {
-            "relationship": "contrast",
-            "carries_over": "Kleinanzeigen's platform migration.",
-            "introduces": "The other Berlin brand, which published about models.",
-            "form": "phrase",
+            "relationship": "additional_support",
+            "carries_over": "Kleinanzeigen's own platform path as one thing that stayed local.",
+            "introduces": "The other Berlin brand's local ranking, which published about models.",
+            "form": "sentence",
             "placement": "start_of_this"
           }
         },
@@ -1142,10 +1121,15 @@
         "relationship": "conclusion_summary",
         "carries_over": "The record across all phases, from the portfolio to the Berlin brands' own paths.",
         "introduces": "The options it shows, set side by side.",
-        "form": "phrase",
+        "form": "sentence",
         "placement": "start_of_this"
       },
       "paragraphs": [
+        {
+          "id": "p44a",
+          "controlling_idea": "Taken across all phases, from the portfolio to the Berlin brands' own paths, the record shows seven options, set side by side in a table.",
+          "function": "transition"
+        },
         {
           "id": "p45",
           "controlling_idea": "The options differ mainly in the kind of interface they create: agreements and external providers are easy to unwind, published contracts can be handed over or re-pointed, and undocumented dependence on a parent is the hardest and the one the regulator wrote into the remedy.",
@@ -1153,7 +1137,7 @@
           "evidence": [
             {
               "kind": "table",
-              "what": "Seven options (buy the leader, launch greenfield, coordinate a choice, build a PaaS, share a vertical supply platform behind contracts, buy from one external provider, depend on the parent), each with what eCG's record shows and when it is right or fails.",
+              "what": "Seven options (buy the leader, launch greenfield brands under a group brand (no group platform claimed), coordinate a choice, build a PaaS, share a vertical supply platform behind contracts, buy from one external provider, depend on the parent), each with what eCG's record shows and when it is right or fails.",
               "shows": "Lays the options side by side for comparison."
             },
             {
@@ -1161,7 +1145,14 @@
               "what": "Figure 6: four joints, from a handshake to a knotted tangle.",
               "shows": "Shows the ordering of interfaces by ease of unwinding."
             }
-          ]
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The seven options in the table.",
+            "introduces": "The one dimension they differ on.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
         }
       ]
     },
@@ -1292,11 +1283,37 @@
             "form": "sentence",
             "placement": "start_of_this"
           }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Kijiji Canada shows why ownership facts may change: away from the core, Adevinta impaired it by €147 million in its 2023 results, citing competition and a new 2023 mobile app, yet it is still listed among Adevinta's brands, a kept brand outside the core that lost value after the sale.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "€147 million impairment citing competition and a new 2023 mobile app; still listed as of October 2026.",
+              "source": "OnlineMarketplaces, 2024",
+              "shows": "Shows a kept brand outside the core losing value, which is why its status may change."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Volatile ownership of three brands after 2024.",
+            "introduces": "Kijiji Canada as the case in point.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "E1"
+            ],
+            "how": "Records a kept greenfield brand outside the core, beside the self-sufficient national leaders."
+          }
         }
       ],
       "flow": {
         "pattern": "large_to_small",
-        "rationale": "The nine open questions first, then the one caveat that applies to facts already given (ownership after 2024). The caveat refers to the portfolio facts, so it follows the list of what is unknown rather than interrupting it."
+        "rationale": "The nine open questions first, then the one caveat that applies to facts already given (ownership after 2024). The caveat refers to the portfolio facts, so it follows the list of what is unknown rather than interrupting it. Kijiji Canada's 2023 impairment follows as the example that shows why the caveat matters (moved from the Aftermath, where readers could not connect it to separation)."
       }
     },
     {
@@ -1618,7 +1635,8 @@
     "Scope and duration of the Gumtree UK transitional services.",
     "Identity of Kleinanzeigen's 2025 'new system' and its relation to any Adevinta platform.",
     "When Kleinanzeigen's buyer-protection provider changed from Online Payment Platform to Adyen.",
-    "Ownership of Gumtree UK, Gumtree Australia and Kijiji Canada after 2024 (volatile)."
+    "Ownership of Gumtree UK, Gumtree Australia and Kijiji Canada after 2024 (volatile).",
+    "Draft-check minor findings left open in the 2026-11-13 fix-only pass: 'group-wide' in p17 overstates two layers (spec wording); Phase 3 dates run June then March/April (p38); the Aftermath identity point (p44) has no example among the bullets; trade-offs row 1 lists Kleinanzeigen among bought leaders; KEY POINTS bullet 3 still says 'platform work' though the Aftermath no longer lists the platform (published wording kept)."
   ],
   "decision_log": [
     {
@@ -1700,6 +1718,42 @@
     {
       "date": "2026-10-19",
       "decision": "For the Veldmark comparison, used a hypothetical 2029 Tradeyard Portugal sale built only from ledger dates (Adevinta's case used Hearthly), so the two cases test different shared capabilities; no ledger facts added."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Intro p04: 'To answer them' names the three questions (flow, both readers). fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p26 INFERENCE callout: the regulator's transitional-services item marked 'as Phase 3 shows' so a Phase 3 fact is not used unannounced (flow, both readers). fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p28/p29: the million-a-day and 34-million figures are not restated as if new; p29 says 'those 34 million' (flow, both readers). No figure removed from the page. fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Aftermath reduced to two pieces of evidence; the 2025 platform bullet's content (not a consequence of the sale, 2009 platform for 10,000 ads a day, statement-based binary logs gloss) moved into berlin-platforms p31 (spec fault, both readers). fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "berlin-platforms reframed as a separate later section on what stayed local: new p30a, transition_in now 'time', p31 and p34 rewritten with bridges to 'what stayed local' (spec fault, both readers, two findings). fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p43 Kijiji Canada impairment moved from the Aftermath to evidence-stops after p50, with one sentence on what it shows (spec fault + evidence_is_explained). fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "trade-offs: new p44a opening sentence carries over the record across all phases (transition finding); table row 2 relabeled 'Launch greenfield brands under a group brand' (Phase 1 wording) so no group platform is stated as record (AC-4, flow). 'When it fails' cell made hypothetical ('a shared platform'). fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Minor wording fixes: p30 'lesson for a single platform's engineering'; p58 referent of 'much thicker' made Veldmark's; p62 'have answers that point one way'. fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "length.max_words raised from 8300 to 8500 (+2.4%) for the added transitions and moved text. fixed under the author's delegation (fix-only pass)."
     }
   ],
   "sources": [
@@ -1779,9 +1833,13 @@
     {
       "date": "2026-10-19",
       "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on round-4 blocking findings: Aftermath trimmed to two pieces of evidence, Berlin section reframed as what stayed local, Kijiji impairment moved to evidence-stops, trade-offs opening and row 2 fixed, intro/callout/figure-repetition wording fixes; max_words 8500. (AI-mediated session)"
     }
   ],
   "length": {
-    "max_words": 8300
+    "max_words": 8500
   }
 }

@@ -33,11 +33,11 @@ A listing is written by one party and read by many. The seller or a dealer's fee
 
 Most marketplaces start with the cheapest answers: downstream systems poll the listing database, read a replica, receive a nightly dump, or get a message that the application sends after it commits — when it remembers to. Each answer works until the number of readers grows. Then removals arrive late, a reindex takes a weekend, and nobody can say which copy of a listing is right. **An event-driven listing architecture replaces many private integrations with one published stream**, owned by the listing's system of record and designed as carefully as an external API.
 
-This chapter opens [[part-7]], whose argument is that a shared platform earns trust through contracts, not mandates. The listing event is the first of those contracts and the one the rest of the part reads from. It turns the lifecycle and invariants of [[listing-aggregate]] and the stages of [[publication-pipeline]] into a published stream, the stream that search, alerts and trust and safety in Parts IV and V already assumed. The chapter owns the **listing event**, the **transactional outbox** and **schema evolution** for listing events. Where the copies live, how consistent they must be, and how erasure reaches them belong to the next chapter, [[listing-data-management]]. How behavioral tracking events reach the data platform belongs to [[data-platform]]. The chapter starts with a Veldmark digest that missed a sale, defines the listing event, builds the stream, tests it on dated engineering posts (Adevinta, Kleinanzeigen, Vinted, AutoScout24, mobile.de), Confluent and Debezium documentation, and contract v1, covers schema evolution and replay, and closes with trade-offs, verticals, failure modes, the Chief Architect's view and review questions.
+This chapter opens [[part-7]], whose argument is that a shared platform earns trust through contracts, not mandates. The listing event is the first of those contracts and the one the rest of the part reads from. It turns the lifecycle and invariants of [[listing-aggregate]] and the stages of [[publication-pipeline]] into a published stream, the stream that search, alerts and trust and safety in Parts IV and V already assumed. The chapter owns the **listing event**, the **transactional outbox** and **schema evolution** for listing events. Where the copies live, how consistent they must be, and how erasure reaches them belong to the next chapter, [[listing-data-management]]. How behavioral tracking events reach the data platform belongs to [[data-platform]]. The chapter starts with a Veldmark digest that missed a sale, defines the listing event, builds the stream and tests it on public evidence and contract v1. It then covers schema evolution and replay, and closes with trade-offs, verticals, failure modes, the Chief Architect's view and review questions. The evidence comes from dated engineering posts (Adevinta, Kleinanzeigen, Vinted, AutoScout24, mobile.de), Confluent and Debezium documentation, and contract v1.
 
 ## Setting the Scene at Veldmark: The Digest That Did Not Know the Bike Was Sold
 
-On Tuesday 9 March 2027, Ingrid Halvorsen, Veldmark's Group Chief Architect (Veldmark is the fictional marketplace group this book follows; see [[meet-veldmark]]), reads an incident note from Tradeyard Netherlands. Femke's €240 Rotterdam city bike, listed on Sunday evening, sold on Monday for €225 through Safe Deal. Tradeyard marked it sold at **18:10** and Solr removed it from search at **18:11**. Yet the next morning's alert digest e-mail still featured the bike to people with matching saved searches. Three of them messaged Femke to ask whether it was still available. (A phishing account that messaged her was suspended Sunday at 20:26; see [[fraud-prevention]].)
+On Tuesday 9 March 2027, Ingrid Halvorsen, Veldmark's Group Chief Architect (Veldmark is the fictional marketplace group this book follows; see [[meet-veldmark]]), reads an incident note from Tradeyard Netherlands. Femke's €240 Rotterdam city bike, listed on Sunday evening, sold on Monday for €225 through Safe Deal. Tradeyard marked it sold at **18:10** and Solr removed it from search at **18:11**. Yet the next morning's alert digest e-mail still featured the bike to people with matching saved searches. Three of them messaged Femke to ask whether it was still available.
 
 Sven Lindqvist, principal engineer for the group event platform, traces the path. Tradeyard's alert digest job assembled its candidate list at 17:30 on Monday from a read replica of Yardstick's MySQL database, the PHP monolith at the heart of Tradeyard. It stored the list and sent it at 07:00 on Tuesday. Nothing told the digest that the bike had sold in between. The search indexer heard about the sale because Yardstick sends a RabbitMQ message after the sold flag is committed, but the digest job was never subscribed to that message, and nobody had a list of who was.
 
@@ -78,7 +78,7 @@ Martin Fowler's 2017 essay ["What do you mean by 'Event-Driven'?"](https://marti
 
 Three properties decide whether consumers end up correct.
 
-- **Ordering.** Kafka preserves order within a partition, so keying listing events by listing ID gives per-listing order. The Debezium outbox router (a tool for the transactional outbox described in the next section) follows the same convention, using the aggregate ID as the message key "which preserves per-aggregate order" ([Debezium documentation](https://debezium.io/documentation/reference/stable/transformations/outbox-event-router.html), n.d.). There is no useful global order across listings, and consumers should not need one.
+- **Ordering.** Kafka preserves order within a partition, so keying listing events by listing ID gives per-listing order. There is no useful global order across listings, and consumers should not need one.
 - **Delivery.** Practical pipelines deliver **at least once**: a producer retry or a consumer restart can deliver the same event twice. End-to-end exactly-once across a database, a broker and a search index is not on offer in general, whatever individual components promise.
 - **Idempotency.** A consumer is **idempotent** if processing an event twice has the same effect as processing it once. For listing events the robust rule is **version-gated apply**: each event carries the listing's aggregate version, and a consumer applies an event only if its version is newer than the one it has stored.
 
@@ -95,7 +95,7 @@ These concepts become an architecture of five parts, each with one owner.
 5. **Consumers** — search indexer, alert matcher, trust-and-safety scoring, sitemap generator, warehouse loader, partner syndication, pro-seller statistics — each own their read model and their consumer offsets.
 
 ![Diagram: One producer, one contract, many consumers](assets/images/33-event-driven-listings/fig02-one-producer-one-contract-many-consumers.jpeg)
-**Figure 2:** *One producer, one contract, many consumers. The outbox makes publication part of the write; the domain-event topic carries changes; the compacted state topic (described under topics and retention below) lets any consumer, including one built next year, start from the current state without asking the producer for a dump.*
+**Figure 2:** *One producer, one contract, many consumers. The outbox makes publication part of the write; the domain-event topic carries changes; the compacted state topic, which keeps only the latest state of each listing (see Topics and retention below), lets any consumer, including one built next year, start from the current state without asking the producer for a dump.*
 
 ### The transactional outbox
 
@@ -107,13 +107,13 @@ The outbox has three properties that matter for listings:
 
 - **The producer chooses the event shape.** The payload is written by domain code, so it can say `ListingSold` with a sale channel and a price, instead of exposing `status=4`.
 - **Publication is at least once.** The relay can publish a row twice after a restart; consumers must de-duplicate.
-- **Order follows commit order per listing**, provided the relay preserves table order and keys by listing ID.
+- **Order follows commit order per listing**, provided the relay preserves table order and keys by listing ID. The Debezium outbox router does exactly that, using the aggregate ID as the message key "which preserves per-aggregate order" ([Debezium documentation](https://debezium.io/documentation/reference/stable/transformations/outbox-event-router.html), n.d.).
 
 The cost is a write-path change in every producer, and an extra table to clean up. That is why legacy systems usually start somewhere else.
 
 ### Change data capture as the strangler's first tool
 
-A monolith like Yardstick cannot be given an outbox in a week; its write paths are scattered across controllers, cron jobs and admin tools. **Table-level change data capture** reads the database's transaction log and turns every row change into an event without touching application code. In a 2025 Adevinta engineering post, Kleinanzeigen's search team described using Debezium on existing Kafka Connect clusters to stream MySQL changes, joining them into a denormalized per-user object published to a compacted topic (one that keeps the latest message per key; see Topics and retention below), at up to 50,000 messages per second during full re-consumption; the authors found Debezium powerful but harder to troubleshoot because issues "often arise at the infrastructure level rather than in the application code" ([Adevinta Tech Blog](https://adevinta.com/techblog/make-data-migration-easy-with-debezium-and-apache-kafka/), 2025).
+A monolith like Yardstick cannot be given an outbox in a week; its write paths are scattered across controllers, cron jobs and admin tools. **Table-level change data capture** reads the database's transaction log and turns every row change into an event without touching application code. In a 2025 Adevinta engineering post, Kleinanzeigen's search team described using Debezium on existing Kafka Connect clusters to stream MySQL changes, joining them into a denormalized per-user object published to a compacted topic like the state topic in Figure 2, at up to 50,000 messages per second during full re-consumption; the authors found Debezium powerful but harder to troubleshoot because issues "often arise at the infrastructure level rather than in the application code" ([Adevinta Tech Blog](https://adevinta.com/techblog/make-data-migration-easy-with-debezium-and-apache-kafka/), 2025).
 
 Raw CDC events are not domain events. The pattern that keeps them from leaking is a **translation layer** — an anti-corruption layer, in domain-driven design terms — that consumes the raw change stream, joins what it needs, infers the business transition and emits the contract event. The rule I use: **CDC is allowed as a source, never as a contract.** Only the translator reads the monolith's tables; everyone else reads the translator's output. When the write path moves out of the monolith, the new service publishes the same contract through its own outbox, and consumers do not notice the switch. CDC and outbox are therefore stages, not alternatives, and [[modernization-and-migration]] uses this sequence for Yardstick's strangler plan. The table compares the options.
 
@@ -149,7 +149,7 @@ The second choice is **public state only**: the `state` block contains what a bu
 
 ### The event catalog
 
-Contract v1 defines twelve listing event types, one per row below; pausing and resuming are one type with two names. The list is short on purpose; every new type is a cost for every consumer.
+Contract v1 defines twelve listing event types, one per row below. One row holds two names, because pausing and resuming are a single type emitted as either `ListingPaused` or `ListingResumed`; that is why the table shows thirteen names. The list is short on purpose; every new type is a cost for every consumer.
 
 | Event type | Emitted when | Main consumers |
 | --- | --- | --- |
@@ -200,14 +200,14 @@ First, others' evidence. Public evidence on listing event models is thin; no cla
 
 Where the public record stops at the plumbing, Veldmark had to design the events themselves. Sven Lindqvist's team designs the contract between March and June 2027, with one representative from each brand and from the four first consumers: search, alerts, trust and safety, and the warehouse. Four decisions shape it.
 
-**One contract, three publication paths.** Each brand reaches the contract differently in 2027, and the design accepts that.
+**One contract, three publication paths.** Each brand reaches the contract differently in 2027, and the design accepts that. Three brands publish; the fourth, Keybridge, stays off the stream for a reason given after the table.
 
 | Brand | Listing system of record (2027) | Publication path to v1 | Target |
 | --- | --- | --- | --- |
 | Tradeyard | Yardstick, PHP on MySQL | Debezium CDC on Yardstick's listing tables into a translator service, **Yardstick Relay**, which emits v1 events | Outbox in the new insertion service when it moves out of Yardstick (Q2 2028) |
 | Motorvane | Kotlin listing service | Transactional outbox, relayed by Debezium | Already target |
 | Hearthly | Go listing service on Google Cloud | Outbox to Google Pub/Sub, then a bridge to Confluent Cloud that preserves the listing key | Direct publication if Hearthly moves to AWS |
-| Keybridge | Not a marketplace; a SaaS publishing agency listings to many portals | Publishes to Hearthly through the same feed interface as any software vendor; **does not consume** Hearthly listing events | Unchanged: the March 2027 neutrality decision applies |
+| Keybridge | Not a marketplace; a SaaS publishing agency listings to many portals | Publishes to Hearthly through the same feed interface as any software vendor; **does not consume** Hearthly listing events | Unchanged: stays off the stream (see below) |
 
 Keybridge gets no subscription to Hearthly's listing stream. Keybridge sends listings to Hearthly's competitors, so a subscription would undermine the neutrality commitment Veldmark made to agencies in March 2027. The event backbone has access control per topic, and the architecture decision record says so explicitly.
 
@@ -215,13 +215,13 @@ Keybridge gets no subscription to Hearthly's listing stream. Keybridge sends lis
 
 **Versions are mandatory.** Every producer must emit a strictly increasing `listing_version`. For Yardstick Relay this means reading the `updated_seq` column the Tradeyard team added to the listing table in April 2027, because MySQL timestamps had one-second resolution and edits within a second were common in bulk tools.
 
-**Avro, full transitive compatibility.** The contract uses Avro schemas in Confluent Schema Registry with the **FULL_TRANSITIVE** compatibility mode on `listing.events.v1`, which lets any consumer read any event on the topic whatever schema version either uses, because producers and consumers upgrade on their own schedules and consumers replay old events; the schema section below sets it against the other modes.
+**Avro in a schema registry.** The contract uses Avro schemas in Confluent Schema Registry, the component that stores every schema version and rejects incompatible changes. The compatibility mode the registry enforces on `listing.events.v1` completes the fourth decision; choosing it needs the registry's compatibility modes, so the Schema Evolution section below makes that choice.
 
 At go-live on **1 July 2027**, the contract has 23 registered consumer groups. By the end of 2027 it carries about **4.2 million listing events a day**, with a peak of about **1,100 events per second** on Sunday evenings, and a publication-latency objective of **p95 under two seconds** from commit to topic. Tradeyard produces about 62% of the events, because private listings change state often and live briefly.
 
 ### The bike, replayed on the contract
 
-The Rotterdam bike is a March 2027 story, before the contract existed. (The table below skips versions 4 to 7, Femke's edits and a photo reorder on Sunday night.) Sven's team uses it as the acceptance test for v1: replay Femke's listing through the new design and check that every consumer would have behaved correctly.
+The Rotterdam bike is a March 2027 story, before the contract existed. Sven's team uses it as the acceptance test for v1: replay Femke's listing through the new design and check that every consumer would have behaved correctly.
 
 ![Diagram: The bike's sale as a single event with three consumers](assets/images/33-event-driven-listings/fig03-bike-s-sale-single-event-three.jpeg)
 **Figure 3:** *The bike's sale as a single event with three consumers. The digest is fixed twice over: it removes the bike when `ListingSold` arrives, and it re-checks listing state at send time, because a derived artifact that lives for thirteen and a half hours must not trust a snapshot.*
@@ -231,24 +231,24 @@ The Rotterdam bike is a March 2027 story, before the contract existed. (The tabl
 | Sun 7 Mar 19:42 | `ListingSubmitted` | 1 | Trust scoring runs the fast path; category confirmed as city bikes |
 | Sun 19:47 | `ListingModerated` (approved) | 2 | Listing context transitions to active |
 | Sun 19:48 | `ListingPublished` | 3 | Search indexes; alert matcher finds **312** matching saved searches; sitemap adds the URL |
-| Sun 20:26 | — | — | The phishing account is suspended; that is an event on the *account*, not on Femke's listing |
+| Sun 20:26 | — | — | A phishing account that messaged Femke is suspended; that is an event on the *account*, not on Femke's listing |
 | Mon 8 Mar 14:02 | `ListingReserved` (Safe Deal) | 8 | Search shows "reserved"; alerts suppress new notifications |
 | Mon 18:10 | `ListingSold`, price €225, channel Safe Deal | 9 | Search removes; digest drops the bike; SEO page switches to a sold state |
 | Mon +30 days | Tombstone on `listing.state.v1` | — | Consumers that track closures purge their state |
 
-The table also shows what the event stream does **not** do: it does not detect the phishing message, which is a messaging event handled in [[messaging-and-leads]] and [[fraud-prevention]], and it does not make the sold page an SEO decision, which [[web-and-seo-architecture]] owns. It makes sure every one of those systems hears the same facts in the same order.
+The table skips versions 4 to 7, Femke's edits and a photo reorder on Sunday night. It also shows what the event stream does **not** do: it does not detect the phishing message, which is a messaging event handled in [[messaging-and-leads]] and [[fraud-prevention]], and it does not make the sold page an SEO decision, which [[web-and-seo-architecture]] owns. It makes sure every one of those systems hears the same facts in the same order.
 
 The Essen Golf gives the contract its second test, on Motorvane. When Autohaus Ruhrblick cuts the price from €21,900 to €21,400 on Thursday 22 April 2027, one `PriceChanged` event reaches the alert matcher, which sends price-drop alerts to **1,180** watchers, and the market-value model, which re-scores the listing. When the car sells on 29 April, though, the dealer's feed reports the removal **26 hours** later. No event architecture can publish a change the system of record has not received. **The stream makes downstream copies as fresh as the source, not fresher**; upstream lateness is a feed-contract problem, handled by reconciliation and staleness controls in [[listing-ingestion]] and [[publication-pipeline]].
 
 ## Schema Evolution
 
-Contract v1's fourth decision, full transitive compatibility, follows from one fact: a listing event schema lives for years and has consumers its producers have never met. Changing it safely is the hardest operational discipline in this chapter.
+Contract v1's compatibility mode, the second half of its fourth decision, follows from one fact: a listing event schema lives for years and has consumers its producers have never met. Changing it safely is the hardest operational discipline in this chapter.
 
 ### Compatibility modes
 
 Confluent Schema Registry enforces compatibility between schema versions. BACKWARD — the default — means consumers using the new schema can read data written with the previous one, and it is checked only against the latest version; the transitive variants check against all previous versions; FORWARD means old consumers can read new data; FULL means both ([Confluent documentation](https://docs.confluent.io/platform/current/schema-registry/fundamentals/schema-evolution.html), n.d.). For Protobuf, a format the contract does not use, the documentation recommends BACKWARD_TRANSITIVE because adding new message types breaks forward compatibility.
 
-A multi-brand listing stream needs **full transitive** compatibility, because consumers and producers upgrade on independent schedules and consumers replay old events. Under it, any consumer, on any schema version, can read any event on the topic. In practice, full compatibility in Avro allows adding and removing **optional fields with defaults** and little else. That constraint is the point.
+A multi-brand listing stream needs **full transitive** compatibility, because consumers and producers upgrade on independent schedules and consumers replay old events, so contract v1 sets the **FULL_TRANSITIVE** mode on `listing.events.v1`. Under it, any consumer, on any schema version, can read any event on the topic. In practice, full compatibility in Avro allows adding and removing **optional fields with defaults** and little else. That constraint is the point.
 
 ### The rules Veldmark publishes
 
@@ -271,7 +271,7 @@ A breaking change means a new topic, `listing.events.v2`, and a period in which 
 
 ### Replay is a feature you design
 
-Its events must also replay safely. A listing stream earns most of its value on bad days. A search mapping changes and the index must be rebuilt. A new recommendation service needs all live listings. An enrichment bug wrote wrong attributes to 300,000 listings and they must be corrected everywhere. Each of these is a **replay**: re-delivering state to consumers that already processed it.
+A contract must not only change safely; its events must also replay safely. A listing stream earns most of its value on bad days. A search mapping changes and the index must be rebuilt. A new recommendation service needs all live listings. An enrichment bug wrote wrong attributes to 300,000 listings and they must be corrected everywhere. Each of these is a **replay**: re-delivering state to consumers that already processed it.
 
 Three replay sources exist, and they serve different purposes.
 
@@ -340,7 +340,7 @@ Each failure below breaks one part of the design.
 - **The unversioned upsert.** A consumer writes `state` into its store without comparing versions. Redeliveries and backfills now resurrect old states, including sold listings — Ghost Inventory produced by the event pipeline itself.
 - **Semantic drift.** A field keeps its name and changes its meaning. Registries do not catch it; reviews and contract tests with real examples do.
 - **Snapshot consumers.** A consumer reads the stream correctly but builds a long-lived artifact — a digest, a partner export, a newsletter — from a snapshot and sends it hours later. The bike digest was this. **Anything that is delivered later than it is computed must re-check availability at delivery time.**
-- **Tombstones missed.** A consumer is down for longer than the tombstone retention and never learns that a listing was erased. Weekly reconciliation against the state topic's key set and the system of record closes the gap.
+- **Tombstones missed.** A consumer is down for longer than the tombstone retention and never learns that a listing was erased. A weekly reconciliation, separate from the nightly read-model check above, compares the state topic's key set with the system of record and closes the gap.
 - **Personal data on the stream.** Seller phone numbers or exact addresses enter `state` "because one consumer needs them". From then on, every consumer, every retained offset and every backup holds personal data subject to erasure. Keep it out; fetch at use.
 - **The stream as a dumping ground.** Views, impressions and experiment exposures are added to the listing topic because the infrastructure is there. Volumes rise by two orders of magnitude and removal latency degrades at the peak. Separate streams for separate purposes.
 
@@ -360,7 +360,7 @@ Each of those failures needs an owner who prevents it. At group scale the contra
 
 ## Questions to Ask
 
-These questions test a design against those decisions.
+These questions test a design against the decisions this chapter has made, from who emits each event to how removals are measured.
 
 1. Which system emits each listing lifecycle transition, and is there any code path — admin tools, cron jobs, bulk operations — that changes listing state without emitting an event?
 2. How does a committed change become an event: outbox, CDC with a translator, or publish-after-commit? What happens if the process crashes between the two?
@@ -375,7 +375,7 @@ These questions test a design against those decisions.
 
 ## From Events to Copies
 
-A listing written once and read by ten or twenty systems needs both halves of this design. The producer's half (one emitter, outbox or translator, key and version) turns each committed change into one event. The consumer's half (version gates, healing state, a backfill topic) stops replays and late batches undoing it. Femke's bike needed both: an event the digest heard, and a digest that re-checked when it sent. Both halves catch backfill and schema-change failures before buyers do, and let a new consumer start without asking the producer. Review the next event design by asking which half it lacks.
+A listing written once and read by ten or twenty systems needs both halves of this design. The producer's half (one emitter, outbox or translator, key and version) turns each committed change into one event. The consumer's half (version gates, healing state, a backfill topic) stops replays and late batches undoing it. Femke's bike needed both: an event the digest heard, and a digest that re-checked when it sent. Both halves, under the schema rules above, catch backfill and schema-change failures before buyers do, and let a new consumer start without asking the producer. Review the next event design by asking which half it lacks.
 
 The event stream moves changes; it does not decide where the resulting copies live, how stale each may be, or how a seller's erasure request reaches every copy. [[listing-data-management]] takes up those questions with the same bike, which it finds held in seven places at once.
 

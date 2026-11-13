@@ -7,7 +7,7 @@
   "part": "part-3",
   "title": "One Property, Three Listings: Duplicates and Entity Resolution",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the entity-resolution entry in journal-spec.json. Added units not in the published text: the roadmap paragraph p05, the table leads p47 and p49, and the synthesis paragraph p60.",
   "intent": {
     "outcome": {
@@ -123,7 +123,7 @@
         "applies_to": "the Lyon apartment and the abuse cases, which test the model on Veldmark"
       }
     ],
-    "rationale": "The scene ends with Ingrid's four questions and the body answers them in the order each answer is needed. What the thing is comes first, in three steps: which kind of duplicate (because the action and owner depend on it), which real-world entity the vertical offers (because matching needs a target), and how duplicates behave in each vertical, placed beside the identity table it extends so the two comparisons are read together. Who decides that two listings are the same comes next, as the matching pipeline and the registry that makes its decisions stable and disputable. What each audience sees can only be stated once clusters exist, so merge policies follow the pipeline. The Lyon apartment then runs the whole model with numbers, and the abuse cases show the same detectors under the enforcement policy the kinds section set apart. Trade-offs, failure modes, the Chief Architect's decisions and review questions are judgements about a model the reader has now seen. Moving merge policies before the pipeline would use clusters and representatives before they exist; moving the Lyon case earlier would show thresholds and registry IDs before they are defined. Kinds come before entities because the enforcement kinds never resolve to an entity: put the other way round, the reader would try to resolve reposts and stolen copies to a property. The abuse cases sit in the practice section, not beside the kinds, because they show the same detectors and registry already described, which the kinds section could only name. The judgement sections run from options (trade-offs) to what goes wrong (failure modes), to the decisions that prevent it (Chief Architect's view) and the questions that test them; the decisions answer the failure modes, so they must follow them."
+    "rationale": "The scene ends with Ingrid's four questions and the body answers them in the order each answer is needed. What the thing is comes first, in three steps: which kind of duplicate (because the action and owner depend on it), which real-world entity the vertical offers (because matching needs a target), and how duplicates behave in each vertical, placed beside the identity table it extends so the two comparisons are read together. Who decides that two listings are the same comes next, as the matching pipeline and the registry that makes its decisions stable and disputable; the two speeds of the stages come before the registry because nightly reruns are what make stable identifiers necessary, and disputes follow the stable IDs they constrain. What each audience sees can only be stated once clusters exist, so merge policies follow the pipeline. The Lyon apartment then runs the whole model with numbers, and the abuse cases show the same detectors under the enforcement policy the kinds section set apart. Trade-offs, failure modes, the Chief Architect's decisions and review questions are judgements about a model the reader has now seen. Moving merge policies before the pipeline would use clusters and representatives before they exist; moving the Lyon case earlier would show thresholds and registry IDs before they are defined. Kinds come before entities because the enforcement kinds never resolve to an entity: put the other way round, the reader would try to resolve reposts and stolen copies to a property. The abuse cases sit in the practice section, not beside the kinds, because they show the same detectors and registry already described, which the kinds section could only name. The judgement sections run from options (trade-offs) to what goes wrong (failure modes), to the decisions that prevent it (Chief Architect's view) and the questions that test them; the decisions answer the failure modes, so they must follow them."
   },
   "introduction": {
     "hook": {
@@ -192,7 +192,7 @@
     "paragraphs": [
       {
         "id": "p01",
-        "controlling_idea": "Normalization and enrichment made listings comparable, and the comparison shows that many of them describe the same thing; this chapter resolves them, runs its online checks inside the publication pipeline, and gives search, alerts and valuation the cluster identifiers they read.",
+        "controlling_idea": "Normalization and enrichment made listings comparable, and the comparison shows that many of them describe the same thing; this chapter groups them into clusters (defined here) whose identifiers search, alerts and valuation read, and runs its cheapest checks at publication inside the publication pipeline.",
         "function": "transition",
         "evidence": [
           {
@@ -388,7 +388,7 @@
       "transition_in": {
         "relationship": "sequence",
         "carries_over": "Ingrid's first question: what is being duplicated.",
-        "introduces": "The first half of the answer: which kind of duplicate.",
+        "introduces": "That the answer takes three sections, and its first part: which kind of duplicate.",
         "form": "sentence",
         "placement": "start_of_this"
       },
@@ -495,7 +495,7 @@
       "transition_in": {
         "relationship": "sequence",
         "carries_over": "Which kind of duplicate.",
-        "introduces": "The second half of 'what is duplicated': same what?",
+        "introduces": "The second part of the answer to 'what is duplicated': same what?",
         "form": "sentence",
         "placement": "start_of_this"
       },
@@ -610,16 +610,16 @@
         "how": "Shows the dominant kind and the action differ per vertical, completing the answer to what is duplicated."
       },
       "transition_in": {
-        "relationship": "contrast",
-        "carries_over": "The identity table just above, which compared what each vertical resolves to.",
-        "introduces": "How duplicates behave in each vertical.",
+        "relationship": "sequence",
+        "carries_over": "The first two parts of the answer to 'what is duplicated', and the identity table just above, which compared what each vertical resolves to.",
+        "introduces": "The third part: how duplicates behave in each vertical.",
         "form": "sentence",
         "placement": "start_of_this"
       },
       "paragraphs": [
         {
           "id": "p49",
-          "controlling_idea": "The identity table compared what each vertical resolves to; this table compares how duplicates behave per vertical: enforcement dominates general classifieds, clustering real estate, silent merges automotive.",
+          "controlling_idea": "The third part of the answer to the first question: next to the identity table, this table compares how duplicates behave per vertical; enforcement dominates general classifieds, clustering real estate, silent merges automotive.",
           "function": "comparison",
           "evidence": [
             {
@@ -672,7 +672,7 @@
     {
       "id": "pipeline",
       "heading": "The Matching Pipeline",
-      "controlling_idea": "Blocking, pairwise scoring and clustering propose links, and an entity registry turns them into stable identifiers with lineage that remember human decisions and follow the listing lifecycle, online at publication and in batch.",
+      "controlling_idea": "Blocking, pairwise scoring and clustering propose links, online at publication and in nightly batch, and an entity registry turns them into stable identifiers with lineage that remember human decisions, follow the listing lifecycle and hold the canonical entity.",
       "function": "process",
       "advances_thesis": {
         "supports": [
@@ -690,7 +690,7 @@
       },
       "flow": {
         "pattern": "chronological",
-        "rationale": "The stages in the order a listing passes through them: candidate generation, scoring, the thresholds that route scores, clustering, then the registry that stabilizes clusters, the canonical record it holds, how it keeps human decisions and lifecycle, and finally the two speeds at which the whole runs."
+        "rationale": "The stages in the order a listing passes through them: candidate generation, scoring, the thresholds that route scores, clustering; then the two speeds at which those stages run, because nightly reruns are what make stable identifiers necessary; then the registry: stable IDs and lineage, the human decisions it keeps (which answer Ingrid's third question straight after the IDs they constrain), membership following the lifecycle, and last the canonical record it holds."
       },
       "paragraphs": [
         {
@@ -835,6 +835,25 @@
           }
         },
         {
+          "id": "p31",
+          "controlling_idea": "Blocking, scoring and clustering run online at publication for cheap, local checks inside the publication budget and in nightly batch for global clustering and repair.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Online: exact and perceptual image hashes against recent listings, same-seller text near-duplicates, VIN and partner-reference lookups. Batch: global blocking and clustering, cross-seller and cross-feed clusters.",
+              "shows": "Each speed catches what the other cannot within its budget."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Blocking, scoring and clustering, the stages that propose links.",
+            "introduces": "When those stages run: online at publication and in nightly batch.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p27",
           "controlling_idea": "The entity registry keeps cluster identifiers stable across runs and records merges and splits as lineage events that consumers subscribe to.",
           "function": "claim",
@@ -847,34 +866,15 @@
           ],
           "transition_in": {
             "relationship": "problem_solution",
-            "carries_over": "Clusters that change every run.",
-            "introduces": "The component that keeps their identity stable.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p28",
-          "controlling_idea": "The registry also holds the canonical entity, built by survivorship rules from its members, which never overwrites the seller's listing.",
-          "function": "explanation",
-          "evidence": [
-            {
-              "kind": "example",
-              "what": "Surface from the energy diagnostic, else the most common professional value; address from the most precise geocode; valuation and analytics read the canonical record, the listing page shows the seller's statement.",
-              "shows": "Keeps the seller's legal statement separate from the platform's reconciled view."
-            }
-          ],
-          "transition_in": {
-            "relationship": "additional_support",
-            "carries_over": "Stable identifiers in the registry.",
-            "introduces": "The canonical record it also holds.",
+            "carries_over": "Batch clustering that produces new groups every night.",
+            "introduces": "The registry that keeps their identity stable.",
             "form": "sentence",
             "placement": "start_of_this"
           }
         },
         {
           "id": "p29",
-          "controlling_idea": "Ingrid's third question is answered here by showing the dispute path: reviewers decide gray-zone pairs in the review queue, an agency or seller that finds its listing grouped with a different property disputes the link, the entity's owner answers and a reviewer checks the pair, and a human 'not the same' decision is stored as a constraint, not only as a training label, or the nightly job reunites the pair.",
+          "controlling_idea": "The registry also keeps human decisions, which answers Ingrid's third question by showing the dispute path: reviewers decide gray-zone pairs in the review queue, an agency or seller that finds its listing grouped with a different property disputes the link, the entity's owner answers and a reviewer checks the pair, and a human 'not the same' decision is stored as a constraint, not only as a training label, or the nightly job reunites the pair.",
           "function": "recommendation",
           "evidence": [
             {
@@ -885,8 +885,8 @@
           ],
           "transition_in": {
             "relationship": "additional_support",
-            "carries_over": "What the registry keeps.",
-            "introduces": "Human decisions as part of what it keeps.",
+            "carries_over": "What the registry keeps: stable identifiers and lineage.",
+            "introduces": "Human decisions as part of what it keeps, which answers Ingrid's third question.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -904,20 +904,20 @@
           }
         },
         {
-          "id": "p31",
-          "controlling_idea": "Resolution runs online at publication for cheap, local checks inside the publication budget and in nightly batch for global clustering and repair.",
-          "function": "comparison",
+          "id": "p28",
+          "controlling_idea": "The registry also holds the canonical entity, built by survivorship rules from its members, which never overwrites the seller's listing.",
+          "function": "explanation",
           "evidence": [
             {
               "kind": "example",
-              "what": "Online: exact and perceptual image hashes against recent listings, same-seller text near-duplicates, VIN and partner-reference lookups. Batch: global blocking and clustering, cross-seller and cross-feed clusters.",
-              "shows": "Each speed catches what the other cannot within its budget."
+              "what": "Surface from the energy diagnostic, else the most common professional value; address from the most precise geocode; valuation and analytics read the canonical record, the listing page shows the seller's statement.",
+              "shows": "Keeps the seller's legal statement separate from the platform's reconciled view."
             }
           ],
           "transition_in": {
-            "relationship": "conclusion_summary",
-            "carries_over": "The stages and the registry.",
-            "introduces": "When they run.",
+            "relationship": "additional_support",
+            "carries_over": "What the registry keeps: stable identifiers, human decisions and lifecycle-bound membership.",
+            "introduces": "The canonical record it also holds.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -937,7 +937,7 @@
       },
       "transition_in": {
         "relationship": "sequence",
-        "carries_over": "Stable clusters with owners.",
+        "carries_over": "Stable clusters with owners and a canonical entity.",
         "introduces": "Ingrid's last question: what each audience sees.",
         "form": "sentence",
         "placement": "start_of_this"
@@ -1064,7 +1064,7 @@
       },
       "flow": {
         "pattern": "chronological",
-        "rationale": "The flat in the order of the pipeline (listings, blocking, scoring, clustering and review, presentation), then the input constraint on the matcher, placed after presentation because it is the price of the result just shown (a higher match rate that would cost agencies' trust) rather than a pipeline stage, then the first-quarter results; then the same detectors under the enforcement policy, on reposts and on the stolen-photo ring."
+        "rationale": "The flat in the order of the pipeline: the listings, then the input constraint on the matcher, placed before blocking because it limits what every later stage may read (a higher match rate that would cost agencies' trust), then blocking, scoring, clustering and review, presentation and the first-quarter results; then the same detectors under the enforcement policy, on reposts and on the stolen-photo ring."
       },
       "paragraphs": [
         {
@@ -1093,6 +1093,26 @@
           }
         },
         {
+          "id": "p43",
+          "controlling_idea": "Before matching starts, the matcher may use only what each listing carries as published, because the March 2027 Keybridge decision bars Hearthly from Keybridge agency data for ranking, which matching feeds, and Keybridge publishes agencies' listings to Hearthly's competitors; the rule is enforced in the data path.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Veldmark's March 2027 decision: no Keybridge agency data used by Hearthly for ranking or sales targeting; access controls and an annual independent review.",
+              "shows": "Sets the legal and business boundary on matcher inputs.",
+              "source": "Scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The three listings, one of them sent through Keybridge.",
+            "introduces": "Data that would raise the match rate and that the matcher may not read.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p39",
           "controlling_idea": "Blocking puts all three in candidate pairs through shared building, cell, type, price band and photo-hash bands, along with 41 pairs from neighbouring flats.",
           "function": "example",
@@ -1106,7 +1126,7 @@
           ],
           "transition_in": {
             "relationship": "sequence",
-            "carries_over": "The three listings.",
+            "carries_over": "The three listings as published, the only data the matcher may read.",
             "introduces": "The first stage applied.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -1178,26 +1198,6 @@
           }
         },
         {
-          "id": "p43",
-          "controlling_idea": "The matcher may use only what each listing carries as published, because the March 2027 Keybridge decision bars Hearthly from Keybridge agency data, and the rule is enforced in the data path.",
-          "function": "claim",
-          "evidence": [
-            {
-              "kind": "fact",
-              "what": "Veldmark's March 2027 decision: no Keybridge agency data used by Hearthly for ranking or sales targeting; access controls and an annual independent review.",
-              "shows": "Sets the legal and business boundary on matcher inputs.",
-              "source": "Scenario ledger"
-            }
-          ],
-          "transition_in": {
-            "relationship": "contrast",
-            "carries_over": "A good result for buyers and agencies.",
-            "introduces": "Data that would raise the match rate and may not be used.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
           "id": "p44",
           "controlling_idea": "After the first quarter, Ingrid's four illustrative numbers show fewer cards and alerts with no loss of click-through, high precision and recall, and disputes that become the best labels.",
           "function": "evidence",
@@ -1211,7 +1211,7 @@
           ],
           "transition_in": {
             "relationship": "cause_effect",
-            "carries_over": "The design and its constraint.",
+            "carries_over": "The resolved flat as each audience sees it.",
             "introduces": "The results.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -1293,12 +1293,12 @@
         },
         {
           "id": "p48",
-          "controlling_idea": "The trade-off that decides most of the others is where the cluster ID is stored: the registry is the system of record and search holds a copy, or the index becomes Search as System of Record.",
+          "controlling_idea": "The decision behind the table's first and last rows decides most of the others: where the cluster ID is stored; the registry is the system of record and search holds a copy, or the index becomes Search as System of Record.",
           "function": "recommendation",
           "transition_in": {
             "relationship": "emphasis",
             "carries_over": "Five choices.",
-            "introduces": "The one that decides most of the others.",
+            "introduces": "The decision behind the table's rows that decides most of the others.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1651,6 +1651,34 @@
     {
       "date": "2026-11-12",
       "decision": "AC-4 (minor, post-level, cold reader on the nightly renumbering job and collapsed counts) accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Kinds, identity and verticals transitions: the first question is answered in three parts, matching the roadmap (spec fault, round 5). fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Pipeline order changed to p26, p31, p27, p29, p30, p28: online and batch before the registry, disputes straight after stable IDs, canonical entity last; transitions of p31, p27, p29, p28 rewritten (spec fault, round 5). fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Lyon walk-through: the Keybridge constraint (p43) moved before blocking; transitions of p43, p39, p44 rewritten; Keybridge glossed on first use as publishing agencies' listings to Hearthly's competitors (ledger line 18, issue 7) (round 5). fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Draft fixes (round 5): intro bridge defines cluster before use; vertical-differences opening split into plain sentences; p29 and p31 openings carry their declared relationships; first-person 'I recommend' removed in p35; p42 price-drop sentence split; 'Its cost' referent named; p48 tied to the trade-off table's rows; Common Ground glossed; failure mode 10 tied to blocking keys and the Barcelona ring. fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Minor findings fixed cheaply: fee sentence names the third agency's higher fee; thresholds stated before scores in p40; exact-address job picked up in p21; step from ranking to matching stated in p43. fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "length.max_words 7,200 to 7,300 (+1.4%) for the added glosses and pointers. fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Orchestrator restored the published 'Because each option rewards a behavior, the rule I recommend is that … is a published ranking parameter' (author's first-person voice); the fix-only pass had replaced it with 'So … should be'."
     }
   ],
   "sources": [
@@ -1697,6 +1725,10 @@
   ],
   "changelog": [
     {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on round-5 blocking findings (14): pipeline and Lyon walk-through reordered, three-part answer to the first question, wording fixes; max_words 7,300. Fixed under the author's delegation (fix-only pass). (AI-mediated session)"
+    },
+    {
       "date": "2026-11-12",
       "change": "Escalations resolved under the author's delegation: Vertical Differences moved after the identity section, dispute path shown in p29, failure-pattern glosses in p35 and p48, published IN THIS CHAPTER callout restored, max_words 6,994 to 7,200, p42 price-drop arithmetic fixed. (AI-mediated session)"
     },
@@ -1730,6 +1762,6 @@
     }
   ],
   "length": {
-    "max_words": 7200
+    "max_words": 7300
   }
 }

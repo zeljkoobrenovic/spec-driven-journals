@@ -7,7 +7,7 @@
   "part": "part-7",
   "title": "Data Platform for Marketplaces: Events, Lakehouse and Data Products",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the data-platform entry in journal-spec.json; supporting claims S1 to S6 are written here. Units added by this conversion: roadmap p04, one lead-in paragraph each for Trade-offs (p54) and Vertical Differences (p55), and a synthesis paragraph p62 before the published hand-off (p63).",
   "intent": {
     "outcome": {
@@ -56,7 +56,7 @@
         "method": "cold_reader",
         "severity": "major",
         "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
-        "expected": "A group's data spread over several warehouses with conflicting definitions; the tracking plan as the schema; governed liquidity metrics; federated ownership on one substrate with access by purpose. Then the three contacts at Veldmark, what the platform is for, the tracking plan, architecture with its quality controls, data products, governed metrics, data for professionals, sharing across brands, freshness and cost, Veldmark's Common Ground data platform, trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: classifieds engineering and investor sources (Adevinta, OLX, Scout24, AutoScout24, Vinted, Zalando), the data-mesh and lakehouse literature, EU law, and the fictional Veldmark."
+        "expected": "A group's data spread over several warehouses with conflicting definitions; the tracking plan as the schema; governed liquidity metrics; federated ownership on one substrate with access by purpose. Then the three contacts at Veldmark, what the platform is for, the tracking plan, architecture with its quality controls, freshness and cost, data products, governed metrics, data for professionals, sharing across brands, Veldmark's Common Ground data platform, trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: classifieds engineering and investor sources (Adevinta, OLX, Scout24, AutoScout24, Vinted, Zalando), the data-mesh and lakehouse literature, EU law, and the fictional Veldmark."
       },
       {
         "id": "AC-3",
@@ -118,7 +118,7 @@
         "applies_to": "trade-offs, verticals, failure-modes, ca-view, questions: the book's standard judging sections"
       }
     ],
-    "rationale": "The scene comes first because its question is the one the chapter answers. Purpose comes next because the platform's consumers and the join of domain and behavioral events justify every later contract. The tracking plan precedes the architecture because the contract gate and the source products receive its events. The architecture precedes data products because ownership is assigned on a substrate the reader has seen; the architecture glosses data product in one clause where three of its layers hold them, and the next section defines the term. Adevinta Spain's personal-data split sits in the architecture beside the contract gate it belongs to, not in the tracking plan, where it would use data contracts before they are defined. Governed metrics come after data products because the contact definition lives in the contacts data product and counts server-side delivery events defined in the tracking plan; placed earlier, the card would name an owner and a fact the reader has not met. The quality controls sit in the architecture beside the contract gate where they start, because producers own quality at the source. Professional data and sharing extend the governed metric and access rules to external and cross-brand use, and freshness and cost keep the whole running. Veldmark's design can only be presented once all its parts exist, and the judging sections apply the whole design, so they come last."
+    "rationale": "The scene comes first because its question is the one the chapter answers. Purpose comes next because the platform's consumers and the join of domain and behavioral events justify every later contract. The tracking plan precedes the architecture because the contract gate and the source products receive its events. The architecture precedes data products because ownership is assigned on a substrate the reader has seen; the architecture names data product, data contract and metrics layer as labels with pointers to where each is defined, rather than defining them twice. Adevinta Spain's personal-data split sits in the architecture beside the contract gate it belongs to, not in the tracking plan, where it would use data contracts before they are defined. Governed metrics come after data products because the contact definition lives in the contacts data product and counts server-side delivery events defined in the tracking plan; placed earlier, the card would name an owner and a fact the reader has not met. The quality controls sit in the architecture beside the contract gate where they start, because producers own quality at the source. Freshness and cost follow the storage choice they depend on, and their last lever, cost ownership on every dataset, leads into data products. Professional data and sharing extend the governed metric and access rules to external and cross-brand use. Veldmark's design can only be presented once all its parts exist, and the judging sections apply the whole design, so they come last."
   },
   "introduction": {
     "hook": {
@@ -155,9 +155,10 @@
           ]
         },
         {
-          "promise": "Lay out the architecture of one substrate with many owners, with its quality controls, and data products.",
+          "promise": "Lay out the architecture of one substrate with many owners, with its quality controls, freshness and cost, and data products.",
           "kept_in": [
             "architecture",
+            "quality",
             "data-products"
           ]
         },
@@ -168,11 +169,10 @@
           ]
         },
         {
-          "promise": "Cover data for professionals, the limits on sharing across brands, and freshness and cost.",
+          "promise": "Cover data for professionals and the limits on sharing across brands.",
           "kept_in": [
             "pro",
-            "sharing",
-            "quality"
+            "sharing"
           ]
         },
         {
@@ -255,7 +255,7 @@
       },
       {
         "id": "p04",
-        "controlling_idea": "The chapter runs from Veldmark's board question through the platform's purpose, the tracking plan, the architecture with its quality controls, data products, governed metrics, data for professionals, sharing across brands and freshness and cost, to Veldmark's design and the judging sections, on evidence from classifieds engineering and investor sources, the data-mesh and lakehouse literature, EU law and the fictional Veldmark.",
+        "controlling_idea": "The chapter runs from Veldmark's board question through the platform's purpose, the tracking plan, the architecture with its quality controls, freshness and cost, data products, governed metrics, data for professionals and sharing across brands, to Veldmark's design and the judging sections, on evidence from classifieds engineering and investor sources, the data-mesh and lakehouse literature, EU law and the fictional Veldmark.",
         "function": "transition",
         "advances_thesis": {
           "supports": [
@@ -611,8 +611,26 @@
         },
         {
           "id": "p19",
+          "controlling_idea": "Every event carries a common envelope: event ID, event and receive times, the brand-and-country tenant, device or session and user identifiers, build, consent state and active experiment assignments.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S1"
+            ],
+            "how": "States the envelope of the thesis."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The core events.",
+            "introduces": "What every event carries.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19b",
           "form": "list",
-          "controlling_idea": "Every event carries a common envelope (IDs, times, the brand-and-country tenant, identifiers, build, consent state and experiment assignments), and two rules follow: facts are server-side and intentions client-side, and impressions are compacted, not dropped.",
+          "controlling_idea": "The core-events table implies two collection rules: facts are server-side and intentions client-side, because clients lose events and servers do not, and impressions are compacted, not dropped.",
           "function": "recommendation",
           "evidence": [
             {
@@ -625,12 +643,12 @@
             "supports": [
               "S1"
             ],
-            "how": "States the envelope and the server-side rule of the thesis."
+            "how": "States the server-side rule of the thesis."
           },
           "transition_in": {
-            "relationship": "elaboration",
-            "carries_over": "The core events.",
-            "introduces": "What every event carries and the rules that follow.",
+            "relationship": "cause_effect",
+            "carries_over": "The core-events table and its producers.",
+            "introduces": "The two collection rules it implies.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -656,7 +674,7 @@
           },
           "transition_in": {
             "relationship": "cause_effect",
-            "carries_over": "Consent state on the envelope.",
+            "carries_over": "Consent state on the envelope, and clients that lose events for lack of consent.",
             "introduces": "The law that requires it.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -715,7 +733,7 @@
       "paragraphs": [
         {
           "id": "p23",
-          "controlling_idea": "The reference architecture has five layers (collection, contract gate, source-aligned products, domain entities and metrics, consumer-aligned products) and one rule: every arrow into the platform passes through a contract; the paragraph glosses in one clause each the terms its table uses (data product, data contract, metrics layer) and says the owners follow the next section's rule.",
+          "controlling_idea": "The reference architecture has five layers (collection, contract gate, source-aligned products, domain entities and metrics, consumer-aligned products) and one rule: every arrow into the platform passes through a contract; the paragraph names the three terms its table uses (data contract, data product, metrics layer) as labels and points to where each is defined, instead of defining them twice.",
           "function": "description",
           "organization": "classification",
           "evidence": [
@@ -831,7 +849,7 @@
         },
         {
           "id": "p48",
-          "controlling_idea": "Validation at the gate is the first of several quality controls: quality is cheapest at the source, so the platform makes producers' obligations explicit with a control at each layer, each catching a different failure at the earliest point that can see it.",
+          "controlling_idea": "Validation at the gate is the first of several quality controls: quality is cheapest at the source, as Adevinta Spain's contracts, Vinted's generated tracking code and Adevinta Benelux's Artemis (glossed in one clause, detailed under governed metrics) show, so the platform makes producers' obligations explicit with a control at each layer, each catching a different failure at the earliest point that can see it.",
           "function": "recommendation",
           "organization": "classification",
           "evidence": [
@@ -916,6 +934,72 @@
       ]
     },
     {
+      "id": "quality",
+      "heading": "Freshness and Cost",
+      "controlling_idea": "Once the storage choice settles where the data lives, freshness should follow the consumer and cost needs an owner or it grows with traffic.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Argues owned freshness and cost."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The storage choice: where the durable copy lives and in what format.",
+        "introduces": "Keeping the platform useful and affordable: freshness and cost.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p49",
+          "controlling_idea": "Freshness targets should follow the consumer: board metrics at D+3, experiment guardrails in hours, fraud features in seconds outside the analytical platform.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Sets freshness by consumer."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The storage choice: where the durable copy lives and in what format.",
+            "introduces": "Keeping the platform useful and affordable: freshness and cost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "form": "list",
+          "controlling_idea": "Behavioral data grows with traffic, not revenue, so cost needs owners, retention tiers, compact envelopes and removal of unused datasets.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Adevinta Tech Blog, 2024: logging cost cut 35%, more than €30,000 a year; Adevinta multi-cloud governance on ownership metadata; AutoScout24 500+ to about 150 dashboards. AutoScout24 cited with its link, as the next section returns to it.",
+              "shows": "Small choices matter at volume; ownership underpins cost allocation.",
+              "source": "Adevinta Tech Blog, 2024; AutoScout24, 2025"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Gives the cost levers."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Freshness.",
+            "introduces": "Cost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
       "id": "data-products",
       "heading": "Data Products: Federate Ownership, Not Substrate",
       "controlling_idea": "Domains should own data products on one shared platform, as every documented classifieds case does, with ownership following the fact and the decision.",
@@ -931,9 +1015,9 @@
         "rationale": "Definition, cases, the reading of the cases, then the ownership rule it supports."
       },
       "transition_in": {
-        "relationship": "elaboration",
-        "carries_over": "One shared substrate.",
-        "introduces": "Who owns what on it.",
+        "relationship": "cause_effect",
+        "carries_over": "Cost needs an owner on every dataset.",
+        "introduces": "Who owns which datasets on the shared substrate.",
         "form": "sentence",
         "placement": "start_of_this"
       },
@@ -1132,7 +1216,7 @@
         },
         {
           "id": "p37",
-          "controlling_idea": "Before the forum approved the card, Priya's team tested it in April by replaying 8–14 March 2027, the week that began the day after Femke listed her bike, with the bike's first 24 hours, and added the Essen Golf in late April once its first 10 days were in (23 leads from 14 e-mails, 7 calls and 2 test drives, from 19 people, none excluded); the figures moved for each brand for a stated reason.",
+          "controlling_idea": "Before the forum approved the card, Priya's team tested it in April in two parts: the brand totals over one replayed week, 8–14 March 2027 (Keybridge out of scope), and two listings each over its own first days, Femke's bike over its first 24 hours from Sunday 7 March, the day before that week, and the Essen Golf over its first 10 days from 14 April, added in late April (23 leads from 14 e-mails, 7 calls and 2 test drives, from 19 people, none excluded); the figures moved for each brand for a stated reason.",
           "function": "evidence",
           "evidence": [
             {
@@ -1433,72 +1517,6 @@
             "relationship": "contrast",
             "carries_over": "A case of hard isolation.",
             "introduces": "A case decided by aggregation level.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        }
-      ]
-    },
-    {
-      "id": "quality",
-      "heading": "Freshness and Cost",
-      "controlling_idea": "Once access policy settles what may be used, freshness should follow the consumer and cost needs an owner or it grows with traffic.",
-      "function": "recommendation",
-      "advances_thesis": {
-        "supports": [
-          "S6"
-        ],
-        "how": "Argues owned freshness and cost."
-      },
-      "transition_in": {
-        "relationship": "sequence",
-        "carries_over": "The access contracts on what data may be used.",
-        "introduces": "Keeping the platform useful and affordable: freshness and cost.",
-        "form": "sentence",
-        "placement": "start_of_this"
-      },
-      "paragraphs": [
-        {
-          "id": "p49",
-          "controlling_idea": "Freshness targets should follow the consumer: board metrics at D+3, experiment guardrails in hours, fraud features in seconds outside the analytical platform.",
-          "function": "recommendation",
-          "advances_thesis": {
-            "supports": [
-              "S6"
-            ],
-            "how": "Sets freshness by consumer."
-          },
-          "transition_in": {
-            "relationship": "sequence",
-            "carries_over": "The access contracts on what data may be used.",
-            "introduces": "Keeping the platform useful and affordable: freshness and cost.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p50",
-          "form": "list",
-          "controlling_idea": "Behavioral data grows with traffic, not revenue, so cost needs owners, retention tiers, compact envelopes and removal of unused datasets.",
-          "function": "recommendation",
-          "evidence": [
-            {
-              "kind": "statistic",
-              "what": "Adevinta Tech Blog, 2024: logging cost cut 35%, more than €30,000 a year; Adevinta multi-cloud governance on ownership metadata; AutoScout24 500+ to about 150 dashboards.",
-              "shows": "Small choices matter at volume; ownership underpins cost allocation.",
-              "source": "Adevinta Tech Blog, 2024; AutoScout24, 2025"
-            }
-          ],
-          "advances_thesis": {
-            "supports": [
-              "S6"
-            ],
-            "how": "Gives the cost levers."
-          },
-          "transition_in": {
-            "relationship": "sequence",
-            "carries_over": "Freshness.",
-            "introduces": "Cost.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -2095,6 +2113,26 @@
     {
       "date": "2026-11-13",
       "decision": "Reader-found error fixed by the orchestrator (author request 'fix the errors readers found'): Scene: the four engines/accounts listed against 'three warehouses' are now reconciled in one clause."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p19 split into p19 (common envelope) and p19b (two collection rules implied by the core-events table) after the round-6 one-idea finding; in p19b the reason is now stated before the Veldmark outcome ('At Veldmark, this one rule later removed...'). (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p23: the one-clause glosses of data product, data contract and metrics layer (added in the outcome pass) replaced by labels with pointers to where each is defined, so readers do not read three definitions twice (round-6 flow finding, two readers). (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p48: Artemis's forward reference replaced by a one-clause gloss (a monitoring tool that alerts teams when a metric leaves its forecast bounds); the full case stays under governed metrics. (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "p37: replay timing restated in two parts (brand totals over 8–14 March 2027; two listings each over its own first days, the bike from 7 March, the Golf from 14 April); no fact changed. (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Freshness and Cost moved from after Sharing to directly after Architecture (round-6 flow finding, two readers): it now follows the storage choice and hands over to Data Products through cost ownership; roadmap p04, promises, section and paragraph transitions and flow rationale updated; AutoScout24's dashboard cut now carries its link at first mention. AC-2's expected section order in journal-spec.json needs the matching edit (reported, not made). (fixed under the author's delegation (fix-only pass))"
     }
   ],
   "sources": [
@@ -2150,6 +2188,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on round-6 blocking findings: p19 split, p23 pointers, Artemis gloss, replay timing restated, Freshness and Cost moved after Architecture. (AI-mediated session)"
+    },
     {
       "date": "2026-11-12",
       "change": "Escalation resolved under the author's delegation: quality controls moved into the architecture beside the contract gate, section renamed Freshness and Cost; replay timing, bike date, p38 claim, tenant wording, May/September sequence, table explanations and transitions fixed; max_words 9,457. (AI-mediated session)"

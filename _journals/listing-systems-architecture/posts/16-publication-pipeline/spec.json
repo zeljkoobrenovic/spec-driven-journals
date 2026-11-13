@@ -7,7 +7,7 @@
   "part": "part-3",
   "title": "From Submitted to Searchable: The Publication Pipeline",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the publication-pipeline entry in journal-spec.json. Units added by this conversion: a roadmap paragraph in the introduction (p04) and a synthesis paragraph (p52) before the hand-off.",
   "intent": {
     "outcome": {
@@ -423,7 +423,7 @@
       "paragraphs": [
         {
           "id": "p08",
-          "controlling_idea": "A listing passes eight stages between submission and full visibility, each with what it decides, a typical owner and whether it runs synchronously.",
+          "controlling_idea": "A listing passes eight stages between submission and full visibility, each with what it decides, a typical owner and whether it runs synchronously; both of Ingrid's answers need them, since removal later runs back through the same consumers.",
           "function": "definition",
           "evidence": [
             {
@@ -435,7 +435,7 @@
         },
         {
           "id": "p09",
-          "controlling_idea": "The first four stages decide whether the listing may go live and the last four decide where it must appear, and mixing the two is the root of most slow pipelines.",
+          "controlling_idea": "The first four stages decide whether the listing may go live and the last four decide where it must appear, with the line drawn per listing (stage 6 joins the first question for the risk tiers that wait), and mixing the two is the root of most slow pipelines.",
           "function": "analysis",
           "evidence": [
             {
@@ -665,7 +665,7 @@
         },
         {
           "id": "p22",
-          "controlling_idea": "Asynchronous checks that may still change the decision run before ListingPublished for the risk tiers that need them and after it for the rest, where they can still demote, hold or remove a live listing through enforcement.",
+          "controlling_idea": "Asynchronous checks that may still change the decision run before ListingPublished for the risk tiers that need them and after it for the rest, where they can still demote, hold or remove a live listing through enforcement; for a listing that waits, the checks subscribe to ListingSubmitted and indexing and every other consumer only to ListingPublished.",
           "function": "explanation",
           "transition_in": {
             "relationship": "elaboration",
@@ -778,7 +778,7 @@
         },
         {
           "id": "p29",
-          "controlling_idea": "The objectives in the table are Veldmark's 2027 targets aligned with the search and event chapters, and how an ended listing is rendered is decided from the reason it ended, which the pipeline must carry.",
+          "controlling_idea": "Two things in the consumer table are set outside the pipeline: the objectives are Veldmark's 2027 targets aligned with the search and event chapters, and how an ended listing is rendered is decided from the reason it ended; the pipeline meets the first and carries the reason for the second.",
           "function": "explanation",
           "transition_in": {
             "relationship": "elaboration",
@@ -965,7 +965,7 @@
         {
           "id": "p38",
           "form": "list",
-          "controlling_idea": "Ingrid's team wrote the 90-second target as a contract with three parts on the SLA card: coverage (gate-cleared listings, with a held-listing objective and the held share beside both), clock (platform latency) and removal objectives (the consumer table's targets).",
+          "controlling_idea": "Ingrid's team wrote the 90-second target as a contract with three parts on the SLA card: coverage (gate-cleared listings, including those whose risk tier waits between ListingSubmitted and ListingPublished, with a held-listing objective and the held share beside both), clock (platform latency) and removal objectives (the consumer table's targets).",
           "function": "recommendation",
           "evidence": [
             {
@@ -985,7 +985,7 @@
         },
         {
           "id": "p39",
-          "controlling_idea": "The budget allocates the 90 seconds to stages, counting media and asynchronous checks once because they run in parallel.",
+          "controlling_idea": "The budget table allocates the 90 seconds to stages, introduced before its 30-second row is explained, counting media and asynchronous checks once because they run in parallel.",
           "function": "evidence",
           "evidence": [
             {
@@ -1451,6 +1451,10 @@
     {
       "date": "2026-11-12",
       "decision": "Carried-over spec.md questions closed (accepted under the author's delegation, 2026-11-12): the baseline stage breakdown stays illustrative, as the text says; Motorvane and Hearthly SLA values stay qualitative; the reference design stays until an operator documents its full pipeline."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Draft-check round 4 blocking findings fixed under the author's delegation (fix-only pass): p01 names both metrics as Part I's; p03 dates the 94% to 2026; p08 ties the stages to both answers; p09 states the stage-6 line as a per-listing rule pointing to the moderation subsection; the coverage ruling for listings that wait between ListingSubmitted and ListingPublished moved from p17 to the Coverage bullet of p38; p22 says which event each consumer subscribes to; p29 opens with 'two things set outside the pipeline'; p39 introduces the budget table before explaining its 30-second row. Minor findings left as recorded. Word limit raised from 6,600 to 6,800 (+3%) for the added glosses and pointers; nothing published was cut."
     }
   ],
   "sources": [
@@ -1551,9 +1555,13 @@
     {
       "date": "2026-11-12",
       "change": "Escalation resolved under the author's delegation: open questions moved to the decision log; p39 explains the 30-second asynchronous checks and media row; word limit 6,600. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on round-4 blocking findings (eight flow and one-idea findings, all draft-fault); controlling ideas of p08, p09, p22, p29, p38, p39 updated to match; no reordering. (AI-mediated session)"
     }
   ],
   "length": {
-    "max_words": 6600
+    "max_words": 6800
   }
 }

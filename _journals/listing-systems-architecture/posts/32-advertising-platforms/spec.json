@@ -7,7 +7,7 @@
   "part": "part-6",
   "title": "Selling Attention: Display, Native and Retail-Media Advertising",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the advertising-platforms entry in journal-spec.json; the conclusion realises Part VI's closing (synthesis, so-what, callback, takeaway) from the same file, and the hand-off uses Part VII's part-level transition_in (re-read at the end of the pass, when Part VII had reached full detail). Units added or split by this conversion: introduction p02/p03 (split) and roadmap p04, concepts p12/p13 (split), one lead-in paragraph each for Trade-offs (p40) and Vertical Differences (p42), and a conclusion widened from one paragraph to three (p52 to p54).",
   "intent": {
     "outcome": {
@@ -159,12 +159,6 @@
           ]
         },
         {
-          "promise": "Show the public record.",
-          "kept_in": [
-            "practice"
-          ]
-        },
-        {
           "promise": "Set out three decision paths under one policy layer.",
           "kept_in": [
             "architecture"
@@ -174,6 +168,12 @@
           "promise": "Explain the consent signal behind display revenue.",
           "kept_in": [
             "consent"
+          ]
+        },
+        {
+          "promise": "Collect the public record behind the paths.",
+          "kept_in": [
+            "practice"
           ]
         },
         {
@@ -254,7 +254,7 @@
       },
       {
         "id": "p04",
-        "controlling_idea": "The chapter runs from three arguments over Veldmark Ads through the vocabulary, the public record, three decision paths under one policy layer and consent, to three 2027 decisions, the judging sections and Part VI's closing.",
+        "controlling_idea": "The chapter runs from three arguments over Veldmark Ads through the vocabulary, three decision paths under one policy layer, consent and the public record, to three 2027 decisions, the judging sections and Part VI's closing.",
         "function": "transition",
         "advances_thesis": {
           "supports": [
@@ -302,7 +302,7 @@
       "paragraphs": [
         {
           "id": "p05",
-          "controlling_idea": "Veldmark runs one shared advertising unit, Veldmark Ads, which earned €100 million in 2026 on Google Ad Manager with Prebid header bidding (glossed as an auction run before the ad server decides), split across four products with different buyers and different places where they run: the three businesses, with display and native sold two ways, programmatic and direct.",
+          "controlling_idea": "Veldmark runs one shared advertising unit, Veldmark Ads, which earned €100 million in 2026 on Google Ad Manager with Prebid header bidding (glossed as an auction run before the ad server decides), split across four products with different buyers and different places where they run: the three businesses, with display and native sold two ways, programmatic (through supply-side platforms, glossed, in the open auction or in private deals offered to selected buyers) and direct, and the prose maps the table's rows to the three businesses before the Concepts section defines the remaining terms.",
           "function": "description",
           "evidence": [
             {
@@ -485,61 +485,6 @@
       ]
     },
     {
-      "id": "practice",
-      "heading": "In Practice: What the Public Record Shows",
-      "controlling_idea": "Public filings show advertising is large on horizontals, cyclical, built on SSPs as critical suppliers and, for sponsored listings and audiences, decided in the marketplace's own systems.",
-      "function": "evidence",
-      "advances_thesis": {
-        "supports": [
-          "S1",
-          "S6"
-        ],
-        "how": "Grounds the three businesses and the shared-stack argument in documented company facts."
-      },
-      "transition_in": {
-        "relationship": "additional_support",
-        "carries_over": "The vocabulary of the ad stack.",
-        "introduces": "What companies have documented about the business those terms describe.",
-        "form": "sentence",
-        "placement": "start_of_this"
-      },
-      "paragraphs": [
-        {
-          "id": "p32",
-          "controlling_idea": "Marketplaces publish advertising revenue more readily than architecture, but their figures show how large and cyclical the business is and where its decisions run.",
-          "function": "evidence",
-          "evidence": [
-            {
-              "kind": "table",
-              "what": "Seven rows: Adevinta 2023 advertising €312M of €1,826M (about 17%), €204M of €744M (about 27%) in European Markets, France down 7%; SSPs as key suppliers and revenue 'recognised as the ads are displayed'; first-party advertising in the convergence plan; eBay US$1,993M; CarGurus audience targeting; Autotrader £15.2M (+14%) next to £585.3M revenue; OLX VAS LTR.",
-              "source": "Adevinta 2024; eBay 2026; CarGurus 2026; Autotrader 2026; OLX 2025",
-              "shows": "Each row's last column states what it shows: size, fragility, dependencies, and that paid visibility is a ranking concern."
-            }
-          ]
-        },
-        {
-          "id": "p33",
-          "controlling_idea": "Display advertising follows the advertising market, not the marketplace's liquidity, so a group should never plan platform investments on display revenue growing with audience.",
-          "function": "analysis",
-          "evidence": [
-            {
-              "kind": "statistic",
-              "what": "Adevinta European Markets earned more than a quarter of revenue from advertising while France reported a 7% decline driven by agencies and programmatic demand; Adevinta has been private since 2024.",
-              "source": "Adevinta, 2024",
-              "shows": "Display revenue moves with the ad market, not with matches."
-            }
-          ],
-          "transition_in": {
-            "relationship": "conclusion_summary",
-            "carries_over": "The documented figures.",
-            "introduces": "The lesson they support.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        }
-      ]
-    },
-    {
       "id": "architecture",
       "heading": "Architecture: Three Stacks, One Policy Layer",
       "controlling_idea": "Veldmark's reference design keeps the display, sponsored-listing and retail-media decision paths apart, each with its own rules, and puts one policy service over all of them.",
@@ -559,8 +504,8 @@
       },
       "transition_in": {
         "relationship": "cause_effect",
-        "carries_over": "The public record: advertising is large, cyclical and, for sponsored listings and audiences, decided in the marketplace's own systems.",
-        "introduces": "The reference architecture that follows from that record.",
+        "carries_over": "The vocabulary's two distinctions: display and native ads are sold to advertisers, sponsored listings to sellers about their listings, and a first-party audience is a data product.",
+        "introduces": "The reference architecture that follows: three decision paths kept apart because buyers and deciding systems differ, under one policy service because they share pages, users and consent.",
         "form": "sentence",
         "placement": "start_of_this"
       },
@@ -713,7 +658,7 @@
         },
         {
           "id": "p20",
-          "controlling_idea": "Native ads inside the result list must be labeled as advertising under the DSA, and their positions count against the same ad-load budget as sponsored listings because each is a position not given to the most relevant listing.",
+          "controlling_idea": "Native ads are not a fourth path but placements the display path's ad server fills inside the result list; they must be labeled as advertising under the DSA, and their positions count against the same ad-load budget as the sponsored listings described next, because each is a position not given to the most relevant listing.",
           "function": "claim",
           "evidence": [
             {
@@ -839,9 +784,9 @@
             },
             {
               "kind": "statistic",
-              "what": "Autotrader FY26: Manufacturer & Agency revenue £15.2M, up 14%, expected to grow in FY27, small next to £585.3M Autotrader revenue but reported on its own and growing; Rightmove: about 10 million consumers subscribed to its marketing CRM.",
+              "what": "Rightmove: about 10 million consumers subscribed to its marketing CRM, placed after the CarGurus audience product; Autotrader FY26: Manufacturer & Agency revenue £15.2M, up 14%, expected to grow in FY27, small next to £585.3M Autotrader revenue but reported on its own and growing.",
               "source": "Autotrader, 2026; Rightmove, 2026",
-              "shows": "Retail media and first-party channels are real revenue lines at vertical leaders."
+              "shows": "Rightmove's figure shows that a vertical leader holds a large first-party audience it reaches without any third party, the raw material of audience products; Autotrader's shows that retail media is a real, separately reported revenue line."
             }
           ],
           "advances_thesis": {
@@ -988,7 +933,7 @@
               "kind": "fact",
               "what": "No classifieds marketplace was on the Commission's list of designated very large online platforms when checked in October 2026.",
               "source": "European Commission, updated 15 October 2026",
-              "shows": "The opinion binds large platforms directly but sets the direction for everyone."
+              "shows": "The opinion was addressed to large online platforms, so it does not bind Veldmark directly; the prose states this link, and the opinion still sets the direction for everyone."
             },
             {
               "kind": "figure",
@@ -1039,6 +984,61 @@
       ]
     },
     {
+      "id": "practice",
+      "heading": "In Practice: What the Public Record Shows",
+      "controlling_idea": "Public filings show advertising is large on horizontals, cyclical, built on SSPs as critical suppliers and, for sponsored listings and audiences, decided in the marketplace's own systems.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S6"
+        ],
+        "how": "Grounds the three businesses and the shared-stack argument in documented company facts."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "The three paths and the consent rules, whose real-company evidence was cited along the way.",
+        "introduces": "The public record collected in one place, and the one lesson it adds: display revenue is cyclical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p32",
+          "controlling_idea": "The three paths and the consent rules rest on what marketplaces have published; they publish advertising revenue more readily than architecture, but their figures, most of them cited in the paths above and collected here in one place, show how large and cyclical the business is and where its decisions run.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven rows: Adevinta 2023 advertising €312M of €1,826M (about 17%), €204M of €744M (about 27%) in European Markets, France down 7%; SSPs as key suppliers and revenue 'recognised as the ads are displayed'; first-party advertising in the convergence plan; eBay US$1,993M; CarGurus audience targeting; Autotrader £15.2M (+14%) next to £585.3M revenue; OLX VAS LTR.",
+              "source": "Adevinta 2024; eBay 2026; CarGurus 2026; Autotrader 2026; OLX 2025",
+              "shows": "Each row's last column states what it shows: size, fragility, dependencies, and that paid visibility is a ranking concern."
+            }
+          ]
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Display advertising follows the advertising market, not the marketplace's liquidity, so a group should never plan platform investments on display revenue growing with audience.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Adevinta European Markets earned more than a quarter of revenue from advertising while France reported a 7% decline driven by agencies and programmatic demand; Adevinta has been private since 2024.",
+              "source": "Adevinta, 2024",
+              "shows": "Display revenue moves with the ad market, not with matches."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The documented figures.",
+            "introduces": "The lesson they support.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
       "id": "worked",
       "heading": "Veldmark Worked Example: Three Decisions in 2027",
       "controlling_idea": "In July 2027 the architecture advice forum answered the scene's three arguments with three decisions: a timeout set with contacts as the guardrail, audiences rebuilt from approved building blocks, and one product family of paid positions.",
@@ -1057,7 +1057,7 @@
       },
       "transition_in": {
         "relationship": "problem_solution",
-        "carries_over": "The scene's three arguments, and the design and consent rules that answer them.",
+        "carries_over": "The scene's three arguments, the design and consent rules that answer them, and the public record's caution that display revenue follows the ad market.",
         "introduces": "The decisions the forum took.",
         "form": "sentence",
         "placement": "start_of_this"
@@ -1065,7 +1065,7 @@
       "paragraphs": [
         {
           "id": "p34",
-          "controlling_idea": "The architecture advice forum took three decisions in July 2027, each with a decision record.",
+          "controlling_idea": "With the record's caution about display revenue in mind, the architecture advice forum took three decisions in July 2027, one for each of the scene's three arguments, each with a decision record.",
           "function": "transition",
           "evidence": [
             {
@@ -1348,7 +1348,7 @@
         {
           "id": "p44",
           "form": "list",
-          "controlling_idea": "Without the design, advertising fails in nine ways, from sponsored units inserted after ranking (Multiplier Creep by a second door) to ads on gone listings (Ghost Inventory monetized).",
+          "controlling_idea": "Without the design, advertising fails in nine ways, from sponsored units inserted after ranking (Multiplier Creep by a second door) to ads on gone listings, where the lead-in says the last item carries the book's Ghost Inventory pattern (sold or removed listings that stay visible) into advertising.",
           "function": "analysis"
         }
       ]
@@ -1530,14 +1530,26 @@
     "transition_in": {
       "relationship": "conclusion_summary",
       "carries_over": "The whole chapter, from Veldmark Ads' three arguments to the review questions, and the four Part VI chapters before it.",
-      "introduces": "What Part VI's five chapters share.",
+      "introduces": "The answer to the chapter's question, then what Part VI's five chapters share.",
       "form": "sentence",
       "placement": "start_of_this"
     },
     "paragraphs": [
       {
         "id": "p52",
-        "controlling_idea": "Ingrid's question is answered (the ad stack and one policy layer are shared, the policy service and DPO-approved audience blocks set which slots and data each business may use, the forum settles conflicts and the CPO decides revenue that costs contacts), and Part VI's five chapters give every revenue line a record both sides can count, delivery events that prove it and a guardrail on what it costs in contacts, so money is one pipeline because its records and guardrails are shared, not because one team sells everything.",
+        "controlling_idea": "Ingrid's question is answered: the ad stack and one policy layer are shared, the policy service and DPO-approved audience blocks set which slots and data each business may use, and the forum settles conflicts, with the CPO deciding revenue that costs contacts.",
+        "function": "synthesis",
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2"
+          ],
+          "how": "Answers the chapter's question from the scene with the design."
+        }
+      },
+      {
+        "id": "p52b",
+        "controlling_idea": "That answer is one instance of what the part builds: Part VI's five chapters give every revenue line a record both sides can count, delivery events that prove it and a guardrail on what it costs in contacts, so money is one pipeline because its records and guardrails are shared, not because one team sells everything.",
         "function": "synthesis",
         "evidence": [
           {
@@ -1552,6 +1564,13 @@
             "S6"
           ],
           "how": "Places the chapter's one invoice line and shared stack within the part's common records."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer to Ingrid's question.",
+          "introduces": "The part's synthesis, of which that answer is one instance.",
+          "form": "sentence",
+          "placement": "start_of_this"
         }
       },
       {
@@ -1582,7 +1601,7 @@
       },
       {
         "id": "p54",
-        "controlling_idea": "These records depend on systems beneath every brand (consent on every event, a read model of paid positions, measurement joining impressions to contacts, leads and paid effects as events, a governed contact definition, guardrails on tests), so every revenue change should be reviewed for its cost in contacts, and Part VII turns to that distributed platform, starting with the event backbone.",
+        "controlling_idea": "These records depend on systems beneath every brand (for the ad stack: consent on every event, a read model of paid positions, measurement joining impressions to contacts; for the earlier chapters: leads and paid effects as events, a governed contact definition, guardrails on tests); because those are platform problems, every revenue change should be reviewed for its cost in contacts, and Part VII turns to that distributed platform, starting with the event backbone.",
         "function": "recommendation",
         "advances_thesis": {
           "supports": [
@@ -1751,6 +1770,26 @@
       "date": "2026-11-12",
       "decision": "Thesis rubric note on S6 (supports the so_what more than the claim): thesis and supporting claims kept as copied from the journal spec. accepted under the author's delegation, 2026-11-12.",
       "rejected": []
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "In Practice moved after Consent (round-4 flow finding: its place was unclear and its rows were met again in the paths); it now collects the record cited in the paths and adds the cyclicality lesson that leads into the worked example. Architecture's transition_in now carries over the vocabulary's distinctions as cause; roadmap p04 and promises reordered; worked transition and p34 updated. The new order matches AC-2's expected order (consent, then the public record), so no journal-spec edit is needed. fixed under the author's delegation (fix-only pass), 2026-11-13.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Conclusion p52 split into p52 (the answer to Ingrid's question) and p52b (the part's synthesis, introduced as the larger pattern the answer is one instance of); conclusion transition_in updated. fixed under the author's delegation (fix-only pass), 2026-11-13.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Draft fixes: scene p05 glosses SSPs and private deals and maps table rows to the three businesses; p20 says native placements are filled by the display path's ad server and glosses ad load; p24 moves the Rightmove CRM figure next to the audience product and says what it shows; p25 parenthetical clarified; p30 states why the VLOP list matters; p37 says Valuo is excluded group-wide; p38 says the €14M is the group's whole retail-media line; p44 lead-in introduces Ghost Inventory; p54 splits the list and states the review as a consequence. fixed under the author's delegation (fix-only pass), 2026-11-13.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "max_words raised from 6,950 to 7,450 (about 7%) for the glosses and pointers; no published fact cut. fixed under the author's delegation (fix-only pass), 2026-11-13.",
+      "rejected": []
     }
   ],
   "sources": [
@@ -1792,6 +1831,10 @@
   ],
   "changelog": [
     {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on the round-4 blocking findings under the author's delegation: In Practice moved after Consent, conclusion p52 split, eleven draft fixes; max_words 7,450; check report now stale. (AI-mediated session)"
+    },
+    {
       "date": "2026-11-12",
       "change": "Resolved the round-3 escalation under the author's delegation: four draft fixes, three name introductions, the answer to Ingrid's question in the conclusion, a clean-room definition; max_words raised to 6,950; open questions closed. (AI-mediated session)"
     },
@@ -1825,6 +1868,6 @@
     }
   ],
   "length": {
-    "max_words": 6950
+    "max_words": 7450
   }
 }

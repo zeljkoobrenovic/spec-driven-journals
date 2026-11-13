@@ -118,7 +118,7 @@ Classification gets political when one group platform serves brands that classif
 
 ## One Listing, Many Models
 
-With the subdomains classified, the decomposition starts from the contexts in which the listing appears and what each one needs it to be. The table follows the Lyon apartment through ten of them. In May 2027 three agencies list the same 68 m² T3 flat in Lyon 7e. **Agence Rhône Habitat**, a 14-branch network, publishes through Keybridge, Veldmark's listing software for agencies, at €389,000; the other two agencies publish through two different real-estate software vendors at €389,000 and €395,000; Step 2 below explains why.
+With the subdomains classified, the decomposition starts from the contexts in which the listing appears and what each one needs it to be. The table follows the Lyon apartment through ten of them. In May 2027 three agencies list the same 68 m² T3 flat in Lyon 7e. **Agence Rhône Habitat**, a 14-branch network, publishes through Keybridge, Veldmark's listing software for agencies, at €389,000; the other two agencies publish through two different real-estate software vendors at €389,000 and €395,000. The prices differ because a French asking price includes the agency's fee.
 
 | Context | What "listing" means here | Identity | Owns | The Lyon flat in this context |
 | --- | --- | --- | --- | --- |
@@ -137,9 +137,9 @@ With the subdomains classified, the decomposition starts from the contexts in wh
 
 **The same real-world change means different things in different contexts**, as the Lyon flat shows. If Rhône Habitat cut its price to €379,000, ingestion would see a changed field in a feed record. The catalog would see a `PriceChanged` transition with a new version. Search would see a document update, alerts a possible price-drop alert, valuation a new asking-price observation and analytics a row in the price-history fact table. One published event serves all of them, but each context interprets it in its own model.
 
-The book also draws on two generic domain models, one for a general-listings marketplace and one for a real-estate marketplace, which are the author's working models and describe no company. They reach the same structure by a different route. Both put the listing in one system-of-record capability with one owner, many readers and a separate search projection. The real-estate model also separates the listing from the property, through a property reference that "connects multiple classifieds, valuations, and location signals to the same underlying property without treating every listing as a separate property". **The listing is not the thing; it is a publication about the thing.** [[listing-aggregate]] turns that into an aggregate design, and [[entity-resolution]] owns the canonical entity.
+The structure the table shows, one owner of the listing and many contexts that read it, is not peculiar to Veldmark. Two generic domain models the book draws on, one for a general-listings marketplace and one for a real-estate marketplace, reach the same structure by a different route; they are the author's working models and describe no company. Both put the listing in one system-of-record capability with one owner, many readers and a separate search projection. The real-estate model also separates the listing from the property, through a property reference that "connects multiple classifieds, valuations, and location signals to the same underlying property without treating every listing as a separate property". **The listing is not the thing; it is a publication about the thing.** [[listing-aggregate]] turns that into an aggregate design, and [[entity-resolution]] owns the canonical entity.
 
-The models' numbers make the one-owner pattern concrete. In the general model, the listing is owned by one capability and read by eleven others, and two more query it through search. Even their mistakes make the case for named owners: the general model's data catalog assigns credentials, sessions and the audit log to the cookie-consent capability, a reminder that ownership assignments must be reviewed as carefully as boundaries.
+The models' numbers make the one-owner pattern concrete. In the general model, the listing is owned by one capability and read by eleven others, and two more query it through search.
 
 ## Architecture: The Marketplace Context Map
 
@@ -150,9 +150,9 @@ Meanings with owners still need rules for how they talk, which a context map rec
 
 Each relationship on the map is a decision, and each has a reason. **Feed ingestion is an anti-corruption layer.** Hearthly receives 84% of its listings from about 160 real-estate software vendors, and Motorvane receives most of its dealer stock from DMS exports. Each source has its own field names, enumerations, photo conventions and ideas of what "deleted" means. If the catalog adopted any vendor's model, every vendor's quirk would leak into search, trust and analytics. Ingestion translates all of them into catalog commands, keeps the source payloads for reconciliation and reports errors back to partners. [[listing-ingestion]] owns the design. The relationship is deliberately one-way: the catalog does not know which vendor a listing came from, except through a provenance reference.
 
-**The listing catalog is upstream of almost everything, and it publishes a language rather than exposing a model.** Consumers do not read the catalog's tables. They read Listing event contract v1: twelve event types with the listing's public state, version and cause (see [[event-driven-listings]]). That makes the catalog an **open host service with a published language**. The catalog can refactor its storage without telling anyone, as long as the contract holds. Hearthly's events reach the group event backbone through a bridge from Google Pub/Sub.
+**The listing catalog is upstream of almost everything, and it publishes a language rather than exposing a model.** Consumers do not read the catalog's tables. They read Listing event contract v1: twelve event types with the listing's public state, version and cause (see [[event-driven-listings]]). That makes the catalog an **open host service with a published language**. The catalog can refactor its storage without telling anyone, as long as the contract holds. Every brand's listing events reach the group event backbone in this one language, Hearthly's through a bridge from Google Pub/Sub (Step 4 of the worked example names it as a translation point).
 
-**Search is a conformist to the published language.** The search context adopts the contract's vocabulary for listing state and public fields, and adds its own model on top: analyzers, facets, boosts. It never writes listing state back. If the catalog says a listing is sold, search removes it; search does not decide. That keeps the index a read model and prevents Search as System of Record. When Vinted moved its search engine to Vespa, it put a "search contract" in a Go gateway in front of the engine so that product applications did not change ([Vinted Engineering](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/), 2024). That is the same idea from the other side: a stable language at the boundary lets the model behind it change.
+**Search is a conformist to the published language.** The search context adopts the contract's vocabulary for listing state and public fields, and adds its own model on top: analyzers, facets, boosts. It never writes listing state back. If the catalog says a listing is sold, search removes it; search does not decide. That keeps the index a read model and prevents Search as System of Record. When Vinted moved its search engine to Vespa, it put a "search contract" in a Go gateway in front of the engine so that product applications did not change ([Vinted Engineering](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/), 2024). There the stable language protected the consumers while the engine behind it changed; here it protects the catalog's storage. Either way, a stable language at the boundary lets the model behind it change.
 
 **Monetization is a customer–supplier partner of the catalog, and the owner of entitlements.** Monetization needs the catalog to accept placement references and to publish visibility changes. The catalog needs monetization to tell it what a listing is entitled to. The rule that prevents Billing by Guesswork is that **entitlements live in the monetization context**: what was sold, what was granted, what was consumed and what was delivered. The listing carries only references to active placements. Ranking reads visibility effects that monetization publishes. [[products-and-entitlements]] owns the design.
 
@@ -214,7 +214,7 @@ The sections so far showed the finished map, its aggregates and its published la
 
 **Step 2: find the language breaks.** For each candidate, the team writes down what "listing", "seller" and "price" mean there. Where two candidates use the same words with the same meaning and the same invariants, they merge. Where one word changes meaning, there is a boundary. The exercise produced one surprise. At Motorvane, "price" means the dealer's asking price. At Hearthly France it means the price including agency fees, which is why the three Lyon listings show €389,000, €389,000 and €395,000 for one flat. Valuation needs the net price. The catalog keeps the advertised price and the fee basis as separate fields, and valuation owns the translation.
 
-**Step 3: assign truth.** For every piece of data, one context is named as owner. The forum records 31 ownership decisions. Five took more than one session; each went to the context whose rules need it:
+**Step 3: assign truth.** For every piece of data, one context is named as owner. The forum records 31 ownership decisions. Five took more than one session; each of those five pieces of data went to the context whose rules need it:
 
 | Data | Candidates | Decision | Why |
 | --- | --- | --- | --- |
@@ -273,7 +273,7 @@ Veldmark's map and the public cases turn on three decisions that recur in every 
 
 ## Vertical Differences
 
-The context map's skeleton is shared across verticals. What changes is which contexts exist, which are core and where the entity sits.
+Those three trade-offs apply to every marketplace, whatever it sells. What they leave open is how the map changes with what is sold. The context map's skeleton is shared across verticals. What changes is which contexts exist, which are core and where the entity sits.
 
 | Dimension | General classifieds | Real estate | Automotive | Jobs and recommerce |
 | --- | --- | --- | --- | --- |
@@ -283,7 +283,7 @@ The context map's skeleton is shared across verticals. What changes is which con
 | Where the hardest boundary is | Messaging versus trust (scams arrive in conversations) | Listing versus property (duplicates, history) | Listing versus vehicle (relisting, history, valuation) | Jobs: application data with sensitive personal data. Recommerce: order versus listing |
 | Transactions context | Supporting, where shipping applies | Absent; milestones only | Emerging (reservations, deposits) | Recommerce core; jobs absent |
 
-The real-estate column explains why Hearthly's map has two contexts that Tradeyard's does not: entity resolution as a core context, and a mandates context that records which agency is authorized to market which property. The general-listings reference model's resilience analysis points to the same separation for goods in one case: when product-safety rules make the marketplace responsible for recalled items, a product identity must exist separately from the listing so that one safety notice can suspend every affected listing. [[vertical-requirements]] develops the differences further.
+The real-estate column explains why Hearthly's map has two contexts that Tradeyard's does not: entity resolution as a core context, and a mandates context that records which agency is authorized to market which property. The general-listings reference model, one of the author's two working models introduced in One Listing, Many Models, points in its resilience analysis to the same separation for goods in one case: when product-safety rules make the marketplace responsible for recalled items, a product identity must exist separately from the listing so that one safety notice can suspend every affected listing. [[vertical-requirements]] develops the differences further.
 
 ## Failure Modes
 
@@ -309,7 +309,7 @@ Boundaries go wrong in recurring ways, most of them a missing owner or an undeci
 
 ## The Chief Architect's View
 
-Those failures come from owners and relationships nobody decided, so the group must say who decides what. At group scale, the context map is the architecture's constitution. As Chief Architect, these are the decisions I would keep at group level, and the ones I would leave to brands.
+Those failures come from owners and relationships nobody decided, so the group must say who decides what. At group scale, the context map is the architecture's constitution. The view that follows is mine, the author's, not Ingrid's: as a chief architect, these are the decisions I would keep at group level, and the ones I would leave to brands.
 
 **Decided at group level, by decision record:**
 
@@ -325,7 +325,7 @@ Those failures come from owners and relationships nobody decided, so the group m
 
 **What to watch:**
 
-- **Contexts with more than one owning team**, and responsibilities with none. Both should be zero, and both drift.
+- **Contexts with more than one owning team**, and responsibilities with none. Both should be zero, and both drift. Review who owns each piece of data as carefully as the boundaries themselves: even the general-listings reference model's data catalog assigns credentials, sessions and the audit log to the cookie-consent capability.
 - **Writes into a context by a non-owner.** Any service that writes listing state without going through the catalog's commands is a boundary breach.
 - **The number of consumers reading a legacy table directly** instead of the published language. At Veldmark this is the Yardstick migration metric that matters most, because every direct reader is a hidden dependency for the strangler plan.
 - **Translation layers that start to make business decisions.** An ACL that begins to decide what a listing's state is has become a second catalog.

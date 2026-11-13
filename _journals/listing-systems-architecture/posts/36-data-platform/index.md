@@ -34,7 +34,7 @@ This chapter takes the opposite route, applying to data the rule stated in the [
 
 Two neighbors own adjacent ground. [[event-driven-listings]] owns the listing event stream and its schema evolution; this chapter consumes that stream. [[listing-data-management]] owns the system of record, read models and erasure propagation; this chapter applies erasure to analytical copies. The next chapter, [[experimentation]], builds on the exposure and metric layers designed here, and [[ml-platform]] builds on its training data.
 
-The chapter starts with Veldmark's board question, then covers the platform's purpose, the tracking plan, the architecture with its quality controls, data products, governed metrics, data for professionals, sharing across brands, and freshness and cost. Veldmark's Common Ground design, trade-offs, vertical differences, failure modes, the Chief Architect's view and questions follow. The evidence comes from Adevinta, OLX, Scout24, AutoScout24, Vinted and Zalando, the data-mesh and lakehouse literature, EU law, and the fictional Veldmark.
+The chapter starts with Veldmark's board question, then covers the platform's purpose, the tracking plan, the architecture with its quality controls, freshness and cost, data products, governed metrics, data for professionals, and sharing across brands. Veldmark's Common Ground design, trade-offs, vertical differences, failure modes, the Chief Architect's view and questions follow. The evidence comes from Adevinta, OLX, Scout24, AutoScout24, Vinted and Zalando, the data-mesh and lakehouse literature, EU law, and the fictional Veldmark.
 
 ## Setting the Scene at Veldmark: Three Warehouses, Three Contacts
 
@@ -109,9 +109,11 @@ A marketplace's tracking plan is not a web-analytics plan with listings added. I
 | `listing_submitted` | Insertion flow (client) | Draft ID, step reached, category prediction accepted or not | Insertion funnel conversion |
 | `experiment_exposure` | Assignment service | Experiment ID, variant, unit type and ID | Joins every event to the experiments that could have influenced it |
 
-Every event carries a **common envelope**: event ID (for de-duplication), event time and receive time, the tenant (one brand in one country, such as Tradeyard NL; [[multi-country-platforms]] defines the term), an anonymous device or session identifier, the pseudonymous user identifier when signed in (after 2028, the Veldmark ID subject), the app or web build, the **consent state** at the moment of the event, and the IDs of active experiment assignments. Two design rules follow from the table.
+Every event carries a **common envelope**: event ID (for de-duplication), event time and receive time, the tenant (one brand in one country, such as Tradeyard NL; [[multi-country-platforms]] defines the term), an anonymous device or session identifier, the pseudonymous user identifier when signed in (after 2028, the Veldmark ID subject), the app or web build, the **consent state** at the moment of the event, and the IDs of active experiment assignments.
 
-1. **Facts are server-side; intentions are client-side.** A contact is counted when the messaging or lead service delivers it, not when a client says a button was tapped. The client event records intent and context; the server event records the fact. This one rule removed the largest disagreement between Veldmark's brands, because clients lose events to ad blockers, crashes and missing consent, while servers do not.
+The core-events table also implies two design rules about how events are collected.
+
+1. **Facts are server-side; intentions are client-side.** A contact is counted when the messaging or lead service delivers it, not when a client says a button was tapped. The client event records intent and context; the server event records the fact, because clients lose events to ad blockers, crashes and missing consent, while servers do not. At Veldmark, this one rule later removed the largest disagreement between the brands.
 2. **Impressions are expensive and indispensable.** Logging every rendered listing with its position multiplies event volume, which tempts teams to sample or drop impressions. Do not, at least for search and recommendation surfaces: without impressions there is no position-bias correction, no unbiased ranking training set and no way to show a regulator or a dealer how paid placements were exposed. Compact them instead (one event per rendered batch, listing IDs as an array) and tier their retention.
 
 ### Consent on the event, not in the job
@@ -122,7 +124,7 @@ Consent makes client-side liquidity counts biased. If 30% of web sessions declin
 
 ## Architecture: One Substrate, Many Owners
 
-The tracking plan governs one input; the reference architecture below receives all of them. It has five layers and one rule: every arrow into the platform passes through a contract. It describes no company's actual systems. Three of its layers hold **data products**, datasets a named team owns and publishes; their owners follow the rule in the next section. The gate checks each source against its **data contract**, a versioned agreement on schema, meaning and ownership, and the **metrics layer** computes each governed metric once for all consumers.
+The tracking plan governs one input; the reference architecture below receives all of them. It has five layers and one rule: every arrow into the platform passes through a contract. It describes no company's actual systems. The table uses three terms the chapter defines where it uses them, so read them here as labels: the data contract the gate checks is defined just below, the data products three layers hold (and who owns them) under Data Products, and the metrics layer under Governed Metrics.
 
 ![Diagram: A reference data platform for a listing marketplace](assets/images/36-data-platform/fig02-reference-data-platform-listing-marketplace-every.jpeg)
 **Figure 2:** *A reference data platform for a listing marketplace. Every source passes a contract gate; personal data is stored apart and joined only under policy; governed metrics are computed once and consumed by dashboards, experiments and pro reporting alike.*
@@ -147,7 +149,7 @@ Adevinta Spain applies the third property in production: each contract lists the
 
 ### Quality is a producer's obligation
 
-Validation at the gate is the first of several quality controls. The documented lesson from Adevinta Spain's contracts, Vinted's generated tracking code and Adevinta Benelux's metric monitoring, Artemis (described under governed metrics), is the same: **quality is cheapest at the source**. The platform's job is to make the producer's obligations explicit and visible, with a control at each stage of the architecture. Each control in the table catches a different failure at the earliest layer that can see it, and sends it back to the team that produced the data.
+Validation at the gate is the first of several quality controls. The documented lesson from Adevinta Spain's contracts, Vinted's generated tracking code and Adevinta Benelux's Artemis, a monitoring tool that alerts teams when a metric leaves its forecast bounds, is the same: **quality is cheapest at the source**. The platform's job is to make the producer's obligations explicit and visible, with a control at each stage of the architecture. Each control in the table catches a different failure at the earliest layer that can see it, and sends it back to the team that produced the data.
 
 | Control | Where it runs | What it catches |
 | --- | --- | --- |
@@ -170,9 +172,22 @@ For a marketplace group the decision is less "which product" than **where the du
 
 The portability argument deserves more weight in marketplaces than in most industries, because marketplace groups change shape. The 2025 strategic report of Adevinta's parent company, Aurelia UK Feederco Ltd, describes the group moving to "a decentralised, standalone operating model" with "the localisation of intellectual property" and a temporary cost spike from "parallel running of central and local services during a transitional period" ([Strategic Report 2025](https://adevinta.com/wp-content/uploads/2026/05/Strategic-Report-2025-Aurelia-UK-Feederco-Ltd.pdf), published 2026); the [[case-adevinta]] chapter covers that history. **A data platform whose durable copy is in open formats, partitioned by tenant, is one that can be split when a brand is sold**, and one that can absorb an acquired brand without first migrating its warehouse.
 
+## Freshness and Cost
+
+The storage choice settles where the data lives; whether the platform stays useful and affordable turns on two more questions: how fresh the data must be, and who pays for it. **Freshness targets should follow the consumer**, not a platform-wide default. Board metrics can be final at D+3. Experiment guardrails, such as a sudden drop in contacts for a variant, need hours, which is why Adevinta built streaming results computation for its experimentation platform (covered in [[experimentation]]). Fraud features need seconds and should not run through the analytical platform at all; [[fraud-prevention]] and [[ml-platform]] own those paths.
+
+### Cost has an owner or it grows
+
+Behavioral data is the largest and least valuable-per-byte part of a marketplace's data estate, and it grows with traffic, not with revenue. Adevinta's 2024 logging post shows how much small format choices matter at volume: trimming fields such as identifiers and hostnames, and moving to Vector, cut its OpenSearch logging cost by 35%, more than €30,000 a year ([Adevinta Tech Blog, 2024](https://adevinta.com/techblog/the-300-bytes-that-saved-millions-optimising-logging-at-scale/)). The same arithmetic applies to tracking events. The levers, in the order I would pull them:
+
+1. **Ownership metadata on every dataset and every compute workload**, so cost is attributed to a team and a purpose. Adevinta's multi-cloud governance post makes the general point that accurate ownership and cost-center metadata underpins governance and cost allocation ([Adevinta Tech Blog, 2024](https://adevinta.com/techblog/multi-cloud-governance-at-scale/)).
+2. **Retention tiers by event class.** Raw impressions in hot storage for 90 days, compacted for two years, aggregated beyond; contacts and domain events kept longer because they are facts.
+3. **Compact envelopes.** Arrays of listing IDs per impression batch, short identifiers, no repeated user agents.
+4. **Kill unused datasets and dashboards.** AutoScout24's 2025 cut from more than 500 dashboards to about 150 ([AutoScout24 Tech Blog, 2025](https://tech.autoscout24.com/blog/posts/bi-modernisation-journey/)), a case the next section returns to, was a governance gain as much as a cost one.
+
 ## Data Products: Federate Ownership, Not Substrate
 
-A **data product** is a dataset (or a small family of them) that a named team owns and publishes for others to use, with a contract, documentation, quality and freshness service levels, access policy and a support channel. The term comes from Zhamak Dehghani's 2019 essay on the data mesh, which argued that domains should "host and serve" their datasets, treat "their data assets as their products" with other teams as customers, rely on a platform that provides "the data infrastructure components in a self-service manner", and agree on standards that "should belong to a global governance, to enable interoperability between polyglot domain datasets" ([Dehghani, martinfowler.com, 2019](https://martinfowler.com/articles/data-monolith-to-mesh.html)). Data mesh, in its own terms, distributes ownership and keeps a shared platform and global rules.
+Cost needs an owner, and so does every dataset on the shared substrate. A **data product** is a dataset (or a small family of them) that a named team owns and publishes for others to use, with a contract, documentation, quality and freshness service levels, access policy and a support channel. The term comes from Zhamak Dehghani's 2019 essay on the data mesh, which argued that domains should "host and serve" their datasets, treat "their data assets as their products" with other teams as customers, rely on a platform that provides "the data infrastructure components in a self-service manner", and agree on standards that "should belong to a global governance, to enable interoperability between polyglot domain datasets" ([Dehghani, martinfowler.com, 2019](https://martinfowler.com/articles/data-monolith-to-mesh.html)). Data mesh, in its own terms, distributes ownership and keeps a shared platform and global rules.
 
 Marketplaces map onto this naturally, because their bounded contexts already exist: supply, catalog, search, trust and safety, messaging, monetization. The documented classifieds cases show a consistent shape, though not a uniform outcome.
 
@@ -224,7 +239,7 @@ Each row closes an argument the brands had been having implicitly. Counting **on
 
 ### Replaying one week under the new definition
 
-Priya's team tested the definition in April, before the forum approved it, by replaying the week of 8–14 March 2027 for all three listing brands. The week began on Monday 8 March, the day after Femke listed her bike, so the team replayed the bike's first 24 hours with it. In late April it added a second example: the Essen Volkswagen Golf, listed by Autohaus Ruhrblick on 14 April, received **23 leads in 10 days** (14 e-mails, 7 calls, 2 test-drive bookings); three of the e-mail senders also called, and one test-drive booking came from a buyer who had already e-mailed. Motorvane reported 23, the dealer felt he had heard from 19 people, and a fraud review would want to know whether any of them should not count at all; the replay excluded none. Keybridge, which has no buyers, was out of scope.
+Priya's team tested the definition in April, before the forum approved it, in two parts. For the brand totals it replayed one week, 8–14 March 2027, for all three listing brands; Keybridge, which has no buyers, was out of scope. For single listings it replayed two examples, each over its own first days. Femke's bike, listed on Sunday 7 March, the day before the replayed week began, was replayed over its first 24 hours. The Essen Volkswagen Golf, listed by Autohaus Ruhrblick on 14 April, was added in late April, once its first 10 days were in: it received **23 leads in 10 days** (14 e-mails, 7 calls, 2 test-drive bookings); three of the e-mail senders also called, and one test-drive booking came from a buyer who had already e-mailed. Motorvane reported 23, the dealer felt he had heard from 19 people, and a fraud review would want to know whether any of them should not count at all; the replay excluded none.
 
 | Example or aggregate | Old brand figure | Qualified contacts v1.0 | Why it moved |
 | --- | --- | --- | --- |
@@ -277,19 +292,6 @@ Four regimes limit sharing, and the last column of the table shows that each bec
 The last row is Veldmark's most sensitive case. In March 2027 the group decided that **Keybridge stays a separate, neutral SaaS**: no Keybridge agency data is used by Hearthly for ranking or sales targeting, enforced by access controls and an annual independent review. In data-platform terms that means Keybridge's Synapse environment does not federate into the group platform; only aggregated financial figures and SaaS usage metrics required for group reporting leave it, through a contract that names each field. Emma Laurent, Keybridge's founder, asked for one more control, which Ingrid accepted: the access policy and its audit log are readable by the independent reviewer without asking Veldmark's engineers. **Neutrality that cannot be audited is a promise; neutrality expressed as access policy is an architecture.**
 
 In Poland, where Tradeyard's cars section and Motorvane compete for the same dealers, the line falls between aggregated and dealer-level data. Using aggregated, non-personal market data across the two (price levels, demand by region) is a group analytics question. Using one brand's dealer-level performance data to target the other brand's sales calls is a commercial question with contract and competition implications, and it should go to the architecture advice forum and legal as a decision record, not be settled by whoever builds the dashboard.
-
-## Freshness and Cost
-
-Access policy settles what data may be used; keeping the platform useful and affordable is the remaining work, and it turns on two questions: how fresh the data must be, and who pays for it. **Freshness targets should follow the consumer**, not a platform-wide default. Board metrics can be final at D+3. Experiment guardrails, such as a sudden drop in contacts for a variant, need hours, which is why Adevinta built streaming results computation for its experimentation platform (covered in [[experimentation]]). Fraud features need seconds and should not run through the analytical platform at all; [[fraud-prevention]] and [[ml-platform]] own those paths.
-
-### Cost has an owner or it grows
-
-Behavioral data is the largest and least valuable-per-byte part of a marketplace's data estate, and it grows with traffic, not with revenue. Adevinta's 2024 logging post shows how much small format choices matter at volume: trimming fields such as identifiers and hostnames, and moving to Vector, cut its OpenSearch logging cost by 35%, more than €30,000 a year ([Adevinta Tech Blog, 2024](https://adevinta.com/techblog/the-300-bytes-that-saved-millions-optimising-logging-at-scale/)). The same arithmetic applies to tracking events. The levers, in the order I would pull them:
-
-1. **Ownership metadata on every dataset and every compute workload**, so cost is attributed to a team and a purpose. Adevinta's multi-cloud governance post makes the general point that accurate ownership and cost-center metadata underpins governance and cost allocation ([Adevinta Tech Blog, 2024](https://adevinta.com/techblog/multi-cloud-governance-at-scale/)).
-2. **Retention tiers by event class.** Raw impressions in hot storage for 90 days, compacted for two years, aggregated beyond; contacts and domain events kept longer because they are facts.
-3. **Compact envelopes.** Arrays of listing IDs per impression batch, short identifiers, no repeated user agents.
-4. **Kill unused datasets and dashboards.** AutoScout24's cut from more than 500 dashboards to about 150 was a governance gain as much as a cost one.
 
 ## In Practice: Veldmark's Common Ground Data Platform
 

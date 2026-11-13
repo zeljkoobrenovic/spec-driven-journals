@@ -7,7 +7,7 @@
   "part": "part-4",
   "title": "What Did They Mean? Query Understanding and Autocomplete",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, the three acceptance criteria, the thesis and the role are copied unchanged from the query-understanding entry in journal-spec.json. Three units are added to the published text: a roadmap paragraph in the introduction (p04, for AC-2), a lead-in for the trade-offs table (p67) and a synthesis paragraph before the hand-off (p79).",
   "intent": {
     "outcome": {
@@ -897,10 +897,9 @@
           "function": "recommendation",
           "evidence": [
             {
-              "kind": "source",
-              "what": "Vinted in 2025 reported that approximate retrieval could make results inconsistent with filters and set the goal that adding a filter should not increase results.",
-              "source": "Vinted Engineering, 2025",
-              "shows": "The invariant comes from a documented failure."
+              "kind": "reasoning",
+              "what": "An applied interpretation is a filter, and a filter only removes listings unless a second retrieval path that skips it adds some back; the hybrid-retrieval section returns to that risk.",
+              "shows": "The invariant follows from what a filter does; the documented failure is cited where dense retrieval is explained."
             }
           ],
           "transition_in": {
@@ -1110,7 +1109,7 @@
         },
         {
           "id": "p45",
-          "controlling_idea": "The two detailed cases reached different answers to the same problem for documented reasons, so the choice depends on filter selectivity, update rate and the engine in use.",
+          "controlling_idea": "The two detailed cases reached different answers to the same problem for documented reasons (Vinted kept HNSW split by market bloc with exact-search fallback; Airbnb chose IVF with cluster IDs as a filter, accepting lower recall), so the choice depends on filter selectivity, update rate and the engine in use.",
           "function": "analysis",
           "transition_in": {
             "relationship": "contrast",
@@ -1162,7 +1161,15 @@
             "introduces": "Where dense retrieval belongs.",
             "form": "sentence",
             "placement": "start_of_this"
-          }
+          },
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Vinted in 2025 reported that approximate retrieval could make results inconsistent with filters and set the goal that adding a filter should not increase results.",
+              "source": "Vinted Engineering, 2025",
+              "shows": "The first invariant of the confidence policy comes from a documented failure of dense retrieval under filters."
+            }
+          ]
         },
         {
           "id": "p49",
@@ -1177,7 +1184,7 @@
             },
             {
               "kind": "figure",
-              "what": "Figure 3: a structured core with a capped dense ring and an LLM translator compiling into validated filters.",
+              "what": "Figure 3: a structured core with a capped dense ring and an LLM translator compiling into validated filters; the caption marks the LLM layer as the next section's subject.",
               "shows": "Shows both layers sitting on the structured core."
             }
           ],
@@ -1470,7 +1477,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "Motor position and battery capacity from the backfill; prediction-distribution monitor; Priya's team as owner; group registry decided on 9 November later made this mandatory.",
+              "what": "Motor position and battery capacity from the backfill; entry in the group model inventory Priya presented in September (a count, not yet a registry); prediction-distribution monitor; Priya's team as owner; the group's 9 November ML platform decision (see ml-platform) then made registration in one group model registry mandatory, so the model needed a registry entry as well.",
               "source": "Veldmark illustration",
               "shows": "Applies the categorizer properties."
             }
@@ -1549,7 +1556,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "About 6% of Hearthly search traffic; 'T3 balcon Lyon 7 moins de 400k' compiles to rooms 3, balcony, Lyon 7e and a €400,000 ceiling and returns the Lyon apartment at €389,000; 'golf 8' as the Essen Volkswagen Golf's generation.",
+              "what": "About 6% of Hearthly search traffic; 'T3 balcon Lyon 7 moins de 400k' compiles to rooms 3, balcony, Lyon 7e and a €400,000 ceiling and returns the Lyon apartment at €389,000; 'golf 8' as the Essen Volkswagen Golf's generation. Both example listings are introduced on first mention here: the Lyon apartment as Hearthly's example listing, a three-room flat in Lyon 7e; the Essen Golf as the 2021 Golf from an Essen dealer, Motorvane's example listing.",
               "source": "Scenario ledger",
               "shows": "The layers applied after the structured core is in place."
             }
@@ -1668,12 +1675,12 @@
       "paragraphs": [
         {
           "id": "p69",
-          "controlling_idea": "Analyzer drift from an engine upgrade or analyzer change quietly changes results; keep token-parity tests in continuous integration.",
+          "controlling_idea": "The failures follow the order of the rules they skip, each naming its rule. Analyzer drift from an engine upgrade or analyzer change quietly changes results; keep token-parity tests in continuous integration; the paragraph names the rule it skips: token parity (language analysis).",
           "function": "cause_effect"
         },
         {
           "id": "p70",
-          "controlling_idea": "Synonyms as the dumping ground: every complaint becomes a synonym until nobody can explain the file; move meaning into the dictionary.",
+          "controlling_idea": "Synonyms as the dumping ground: every complaint becomes a synonym until nobody can explain the file; move meaning into the dictionary; the paragraph names the rule it skips: meaning lives in the dictionary (spelling and synonyms).",
           "function": "cause_effect",
           "transition_in": {
             "relationship": "additional_support",
@@ -1685,7 +1692,7 @@
         },
         {
           "id": "p71",
-          "controlling_idea": "Taxonomy changes without a categorizer plan leave the categorizer predicting old categories; version models with the taxonomy.",
+          "controlling_idea": "Taxonomy changes without a categorizer plan leave the categorizer predicting old categories; version models with the taxonomy; the paragraph names the rule it skips: the categorizer is versioned with the taxonomy.",
           "function": "cause_effect",
           "transition_in": {
             "relationship": "additional_support",
@@ -1697,7 +1704,7 @@
         },
         {
           "id": "p72",
-          "controlling_idea": "Invisible filters: applied interpretations without chips leave buyers unable to recover and the team unable to learn.",
+          "controlling_idea": "Invisible filters: applied interpretations without chips leave buyers unable to recover and the team unable to learn; the paragraph names the rule it skips: the confidence policy's removable chip.",
           "function": "cause_effect",
           "transition_in": {
             "relationship": "additional_support",
@@ -1709,7 +1716,7 @@
         },
         {
           "id": "p73",
-          "controlling_idea": "Autocomplete without live counts leads buyers to empty results or offensive strings; join inventory counts and filter candidates.",
+          "controlling_idea": "Autocomplete without live counts leads buyers to empty results or offensive strings; join inventory counts and filter candidates; the paragraph names the rule it skips: suggest only what returns inventory.",
           "function": "cause_effect",
           "transition_in": {
             "relationship": "additional_support",
@@ -1721,7 +1728,7 @@
         },
         {
           "id": "p74",
-          "controlling_idea": "Dense results that ignore filters return listings outside the buyer's filters; enforce filters on every path and test the invariant.",
+          "controlling_idea": "Dense results that ignore filters return listings outside the buyer's filters; enforce filters on every path and test the invariant; the paragraph names the rule it skips: dense matches respect every buyer filter.",
           "function": "cause_effect",
           "transition_in": {
             "relationship": "additional_support",
@@ -1733,7 +1740,7 @@
         },
         {
           "id": "p75",
-          "controlling_idea": "Unvalidated LLM output returns categories or values that do not exist; validate every output against the dictionary.",
+          "controlling_idea": "Unvalidated LLM output returns categories or values that do not exist; validate every output against the dictionary; the paragraph names the rule it skips: the validator in the compiler pattern.",
           "function": "cause_effect",
           "transition_in": {
             "relationship": "additional_support",
@@ -1779,7 +1786,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "One vocabulary, many policies; every model in the query path an order-tier model; a query-understanding checklist in every taxonomy release; LLMs compile, engines retrieve, through the AI gateway with Lucía Ortega's data-protection review; evaluation as a shared asset.",
+              "what": "One vocabulary, many policies; every model in the query path an order-tier model; a query-understanding checklist in every taxonomy release; LLMs compile, engines retrieve, through the AI gateway (glossed: the one group service for model calls, with routing, metering, logging and kill switches) with the data-protection review of Lucía Ortega, the group's Data Protection Officer; evaluation as a shared asset.",
               "source": "Veldmark illustration",
               "shows": "Each decision applies one section at group scale."
             }
@@ -1999,6 +2006,18 @@
     {
       "date": "2026-10-19",
       "decision": "Kept agentic assistants to one table row and a short section on external assistants as clients; ai-in-listing-systems owns the broader view. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-4 spec-fault finding (p38 rests on a dense-retrieval failure explained two sections later): the Vinted 2025 filter-inconsistency evidence moved from p38 to p48, where dense retrieval and the buyer-filter rule are explained; both invariants stay together in p38, which now argues the first from what a filter does and points forward. No published fact or citation was cut; fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-4 draft-fault findings: the Vinted bullet in p44 split into shorter sentences; p45 states Vinted's and Airbnb's answers; the Figure 3 caption marks the LLM layer as the next section's subject; p62 explains the inventory (Priya's September count, ledger [ml-platform] line) against the 9 November registry decision and links ml-platform; p66 glosses the Lyon apartment and the Essen Golf on first mention (ledger shared-example entries 2 and 3); the failure-mode paragraphs each name the rule they skip; p76 gives Lucía Ortega's role (ledger cast table) and glosses the AI gateway (ledger [ai-in-listing-systems] line). Minor findings also fixed: 'six leaf categories in the Dutch tree', 'torso' glossed; fixed under the author's delegation (fix-only pass)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Raised length.max_words from 7,000 to 7,250 (about 3.6%, within the 10% allowed) to make room for the round-4 glosses, pointers and rule names; no published text was cut; fixed under the author's delegation (fix-only pass)."
     }
   ],
   "sources": [
@@ -2109,9 +2128,13 @@
     {
       "date": "2026-11-12",
       "change": "Resolved the round-3 escalation under the author's delegation: five draft fixes, two minor fixes, max_words 6,921 to 7,000, open questions reduced to the three sourcing notes."
+    },
+    {
+      "date": "2026-11-13",
+      "change": "Resolved the round-4 escalation (fix-only pass, no new check round): one spec fix (Vinted invariant evidence moved p38 to p48) and eight draft fixes, plus three minor fixes; max_words 7,000 to 7,250; fixed under the author's delegation (fix-only pass)."
     }
   ],
   "length": {
-    "max_words": 7000
+    "max_words": 7250
   }
 }

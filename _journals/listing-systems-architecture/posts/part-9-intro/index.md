@@ -47,7 +47,7 @@ The evidence is uneven, and each case says where it stops. Adevinta published a 
 
 ## Chapters in this part
 
-Under these rules, the cases run from whole groups to single verticals: the groups Adevinta, OLX and eBay Classifieds, then real estate (the fourth group, AVIV, and the property portals), then automotive. Adevinta comes first because its case is the first to ask the opening's three questions, which every later case asks again.
+With those rules set, the cases run from whole groups to single verticals: first three of the four groups (Adevinta, OLX and eBay Classifieds), then real estate, where the fourth group, AVIV, is read beside the property portals because its business is property, then automotive. Adevinta comes first because it is the best-documented case and the only one with a full swing from federation to shared platform and back, so it shows most clearly the three things every case asks: what was shared, at which layer, and what it cost.
 
 | Chapter | The question it answers | Read it when… |
 | --- | --- | --- |

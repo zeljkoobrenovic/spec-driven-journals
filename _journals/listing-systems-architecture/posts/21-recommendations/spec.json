@@ -1,1630 +1,1674 @@
 {
- "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
- "spec_version": "0.1",
- "kind": "post",
- "id": "recommendations",
- "journal": "listing-systems-architecture",
- "part": "part-4",
- "title": "Recommendations for Inventory That Disappears",
- "status": "draft",
- "revised": "2026-11-12",
- "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, the three acceptance criteria, the thesis and the role are copied unchanged from the recommendations entry in journal-spec.json. Four units are added to the published text: a roadmap paragraph in the introduction (p04, for AC-2), lead-ins for the trade-offs and vertical-differences tables (p42, p43), and a synthesis paragraph before the hand-off (p54).",
- "intent": {
-  "outcome": {
-   "know": [
-    "The recommendation surfaces of a listing marketplace and why churn breaks the usual recommender: every listing is a cold-start problem and may disappear before the buyer clicks.",
-    "The generate, filter, re-rank, apply-policy architecture; events and serving-time checks; cold start for new listings, new users and new markets; feedback loops and exposure; evaluation by contacts and coverage; consent and the non-profiling option for very large platforms."
-   ],
-   "believe": [
-    "Churn changes a recommender's plumbing more than its algorithms, and a nightly batch job over a catalog that changes by the hour produces Ghost Inventory.",
-    "Carousel click-through is the wrong success metric; contacts and inventory coverage are the right ones."
-   ],
-   "can_do": [
-    "Design a recommendation pipeline whose candidate indices take inserts and deletes from listing events and whose single serving-time filter reads the shared status read model.",
-    "Set an exposure policy (dealer concentration cap, exploration slot) and decide what a group shares for recommendations and what each brand keeps."
-   ]
-  },
-  "audience": {
-   "who": "Chief architects, recommendation and ML leads, discovery product owners and data protection leads in listing marketplaces, who know recommender basics and need the marketplace-specific failure modes and the architecture that avoids them.",
-   "already_knows": [
-    "APIs, databases, event streams, search engines and Kubernetes; recommender basics (collaborative filtering, click-through as a metric).",
-    "From earlier chapters: Ghost Inventory and the other failure patterns, the listing event stream, the publication pipeline's unpublish events and status read model, the search index as a read model, enrichment that fills attributes, entity-resolution clusters, and Veldmark's brands, cast and the Essen Golf.",
-    "From ranking: candidate generation and re-ranking stages, the ranking policy as a separate layer, gradient-boosted decision trees, position bias and propensity correction, exploration positions, reason codes, and why paid status must not be a model feature."
-   ],
-   "does_not_know": [
-    "Cold start, co-view and co-contact signals, matrix factorization and graph methods, session-based models and two-tower embeddings.",
-    "Approximate nearest-neighbor (ANN) indices, filtered versus post-filtered kNN search.",
-    "Recall at k, NDCG, and coverage, novelty and concentration as recommendation metrics.",
-    "Articles 27 and 38 of the Digital Services Act."
-   ]
-  },
-  "acceptance_criteria": [
-   {
-    "id": "AC-1",
-    "statement": "Given a carousel that shows sold items and ignores new ones, the reader redesigns it and names the metric that decides success.",
-    "check": "custom",
-    "method": "cold_reader",
-    "severity": "major",
-    "probe": "Your 'similar vehicles' carousel is a nightly co-view job. It starts 7% of leads, but 41% of new listings get no carousel impression in their first three days and about 4% of clicks land on sold cars. Using only this chapter: how do you rebuild it, and by what metric do you judge the rebuild?",
-    "expected": "Several candidate sources (attribute similarity over the search index, embeddings with a content tower so new cars get vectors at once, frequently recomputed co-contact neighbors, fresh listings nearby) kept current by listing events within a minute; one serving-time filter on the shared status read model plus trust, duplicate and already-contacted rules; a re-ranker trained on leads with position logged; a policy capping cars per dealer group and reserving an exploration slot for new listings. Judge it on leads and inventory coverage, not click-through, which may fall slightly as the carousel shows newer, comparable cars; and close the sale-to-removal gap at the source (a mark-as-sold event, a fast status delta in the supply contract)."
-   },
-   {
-    "id": "AC-2",
-    "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
-    "check": "intro_predicts_content",
-    "method": "cold_reader",
-    "severity": "major",
-    "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
-    "expected": "The sold Golf that kept being recommended at Motorvane; recommendation surfaces; why listings break the usual recommender; methods under churn; generate, filter, re-rank, apply policy; events and serving-time checks; cold start in three forms; feedback loops and exposure; evaluation; privacy, consent and regulation; the Motorvane rebuild; trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: published marketplace recommender work (Airbnb listing embeddings and others), EU regulation and the fictional Veldmark."
-   },
-   {
-    "id": "AC-3",
-    "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
-    "check": "reverse_outline_matches_spec",
-    "method": "reverse_outline",
-    "severity": "blocker"
-   }
-  ]
- },
- "thesis": {
-  "question": "How do you recommend items that may be sold tomorrow?",
-  "claim": "Recommending inventory that may be sold tomorrow depends on plumbing more than on modeling: several candidate sources, each one index lookup, including content and image features that give a listing a place before anyone has viewed it, feed candidate indices that listing events update within a minute; one serving-time filter on the shared status read model removes unavailable, ineligible and unconsented items; a re-ranker with an exposure policy (a cap per dealer group, an exploration slot for new listings) is judged on contacts and inventory coverage rather than click-through; and every surface has a non-personalized mode that serves a complete list when personalization is unavailable or not consented to.",
-  "disputed_by": "The common practice, inherited from retail, of building recommendations as a nightly collaborative-filtering batch job (co-views or co-purchases written to a key-value store) and judging it on carousel click-through.",
-  "so_what": "A Chief Architect who accepts this shares the status read model and listing event stream, candidate-serving infrastructure with real-time upserts, deletes and filtered search, the recommendation log and evaluation tooling and consent propagation across brands, keeps models, source weights and policy values per brand, and watches contacts on unavailable listings by surface, new-listing exposure within 72 hours, weekly coverage and seller concentration.",
-  "how_why": "Motorvane's 2020 co-view carousel could recommend only cars someone had already viewed alongside another: 41% of new listings got no carousel impression in their first 72 hours although the carousel started 7% of leads, 3.8% of clicks landed on sold or removed cars, and the sold Essen Golf stayed in carousels until the next nightly run. The rebuild (four candidate sources, one filter, a GBDT re-ranker, at most two cars per dealer group in ten) raised carousel-started leads by 16% relative, cut new listings without an impression to 8% and clicks on unavailable cars to 0.3%, while click-through fell 4%.",
-  "supporting_claims": [
-   {
-    "id": "R1",
-    "claim": "Listing churn breaks the retail recommender: every listing is a cold start and may disappear before the buyer clicks, so a nightly, behavior-only batch job both recommends sold items and starves new ones."
-   },
-   {
-    "id": "R2",
-    "claim": "Several candidate sources, at least one content-based, served from indices that take inserts, deletes and filtering from the listing event stream, give a listing a place from its first minute."
-   },
-   {
-    "id": "R3",
-    "claim": "One serving-time filter on the same status read model as search, cards rendered from the live read model, and send-time checks keep unavailable, ineligible and unconsented listings off every surface."
-   },
-   {
-    "id": "R4",
-    "claim": "A re-ranker trained on contacts and an exposure policy (dealer caps, diversity, exploration), judged on contacts and inventory coverage rather than click-through, counter feedback loops and seller concentration."
-   },
-   {
-    "id": "R5",
-    "claim": "Consent and regulation make a complete non-personalized mode and governed, opt-in cross-brand data part of the design, not an afterthought."
-   },
-   {
-    "id": "R6",
-    "claim": "At group scale the status read model, event stream, candidate-serving infrastructure, logs and consent lineage are shared, while models, source weights and policy values stay with each brand."
-   }
-  ]
- },
- "role": {
-  "contribution": "Extends the read-model and owned-order arguments to ranking without a query, where churn makes availability and cold start the design problem.",
-  "supports": [
-   "P4-4"
-  ]
- },
- "flow": {
-  "pattern": "problem_solution",
-  "additional_patterns": [
-   {
-    "pattern": "large_to_small",
-    "applies_to": "surfaces, why listings differ and methods: the whole field of surfaces and assumptions before individual methods"
-   },
-   {
-    "pattern": "chronological",
-    "applies_to": "architecture: the four stages in the order a request passes through them; methods: the documented cases in date order"
-   },
-   {
-    "pattern": "grouping",
-    "applies_to": "trade-offs to questions: the book's reference sections"
-   }
-  ],
-  "rationale": "The scene poses the problem with the sold Golf and the starved new listings. Surfaces and the broken retail assumptions say why it is general, and the methods table shows which families can treat new and sold listings, so the architecture can then combine them. Events and serving-time checks follow the architecture because they keep its stages current. Cold start, feedback loops and evaluation refine the parts the architecture introduced (candidate sources, policy, metrics); privacy limits what the whole may use. Evaluation must precede the rebuild, whose falling click-through only reads as success once the case against click-through has been made. The rebuild comes after all of these because it applies every one of them to the opening case, and the reference sections test and govern the design. Putting the methods after the architecture would leave the four stages without a reason for several sources."
- },
- "introduction": {
-  "hook": {
-   "type": "intriguing_example",
-   "content": "In retail, a recommender learns that people who bought a kettle also bought a toaster, and the lesson stays useful for years because the same kettle is sold every day. The Essen Volkswagen Golf with 48,000 kilometers exists once, for fifteen days, and then it is gone."
-  },
-  "bridge": {
-   "from_reader_world": "Ranking, as the previous chapter built it, orders what a buyer asked for with candidate generation, re-ranking, exposure policy and logging.",
-   "to_topic": "Recommendation surfaces have no query to anchor relevance, reuse that machinery, and face inventory that is new and may be gone tomorrow."
-  },
-  "thesis_statement": {
-   "text": "Churn changes a recommender's plumbing more than its algorithms: several candidate sources including content, indices kept live by listing events, one serving-time filter on the shared status read model, a re-ranker and exposure policy judged on contacts and coverage, and a non-personalized mode on every surface.",
-   "placement": "KEY POINTS callout (all three bullets); introduction paragraphs p01 and p02 state the churn-and-plumbing claim."
-  },
-  "roadmap": {
-   "placement": "IN THIS CHAPTER callout and paragraph p04, which names the sections in order.",
-   "promises": [
-    {
-     "promise": "Motorvane's carousel and the sold Golf it kept recommending.",
-     "kept_in": [
-      "scene"
-     ]
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "recommendations",
+  "journal": "listing-systems-architecture",
+  "part": "part-4",
+  "title": "Recommendations for Inventory That Disappears",
+  "status": "draft",
+  "revised": "2026-11-13",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, the three acceptance criteria, the thesis and the role are copied unchanged from the recommendations entry in journal-spec.json. Four units are added to the published text: a roadmap paragraph in the introduction (p04, for AC-2), lead-ins for the trade-offs and vertical-differences tables (p42, p43), and a synthesis paragraph before the hand-off (p54).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The recommendation surfaces of a listing marketplace and why churn breaks the usual recommender: every listing is a cold-start problem and may disappear before the buyer clicks.",
+        "The generate, filter, re-rank, apply-policy architecture; events and serving-time checks; cold start for new listings, new users and new markets; feedback loops and exposure; evaluation by contacts and coverage; consent and the non-profiling option for very large platforms."
+      ],
+      "believe": [
+        "Churn changes a recommender's plumbing more than its algorithms, and a nightly batch job over a catalog that changes by the hour produces Ghost Inventory.",
+        "Carousel click-through is the wrong success metric; contacts and inventory coverage are the right ones."
+      ],
+      "can_do": [
+        "Design a recommendation pipeline whose candidate indices take inserts and deletes from listing events and whose single serving-time filter reads the shared status read model.",
+        "Set an exposure policy (dealer concentration cap, exploration slot) and decide what a group shares for recommendations and what each brand keeps."
+      ]
     },
-    {
-     "promise": "The surfaces, why listings break the usual recommender, and how each method treats a new and a sold listing.",
-     "kept_in": [
-      "surfaces",
-      "why-listings-differ",
-      "methods"
-     ]
+    "audience": {
+      "who": "Chief architects, recommendation and ML leads, discovery product owners and data protection leads in listing marketplaces, who know recommender basics and need the marketplace-specific failure modes and the architecture that avoids them.",
+      "already_knows": [
+        "APIs, databases, event streams, search engines and Kubernetes; recommender basics (collaborative filtering, click-through as a metric).",
+        "From earlier chapters: Ghost Inventory and the other failure patterns, the listing event stream, the publication pipeline's unpublish events and status read model, the search index as a read model, enrichment that fills attributes, entity-resolution clusters, and Veldmark's brands, cast and the Essen Golf.",
+        "From ranking: candidate generation and re-ranking stages, the ranking policy as a separate layer, gradient-boosted decision trees, position bias and propensity correction, exploration positions, reason codes, and why paid status must not be a model feature."
+      ],
+      "does_not_know": [
+        "Cold start, co-view and co-contact signals, matrix factorization and graph methods, session-based models and two-tower embeddings.",
+        "Approximate nearest-neighbor (ANN) indices, filtered versus post-filtered kNN search.",
+        "Recall at k, NDCG, and coverage, novelty and concentration as recommendation metrics.",
+        "Articles 27 and 38 of the Digital Services Act."
+      ]
     },
-    {
-     "promise": "The four-stage architecture with its events and serving-time checks.",
-     "kept_in": [
-      "architecture",
-      "freshness"
-     ]
-    },
-    {
-     "promise": "Cold start, feedback loops, evaluation, and consent and regulation.",
-     "kept_in": [
-      "cold-start",
-      "feedback-loops",
-      "evaluation",
-      "privacy"
-     ]
-    },
-    {
-     "promise": "The Motorvane rebuild.",
-     "kept_in": [
-      "rebuild"
-     ]
-    },
-    {
-     "promise": "Trade-offs, vertical differences, failure modes, the Chief Architect's view and questions for a design review.",
-     "kept_in": [
-      "trade-offs",
-      "verticals",
-      "failure-modes",
-      "chief-architect",
-      "questions"
-     ]
-    }
-   ]
-  },
-  "paragraphs": [
-   {
-    "id": "p01",
-    "controlling_idea": "In retail a recommender's lessons last because the same kettle is sold every day (people who bought it also bought a toaster), but a listing exists once and briefly, so every listing is a cold-start problem and every recommendation a bet on an item that may disappear before the buyer clicks.",
-    "function": "context",
-    "organization": "illustration",
-    "evidence": [
-     {
-      "kind": "example",
-      "what": "The kettle and toaster bought together for years; the Essen Volkswagen Golf with 48,000 km that exists once, for fifteen days.",
-      "shows": "Makes concrete the difference between a stable catalog and a unique, short-lived listing.",
-      "source": "Scenario ledger, Essen Golf (listed 14 April, sold 29 April 2027)"
-     }
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a carousel that shows sold items and ignores new ones, the reader redesigns it and names the metric that decides success.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Your 'similar vehicles' carousel is a nightly co-view job. It starts 7% of leads, but 41% of new listings get no carousel impression in their first three days and about 4% of clicks land on sold cars. Using only this chapter: how do you rebuild it, and by what metric do you judge the rebuild?",
+        "expected": "Several candidate sources (attribute similarity over the search index, embeddings with a content tower so new cars get vectors at once, frequently recomputed co-contact neighbors, fresh listings nearby) kept current by listing events within a minute; one serving-time filter on the shared status read model plus trust, duplicate and already-contacted rules; a re-ranker trained on leads with position logged; a policy capping cars per dealer group and reserving an exploration slot for new listings. Judge it on leads and inventory coverage, not click-through, which may fall slightly as the carousel shows newer, comparable cars; and close the sale-to-removal gap at the source (a mark-as-sold event, a fast status delta in the supply contract)."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "The sold Golf that kept being recommended at Motorvane; recommendation surfaces; why listings break the usual recommender; methods under churn; cold start in three forms; generate, filter, re-rank, apply policy; events and serving-time checks; feedback loops and exposure; evaluation; privacy, consent and regulation; the Motorvane rebuild; trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: published marketplace recommender work (Airbnb listing embeddings and others), EU regulation and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
     ]
-   },
-   {
-    "id": "p02",
-    "controlling_idea": "Churn changes a recommender's plumbing more than its algorithms: the working marketplace systems kept fairly simple models and changed indices, filtered retrieval, content features and serving-time checks, while the failures come from a nightly batch job over a catalog that changes by the hour.",
-    "function": "claim",
-    "transition_in": {
-     "relationship": "cause_effect",
-     "carries_over": "Every listing as a cold start that may disappear.",
-     "introduces": "What that does to a recommender's architecture: plumbing rather than models.",
-     "form": "sentence",
-     "placement": "start_of_this"
-    }
-   },
-   {
-    "id": "p03",
-    "controlling_idea": "The chapter owns candidate generation, similar listings and cold start; it treats a recommendation module as a ranked list without a query that reuses ranking's machinery, and its availability rule returns in map search and alerts, while the ML platform and event stream are owned elsewhere.",
-    "function": "definition",
-    "transition_in": {
-     "relationship": "contrast",
-     "carries_over": "Ranking's machinery (candidate generation, re-ranking, exposure policy, logging), which orders what a buyer asked for.",
-     "introduces": "Surfaces with no query to anchor relevance, and the terms this chapter owns.",
-     "form": "sentence",
-     "placement": "start_of_this"
-    }
-   },
-   {
-    "id": "p04",
-    "controlling_idea": "The chapter starts with Motorvane's carousel and the sold Golf, names the surfaces, shows why listings break the usual recommender and how each method treats a new and a sold listing, builds the four-stage architecture with its events and serving-time checks, then covers cold start, feedback loops, evaluation and consent and regulation, applies the design in the Motorvane rebuild, and closes with trade-offs, vertical differences, failure modes, the Chief Architect's view and questions, drawing on published marketplace recommender work, EU regulation and Veldmark.",
-    "function": "transition",
-    "evidence": [
-     {
-      "kind": "reasoning",
-      "what": "The chapter's sections in order, and the kinds of evidence.",
-      "shows": "Lets a reader of the opening predict the chapter."
-     }
-    ],
-    "transition_in": {
-     "relationship": "sequence",
-     "carries_over": "The terms the chapter owns.",
-     "introduces": "The order in which the chapter covers them.",
-     "form": "sentence",
-     "placement": "start_of_this"
-    }
-   }
-  ]
- },
- "sections": [
-  {
-   "id": "scene",
-   "heading": "Setting the Scene at Veldmark: The Golf That Kept Being Recommended",
-   "controlling_idea": "Motorvane's nightly co-view carousel kept recommending the sold Essen Golf and gave four in ten new listings no exposure, which poses the chapter's question with Veldmark's numbers.",
-   "function": "context",
-   "advances_thesis": {
+  },
+  "thesis": {
+    "question": "How do you recommend items that may be sold tomorrow?",
+    "claim": "Recommending inventory that may be sold tomorrow depends on plumbing more than on modeling: several candidate sources, each one index lookup, including content and image features that give a listing a place before anyone has viewed it, feed candidate indices that listing events update within a minute; one serving-time filter on the shared status read model removes unavailable, ineligible and unconsented items; a re-ranker with an exposure policy (a cap per dealer group, an exploration slot for new listings) is judged on contacts and inventory coverage rather than click-through; and every surface has a non-personalized mode that serves a complete list when personalization is unavailable or not consented to.",
+    "disputed_by": "The common practice, inherited from retail, of building recommendations as a nightly collaborative-filtering batch job (co-views or co-purchases written to a key-value store) and judging it on carousel click-through.",
+    "so_what": "A Chief Architect who accepts this shares the status read model and listing event stream, candidate-serving infrastructure with real-time upserts, deletes and filtered search, the recommendation log and evaluation tooling and consent propagation across brands, keeps models, source weights and policy values per brand, and watches contacts on unavailable listings by surface, new-listing exposure within 72 hours, weekly coverage and seller concentration.",
+    "how_why": "Motorvane's 2020 co-view carousel could recommend only cars someone had already viewed alongside another: 41% of new listings got no carousel impression in their first 72 hours although the carousel started 7% of leads, 3.8% of clicks landed on sold or removed cars, and the sold Essen Golf stayed in carousels until the next nightly run. The rebuild (four candidate sources, one filter, a GBDT re-ranker, at most two cars per dealer group in ten) raised carousel-started leads by 16% relative, cut new listings without an impression to 8% and clicks on unavailable cars to 0.3%, while click-through fell 4%.",
+    "supporting_claims": [
+      {
+        "id": "R1",
+        "claim": "Listing churn breaks the retail recommender: every listing is a cold start and may disappear before the buyer clicks, so a nightly, behavior-only batch job both recommends sold items and starves new ones."
+      },
+      {
+        "id": "R2",
+        "claim": "Several candidate sources, at least one content-based, served from indices that take inserts, deletes and filtering from the listing event stream, give a listing a place from its first minute."
+      },
+      {
+        "id": "R3",
+        "claim": "One serving-time filter on the same status read model as search, cards rendered from the live read model, and send-time checks keep unavailable, ineligible and unconsented listings off every surface."
+      },
+      {
+        "id": "R4",
+        "claim": "A re-ranker trained on contacts and an exposure policy (dealer caps, diversity, exploration), judged on contacts and inventory coverage rather than click-through, counter feedback loops and seller concentration."
+      },
+      {
+        "id": "R5",
+        "claim": "Consent and regulation make a complete non-personalized mode and governed, opt-in cross-brand data part of the design, not an afterthought."
+      },
+      {
+        "id": "R6",
+        "claim": "At group scale the status read model, event stream, candidate-serving infrastructure, logs and consent lineage are shared, while models, source weights and policy values stay with each brand."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Extends the read-model and owned-order arguments to ranking without a query, where churn makes availability and cold start the design problem.",
     "supports": [
-     "R1"
-    ],
-    "how": "Shows the two failures of a nightly, behavior-only recommender on one dated case."
-   },
-   "flow": {
+      "P4-4"
+    ]
+  },
+  "flow": {
     "pattern": "problem_solution",
-    "rationale": "The design first, then the incident it produced, the numbers that show it is systematic, why the method causes it, and the question it leaves."
-   },
-   "transition_in": {
-    "relationship": "example",
-    "carries_over": "Every listing as a cold start that may disappear; the roadmap.",
-    "introduces": "A dated Veldmark case: the carousel and the Golf.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p05",
-     "controlling_idea": "Motorvane's similar-vehicles carousel was built in 2020 as a nightly Spark job that writes each listing's top ten co-viewed neighbors to a key-value store, and nobody has looked at it closely since its launch.",
-     "function": "context",
-     "organization": "description",
-     "evidence": [
+    "additional_patterns": [
       {
-       "kind": "scenario",
-       "what": "Ten 'similar vehicles' on every German detail page; nightly item-to-item co-views written to a key-value store.",
-       "shows": "Establishes the batch, behavior-only design the chapter argues against.",
-       "source": "Scenario ledger, [recommendations] line"
-      }
-     ]
-    },
-    {
-     "id": "p06",
-     "controlling_idea": "The Essen Golf, sold at 15:10 on 29 April 2027, was removed from search within minutes of a feed removal that arrived 26 hours late, but stayed in other cars' carousels until the nightly job ran on 1 May, and two of three enquiries in between came through the carousel.",
-     "function": "example",
-     "organization": "narration",
-     "evidence": [
-      {
-       "kind": "case",
-       "what": "Golf listed 14 April 2027 at €21,900; 23 raw leads (19 deduplicated) in 10 days; price cut to €21,400 on 22 April with alerts to 1,180 watchers; sold 15:10 Thursday 29 April; removal 17:10 Friday 30 April; three e-mail enquiries in between, two via the carousel; carousel kept it until early Saturday 1 May.",
-       "shows": "Search and the carousel answered 'is it available?' differently because the carousel read precomputed lists.",
-       "source": "Scenario ledger, Essen Golf, [listing-ingestion], [recommendations], [editor] lines; consistency issue 11"
+        "pattern": "large_to_small",
+        "applies_to": "surfaces, why listings differ, methods and cold start: the whole field of surfaces and assumptions before individual methods and their cold-start forms"
       },
       {
-       "kind": "figure",
-       "what": "Figure 1: the Golf's timeline, with search dropping it and the carousel keeping it.",
-       "shows": "Shows the gap between the two surfaces on one timeline."
-      }
-     ],
-     "transition_in": {
-      "relationship": "time",
-      "carries_over": "The carousel's nightly design.",
-      "introduces": "A dated incident that design produced.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p07",
-     "controlling_idea": "A review of the German carousel found that the Golf was not an exception: the carousel distributes a large share of traffic and leads while sending clicks to sold listings and leaving new and much of the live inventory unseen.",
-     "function": "evidence",
-     "evidence": [
-      {
-       "kind": "table",
-       "what": "12% of detail-page views and 7% of leads from the carousel; 41% of new listings with no impression in 72 hours; 3.8% of clicks on sold or removed listings; 31% from the anchor's dealer group; 46% weekly coverage (illustrative).",
-       "shows": "The failure is systematic, on both availability and exposure.",
-       "source": "Scenario ledger, [recommendations] line; dealer-group share is a local, non-canonical figure"
-      }
-     ],
-     "transition_in": {
-      "relationship": "additional_support",
-      "carries_over": "The Golf as one incident.",
-      "introduces": "The review's numbers across the carousel.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p08",
-     "controlling_idea": "A co-view recommender can recommend only listings someone has already viewed alongside another, so a car that arrived this morning gets none of the carousel's traffic, and dealers who pay for listing slots notice.",
-     "function": "analysis",
-     "evidence": [
-      {
-       "kind": "statistic",
-       "what": "7% of leads from the carousel against 41% of new listings with no impression in 72 hours.",
-       "shows": "The cause is the method's data requirement, not chance."
-      }
-     ],
-     "transition_in": {
-      "relationship": "cause_effect",
-      "carries_over": "The review's numbers.",
-      "introduces": "Why a co-view method starves new listings and why dealers care.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p09",
-     "controlling_idea": "Felix's practical question to Ingrid and Priya was how Motorvane should recommend cars that may be sold tomorrow and were not there yesterday.",
-     "function": "transition",
-     "transition_in": {
-      "relationship": "conclusion_summary",
-      "carries_over": "Ghost listings and starved new ones.",
-      "introduces": "The chapter's question as Motorvane put it.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "surfaces",
-   "heading": "Recommendation Surfaces",
-   "controlling_idea": "Recommendation surfaces differ in what anchors them, and the anchor decides the method, the freshness requirement and the outcome metric.",
-   "function": "definition",
-   "advances_thesis": {
-    "supports": [
-     "R1"
-    ],
-    "how": "Shows that freshness needs and outcomes vary by surface, and that some surfaces are where churn hurts most."
-   },
-   "transition_in": {
-    "relationship": "elaboration",
-    "carries_over": "Motorvane's question about one carousel.",
-    "introduces": "The full set of recommendation surfaces a marketplace runs.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p10",
-     "controlling_idea": "A recommendation is a list the user did not explicitly request, chosen from what is known about the context, the user or both, and each surface's anchor decides its method, freshness need and metric.",
-     "function": "definition",
-     "evidence": [
-      {
-       "kind": "table",
-       "what": "Seven surfaces (similar listings, home feed, continue your search, recommended searches, zero- and low-result fallback, buyers also contacted, e-mails and push) with anchor, latency budget, freshness need and primary outcome.",
-       "shows": "Freshness and outcome differ by surface, so one design must serve several budgets."
-      }
-     ]
-    },
-    {
-     "id": "p11",
-     "controlling_idea": "Low-result fallback is where recommendations protect liquidity most directly, turning a narrow search with three results into a contact on a similar listing farther away or in a neighboring category.",
-     "function": "example",
-     "evidence": [
-      {
-       "kind": "example",
-       "what": "A cargo-bike search within five kilometers of a small town; Airbnb's 2025 description of augmenting narrow searches with recommendations.",
-       "shows": "A dead-end search becomes a contact.",
-       "source": "Airbnb Tech, 2025"
-      }
-     ],
-     "transition_in": {
-      "relationship": "emphasis",
-      "carries_over": "The surface table.",
-      "introduces": "The surface that matters most for liquidity.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p12",
-     "controlling_idea": "Recommendation e-mails are where Ghost Inventory is most visible, because a list computed at 02:00 and opened at 09:00 can be seven hours stale.",
-     "function": "example",
-     "evidence": [
-      {
-       "kind": "case",
-       "what": "Femke's Rotterdam city bike, sold on 8 March 2027, still in Tradeyard's alert digest the next morning.",
-       "shows": "Batch-built e-mails show sold items.",
-       "source": "Scenario ledger, Rotterdam city bike"
-      }
-     ],
-     "transition_in": {
-      "relationship": "contrast",
-      "carries_over": "The surface where recommendations help most.",
-      "introduces": "The surface where they fail most visibly.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "why-listings-differ",
-   "heading": "Why Listings Break the Usual Recommender",
-   "controlling_idea": "Listings violate the retail recommender's assumptions of a stable catalog, logged-in repeat customers and purchase labels, so the recommender must describe a listing nobody has interacted with.",
-   "function": "cause_effect",
-   "advances_thesis": {
-    "supports": [
-     "R1",
-     "R2"
-    ],
-    "how": "Turns the scene's failures into a design principle: content at the center."
-   },
-   "transition_in": {
-    "relationship": "contrast",
-    "carries_over": "The retail recommender the opening set against listings (the kettle).",
-    "introduces": "The three retail assumptions a listing marketplace violates.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p13",
-     "controlling_idea": "Retail recommendation assumes a stable catalog, logged-in repeat customers and purchases as labels, and the published marketplace research says that listings violate all three.",
-     "function": "evidence",
-     "evidence": [
-      {
-       "kind": "source",
-       "what": "FINN.no's 2018 paper (unique second-hand items, poor item data, interactions finishing off the platform); OLX Jobs 2023 ('limited information regarding users and items').",
-       "shows": "Practitioners name the same broken assumptions.",
-       "source": "Eide and Zhou, 2018; Kwieciński et al., 2023"
+        "pattern": "chronological",
+        "applies_to": "architecture: the four stages in the order a request passes through them; methods: the documented cases in date order"
       },
       {
-       "kind": "table",
-       "what": "Item lifetime, multiplicity, churn, identity, outcome and supply side, retail against listings, with the consequence of each.",
-       "shows": "Each difference has an architectural consequence."
+        "pattern": "grouping",
+        "applies_to": "trade-offs to questions: the book's reference sections"
       }
-     ]
-    },
-    {
-     "id": "p14",
-     "controlling_idea": "The consequence is a design principle: the recommender must be able to describe a listing it has never seen anyone interact with, which rules out collaborative filtering as the only method and puts the listing's own content at the center.",
-     "function": "claim",
-     "evidence": [
-      {
-       "kind": "figure",
-       "what": "Figure 2: a new car isolated in a co-view network against the same car placed among similar cars by its attributes, price, location and photo.",
-       "shows": "Content places a listing from minute one."
-      }
-     ],
-     "transition_in": {
-      "relationship": "cause_effect",
-      "carries_over": "The broken assumptions and their consequences.",
-      "introduces": "The principle that follows from them.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "methods",
-   "heading": "Methods Under Churn",
-   "controlling_idea": "What matters about each recommendation method for listings is how it treats a new listing and a sold one, and published designs settle the same trade-off differently according to how long their inventory lives.",
-   "function": "comparison",
-   "advances_thesis": {
-    "supports": [
-     "R1",
-     "R2"
     ],
-    "how": "Compares methods by the two questions churn asks, with dated marketplace evidence."
-   },
-   "transition_in": {
-    "relationship": "elaboration",
-    "carries_over": "The principle that content must carry a listing.",
-    "introduces": "How each method family treats new and sold listings.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p15",
-     "controlling_idea": "For listings, what matters about each method family is how it treats a new listing and a sold one.",
-     "function": "comparison",
-     "evidence": [
-      {
-       "kind": "table",
-       "what": "Content-based similarity, item-to-item CF, factorization and graph methods, session-based models, learned embeddings and bandits: how each works, new listing, sold listing, cost, marketplace evidence.",
-       "shows": "Only content-based methods and embeddings with a content tower work for new listings, and only live indices drop sold ones.",
-       "source": "Zillow 2021; Kwieciński et al. 2023; Hidasi et al. 2015; Grbovic and Cheng 2018; Vinted 2023; Eide and Zhou 2018"
-      }
-     ]
-    },
-    {
-     "id": "p16",
-     "form": "list",
-     "controlling_idea": "The documented cases, in date order, show embeddings from sessions, text for listings that attributes describe poorly, a candidate pool limited to recently active items, real-time indices with pre-filtering, and a daily listing tower whose staleness suits long-lived inventory.",
-     "function": "evidence",
-     "evidence": [
-      {
-       "kind": "case",
-       "what": "Airbnb 2018 (embeddings; 99% of conversions through search ranking and similar listings); Zillow 2021 (Word2Vec on about 10 million descriptions, gains for vacant land); Adevinta 2022 (ANN over items active in 90 days and viewed in 15); Vinted 2023 (Faiss rebuilds and no pre-filtering replaced by Vespa; exact search raised p99 from about 50 to 70 ms; recall kept at 60–70%); Airbnb 2026 (daily listing tower, features up to a day old).",
-       "shows": "Each case answers the new-listing or sold-listing question in a dated, sourced way.",
-       "source": "Sources as cited in the chapter"
-      }
-     ],
-     "transition_in": {
-      "relationship": "example",
-      "carries_over": "The method table.",
-      "introduces": "Dated marketplace cases, in date order.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p17",
-     "controlling_idea": "Vinted and Airbnb made the same trade-off and settled it differently because their inventory lives for different lengths of time, and that is the most useful way to read any published recommender design.",
-     "function": "analysis",
-     "transition_in": {
-      "relationship": "conclusion_summary",
-      "carries_over": "The five cases.",
-      "introduces": "The lesson that ties them together: read designs by inventory lifetime.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
+    "rationale": "The scene poses the problem with the sold Golf and the starved new listings. Surfaces and the broken retail assumptions say why it is general, and the methods table shows which families can treat new and sold listings, so the architecture can then combine them. Events and serving-time checks follow the architecture because they keep its stages current. Cold start follows the methods, because it is where their difference matters most, and comes before the architecture, which must serve its three forms (both cold readers of round 4 found it backtracking after the architecture). Feedback loops and evaluation refine the parts the architecture introduced (policy, metrics); privacy limits what the whole may use. Evaluation must precede the rebuild, whose falling click-through only reads as success once the case against click-through has been made. The rebuild comes after all of these because it applies every one of them to the opening case, and the reference sections test and govern the design. Putting the methods after the architecture would leave the four stages without a reason for several sources."
   },
-  {
-   "id": "architecture",
-   "heading": "Architecture: Generate, Filter, Re-rank, Apply Policy",
-   "controlling_idea": "Recommendations for listings run in four stages with strict responsibilities: several cheap candidate sources, one serving-time filter on the shared status read model, a contact-optimized re-ranker, and a policy for rules a model should not learn.",
-   "function": "process",
-   "advances_thesis": {
-    "supports": [
-     "R2",
-     "R3",
-     "R4"
-    ],
-    "how": "Gives the pipeline the thesis names, stage by stage."
-   },
-   "flow": {
-    "pattern": "chronological",
-    "rationale": "The stages in the order a request passes through them, each stage's key rule right after it."
-   },
-   "transition_in": {
-    "relationship": "similarity",
-    "carries_over": "The multi-stage shape of search ranking from the previous chapter.",
-    "introduces": "Four stages for recommendations, with candidate generation carrying more load because no query anchors relevance.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p18",
-     "controlling_idea": "Recommendation shares the multi-stage shape of search ranking, but without a query to anchor relevance candidate generation carries more of the load, so the author uses four stages with strict responsibilities.",
-     "function": "claim",
-     "evidence": [
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "In retail, a recommender learns that people who bought a kettle also bought a toaster, and the lesson stays useful for years because the same kettle is sold every day. The Essen Volkswagen Golf with 48,000 kilometers exists once, for fifteen days, and then it is gone."
+    },
+    "bridge": {
+      "from_reader_world": "Ranking, as the previous chapter built it, orders what a buyer asked for with candidate generation, re-ranking, exposure policy and logging.",
+      "to_topic": "Recommendation surfaces have no query to anchor relevance, reuse that machinery, and face inventory that is new and may be gone tomorrow."
+    },
+    "thesis_statement": {
+      "text": "Churn changes a recommender's plumbing more than its algorithms: several candidate sources including content, indices kept live by listing events, one serving-time filter on the shared status read model, a re-ranker and exposure policy judged on contacts and coverage, and a non-personalized mode on every surface.",
+      "placement": "KEY POINTS callout (all three bullets); introduction paragraphs p01 and p02 state the churn-and-plumbing claim."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p04, which names the sections in order.",
+      "promises": [
+        {
+          "promise": "Motorvane's carousel and the sold Golf it kept recommending.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "The surfaces, why listings break the usual recommender, how each method treats a new and a sold listing, and the three forms of cold start.",
+          "kept_in": [
+            "surfaces",
+            "why-listings-differ",
+            "methods",
+            "cold-start"
+          ]
+        },
+        {
+          "promise": "The four-stage architecture with its events and serving-time checks.",
+          "kept_in": [
+            "architecture",
+            "freshness"
+          ]
+        },
+        {
+          "promise": "Feedback loops, evaluation, and consent and regulation.",
+          "kept_in": [
+            "feedback-loops",
+            "evaluation",
+            "privacy"
+          ]
+        },
+        {
+          "promise": "The Motorvane rebuild.",
+          "kept_in": [
+            "rebuild"
+          ]
+        },
+        {
+          "promise": "Trade-offs, vertical differences, failure modes, the Chief Architect's view and questions for a design review.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "chief-architect",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
       {
-       "kind": "figure",
-       "what": "Figure 3: four stages; several candidate sources, one content-based, feed one filter; re-ranker and policy; the event stream keeps indices and filter current.",
-       "shows": "Shows the stages and what keeps them current."
-      }
-     ]
-    },
-    {
-     "id": "p19",
-     "form": "list",
-     "controlling_idea": "Candidate generation selects a few hundred plausible items for recall and speed from several sources that cover each other's weaknesses: attribute and geography similarity, embedding nearest neighbors served from an ANN index that filters during the search, co-view and co-contact, and fresh local listings.",
-     "function": "process",
-     "evidence": [
-      {
-       "kind": "source",
-       "what": "Elastic's documentation: filtering during approximate kNN returns k matches; post-filtering can return fewer.",
-       "shows": "Why the embedding index must filter during the search.",
-       "source": "Elastic, n.d."
-      }
-     ],
-     "transition_in": {
-      "relationship": "sequence",
-      "carries_over": "The four stages.",
-      "introduces": "The first stage and its sources.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p20",
-     "controlling_idea": "Candidate sources return listing identifiers and scores, never rendered content, so cards are assembled at serving time from the current listing read model and are never stale.",
-     "function": "recommendation",
-     "organization": "description",
-     "transition_in": {
-      "relationship": "elaboration",
-      "carries_over": "The candidate sources.",
-      "introduces": "The rule for what they return.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p21",
-     "controlling_idea": "One deliberately simple filter, applied at serving time to every candidate from every source, keeps sold, ineligible and untrusted listings off every surface.",
-     "function": "process",
-     "evidence": [
-      {
-       "kind": "table",
-       "what": "Availability, eligibility, trust, duplicates, already seen or contacted, consent, each with its rule and source of truth.",
-       "shows": "Every filter reads an owned source of truth."
-      }
-     ],
-     "transition_in": {
-      "relationship": "sequence",
-      "carries_over": "Candidate generation.",
-      "introduces": "The second stage, the filter.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p22",
-     "controlling_idea": "The availability check uses the same status read model as search, because buyers find any disagreement between the two, as they did with the Golf.",
-     "function": "claim",
-     "evidence": [
-      {
-       "kind": "case",
-       "what": "The Golf, dropped by search and kept by the carousel.",
-       "shows": "Disagreement between surfaces is visible to buyers."
-      }
-     ],
-     "transition_in": {
-      "relationship": "emphasis",
-      "carries_over": "The filter's rules.",
-      "introduces": "The one rule that matters most: the shared status model.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p23",
-     "controlling_idea": "The re-ranker scores filtered candidates for the probability of a contact from anchor, candidate and pair features, with a gradient-boosted model as a sound default, and never uses paid status as a feature.",
-     "function": "process",
-     "transition_in": {
-      "relationship": "sequence",
-      "carries_over": "The filter.",
-      "introduces": "The third stage, the re-ranker.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p24",
-     "form": "list",
-     "controlling_idea": "The policy applies rules a model should not learn: seller and dealer caps, diversity, exploration positions and reason codes.",
-     "function": "recommendation",
-     "evidence": [
-      {
-       "kind": "example",
-       "what": "At most two listings from one seller or dealer group in a ten-item carousel; spread across price bands; one or two exploration positions from the content source; reason codes such as similar_attributes, viewed_together, new_nearby.",
-       "shows": "The policy protects buyers, smaller dealers and new listings."
-      }
-     ],
-     "transition_in": {
-      "relationship": "sequence",
-      "carries_over": "The re-ranker.",
-      "introduces": "The fourth stage, the policy.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "freshness",
-   "heading": "Keeping Recommendations Alive: Events and Serving-Time Checks",
-   "controlling_idea": "The listing event stream that feeds search keeps candidate indices current, the serving-time check catches what indices still hold, and batch surfaces such as e-mail need a check at send time.",
-   "function": "process",
-   "advances_thesis": {
-    "supports": [
-     "R2",
-     "R3"
-    ],
-    "how": "Shows how the pipeline stays live, removal first."
-   },
-   "transition_in": {
-    "relationship": "elaboration",
-    "carries_over": "The four stages and the filter's status rule.",
-    "introduces": "How events and serving-time checks keep the stages current.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p25",
-     "controlling_idea": "Freshness runs in two directions and removal matters more than insertion; both come from the listing event stream that already feeds search, replayed here for the Golf's sale in Motorvane's target design.",
-     "function": "claim",
-     "evidence": [
-      {
-       "kind": "figure",
-       "what": "Figure 4: the unpublish event deletes from candidate indices, the serving-time check catches what indices still hold, and neither fixes a feed that reports a sale 26 hours late.",
-       "shows": "Two defenses, and the limit of both."
-      }
-     ]
-    },
-    {
-     "id": "p26",
-     "form": "list",
-     "controlling_idea": "Three design points follow: indices that cannot delete are a liability, precomputed lists are acceptable only behind a live filter, and late feeds are not a recommender problem but recommenders amplify them.",
-     "function": "recommendation",
-     "evidence": [
-      {
-       "kind": "case",
-       "what": "Vinted's periodically rebuilt Faiss index; the Golf's 26-hour lag from the dealer's DMS export schedule, fixed in the feed contract and by Motorvane's own sold signals.",
-       "shows": "Grounds each design point.",
-       "source": "Vinted, 2023; scenario ledger"
-      }
-     ],
-     "transition_in": {
-      "relationship": "cause_effect",
-      "carries_over": "The diagram.",
-      "introduces": "The design points it implies.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p27",
-     "controlling_idea": "E-mail and push need a send-time check, and rendering the card when the message is opened is the stronger version, with care for e-mail clients that prefetch images.",
-     "function": "recommendation",
-     "transition_in": {
-      "relationship": "additional_support",
-      "carries_over": "Serving-time checks for on-page surfaces.",
-      "introduces": "The same check for batch surfaces.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "cold-start",
-   "heading": "Cold Start in Three Forms",
-   "controlling_idea": "Cold start comes in three forms, new listing, new or anonymous user and new market or category, and published evidence supports content and image representations for new listings and the session as the user for anonymous visitors.",
-   "function": "definition",
-   "advances_thesis": {
-    "supports": [
-     "R2"
-    ],
-    "how": "Shows how content features and sessions give listings and users a place without history."
-   },
-   "transition_in": {
-    "relationship": "elaboration",
-    "carries_over": "The candidate sources that already give new listings a place.",
-    "introduces": "Why the section returns to new listings (the evidence behind that choice) and the two forms the architecture has not yet covered, new users and new markets.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p28",
-     "controlling_idea": "Cold start, recommending without the interaction history collaborative methods need, has three marketplace forms, each with its own approach.",
-     "function": "definition",
-     "evidence": [
-      {
-       "kind": "table",
-       "what": "New listing (the Golf on 14 April), new or anonymous user, new market or category (Tradeyard's cargo-bike leaf from November 2027), each with an approach.",
-       "shows": "Each form has a different remedy."
-      }
-     ]
-    },
-    {
-     "id": "p29",
-     "controlling_idea": "For new listings the published evidence supports describing a listing by what it is, with content and image representations.",
-     "function": "evidence",
-     "evidence": [
-      {
-       "kind": "source",
-       "what": "Airbnb 2020 (cold start for new listings a main improvement); Airbnb 2026 (more bookings for new listings); Vinted 2025 (item tower from category, brand and image embeddings).",
-       "shows": "Content and image features carry new listings.",
-       "source": "Haldar et al., 2020; Abdool et al., 2026; Vinted, 2025"
-      }
-     ],
-     "transition_in": {
-      "relationship": "elaboration",
-      "carries_over": "The three forms.",
-      "introduces": "The evidence for the first.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p30",
-     "controlling_idea": "For anonymous users the session is the user: the last few viewed listings personalize a logged-out visitor within a few clicks, without a long-term profile, which is also the privacy-friendly option.",
-     "function": "claim",
-     "transition_in": {
-      "relationship": "sequence",
-      "carries_over": "New listings.",
-      "introduces": "The second form, anonymous users.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "feedback-loops",
-   "heading": "Feedback Loops and Exposure",
-   "controlling_idea": "A recommender trained on its own output drifts toward what it already recommends, and in recommendations only the policy limits that drift.",
-   "function": "cause_effect",
-   "advances_thesis": {
-    "supports": [
-     "R4"
-    ],
-    "how": "Shows why the exposure policy is needed."
-   },
-   "transition_in": {
-    "relationship": "contrast",
-    "carries_over": "Ways to give new listings and users a start.",
-    "introduces": "Feedback that works against new listings by pulling exposure toward what is already recommended.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p31",
-     "form": "list",
-     "controlling_idea": "A recommender trained on its own output drifts toward what it already recommends, with three effects specific to listings: popularity bias amplifies Ghost Inventory, exposure is supply-side value, and carousels have position bias too.",
-     "function": "cause_effect",
-     "evidence": [
-      {
-       "kind": "reasoning",
-       "what": "The best deals are most viewed and sell first; the carousel distributes 12% of detail-page traffic; the first two items get most clicks.",
-       "shows": "Each effect has a listing-specific consequence."
-      }
-     ]
-    },
-    {
-     "id": "p32",
-     "controlling_idea": "The tools are the same as in ranking, but in recommendations nothing limits the drift except the policy, because there is no query.",
-     "function": "analysis",
-     "transition_in": {
-      "relationship": "contrast",
-      "carries_over": "The three effects.",
-      "introduces": "How the tools apply, and the difference from ranking.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "evaluation",
-   "heading": "Evaluating Recommendations",
-   "controlling_idea": "Recommendations should be judged on contacts and the distribution of exposure, offline and online, with guardrails, because click-through rewards the wrong listings.",
-   "function": "claim",
-   "advances_thesis": {
-    "supports": [
-     "R4"
-    ],
-    "how": "Names the metrics the thesis requires and why click-through misleads."
-   },
-   "transition_in": {
-    "relationship": "contrast",
-    "carries_over": "Clicks, which the feedback loops above amplify.",
-    "introduces": "Click-through as the most common and one of the least useful metrics, and what to measure instead.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p33",
-     "controlling_idea": "Click-through rate is the most common recommendation metric and one of the least useful, because a carousel of suspiciously cheap cars has excellent click-through.",
-     "function": "claim"
-    },
-    {
-     "id": "p34",
-     "controlling_idea": "Offline, measure recall at k and NDCG against held-out contacts plus coverage, novelty and concentration, and treat the serving index's ANN recall as an explicit, measured engineering decision.",
-     "function": "recommendation",
-     "evidence": [
-      {
-       "kind": "case",
-       "what": "Vinted accepted 60–70% recall because exact search cost more latency than it returned.",
-       "shows": "A measured, explicit recall decision.",
-       "source": "Vinted, 2023"
-      }
-     ],
-     "transition_in": {
-      "relationship": "contrast",
-      "carries_over": "Click-through as the wrong metric.",
-      "introduces": "The offline metrics to use instead.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p35",
-     "controlling_idea": "Online, A/B test on contacts with guardrails, at a scale that needs an experimentation platform rather than a one-off launch test.",
-     "function": "recommendation",
-     "evidence": [
-      {
-       "kind": "case",
-       "what": "Vinted's dense retrieval reached full rollout after about 50 A/B tests.",
-       "shows": "Iteration at scale needs a platform.",
-       "source": "Vinted, 2025"
+        "id": "p01",
+        "controlling_idea": "In retail a recommender's lessons last because the same kettle is sold every day (people who bought it also bought a toaster), but a listing exists once and briefly, so every listing is a cold-start problem and every recommendation a bet on an item that may disappear before the buyer clicks. Cold start is glossed on first use (recommending a listing before anyone has interacted with it).",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "The kettle and toaster bought together for years; the Essen Volkswagen Golf with 48,000 km that exists once, for fifteen days.",
+            "shows": "Makes concrete the difference between a stable catalog and a unique, short-lived listing.",
+            "source": "Scenario ledger, Essen Golf (listed 14 April, sold 29 April 2027)"
+          }
+        ]
       },
       {
-       "kind": "table",
-       "what": "Guardrails: contacts on unavailable listings, new listings with an impression in 72 hours, top-1% seller share, weekly coverage, p99 latency, each with what it protects.",
-       "shows": "Each guardrail protects a party or property the primary metric would miss."
+        "id": "p02",
+        "controlling_idea": "Churn changes a recommender's plumbing more than its algorithms: the working marketplace systems kept fairly simple models and changed indices, filtered retrieval, content features and serving-time checks, while the failures come from a nightly batch job over a catalog that changes by the hour.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Every listing as a cold start that may disappear.",
+          "introduces": "What that does to a recommender's architecture: plumbing rather than models.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter owns candidate generation, similar listings and cold start; it treats a recommendation module as a ranked list without a query that reuses ranking's machinery, and its availability rule returns in map search and alerts, while the ML platform and event stream are owned elsewhere.",
+        "function": "definition",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "Ranking's machinery (candidate generation, re-ranking, exposure policy, logging), which orders what a buyer asked for.",
+          "introduces": "Surfaces with no query to anchor relevance, and the terms this chapter owns.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter starts with Motorvane's carousel and the sold Golf, names the surfaces, shows why listings break the usual recommender, how each method treats a new and a sold listing and the three forms of cold start, builds the four-stage architecture with its events and serving-time checks, then covers feedback loops, evaluation and consent and regulation, applies the design in the Motorvane rebuild, and closes with trade-offs, vertical differences, failure modes, the Chief Architect's view and questions, drawing on published marketplace recommender work, EU regulation and Veldmark.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The chapter's sections in order, and the kinds of evidence.",
+            "shows": "Lets a reader of the opening predict the chapter."
+          }
+        ],
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The terms the chapter owns.",
+          "introduces": "The order in which the chapter covers them.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
       }
-     ],
-     "transition_in": {
-      "relationship": "sequence",
-      "carries_over": "Offline evaluation.",
-      "introduces": "Online evaluation and guardrails.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: The Golf That Kept Being Recommended",
+      "controlling_idea": "Motorvane's nightly co-view carousel kept recommending the sold Essen Golf and gave four in ten new listings no exposure, which poses the chapter's question with Veldmark's numbers.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "R1"
+        ],
+        "how": "Shows the two failures of a nightly, behavior-only recommender on one dated case."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The design first, then the incident it produced, the numbers that show it is systematic, why the method causes it, and the question it leaves."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "Every listing as a cold start that may disappear; the roadmap.",
+        "introduces": "A dated Veldmark case: the carousel and the Golf.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Motorvane's similar-vehicles carousel was built in 2020 as a nightly Spark job that writes each listing's top ten co-viewed neighbors to a key-value store, and nobody has looked at it closely since its launch.",
+          "function": "context",
+          "organization": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Ten 'similar vehicles' on every German detail page; nightly item-to-item co-views written to a key-value store.",
+              "shows": "Establishes the batch, behavior-only design the chapter argues against.",
+              "source": "Scenario ledger, [recommendations] line"
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "The Essen Golf, sold at 15:10 on 29 April 2027, was removed from search within minutes of a feed removal that arrived 26 hours late, but stayed in other cars' carousels until the nightly job ran on 1 May, and two of three enquiries in between came through the carousel.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Golf listed 14 April 2027 at €21,900; 23 raw leads (19 deduplicated) in 10 days; price cut to €21,400 on 22 April with alerts to 1,180 watchers; sold 15:10 Thursday 29 April; removal 17:10 Friday 30 April; three e-mail enquiries in between, two via the carousel; carousel kept it until early Saturday 1 May.",
+              "shows": "Search and the carousel answered 'is it available?' differently because the carousel read precomputed lists.",
+              "source": "Scenario ledger, Essen Golf, [listing-ingestion], [recommendations], [editor] lines; consistency issue 11"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: the Golf's timeline, with search dropping it and the carousel keeping it.",
+              "shows": "Shows the gap between the two surfaces on one timeline."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The carousel's nightly design.",
+            "introduces": "A dated incident that design produced.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "A review of the German carousel found that the Golf was not an exception: the carousel distributes a large share of traffic and leads while sending clicks to sold listings and leaving new and much of the live inventory unseen.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "12% of detail-page views and 7% of leads from the carousel; 41% of new listings with no impression in 72 hours; 3.8% of clicks on sold or removed listings; 31% from the anchor's dealer group; 46% weekly coverage (illustrative).",
+              "shows": "The failure is systematic, on both availability and exposure.",
+              "source": "Scenario ledger, [recommendations] line; dealer-group share is a local, non-canonical figure"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Golf as one incident.",
+            "introduces": "The review's numbers across the carousel.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "A co-view recommender can recommend only listings someone has already viewed alongside another, so a car that arrived this morning gets none of the carousel's traffic, and dealers who pay for listing slots notice.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "7% of leads from the carousel against 41% of new listings with no impression in 72 hours.",
+              "shows": "The cause is the method's data requirement, not chance."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The review's numbers.",
+            "introduces": "Why a co-view method starves new listings and why dealers care.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Felix's practical question to Ingrid and Priya was how Motorvane should recommend cars that may be sold tomorrow and were not there yesterday.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Ghost listings and starved new ones.",
+            "introduces": "The chapter's question as Motorvane put it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "surfaces",
+      "heading": "Recommendation Surfaces",
+      "controlling_idea": "Recommendation surfaces differ in what anchors them, and the anchor decides the method, the freshness requirement and the outcome metric.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "R1"
+        ],
+        "how": "Shows that freshness needs and outcomes vary by surface, and that some surfaces are where churn hurts most."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Motorvane's question about one carousel.",
+        "introduces": "The full set of recommendation surfaces a marketplace runs.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "A recommendation is a list the user did not explicitly request, chosen from what is known about the context, the user or both, and each surface's anchor decides its method, freshness need and metric.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven surfaces (similar listings, home feed, continue your search, recommended searches, zero- and low-result fallback, buyers also contacted, e-mails and push) with anchor, latency budget, freshness need and primary outcome.",
+              "shows": "Freshness and outcome differ by surface, so one design must serve several budgets."
+            }
+          ]
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Low-result fallback is where recommendations protect liquidity most directly, turning a narrow search with three results into a contact on a similar listing farther away or in a neighboring category.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A cargo-bike search within five kilometers of a small town; Airbnb's 2025 description of augmenting narrow searches with recommendations.",
+              "shows": "A dead-end search becomes a contact.",
+              "source": "Airbnb Tech, 2025"
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The surface table.",
+            "introduces": "The surface that matters most for liquidity.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Recommendation e-mails are where Ghost Inventory is most visible, because a list computed at 02:00 and opened at 09:00 can be seven hours stale.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Femke's Rotterdam city bike, sold on 8 March 2027, still in Tradeyard's alert digest the next morning.",
+              "shows": "Batch-built e-mails show sold items.",
+              "source": "Scenario ledger, Rotterdam city bike"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The surface where recommendations help most.",
+            "introduces": "The surface where they fail most visibly.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "why-listings-differ",
+      "heading": "Why Listings Break the Usual Recommender",
+      "controlling_idea": "Listings violate the retail recommender's assumptions of a stable catalog, logged-in repeat customers and purchase labels, so the recommender must describe a listing nobody has interacted with.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "R1",
+          "R2"
+        ],
+        "how": "Turns the scene's failures into a design principle: content at the center."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The retail recommender the opening set against listings (the kettle).",
+        "introduces": "The three retail assumptions a listing marketplace violates.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p13",
+          "controlling_idea": "Retail recommendation assumes a stable catalog, logged-in repeat customers and purchases as labels, and the published marketplace research says that listings violate all three.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "FINN.no's 2018 paper (unique second-hand items, poor item data, interactions finishing off the platform); OLX Jobs 2023 ('limited information regarding users and items').",
+              "shows": "Practitioners name the same broken assumptions.",
+              "source": "Eide and Zhou, 2018; Kwieciński et al., 2023"
+            },
+            {
+              "kind": "table",
+              "what": "Item lifetime, multiplicity, churn, identity, outcome and supply side, retail against listings, with the consequence of each.",
+              "shows": "Each difference has an architectural consequence."
+            }
+          ]
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "The consequence is a design principle: the recommender must be able to describe a listing it has never seen anyone interact with, which rules out collaborative filtering as the only method and puts the listing's own content at the center.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: a new car isolated in a co-view network against the same car placed among similar cars by its attributes, price, location and photo.",
+              "shows": "Content places a listing from minute one."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The broken assumptions and their consequences.",
+            "introduces": "The principle that follows from them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "methods",
+      "heading": "Methods Under Churn",
+      "controlling_idea": "What matters about each recommendation method for listings is how it treats a new listing and a sold one, and published designs settle the same trade-off differently according to how long their inventory lives.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "R1",
+          "R2"
+        ],
+        "how": "Compares methods by the two questions churn asks, with dated marketplace evidence."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The principle that content must carry a listing.",
+        "introduces": "How each method family treats new and sold listings.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p15",
+          "controlling_idea": "For listings, what matters about each method family is how it treats a new listing and a sold one.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Content-based similarity, item-to-item CF, factorization and graph methods, session-based models, learned embeddings and bandits: how each works, new listing, sold listing, cost, marketplace evidence.",
+              "shows": "Only content-based methods and embeddings with a content tower work for new listings, and only live indices drop sold ones.",
+              "source": "Zillow 2021; Kwieciński et al. 2023; Hidasi et al. 2015; Grbovic and Cheng 2018; Vinted 2023; Eide and Zhou 2018"
+            }
+          ]
+        },
+        {
+          "id": "p15a",
+          "controlling_idea": "The matrix factorization row names three standard algorithms: ALS factorizes the user-item matrix, RP3beta is a random walk over the user-item graph that damps popular items, and SLIM learns sparse item-to-item weights.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The factorization row of the method table.",
+            "introduces": "Short definitions of its three algorithms, moved out of the table cell.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "form": "list",
+          "controlling_idea": "The documented cases, in date order, show embeddings from sessions, text for listings that attributes describe poorly, a candidate pool limited to recently active items, real-time indices with pre-filtering, and a daily listing tower whose staleness suits long-lived inventory.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Airbnb 2018 (embeddings; 99% of conversions through search ranking and similar listings); Zillow 2021 (Word2Vec on about 10 million descriptions, gains for vacant land); Adevinta 2022 (ANN over items active in 90 days and viewed in 15); Vinted 2023 (Faiss rebuilds and no pre-filtering replaced by Vespa; exact search raised p99 from about 50 to 70 ms; recall kept at 60–70%); Airbnb 2026 (daily listing tower, features up to a day old).",
+              "shows": "Each case answers the new-listing or sold-listing question in a dated, sourced way.",
+              "source": "Sources as cited in the chapter"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The method table and its algorithms.",
+            "introduces": "Dated marketplace cases, in date order.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Vinted and Airbnb faced the same trade-off, an always-fresh listing side against a low serving cost, and settled it differently because their inventory lives for different lengths of time (Vinted paid for real-time updates, Airbnb accepted day-old listing vectors), and that is the most useful way to read any published recommender design.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The five cases.",
+            "introduces": "The lesson that ties them together: read designs by inventory lifetime.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cold-start",
+      "heading": "Cold Start in Three Forms",
+      "controlling_idea": "Cold start comes in three forms, new listing, new or anonymous user and new market or category, and published evidence supports content and image representations for new listings and the session as the user for anonymous visitors.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "R2"
+        ],
+        "how": "Shows how content features and sessions give listings and users a place without history."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The methods table: only content places a new listing at once.",
+        "introduces": "Cold start as the general problem, in three forms, before the architecture that must serve all of them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p28",
+          "controlling_idea": "Cold start, recommending without the interaction history collaborative methods need, has three marketplace forms, each with its own approach, and the architecture that follows must serve all three.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "New listing (the Golf on 14 April), new or anonymous user, new market or category (Tradeyard's cargo-bike leaf, glossed as the lowest level of the category tree, created by the bikes split on 1 November 2027, after the rebuild), each with an approach.",
+              "shows": "Each form has a different remedy."
+            }
+          ]
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "For new listings the published evidence supports describing a listing by what it is, with content and image representations.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Airbnb 2020 (cold start for new listings a main improvement); Airbnb 2026 (more bookings for new listings); Vinted 2025 (item tower from category, brand and image embeddings).",
+              "shows": "Content and image features carry new listings.",
+              "source": "Haldar et al., 2020; Abdool et al., 2026; Vinted, 2025"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The three forms.",
+            "introduces": "The evidence for the first.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "For anonymous users the session is the user: the last few viewed listings personalize a logged-out visitor within a few clicks, without a long-term profile, which is also the privacy-friendly option.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "New listings.",
+            "introduces": "The second form, anonymous users.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: Generate, Filter, Re-rank, Apply Policy",
+      "controlling_idea": "Recommendations for listings run in four stages with strict responsibilities: several cheap candidate sources, one serving-time filter on the shared status read model, a contact-optimized re-ranker, and a policy for rules a model should not learn.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "R2",
+          "R3",
+          "R4"
+        ],
+        "how": "Gives the pipeline the thesis names, stage by stage."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The stages in the order a request passes through them, each stage's key rule right after it."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The methods and cold-start remedies (content for new listings, sessions for new users, behavioral neighbors for listings with history).",
+        "introduces": "One system that combines them: four stages with the multi-stage shape of search ranking, candidate generation carrying more load because no query anchors relevance.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p18",
+          "controlling_idea": "The methods and cold-start remedies must be combined in one system; recommendation shares the multi-stage shape of search ranking, but without a query to anchor relevance candidate generation carries more of the load, so the author uses four stages with strict responsibilities.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: four stages; several candidate sources, one content-based, feed one filter; re-ranker and policy; the event stream keeps indices and filter current.",
+              "shows": "Shows the stages and what keeps them current."
+            }
+          ]
+        },
+        {
+          "id": "p19",
+          "form": "list",
+          "controlling_idea": "Candidate generation selects a few hundred plausible items for recall and speed from several sources that cover each other's weaknesses: attribute and geography similarity, embedding nearest neighbors served from an ANN index that filters during the search, co-view and co-contact, and fresh local listings.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Elastic's documentation: filtering during approximate kNN returns k matches; post-filtering can return fewer.",
+              "shows": "Why the embedding index must filter during the search.",
+              "source": "Elastic, n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The four stages.",
+            "introduces": "The first stage and its sources.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Candidate sources return listing identifiers and scores, never rendered content, so cards are assembled at serving time from the current listing read model and are never stale.",
+          "function": "recommendation",
+          "organization": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The candidate sources.",
+            "introduces": "The rule for what they return.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "One deliberately simple filter, applied at serving time to every candidate from every source, keeps sold, ineligible and untrusted listings off every surface.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Availability, eligibility, trust, duplicates, already seen or contacted, consent, each with its rule and source of truth.",
+              "shows": "Every filter reads an owned source of truth."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Candidate generation.",
+            "introduces": "The second stage, the filter.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The availability check uses the same status read model as search, because buyers find any disagreement between the two, as they did with the Golf.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Golf, dropped by search and kept by the carousel.",
+              "shows": "Disagreement between surfaces is visible to buyers."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The filter's rules.",
+            "introduces": "The one rule that matters most: the shared status model.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "The re-ranker scores filtered candidates for the probability of a contact from anchor, candidate and pair features, with a gradient-boosted model as a sound default, and never uses paid status as a feature.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The filter.",
+            "introduces": "The third stage, the re-ranker.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "form": "list",
+          "controlling_idea": "The policy applies rules a model should not learn: seller and dealer caps, diversity, exploration positions and reason codes.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "At most two listings from one seller or dealer group in a ten-item carousel; spread across price bands; one or two exploration positions from the content source; reason codes such as similar_attributes, viewed_together, new_nearby.",
+              "shows": "The policy protects buyers, smaller dealers and new listings."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The re-ranker.",
+            "introduces": "The fourth stage, the policy.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "freshness",
+      "heading": "Keeping Recommendations Alive: Events and Serving-Time Checks",
+      "controlling_idea": "The listing event stream that feeds search keeps candidate indices current, the serving-time check catches what indices still hold, and batch surfaces such as e-mail need a check at send time.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "R2",
+          "R3"
+        ],
+        "how": "Shows how the pipeline stays live, removal first."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The four stages and the filter's status rule.",
+        "introduces": "How events and serving-time checks keep the stages current.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p25",
+          "controlling_idea": "Freshness runs in two directions and removal matters more than insertion; both come from the listing event stream that already feeds search, replayed here for the Golf's sale in Motorvane's target design.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: the unpublish event deletes from candidate indices, the serving-time check catches what indices still hold, and neither fixes a feed that reports a sale 26 hours late.",
+              "shows": "Two defenses, and the limit of both."
+            }
+          ]
+        },
+        {
+          "id": "p26",
+          "form": "list",
+          "controlling_idea": "Three design points follow: indices that cannot delete are a liability, precomputed lists are acceptable only behind a live filter, and late feeds are not a recommender problem but recommenders amplify them.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Vinted's periodically rebuilt Faiss index; the Golf's 26-hour lag from the dealer's DMS export schedule, fixed in the feed contract and by Motorvane's own sold signals.",
+              "shows": "Grounds each design point.",
+              "source": "Vinted, 2023; scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The diagram.",
+            "introduces": "The design points it implies.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "E-mail and push need a send-time check, and rendering the card when the message is opened is the stronger version, with care for e-mail clients that prefetch images.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Serving-time checks for on-page surfaces.",
+            "introduces": "The same check for batch surfaces.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "feedback-loops",
+      "heading": "Feedback Loops and Exposure",
+      "controlling_idea": "A recommender trained on its own output drifts toward what it already recommends, and in recommendations only the policy limits that drift.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "R4"
+        ],
+        "how": "Shows why the exposure policy is needed."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Events that make a new listing eligible within minutes.",
+        "introduces": "Eligibility is not exposure: feedback that works against new listings by pulling exposure toward what is already recommended.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p31",
+          "form": "list",
+          "controlling_idea": "A recommender trained on its own output drifts toward what it already recommends, with three effects specific to listings: popularity bias amplifies Ghost Inventory, exposure is supply-side value, and carousels have position bias too.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The best deals are most viewed and sell first; the carousel distributes 12% of detail-page traffic; the first two items get most clicks.",
+              "shows": "Each effect has a listing-specific consequence."
+            }
+          ]
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The tools are the same as in ranking, but in recommendations nothing limits the drift except the policy, because there is no query.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The three effects.",
+            "introduces": "How the tools apply, and the difference from ranking.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "evaluation",
+      "heading": "Evaluating Recommendations",
+      "controlling_idea": "Recommendations should be judged on contacts and the distribution of exposure, offline and online, with guardrails, because click-through rewards the wrong listings.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "R4"
+        ],
+        "how": "Names the metrics the thesis requires and why click-through misleads."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Clicks, which the feedback loops above amplify.",
+        "introduces": "Click-through as the most common and one of the least useful metrics, and what to measure instead.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p33",
+          "controlling_idea": "Click-through rate is the most common recommendation metric and one of the least useful, because a carousel of suspiciously cheap cars has excellent click-through.",
+          "function": "claim"
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Offline, measure recall at k and NDCG against held-out contacts plus coverage, novelty and concentration, and treat the serving index's ANN recall as an explicit, measured engineering decision.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Vinted accepted 60–70% recall because exact search cost more latency than it returned.",
+              "shows": "A measured, explicit recall decision.",
+              "source": "Vinted, 2023"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Click-through as the wrong metric.",
+            "introduces": "The offline metrics to use instead.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Online, A/B test on contacts with guardrails, at a scale that needs an experimentation platform rather than a one-off launch test.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Vinted's dense retrieval reached full rollout after about 50 A/B tests.",
+              "shows": "Iteration at scale needs a platform.",
+              "source": "Vinted, 2025"
+            },
+            {
+              "kind": "table",
+              "what": "Guardrails: contacts on unavailable listings, new listings with an impression in 72 hours, top-1% seller share, weekly coverage, p99 latency, each with what it protects.",
+              "shows": "Each guardrail protects a party or property the primary metric would miss."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Offline evaluation.",
+            "introduces": "Online evaluation and guardrails.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "privacy",
+      "heading": "Privacy, Consent and Regulation",
+      "controlling_idea": "Consent, the Digital Services Act, anti-discrimination and retention rules limit personalization, so consent travels with the request, every surface has a good non-personalized mode, and cross-brand data is a governed decision.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "R5"
+        ],
+        "how": "Argues the non-personalized mode and governed cross-brand data the thesis requires."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "What the system optimizes and how it is measured.",
+        "introduces": "What the law and consent allow it to use.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p36",
+          "form": "list",
+          "controlling_idea": "Recommendations turn behavioral data into visible decisions about a person, so consent (which travels with the request and requires a non-personalized mode on every surface good enough to stand on its own), DSA transparency, discrimination rules and retention limits shape them more than search ranking.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "ePrivacy consent and GDPR legal basis; DSA Article 27 (main parameters in plain language, for online platforms that are not micro or small enterprises) and Article 38 (a non-profiling option for very large platforms, 45 million users threshold); 24 CFR §100.75; Airbnb 2026 sequences up to seven years.",
+              "shows": "Each rule leads to a design consequence: consent on the request, a non-personalized mode, audits for disparate delivery, retention per feature.",
+              "source": "Regulation (EU) 2022/2065; Cornell LII; Airbnb Tech, 2026"
+            }
+          ]
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Cross-brand data (may one brand use what a user did on another?) is a separate decision whose architectural answer is opt-in at the feature level with lineage: Veldmark ID makes it technically possible, but consent scope and privacy notices decide whether it is allowed.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Veldmark ID approved June 2027 for rollout in 2028.",
+              "shows": "Cross-brand use is a governed decision.",
+              "source": "Scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Consent and regulation within one brand.",
+            "introduces": "The same question across brands.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37a",
+          "controlling_idea": "Keybridge adds one more limit: its March 2027 neutrality commitment rules out using Keybridge data for ranking or sales targeting at Hearthly, and Lucía Ortega's team owns the answer to the cross-brand question.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The March 2027 neutrality commitment excludes Keybridge data from Hearthly ranking or sales targeting; Lucía Ortega, group data protection officer, owns the answer.",
+              "shows": "Cross-brand use is a governed decision with a named owner.",
+              "source": "Scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Consent scope and privacy notices as the limits on cross-brand use.",
+            "introduces": "The Keybridge neutrality commitment as a further limit, and the owner of the answer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "rebuild",
+      "heading": "The Veldmark Rebuild: Similar Vehicles at Motorvane",
+      "controlling_idea": "Motorvane's rebuild applies the design on its own Elasticsearch 8 stack and raises leads and coverage while click-through falls, which shows both the design and the metric argument at work.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "R2",
+          "R3",
+          "R4"
+        ],
+        "how": "Shows the thesis working on the scene's problem, with numbers."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The design and its limits.",
+        "introduces": "Motorvane's rebuild of the carousel from the opening scene.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p38",
+          "form": "list",
+          "controlling_idea": "Felix's team rebuilt the carousel between June and August 2027 on Elasticsearch 8 with four candidate sources, one serving-time filter, a GBDT re-ranker, a policy and events that update the indices within a minute.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Attribute similarity once VIN decoding fills 31 attributes; filtered kNN embeddings with a content tower; co-contact every two hours; fresh listings nearby; at most two cars per dealer group in ten; one exploration slot; ListingSold from Dealer Hub at once.",
+              "shows": "Each element of the four-stage design, at Motorvane.",
+              "source": "Scenario ledger, [recommendations] line, Essen Golf"
+            }
+          ]
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "A September 2027 A/B test randomized by user compared the rebuilt carousel with the old one.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Carousel leads 7.0% to 8.1% (+16% relative); no-impression new listings 41% to 8%; clicks on unavailable listings 3.8% to 0.3%; dealer-group share 31% to 14%; coverage 46% to 79%; click-through −4% (illustrative).",
+              "shows": "Leads, exposure and availability improved together.",
+              "source": "Scenario ledger, [recommendations] line; dealer-group row local"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The rebuild.",
+            "introduces": "Its test result.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "The click-through row would have killed the project had click-through been the metric: the new carousel shows fewer eye-catching popular cars and more new, comparable ones, so it is clicked less and produces more leads.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The results table.",
+            "introduces": "The row that carries the metric argument.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "Under the new design the Golf would appear in carousels within minutes of becoming searchable and leave within a minute of the sold signal, so the 26-hour gap closes at the source, not in the recommender.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Searchable at 17:05 on 14 April; Dealer Hub's mark as sold; the Supply Contract v1 (September 2027) status delta within 15 minutes of a sale.",
+              "shows": "The opening incident would not recur, and the remaining fix lies in ingestion.",
+              "source": "Scenario ledger, [listing-ingestion] line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The rebuild's design and results.",
+            "introduces": "The opening Golf replayed through it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Each design choice in the chapter has an alternative that is right under other conditions, and the table says when each holds.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "R2",
+          "R4",
+          "R6"
+        ],
+        "how": "Tests the design against its alternatives."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Motorvane's choices.",
+        "introduces": "The alternatives and when they are right.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "controlling_idea": "Each design choice has an alternative that is right under other conditions, and the table pairs them.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Candidate source mix, index update model, representation freshness, ANN precision, optimization target, personalization depth and ownership, each with two options and when to choose each.",
+              "shows": "The chapter's recommendations have conditions."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "What 'similar' means, the signal that carries a new listing, freshness pressure and the distinctive risk differ by vertical, and two cells need decisions beyond the model.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "R4",
+          "R6"
+        ],
+        "how": "Shows what stays local per vertical and where policy rather than the model must decide."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "General trade-offs.",
+        "introduces": "How they land in each vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p43",
+          "controlling_idea": "Recommendations differ by vertical in what 'similar' means, which signal carries a new listing, freshness pressure and the distinctive risk, as the table shows.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "General classifieds, automotive, real estate and jobs: main surface, meaning of similar, cold-start signal, freshness pressure, distinctive risk, supply-side sensitivity.",
+              "shows": "The models and policy values must be tuned per vertical."
+            }
+          ]
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Recommending competing dealers on a dealer's own page is a product decision with commercial weight, and if 'own stock only' is sold it is a paid effect that belongs in the policy layer with a label, not inside the model.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The vertical table.",
+            "introduces": "The automotive cell that needs a decision.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "At Hearthly the duplicate filter has a fairness side: when the Lyon apartment (introduced here as the 68 m² flat listed in May 2027 by three agencies) has its three agency listings clustered, the recommender must pick one with the same rule ranking uses, or agencies see inconsistent treatment.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Lyon apartment listed by three agencies.",
+              "shows": "One canonical rule across surfaces.",
+              "source": "Scenario ledger, Lyon apartment"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The automotive cell.",
+            "introduces": "The real-estate cell.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "The common recommender failures in listing marketplaces each break one rule of the chapter and have a warning sign.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "R1",
+          "R2",
+          "R3",
+          "R4",
+          "R5"
+        ],
+        "how": "Restates each rule as the failure that ignores it."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The design and its variants.",
+        "introduces": "What goes wrong when a rule is ignored.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "form": "list",
+          "controlling_idea": "Eight failure modes, each with a warning sign: nightly lists over hourly inventory, behavior-only candidates, click-through as the goal, rendering from the candidate store, post-filtering a static ANN index, personalization without a fallback, one dealer's showroom, and unowned after launch.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Warning signs such as contacts on sold listings concentrated in recommendation surfaces, recommended listings far older than live inventory, and nobody able to name a model's owner.",
+              "shows": "Each failure is detectable."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chief-architect",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "At group scale recommendations are a platform capability with brand-specific models: the Chief Architect decides what to share, what to keep local, who decides and what to watch.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "R6"
+        ],
+        "how": "Gives the group-level so-what the thesis names."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The line first, then what to share, what to keep, who decides, what to watch and the long-term view, the order a group decision is made."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Failures a single brand can make.",
+        "introduces": "The group decisions that prevent them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p47",
+          "controlling_idea": "Most of the failure modes come from a brand running its recommender alone, and group decisions prevent them: recommendations look like a squad's feature but at group scale are a platform capability with brand-specific models, and the Chief Architect's work is to draw that line.",
+          "function": "claim"
+        },
+        {
+          "id": "p48",
+          "form": "list",
+          "controlling_idea": "Share the status read model and event stream, the candidate-serving infrastructure, the recommendation log and evaluation tooling, and consent propagation with cross-brand lineage.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The event backbone of Common Ground (glossed as the group's 2027–2030 program of shared platforms); the shared OpenSearch platform for Tradeyard and Hearthly from 2028; Motorvane on Elasticsearch until the 2029 review.",
+              "shows": "Where the shared pieces sit at Veldmark.",
+              "source": "Scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The line between platform and brand.",
+            "introduces": "What sits on the platform side.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Keep models, candidate-source weights and policy values local, because 'similar' means different things for a city bike, a Golf and a Lyon apartment.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What to share.",
+            "introduces": "What to keep local.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Each brand's discovery product owner owns the objective and guardrails, the group data protection officer owns consent scope and cross-brand use, and the architecture advice forum reviews cross-brand or paid recommenders.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What to share and keep.",
+            "introduces": "Who decides.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "Watch contacts on unavailable listings by surface, new-listing exposure in 72 hours, weekly coverage, seller concentration and every model's retraining age, because an unretrained recommender is Set-and-Forget AI.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Who decides.",
+            "introduces": "What to watch.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "As recommendations reach users through AI assistants and buyer agents, a similar-listing API needs the same availability guarantees as the carousel, so the pipeline should be built as a service with a contract.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What to watch now.",
+            "introduces": "The long-term consideration.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions let a reader test their own recommenders against the chapter's rules in a design review.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "R1",
+          "R2",
+          "R3",
+          "R4",
+          "R5",
+          "R6"
+        ],
+        "how": "Turns each rule into a question."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The group view.",
+        "introduces": "Questions to take into a review.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p53",
+          "form": "list",
+          "controlling_idea": "Ten questions cover coverage and age, removal delay per surface, first-hour candidates, index deletes and filtering, the primary metric, the non-personalized experience, caps, card rendering, cross-brand data and ownership.",
+          "function": "recommendation"
+        }
+      ]
     }
-   ]
-  },
-  {
-   "id": "privacy",
-   "heading": "Privacy, Consent and Regulation",
-   "controlling_idea": "Consent, the Digital Services Act, anti-discrimination and retention rules limit personalization, so consent travels with the request, every surface has a good non-personalized mode, and cross-brand data is a governed decision.",
-   "function": "claim",
-   "advances_thesis": {
-    "supports": [
-     "R5"
-    ],
-    "how": "Argues the non-personalized mode and governed cross-brand data the thesis requires."
-   },
-   "transition_in": {
-    "relationship": "contrast",
-    "carries_over": "What the system optimizes and how it is measured.",
-    "introduces": "What the law and consent allow it to use.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p36",
-     "form": "list",
-     "controlling_idea": "Recommendations turn behavioral data into visible decisions about a person, so consent (which travels with the request and requires a non-personalized mode on every surface good enough to stand on its own), DSA transparency, discrimination rules and retention limits shape them more than search ranking.",
-     "function": "claim",
-     "evidence": [
-      {
-       "kind": "source",
-       "what": "ePrivacy consent and GDPR legal basis; DSA Article 27 (main parameters in plain language, for online platforms that are not micro or small enterprises) and Article 38 (a non-profiling option for very large platforms, 45 million users threshold); 24 CFR §100.75; Airbnb 2026 sequences up to seven years.",
-       "shows": "Each rule leads to a design consequence: consent on the request, a non-personalized mode, audits for disparate delivery, retention per feature.",
-       "source": "Regulation (EU) 2022/2065; Cornell LII; Airbnb Tech, 2026"
-      }
-     ]
+  ],
+  "conclusion": {
+    "heading": "From Lists to Maps",
+    "synthesis": "Every part of the chapter answers the same fact from a different side, that the item recommended is new, unique and about to go: content sources give a listing a place on its first day, events and one status filter take it out within a minute of the sold signal, and contacts and coverage keep the carousel from drifting toward the most clickable cars; that is why Motorvane's gain came from plumbing and measurement rather than a better model.",
+    "so_what": "A group that shares the status read model and event stream across surfaces gets most of the value before any brand trains a model, and the same rule (one status model, read by every surface) carries into map search and alerts.",
+    "callback": {
+      "to": "The opening contrast between the retail kettle and the Essen Golf, and the claim that every recommendation is a bet on an item that may disappear.",
+      "how": "The conclusion returns to the kettle and the Golf and says how each part of the design answers that bet."
     },
-    {
-     "id": "p37",
-     "controlling_idea": "Cross-brand data is a separate decision whose architectural answer is opt-in at the feature level with lineage: Veldmark ID makes it technically possible, but consent scope, privacy notices and the Keybridge neutrality commitment decide whether it is allowed.",
-     "function": "recommendation",
-     "evidence": [
-      {
-       "kind": "scenario",
-       "what": "Veldmark ID approved June 2027 for rollout in 2028; the March 2027 neutrality commitment excludes Keybridge data from Hearthly ranking or sales targeting; Lucía Ortega's team owns the answer.",
-       "shows": "Cross-brand use is a governed decision.",
-       "source": "Scenario ledger"
-      }
-     ],
-     "transition_in": {
-      "relationship": "elaboration",
-      "carries_over": "Consent and regulation within one brand.",
-      "introduces": "The same question across brands.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "rebuild",
-   "heading": "The Veldmark Rebuild: Similar Vehicles at Motorvane",
-   "controlling_idea": "Motorvane's rebuild applies the design on its own Elasticsearch 8 stack and raises leads and coverage while click-through falls, which shows both the design and the metric argument at work.",
-   "function": "example",
-   "advances_thesis": {
-    "supports": [
-     "R2",
-     "R3",
-     "R4"
-    ],
-    "how": "Shows the thesis working on the scene's problem, with numbers."
-   },
-   "transition_in": {
-    "relationship": "problem_solution",
-    "carries_over": "The design and its limits.",
-    "introduces": "Motorvane's rebuild of the carousel from the opening scene.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p38",
-     "form": "list",
-     "controlling_idea": "Felix's team rebuilt the carousel between June and August 2027 on Elasticsearch 8 with four candidate sources, one serving-time filter, a GBDT re-ranker, a policy and events that update the indices within a minute.",
-     "function": "example",
-     "evidence": [
-      {
-       "kind": "scenario",
-       "what": "Attribute similarity once VIN decoding fills 31 attributes; filtered kNN embeddings with a content tower; co-contact every two hours; fresh listings nearby; at most two cars per dealer group in ten; one exploration slot; ListingSold from Dealer Hub at once.",
-       "shows": "Each element of the four-stage design, at Motorvane.",
-       "source": "Scenario ledger, [recommendations] line, Essen Golf"
-      }
-     ]
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Give every recommendation surface a content-based source, one status filter shared with search and a contact metric before tuning any model."
     },
-    {
-     "id": "p39",
-     "controlling_idea": "A September 2027 A/B test randomized by user compared the rebuilt carousel with the old one.",
-     "function": "evidence",
-     "evidence": [
-      {
-       "kind": "table",
-       "what": "Carousel leads 7.0% to 8.1% (+16% relative); no-impression new listings 41% to 8%; clicks on unavailable listings 3.8% to 0.3%; dealer-group share 31% to 14%; coverage 46% to 79%; click-through −4% (illustrative).",
-       "shows": "Leads, exposure and availability improved together.",
-       "source": "Scenario ledger, [recommendations] line; dealer-group row local"
-      }
-     ],
-     "transition_in": {
-      "relationship": "sequence",
-      "carries_over": "The rebuild.",
-      "introduces": "Its test result.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
+    "hand_off": {
+      "to": "map-search",
+      "relationship": "similarity",
+      "carries_over": "Recommendations' principles (content first, availability always, measurement on matches rather than clicks) and the lesson that a surface without a typed query still needs its own ranking and evaluation.",
+      "introduces": "The map, where the result set is scoped by place and list-based metrics do not describe how people look."
     },
-    {
-     "id": "p40",
-     "controlling_idea": "The click-through row would have killed the project had click-through been the metric: the new carousel shows fewer eye-catching popular cars and more new, comparable ones, so it is clicked less and produces more leads.",
-     "function": "analysis",
-     "transition_in": {
-      "relationship": "emphasis",
-      "carries_over": "The results table.",
-      "introduces": "The row that carries the metric argument.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p41",
-     "controlling_idea": "Under the new design the Golf would appear in carousels within minutes of becoming searchable and leave within a minute of the sold signal, so the 26-hour gap closes at the source, not in the recommender.",
-     "function": "example",
-     "evidence": [
-      {
-       "kind": "scenario",
-       "what": "Searchable at 17:05 on 14 April; Dealer Hub's mark as sold; the Supply Contract v1 (September 2027) status delta within 15 minutes of a sale.",
-       "shows": "The opening incident would not recur, and the remaining fix lies in ingestion.",
-       "source": "Scenario ledger, [listing-ingestion] line"
-      }
-     ],
-     "transition_in": {
-      "relationship": "example",
-      "carries_over": "The rebuild's design and results.",
-      "introduces": "The opening Golf replayed through it.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "trade-offs",
-   "heading": "Trade-offs",
-   "controlling_idea": "Each design choice in the chapter has an alternative that is right under other conditions, and the table says when each holds.",
-   "function": "comparison",
-   "advances_thesis": {
-    "supports": [
-     "R2",
-     "R4",
-     "R6"
-    ],
-    "how": "Tests the design against its alternatives."
-   },
-   "transition_in": {
-    "relationship": "contrast",
-    "carries_over": "Motorvane's choices.",
-    "introduces": "The alternatives and when they are right.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p42",
-     "controlling_idea": "Each design choice has an alternative that is right under other conditions, and the table pairs them.",
-     "function": "comparison",
-     "evidence": [
-      {
-       "kind": "table",
-       "what": "Candidate source mix, index update model, representation freshness, ANN precision, optimization target, personalization depth and ownership, each with two options and when to choose each.",
-       "shows": "The chapter's recommendations have conditions."
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "id": "verticals",
-   "heading": "Vertical Differences",
-   "controlling_idea": "What 'similar' means, the signal that carries a new listing, freshness pressure and the distinctive risk differ by vertical, and two cells need decisions beyond the model.",
-   "function": "comparison",
-   "advances_thesis": {
-    "supports": [
-     "R4",
-     "R6"
-    ],
-    "how": "Shows what stays local per vertical and where policy rather than the model must decide."
-   },
-   "transition_in": {
-    "relationship": "elaboration",
-    "carries_over": "General trade-offs.",
-    "introduces": "How they land in each vertical.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p43",
-     "controlling_idea": "Recommendations differ by vertical in what 'similar' means, which signal carries a new listing, freshness pressure and the distinctive risk, as the table shows.",
-     "function": "comparison",
-     "evidence": [
-      {
-       "kind": "table",
-       "what": "General classifieds, automotive, real estate and jobs: main surface, meaning of similar, cold-start signal, freshness pressure, distinctive risk, supply-side sensitivity.",
-       "shows": "The models and policy values must be tuned per vertical."
-      }
-     ]
-    },
-    {
-     "id": "p44",
-     "controlling_idea": "Recommending competing dealers on a dealer's own page is a product decision with commercial weight, and if 'own stock only' is sold it is a paid effect that belongs in the policy layer with a label, not inside the model.",
-     "function": "recommendation",
-     "transition_in": {
-      "relationship": "elaboration",
-      "carries_over": "The vertical table.",
-      "introduces": "The automotive cell that needs a decision.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p45",
-     "controlling_idea": "At Hearthly the duplicate filter has a fairness side: when the Lyon apartment's three agency listings are clustered, the recommender must pick one with the same rule ranking uses, or agencies see inconsistent treatment.",
-     "function": "example",
-     "evidence": [
-      {
-       "kind": "case",
-       "what": "The Lyon apartment listed by three agencies.",
-       "shows": "One canonical rule across surfaces.",
-       "source": "Scenario ledger, Lyon apartment"
-      }
-     ],
-     "transition_in": {
-      "relationship": "additional_support",
-      "carries_over": "The automotive cell.",
-      "introduces": "The real-estate cell.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "failure-modes",
-   "heading": "Failure Modes",
-   "controlling_idea": "The common recommender failures in listing marketplaces each break one rule of the chapter and have a warning sign.",
-   "function": "analysis",
-   "advances_thesis": {
-    "supports": [
-     "R1",
-     "R2",
-     "R3",
-     "R4",
-     "R5"
-    ],
-    "how": "Restates each rule as the failure that ignores it."
-   },
-   "transition_in": {
-    "relationship": "contrast",
-    "carries_over": "The design and its variants.",
-    "introduces": "What goes wrong when a rule is ignored.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p46",
-     "form": "list",
-     "controlling_idea": "Eight failure modes, each with a warning sign: nightly lists over hourly inventory, behavior-only candidates, click-through as the goal, rendering from the candidate store, post-filtering a static ANN index, personalization without a fallback, one dealer's showroom, and unowned after launch.",
-     "function": "analysis",
-     "evidence": [
-      {
-       "kind": "example",
-       "what": "Warning signs such as contacts on sold listings concentrated in recommendation surfaces, recommended listings far older than live inventory, and nobody able to name a model's owner.",
-       "shows": "Each failure is detectable."
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "id": "chief-architect",
-   "heading": "The Chief Architect's View",
-   "controlling_idea": "At group scale recommendations are a platform capability with brand-specific models: the Chief Architect decides what to share, what to keep local, who decides and what to watch.",
-   "function": "recommendation",
-   "advances_thesis": {
-    "supports": [
-     "R6"
-    ],
-    "how": "Gives the group-level so-what the thesis names."
-   },
-   "flow": {
-    "pattern": "grouping",
-    "rationale": "The line first, then what to share, what to keep, who decides, what to watch and the long-term view, the order a group decision is made."
-   },
-   "transition_in": {
-    "relationship": "problem_solution",
-    "carries_over": "Failures a single brand can make.",
-    "introduces": "The group decisions that prevent them.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p47",
-     "controlling_idea": "Recommendations look like a squad's feature but at group scale are a platform capability with brand-specific models, and the Chief Architect's work is to draw that line.",
-     "function": "claim"
-    },
-    {
-     "id": "p48",
-     "form": "list",
-     "controlling_idea": "Share the status read model and event stream, the candidate-serving infrastructure, the recommendation log and evaluation tooling, and consent propagation with cross-brand lineage.",
-     "function": "recommendation",
-     "evidence": [
-      {
-       "kind": "scenario",
-       "what": "Common Ground event backbone; the shared OpenSearch platform for Tradeyard and Hearthly from 2028; Motorvane on Elasticsearch until the 2029 review.",
-       "shows": "Where the shared pieces sit at Veldmark.",
-       "source": "Scenario ledger"
-      }
-     ],
-     "transition_in": {
-      "relationship": "elaboration",
-      "carries_over": "The line between platform and brand.",
-      "introduces": "What sits on the platform side.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p49",
-     "controlling_idea": "Keep models, candidate-source weights and policy values local, because 'similar' means different things for a city bike, a Golf and a Lyon apartment.",
-     "function": "recommendation",
-     "transition_in": {
-      "relationship": "contrast",
-      "carries_over": "What to share.",
-      "introduces": "What to keep local.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p50",
-     "controlling_idea": "Each brand's discovery product owner owns the objective and guardrails, the group data protection officer owns consent scope and cross-brand use, and the architecture advice forum reviews cross-brand or paid recommenders.",
-     "function": "recommendation",
-     "transition_in": {
-      "relationship": "sequence",
-      "carries_over": "What to share and keep.",
-      "introduces": "Who decides.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p51",
-     "controlling_idea": "Watch contacts on unavailable listings by surface, new-listing exposure in 72 hours, weekly coverage, seller concentration and every model's retraining age, because an unretrained recommender is Set-and-Forget AI.",
-     "function": "recommendation",
-     "transition_in": {
-      "relationship": "sequence",
-      "carries_over": "Who decides.",
-      "introduces": "What to watch.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p52",
-     "controlling_idea": "As recommendations reach users through AI assistants and buyer agents, a similar-listing API needs the same availability guarantees as the carousel, so the pipeline should be built as a service with a contract.",
-     "function": "recommendation",
-     "transition_in": {
-      "relationship": "sequence",
-      "carries_over": "What to watch now.",
-      "introduces": "The long-term consideration.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "questions",
-   "heading": "Questions to Ask",
-   "controlling_idea": "Ten questions let a reader test their own recommenders against the chapter's rules in a design review.",
-   "function": "recommendation",
-   "advances_thesis": {
-    "supports": [
-     "R1",
-     "R2",
-     "R3",
-     "R4",
-     "R5",
-     "R6"
-    ],
-    "how": "Turns each rule into a question."
-   },
-   "transition_in": {
-    "relationship": "sequence",
-    "carries_over": "The group view.",
-    "introduces": "Questions to take into a review.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p53",
-     "form": "list",
-     "controlling_idea": "Ten questions cover coverage and age, removal delay per surface, first-hour candidates, index deletes and filtering, the primary metric, the non-personalized experience, caps, card rendering, cross-brand data and ownership.",
-     "function": "recommendation"
-    }
-   ]
-  }
- ],
- "conclusion": {
-  "heading": "From Lists to Maps",
-  "synthesis": "Every part of the chapter answers the same fact from a different side, that the item recommended is new, unique and about to go: content sources give a listing a place on its first day, events and one status filter take it out within a minute of the sold signal, and contacts and coverage keep the carousel from drifting toward the most clickable cars; that is why Motorvane's gain came from plumbing and measurement rather than a better model.",
-  "so_what": "A group that shares the status read model and event stream across surfaces gets most of the value before any brand trains a model, and the same rule (one status model, read by every surface) carries into map search and alerts.",
-  "callback": {
-   "to": "The opening contrast between the retail kettle and the Essen Golf, and the claim that every recommendation is a bet on an item that may disappear.",
-   "how": "The conclusion returns to the kettle and the Golf and says how each part of the design answers that bet."
-  },
-  "takeaway": {
-   "type": "course_of_action",
-   "content": "Give every recommendation surface a content-based source, one status filter shared with search and a contact metric before tuning any model."
-  },
-  "hand_off": {
-   "to": "map-search",
-   "relationship": "similarity",
-   "carries_over": "Recommendations' principles (content first, availability always, measurement on matches rather than clicks) and the lesson that a surface without a typed query still needs its own ranking and evaluation.",
-   "introduces": "The map, where the result set is scoped by place and list-based metrics do not describe how people look."
-  },
-  "transition_in": {
-   "relationship": "conclusion_summary",
-   "carries_over": "The questions and the whole chapter.",
-   "introduces": "What the chapter's parts add up to.",
-   "form": "sentence",
-   "placement": "start_of_this"
-  },
-  "paragraphs": [
-   {
-    "id": "p54",
-    "controlling_idea": "The kettle recommender fails on listings for one reason every section answered from a different side, that the item is new, unique and about to go, which is why Motorvane's gain came from plumbing and measurement rather than a better model and why sharing the status model and event stream is worth more than any one brand's model.",
-    "function": "synthesis"
-   },
-   {
-    "id": "p55",
-    "controlling_idea": "Recommendations rank without a query; the next chapter, map search, ranks within a place, and the same principles return there: content first, availability always, and measurement on matches rather than clicks.",
-    "function": "transition",
     "transition_in": {
-     "relationship": "similarity",
-     "carries_over": "Recommendations' principles.",
-     "introduces": "Map search, in the next chapter.",
-     "form": "sentence",
-     "placement": "start_of_this"
+      "relationship": "conclusion_summary",
+      "carries_over": "The questions and the whole chapter.",
+      "introduces": "What the chapter's parts add up to.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p54",
+        "controlling_idea": "The kettle recommender fails on listings for one reason every section answered from a different side, that the item is new, unique and about to go, which is why Motorvane's gain came from plumbing and measurement rather than a better model and why sharing the status model and event stream is worth more than any one brand's model.",
+        "function": "synthesis"
+      },
+      {
+        "id": "p55",
+        "controlling_idea": "Recommendations rank without a query; the next chapter, map search, ranks within a place, and the same principles return there: content first, availability always, and measurement on matches rather than clicks.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "similarity",
+          "carries_over": "Recommendations' principles.",
+          "introduces": "Map search, in the next chapter.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Search ranking, learning-to-rank training details and paid blending.",
+      "covered_in": [
+        "ranking"
+      ]
+    },
+    {
+      "topic": "Saved-search matching and alert fan-out.",
+      "covered_in": [
+        "saved-searches-and-alerts"
+      ]
+    },
+    {
+      "topic": "Feature stores, model governance and the ML platform.",
+      "covered_in": [
+        "ml-platform"
+      ]
+    },
+    {
+      "topic": "The listing event contract and outbox.",
+      "covered_in": [
+        "event-driven-listings"
+      ]
+    },
+    {
+      "topic": "Tracking plan and consent propagation.",
+      "covered_in": [
+        "data-platform"
+      ]
+    },
+    {
+      "topic": "Interference designs for experiments.",
+      "covered_in": [
+        "experimentation"
+      ]
+    },
+    {
+      "topic": "Agentic and AI channels.",
+      "covered_in": [
+        "ai-in-listing-systems"
+      ]
     }
-   }
-  ]
- },
- "non_goals": [
-  {
-   "topic": "Search ranking, learning-to-rank training details and paid blending.",
-   "covered_in": [
-    "ranking"
-   ]
-  },
-  {
-   "topic": "Saved-search matching and alert fan-out.",
-   "covered_in": [
-    "saved-searches-and-alerts"
-   ]
-  },
-  {
-   "topic": "Feature stores, model governance and the ML platform.",
-   "covered_in": [
-    "ml-platform"
-   ]
-  },
-  {
-   "topic": "The listing event contract and outbox.",
-   "covered_in": [
-    "event-driven-listings"
-   ]
-  },
-  {
-   "topic": "Tracking plan and consent propagation.",
-   "covered_in": [
-    "data-platform"
-   ]
-  },
-  {
-   "topic": "Interference designs for experiments.",
-   "covered_in": [
-    "experimentation"
-   ]
-  },
-  {
-   "topic": "Agentic and AI channels.",
-   "covered_in": [
-    "ai-in-listing-systems"
-   ]
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Airbnb KDD 2018 details (the cold-start averaging of nearby listing embeddings, corpus sizes, the +21% similar-listing CTR) appear only in secondary sources. The ACM text could not be fetched, so the chapter cites the abstract-level claims only. (Carried over from spec.md.)",
+    "The Zillow 2021 post is cited through the Medium RSS feed, because the post's own page was blocked. (Carried over from spec.md.)",
+    "The ePrivacy and GDPR statements are kept at the level of general principle; Lucía Ortega's role in the scenario stands in for counsel review. (Carried over from spec.md.)",
+    "Journal spec AC-2 'expected' still lists cold start after events and serving-time checks; the post now places it after the methods. The journal spec needs the author's edit (reported in the fix-only pass, 2026-11-13)."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-13",
+      "decision": "Fixed under the author's delegation (fix-only pass), round-4 blocking findings: (1) Cold Start in Three Forms moved before the architecture (both readers converged on this; spec fault); transitions of cold-start, architecture and feedback-loops rewritten, roadmap promises and p04 reordered, flow rationale updated; (2) cold start glossed on first use in the WHY ARCHITECTS callout and p01; (3) 'leaf' glossed and the 1 November 2027 bikes split placed after the rebuild; (4) the Lyon apartment introduced (68 m², May 2027, three agencies, per the ledger); (5) Common Ground glossed; (6) Chief Architect opening now picks up the failure modes and presents group decisions as what prevents them; (7) the Vinted/Airbnb trade-off named; (8) ALS, RP3beta and SLIM definitions moved from the table cell into new paragraph p15a; (9) 'a lead management system' now clearly Dealer Hub; (10) the interference claim gives its reason (carousel moves 12% of detail-page views) and the Vinted 50-test evidence is marked as search; (11) cross-brand paragraph states its question and is split (new p37a for Keybridge and the owner); (12) 17:05 and Supply Contract v1 presented with their source ([[listing-ingestion]]) and the ledger's 17:02 creation time; (13) Motorvane and Ghost Inventory glossed in the callouts. length.max_words raised from 7,200 to 7,900 (9.7%); no published text cut.",
+      "rejected": [
+        "Keeping Cold Start after the architecture (round 4: both readers converged on moving it)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-3 escalation resolved under the author's delegation ('auto resolve all ESCALATE topics'), 2026-11-12: (1) Methods p15 now glosses two-tower and content tower in two sentences before the table; (2) the factorization row glosses ALS (factorizes the user-item matrix), RP3beta (random walk over the user-item graph that damps popular items) and SLIM (learns sparse item-to-item weights), as described in the cited Kwieciński et al. 2023 benchmark; (3) Cold Start keeps its position (rule 8: readers agreed it read as a backfill but did not converge on a destination, so the published order stays) and its opening now says why it returns to new listings; (4) p37 leads with its point (opt-in at the feature level, with lineage) and keeps every name, date and fact. Also the cheap minor fix 'Even so,' in the DSA bullet. length.max_words raised from 6,985 to 7,200 (3%) to make room; no published text cut.",
+      "rejected": [
+        "Moving Cold Start before the architecture (a spec-order change neither reader converged on)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis-rubric notes (four-part claim; R6 backing the so_what) and flow-rubric notes (p23 pointer, p29 trim, p12 clause, separate non-personalized paragraph) left untaken: accepted under the author's delegation, 2026-11-12. The thesis is copied from the journal spec and unchanged; the flow notes would change published text with no clear gain (rule 8)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Rewrote the eight spec.md success criteria as outcomes: the pipeline, removal path, cold start, metric choice and the Motorvane case are covered by the journal spec's AC-1 cold-reader probe; the opening's predictability by AC-2; the order of ideas by AC-3. Dropped the inventory criteria (surface table, method comparison with named cases, regulatory list, ledger consistency) as separate criteria: the first three are part of intent.outcome, and ledger agreement is governed by the style guide and ledger, not by a reader check.",
+      "rejected": [
+        "Keeping the eight criteria as written, since most list what the chapter contains."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added four units to the published text: a roadmap paragraph (p04) so a reader of the opening can predict the sections, one-sentence lead-ins for the trade-offs and vertical-differences tables (p42, p43) so each table is introduced, and a synthesis paragraph (p54) so the conclusion synthesizes and returns to the opening before handing off to map search.",
+      "rejected": [
+        "Leaving the conclusion as the single hand-off paragraph, which neither synthesizes nor calls back to the opening."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "From the flow rubric (sound with notes): p01's controlling idea names the kettle so the conclusion's callback has its setup; p19 names the ANN index that filters during the search; p36 names the non-personalized mode the thesis requires; the flow rationale states why evaluation precedes the rebuild. No unit was moved, so the order was not re-run. Thesis rubric passed.",
+      "rejected": [
+        "Adding a separate non-personalized-mode paragraph, which would change the author's published privacy list."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft-check round 2, four section transitions (why-listings-differ, architecture, feedback-loops, evaluation) were re-declared to the relationship the published prose expresses: the reconstruction had guessed relationships (cause_effect, problem_solution) that the author's section openings do not make. No unit, order, intent, thesis or role changed.",
+      "rejected": [
+        "Rewriting four of the author's section openings to fit the guessed relationships, which would add words at the limit."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Modalities left empty: spec.md listed checklist, summary, dialog and comics as unchecked boxes and none of those files exists."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Organized the chapter around churn and availability rather than a survey of algorithms, because the failure readers meet in practice is Ghost Inventory in carousels and e-mails, not a weak model. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used the canonical Essen Golf and its 26-hour feed removal as the problem case, with local, non-canonical carousel statistics and a September 2027 A/B result; the click-through decrease was kept visible to make the metric argument concrete. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Kept Motorvane on Elasticsearch 8 with filtered kNN, in line with the ledger's 2029 search review. (Carried over from spec.md.)",
+      "rejected": [
+        "A design that waits for the shared OpenSearch platform."
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Treated cross-brand recommendation data as a governed, opt-in decision, linked to Veldmark ID (2028) and the Keybridge neutrality commitment, rather than as a technical capability. (Carried over from spec.md.)"
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria, thesis, role, the incoming transition and the hand-off relationship."
+    },
+    {
+      "kind": "internal",
+      "ref": "posts/21-recommendations/spec.md (accepted 2026-10-21)",
+      "contributed": "Audience, non-goals, open questions, decision log, sources and changelog."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-search-discovery.md Parts 9–10 and 13",
+      "contributed": "Recommendation evidence and listing-specific challenges."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-real-estate-portals.md B.1",
+      "contributed": "Zillow similar-home embeddings (2021)."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-platform-data-ml.md Parts 8–10",
+      "contributed": "Tracking, experimentation, feature-store caution."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-trust-safety-regulation.md 5.1 and the fair-housing section",
+      "contributed": "DSA Art. 27 and fair-housing advertising."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "The Essen Golf, the Motorvane carousel review and rebuild, Veldmark ID, Keybridge neutrality, Supply Contract v1."
+    },
+    {
+      "kind": "internal",
+      "ref": "ranking, event-driven-listings, publication-pipeline, ml-platform, data-platform",
+      "contributed": "Re-ranking machinery, the event stream, the status read model, platform and consent ownership."
+    },
+    {
+      "kind": "external",
+      "ref": "Vinted Engineering (2023, 2025); Adevinta (2022); Zillow Tech Hub (2021); Airbnb papers and posts (2018, 2020, 2025, 2026); FINN.no (2018); OLX Jobs (2023); GRU4Rec (2015)",
+      "contributed": "Dated marketplace recommender evidence."
+    },
+    {
+      "kind": "external",
+      "ref": "Elastic filtered kNN documentation (n.d.); Regulation (EU) 2022/2065 Articles 27 and 38; 24 CFR §100.75",
+      "contributed": "Filtered retrieval, recommender transparency and the non-profiling option, fair-housing advertising."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass under the author's delegation: 15 round-4 blocking findings fixed; Cold Start moved before the architecture; p15a and p37a added; max_words 7,900. The check report is stale."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check: round 1 REVISE, round 2 REVISE, round 3 ESCALATE; remaining failures recorded under open_questions. The check report is stale after this entry."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Re-declared four section transitions after draft-check round 2 to match the published prose (see decision log)."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec), reconstructed from the published index.md; spec.md removed. Status draft."
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 2 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json); Figure 3 kept attempt 4 with a missing dashed arrow and a duplicated label. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 5,820 to 5,855 words; lead ties the chapter to Part IV; 'Methods and Their Fit' renamed 'Methods Under Churn'; two two-point paragraphs split. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 1 heading aligned with the book's shared section names; no body text changed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 2 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: Golf leads labeled raw (23) vs deduplicated (19), sale time added, DSA Arts. 27/38 checked against the Official Journal (Art. 27 small-enterprise exemption noted), Zillow source linked to the 2021 post, old evidence flagged, acronyms expanded. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 7900
   }
- ],
- "modalities": [],
- "open_questions": [
-  "Airbnb KDD 2018 details (the cold-start averaging of nearby listing embeddings, corpus sizes, the +21% similar-listing CTR) appear only in secondary sources. The ACM text could not be fetched, so the chapter cites the abstract-level claims only. (Carried over from spec.md.)",
-  "The Zillow 2021 post is cited through the Medium RSS feed, because the post's own page was blocked. (Carried over from spec.md.)",
-  "The ePrivacy and GDPR statements are kept at the level of general principle; Lucía Ortega's role in the scenario stands in for counsel review. (Carried over from spec.md.)"
- ],
- "decision_log": [
-  {
-   "date": "2026-11-12",
-   "decision": "Round-3 escalation resolved under the author's delegation ('auto resolve all ESCALATE topics'), 2026-11-12: (1) Methods p15 now glosses two-tower and content tower in two sentences before the table; (2) the factorization row glosses ALS (factorizes the user-item matrix), RP3beta (random walk over the user-item graph that damps popular items) and SLIM (learns sparse item-to-item weights), as described in the cited Kwieciński et al. 2023 benchmark; (3) Cold Start keeps its position (rule 8: readers agreed it read as a backfill but did not converge on a destination, so the published order stays) and its opening now says why it returns to new listings; (4) p37 leads with its point (opt-in at the feature level, with lineage) and keeps every name, date and fact. Also the cheap minor fix 'Even so,' in the DSA bullet. length.max_words raised from 6,985 to 7,200 (3%) to make room; no published text cut.",
-   "rejected": [
-    "Moving Cold Start before the architecture (a spec-order change neither reader converged on)."
-   ]
-  },
-  {
-   "date": "2026-11-12",
-   "decision": "Thesis-rubric notes (four-part claim; R6 backing the so_what) and flow-rubric notes (p23 pointer, p29 trim, p12 clause, separate non-personalized paragraph) left untaken: accepted under the author's delegation, 2026-11-12. The thesis is copied from the journal spec and unchanged; the flow notes would change published text with no clear gain (rule 8)."
-  },
-  {
-   "date": "2026-11-12",
-   "decision": "Rewrote the eight spec.md success criteria as outcomes: the pipeline, removal path, cold start, metric choice and the Motorvane case are covered by the journal spec's AC-1 cold-reader probe; the opening's predictability by AC-2; the order of ideas by AC-3. Dropped the inventory criteria (surface table, method comparison with named cases, regulatory list, ledger consistency) as separate criteria: the first three are part of intent.outcome, and ledger agreement is governed by the style guide and ledger, not by a reader check.",
-   "rejected": [
-    "Keeping the eight criteria as written, since most list what the chapter contains."
-   ]
-  },
-  {
-   "date": "2026-11-12",
-   "decision": "Added four units to the published text: a roadmap paragraph (p04) so a reader of the opening can predict the sections, one-sentence lead-ins for the trade-offs and vertical-differences tables (p42, p43) so each table is introduced, and a synthesis paragraph (p54) so the conclusion synthesizes and returns to the opening before handing off to map search.",
-   "rejected": [
-    "Leaving the conclusion as the single hand-off paragraph, which neither synthesizes nor calls back to the opening."
-   ]
-  },
-  {
-   "date": "2026-11-12",
-   "decision": "From the flow rubric (sound with notes): p01's controlling idea names the kettle so the conclusion's callback has its setup; p19 names the ANN index that filters during the search; p36 names the non-personalized mode the thesis requires; the flow rationale states why evaluation precedes the rebuild. No unit was moved, so the order was not re-run. Thesis rubric passed.",
-   "rejected": [
-    "Adding a separate non-personalized-mode paragraph, which would change the author's published privacy list."
-   ]
-  },
-  {
-   "date": "2026-11-12",
-   "decision": "After draft-check round 2, four section transitions (why-listings-differ, architecture, feedback-loops, evaluation) were re-declared to the relationship the published prose expresses: the reconstruction had guessed relationships (cause_effect, problem_solution) that the author's section openings do not make. No unit, order, intent, thesis or role changed.",
-   "rejected": [
-    "Rewriting four of the author's section openings to fit the guessed relationships, which would add words at the limit."
-   ]
-  },
-  {
-   "date": "2026-11-12",
-   "decision": "Modalities left empty: spec.md listed checklist, summary, dialog and comics as unchecked boxes and none of those files exists."
-  },
-  {
-   "date": "2026-10-19",
-   "decision": "Organized the chapter around churn and availability rather than a survey of algorithms, because the failure readers meet in practice is Ghost Inventory in carousels and e-mails, not a weak model. (Carried over from spec.md.)"
-  },
-  {
-   "date": "2026-10-19",
-   "decision": "Used the canonical Essen Golf and its 26-hour feed removal as the problem case, with local, non-canonical carousel statistics and a September 2027 A/B result; the click-through decrease was kept visible to make the metric argument concrete. (Carried over from spec.md.)"
-  },
-  {
-   "date": "2026-10-19",
-   "decision": "Kept Motorvane on Elasticsearch 8 with filtered kNN, in line with the ledger's 2029 search review. (Carried over from spec.md.)",
-   "rejected": [
-    "A design that waits for the shared OpenSearch platform."
-   ]
-  },
-  {
-   "date": "2026-10-19",
-   "decision": "Treated cross-brand recommendation data as a governed, opt-in decision, linked to Veldmark ID (2028) and the Keybridge neutrality commitment, rather than as a technical capability. (Carried over from spec.md.)"
-  }
- ],
- "sources": [
-  {
-   "kind": "internal",
-   "ref": "_journals/listing-systems-architecture/journal-spec.json",
-   "contributed": "Intent outcome, acceptance criteria, thesis, role, the incoming transition and the hand-off relationship."
-  },
-  {
-   "kind": "internal",
-   "ref": "posts/21-recommendations/spec.md (accepted 2026-10-21)",
-   "contributed": "Audience, non-goals, open questions, decision log, sources and changelog."
-  },
-  {
-   "kind": "internal",
-   "ref": "_research/brief-search-discovery.md Parts 9–10 and 13",
-   "contributed": "Recommendation evidence and listing-specific challenges."
-  },
-  {
-   "kind": "internal",
-   "ref": "_research/brief-real-estate-portals.md B.1",
-   "contributed": "Zillow similar-home embeddings (2021)."
-  },
-  {
-   "kind": "internal",
-   "ref": "_research/brief-platform-data-ml.md Parts 8–10",
-   "contributed": "Tracking, experimentation, feature-store caution."
-  },
-  {
-   "kind": "internal",
-   "ref": "_research/brief-trust-safety-regulation.md 5.1 and the fair-housing section",
-   "contributed": "DSA Art. 27 and fair-housing advertising."
-  },
-  {
-   "kind": "internal",
-   "ref": "_research/scenario-ledger.md",
-   "contributed": "The Essen Golf, the Motorvane carousel review and rebuild, Veldmark ID, Keybridge neutrality, Supply Contract v1."
-  },
-  {
-   "kind": "internal",
-   "ref": "ranking, event-driven-listings, publication-pipeline, ml-platform, data-platform",
-   "contributed": "Re-ranking machinery, the event stream, the status read model, platform and consent ownership."
-  },
-  {
-   "kind": "external",
-   "ref": "Vinted Engineering (2023, 2025); Adevinta (2022); Zillow Tech Hub (2021); Airbnb papers and posts (2018, 2020, 2025, 2026); FINN.no (2018); OLX Jobs (2023); GRU4Rec (2015)",
-   "contributed": "Dated marketplace recommender evidence."
-  },
-  {
-   "kind": "external",
-   "ref": "Elastic filtered kNN documentation (n.d.); Regulation (EU) 2022/2065 Articles 27 and 38; 24 CFR §100.75",
-   "contributed": "Filtered retrieval, recommender transparency and the non-profiling option, fair-housing advertising."
-  }
- ],
- "changelog": [
-  {
-   "date": "2026-11-12",
-   "change": "Draft check: round 1 REVISE, round 2 REVISE, round 3 ESCALATE; remaining failures recorded under open_questions. The check report is stale after this entry."
-  },
-  {
-   "date": "2026-11-12",
-   "change": "Re-declared four section transitions after draft-check round 2 to match the published prose (see decision log)."
-  },
-  {
-   "date": "2026-11-12",
-   "change": "Converted spec.md to spec.json (outcome spec), reconstructed from the published index.md; spec.md removed. Status draft."
-  },
-  {
-   "date": "2026-10-21",
-   "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
-  },
-  {
-   "date": "2026-10-20",
-   "change": "Replaced 2 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json); Figure 3 kept attempt 4 with a missing dashed arrow and a duplicated label. (AI-mediated session)"
-  },
-  {
-   "date": "2026-10-20",
-   "change": "Sharpening pass: 5,820 to 5,855 words; lead ties the chapter to Part IV; 'Methods and Their Fit' renamed 'Methods Under Churn'; two two-point paragraphs split. (AI-mediated session)"
-  },
-  {
-   "date": "2026-10-20",
-   "change": "Cross-chapter consistency sweep: 1 heading aligned with the book's shared section names; no body text changed. (AI-mediated session)"
-  },
-  {
-   "date": "2026-10-19",
-   "change": "Added 2 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
-  },
-  {
-   "date": "2026-10-19",
-   "change": "Editorial review pass: Golf leads labeled raw (23) vs deduplicated (19), sale time added, DSA Arts. 27/38 checked against the Official Journal (Art. 27 small-enterprise exemption noted), Zillow source linked to the 2021 post, old evidence flagged, acronyms expanded. (AI-mediated session)"
-  },
-  {
-   "date": "2026-10-19",
-   "change": "Initial spec and article. (AI-mediated session)"
-  }
- ],
- "length": {
-  "max_words": 7200
- }
 }

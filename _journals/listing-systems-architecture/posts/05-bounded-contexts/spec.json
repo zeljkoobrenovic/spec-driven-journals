@@ -7,7 +7,7 @@
   "part": "part-1",
   "title": "Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models",
   "status": "draft",
-  "revised": "2026-11-12",
+  "revised": "2026-11-13",
   "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the bounded-contexts entry in journal-spec.json. One unit was added by this conversion: a synthesis paragraph (p76) before the old hand-off paragraph in the closing section.",
   "intent": {
     "outcome": {
@@ -619,7 +619,7 @@
       "paragraphs": [
         {
           "id": "p21",
-          "controlling_idea": "The Lyon flat, listed by three agencies at €389,000, €389,000 and €395,000, means something different in each of ten contexts.",
+          "controlling_idea": "The Lyon flat, listed by three agencies at €389,000, €389,000 and €395,000, means something different in each of ten contexts. The two equal prices and one higher price come from French asking prices including the agency's fee.",
           "function": "evidence",
           "evidence": [
             {
@@ -688,20 +688,20 @@
         },
         {
           "id": "p46",
-          "controlling_idea": "The reference models' numbers make the one-owner pattern concrete, and even their mistakes show that ownership assignments must be reviewed as carefully as boundaries.",
+          "controlling_idea": "The reference models' numbers make the one-owner pattern concrete: in the general model one capability owns the listing, eleven read it and two more query it through search.",
           "function": "evidence",
           "evidence": [
             {
               "kind": "fact",
-              "what": "In the general model the listing is owned by one capability, read by eleven and queried through search by two more; its data catalog assigns credentials, sessions and the audit log to cookie consent.",
-              "shows": "The canonical pattern, and a reminder to review ownership as carefully as boundaries.",
+              "what": "In the general model the listing is owned by one capability, read by eleven and queried through search by two more.",
+              "shows": "The canonical one-owner, many-readers pattern in numbers.",
               "source": "Productscape reference models, 2026"
             }
           ],
           "transition_in": {
             "relationship": "elaboration",
             "carries_over": "The reference models' one owner and many readers.",
-            "introduces": "Their counts, and a mistake that shows why ownership needs review.",
+            "introduces": "Their counts.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1647,7 +1647,7 @@
       "paragraphs": [
         {
           "id": "p69",
-          "controlling_idea": "The context map is the architecture's constitution at group scale, and the author keeps some decisions at group level and leaves others to brands.",
+          "controlling_idea": "The context map is the architecture's constitution at group scale, and the author, speaking in the author's own voice rather than as Veldmark's Ingrid, keeps some decisions at group level and leaves others to brands.",
           "function": "claim"
         },
         {
@@ -1690,7 +1690,7 @@
         {
           "id": "p73",
           "form": "list",
-          "controlling_idea": "Five signals show the map decaying: contexts with two owners or none, writes by non-owners, consumers reading legacy tables directly, translation layers making business decisions, and contexts that cannot be separated if a business is sold.",
+          "controlling_idea": "Five signals show the map decaying: contexts with two owners or none (with ownership of each piece of data reviewed as carefully as boundaries), writes by non-owners, consumers reading legacy tables directly, translation layers making business decisions, and contexts that cannot be separated if a business is sold.",
           "function": "recommendation",
           "evidence": [
             {
@@ -1698,6 +1698,12 @@
               "what": "Adevinta (2025): 'parallel running of central and local services during a transitional period' as it decentralized.",
               "shows": "Shows the cost of shared contexts that were not designed to be separable.",
               "source": "Adevinta, 2025"
+            },
+            {
+              "kind": "fact",
+              "what": "The general-listings reference model's data catalog assigns credentials, sessions and the audit log to the cookie-consent capability.",
+              "shows": "Even a careful model mis-assigns ownership, so ownership needs review as boundaries do.",
+              "source": "Productscape reference models, 2026"
             }
           ],
           "transition_in": {
@@ -1929,6 +1935,38 @@
     {
       "date": "2026-11-12",
       "decision": "Orchestrator: 'thirteen event types' → 'twelve' (ledger line 135: listing.events.v1 has 12 domain event types; event-driven-listings and listing-aggregate say twelve)."
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-5 spec-fault findings (one_controlling_idea p46; flow, both readers): the cookie-consent ownership mistake moved out of p46 into p73's first watch signal (contexts with two owners or none), where it bears on ownership review; p46 now holds only the owner/reader counts. No fact cut. (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-5 transition finding p24: opening now names the structure carried over ('one owner of the listing and many contexts that read it') before introducing the reference models. (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-5 transition and flow findings on Vertical Differences: opening now bridges from the three trade-offs ('apply to every marketplace ... what they leave open is how the map changes with what is sold'). (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-5 flow finding p21: forward pointer 'Step 2 below explains why' replaced by the reason (French asking prices include the agency's fee); p21 controlling idea extended. (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-5 flow finding p28: Pub/Sub bridge sentence tied to the published language (every brand's events reach the backbone in this one language) with a pointer to Step 4. (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-5 flow finding p69: first person marked as the author's, not Ingrid's. (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "Round-5 minor findings also fixed: Vinted 'other side' sentence spelled out; Step 3 'each' given its referent; the reference model's resilience analysis pointed back to where the models were introduced. (fixed under the author's delegation (fix-only pass))"
+    },
+    {
+      "date": "2026-11-13",
+      "decision": "length.max_words raised 7950 -> 8100 (+1.9%) to hold the glosses, bridges and pointers of this pass; no published fact cut (fixed under the author's delegation (fix-only pass))."
     }
   ],
   "sources": [
@@ -1969,6 +2007,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-13",
+      "change": "Fix-only pass on the round-5 check report: eight blocking findings and three minor ones fixed in index.md and spec.json (p21, p24, p28, p46, p69, p73, Vertical Differences opening). (AI-mediated session)"
+    },
     {
       "date": "2026-11-12",
       "change": "Escalation resolved under the author's delegation: S2 folded into S5; p46 moved beside p24; worked example moved before the public record; Failure Modes lead-in split into p59a; conclusion states the takeaway; max_words 7,780 to 7,950; four cheap minor fixes. (AI-mediated session)"
@@ -2015,6 +2057,6 @@
     }
   ],
   "length": {
-    "max_words": 7950
+    "max_words": 8100
   }
 }

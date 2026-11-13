@@ -76,7 +76,7 @@ The public record documents the Schibsted-era portfolio but not how it was built
 
 **My reading** is that a shared starting code base, copied and then evolved locally, is the classic origin of the Copy-Paste Country: every site begins identical and diverges with every local change, until improvements must be built once per country. The later phases read as attempts to recover the economics that copying gave away, without giving up the local autonomy that made the sites win their markets.
 
-**The group's most durable shared abstraction was a local invention, promoted to group level.** **FIAAS** ("FINN Infrastructure as a Service") was built at FINN.no, Schibsted's Norwegian marketplace. FINN.no stayed with Schibsted and never joined Adevinta: the 2019 demerger covered Schibsted's non-Nordic marketplaces (Schibsted release, 2019). FINN's 2017 KubeCon talk describes about 350 microservices and 1,200 deployments per week, with FIAAS replacing roughly 147 lines of Kubernetes configuration with a short application file. FIAAS was open-sourced in 2019 and became the deployment abstraction of Adevinta's platform (Phase 2); a 2023 Adevinta post still calls it the "Golden Path".
+**Adevinta's most durable shared abstraction was a local invention from a Schibsted site, promoted to group level.** **FIAAS** ("FINN Infrastructure as a Service") was built at FINN.no, Schibsted's Norwegian marketplace. FINN.no stayed with Schibsted and never joined Adevinta: the 2019 demerger covered Schibsted's non-Nordic marketplaces (Schibsted release, 2019). FINN's 2017 KubeCon talk describes about 350 microservices and 1,200 deployments per week, with FIAAS replacing roughly 147 lines of Kubernetes configuration with a short application file. FIAAS was open-sourced in 2019, the year of the demerger, so it was not tied to FINN.no's owner; it became the deployment abstraction of Adevinta's platform (Phase 2), and a 2023 Adevinta post still calls it the "Golden Path".
 
 ## Phase 2: Selective Centralization (2019–2020)
 
@@ -86,7 +86,7 @@ Adevinta's first annual report as a listed company, for 2019, named the trade-of
 
 > "While one of our historic success formulas has been local autonomy and decentralised capacity in product and technology, we are adopting a centralised strategy to data and analytics. This one area where investment requirements are large and the technology is uniform, and where the maxim 'built once; used many times' clearly applies."
 
-The same report commits to "scalable components" developed centrally "aligned closely with local on-the-ground technical expertise", and attributes rising central losses to "investments in scalable tech and data". The 2019 revenue was €680 million across France (€357 million, mostly leboncoin), Spain (€182 million), Brazil (an equity-accounted joint venture) and a long tail of "Global Markets".
+The same report commits to "scalable components" developed centrally "aligned closely with local on-the-ground technical expertise", and attributes rising central losses to "investments in scalable tech and data". That investment served a group whose money came mostly from two countries: the 2019 revenue was €680 million across France (€357 million, mostly leboncoin), Spain (€182 million), Brazil (an equity-accounted joint venture) and a long tail of "Global Markets". The rule, in other words, governed central investment for a group whose revenue was concentrated in France and Spain.
 
 **I read this as the strongest decision rule in the whole record.** It does not say "centralize what is shared". It names two conditions, *large investment* and *uniform technology*, and accepts that product surfaces fail them. That is the same test [[multi-country-platforms]] proposes for choosing global components, and it explains why the documented successes of the next five years cluster where they do.
 
@@ -99,7 +99,7 @@ The "Common Platform", described in Galo Navarro's 2019 talk (written up in Janu
 
 Its design choices were less ordinary, starting with voluntary adoption ("You prefer to do the plumbing yourself? It's your call, we respect that."). Onboarding took about ten minutes through a web form that set up delivery pipelines, a namespace, metrics and logging. For large migrations, such as the Spanish marketplaces' roughly 200 microservices, the platform team embedded one or two engineers with the local team. A controller called "Eurek8s" bridged the services' existing service discovery into Kubernetes so they could move without code changes (described in 2020).
 
-**The platform grew from about 1,500 to more than 4,000 developers, through the eCG integration, and the public record shows no mandate.** By June 2023 it was called **SCHIP**, a multi-tenant Kubernetes distribution, and served "more than 4,000 developers" and about 5,000 applications. It is the clearest documented counter-example to the Forced Fit in the book's research: a central platform that won its tenants by being cheaper to use than the alternative.
+Looking ahead past this phase: **the platform grew from about 1,500 to more than 4,000 developers, through the eCG integration that Phase 3 describes, and the public record shows no mandate.** By June 2023 it was called **SCHIP**, a multi-tenant Kubernetes distribution, and served "more than 4,000 developers" and about 5,000 applications. It is the clearest documented counter-example to the Forced Fit in the book's research: a central platform that won its tenants by being cheaper to use than the alternative.
 
 ## Phase 3: Absorbing eBay Classifieds (2021–2023)
 
@@ -107,13 +107,13 @@ Its design choices were less ordinary, starting with voluntary adoption ("You pr
 
 The eBay Classifieds Group acquisition, completed on 25 June 2021, roughly doubled the group. Adevinta's completion release claims number-one positions in 16 countries, about three billion monthly visits and pro forma 2019 revenue of about €1.6 billion, and targets **run-rate cost synergies of €130–165 million after three years**. The acquired brands included mobile.de, eBay Kleinanzeigen, Marktplaats, 2dehands/2ememain, Kijiji, Gumtree, Automobile.it and others; **my reading** is that each came with its own stack.
 
-**Regulators and strategy removed part of the integration scope before integration began, so the scope was not known at signing.** The UK Competition and Markets Authority required the sale of Shpock and of Gumtree UK with Motors.co.uk, both completed in 2021; eCG's Danish businesses went to Schibsted. Further sales in 2022 (Australia, South Africa, Mexico) and the 2023 exit from Hungary were strategic, following a review that focused the group on "five core European markets: Benelux, France, Germany, Italy and Spain". **My reading** is that the platforms that overlap most are the likeliest to be divested before anyone integrates them.
+**Regulators and strategy removed part of the integration scope before integration began, so the scope was not known at signing.** The UK Competition and Markets Authority required the sale of Shpock and of Gumtree UK with Motors.co.uk, both completed in 2021; eCG's Danish businesses went to Schibsted. Further sales in 2022 (Australia and Mexico, per the 2022 release and trade press in the timeline; South Africa, as reported by Online Marketplaces) and the 2023 exit from Hungary (Annual Report 2023) were strategic, following a review that focused the group on "five core European markets: Benelux, France, Germany, Italy and Spain". **My reading** is that the platforms that overlap most are the likeliest to be divested before anyone integrates them.
 
 The 2023 annual report shows the integration's cost: €69 million of eCG integration expenses in that year alone, €15 million for the eBay Kleinanzeigen rebrand (under the acquisition agreement, Adevinta could not use the "eBay Kleinanzeigen" brand beyond 2024), and €22 million for the verticalization project (the move to verticals, see Phase 4). Whether the €130–165 million synergy target was achieved, and how much of it came from technology, is not public.
 
 ### What was consolidated, layer by layer
 
-The engineering blog (about 90 posts, August 2022 to March 2026) documents consolidation at four layers.
+The engineering blog (about 90 posts, August 2022 to March 2026) documents consolidation at four layers. This section follows each layer past 2023 to its last documented state, so some evidence below is dated 2024, after the 2023 strategy change that Phase 4 describes.
 
 **Infrastructure and cloud.** The 2023 annual report states that infrastructure for the "EU5" businesses (the five core European markets) was consolidated "to a single public cloud vendor" (AWS), and Canada moved to Google Cloud. The plan for 2024 was to "close three of four data centre footprints" and "onboard most product platforms onto Adevinta's common internal development platform", with a target of being 100% cloud-native by 2025. SCHIP moved to Amazon EKS: a September 2023 post describes more than 30 production clusters, the largest about 200 nodes, and by October 2024 it ran "over 2,000 Kubernetes nodes" in 30 clusters "across 25 marketplaces". A December 2024 post counts **732 AWS accounts and 425 Google Cloud projects** (fewer than 150 AWS accounts in 2019), each mapped to teams and cost centers under the principle "You build it, you run it (and you pay for it)".
 
@@ -144,7 +144,7 @@ The dispute back office is the only cross-marketplace *product* component with a
 
 ### Verticals and the 2023 revenue mix
 
-The 2023 annual report, published in April 2024, describes the "Growing at Scale" strategy (five core markets, high-quality verticals, "fully transactional in Re-Commerce", technology and advertising) and an operating model "organised by verticals": Mobility, Re-Commerce, and Real Estate & Emerging Verticals. Group revenue was €1,826 million and EBITDA €651 million.
+While those uniform layers were still being consolidated through 2023, the group adopted a strategy that went further. The 2023 annual report, published in April 2024, describes this "Growing at Scale" strategy (five core markets, high-quality verticals, "fully transactional in Re-Commerce", technology and advertising) and an operating model "organised by verticals": Mobility, Re-Commerce, and Real Estate & Emerging Verticals. Group revenue was €1,826 million and EBITDA €651 million. The segment table shows where that money came from when the convergence was decided.
 
 | 2023, € million | France | mobile.de | European Markets | International (Kijiji) | Other/HQ | Total |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -216,7 +216,7 @@ The 2025 accounts report revenue from continuing operations of €1,891 million 
 
 ## The Layer Map: What Was Shared, When
 
-The table pulls the five phases into one view, at the layers Figure 1 introduced: the uniform layers stay shared until 2024, and only the product platform's convergence is announced. "Shared" means documented as run centrally for several marketplaces at the date given; a blank means no public evidence either way.
+The table pulls the five phases into one view, at the layers Figure 1 introduced: the uniform layers are documented as shared until 2024, while the product platform's convergence is only announced, never documented as shared. "Shared" means documented as run centrally for several marketplaces at the date given; a blank means no public evidence either way.
 
 | Layer | 2019–2020 | 2021–2023 | 2023–2024 | 2025–2026 |
 | --- | --- | --- | --- | --- |
@@ -252,12 +252,12 @@ If separability can be built in, the question becomes when to share at all. **Th
 
 ## Vertical Differences in the Record
 
-Under the same group strategy, Adevinta's generalist, automotive and real-estate marketplaces differed in scale, in revenue model and in which were sold or put up for sale, and so in how separable a shared capability had to be.
+The trade-offs' new condition, how long the group expects to own each tenant, played out differently by vertical. Under the same group strategy, Adevinta's generalist, automotive and real-estate marketplaces differed in scale, in revenue model and in which were sold or put up for sale, and so in how separable a shared capability had to be.
 
 | Vertical | Adevinta examples | What the record shows | Implication for platform sharing |
 | --- | --- | --- | --- |
-| **Generalist (recommerce)** | leboncoin, Kleinanzeigen, Marktplaats, Subito | Large audiences (Kleinanzeigen more than 58 million live ads, leboncoin more than 88 million, 2025); transactional journeys with PSP-held funds and shipping; the target of the 2023 convergence | Strongest case for shared transactional and AI-search capabilities; also where local law, carriers and payment contracts bite hardest |
-| **Automotive** | mobile.de, Automobile.it, coches.net (sold 2026) | mobile.de: 1.6 million listings, more than 140 million monthly visits (2025); revenue almost entirely dealer classifieds; the most valuable single asset, with a reported dual-track process | High-value, dealer-driven businesses are the likeliest to be separated, so separability matters most here |
+| **Generalist (recommerce)** | leboncoin, Kleinanzeigen, Marktplaats, Subito | Large audiences (Kleinanzeigen more than 58 million live ads, leboncoin more than 88 million, 2025, Strategic Report 2025); transactional journeys with PSP-held funds and shipping; the target of the 2023 convergence | Strongest case for shared transactional and AI-search capabilities; also where local law, carriers and payment contracts bite hardest |
+| **Automotive** | mobile.de, Automobile.it, coches.net (sold 2026) | mobile.de: 1.6 million listings, more than 140 million monthly visits (2025, Strategic Report 2025); revenue almost entirely dealer classifieds; the most valuable single asset, with a reported dual-track process | High-value, dealer-driven businesses are the likeliest to be separated, so separability matters most here |
 | **Real estate** | Fotocasa, Habitaclia (sold), A Vendre A Louer | Spanish property portals moved to Scout24 in 2026, a buyer with its own platforms | Acquirers bring their own stacks; anything shared must be easy to hand over or switch off |
 
 Take coches.net's natural-language car search (November 2024), in which a language model turns free text into the site's existing filters for about €19 a day: built locally on group infrastructure, it went with Spain to EQT. **A capability built inside a marketplace leaves with that marketplace; one built centrally has to be split or licensed.** [[ai-in-listing-systems]] and [[query-understanding]] cover the design.
@@ -281,7 +281,7 @@ No public source found for this book answers the following questions, and the ch
 | Did the leboncoin–Kleinanzeigen "unified global platform" ship? | The 2023 decision; "progressing well and according to plan" (May 2024) | Its architecture (shared backend, one code base, or shared components), its scope, whether any market went live on it, and its fate after 2025 |
 | What happened to SCHIP after decentralization? | Its state up to the June 2025 PlatformCon talk | Whether it was split per marketplace, handed to a marketplace, or retired; how Spain was carved out of shared clusters and accounts |
 | How did chat and moderation work centrally? | That they were consolidated (Annual Report 2023) | Any architecture, data model or operating model |
-| How do the marketplaces run search and ranking? | A Kleinanzeigen search data pipeline built on change data capture (2025); LLM front ends at coches.net and leboncoin (2024) | Engines, index topology, ranking models and their ownership |
+| How do the marketplaces run search and ranking? | A Kleinanzeigen search data pipeline built on change data capture (2025); LLM front ends at coches.net and leboncoin (Adevinta Tech Blog, November 2024) | Engines, index topology, ranking models and their ownership |
 | Were the eCG synergies achieved? | The €130–165 million target (2021); €69 million integration cost in 2023 | The outcome and the technology share |
 | What did separation cost? | A "temporary spike" in cloud emissions from parallel running (2025); a carve-out advisor | Duration, cost, transitional service agreements |
 | What is the revenue mix after 2023? | Group totals for 2025 | Classifieds, advertising and transactional split |
@@ -315,7 +315,7 @@ Adevinta's record supports most book patterns it touches, leaves two untested ("
 | Platform as product with voluntary adoption ([[organizing-marketplace-engineering]]) | 1,500 → 4,000+ developers without a documented mandate | Strongly supported |
 | Data products with contracts on a shared substrate ([[data-platform]]) | Adevinta Spain's data mesh and contract-driven ingestion | Supported; also eases separation |
 | Keep funds with a licensed PSP and own the state machine ([[transactions-and-payments]]) | Adyen holds funds at Kleinanzeigen (help page, 2026) and Online Payment Platform at Marktplaats (as reported in 2022) | Consistent with public descriptions |
-| Put language models in front of structured search ([[ai-in-listing-systems]]) | coches.net and leboncoin map text to filters | Not contradicted; adoption slow |
+| Put language models in front of structured search ([[ai-in-listing-systems]]) | coches.net and leboncoin map text to filters (Adevinta Tech Blog, 2024) | Not contradicted; adoption slow |
 | Design for portability and stressors ([[long-term-evolution]]) | Ownership change turned shared platforms into separation costs | Supported; adds capital strategy as a stressor |
 
 Veldmark's 2027 program sits close to Adevinta's 2019 rule and further from its 2023 plan. Common Ground, the group platform program approved in January 2027 at €140 million over 2027–2030, follows the principle **"share platforms, not products"**. The case sharpens these Veldmark choices:
@@ -328,7 +328,7 @@ Veldmark's 2027 program sits close to Adevinta's 2019 rule and further from its 
 | Retire Yardstick, Tradeyard's old monolith, by end of 2029 through a strangler sequence ([[modernization-and-migration]]) | No public evidence of a completed product-platform convergence | Stage gates with exit criteria matter more than the target end state |
 | Majority-owned by a private-equity investor since 2025 | Take-private in 2024, then break-up | Veldmark's own capital structure makes separability a live requirement, not a hypothetical |
 
-**The last row turns separability into a costed question: in November 2027 Veldmark's investor asks what a 2030 sale of Hearthly would cost.** By then, under the scenario's timeline, Hearthly would use Veldmark ID, the shared identity service (rolled out 2028), the shared OpenSearch search platform (by end of 2028), the Confluent event backbone (from July 2027) and the group catalog and entitlement service (Q2 2028), while running its own services on Google Cloud (through at least 2028). Each would need a handover plan, a transitional service or a switch-off date — what Adevinta's 2025 report calls "transfer of key capabilities" and "localisation of intellectual property".
+**The last row turns separability into a costed question: in November 2027 Veldmark's investor asks what a 2030 sale of Hearthly would cost.** By then, under the scenario's timeline, Hearthly would run its own services on Google Cloud (through at least 2028) but depend on four shared ones: identity (Veldmark ID, rolled out 2028), search (the shared OpenSearch platform, by end of 2028), events (the Confluent backbone, from July 2027) and the group catalog and entitlement service (Q2 2028). Each would need a handover plan, a transitional service or a switch-off date — what Adevinta's 2025 report calls "transfer of key capabilities" and "localisation of intellectual property".
 
 **The architectural answer is not to share less, but to make each shared capability tenant-separable from its first release.** That means identity with per-brand profile stores and an export path; a search platform with per-tenant clusters or indices and portable index definitions; event topics and schemas owned per brand; and an entitlement service whose data can be extracted per brand. Veldmark's tenancy model, adopted in June 2027, already requires every shared capability to document a tenant exit path ([[multi-country-platforms]]). Ingrid Halvorsen, Veldmark's fictional Group Chief Architect, puts a number on it for the board in December 2027. With those rules, a Hearthly carve-out would need transitional services for seven shared capabilities for about nine to twelve months; without them, for more than twenty months. [[long-term-evolution]] develops this labeled estimate.
 
@@ -350,7 +350,7 @@ Put the rules to your own group:
 
 The opening's three questions, asked of each phase, add up to one rule. **What was shared** held up where the 2019 test said: uniform, expensive layers, grown by adoption. **The layer** mattered most in 2023, when the line moved up to the product platform, which fails that test and is never shown finished. **What it cost** was set by the owner: synergy in 2021, separation in 2025. My reading: share by layer, fund product convergence as its own case, and design each shared layer for a tenant's exit.
 
-Adevinta shows one group running the whole pendulum in public. The next case, [[case-olx]], follows a group that built regional platforms across several continents, verticalized its businesses and then retreated from many markets — a different route through the same questions. It also takes up the question Adevinta's record leaves undocumented: what happens to a shared platform when the portfolio, not the platform strategy, changes, and how a listing stack is improved in place while it does.
+Adevinta shows one group running the whole pendulum in public. The next case, [[case-olx]], follows a group that built regional platforms across several continents, verticalized its businesses and then retreated from many markets — a different route through the same questions. It also takes up the question Adevinta's record leaves undocumented: what happens to a shared platform when the portfolio changes on its own, not together with the platform strategy as at Adevinta in 2025, and how a listing stack is improved in place while it does.
 
 ## Sources and Evidence
 
